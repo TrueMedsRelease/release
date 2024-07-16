@@ -22,4 +22,5 @@ Route::get('/delivery', [HomeController::class, 'delivery'])->name('home.deliver
 Route::get('/moneyback', [HomeController::class, 'moneyback'])->name('home.moneyback');
 Route::get('/lang={locale}', [HomeController::class, 'language'])->name('home.language');
 Route::get('/first_letter/{letter}', [HomeController::class, 'first_letter'])->name('home.first_letter');
+Route::get('/{product_name}', [HomeController::class, 'product'])->name('home.product');
 

@@ -1852,7 +1852,7 @@ body{
 
 .page-wrapper{
   display:flex;
-  flex:1 0 auto;
+  /* flex:1 0 auto; */
   gap:2rem;
   padding-top:2rem;
   padding-bottom:5rem;

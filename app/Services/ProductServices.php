@@ -7,14 +7,16 @@ use App\Models\CategoryDesc;
 use App\Models\Language;
 use App\Models\Product;
 use App\Models\ProductDesc;
+use App\Models\ProductDisease;
 use App\Models\ProductPackaging;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ProductServices
 {
     public function GetBestsellers() {
-        $products_desc = $this->GetAllProductDesc(Language::$languages[App::currentLocale()]);
+        $products_desc = $this->GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = $this->GetAllProductPillPrice();
 
         $products = Product::query()
@@ -38,7 +40,7 @@ class ProductServices
     public function GetAllCategoriesWithProducts()
     {
         $category_desc = $this->GetAllCategoryDesc(Language::$languages[App::currentLocale()]);
-        $products_desc = $this->GetAllProductDesc(Language::$languages[App::currentLocale()]);
+        $products_desc = $this->GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = $this->GetAllProductPillPrice();
 
         $categories_raw = Category::query()
@@ -62,14 +64,25 @@ class ProductServices
         return $categories;
     }
 
-    public function GetAllProductDesc($language_id)
+    public function GetProductDesc($language_id, $url = '')
     {
-        $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc'])->groupBy('product_id')->toArray();
+        if(empty($url))
+        {
+            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+        }
+        else
+        {
+            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+        }
 
         $products_desc = [];
         foreach($products_desc_raw as $key => $p)
         {
             $products_desc[$key] = $p[0];
+            if(!empty($url))
+            {
+                return $p[0];
+            }
         }
 
         return $products_desc;
@@ -102,7 +115,7 @@ class ProductServices
 
     public function GetProductByFirstLetter($letter)
     {
-        $products_desc = $this->GetAllProductDesc(Language::$languages[App::currentLocale()]);
+        $products_desc = $this->GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = $this->GetAllProductPillPrice();
 
         $products = Product::query()
@@ -121,6 +134,55 @@ class ProductServices
         }
 
         return $products;
+    }
+
+    public function GetProductInfoByUrl($url)
+    {
+        $language_id = Language::$languages[App::currentLocale()];
+        $products_desc = $this->GetProductDesc($language_id, $url);
+
+        $product = Product::query()
+            ->where('id', '=', $products_desc['product_id'])
+            ->where('is_showed', '=', 1)
+            ->with('category.category_desc')
+            ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+
+        $categories = [];
+
+        foreach($product[0]->category as $category)
+        {
+            $names = $category->category_desc->where('language_id', '=', $language_id);
+            foreach($names as $n)
+            {
+                $name = $n['name'];
+            }
+            $categories[] = $name;
+        }
+
+        $product_disease = [];
+        $product_diseases = ProductDisease::query()
+            ->where('product_id', '=', $products_desc['product_id'])
+            ->where('language_id', '=', $language_id)
+            ->get('disease')
+            ->toArray();
+
+        foreach($product_diseases as $disease)
+        {
+            $product_disease[] = $disease['disease'];
+        }
+
+        $product = $product->toArray()[0];
+        unset($product['category']);
+        $product['categories'] = $categories;
+        $product['name'] = $products_desc['name'];
+        $product['desc'] = $products_desc['desc'];
+        $product['aktiv'] = explode(',', str_replace(' ', '', ucwords($product['aktiv'])));
+        $product['disease'] = $product_disease;
+        $path = public_path() . '\languages\\' . App::currentLocale() . '\tablets_descriptions\\' . str_replace('/', '\\', $product['product_info_file_path']);
+        $product['full_desc'] = File::exists($path) ? File::get($path) : '';
+
+        dump($product);
+        return $product;
     }
 
 }

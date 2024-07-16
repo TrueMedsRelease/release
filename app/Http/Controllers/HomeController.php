@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Services\ProductServices;
+use Illuminate\Support\Illuminate;
+
 
 class HomeController extends Controller
 {
@@ -43,6 +45,23 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'letter' => $letter,
+        ]);
+    }
+
+    public function product($product) : View
+    {
+        $design = config('app.design');
+        $product_service = new ProductServices();
+        $bestsellers = $product_service->GetBestsellers();
+        $menu = $product_service->GetAllCategoriesWithProducts();
+
+        $product = $product_service->GetProductInfoByUrl($product);
+
+        return view($design . '.product', [
+            'design' => $design,
+            'bestsellers' => $bestsellers,
+            'menu' => $menu,
+            'product' => $product
         ]);
     }
 
