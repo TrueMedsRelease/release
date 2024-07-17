@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductDesc;
 use App\Models\ProductDisease;
 use App\Models\ProductPackaging;
+use App\Models\ProductTypeDesc;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -57,6 +58,8 @@ class ProductServices
                 $product['price'] = $product_price[$product['id']];
                 $product['name'] = $products_desc[$product['id']]['name'];
             }
+            unset($product);
+
             $categories[$category->id]['name'] = $category_desc[$category->id];
             $categories[$category->id]['products'] = $products;
         }
@@ -147,8 +150,8 @@ class ProductServices
             ->with('category.category_desc')
             ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
 
+        #region Category
         $categories = [];
-
         foreach($product[0]->category as $category)
         {
             $names = $category->category_desc->where('language_id', '=', $language_id);
@@ -158,7 +161,18 @@ class ProductServices
             }
             $categories[] = $name;
         }
+        #endregion
 
+        #region Analogs
+        $analogs = DB::select('SELECT pd.name, pd.url
+        FROM product_analog pa
+        JOIN product_desc pd ON pd.product_id = pa.analog_id
+        JOIN product p ON p.id = pa.analog_id
+        WHERE pa.product_id = ? AND pd.language_id = ? AND p.is_showed = 1',
+        [$products_desc['product_id'], $language_id]);
+        #endregion
+
+        #region Product Disease
         $product_disease = [];
         $product_diseases = ProductDisease::query()
             ->where('product_id', '=', $products_desc['product_id'])
@@ -170,6 +184,43 @@ class ProductServices
         {
             $product_disease[] = $disease['disease'];
         }
+        #endregion
+
+        #region Packaging
+        $packs = ProductPackaging::query()
+            ->where('product_id', '=', $products_desc['product_id'])
+            ->where('price', '!=', 0)
+            ->where('is_showed', '=', 1)
+            ->orderBy('ord')
+            ->get()
+            ->groupBy('dosage')
+            ->toArray();
+
+        $product_type = 1; //defualt pills
+        foreach($packs as &$pack)
+        {
+
+            $max_pill_price = 0;
+            foreach($pack as $p)
+            {
+                $product_type = $p['type_id'];
+                $max_pill_price = ($p['price'] / $p['num']) > $max_pill_price ? round($p['price'] / $p['num'], 2) : $max_pill_price;
+                // break;
+            }
+            // dd();
+            $pack['max_pill_price'] = $max_pill_price;
+        }
+        unset($pack);
+
+        krsort($packs, SORT_NUMERIC); //сортировка упаковок по дозации
+        #endregion
+
+        #region Product Type
+        $type = ProductTypeDesc::query()
+        ->where('type_id', '=', $product_type) //$product_type получен в регионе Packaging
+        ->where('language_id', '=', $language_id)
+        ->first('name')->name;
+        #endregion
 
         $product = $product->toArray()[0];
         unset($product['category']);
@@ -178,8 +229,12 @@ class ProductServices
         $product['desc'] = $products_desc['desc'];
         $product['aktiv'] = explode(',', str_replace(' ', '', ucwords($product['aktiv'])));
         $product['disease'] = $product_disease;
+        $product['analog'] = json_decode(json_encode($analogs), true);
+        $product['sinonim'] = explode("\n", str_replace("\u{FEFF}", '', $product['sinonim']));
         $path = public_path() . '\languages\\' . App::currentLocale() . '\tablets_descriptions\\' . str_replace('/', '\\', $product['product_info_file_path']);
         $product['full_desc'] = File::exists($path) ? File::get($path) : '';
+        $product['packs'] = $packs;
+        $product['type'] = $type;
 
         dump($product);
         return $product;

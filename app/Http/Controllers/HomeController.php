@@ -56,6 +56,7 @@ class HomeController extends Controller
         $menu = $product_service->GetAllCategoriesWithProducts();
 
         $product = $product_service->GetProductInfoByUrl($product);
+        // $packs = $product_service->GetPacksById()
 
         return view($design . '.product', [
             'design' => $design,
