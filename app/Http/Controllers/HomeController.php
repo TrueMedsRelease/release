@@ -18,11 +18,9 @@ class HomeController extends Controller
 {
     public function index() : View
     {
-        $product_service = new ProductServices();
+        $bestsellers = ProductServices::GetBestsellers();
 
-        $bestsellers = $product_service->GetBestsellers();
-
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
         return view($design . '.index', ['design' => $design, 'bestsellers' => $bestsellers, 'menu' => $menu]);
@@ -30,13 +28,11 @@ class HomeController extends Controller
 
     public function first_letter($letter) : View
     {
-        $product_service = new ProductServices();
+        $products = ProductServices::GetProductByFirstLetter($letter);
 
-        $products = $product_service->GetProductByFirstLetter($letter);
+        $bestsellers = ProductServices::GetBestsellers();
 
-        $bestsellers = $product_service->GetBestsellers();
-
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
         return view($design . '.first_letter',[
@@ -48,15 +44,69 @@ class HomeController extends Controller
         ]);
     }
 
+    public function active($active) : View
+    {
+        $bestsellers = ProductServices::GetBestsellers();
+
+        $menu = ProductServices::GetCategoriesWithProducts();
+
+        $products = ProductServices::GetProductByActive($active);
+
+        $design = config('app.design');
+        return view($design . '.active',[
+            'design' => $design,
+            'products' => $products,
+            'bestsellers' => $bestsellers,
+            'menu' => $menu,
+            'active' => $active,
+        ]);
+    }
+
+    public function category($category) : View
+    {
+
+        $bestsellers = ProductServices::GetBestsellers();
+
+        $menu = ProductServices::GetCategoriesWithProducts();
+
+        $products = ProductServices::GetCategoriesWithProducts($category);
+
+        $design = config('app.design');
+        return view($design . '.category',[
+            'design' => $design,
+            'bestsellers' => $bestsellers,
+            'menu' => $menu,
+            'products' => $products,
+        ]);
+    }
+
+    public function disease($disease) : View
+    {
+
+        $bestsellers = ProductServices::GetBestsellers();
+
+        $menu = ProductServices::GetCategoriesWithProducts();
+
+        $products = ProductServices::GetProductByDisease($disease);
+
+        $design = config('app.design');
+        return view($design . '.disease',[
+            'design' => $design,
+            'bestsellers' => $bestsellers,
+            'menu' => $menu,
+            'products' => $products,
+            'disease' => $disease
+        ]);
+    }
+
     public function product($product) : View
     {
         $design = config('app.design');
-        $product_service = new ProductServices();
-        $bestsellers = $product_service->GetBestsellers();
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $bestsellers = ProductServices::GetBestsellers();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
-        $product = $product_service->GetProductInfoByUrl($product);
-        // $packs = $product_service->GetPacksById()
+        $product = ProductServices::GetProductInfoByUrl($product);
+        // $packs = ProductServices::GetPacksById()
 
         return view($design . '.product', [
             'design' => $design,
@@ -68,11 +118,9 @@ class HomeController extends Controller
 
     public function about() : View
     {
-        $product_service = new ProductServices();
+        $bestsellers = ProductServices::GetBestsellers();
 
-        $bestsellers = $product_service->GetBestsellers();
-
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
         return view($design . '.about', [
@@ -84,11 +132,9 @@ class HomeController extends Controller
 
     public function help() : View
     {
-        $product_service = new ProductServices();
+        $bestsellers = ProductServices::GetBestsellers();
 
-        $bestsellers = $product_service->GetBestsellers();
-
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
         return view($design . '.help', [
@@ -100,11 +146,9 @@ class HomeController extends Controller
 
     public function testimonials() : View
     {
-        $product_service = new ProductServices();
+        $bestsellers = ProductServices::GetBestsellers();
 
-        $bestsellers = $product_service->GetBestsellers();
-
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
         return view($design . '.testimonials', [
@@ -116,11 +160,9 @@ class HomeController extends Controller
 
     public function delivery() : View
     {
-        $product_service = new ProductServices();
+        $bestsellers = ProductServices::GetBestsellers();
 
-        $bestsellers = $product_service->GetBestsellers();
-
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
         return view($design . '.delivery', [
@@ -132,11 +174,9 @@ class HomeController extends Controller
 
     public function moneyback() : View
     {
-        $product_service = new ProductServices();
+        $bestsellers = ProductServices::GetBestsellers();
 
-        $bestsellers = $product_service->GetBestsellers();
-
-        $menu = $product_service->GetAllCategoriesWithProducts();
+        $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
         return view($design . '.moneyback', [

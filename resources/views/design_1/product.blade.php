@@ -11,7 +11,7 @@
                 </h1>
                 <div class="product_category">
                     @foreach ($product['categories'] as $category)
-                        <a href="#!">{{ $category }}</a> <br>
+                        <a href=" {{ route("home.category", $category['url']) }} ">{{ $category['name'] }}</a> <br>
                     @endforeach
                 </div>
             </div>
@@ -19,15 +19,17 @@
                 <div class="info-panel panel">
                     <div class="info-panel__image">
                         <picture>
+                            @if ($product['image'] != "gift-card")
                             <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
-                            <img src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="viagra">
+                            @endif
+                            <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/products/gift-card.svg') }}" alt="{{ $product['image'] }}">
                         </picture>
                     </div>
 
                     <div class="info-panel__row">
                         Active Ingredient:
                         @foreach ($product['aktiv'] as $aktiv)
-                            <a href="">{{ $aktiv }}</a>
+                            <a href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
                         @endforeach
                     </div>
 
@@ -39,7 +41,7 @@
                         <div class="info-panel__row">
                             Diseases:
                             @foreach ($product['disease'] as $disease)
-                                <a href="#!">{{ ucfirst($disease) }}</a>
+                                <a href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">{{ ucfirst($disease) }}</a>
                             @endforeach
                         </div>
                     @endif
@@ -59,7 +61,7 @@
                         <div class="info-panel__row">
                             {{ $product['name'] }} other names:
                             @foreach ($product['sinonim'] as $sinonim)
-                                <a href = "{{ route('home.product', $sinonim) }}" class="others">{{ $sinonim }}</a>
+                                <a href = "" class="others">{{ $sinonim }}</a>
                             @endforeach
                         </div>
                     @endif
@@ -95,9 +97,9 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <td class="product__price-per-pill" data-caption="Per Pill:">{{ round(($item['price'] / $item['num']),2) }}</td>
+                                    <td class="product__price-per-pill" data-caption="Per Pill:">${{ round(($item['price'] / $item['num']),2) }}</td>
                                     <td class="product__price-wrapper" data-caption="Special Price:">
-                                        @if ($loop->remaining != 1)
+                                        @if ($loop->remaining != 1 && $product['image'] != "gift-card")
                                         <div class="product__discount"><s>${{ $dosage['max_pill_price'] * $item['num'] }}</s>
                                             -{{ ceil(100 - (($item['price']/($dosage['max_pill_price'] * $item['num']))*100)) }}%
                                         </div>

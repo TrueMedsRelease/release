@@ -1,12 +1,12 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', str_replace('-', ' ', $disease))
 
 @section('content')
 <main class="main">
-    <h1>Bestsellers</h1>
+    <h1>Search results for disease «{{ str_replace('-', ' ', $disease) }}»</h1>
     <div class="product-cards">
-        @foreach ($bestsellers as $product)
+        @foreach ($products as $product)
         <article class="card product-card">
             <a class="product-card__img" href="{{ route('home.product', $product['url']) }}">
                 <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/products/gift-card.svg') }}" width="140" height="140" alt="{{ $product['name'] }}">
@@ -21,12 +21,12 @@
                 {{ str()->limit($product['desc'], 120, $end='...') }}
             </a>
             <div class="product-card__controls">
-                <button class="button product-card__button" aria-label="Buy now" onclick="location.href='{{ route('home.product', $product['url']) }}'">
+                <button class="button product-card__button" aria-label="Buy Now" onclick="location.href='{{ route('home.product', $product['url']) }}'">
                     <span class="icon">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ $design }}/svg/icons/sprite.svg#cart"></use>
+                            <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
                         </svg>
-                    </span> <span class="button__text">Buy now</span>
+                    </span> <span class="button__text">Buy Now</span>
                 </button>
             <div class="product-card__price">${{ $product['price'] }}</div>
             </div>

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductDesc;
 use App\Models\ProductDisease;
 use App\Models\ProductPackaging;
+use App\Models\ProductSearch;
 use App\Models\ProductTypeDesc;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -16,9 +17,10 @@ use Illuminate\Support\Facades\File;
 
 class ProductServices
 {
-    public function GetBestsellers() {
-        $products_desc = $this->GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = $this->GetAllProductPillPrice();
+    public static function GetBestsellers()
+    {
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $product_price = self::GetAllProductPillPrice();
 
         $products = Product::query()
             ->where('is_showed_on_main', '=', 1)
@@ -27,27 +29,39 @@ class ProductServices
             ->get(['id', 'image', 'aktiv'])
             ->toArray();
 
-
         for($i = 0; $i < count($products); $i++)
         {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
         return $products;
     }
 
-    public function GetAllCategoriesWithProducts()
+    public static function GetCategoriesWithProducts($url = '')
     {
-        $category_desc = $this->GetAllCategoryDesc(Language::$languages[App::currentLocale()]);
-        $products_desc = $this->GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = $this->GetAllProductPillPrice();
+        $category_desc = self::GetAllCategoryDesc(Language::$languages[App::currentLocale()]);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $product_price = self::GetAllProductPillPrice();
 
-        $categories_raw = Category::query()
-            ->with(['product'])
-            ->orderBy('ord')
-            ->get();
+        if(empty($url))
+        {
+            $categories_raw = Category::query()
+                ->with(['product'])
+                ->orderBy('ord')
+                ->get();
+        }
+        else
+        {
+            $categories_raw = Category::query()
+                ->where('url', '=', $url)
+                ->with(['product'])
+                ->orderBy('ord')
+                ->get();
+        }
 
         $categories = [];
         foreach($categories_raw as $category)
@@ -57,9 +71,13 @@ class ProductServices
             {
                 $product['price'] = $product_price[$product['id']];
                 $product['name'] = $products_desc[$product['id']]['name'];
+                $product['desc'] = $products_desc[$product['id']]['desc'];
+                $product['url'] = $products_desc[$product['id']]['url'];
+                $product['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$product['aktiv'])));
             }
             unset($product);
 
+            $categories[$category->id]['url'] = $category->url;
             $categories[$category->id]['name'] = $category_desc[$category->id];
             $categories[$category->id]['products'] = $products;
         }
@@ -67,7 +85,7 @@ class ProductServices
         return $categories;
     }
 
-    public function GetProductDesc($language_id, $url = '')
+    public static function GetProductDesc($language_id, $url = '')
     {
         if(empty($url))
         {
@@ -91,7 +109,7 @@ class ProductServices
         return $products_desc;
     }
 
-    public function GetAllCategoryDesc($language_id)
+    public static function GetAllCategoryDesc($language_id)
     {
         $category_desc_raw = CategoryDesc::query()->where('language_id', '=', $language_id)->get(['category_id', 'name'])->groupBy('category_id')->toArray();
         $category_desc = [];
@@ -103,7 +121,7 @@ class ProductServices
         return $category_desc;
     }
 
-    public function GetAllProductPillPrice()
+    public static function GetAllProductPillPrice()
     {
 
         $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 GROUP BY product_id');
@@ -116,10 +134,10 @@ class ProductServices
         return $product_price;
     }
 
-    public function GetProductByFirstLetter($letter)
+    public static function GetProductByFirstLetter($letter)
     {
-        $products_desc = $this->GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = $this->GetAllProductPillPrice();
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $product_price = self::GetAllProductPillPrice();
 
         $products = Product::query()
             ->where('is_showed', '=', 1)
@@ -133,16 +151,77 @@ class ProductServices
         {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
         return $products;
     }
 
-    public function GetProductInfoByUrl($url)
+    public static function GetProductByDisease($disease)
+    {
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $product_price = self::GetAllProductPillPrice();
+        $disease = str_replace('-', ' ', $disease);
+
+        $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ?', [Language::$languages[App::currentLocale()], $disease]);
+
+        $product_id = [];
+        foreach($diseases as $item)
+        {
+            $product_id[] = $item->product_id;
+        }
+
+        $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->whereIn('id', $product_id)
+            ->orderBy('main_order', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
+
+        for($i = 0; $i < count($products); $i++)
+        {
+            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['price'] = $product_price[$products[$i]['id']];
+        }
+
+        return $products;
+    }
+
+    public static function GetProductByActive($active)
+    {
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $product_price = self::GetAllProductPillPrice();
+
+        $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->where('aktiv', 'LIKE', "%$active%")
+            ->orderBy('main_order', 'asc')
+            // ->orderBy('image', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
+
+
+        for($i = 0; $i < count($products); $i++)
+        {
+            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['price'] = $product_price[$products[$i]['id']];
+        }
+
+        return $products;
+    }
+
+    public static function GetProductInfoByUrl($url)
     {
         $language_id = Language::$languages[App::currentLocale()];
-        $products_desc = $this->GetProductDesc($language_id, $url);
+        $products_desc = self::GetProductDesc($language_id, $url);
 
         $product = Product::query()
             ->where('id', '=', $products_desc['product_id'])
@@ -159,7 +238,7 @@ class ProductServices
             {
                 $name = $n['name'];
             }
-            $categories[] = $name;
+            $categories[] = ['name' => $name, 'url' => $category->url];
         }
         #endregion
 
@@ -236,8 +315,49 @@ class ProductServices
         $product['packs'] = $packs;
         $product['type'] = $type;
 
-        dump($product);
         return $product;
+    }
+
+    public static function SearchProduct($search_text)
+    {
+        if(str_contains($search_text, ' '))
+        {
+            $search_text = '(' . $search_text . ')';
+        }
+
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $product_price = self::GetAllProductPillPrice();
+        $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                                    ->distinct()
+                                    ->get(['product_id'])
+                                    ->toArray();
+
+        // $product_ids = DB::select("SELECT DISTINCT ps.product_id, MATCH (ps.keyword) AGAINST ('$search_text*' IN BOOLEAN MODE) as scoring, p.is_showed_on_main, p.main_order FROM product_search ps INNER JOIN product p ON ps.product_id = p.id where ps.is_showed = 1 ORDER BY scoring DESC, p.is_showed_on_main DESC, p.main_order ASC LIMIT 30");
+
+        $product_id = [];
+        foreach($product_ids as $item)
+        {
+            $product_id[] = $item['product_id'];
+        }
+
+
+        $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->whereIn('id', $product_id)
+            ->orderBy('main_order', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
+
+        for($i = 0; $i < count($products); $i++)
+        {
+            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['price'] = $product_price[$products[$i]['id']];
+        }
+
+        return $products;
     }
 
 }
