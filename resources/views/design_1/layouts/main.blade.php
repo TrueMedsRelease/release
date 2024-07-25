@@ -120,17 +120,29 @@
                         </div>
                     </form>
                     <!-- Cart-->
-                    <a class="cart-button button button--secondary" href="cart.html" data-counter="3">
+                    @php
+                        $cart_count = 0;
+                        $cart_total = 0;
+                        if(!empty(session('cart')))
+                        {
+                            foreach (session('cart') as $value) {
+                                $cart_count += $value['q'];
+                                $cart_total += $value['price'] * $value['q'];
+                            }
+                        }
+                    @endphp
+                    <a class="cart-button button button--secondary" href="{{ route('cart.index') }}" data-counter="{{ $cart_count }}">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg") }}#cart"></use>
                             </svg>
                         </span>
                         <span class="button__text">Cart</span>
-                        <span class="button__total">$36.10</span>
+                        <span class="button__total">${{ $cart_total }}</span>
                     </a>
                 </div>
-            </div><!-- Header info-->
+            </div>
+            <!-- Header info-->
             <div class="header__info">
                 <div class="customer-choise">
                     <div class="customer-choise__logo"><img src="{{ asset("$design/svg/ui/choise.svg") }}"
@@ -537,6 +549,7 @@
             </form>
         </div>
     </dialog>
+    <script src="{{ asset("$design/js/app.js") }}"></script>
 </body>
 
 </html>

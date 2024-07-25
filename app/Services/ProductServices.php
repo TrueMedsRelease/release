@@ -318,6 +318,57 @@ class ProductServices
         return $product;
     }
 
+    public static function GetMaxPriceForPill($product_id, $dosage)
+    {
+        $packs = ProductPackaging::query()
+        ->where('product_id', '=', $product_id)
+        ->where('dosage', '=', $dosage)
+        ->where('price', '!=', 0)
+        ->where('is_showed', '=', 1)
+        ->get()
+        ->toArray();
+
+        $max_pill_price = 0;
+        foreach($packs as $pack)
+        {
+            $max_pill_price = ($pack['price'] / $pack['num']) > $max_pill_price ? round($pack['price'] / $pack['num'], 2) : $max_pill_price;
+        }
+
+        return $max_pill_price;
+    }
+
+    public static function GetUpgradePack($pack_id)
+    {
+        $product_pack = ProductPackaging::query()->find($pack_id);
+
+        $upgrade_pack = ProductPackaging::query()
+                    ->where('product_id', '=', $product_pack->product_id)
+                    ->where('dosage', '=', $product_pack->dosage)
+                    ->where('price', '!=', 0)
+                    ->where('is_showed', '=', 1)
+                    ->where('num', '>', $product_pack->num)
+                    ->orderBy('num', 'asc')
+                    ->limit(1)
+                    ->get()
+                    ->toArray();
+
+        if(!empty($upgrade_pack))
+        {
+            $upgrade_pack = $upgrade_pack[0];
+
+            return [
+                'pack_id' => $upgrade_pack['id'],
+                'price' => $upgrade_pack['price'],
+                'num' => $upgrade_pack['num']
+            ];
+        }
+        else
+        {
+            return [];
+        }
+
+    }
+
     public static function SearchProduct($search_text)
     {
         if(str_contains($search_text, ' '))
@@ -332,14 +383,11 @@ class ProductServices
                                     ->get(['product_id'])
                                     ->toArray();
 
-        // $product_ids = DB::select("SELECT DISTINCT ps.product_id, MATCH (ps.keyword) AGAINST ('$search_text*' IN BOOLEAN MODE) as scoring, p.is_showed_on_main, p.main_order FROM product_search ps INNER JOIN product p ON ps.product_id = p.id where ps.is_showed = 1 ORDER BY scoring DESC, p.is_showed_on_main DESC, p.main_order ASC LIMIT 30");
-
         $product_id = [];
         foreach($product_ids as $item)
         {
             $product_id[] = $item['product_id'];
         }
-
 
         $products = Product::query()
             ->where('is_showed', '=', 1)

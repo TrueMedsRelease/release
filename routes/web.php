@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -21,6 +22,16 @@ Route::controller(SearchController::class)->group(function() {
     Route::post('/search', 'search_product')->name('search.search_product');
     Route::get('/search_autocomplete', 'search_autocomplete')->name('search.search_autocomplete');
     Route::get('/search/{search_text}', 'search_result')->name('search.search_result');
+});
+
+Route::controller(CartController::class)->group(function(){
+    Route::get('/cart', 'index')->name('cart.index');
+    Route::post('/cart_content', 'cart')->name('cart.content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/cart/add/{product}', 'add')->name('cart.add');
+    Route::post('/cart/up', 'up')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/cart/down', 'down')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/cart/remove', 'remove')->name('cart.remove')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/cart/upgrade', 'upgrade')->name('cart.upgrade')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::controller(HomeController::class)->group(function() {
