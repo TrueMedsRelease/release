@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Language;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
+use App\Services\CacheServices;
+use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Services\ProductServices;
-use Illuminate\Support\Illuminate;
-
 
 class HomeController extends Controller
 {

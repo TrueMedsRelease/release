@@ -118,7 +118,7 @@ class Cart extends Model
                         ->limit(1)
                         ->get()
                         ->toArray();
-                        
+
         $product_pack = $product_pack[0];
 
         $array = [];
@@ -147,6 +147,51 @@ class Cart extends Model
         }
         session(['cart' => $products]);
 
+    }
+
+    public static function update_cart_total()
+    {
+        if(!empty(session('cart')))
+        {
+            $products = session('cart');
+            $product_total = 0;
+            foreach($products as $product)
+            {
+                $product_total += $product['price'] * $product['q'];
+            }
+        }
+        else
+        {
+            $product_total = 0;
+        }
+
+        if(!empty(session("cart_option")))
+        {
+            $options = session('cart_option');
+            $shipping_total = $options['shipping_price'];
+            $bonus_total = $options['bonus_price'];
+            $insurance = $options['insurance'];
+            $secret_package = $options['secret_package'];
+        }
+        else
+        {
+            $shipping_total = 0;
+            $bonus_total = 0;
+            $bonus_total = 0;
+            $insurance = 0;
+            $secret_package = 0;
+        }
+
+        $cart_total = [
+            "product_total" => $product_total,
+            "shipping_total" => $shipping_total,
+            "bonus_total" => $bonus_total,
+            "insurance" => $insurance,
+            "secret_package" => $secret_package,
+            "all" => $product_total + $shipping_total + $bonus_total + $insurance + $secret_package
+        ];
+
+        session(['total' => $cart_total]);
     }
 
 }

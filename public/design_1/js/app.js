@@ -60,3 +60,33 @@ function upgrade(pack_id) {
         }
     });
 }
+
+function change_shipping(shipping_name, shipping_price)
+{
+    $.ajax({
+        url: '/cart/change-shipping',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {'shipping_name':shipping_name, 'shipping_price':shipping_price},
+        success: function (data) {
+            data = JSON.parse(data);
+            $('#shopping_cart').html(data.html);
+        }
+    });
+}
+
+function change_bonus(bonus_id, bonus_price)
+{
+    $.ajax({
+        url: '/cart/change-bonus',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {'bonus_id':bonus_id, 'bonus_price':bonus_price},
+        success: function (data) {
+            data = JSON.parse(data);
+            $('#shopping_cart').html(data.html);
+        }
+    });
+}

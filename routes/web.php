@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+if(empty(session('location')))
+{
+    session(['location' => GeoIpService::GetInfoByIp()]);
+}
 
 Route::controller(SearchController::class)->group(function() {
     Route::post('/search', 'search_product')->name('search.search_product');
@@ -32,6 +37,8 @@ Route::controller(CartController::class)->group(function(){
     Route::post('/cart/down', 'down')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/remove', 'remove')->name('cart.remove')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/upgrade', 'upgrade')->name('cart.upgrade')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/cart/change-shipping', 'change_shipping')->name('cart.shipping')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/cart/change-bonus', 'change_bonus')->name('cart.bonus')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::controller(HomeController::class)->group(function() {

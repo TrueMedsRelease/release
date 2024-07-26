@@ -408,4 +408,48 @@ class ProductServices
         return $products;
     }
 
+    public static function GetBonuses()
+    {
+        $language_id = Language::$languages[App::currentLocale()];
+        $bonus = DB::select("SELECT pack_id, pd.name, price, ptd.name as type
+                            FROM bonus_packs bp
+                            JOIN product_packaging pp ON pp.id = bp.pack_id
+                            JOIN product_desc pd ON pd.product_id = pp.product_id
+                            JOIN product_type_desc ptd on pp.type_id = ptd.type_id
+                            WHERE pd.language_id = $language_id AND ptd.language_id = $language_id AND bp.is_showed = 1");
+
+        foreach($bonus as &$product)
+        {
+            switch($product->pack_id)
+            {
+                case 11630:
+                    $desc = "Viagra 100 mg x 1 $product->type, Cialis 20 mg x 1 $product->type, Levitra 20 mg x 1 $product->type";
+                    break;
+                case 4576:
+                    $desc = "Viagra 100 mg x 5 $product->type, Cialis 20 mg x 5 $product->type, Levitra 20 mg x 5 $product->type";
+                    break;
+                case 4577:
+                    $desc = "Viagra 100 mg x 10 $product->type, Cialis 20 mg x 10 $product->type, Levitra 20 mg x 10 $product->type";
+                    break;
+                case 4919:
+                    $desc = "Viagra 100 mg x 20 $product->type, Cialis 20 mg x 20 $product->type, Levitra 20 mg x 20 $product->type";
+                    break;
+                case 11656:
+                    $desc = "Viagra 100 mg x 30 $product->type, Cialis 20 mg x 30 $product->type, Levitra 20 mg x 30 $product->type";
+                    break;
+                case 11655:
+                    $desc = "Viagra 100 mg x 30 $product->type, Female Viagra 100 mg x 30 $product->type";
+                    break;
+                default:
+                    $desc = "";
+                    break;
+            }
+
+            $product->desc = $desc; 
+        }
+        unset($product);
+
+        return $bonus;
+    }
+
 }
