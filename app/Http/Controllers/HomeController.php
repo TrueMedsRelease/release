@@ -186,4 +186,10 @@ class HomeController extends Controller
         return Redirect::back();
     }
 
+    public function currency($currency)
+    {
+        session(['currency' => $currency]);
+        return Redirect::back();
+    }
+
 }
