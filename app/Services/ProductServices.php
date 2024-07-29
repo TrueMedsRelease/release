@@ -445,11 +445,26 @@ class ProductServices
                     break;
             }
 
-            $product->desc = $desc; 
+            $product->desc = $desc;
         }
         unset($product);
 
         return $bonus;
+    }
+
+    public static function GetGiftCard()
+    {
+        $language_id = Language::$languages[App::currentLocale()];
+        $cards = DB::select("SELECT pp.id as pack_id, pd.name, price
+            FROM product_packaging pp
+            JOIN product_desc pd ON pd.product_id = pp.product_id
+            WHERE pd.language_id = $language_id
+            AND pp.is_showed = 1
+            AND dosage = '1card'
+            ORDER BY price ASC
+            ");
+
+        return $cards;
     }
 
 }

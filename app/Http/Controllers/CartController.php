@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CountryInfoCache;
 use App\Models\Language;
+use App\Models\ProductDesc;
 use App\Models\ProductTypeDesc;
 use App\Services\ProductServices;
 use Illuminate\Contracts\View\View;
@@ -47,7 +48,14 @@ class CartController extends Controller
         {
             $item['name'] = $desc[$item['product_id']]['name'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
-            $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+            if($item['dosage'] != '1card')
+            {
+                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+            }
+            else
+            {
+                $item['pack_name'] = $item['name'] ;
+            }
             $product_total += $item['price'] * $item['q'];
         }
         unset($item);
@@ -86,9 +94,30 @@ class CartController extends Controller
 
             session(['cart_option' => $option]);
         }
+        else
+        {
+            $cart_option = session('cart_option');
+
+            $product_total += $cart_option['bonus_price'];
+
+            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            else
+            {
+                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
+            }
+
+            session(['cart_option' => $cart_option]);
+        }
 
         $bonus = ProductServices::GetBonuses();
-
+        $cards = ProductServices::GetGiftCard();
         Cart::update_cart_total();
 
         $design = config('app.design');
@@ -98,13 +127,9 @@ class CartController extends Controller
             'product_total' => $product_total,
             'shipping' => $shipping,
             'bonus' => $bonus,
+            'cards' => $cards,
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
-
-        // return view($design . '.ajax.cart_content', [
-        //     'design' => $design,
-        //     'products' => $products
-        // ]);
     }
 
     public function add($pack_id)
@@ -129,10 +154,18 @@ class CartController extends Controller
         {
             $item['name'] = $desc[$item['product_id']]['name'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
-            $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+            if($item['dosage'] != '1card')
+            {
+                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+            }
+            else
+            {
+                $item['pack_name'] = $item['name'] ;
+            }
             $product_total += $item['price'] * $item['q'];
         }
         unset($item);
+        $product_total += session('cart_option')['bonus_price'];
 
         $country_info = CountryInfoCache::query()
         ->where('country_iso2', '=', session('location')['country'])
@@ -142,7 +175,25 @@ class CartController extends Controller
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
 
+        $cart_option = session('cart_option');
+
+        if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+        {
+            $cart_option['shipping_price'] = 0;
+        }
+        elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+        {
+            $cart_option['shipping_price'] = 0;
+        }
+        else
+        {
+            $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
+        }
+
+        session(['cart_option' => $cart_option]);
+
         $bonus = ProductServices::GetBonuses();
+        $cards = ProductServices::GetGiftCard();
 
         Cart::update_cart_total();
 
@@ -152,6 +203,7 @@ class CartController extends Controller
             'products' => $products,
             'product_total' => $product_total,
             'shipping' => $shipping,
+            'cards' => $cards,
             'bonus' => $bonus
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -173,10 +225,18 @@ class CartController extends Controller
         {
             $item['name'] = $desc[$item['product_id']]['name'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
-            $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+            if($item['dosage'] != '1card')
+            {
+                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+            }
+            else
+            {
+                $item['pack_name'] = $item['name'] ;
+            }
             $product_total += $item['price'] * $item['q'];
         }
         unset($item);
+        $product_total += session('cart_option')['bonus_price'];
 
         $country_info = CountryInfoCache::query()
         ->where('country_iso2', '=', session('location')['country'])
@@ -186,7 +246,25 @@ class CartController extends Controller
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
 
+        $cart_option = session('cart_option');
+
+        if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+        {
+            $cart_option['shipping_price'] = 0;
+        }
+        elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+        {
+            $cart_option['shipping_price'] = 0;
+        }
+        else
+        {
+            $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
+        }
+
+        session(['cart_option' => $cart_option]);
+
         $bonus = ProductServices::GetBonuses();
+        $cards = ProductServices::GetGiftCard();
 
         Cart::update_cart_total();
 
@@ -196,6 +274,7 @@ class CartController extends Controller
             'products' => $products,
             'product_total' => $product_total,
             'shipping' => $shipping,
+            'cards' => $cards,
             'bonus' => $bonus
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -220,10 +299,18 @@ class CartController extends Controller
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
-                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                if($item['dosage'] != '1card')
+                {
+                    $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                }
+                else
+                {
+                    $item['pack_name'] = $item['name'] ;
+                }
                 $product_total += $item['price'] * $item['q'];
             }
             unset($item);
+            $product_total += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -233,7 +320,25 @@ class CartController extends Controller
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
 
+            $cart_option = session('cart_option');
+
+            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            else
+            {
+                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
+            }
+
+            session(['cart_option' => $cart_option]);
+
             $bonus = ProductServices::GetBonuses();
+            $cards = ProductServices::GetGiftCard();
 
             Cart::update_cart_total();
 
@@ -243,6 +348,7 @@ class CartController extends Controller
                 'products' => $products,
                 'product_total' => $product_total,
                 'shipping' => $shipping,
+                'cards' => $cards,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -272,10 +378,18 @@ class CartController extends Controller
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
-                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                if($item['dosage'] != '1card')
+                {
+                    $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                }
+                else
+                {
+                    $item['pack_name'] = $item['name'] ;
+                }
                 $product_total += $item['price'] * $item['q'];
             }
             unset($item);
+            $product_total += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -285,7 +399,25 @@ class CartController extends Controller
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
 
+            $cart_option = session('cart_option');
+
+            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            else
+            {
+                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
+            }
+
+            session(['cart_option' => $cart_option]);
+
             $bonus = ProductServices::GetBonuses();
+            $cards = ProductServices::GetGiftCard();
 
             Cart::update_cart_total();
 
@@ -295,6 +427,7 @@ class CartController extends Controller
                 'products' => $products,
                 'product_total' => $product_total,
                 'shipping' => $shipping,
+                'cards' => $cards,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -332,10 +465,18 @@ class CartController extends Controller
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
-                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                if($item['dosage'] != '1card')
+                {
+                    $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                }
+                else
+                {
+                    $item['pack_name'] = $item['name'] ;
+                }
                 $product_total += $item['price'] * $item['q'];
             }
             unset($item);
+            $product_total += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -345,7 +486,25 @@ class CartController extends Controller
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
 
+            $cart_option = session('cart_option');
+
+            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            else
+            {
+                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
+            }
+
+            session(['cart_option' => $cart_option]);
+
             $bonus = ProductServices::GetBonuses();
+            $cards = ProductServices::GetGiftCard();
 
             Cart::update_cart_total();
 
@@ -355,6 +514,7 @@ class CartController extends Controller
                 'products' => $products,
                 'product_total' => $product_total,
                 'shipping' => $shipping,
+                'cards' => $cards,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -391,10 +551,18 @@ class CartController extends Controller
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
-                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                if($item['dosage'] != '1card')
+                {
+                    $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                }
+                else
+                {
+                    $item['pack_name'] = $item['name'] ;
+                }
                 $product_total += $item['price'] * $item['q'];
             }
             unset($item);
+            $product_total += $bonus_price;
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -404,7 +572,25 @@ class CartController extends Controller
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
 
+            $cart_option = session('cart_option');
+
+            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            {
+                $cart_option['shipping_price'] = 0;
+            }
+            else
+            {
+                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
+            }
+
+            session(['cart_option' => $cart_option]);
+
             $bonus = ProductServices::GetBonuses();
+            $cards = ProductServices::GetGiftCard();
 
             Cart::update_cart_total();
 
@@ -414,6 +600,7 @@ class CartController extends Controller
                 'products' => $products,
                 'product_total' => $product_total,
                 'shipping' => $shipping,
+                'cards' => $cards,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));

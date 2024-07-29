@@ -41,15 +41,21 @@
                                                 </div>
                                             </td>
                                             <td class="cart-item__pack-price" width="18.5%" data-caption="Per Pack:">
-                                                <span
-                                                    class="discount-price"><s>${{ $product['max_pill_price'] * $product['num'] }}</s>
-                                                    -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
-                                                <span class="price">Only ${{ $product['price'] }} </span>
+                                                @if ($product['dosage'] != '1card')
+                                                    <span
+                                                        class="discount-price"><s>${{ $product['max_pill_price'] * $product['num'] }}</s>
+                                                        -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
+                                                    </span>
+                                                @endif
+                                                <span class="price">@if ($product['dosage'] != '1card') Only @endif ${{ $product['price'] }} </span>
                                             </td>
                                             <td class="cart-item__total-price" width="18.5%" data-caption="Price:">
-                                                <span
-                                                    class="discount-price"><s>${{ $product['max_pill_price'] * $product['num'] * $product['q'] }}</s>
-                                                    -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
+                                                @if ($product['dosage'] != '1card')
+                                                    <span
+                                                        class="discount-price"><s>${{ $product['max_pill_price'] * $product['num'] * $product['q'] }}</s>
+                                                        -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
+                                                    </span>
+                                                @endif
                                                 <span class="price">Only
                                                     ${{ $product['price'] * $product['q'] }}</span>
                                             </td>
@@ -100,14 +106,15 @@
                     @if ($shipping['ems'] != 0)
                         <div class="form-radio-wrapper"><input class="form-radio-input" id="delivery-2" type="radio"
                                 name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif
-                                onchange="change_shipping('ems', {{ $product_total >= 300 ? 0 : $shipping['ems'] }})"><label class="form-radio"
-                                for="delivery-2">
+                                onchange="change_shipping('ems', {{ $product_total >= 300 ? 0 : $shipping['ems'] }})"><label
+                                class="form-radio" for="delivery-2">
                                 <div class="form-radio__title">Express Dellvery</div>
                                 <div class="form-radio__text">Delivery takes а few days. Online tracking is available
                                 </div>
                                 <div class="form-radio__price">
                                     @if ($product_total >= 300)
-                                        Free <span style="text-decoration: line-through;">${{ $shipping['ems'] }}</span>
+                                        Free <span
+                                            style="text-decoration: line-through;">${{ $shipping['ems'] }}</span>
                                     @else
                                         ${{ $shipping['ems'] }}
                                     @endif
@@ -118,14 +125,15 @@
                     @if ($shipping['regular'] != 0)
                         <div class="form-radio-wrapper"><input class="form-radio-input" id="delivery-1" type="radio"
                                 name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif
-                                onchange="change_shipping('regular', {{  $product_total >= 200 ? 0 : $shipping['regular'] }})">
+                                onchange="change_shipping('regular', {{ $product_total >= 200 ? 0 : $shipping['regular'] }})">
                             <label class="form-radio" for="delivery-1">
                                 <div class="form-radio__title">Regular Delivery</div>
                                 <div class="form-radio__text">Delivery takes а few weeks. Online tracking is not
                                     available</div>
                                 <div class="form-radio__price">
                                     @if ($product_total >= 200)
-                                        Free <span style="text-decoration: line-through;">${{ $shipping['regular'] }}</span>
+                                        Free <span
+                                            style="text-decoration: line-through;">${{ $shipping['regular'] }}</span>
                                     @else
                                         ${{ $shipping['regular'] }}
                                     @endif
@@ -164,24 +172,37 @@
             </div>
         </fieldset>
         <!-- Gift Card -->
-        <fieldset class="form__fieldset form-panel discount-panel">
+        <fieldset class="form__fieldset form-panel discount-panel gift_field">
             <div class="form__field">
-                <div class="add-gift-card">
-                    <div class="h3">Would you like to add a gift card to your order?</div><button class="button"
-                        type="button">Add</button>
-                </div>
-                <div class="gift-card-balance">
-                    <div class="h3">Gift Card</div>
-                    <div class="select-wrapper"><select class="select">
-                            <option value="1">$50</option>
-                            <option value="2">$100</option>
-                            <option value="3">$250</option>
-                            <option value="4">$500</option>
-                        </select><span class="icon select-wrapper__chevron"><svg width="1em" height="1em"
-                                fill="currentColor">
-                                <use href="{{ asset("$design/svg/icons/sprite.svg") }}#chevron-down"></use>
-                            </svg></span></div>
-                </div>
+                <form class="gift_card" action="#">
+                    <div class="gift_block">
+                        <div class="gift_top_block__item">
+                            <span class="visible gift"></span>
+                            <div class="top_left_text">Would you like to add a gift card to your order?</div>
+                        </div>
+                        <div class="gift_bottom_block">
+                            <div class="bottom_left_text">Gift Card</div>
+                            <div>
+                                <div class="select_gift">
+                                    <div class="select_header_gift">
+                                        <span class="select_current_gift"
+                                            curr_packaging_id = "{{ $cards[0]->pack_id }}">{{ $cards[0]->price }}</span>
+                                        <div class="select_icon">
+                                            <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                        </div>
+                                    </div>
+                                    <div class="select_body_gifts">
+                                        @foreach ($cards as $card)
+                                            <div class="select_item_gift" packaging_id = "{{ $card->pack_id }}">$
+                                                {{ $card->price }}</div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button_add_gift" onclick="addCard()">Add</div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </fieldset>
         <fieldset class="form__fieldset form-panel">
@@ -192,7 +213,13 @@
                             @php
                                 $total_discount = 0;
                                 foreach ($products as $product) {
-                                    $total_discount += $product['max_pill_price'] * $product['num'];
+                                    if($product['dosage'] != '1card')
+                                    {
+                                        $total_discount += $product['max_pill_price'] * $product['num'];
+                                    }
+                                    else {
+                                        $total_discount += $product['price'];
+                                    }
                                 }
                                 $total_discount += session('cart_option')['bonus_price'];
                                 $total_discount += $shipping[session('cart_option')['shipping']];
