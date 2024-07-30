@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "Produkty ekologiczne",
     "common_natural_med" => "Tylko medycyna naturalna",
     "common_delivery" => "Szybka i globalna dostawa",
-    "common_receive " => "Otrzymuj zamówienia szybko",
+    "common_receive" => "Otrzymuj zamówienia szybko",
     "common_verified" => "Sprawdzona apteka",
     "common_approved" => "Ponad sto zatwierdzonych certyfikatów",
     "common_verified_d4" => "Zweryfikowany sklep",

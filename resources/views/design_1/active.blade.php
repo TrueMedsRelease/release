@@ -4,7 +4,7 @@
 
 @section('content')
 <main class="main">
-    <h1>Search results for active ingredient {{ $active }}</h1>
+    <h1>{{__('text.aktiv_aktiv_result_title')}} {{ $active }}</h1>
     <div class="product-cards">
         @foreach ($products as $product)
         <article class="card product-card">
@@ -26,7 +26,7 @@
                         <svg width="1em" height="1em" fill="currentColor">
                             <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
                         </svg>
-                    </span> <span class="button__text">Buy Now</span>
+                    </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                 </button>
             <div class="product-card__price">${{ $product['price'] }}</div>
             </div>

@@ -48,7 +48,7 @@ return [
     "common_eco_product" => "Eco Products",
     "common_natural_med" => "Only natural medicine",
     "common_delivery" => "Fast & Worldwide Delivery",
-    "common_receive " => "Receive orders quickly",
+    "common_receive" => "Receive orders quickly",
     "common_verified" => "Verified pharmacy store",
     "common_approved" => "More than one hundred approved certificates",
     "common_verified_d4" => "Verified store",

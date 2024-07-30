@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "环保产品",
     "common_natural_med" => "只做天然药物",
     "common_delivery" => "快速配送且支持全球交付",
-    "common_receive " => "接单迅速",
+    "common_receive" => "接单迅速",
     "common_verified" => "经过认证的药店",
     "common_approved" => "一百多张认证证书",
     "common_verified_d4" => "已验证的商店",

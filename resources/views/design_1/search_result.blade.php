@@ -5,8 +5,8 @@
 @section('content')
 <main class="main">
     @if (count($products) == 0)
-    <h1>No products were found for the «{{ $search_text }}» query</h1>
-    <h2>But you can check out our bestsellers</h2>
+    <h1>{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h1>
+    <h2>{{__('text.search_result_best_for_search')}}</h2>
     <div class="product-cards">
         @foreach ($bestsellers as $product)
         <article class="card product-card">
@@ -28,7 +28,7 @@
                         <svg width="1em" height="1em" fill="currentColor">
                             <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
                         </svg>
-                    </span> <span class="button__text">Buy Now</span>
+                    </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                 </button>
             <div class="product-card__price">${{ $product['price'] }}</div>
             </div>
@@ -52,7 +52,7 @@
         @endforeach
     </div>
     @else
-    <h1>Search results for «{{ $search_text }}»</h1>
+    <h1>{{__('text.search_result_title_page')}} «{{ $search_text }}»</h1>
     <div class="product-cards">
         @foreach ($products as $product)
         <article class="card product-card">
@@ -74,7 +74,7 @@
                         <svg width="1em" height="1em" fill="currentColor">
                             <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
                         </svg>
-                    </span> <span class="button__text">Buy Now</span>
+                    </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                 </button>
             <div class="product-card__price">${{ $product['price'] }}</div>
             </div>

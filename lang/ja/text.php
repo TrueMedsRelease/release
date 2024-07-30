@@ -50,7 +50,7 @@ return [
     "common_eco_product" => "エコプロダクツ",
     "common_natural_med" => "唯一の自然薬",
     "common_delivery" => "迅速な海外発送",
-    "common_receive " => "注文した商品がすばやく届く",
+    "common_receive" => "注文した商品がすばやく届く",
     "common_verified" => "認証を受けた薬局",
     "common_approved" => "M認可を受けた証明書は100種以上",
     "common_verified_d4" => "検証済みストア",

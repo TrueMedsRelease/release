@@ -28,19 +28,19 @@
                     </div>
 
                     <div class="info-panel__row">
-                        Active Ingredient:
+                        {!!__('text.product_active')!!}
                         @foreach ($product['aktiv'] as $aktiv)
                             <a href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
                         @endforeach
                     </div>
 
-                    <div class="info-panel__row">In Stock:<b>Only {{ random_int(10, 40) }} packs left</b></div>
+                    <div class="info-panel__row">{!!__('text.product_pack1_1')!!}<b>{{__('text.product_pack2_1')}}{{ random_int(10, 40) }}{{__('text.product_pack3_1')}}</b></div>
 
                     <div class="info-panel__row">{{ $product['desc'] }}</div>
 
                     @if (count($product['disease']) > 0)
                         <div class="info-panel__row">
-                            Diseases:
+                            {{__('text.product_diseases')}}
                             @foreach ($product['disease'] as $disease)
                                 <a
                                     href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">{{ ucfirst($disease) }}</a>
@@ -51,7 +51,7 @@
 
                     @if (!empty($product['analog']))
                         <div class="info-panel__row">
-                            {{ $product['name'] }} analogs:
+                            {{ $product['name'] }} {!!__('text.product_analogs')!!}
                             @foreach ($product['analog'] as $analog)
                                 <a href="{{ route('home.product', $analog['url']) }}"
                                     class="analog">{{ $analog['name'] }}</a>
@@ -61,7 +61,7 @@
 
                     @if (!empty($product['sinonim']))
                         <div class="info-panel__row">
-                            {{ $product['name'] }} other names:
+                            {{ $product['name'] }} {!!__('text.product_others')!!}
                             @foreach ($product['sinonim'] as $sinonim)
                                 <a href = "" class="others">{{ $sinonim }}</a>
                             @endforeach
@@ -77,9 +77,9 @@
                         <table class="table product-table">
                             <thead>
                                 <tr>
-                                    <th width="39.3%">Package</th>
-                                    <th width="14.2%">Per Pill</th>
-                                    <th width="20.4%">Special Price</th>
+                                    <th width="39.3%">{{__('text.product_package_title')}}</th>
+                                    <th width="14.2%">{{__('text.product_price_per_pill_title')}}</th>
+                                    <th width="20.4%">{{__('text.product_price_title')}}</th>
                                     <th width="26.1%"></th>
                                 </tr>
                             </thead>
@@ -95,9 +95,9 @@
                                                 <div class="product__quantity">{{ "{$item['num']} {$product['type']}" }}
                                                 </div>
                                                 @if ($item['price'] >= 300)
-                                                    <div class="product__delivery">Free Express Delivery</div>
+                                                    <div class="product__delivery">{{__('text.cart_free_express')}}</div>
                                                 @elseif($item['price'] < 300 && $item['price'] >= 200)
-                                                    <div class="product__delivery">Free Regular Delivery</div>
+                                                    <div class="product__delivery">{{__('text.cart_free_regular')}}</div>
                                                 @endif
                                             </div>
                                         </td>
@@ -110,7 +110,7 @@
                                                     -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
                                                 </div>
                                             @endif
-                                            <div class="product__price">Only ${{ $item['price'] }}</div>
+                                            <div class="product__price">{!!__('text.product_only')!!} ${{ $item['price'] }}</div>
                                         </td>
                                         <td class="product__button-wrapper">
                                             <form action="{{ route('cart.add', $item['id']) }}" method="post">
@@ -121,7 +121,7 @@
                                                             <use href="{{ $design }}/svg/icons/sprite.svg#cart"></use>
                                                         </svg>
                                                     </span>
-                                                    <span class="button__text">Add</span>
+                                                    <span class="button__text">{{__('text.product_add_to_cart_text_d2')}}</span>
                                                 </button>
                                             </form>
                                         </td>

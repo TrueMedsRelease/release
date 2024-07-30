@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "Ekotuotteet",
     "common_natural_med" => "Vain luonnonlääkkeitä",
     "common_delivery" => "Nopea ja maailmalaajuinen toimitus",
-    "common_receive " => "Vastaanota tilaukset nopeasti",
+    "common_receive" => "Vastaanota tilaukset nopeasti",
     "common_verified" => "Varmistettu apteekki",
     "common_approved" => "Yli sata hyväksyttyä sertifikaattia",
     "common_verified_d4" => "Vahvistettu myymälä",

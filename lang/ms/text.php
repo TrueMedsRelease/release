@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "Produk Eko",
     "common_natural_med" => "Hanya ubat semulajadi",
     "common_delivery" => "Penghantaran Pantas & Seluruh Dunia",
-    "common_receive " => "Terima pesanan dengan cepat",
+    "common_receive" => "Terima pesanan dengan cepat",
     "common_verified" => "Kedai Farmasi yang disahkan",
     "common_approved" => "Lebih daripada seratus sijil diluluskan",
     "common_verified_d4" => "Kedai yang disahkan",

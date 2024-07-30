@@ -48,7 +48,7 @@ return [
     "common_eco_product" => "Eco-producten",
     "common_natural_med" => "Alleen natuurlijke geneeskunde",
     "common_delivery" => "Snelle & wereldwijde levering",
-    "common_receive " => "Ontvang bestellingen snel",
+    "common_receive" => "Ontvang bestellingen snel",
     "common_verified" => "Gecontroleerde apotheekwinkel",
     "common_approved" => "Meer dan honderd goedgekeurde attesten",
     "common_verified_d4" => "Geverifieerde winkel",

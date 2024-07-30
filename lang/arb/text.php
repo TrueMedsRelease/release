@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "المنتجات البيئية",
     "common_natural_med" => "الطب الطبيعي فقط",
     "common_delivery" => "توصيل دولي وسريع",
-    "common_receive " => "قم باستلام الطلبات سريعاً",
+    "common_receive" => "قم باستلام الطلبات سريعاً",
     "common_verified" => "متجر أدوية موثوق",
     "common_approved" => "أكثر من مئة شهادة موثقة",
     "common_verified_d4" => "متجر تم التحقق منه",

@@ -37,8 +37,7 @@
         <div class="container">
             <div class="header__grid-wrapper"><!-- Phones-->
                 <address class="header__phones">
-                    <div class="header__phones-caption"><button class="link-button" data-dialog="call">Request a
-                            Callback</button> <span class="caption-text">or Call Us</span></div>
+                    <div class="header__phones-caption"><button class="link-button" data-dialog="call">{{ __('text.common_callback') }}</button> <span class="caption-text">{{__('text.common_call_us_top')}}</span></div>
                     <ul class="header__phones-wrapper">
                         <li class="dropdown-item"><a class="header-phone" href="tel:+17185503732">US: +1 718 550
                                 3732</a></li>
@@ -91,7 +90,7 @@
                             </svg></span></div><a class="header__auth" href="#!"><span class="icon"><svg
                                 width="1em" height="1em" fill="currentColor">
                                 <use href="{{ $design }}/svg/icons/sprite.svg#profile"></use>
-                            </svg></span> My account</a>
+                            </svg></span>{{__('text.common_profile')}}</a>
                 </div><!-- Logo--><a class="logo" href="{{ route('home.index') }}">
                     <div class="logo__image"><img src="{{ asset("$design/svg/logo.svg") }}" width="40"
                             height="40" alt="Site logo"></div>
@@ -102,7 +101,7 @@
                         class="button categories-button"><span class="icon"><svg width="1em" height="1em"
                                 fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg") }}#hotdog"></use>
-                            </svg></span> <span class="button__text">Categories</span></button>
+                            </svg></span> <span class="button__text">{{__('text.common_categories_menu')}}</span></button>
                     <!-- Search-->
                     <form class="search-form" action="{{ route('search.search_product') }}" method="post">
                         @csrf
@@ -137,7 +136,7 @@
                                 <use href="{{ asset("$design/svg/icons/sprite.svg") }}#cart"></use>
                             </svg>
                         </span>
-                        <span class="button__text">Cart</span>
+                        <span class="button__text">{{__('text.common_cart_text_d2')}}</span>
                         <span class="button__total">${{ $cart_total }}</span>
                     </a>
                 </div>
@@ -149,8 +148,7 @@
                             width="42" height="42" alt="Site logo">
                     </div>
                     <div class="customer-choise__counter">1 000 000</div>
-                    <div class="customer-choise__text">customers have chosen our amazing service and high-quality
-                        products</div>
+                    <div class="customer-choise__text">{{__('text.common_customers')}}</div>
                 </div>
                 <div class="header-brands">
                     <div class="header-brand">
@@ -237,17 +235,17 @@
                 <div class="nav-container">
                     <ul class="nav__list">
                         <li class="nav__item"><a class="nav__link is-active"
-                                href="{{ route('home.index') }}">Bestsellers</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.about') }}">Abous US</a>
+                                href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a></li>
+                        <li class="nav__item"><a class="nav__link" href="{{ route('home.about') }}">{{__('text.common_about_us_main_menu_item')}}</a>
                         </li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.help') }}">Help</a></li>
+                        <li class="nav__item"><a class="nav__link" href="{{ route('home.help') }}">{{__('text.common_help_main_menu_item')}}</a></li>
                         <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.testimonials') }}">Testimonials</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery') }}">Delivery</a>
+                                href="{{ route('home.testimonials') }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
+                        <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery') }}">{{__('text.common_shipping_main_menu_item')}}</a>
                         </li>
                         <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.moneyback') }}">Moneyback</a></li>
-                        <li class="nav__item"><a class="nav__link" href="contact.html">Contact us</a></li>
+                                href="{{ route('home.moneyback') }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                        <li class="nav__item"><a class="nav__link" href="contact.html">{{__('text.common_contact_us_main_menu_item')}}</a></li>
                     </ul>
                 </div><button class="greedy-button" aria-label="Show dropdown"><span class="icon"><svg
                             width="1em" height="1em" fill="currentColor">
@@ -257,12 +255,12 @@
             </nav>
             <nav class="nav cat-nav">
                 <div class="nav-container">
-                    <div class="nav__heading">Categories</div><button class="nav__close-button"
+                    <div class="nav__heading">{{__('text.common_categories_menu')}}</div><button class="nav__close-button"
                         aria-label="Close categories"></button>
                     <ul class="nav__list">
                         <li class="nav__item">
                             <a class="nav__link is-active nav__sublist-toggler" href="{{ route('home.index') }}"
-                                data-sublist-index="0">Bestsellers</a>
+                                data-sublist-index="0">{{__('text.common_best_selling_title')}}</a>
                         </li>
                         @foreach ($menu as $category)
                             <li class="nav__item">
@@ -275,7 +273,7 @@
                     <div class="categories-sublists">
                         <ul class="nav__sublist sublist-4-col" data-sublist-index="0">
                             <li class="nav__item nav__item--return">
-                                <button class="nav__mobile-return">Bestsellers</button>
+                                <button class="nav__mobile-return">{{__('text.common_best_selling_title')}}</button>
                             </li>
                             @foreach ($bestsellers as $bestseller)
                                 <li class="nav__item"><a class="nav__link"
@@ -313,25 +311,25 @@
         </div><!-- Store info-->
         <div class="store-info">
             <div class="store-info-caption">
-                <div class="store-info-caption__title">Verified Pharmacy Store</div>
-                <div class="store-info-caption__text">More 100 Approved certificates</div>
+                <div class="store-info-caption__title">{{__('text.common_verified')}}</div>
+                <div class="store-info-caption__text">{{__('text.common_approved_d4')}}</div>
             </div>
             <div class="store-info-blocks">
                 <div class="store-info-block store-info-block--1">
-                    <div class="store-info-block__title">Save up to <br class="sm">80% off</div>
-                    <div class="store-info-block__text">Big discounts and sales</div>
+                    <div class="store-info-block__title">{{__('text.common_save')}}</div>
+                    <div class="store-info-block__text">{{__('text.common_discount')}}</div>
                 </div>
                 <div class="store-info-block store-info-block--2">
-                    <div class="store-info-block__title">No prescription needed</div>
-                    <div class="store-info-block__text">Buy pills without restrictions</div>
+                    <div class="store-info-block__title">{{__('text.common_prescription')}}</div>
+                    <div class="store-info-block__text">{{__('text.common_restrictions')}}</div>
                 </div>
                 <div class="store-info-block store-info-block--3">
-                    <div class="store-info-block__title">Fast & Worldwide Delivery</div>
-                    <div class="store-info-block__text">Receive orders quickly</div>
+                    <div class="store-info-block__title">{{__('text.common_delivery')}}</div>
+                    <div class="store-info-block__text">{{__('text.common_receive')}}</div>
                 </div>
                 <div class="store-info-block store-info-block--4">
-                    <div class="store-info-block__title">Money Back Guaranteed</div>
-                    <div class="store-info-block__text">30-day refunds</div>
+                    <div class="store-info-block__title">{{__('text.common_moneyback')}}</div>
+                    <div class="store-info-block__text">{{__('text.common_refund')}}</div>
                 </div>
             </div>
         </div>
@@ -345,7 +343,7 @@
         <aside class="aside"><!-- Aside navigation-->
             <nav class="accordion aside-nav">
                 <div class="accordion-item">
-                    <button class="accordion-button" aria-expanded="true">Bestsellers</button>
+                    <button class="accordion-button" aria-expanded="true">{{__('text.main_best_selling_title')}}</button>
                     <div class="accordion-panel">
                         <div class="accordion-content">
                             <ul class="aside-nav__list">
@@ -388,20 +386,20 @@
     <div class="container sup-footer"><!-- Subscribe block-->
         <div class="subscribe">
             <div class="subscribe__caption">
-                <div class="subscribe__title">Subscribe</div>
-                <div class="subscribe__text">Special offers & News</div>
+                <div class="subscribe__title">{{__('text.common_subscribe')}}</div>
+                <div class="subscribe__text">{{__('text.common_spec_offer')}}</div>
             </div>
             <form class="form form form--secondary subscribe-form">
                 <div class="form__field"><label class="form__label form__label--email"><input
-                            class="form__text-input input-email" type="email" placeholder="Email" required></label>
+                            class="form__text-input input-email" type="email" placeholder="{{__('text.common_chat_email')}}" required></label>
                 </div>
-                <div class="form__field"><input class="button form__submit" type="submit" value="Subscribe"></div>
+                <div class="form__field"><input class="button form__submit" type="submit" value="{{__('text.common_subscribe')}}"></div>
             </form>
         </div><!-- Testimonials-->
         <div class="footer-testimonials">
             <div class="testimonial card">
                 <div class="testimonial__header">
-                    <div class="testimonial__author">Melissa H.</div>
+                    <div class="testimonial__author">{!!__('text.testimonials_author_t_1')!!}</div>
                     <div class="testimonial__rating">
                         <div class="rating">
                             <div class="rating__star"></div>
@@ -412,12 +410,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="testimonial__text">"As an online shopper, i saved $96 on my Estrogel by ordering from
-                    YouDrugstore, and they also shipped my order right to my front door in Houston for free"</div>
+                <div class="testimonial__text">{{__('text.testimonials_t_1')}}</div>
             </div>
             <div class="testimonial card">
                 <div class="testimonial__header">
-                    <div class="testimonial__author">Melissa H.</div>
+                    <div class="testimonial__author">{!!__('text.testimonials_author_t_2')!!}</div>
                     <div class="testimonial__rating">
                         <div class="rating">
                             <div class="rating__star"></div>
@@ -428,12 +425,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="testimonial__text">"As an online shopper, i saved $96 on my Estrogel by ordering from
-                    YouDrugstore, and they also shipped my order right to my front door in Houston for free"</div>
+                <div class="testimonial__text">{{__('text.testimonials_t_2')}}</div>
             </div>
             <div class="testimonial card">
                 <div class="testimonial__header">
-                    <div class="testimonial__author">Melissa H.</div>
+                    <div class="testimonial__author">{!!__('text.testimonials_author_t_3')!!}</div>
                     <div class="testimonial__rating">
                         <div class="rating">
                             <div class="rating__star"></div>
@@ -444,12 +440,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="testimonial__text">"As an online shopper, i saved $96 on my Estrogel by ordering from
-                    YouDrugstore, and they also shipped my order right to my front door in Houston for free"</div>
+                <div class="testimonial__text">{{__('text.testimonials_t_3')}}</div>
             </div>
             <div class="testimonial card">
                 <div class="testimonial__header">
-                    <div class="testimonial__author">Melissa H.</div>
+                    <div class="testimonial__author">{!!__('text.testimonials_author_t_4')!!}</div>
                     <div class="testimonial__rating">
                         <div class="rating">
                             <div class="rating__star"></div>
@@ -460,8 +455,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="testimonial__text">"As an online shopper, i saved $96 on my Estrogel by ordering from
-                    YouDrugstore, and they also shipped my order right to my front door in Houston for free"</div>
+                <div class="testimonial__text">{{__('text.testimonials_t_4')}}</div>
             </div>
         </div>
     </div>
@@ -476,43 +470,39 @@
                 <nav class="nav footer-nav">
                     <div class="nav-container">
                         <ul class="nav__list">
-                            <li class="nav__item"><a class="nav__link is-active"
-                                    href="{{ route('home.index') }}">Bestsellers</a></li>
-                            <li class="nav__item"><a class="nav__link" href="{{ route('home.about') }}">Abous
-                                    US</a></li>
-                            <li class="nav__item"><a class="nav__link" href="{{ route('home.help') }}">Help</a>
-                            </li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.testimonials') }}">Testimonials</a></li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.delivery') }}">Delivery</a></li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.moneyback') }}">Moneyback</a></li>
-                            <li class="nav__item"><a class="nav__link" href="contact.html">Contact us</a></li>
+                            <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.about') }}">{{__('text.common_about_us_main_menu_item')}}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.help') }}">{{__('text.common_help_main_menu_item')}}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials') }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery') }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback') }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="contact.html">{{__('text.common_contact_us_main_menu_item')}}</a></li>
                         </ul>
                     </div>
-                </nav><a class="button" href="affiliate.html">Affiliate program</a>
-            </div><!-- Copyrights-->
-            <div class="footer__copyrights"><span>© 1999-2022 All rights reserved.</span><span>TrueMeds or its
-                    affiliates
-                    Licensed by the Pharmaceutical Association IPS License #25302</span></div><!-- Footer controls-->
+                </nav><a class="button" href="affiliate.html">{{__('text.common_affiliate_main_menu_button')}}</a>
+            </div>
+            <!-- Copyrights-->
+            <div class="footer__copyrights">
+                <p>{{__('text.license_text_license1_d2')}} {{__('text.license_text_license2_d10')}}</p>
+            </div>
+            <!-- Footer controls-->
             <div class="footer-buttons">
                 <div class="footer-buttons__container"><a class="footer-button" href="index.html"><span
                             class="icon"><svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ $design }}/svg/icons/sprite.svg#home"></use>
-                            </svg></span> <span class="button__text">Home</span></a><button
+                            </svg></span> <span class="button__text">{{__('text.common_home_main_menu_item')}}</span></a><button
                         class="footer-button footer-button--cat"><span class="icon"><svg width="1em"
                                 height="1em" fill="currentColor">
                                 <use href="{{ $design }}/svg/icons/sprite.svg#hotdog"></use>
-                            </svg></span> <span class="button__text">Categories</span></button><a
+                            </svg></span> <span class="button__text">{{__('text.common_categories_menu')}}</span></button><a
                         class="footer-button" href="#!"><span class="icon"><svg width="1em"
                                 height="1em" fill="currentColor">
                                 <use href="{{ $design }}/svg/icons/sprite.svg#profile"></use>
-                            </svg></span> <span class="button__text">My account</span></a><a
+                            </svg></span> <span class="button__text">{{__('text.common_profile')}}</span></a><a
                         class="footer-button footer-button--cart" href="cart.html" data-counter="2"><span
                             class="icon"><svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ $design }}/svg/icons/sprite.svg#cart"></use>
-                            </svg></span> <span class="button__text">$36.10</span></a></div>
+                            </svg></span> <span class="button__text">${{ $cart_total }}</span></a></div>
             </div>
         </div>
     </footer>
@@ -520,13 +510,13 @@
     <dialog class="dialog" data-name="call" data-modal="true" data-clickable-backdrop="true">
         <div class="dialog__inner-wrapper">
             <header class="dialog__header">
-                <div class="dialog__title">Request a call</div><button
+                <div class="dialog__title">{{__('text.common_callback')}}</div><button
                     class="dialog__close-button close-button">Close</button>
             </header>
             <form class="form callback-form" method="dialog">
                 <div class="form__field"><input class="form__text-input input-tel intl-phone" type="tel"
                         id="callback-phone" required><label class="form__label form__label--tel"
-                        for="callback-phone">Mobile phone:</label></div>
+                        for="callback-phone">{{__('text.checkout_phone')}}</label></div>
                 <div class="form__field"><input class="button form__submit" type="submit" value="Request a call">
                 </div>
             </form>
@@ -535,17 +525,17 @@
     <dialog class="dialog" data-name="call-push" data-modal="true" data-clickable-backdrop="true">
         <div class="dialog__inner-wrapper">
             <header class="dialog__header">
-                <div class="dialog__title">Request a call</div>
-                <div class="dialog__note">Allow the site mysite.com send you a notification to your desktop</div>
+                <div class="dialog__title">{{__('text.common_callback')}}</div>
+                <div class="dialog__note">{{__('text.common_push_text')}}</div>
                 <button class="dialog__close-button close-button">Close</button>
             </header>
             <form class="form callback-push-form" method="dialog">
                 <div class="form__field"><input class="form__text-input input-tel intl-phone" type="tel"
                         id="callback-push-phone" required><label class="form__label form__label--tel"
-                        for="callback-push-phone">Mobile phone:</label></div>
+                        for="callback-push-phone">{{__('text.checkout_phone')}}</label></div>
                 <div class="form__field callback-push-submit"><button class="button button--outline"
-                        type="button">Decline</button><button class="button form__submit"
-                        type="submit">Allow</button></div>
+                        type="button">{{__('text.common_decline')}}</button><button class="button form__submit"
+                        type="submit">{{__('text.common_allow')}}</button></div>
             </form>
         </div>
     </dialog>

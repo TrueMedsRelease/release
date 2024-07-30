@@ -26,7 +26,7 @@
                         <svg width="1em" height="1em" fill="currentColor">
                             <use href="{{ $design }}/svg/icons/sprite.svg#cart"></use>
                         </svg>
-                    </span> <span class="button__text">Buy now</span>
+                    </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                 </button>
             <div class="product-card__price">${{ $product['price'] }}</div>
             </div>

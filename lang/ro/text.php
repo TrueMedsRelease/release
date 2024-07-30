@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "Produse ecologice",
     "common_natural_med" => "Doar medicina naturala",
     "common_delivery" => "Livrare rapidă și în întreaga lume ",
-    "common_receive " => "Primești comanda rapid",
+    "common_receive" => "Primești comanda rapid",
     "common_verified" => "Farmacie verificată",
     "common_approved" => "Mai bine de 100 de certificate aprobate",
     "common_verified_d4" => "Magazin verificat",

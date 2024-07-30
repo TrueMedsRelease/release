@@ -52,7 +52,7 @@ return [
     "common_prescription" => "No se necesita receta médica",
     "common_restrictions" => "Compre pastillas sin restricciones",
     "common_delivery" => "Envío rápido y a todo el mundo",
-    "common_receive " => "Reciba sus pedidos rápidamente",
+    "common_receive" => "Reciba sus pedidos rápidamente",
     "common_moneyback" => "Garantía de devolución del dinero",
     "common_refund" => "Reembolso en un plazo de 30 días",
     "common_eco_product" => "Productos ecológicos",

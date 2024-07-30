@@ -56,7 +56,7 @@ return [
     "common_eco_product" => "Produits écologiques",
     "common_natural_med" => "Seule la médecine naturelle",
     "common_delivery" => "Livraison mondiale rapide",
-    "common_receive " => "Recevez rapidement vos commandes",
+    "common_receive" => "Recevez rapidement vos commandes",
     "common_verified" => "Pharmacie contrôlée",
     "common_approved" => "Plus de cent certificats approuvés",
     "common_verified_d4" => "Magasin vérifié",

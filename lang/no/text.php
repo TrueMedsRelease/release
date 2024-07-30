@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "Økoprodukter",
     "common_natural_med" => "Kun naturmedisin",
     "common_delivery" => "Rask & verdensomspennende levering",
-    "common_receive " => "Motta bestillinger raskt",
+    "common_receive" => "Motta bestillinger raskt",
     "common_verified" => "Verifisert apotek",
     "common_approved" => "Mer enn hundre godkjente sertifiseringer",
     "common_verified_d4" => "Verifisert butikk",

@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "Ekologické produkty",
     "common_natural_med" => "Len prírodná medicína",
     "common_delivery" => "Rýchle a celosvetové doručenie",
-    "common_receive " => "Rýchle prijímanie objednávok",
+    "common_receive" => "Rýchle prijímanie objednávok",
     "common_verified" => "Overený obchod s liekmi",
     "common_approved" => "Viac ako sto schválených certifikátov",
     "common_verified_d4" => "Overený obchod",

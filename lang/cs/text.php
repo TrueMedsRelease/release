@@ -50,7 +50,7 @@ return [
     "common_eco_product" => "Ekologické produkty",
     "common_natural_med" => "Pouze přírodní medicína",
     "common_delivery" => "Rychlé doručení po celém světě",
-    "common_receive " => "Rychlý příjem objednávek",
+    "common_receive" => "Rychlý příjem objednávek",
     "common_verified" => "nákupním košíku",
     "common_approved" => "Více než stovka ověřených certifikátů",
     "common_verified_d4" => "Ověřený obchod",

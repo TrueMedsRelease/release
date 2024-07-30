@@ -44,7 +44,7 @@ return [
     "common_eco_product" => "Öko termékek",
     "common_natural_med" => "Csak természetes gyógymód",
     "common_delivery" => "Gyors és világszerte történő szállítás",
-    "common_receive " => "Gyors rendelésfogadás",
+    "common_receive" => "Gyors rendelésfogadás",
     "common_verified" => "Hitelesített gyógyszertár",
     "common_approved" => "Több mint száz jóváhagyott tanúsítvány",
     "common_verified_d4" => "Ellenőrzött áruház",

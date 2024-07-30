@@ -49,7 +49,7 @@ return [
     "common_eco_product" => "Öko-Produkte",
     "common_natural_med" => "Nur natürliche Medizin",
     "common_delivery" => "Schnelle & weltweite Lieferung",
-    "common_receive " => "Erhalten Sie Ihre Bestellungen schnell",
+    "common_receive" => "Erhalten Sie Ihre Bestellungen schnell",
     "common_verified" => "Geprüfter Apothekenladen",
     "common_approved" => "Mehr als einhundert geprüfte Zertifikate",
     "common_verified_d4" => "Verifizierter Shop",
