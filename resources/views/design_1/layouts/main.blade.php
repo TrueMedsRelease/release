@@ -7,6 +7,30 @@
     <meta name="description" content="Verified Pharmacy Store">
     <meta name="keywords" content="key, words">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <link rel="alternate" href="{{ config('app.url') }}/lang=arb" hreflang="ar" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=cs" hreflang="cs" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=da" hreflang="da" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=de" hreflang="de" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=en" hreflang="en" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=es" hreflang="es" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=fi" hreflang="fi" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=fr" hreflang="fr" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=gr" hreflang="gr" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=hans" hreflang="zh-Hans" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=hant" hreflang="zh-Hant" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=hu" hreflang="hu" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=it" hreflang="it" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=ja" hreflang="ja" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=ms" hreflang="ms" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=nl" hreflang="nl" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=no" hreflang="no" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=pl" hreflang="pl" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=pt" hreflang="pt" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=ro" hreflang="ro" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=sk" hreflang="sk" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=sv" hreflang="sv" />
+
     <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
@@ -32,6 +56,7 @@
 <body class="no-js no-transition webp homepage">
     <script>
         const design = 10;
+        const url = "{{ config('app.url') }}/lang=de";
     </script>
     <header class="header">
         <div class="container">
