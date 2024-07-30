@@ -2,18 +2,18 @@
 <div class="main__content">
     <form class="form cart-form form--flex">
         <fieldset class="form__fieldset form-panel">
-            <legend>Only Today. Finale Sale. Big Discounts.
-                <p style="font-size: 1.6rem">Low stock: Items in your cart are reserved for you for 30 minutes.</p>
+            <legend>{{__('text.cart_order_title_1')}}
+                <p style="font-size: 1.6rem">{{__('text.cart_order_title_text')}}</p>
             </legend>
 
             <div class="form__field">
                 <table class="table cart-table">
                     <thead>
                         <tr>
-                            <th width="45.2">Package</th>
-                            <th width="15.2%">QTY</th>
-                            <th width="18.5%">Per Pack</th>
-                            <th width="18.5%">Price</th>
+                            <th width="45.2">{{__('text.cart_package')}}</th>
+                            <th width="15.2%">{{__('text.cart_qty')}}</th>
+                            <th width="18.5%">{{__('text.cart_per_pack')}}</th>
+                            <th width="18.5%">{{__('text.cart_price')}}</th>
                             <th width="2.6%"></th>
                         </tr>
                     </thead>
@@ -69,14 +69,14 @@
                                         <tr>
 
                                             @if (!empty($product['upgrade_pack']))
-                                                <td class="cart-item__caption" colspan="5" onclick="upgrade({{ $product['pack_id'] }})">Upgrade this pack to
-                                                    <b>{{ $product['upgrade_pack']['num'] }} pills for only
+                                                <td class="cart-item__caption" colspan="5" onclick="upgrade({{ $product['pack_id'] }})">{{__('text.cart_upgrade')}}
+                                                    <b>{{ $product['upgrade_pack']['num'] }} pills {{__('text.cart_for_only')}}
                                                         ${{ $product['upgrade_pack']['price'] - $product['price'] }}</b>
-                                                    and save ${{ $product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'] }}.
+                                                        {{__('text.cart_savei')}} ${{ $product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'] }}.
                                                     @if ($cart_total + ($product['upgrade_pack']['price'] - $product['price']) >= 200 && $cart_total + ($product['upgrade_pack']['price'] - $product['price']) < 300)
-                                                        <b>Bonus: Free Regular Delivery!</b>
+                                                        <b>{{__('text.cart_get_regular')}}</b>
                                                     @elseif ($cart_total + ($product['upgrade_pack']['price'] - $product['price']) >= 300)
-                                                        <b>Bonus: Free Express Delivery!</b>
+                                                        <b>{{__('text.cart_get_ems')}}</b>
                                                     @endif
                                                 </td>
                                             @endif
@@ -95,17 +95,15 @@
                 <div class="delivery-radios">
                     <div class="form-radio-wrapper"><input class="form-radio-input" id="delivery-1" type="radio"
                             name="delivery" checked><label class="form-radio" for="delivery-1">
-                            <div class="form-radio__title">Regular Delivery</div>
-                            <div class="form-radio__text">Delivery takes а few weeks. Online tracking is not
-                                available</div>
-                            <div class="form-radio__price">Free</div>
+                            <div class="form-radio__title">{{__('text.checkout_regular')}}</div>
+                            <div class="form-radio__text">{{__('text.checkout_regular_text')}}</div>
+                            <div class="form-radio__price">{{__('text.checkout_free')}}</div>
                         </label></div>
                     <div class="form-radio-wrapper"><input class="form-radio-input" id="delivery-2" type="radio"
                             name="delivery"><label class="form-radio" for="delivery-2">
-                            <div class="form-radio__title">Express Dellvery</div>
-                            <div class="form-radio__text">Delivery takes а few days. Online tracking is available
-                            </div>
-                            <div class="form-radio__price">Only $29.99</div>
+                            <div class="form-radio__title">{{__('text.checkout_express')}}</div>
+                            <div class="form-radio__text">{{__('text.checkout_express_text')}}</div>
+                            <div class="form-radio__price">{{__('text.checkout_only')}} $29.99</div>
                         </label></div>
                 </div>
             </div>
@@ -157,11 +155,11 @@
         <fieldset class="form__fieldset form-panel discount-panel">
             <div class="form__field">
                 <div class="add-gift-card">
-                    <div class="h3">Would you like to add a gift card to your order?</div><button class="button"
-                        type="button">Add</button>
+                    <div class="h3">{{__('text.cart_add_gift')}}</div>
+                    <button class="button" type="button">{{__('text.common_add_to_cart_text_d2')}}</button>
                 </div>
                 <div class="gift-card-balance">
-                    <div class="h3">Gift Card</div>
+                    <div class="h3">{{__('text.common_gift_card')}}</div>
                     <div class="select-wrapper"><select class="select">
                             <option value="1">$50</option>
                             <option value="2">$100</option>
@@ -177,16 +175,21 @@
         <fieldset class="form__fieldset form-panel">
             <div class="form__field">
                 <div class="cart-total">
-                    <div class="cart-total__title h3">Total:</div>
+                    <div class="cart-total__title h3">{{__('text.cart_total_price_text')}}</div>
                     <div class="cart-total__discount"><s>$649.80</s> -70%</div>
-                    <div class="cart-total__savings">Savings: $540</div>
-                    <div class="cart-total__price h3">Only $ 195.31</div>
+                    <div class="cart-total__savings">{{__('text.cart_saving')}} $540</div>
+                    <div class="cart-total__price h3">{{__('text.cart_only')}} $195.31</div>
                 </div>
-                <div class="cart-form__controls"><button class="button button--outline" type="button">Continue
-                        shopping</button><button class="button cart-form__checkout" type="submit">Pay for order
-                        <span class="icon"><svg width="1em" height="1em" fill="currentColor">
+                <div class="cart-form__controls">
+                    <button class="button button--outline" type="button">{{__('text.cart_back_to_shop')}}</button>
+                    <button class="button cart-form__checkout" type="submit">{{__('text.cart_pay_button')}}
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor">
                                 <use href="svg/icons/sprite.svg#arrow"></use>
-                            </svg></span></button></div>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
             </div>
         </fieldset>
     </form>
@@ -194,27 +197,24 @@
 <aside class="main__aside main__aside--narrow">
     <div class="panel cart-panel">
         <div class="cart-panel-item">
-            <div class="cart-panel-item__title">10% discount for next orders</div>
-            <div class="cart-panel-item__text">For orders over $100</div>
+            <div class="cart-panel-item__title">{{__('text.cart_discount1')}}</div>
+            <div class="cart-panel-item__text">{{__('text.cart_discount2')}}</div>
         </div>
         <div class="cart-panel-item cart-panel-item--2">
-            <div class="cart-panel-item__title">Free Regular Delivery</div>
-            <div class="cart-panel-item__text">For orders over $200</div>
+            <div class="cart-panel-item__title">{{__('text.cart_free_regular')}}</div>
+            <div class="cart-panel-item__text">{{__('text.cart_sum_regular')}}</div>
         </div>
         <div class="cart-panel-item cart-panel-item--3">
-            <div class="cart-panel-item__title">Free Express Delivery</div>
-            <div class="cart-panel-item__text">For orders over $300</div>
+            <div class="cart-panel-item__title">{{__('text.cart_free_express')}}</div>
+            <div class="cart-panel-item__text">{{__('text.cart_sum_express')}}</div>
         </div>
         <div class="cart-panel-item cart-panel-item--4">
-            <div class="cart-panel-item__title">Secret packaging: Available</div>
-            <div class="cart-panel-item__text">There is no description on the package, and the description is left
-                blank</div>
+            <div class="cart-panel-item__title">{{__('text.cart_secret1')}} {{__('text.cart_secret2')}}</div>
+            <div class="cart-panel-item__text">{{__('text.cart_description_secret')}}</div>
         </div>
         <div class="cart-panel-item cart-panel-item--5">
-            <div class="cart-panel-item__title">Moneyback: 30 days</div>
-            <div class="cart-panel-item__text">In case of any dissatisfaction or damage to the package, we will
-                take
-                care of it by shipping the medicines again or refunding your money</div>
+            <div class="cart-panel-item__title">{{__('text.cart_moneyback1')}} {{__('text.cart_moneyback2')}}</div>
+            <div class="cart-panel-item__text">{{__('text.cart_description_moneyback')}}</div>
         </div>
     </div>
 </aside>
