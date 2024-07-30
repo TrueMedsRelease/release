@@ -5,7 +5,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
-use App\Services\CurrencyService;
+use App\Models\Currency;
 use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +28,7 @@ if(empty(session('location')))
 if(empty(session('currency')))
 {
     $currency = config('app.currency');
-    $coef = CurrencyService::GetCoef($currency);
+    $coef = Currency::GetCoef($currency);
     session(['currency' => $currency]);
     session(['currency_c' => $coef]);
 }
@@ -53,6 +53,7 @@ Route::controller(CartController::class)->group(function(){
 
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'index')->name('checkout.index');
+    Route::post('/checkout_content', 'checkout')->name('checkout.content')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::controller(HomeController::class)->group(function() {

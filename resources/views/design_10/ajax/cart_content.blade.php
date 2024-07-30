@@ -43,21 +43,21 @@
                                             <td class="cart-item__pack-price" width="18.5%" data-caption="Per Pack:">
                                                 @if ($product['dosage'] != '1card')
                                                     <span
-                                                        class="discount-price"><s>{{ $CurrencyService::convert($product['max_pill_price'] * $product['num'], true) }}</s>
+                                                        class="discount-price"><s>{{ $Currency::convert($product['max_pill_price'] * $product['num'], true) }}</s>
                                                         -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
                                                     </span>
                                                 @endif
-                                                <span class="price">@if ($product['dosage'] != '1card') Only @endif {{ $CurrencyService::convert($product['price'],true) }} </span>
+                                                <span class="price">@if ($product['dosage'] != '1card') Only @endif {{ $Currency::convert($product['price'],true) }} </span>
                                             </td>
                                             <td class="cart-item__total-price" width="18.5%" data-caption="Price:">
                                                 @if ($product['dosage'] != '1card')
                                                     <span
-                                                        class="discount-price"><s>{{ $CurrencyService::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}</s>
+                                                        class="discount-price"><s>{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}</s>
                                                         -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
                                                     </span>
                                                 @endif
                                                 <span class="price">Only
-                                                    {{ $CurrencyService::convert($product['price'] * $product['q'], true) }}</span>
+                                                    {{ $Currency::convert($product['price'] * $product['q'], true) }}</span>
                                             </td>
                                             <td class="cart-item__remove" width="2.6%">
                                                 <button class="icon-button" type="button" aria-label="Remove from cart"
@@ -78,9 +78,9 @@
                                                 <td class="cart-item__caption" colspan="5"
                                                     onclick="upgrade({{ $product['pack_id'] }})">Upgrade this pack to
                                                     <b>{{ $product['upgrade_pack']['num'] }} pills for only
-                                                        {{ $CurrencyService::convert($product['upgrade_pack']['price'] - $product['price'], true) }}</b>
+                                                        {{ $Currency::convert($product['upgrade_pack']['price'] - $product['price'], true) }}</b>
                                                     and save
-                                                    {{ $CurrencyService::convert($product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'], true) }}.
+                                                    {{ $Currency::convert($product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'], true) }}.
                                                     @if (
                                                         $product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 200 &&
                                                             $product_total + ($product['upgrade_pack']['price'] - $product['price']) < 300)
@@ -114,9 +114,9 @@
                                 <div class="form-radio__price">
                                     @if ($product_total >= 300)
                                         Free <span
-                                            style="text-decoration: line-through;">{{ $CurrencyService::convert($shipping['ems']) }}</span>
+                                            style="text-decoration: line-through;">{{ $Currency::convert($shipping['ems']) }}</span>
                                     @else
-                                        {{ $CurrencyService::convert($shipping['ems']) }}
+                                        {{ $Currency::convert($shipping['ems']) }}
                                     @endif
                                 </div>
                             </label>
@@ -133,9 +133,9 @@
                                 <div class="form-radio__price">
                                     @if ($product_total >= 200)
                                         Free <span
-                                            style="text-decoration: line-through;">{{ $CurrencyService::convert($shipping['regular']) }}</span>
+                                            style="text-decoration: line-through;">{{ $Currency::convert($shipping['regular']) }}</span>
                                     @else
-                                        {{ $CurrencyService::convert($shipping['regular']) }}
+                                        {{ $Currency::convert($shipping['regular']) }}
                                     @endif
                                 </div>
                             </label>
@@ -224,14 +224,14 @@
                                 $total_discount += session('cart_option')['bonus_price'];
                                 $total_discount += $shipping[session('cart_option')['shipping']];
                             @endphp
-                            {{ $CurrencyService::convert($total_discount) }}
+                            {{ $Currency::convert($total_discount) }}
                         </s> -{{ ceil(100 - (session('total')['all'] / $total_discount) * 100) }}%</div>
-                    <div class="cart-total__savings">Savings: {{ $CurrencyService::convert($total_discount - session('total')['all']) }}</div>
+                    <div class="cart-total__savings">Savings: {{ $Currency::convert($total_discount - session('total')['all']) }}</div>
                     <div class="cart-total__price h3">Only {{ session('total')['all_in_currency'] }} </div>
                 </div>
                 <div class="cart-form__controls">
                     <button class="button button--outline" type="button" onclick="document.location.href='{{ route('home.index') }}'">Continue shopping</button>
-                    <button class="button cart-form__checkout" type="submit">Pay for order
+                    <button class="button cart-form__checkout" type="submit" onclick="document.location.href='{{ route('checkout.index') }}'">Pay for order
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg") }}#arrow"></use>

@@ -65,9 +65,9 @@
                 <div class="header__controls">
                     <div class="header__lang header-select-wrapper">
                         <select class="header-select" onchange="location.href=this.options[this.selectedIndex].value">
-                            <option value="/lang=en" @if (App::currentLocale() == 'en') selected @endif>English</option>
-                            <option value="/lang=de" @if (App::currentLocale() == 'de') selected @endif>Deutsch</option>
-                            <option value="/lang=fr" @if (App::currentLocale() == 'fr') selected @endif>French</option>
+                            @foreach ($Language::GetAllLanuages() as $item)
+                                <option value="/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
+                            @endforeach
                         </select><span class="icon header-select-wrapper__icon"><svg width="1em" height="1em"
                                 fill="currentColor">
                                 <use href="{{ $design }}/svg/icons/sprite.svg#world"></use>
@@ -78,11 +78,9 @@
                     </div>
                     <div class="header__currency header-select-wrapper">
                         <select class="header-select" onchange="location.href=this.options[this.selectedIndex].value">
-                            @foreach ($CurrencyService::GetAllCurrency() as $item)
+                            @foreach ($Currency::GetAllCurrency() as $item)
                                 <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
                             @endforeach
-                            {{-- <option value="/curr=usd" @if (session('currency') == 'usd') selected @endif>USD</option>
-                            <option value="/curr=eur" @if (session('currency') == 'eur') selected @endif>EUR</option> --}}
                         </select>
                         <span class="icon header-select-wrapper__icon"><svg width="1em" height="1em"
                                 fill="currentColor">
@@ -140,7 +138,7 @@
                             </svg>
                         </span>
                         <span class="button__text">Cart</span>
-                        <span class="button__total">{{  $CurrencyService::Convert($cart_total, true) }}</span>
+                        <span class="button__total">{{  $Currency::Convert($cart_total, true) }}</span>
                     </a>
                 </div>
             </div>
@@ -356,7 +354,7 @@
                                         <a class="aside-nav__link"
                                             href="{{ route('home.product', $bestseller['url']) }}">
                                             {{ $bestseller['name'] }} <span
-                                                class="aside-nav__price">{{ $CurrencyService::convert($bestseller['price']) }}</span>
+                                                class="aside-nav__price">{{ $Currency::convert($bestseller['price']) }}</span>
                                         </a>
                                     </li>
                                 @endforeach
@@ -375,7 +373,7 @@
                                             <a class="aside-nav__link"
                                                 href="{{ route('home.product', $item['url']) }}">
                                                 {{ $item['name'] }}<span
-                                                    class="aside-nav__price">{{ $CurrencyService::convert($item['price']) }}</span>
+                                                    class="aside-nav__price">{{ $Currency::convert($item['price']) }}</span>
                                             </a>
                                         </li>
                                     @endforeach

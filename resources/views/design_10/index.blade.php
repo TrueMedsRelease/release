@@ -28,7 +28,7 @@
                         </svg>
                     </span> <span class="button__text">Buy now</span>
                 </button>
-            <div class="product-card__price">{{ $CurrencyService::convert($product['price']) }}</div>
+            <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
             </div>
         </article>
         @if ($loop->index == 1)

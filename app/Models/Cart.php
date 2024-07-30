@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\CurrencyService;
 use App\Services\ProductServices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -190,12 +189,12 @@ class Cart extends Model
             "insurance" => $insurance,
             "secret_package" => $secret_package,
             "all" => $product_total + $shipping_total + $bonus_total + $insurance + $secret_package,
-            "all_in_currency" => CurrencyService::SumInCurrency([
-                CurrencyService::Convert($product_total, true),
-                CurrencyService::Convert($shipping_total),
-                CurrencyService::Convert($bonus_total, true),
-                CurrencyService::Convert($insurance),
-                CurrencyService::Convert($secret_package),
+            "all_in_currency" => Currency::SumInCurrency([
+                Currency::Convert($product_total, true),
+                Currency::Convert($shipping_total),
+                Currency::Convert($bonus_total, true),
+                Currency::Convert($insurance),
+                Currency::Convert($secret_package),
             ]),
         ];
 

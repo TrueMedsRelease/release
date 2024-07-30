@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Currency;
+use App\Models\Language;
 use App\Services\CacheServices;
-use App\Services\CurrencyService;
 use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -22,7 +23,8 @@ class HomeController extends Controller
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
-            'CurrencyService' => CurrencyService::class,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
         ]);
     }
 
@@ -41,7 +43,8 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'letter' => $letter,
-            'CurrencyService' => CurrencyService::class,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
         ]);
     }
 
@@ -60,7 +63,8 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'active' => $active,
-            'CurrencyService' => CurrencyService::class,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
         ]);
     }
 
@@ -79,7 +83,8 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'products' => $products,
-            'CurrencyService' => CurrencyService::class,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
         ]);
     }
 
@@ -98,7 +103,8 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'products' => $products,
-            'CurrencyService' => CurrencyService::class,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
             'disease' => $disease
         ]);
     }
@@ -115,7 +121,8 @@ class HomeController extends Controller
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
-            'CurrencyService' => CurrencyService::class,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
             'product' => $product
         ]);
     }
@@ -131,7 +138,8 @@ class HomeController extends Controller
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
-            'CurrencyService' => CurrencyService::class,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
         ]);
     }
 
@@ -146,7 +154,8 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
-           'CurrencyService' => CurrencyService::class,
+           'Currency' => Currency::class,
+           'Language' => Language::class,
         ]);
     }
 
@@ -161,7 +170,8 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
-           'CurrencyService' => CurrencyService::class,
+           'Currency' => Currency::class,
+           'Language' => Language::class,
         ]);
     }
 
@@ -176,7 +186,8 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
-           'CurrencyService' => CurrencyService::class,
+           'Currency' => Currency::class,
+           'Language' => Language::class,
         ]);
     }
 
@@ -191,7 +202,8 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
-           'CurrencyService' => CurrencyService::class,
+           'Currency' => Currency::class,
+           'Language' => Language::class,
         ]);
     }
 
@@ -203,7 +215,7 @@ class HomeController extends Controller
 
     public function currency($currency)
     {
-        $coef = CurrencyService::GetCoef($currency);
+        $coef = Currency::GetCoef($currency);
         session(['currency' => $currency]);
         session(['currency_c' => $coef]);
         return Redirect::back();
