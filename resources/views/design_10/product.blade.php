@@ -102,15 +102,15 @@
                                             </div>
                                         </td>
                                         <td class="product__price-per-pill" data-caption="Per Pill:">
-                                            ${{ round($item['price'] / $item['num'], 2) }}</td>
+                                            {{ $CurrencyService::convert(round($item['price'] / $item['num'], 2)) }}</td>
                                         <td class="product__price-wrapper" data-caption="Special Price:">
                                             @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                                 <div class="product__discount">
-                                                    <s>${{ $dosage['max_pill_price'] * $item['num'] }}</s>
+                                                    <s>{{ $CurrencyService::convert($dosage['max_pill_price'] * $item['num'], true) }}</s>
                                                     -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
                                                 </div>
                                             @endif
-                                            <div class="product__price">Only ${{ $item['price'] }}</div>
+                                            <div class="product__price">Only {{ $CurrencyService::convert($item['price'], true) }}</div>
                                         </td>
                                         <td class="product__button-wrapper">
                                             <form action="{{ route('cart.add', $item['id']) }}" method="post">

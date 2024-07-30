@@ -1,10 +1,10 @@
 @extends($design . '.layouts.main')
 
-@section('title', str_replace('-', ' ', $disease))
+@section('title', 'TrueMeds')
 
 @section('content')
 <main class="main">
-    <h1>Search results for disease «{{ str_replace('-', ' ', $disease) }}»</h1>
+    <h1>Search results for active ingredient {{ $active }}</h1>
     <div class="product-cards">
         @foreach ($products as $product)
         <article class="card product-card">
@@ -28,7 +28,7 @@
                         </svg>
                     </span> <span class="button__text">Buy Now</span>
                 </button>
-            <div class="product-card__price">${{ $product['price'] }}</div>
+            <div class="product-card__price">{{ $CurrencyService::convert($product['price']) }}</div>
             </div>
         </article>
         @if ($loop->index == 1)

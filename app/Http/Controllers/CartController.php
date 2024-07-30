@@ -7,6 +7,7 @@ use App\Models\CountryInfoCache;
 use App\Models\Language;
 use App\Models\ProductDesc;
 use App\Models\ProductTypeDesc;
+use App\Services\CurrencyService;
 use App\Services\ProductServices;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -29,7 +30,9 @@ class CartController extends Controller
         return view($design . '.cart', [
             'design' => $design,
             'bestsellers' => $bestsellers,
+            'CurrencyService' => CurrencyService::class,
             'menu' => $menu
+
         ]);
     }
 
@@ -128,6 +131,7 @@ class CartController extends Controller
             'shipping' => $shipping,
             'bonus' => $bonus,
             'cards' => $cards,
+            'CurrencyService' => CurrencyService::class,
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -204,6 +208,7 @@ class CartController extends Controller
             'product_total' => $product_total,
             'shipping' => $shipping,
             'cards' => $cards,
+            'CurrencyService' => CurrencyService::class,
             'bonus' => $bonus
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -275,6 +280,7 @@ class CartController extends Controller
             'product_total' => $product_total,
             'shipping' => $shipping,
             'cards' => $cards,
+            'CurrencyService' => CurrencyService::class,
             'bonus' => $bonus
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -349,6 +355,7 @@ class CartController extends Controller
                 'product_total' => $product_total,
                 'shipping' => $shipping,
                 'cards' => $cards,
+                'CurrencyService' => CurrencyService::class,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -428,6 +435,7 @@ class CartController extends Controller
                 'product_total' => $product_total,
                 'shipping' => $shipping,
                 'cards' => $cards,
+                'CurrencyService' => CurrencyService::class,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -515,6 +523,7 @@ class CartController extends Controller
                 'product_total' => $product_total,
                 'shipping' => $shipping,
                 'cards' => $cards,
+                'CurrencyService' => CurrencyService::class,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
@@ -601,6 +610,7 @@ class CartController extends Controller
                 'product_total' => $product_total,
                 'shipping' => $shipping,
                 'cards' => $cards,
+                'CurrencyService' => CurrencyService::class,
                 'bonus' => $bonus
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));

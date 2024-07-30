@@ -54,6 +54,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/delivery', 'delivery')->name('home.delivery');
     Route::get('/moneyback', 'moneyback')->name('home.moneyback');
     Route::get('/lang={locale}', 'language')->name('home.language');
+    Route::get('/curr={currency}', 'currency')->name('home.currency');
     Route::get('/first_letter/{letter}', 'first_letter')->name('home.first_letter');
     Route::get('/category/{category}', 'category')->name('home.category');
     Route::get('/active/{active}', 'active')->name('home.active');

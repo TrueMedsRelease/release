@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CacheServices;
+use App\Services\CurrencyService;
 use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -17,7 +18,12 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts();
 
         $design = config('app.design');
-        return view($design . '.index', ['design' => $design, 'bestsellers' => $bestsellers, 'menu' => $menu]);
+        return view($design . '.index', [
+            'design' => $design,
+            'bestsellers' => $bestsellers,
+            'menu' => $menu,
+            'CurrencyService' => CurrencyService::class,
+        ]);
     }
 
     public function first_letter($letter) : View
@@ -35,6 +41,7 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'letter' => $letter,
+            'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -53,6 +60,7 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'active' => $active,
+            'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -71,6 +79,7 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'products' => $products,
+            'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -89,6 +98,7 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'products' => $products,
+            'CurrencyService' => CurrencyService::class,
             'disease' => $disease
         ]);
     }
@@ -100,12 +110,12 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts();
 
         $product = ProductServices::GetProductInfoByUrl($product);
-        // $packs = ProductServices::GetPacksById()
 
         return view($design . '.product', [
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
+            'CurrencyService' => CurrencyService::class,
             'product' => $product
         ]);
     }
@@ -121,6 +131,7 @@ class HomeController extends Controller
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
+            'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -135,6 +146,7 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
+           'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -149,6 +161,7 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
+           'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -163,6 +176,7 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
+           'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -177,6 +191,7 @@ class HomeController extends Controller
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
+           'CurrencyService' => CurrencyService::class,
         ]);
     }
 
@@ -188,7 +203,9 @@ class HomeController extends Controller
 
     public function currency($currency)
     {
+        $coef = CurrencyService::GetCoef($currency);
         session(['currency' => $currency]);
+        session(['currency_c' => $coef]);
         return Redirect::back();
     }
 

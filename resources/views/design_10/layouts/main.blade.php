@@ -76,13 +76,15 @@
                                 <use href="{{ $design }}/svg/icons/sprite.svg#chevron-down"></use>
                             </svg></span>
                     </div>
-                    <div class="header__currency header-select-wrapper"><select class="header-select">
-                            <option value="1">USD</option>
-                            <option value="2">RUB</option>
-                            <option value="3">EUR</option>
-                            <option value="4">KZT</option>
-                            <option value="5">CNY</option>
-                        </select><span class="icon header-select-wrapper__icon"><svg width="1em" height="1em"
+                    <div class="header__currency header-select-wrapper">
+                        <select class="header-select" onchange="location.href=this.options[this.selectedIndex].value">
+                            @foreach ($CurrencyService::GetAllCurrency() as $item)
+                                <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                            @endforeach
+                            {{-- <option value="/curr=usd" @if (session('currency') == 'usd') selected @endif>USD</option>
+                            <option value="/curr=eur" @if (session('currency') == 'eur') selected @endif>EUR</option> --}}
+                        </select>
+                        <span class="icon header-select-wrapper__icon"><svg width="1em" height="1em"
                                 fill="currentColor">
                                 <use href="{{ $design }}/svg/icons/sprite.svg#money"></use>
                             </svg></span><span class="icon header-select-wrapper__chevron"><svg width="1em"
@@ -138,7 +140,7 @@
                             </svg>
                         </span>
                         <span class="button__text">Cart</span>
-                        <span class="button__total">${{ $cart_total }}</span>
+                        <span class="button__total">{{  $CurrencyService::Convert($cart_total, true) }}</span>
                     </a>
                 </div>
             </div>
@@ -354,7 +356,7 @@
                                         <a class="aside-nav__link"
                                             href="{{ route('home.product', $bestseller['url']) }}">
                                             {{ $bestseller['name'] }} <span
-                                                class="aside-nav__price">${{ $bestseller['price'] }}</span>
+                                                class="aside-nav__price">{{ $CurrencyService::convert($bestseller['price']) }}</span>
                                         </a>
                                     </li>
                                 @endforeach
@@ -373,7 +375,7 @@
                                             <a class="aside-nav__link"
                                                 href="{{ route('home.product', $item['url']) }}">
                                                 {{ $item['name'] }}<span
-                                                    class="aside-nav__price">${{ $item['price'] }}</span>
+                                                    class="aside-nav__price">{{ $CurrencyService::convert($item['price']) }}</span>
                                             </a>
                                         </li>
                                     @endforeach
