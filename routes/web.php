@@ -5,6 +5,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Services\CurrencyService;
 use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,14 @@ use Illuminate\Support\Facades\Route;
 if(empty(session('location')))
 {
     session(['location' => GeoIpService::GetInfoByIp()]);
+}
+
+if(empty(session('currency')))
+{
+    $currency = config('app.currency');
+    $coef = CurrencyService::GetCoef($currency);
+    session(['currency' => $currency]);
+    session(['currency_c' => $coef]);
 }
 
 Route::controller(SearchController::class)->group(function() {

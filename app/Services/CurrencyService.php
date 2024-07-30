@@ -34,4 +34,18 @@ class CurrencyService
         }
         return $prefix . $total;
     }
+
+
+
+    public static function SumInCurrency($numbers = [])
+    {
+        $current_currency = session('currency', 'usd');
+        $sum = 0;
+        foreach($numbers as $num)
+        {
+            $sum += floatval(preg_replace("/[^-0-9\.]/","",$num));
+        }
+
+        return Currency::$prefix[$current_currency] . $sum;
+    }
 }
