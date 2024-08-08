@@ -10,6 +10,7 @@
     <title>Document</title>
 </head>
 <body>
+
     <div class="wrapper">
 
 	</div>
@@ -29,7 +30,6 @@
                         document.body.classList.add('loaded');
                         document.body.classList.remove('loaded_hiding');
                     }, 500);
-
                 }
             });
         });

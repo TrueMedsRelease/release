@@ -90,8 +90,10 @@ class CartController extends Controller
                 "shipping_price" => $shipping_price,
                 "bonus_id" => 0,
                 "bonus_price" => 0,
-                "insurance" => 0,
-                "secret_package" => 0
+                "insurance" => true,
+                "insurance_price" => 0,
+                "secret_package" => true,
+                "secret_price" => 0,
             ];
 
             session(['cart_option' => $option]);

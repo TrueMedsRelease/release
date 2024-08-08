@@ -1890,7 +1890,7 @@
                         _slideUp(cryptoBlock);
                         _slideUp(cardBlock);
                     }
-                    
+
                 }));
                 const copyBtns = document.querySelectorAll(".details-payment__copy-button");
                 const unsecuredCopyToClipboard = text => {
@@ -1925,7 +1925,7 @@
                         }
                     }));
                 }));
-                
+
 
         }));
         window["FLS"] = true;
@@ -1934,19 +1934,13 @@
 })();
 
 $( ".language .select__option" ).click(function() {
-    var currentUrl = window.location.href;
-    currentUrl = currentUrl.split('?')[0];
     var language = $(this).attr('data-value');
-    language = language.split('?')[1];
-    window.location.replace(currentUrl+'?'+language);
+    window.location.replace(language);
 });
 
 $( ".currency .select__option" ).click(function() {
-    var currentUrl = window.location.href;
-    currentUrl = currentUrl.split('?')[0];
     var currency = $(this).attr('data-value');
-    currency = currency.split('?')[1];
-    window.location.replace(currentUrl+'?'+currency);
+    window.location.replace(currency);
 });
 
 $('#copy_img').click(function () {

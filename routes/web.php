@@ -54,6 +54,14 @@ Route::controller(CartController::class)->group(function(){
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'index')->name('checkout.index');
     Route::post('/checkout_content', 'checkout')->name('checkout.content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/checkout/insurance', 'insurance')->name('checkout.insurance')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/checkout/secret_package', 'secret_package')->name('checkout.secret_package')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/checkout/change-shipping', 'change_shipping')->name('checkout.shipping')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/checkout/coupon', 'coupon')->name('checkout.coupon');
+    Route::post('/checkout/order', 'order')->name('checkout.order');
+    Route::post('/checkout/auth', 'auth')->name('checkout.auth');
+    Route::post('/checkout/change_country', 'change_country')->name('checkout.country')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/complete', 'complete')->name('checkout.complete');
 });
 
 Route::controller(HomeController::class)->group(function() {
