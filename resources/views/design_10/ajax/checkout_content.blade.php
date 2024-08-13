@@ -131,7 +131,9 @@
                                 <div class="your-order__checkbox checkbox">
                                     <input @if (session('cart_option.insurance')) checked="checked" @endif id="c_82"
                                         class="checkbox__input" type="checkbox" value="1" name="insurance"
-                                        pop_show="true" onclick="Insurance()">
+                                        pop_show="true" @if (!session('cart_option.insurance', false))
+                                        onclick="Insurance()"
+                                        @endif >
                                     <label for="c_82" class="checkbox__label"><span class="checkbox__text"><b
                                                 style="font-weight: 500;">Insurance</b></span></label>
                                 </div>
@@ -538,16 +540,16 @@
                                         value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
                                     <select name="payment_type" class="form" id="payment_type_select"
                                         data-pseudo-label="Type of Payment">
-                                        <option value="card" selected>Bank Card</option>
-                                        <option value="crypto">Crypto -15% extra off</option>
-
+                                        <option value="card" @selected(session('form.payment_type', 'card') == 'card')>Bank Card</option>
+                                        <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>Crypto -15% extra off</option>
+                                        <option value="paypal" @selected(session('form.payment_type', 'paypal') == 'paypal')>Paypal</option>
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{#not_selected#}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="enter-info__card-content">
+                        <div class="enter-info__card-content" @if (session('form.payment_type', 'card') != 'card')) hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">Card Number</label>
@@ -607,26 +609,26 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="enter-info__crypto-content" hidden>
+                        <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'card') != 'crypto')) hidden @endif>
                             <input type="hidden" id="pay_yes" value="0">
                             <input type="hidden" id="invoiceId" value="">
                             <div class="info_text_crypto" style="line-height: 24px">
-                                <div>{#crypto_text_1#}</div>
-                                <div>{#crypto_text_2#}</div>
-                                <ul style="padding-left: 40px; line-height: 24px">
-                                    <li style="list-style: disc">{#crypto_li_0#}</li>
-                                    <li style="list-style: disc">{#crypto_li_1#}</li>
-                                    <li style="list-style: disc">{#crypto_li_2#}</li>
-                                    <li style="list-style: disc">{#crypto_li_3#}</li>
-                                    <li style="list-style: disc">{#crypto_li_4#}</li>
-                                    <li style="list-style: disc">{#crypto_li_5#}</li>
-                                    <li style="list-style: disc">{#crypto_li_6#}</li>
-                                </ul>
-                            </div>
+								<div>How to pay with cryptocurrency</div>
+								<div>You will need to use your wallet to send payment. Create a wallet on Coinbase.com or another wallet and add money to your wallet using a credit card or bank transfer. Every wallet is different, so this example uses the Coinbase.com wallet. In general, to make a payment you:</div>
+								<ul style="padding-left: 40px; line-height: 24px">
+									<li style="list-style: disc">Select one of the cryptocurrencies</li>
+									<li style="list-style: disc">Open the wallet application</li>
+									<li style="list-style: disc">Click “Submit Payment” or similar button</li>
+									<li style="list-style: disc">Enter the QR code or wallet address of the recipient</li>
+									<li style="list-style: disc">Enter the amount you want to send</li>
+									<li style="list-style: disc">Click "Submit" or similar button</li>
+									<li style="list-style: disc">Click “I paid” to complete the order</li>
+								</ul>
+							</div>
                             <div class="content-crypto">
                                 <div class="content-crypto__items">
                                     <div class="content-crypto__item">
-                                        <input id="cr_01" value="ETH_ETHEREUM" type="radio"
+                                        <input id="cr_01" @checked(session('crypto.currency', '') == 'ETH_ETHEREUM') value="ETH_ETHEREUM" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_01">
                                             <svg width="40" height="40">
@@ -638,7 +640,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_02" value="BTC_BITCOIN" type="radio"
+                                        <input id="cr_02" @checked(session('crypto.currency', '') == 'BTC_BITCOIN') value="BTC_BITCOIN" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_02">
                                             <svg width="40" height="40">
@@ -650,7 +652,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_03" value="USDT_TRON" type="radio"
+                                        <input id="cr_03" @checked(session('crypto.currency', '') == 'USDT_TRON') value="USDT_TRON" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_03">
                                             <svg width="40" height="40">
@@ -662,7 +664,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_04" value="USDT_ETHEREUM" type="radio"
+                                        <input id="cr_04" @checked(session('crypto.currency', '') == 'USDT_ETHEREUM') value="USDT_ETHEREUM" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_04">
                                             <svg width="40" height="40">
@@ -674,7 +676,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_05" value="LTC_LITECOIN" type="radio"
+                                        <input id="cr_05" @checked(session('crypto.currency', '') == 'LTC_LITECOIN') value="LTC_LITECOIN" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_05">
                                             <svg width="40" height="40">
@@ -686,7 +688,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_06" value="TRX_TRON" type="radio" name="crypt_currency">
+                                        <input id="cr_06" @checked(session('crypto.currency', '') == 'TRX_TRON') value="TRX_TRON" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_06">
                                             <svg width="40" height="40">
                                                 <use
@@ -697,7 +699,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_07" value="BNB_BSC" type="radio" name="crypt_currency">
+                                        <input id="cr_07" @checked(session('crypto.currency', '') == 'BNB_BSC') value="BNB_BSC" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_07">
                                             <svg width="40" height="40">
                                                 <use
@@ -708,7 +710,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_08" value="TON_TON" type="radio" name="crypt_currency">
+                                        <input id="cr_08" @checked(session('crypto.currency', '') == 'TON_TON') value="TON_TON" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_08">
                                             <picture style="margin-bottom: 3px;">
                                                 <source srcset="{{ asset('style_checkout/images/icons/ton.png') }}"
@@ -720,8 +722,8 @@
                                             <span>TON</span>
                                         </label>
                                     </div>
-                                    {* <div class="content-crypto__item">
-                                        <input id="cr_09" value="BUSD_BSC" type="radio" name="crypt_currency">
+                                    {{-- <div class="content-crypto__item">
+                                           <input id="cr_09" @checked(session('crypto.currency', '') == 'BUSD_BSC') value="BUSD_BSC" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_08">
                                             <svg width="40" height="40">
                                                 <use
@@ -730,38 +732,36 @@
                                             </svg>
                                             <span>Binance USD</span>
                                         </label>
-                                    </div> *}
+                                    </div> --}}
                                 </div>
                                 <div style="text-align: center;" id="requisites_load" hidden>
                                     <img src="{{ asset('style_checkout/images/loading.gif') }}">
                                 </div>
-                                <div id="requisites" hidden>
+                                <div id="requisites" @if (empty(session('crypto'))) hidden @endif>
                                     <div class="enter-info__note">
                                         <svg width="18" height="18">
                                             <use
                                                 xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-time">
                                             </use>
                                         </svg>
-                                        <p>{#invoice#} <b id="timer">30:00</b></p>
+                                        <p>Invoice will be expired in <b id="timer">30:00</b></p>
                                     </div>
                                     <div class="content-crypto__details details-payment">
                                         <div class="details-payment__qr-code">
-                                            <picture><img id="qr_code" src="" width="140"
+                                            <picture><img id="qr_code" src="{{ session('crypto.qr') }}" width="140"
                                                     height="140" alt="Awesome image"></picture>
                                         </div>
                                         <div class="details-payment__rows">
                                             <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">{#amount#}</h3>
+                                                    <h3 class="details-payment__title">Amount</h3>
                                                     <div class="details-payment__cells">
                                                         <span class="details-payment__amount"
-                                                            id="crypto_total"></span>
-                                                        {* <span class="details-payment__price"
-                                                            id="crypto_price"></span> *}
+                                                            id="crypto_total">{{ session('crypto.amount') }}</span>
                                                         <span class="details-payment__old-price"
-                                                            id="crypto_price"></span>
+                                                            id="crypto_price"> {{ $Currency::Convert(session('total.all', 0)) }} </span>
                                                         <span class="details-payment__price"
-                                                            id="crypto_discount_price"></span>
+                                                            id="crypto_discount_price">{{ session('crypto.crypto_total') }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -777,15 +777,15 @@
                                                             xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
                                                         </use>
                                                     </svg>
-                                                    <span>{#copy#}</span>
+                                                    <span>Copied</span>
                                                 </div>
                                             </div>
                                             <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">{#funds#}</h3>
+                                                    <h3 class="details-payment__title">Send the funds to this address</h3>
                                                     <div class="details-payment__cells">
                                                         <span id="purse"
-                                                            class="details-payment__amount">0xbcec7dc127978e0733ef40cd3255ba54a450b87c</span>
+                                                            class="details-payment__amount">{{ session('crypto.purse') }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -801,18 +801,18 @@
                                                             xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
                                                         </use>
                                                     </svg>
-                                                    <span>{#copy#}</span>
+                                                    <span>Copied</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="enter-info__note enter-info__note--has-offset">
-                                        <p>{#payment_id#} <span id="invoce_p"></span></p>
+                                        <p>Your payment ID <span id="invoce_p">{{ session('crypto.invoiceId') }}</span></p>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="enter-info__button button" id="paid">
-                                <span>{#paid#}</span>
+                            <button type="button" class="enter-info__button button" id="paid">
+                                <span>I paid</span>
                             </button>
                             <button style="display: none;" type="submit" class="enter-info__button button"
                                 id="waiting">
@@ -820,16 +820,14 @@
                                     width="30px" height="30px">
                             </button>
                         </div>
-                        <div class="enter-info__paypal-content" {*{if $data.info.billing_country eq 'US' or
-                            $data.info.billing_country eq 'CA' or $data.info.billing_country eq 'PR' } hidden {/if}*}
-                            hidden>
+                        <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal')) hidden @endif>
                             <div class="details-payment__row">
                                 <div class="details-payment__data" style="text-align: center;">
-                                    {#sepa_text#}
+                                    Click the button to go to the payment page
                                 </div>
                             </div>
-                            <button id="proccess_paypal" name="proccess" class="enter-info__button button">
-                                <span>{#sepa_button#}</span>
+                            <button type="button" id="proccess_paypal" name="proccess" class="enter-info__button button">
+                                <span>Pay</span>
                             </button>
                         </div>
 

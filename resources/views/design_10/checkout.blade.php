@@ -10,6 +10,21 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="preloader">
+		<div class="preloader__row">
+			<div class="preloader__item"></div>
+			<div class="preloader__item"></div>
+		</div>
+	</div>
+	<div class="ploader">
+		<div class="ploader__row">
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+		</div>
+	</div>
 
     <div class="wrapper">
 
@@ -41,12 +56,12 @@
 					<use xlink:href="/style_checkout/images/icons/icons.svg#svg-close"></use>
 				</svg>
 			</button>
-			<h3 class="popup_head">{#notice#}</h3>
+			<h3 class="popup_head">Notice</h3>
 			<div class="popup_text">
-				<p>{#insurance_popup#}</p>
+				<p>Insurance is very important, guaranteed reshipment if delivery failed</p>
 			</div>
-			<button id="change_insur">
-				{#ok#}
+			<button id="change_insur" onclick="Insurance()">
+				Ok
 			</button>
 		</div>
 	</div>
