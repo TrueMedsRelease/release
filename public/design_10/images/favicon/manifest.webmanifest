@@ -1,0 +1,42 @@
+{
+  "name": "truemeds",
+  "short_name": "truemeds",
+  "dir": "auto",
+  "lang": "en-US",
+  "display": "standalone",
+  "orientation": "any",
+  "start_url": "../../index.html",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+  "screenshots": [
+    {
+        "src":"screen_1.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    },
+    {
+        "src":"screen_2.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    },
+    {
+        "src":"screen_3.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    }
+  ],
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

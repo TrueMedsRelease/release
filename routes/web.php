@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
+use App\Services\CurrencyServices;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +38,14 @@ Route::controller(CartController::class)->group(function(){
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
     Route::get('/about', 'about')->name('home.about');
+    Route::get('/contact_us', 'contact_us')->name('home.contact_us');
+    Route::get('/affiliate', 'affiliate')->name('home.affiliate');
     Route::get('/help', 'help')->name('home.help');
     Route::get('/testimonials', 'testimonials')->name('home.testimonials');
     Route::get('/delivery', 'delivery')->name('home.delivery');
     Route::get('/moneyback', 'moneyback')->name('home.moneyback');
     Route::get('/lang={locale}', 'language')->name('home.language');
+    Route::get('/curr={curr_code}', 'currency')->name('home.currency');
     Route::get('/first_letter/{letter}', 'first_letter')->name('home.first_letter');
     Route::get('/category/{category}', 'category')->name('home.category');
     Route::get('/active/{active}', 'active')->name('home.active');

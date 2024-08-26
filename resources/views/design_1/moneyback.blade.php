@@ -4,10 +4,12 @@
 @section('title', 'Moneyback')
 
 @section('content')
-<main class="main">
-    <article class="raw-content">
-      <h1>{{__('text.moneyback_title')}}</h1>
-      <p>{!!__('text.moneyback_text')!!}</p>
-    </article>
-  </main>
-  @endsection
+<section class="page__text-block text-block">
+    <div class="text-block__container">
+        <h2 class="text-block__title title" id = "scroll">{{__('text.moneyback_title')}}</h2>
+        <div class="text-block__body">
+            {!!__('text.moneyback_text')!!}
+        </div>
+    </div>
+</section>
+@endsection

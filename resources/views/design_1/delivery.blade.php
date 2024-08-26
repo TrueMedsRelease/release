@@ -4,32 +4,25 @@
 @section('title', 'Delivery')
 
 @section('content')
-<main class="main">
-    <article class="raw-content">
-      <h1>{{__('text.shipping_title')}}</h1>
-      <h2>{{__('text.shipping_title1')}}</h2>
-      <ul>
+<div class="onei">
+    <h2 class="text-block__title title" id = "scroll">{{__('text.shipping_title')}}</h2>
+    <div class="text-block__body ship_list">
+        <h3 class="ship_">{{__('text.shipping_title1')}}</h3>
+        <br>
         <li>{!!__('text.shipping_text_1')!!}</li>
         <li>{!!__('text.shipping_text_2')!!}</li>
-      </ul>
-      <p>{{__('text.shipping_text_3')}}</p>
-      <p><strong>{{__('text.shipping_title2')}}</strong></p>
-      <div class="raw-content__section-mt">
+        <p></p>
+        <p>{{__('text.shipping_text_3')}}</p>
+        <h3 class="ship_">{{__('text.shipping_title2')}}</h3>
+        <br>
         <p>{{__('text.shipping_text_4')}}</p>
         <p>{{__('text.shipping_text_5')}}</p>
-      </div>
-      <div class="raw-content__section-mt">
-        <ul>
-          <li>{{__('text.shipping_text_6')}}</li>
-          <li>{{__('text.shipping_text_7')}}</li>
-          <li>{{__('text.shipping_text_8')}}</li>
-          <li>{{__('text.shipping_text_9')}}</li>
-        </ul>
-      </div>
-      <div class="raw-content__section-mt">
-        <p>{{__('text.shipping_text_10')}}<a href="contact.html">{{__('text.shipping_contact_us_shipping')}}</a>
-        </p>
-      </div>
-    </article>
-  </main>
+            <li>{{__('text.shipping_text_6')}}</li>
+            <li>{{__('text.shipping_text_7')}}</li>
+            <li>{{__('text.shipping_text_8')}}</li>
+            <li>{{__('text.shipping_text_9')}}</li>
+        <p></p>
+        <p>{{__('text.shipping_text_10')}}<a class = "shipping_a" href="{{ route('home.contact_us') }}">{{__('text.shipping_contact_us_shipping')}}</a></p>
+    </div>
+</div>
   @endsection

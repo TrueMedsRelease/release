@@ -17,17 +17,30 @@ use Illuminate\Support\Facades\File;
 
 class ProductServices
 {
-    public static function GetBestsellers()
+    public static function GetBestsellers($design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $product_price = self::GetAllProductPillPrice($design);
 
-        $products = Product::query()
-            ->where('is_showed_on_main', '=', 1)
-            ->where('is_showed', '=', 1)
-            ->orderBy('main_order', 'asc')
-            ->get(['id', 'image', 'aktiv'])
-            ->toArray();
+        if ($design == 'design_5') {
+            $products = Product::query()
+                ->where('product.is_showed_on_main', '=', 1)
+                ->where('product.is_showed', '=', 1)
+                ->where('product_category.category_id', '=', 14)
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->orderBy('product.main_order', 'asc')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+
+        } else {
+            $products = Product::query()
+                ->where('is_showed_on_main', '=', 1)
+                ->where('is_showed', '=', 1)
+                ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        }
+
 
         for($i = 0; $i < count($products); $i++)
         {
@@ -41,32 +54,54 @@ class ProductServices
         return $products;
     }
 
-    public static function GetCategoriesWithProducts($url = '')
+    public static function GetCategoriesWithProducts($design, $url = '')
     {
-        $category_desc = self::GetAllCategoryDesc(Language::$languages[App::currentLocale()]);
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $category_desc = self::GetAllCategoryDesc(Language::$languages[App::currentLocale()], $design);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $product_price = self::GetAllProductPillPrice($design);
 
         if(empty($url))
         {
-            $categories_raw = Category::query()
+            if ($design == 'design_5') {
+                $categories_raw = Category::query()
+                ->whereIn('id', [13, 14])
                 ->with(['product'])
                 ->orderBy('ord')
                 ->get();
+            } else {
+                $categories_raw = Category::query()
+                ->with(['product'])
+                ->orderBy('ord')
+                ->get();
+            }
         }
         else
         {
-            $categories_raw = Category::query()
-                ->where('url', '=', $url)
-                ->with(['product'])
-                ->orderBy('ord')
-                ->get();
+            if ($design == 'design_5') {
+                $categories_raw = Category::query()
+                    ->where('url', '=', $url)
+                    ->whereIn('id', [13, 14])
+                    ->with(['product'])
+                    ->orderBy('ord')
+                    ->get();
+            } else {
+                $categories_raw = Category::query()
+                    ->where('url', '=', $url)
+                    ->with(['product'])
+                    ->orderBy('ord')
+                    ->get();
+            }
         }
 
         $categories = [];
         foreach($categories_raw as $category)
         {
-            $products = $category->product->where('is_showed', '=', 1)->sortBy('menu_order')->toArray();
+            // if ($design == 'design_5') {
+            //     $products = $category->product->where('is_showed', '=', 1)->where('category_id', '=', 14)->sortBy('menu_order')->toArray();
+            // } else {
+                $products = $category->product->where('is_showed', '=', 1)->sortBy('menu_order')->toArray();
+            // }
+
             foreach($products as &$product)
             {
                 $product['price'] = $product_price[$product['id']];
@@ -85,15 +120,23 @@ class ProductServices
         return $categories;
     }
 
-    public static function GetProductDesc($language_id, $url = '')
+    public static function GetProductDesc($language_id, $design, $url = '')
     {
         if(empty($url))
         {
-            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+            // if ($design == 'design_5') {
+            //     $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('category_id', '=', 14)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+            // } else {
+                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+            // }
         }
         else
         {
-            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+            // if ($design == 'design_5') {
+            //     $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('category_id', '=', 14)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+            // } else {
+                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+            // }
         }
 
         $products_desc = [];
@@ -109,9 +152,14 @@ class ProductServices
         return $products_desc;
     }
 
-    public static function GetAllCategoryDesc($language_id)
+    public static function GetAllCategoryDesc($language_id, $design)
     {
-        $category_desc_raw = CategoryDesc::query()->where('language_id', '=', $language_id)->get(['category_id', 'name'])->groupBy('category_id')->toArray();
+        // if ($design == 'design_5') {
+        //     $category_desc_raw = CategoryDesc::query()->where('language_id', '=', $language_id)->where('category_id', '=', 14)->get(['category_id', 'name'])->groupBy('category_id')->toArray();
+        // } else {
+            $category_desc_raw = CategoryDesc::query()->where('language_id', '=', $language_id)->get(['category_id', 'name'])->groupBy('category_id')->toArray();
+        // }
+
         $category_desc = [];
         foreach($category_desc_raw as $key => $p)
         {
@@ -121,31 +169,46 @@ class ProductServices
         return $category_desc;
     }
 
-    public static function GetAllProductPillPrice()
+    public static function GetAllProductPillPrice($design)
     {
+        // if ($design == 'design_5') {
+        //     $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 AND category_id = 14 GROUP BY product_id');
+        // } else {
+            $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 GROUP BY product_id');
+        // }
 
-        $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 GROUP BY product_id');
+
         $product_price = [];
         foreach($product as $p)
         {
-            $product_price[$p->product_id] = round($p->min, 2);
+            $product_price[$p->product_id] = CurrencyServices::format(CurrencyServices::upgrade(round($p->min, 2)));
         }
 
         return $product_price;
     }
 
-    public static function GetProductByFirstLetter($letter)
+    public static function GetProductByFirstLetter($letter, $design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $product_price = self::GetAllProductPillPrice($design);
 
-        $products = Product::query()
-            ->where('is_showed', '=', 1)
-            ->where('first_letter', '=', $letter)
-            ->orderBy('main_order', 'asc')
-            ->get(['id', 'image', 'aktiv'])
-            ->toArray();
+        if ($design == 'design_5') {
+            $products = Product::query()
+                ->where('is_showed', '=', 1)
+                ->where('first_letter', '=', $letter)
+                ->where('category_id', '=', 14)
+                ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
 
+        } else {
+            $products = Product::query()
+                ->where('is_showed', '=', 1)
+                ->where('first_letter', '=', $letter)
+                ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        }
 
         for($i = 0; $i < count($products); $i++)
         {
@@ -159,13 +222,17 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductByDisease($disease)
+    public static function GetProductByDisease($disease, $design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $product_price = self::GetAllProductPillPrice($design);
         $disease = str_replace('-', ' ', $disease);
 
-        $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ?', [Language::$languages[App::currentLocale()], $disease]);
+        if ($design == 'design_5') {
+            $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ? AND category_id = ?', [Language::$languages[App::currentLocale()], $disease, 14]);
+        } else {
+            $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ?', [Language::$languages[App::currentLocale()], $disease]);
+        }
 
         $product_id = [];
         foreach($diseases as $item)
@@ -173,12 +240,23 @@ class ProductServices
             $product_id[] = $item->product_id;
         }
 
-        $products = Product::query()
-            ->where('is_showed', '=', 1)
-            ->whereIn('id', $product_id)
-            ->orderBy('main_order', 'asc')
-            ->get(['id', 'image', 'aktiv'])
-            ->toArray();
+        if ($design == 'design_5') {
+            $products = Product::query()
+                ->where('is_showed', '=', 1)
+                ->where('category_id', '=', 14)
+                ->whereIn('id', $product_id)
+                ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+
+        } else {
+            $products = Product::query()
+                ->where('is_showed', '=', 1)
+                ->whereIn('id', $product_id)
+                ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        }
 
         for($i = 0; $i < count($products); $i++)
         {
@@ -192,19 +270,29 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductByActive($active)
+    public static function GetProductByActive($active, $design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $product_price = self::GetAllProductPillPrice($design);
 
-        $products = Product::query()
+        if ($design == 'design_5') {
+            $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->where('aktiv', 'LIKE', "%$active%")
+            ->where('category_id', 14)
+            ->orderBy('main_order', 'asc')
+            // ->orderBy('image', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
+        } else {
+            $products = Product::query()
             ->where('is_showed', '=', 1)
             ->where('aktiv', 'LIKE', "%$active%")
             ->orderBy('main_order', 'asc')
             // ->orderBy('image', 'asc')
             ->get(['id', 'image', 'aktiv'])
             ->toArray();
-
+        }
 
         for($i = 0; $i < count($products); $i++)
         {
@@ -218,16 +306,27 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductInfoByUrl($url)
+    public static function GetProductInfoByUrl($url, $design)
     {
         $language_id = Language::$languages[App::currentLocale()];
-        $products_desc = self::GetProductDesc($language_id, $url);
+        $products_desc = self::GetProductDesc($language_id, $design, $url);
 
-        $product = Product::query()
-            ->where('id', '=', $products_desc['product_id'])
-            ->where('is_showed', '=', 1)
-            ->with('category.category_desc')
-            ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+        // if ($design == 'design_5') {
+        //     $product = Product::query()
+        //         ->where('id', '=', $products_desc['product_id'])
+        //         ->where('is_showed', '=', 1)
+        //         ->where('category_id', '=', 14)
+        //         ->with('category.category_desc')
+        //         ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+
+        // } else {
+            $product = Product::query()
+                ->where('id', '=', $products_desc['product_id'])
+                ->where('is_showed', '=', 1)
+                ->with('category.category_desc')
+                ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+
+        // }
 
         #region Category
         $categories = [];
@@ -310,7 +409,7 @@ class ProductServices
         $product['disease'] = $product_disease;
         $product['analog'] = json_decode(json_encode($analogs), true);
         $product['sinonim'] = explode("\n", str_replace("\u{FEFF}", '', $product['sinonim']));
-        $path = public_path() . '\languages\\' . App::currentLocale() . '\tablets_descriptions\\' . str_replace('/', '\\', $product['product_info_file_path']);
+        $path = public_path() . '/languages/' . App::currentLocale() . '/tablets_descriptions/' . $product['product_info_file_path'];
         $product['full_desc'] = File::exists($path) ? File::get($path) : '';
         $product['packs'] = $packs;
         $product['type'] = $type;
@@ -369,15 +468,15 @@ class ProductServices
 
     }
 
-    public static function SearchProduct($search_text)
+    public static function SearchProduct($search_text, $design)
     {
         if(str_contains($search_text, ' '))
         {
             $search_text = '(' . $search_text . ')';
         }
 
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $product_price = self::GetAllProductPillPrice($design);
         $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
                                     ->distinct()
                                     ->get(['product_id'])
@@ -389,12 +488,24 @@ class ProductServices
             $product_id[] = $item['product_id'];
         }
 
-        $products = Product::query()
-            ->where('is_showed', '=', 1)
-            ->whereIn('id', $product_id)
-            ->orderBy('main_order', 'asc')
-            ->get(['id', 'image', 'aktiv'])
-            ->toArray();
+        if ($design == 'design_5') {
+            $products = Product::query()
+                ->where('is_showed', '=', 1)
+                ->where('caterogy_id', '=', 14)
+                ->whereIn('id', $product_id)
+                ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        } else {
+            $products = Product::query()
+                ->where('is_showed', '=', 1)
+                ->whereIn('id', $product_id)
+                ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        }
+
+
 
         for($i = 0; $i < count($products); $i++)
         {

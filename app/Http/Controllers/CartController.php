@@ -9,6 +9,7 @@ use App\Services\ProductServices;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use App\Services\CurrencyServices;
 
 class CartController extends Controller
 {
@@ -19,10 +20,11 @@ class CartController extends Controller
             return redirect(route('home.index'));
         }
 
-        $bestsellers = ProductServices::GetBestsellers();
-        $menu = ProductServices::GetCategoriesWithProducts();
-
         $design = config('app.design');
+
+        $bestsellers = ProductServices::GetBestsellers($design);
+        $menu = ProductServices::GetCategoriesWithProducts($design);
+
         return view($design . '.cart', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -32,13 +34,21 @@ class CartController extends Controller
 
     public function cart()
     {
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $design = config('app.design');
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        $types = ProductTypeDesc::query()
-        ->where('language_id', '=', $language_id)
-        ->get(['type_id', 'name']);
+        if ($design == 'design_5') {
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->where('category_id', '=', 14)
+                ->get(['type_id', 'name']);
+        } else {
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->get(['type_id', 'name']);
+        }
 
         foreach($products as &$item)
         {
@@ -55,7 +65,6 @@ class CartController extends Controller
             }
         }
 
-        $design = config('app.design');
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
             'products' => $products,
@@ -77,14 +86,22 @@ class CartController extends Controller
 
     public function up(Request $request)
     {
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $design = config('app.design');
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         Cart::add($request->pack_id);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        $types = ProductTypeDesc::query()
-        ->where('language_id', '=', $language_id)
-        ->get(['type_id', 'name']);
+        if ($design == 'design_5') {
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->where('category_id', '=', 14)
+                ->get(['type_id', 'name']);
+        } else {
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->get(['type_id', 'name']);
+        }
 
         foreach($products as &$item)
         {
@@ -101,7 +118,6 @@ class CartController extends Controller
             }
         }
 
-        $design = config('app.design');
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
             'products' => $products,
@@ -112,14 +128,22 @@ class CartController extends Controller
 
     public function down(Request $request)
     {
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $design = config('app.design');
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         Cart::decrease($request->pack_id);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        $types = ProductTypeDesc::query()
-        ->where('language_id', '=', $language_id)
-        ->get(['type_id', 'name']);
+        if ($design == 'design_5') {
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->where('category_id', '=', 14)
+                ->get(['type_id', 'name']);
+        } else {
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->get(['type_id', 'name']);
+        }
 
         foreach($products as &$item)
         {
@@ -136,7 +160,6 @@ class CartController extends Controller
             }
         }
 
-        $design = config('app.design');
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
             'products' => $products,
@@ -150,14 +173,22 @@ class CartController extends Controller
         Cart::remove($request->pack_id);
         $products = !empty(session('cart')) ? session('cart') : '';
         $language_id = Language::$languages[App::currentLocale()];
+        $design = config('app.design');
 
         if($products != '')
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
 
-            $types = ProductTypeDesc::query()
-            ->where('language_id', '=', $language_id)
-            ->get(['type_id', 'name']);
+            if ($design == 'design_5') {
+                $types = ProductTypeDesc::query()
+                    ->where('language_id', '=', $language_id)
+                    ->where('category_id', '=', 14)
+                    ->get(['type_id', 'name']);
+            } else {
+                $types = ProductTypeDesc::query()
+                    ->where('language_id', '=', $language_id)
+                    ->get(['type_id', 'name']);
+            }
 
             foreach($products as &$item)
             {
@@ -174,7 +205,6 @@ class CartController extends Controller
                 }
             }
 
-            $design = config('app.design');
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
@@ -193,15 +223,22 @@ class CartController extends Controller
         Cart::upgrade($request->pack_id);
         $products = !empty(session('cart')) ? session('cart') : '';
         $language_id = Language::$languages[App::currentLocale()];
+        $design = config('app.design');
 
         if($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
 
-            $types = ProductTypeDesc::query()
-            ->where('language_id', '=', $language_id)
-            ->get(['type_id', 'name']);
-
+            if ($design == 'design_5') {
+                $types = ProductTypeDesc::query()
+                    ->where('language_id', '=', $language_id)
+                    ->where('category_id', '=', 14)
+                    ->get(['type_id', 'name']);
+            } else {
+                $types = ProductTypeDesc::query()
+                    ->where('language_id', '=', $language_id)
+                    ->get(['type_id', 'name']);
+            }
             foreach($products as &$item)
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
@@ -217,7 +254,7 @@ class CartController extends Controller
                 }
             }
 
-            $design = config('app.design');
+
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,

@@ -3,7 +3,15 @@
 @section('title', 'Cart')
 
 @section('content')
-    <main id = "shopping_cart" class="main main--grid main--aside-xl main--aside-124">
+<script>
+    flagc = true;
+</script>
+    <div class="main">
+        <section class="basket" id="shopping_cart">
 
-    </main>
+        </section>
+    </div>
+</div>
+</div>
+</div>
 @endsection

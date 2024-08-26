@@ -1,0 +1,37 @@
+{
+  "name": "True Pharmacy",
+  "short_name": "TruePharm",
+  "description":"High-Quality Generic Drugs with big discounts. Fast & Worldwide Delivery. Safe & Secure Payments.",
+  "dir": "auto",
+  "lang": "en-US",
+  "display": "standalone",
+  "orientation": "any",
+  "start_url": "/",
+  "background_color": "#fff",
+  "theme_color": "#4FAFCD",
+  "screenshots": [
+    {
+        "src":"screen_1.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    },
+    {
+        "src":"screen_2.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    },
+    {
+        "src":"screen_3.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    }
+  ],
+  "icons": [
+    {
+      "src": "android-chrome-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
