@@ -29,6 +29,8 @@
                     </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                 </button>
             <div class="product-card__price">${{ $product['price'] }}</div>
+            </a>
+            <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
             </div>
         </article>
         @if ($loop->index == 1)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\GeoIpService;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 

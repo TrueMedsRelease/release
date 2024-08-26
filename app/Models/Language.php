@@ -36,5 +36,11 @@ class Language extends Model
         'hans' => 26,
     ];
 
+    public static function GetAllLanuages()
+    {
+        $language = Language::query()->where('show', '=', 1)->orderBy('ord','asc')->get()->toArray();
+        return $language;
+    }
+
     protected $table = 'language';
 }

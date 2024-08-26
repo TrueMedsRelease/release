@@ -216,6 +216,7 @@ return [
     //Design
     'design' => env('APP_DESIGN', 'design_10'),
 
-    'currancy' => env('APP_CURRENCY', 'usd'),
+    //Currency
+    'currency' => env('APP_CURRENCY', 'usd'),
 
 ];

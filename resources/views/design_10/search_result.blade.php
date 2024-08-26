@@ -28,9 +28,10 @@
                         <svg width="1em" height="1em" fill="currentColor">
                             <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
                         </svg>
-                    </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
+
+                    </span> <span class="button__text">Buy Now</span>
                 </button>
-            <div class="product-card__price">${{ $product['price'] }}</div>
+            <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
             </div>
         </article>
         @if ($loop->index == 1)
@@ -77,6 +78,38 @@
                     </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                 </button>
             <div class="product-card__price">${{ $product['price'] }}</div>
+        </div>
+        </section>
+    @else
+    <section class="page__best-sellers best-sellers">
+        <h2 class="best-sellers__title title" id = "scroll">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>
+        <div class="best-sellers__items">
+        @foreach ($products as $product)
+            <a href="{{ route('home.product', $product['url']) }}" class="product-card">
+                <div class="product-card__body">
+                <div class="product-card__top">
+                    <div class="product-card__info">
+                    <h3 class="product-card__name">{{ $product['name'] }}</h3>
+                    <h4 class="product-card__company">
+                        @foreach ($product['aktiv'] as $aktiv)
+                            {{ $aktiv }}
+                        @endforeach
+                    </h4>
+                    </div>
+                    <div class="product-card__price">${{ $product['price'] }}</div>
+                </div>
+                <div class="product-card__image">
+                    <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}">
+                </div>
+                </div>
+                <button type="button" class="product-card__button button button--primary">
+                <picture>
+                    <source srcset="{{ asset("$design/images/icons/cart.webp") }}" type="image/webp">
+                    <img src="{{ asset("$design/images/icons/cart.png") }}" width="23" height="23" alt="">
+                </picture>
+                </button>
+            </a>
+            <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
             </div>
         </article>
         @if ($loop->index == 1)

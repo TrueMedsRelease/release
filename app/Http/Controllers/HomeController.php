@@ -286,10 +286,12 @@ class HomeController extends Controller
         return Redirect::back();
     }
 
-    public function currency($curr_code)
+    public function currency($currency)
     {
-        session(['curr_code' => $curr_code]);
-        Cookie::queue('curr', $curr_code, 525600, '/');
+        $coef = Currency::GetCoef($currency);
+        session(['currency' => $currency]);
+        session(['currency_c' => $coef]);
         return Redirect::back();
     }
+
 }

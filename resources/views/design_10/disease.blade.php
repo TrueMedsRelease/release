@@ -17,6 +17,9 @@
             @foreach ($product['aktiv'] as $aktiv)
             <a class="product-card__ingredient" href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
             @endforeach
+
+         </div>
+        </section>
             <a class="product-card__text link-primary" href="{{ route('home.product', $product['url']) }}">
                 {{ str()->limit($product['desc'], 120, $end='...') }}
             </a>

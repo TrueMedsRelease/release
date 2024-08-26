@@ -67,6 +67,78 @@
                             @endforeach
                         </div>
                     @endif
+                </ul>
+            </div>
+            <div class="product__info">
+            @foreach ($product['packs'] as $key => $dosage)
+                    <ul class="product__info-items">
+                        @php
+                            $prev_dosage = 0;
+                        @endphp
+                        @foreach ($dosage as $item)
+                            @if ($loop->last)
+                                @continue
+                            @endif
+                            @if ($loop->iteration != 1 && $key != $prev_dosage)
+                                </tbody>
+                                </table>
+                                </li>
+                            @endif
+                            @if ($key != $prev_dosage)
+                                <li class="product__info-item">
+                                    <h3 class="product__info-title">
+                                        {{ "{$product['name']} $key" }}
+                                    </h3>
+                                    <table class="product-table">
+                                        <tbody>
+                                        <tr class="product-table__list product-table__list--top">
+                                            <th class="product-table__package">{{__('text.product_quantity_title')}}</th>
+                                            <th class="product-table__per">{{__('text.product_price_per_pill_title')}}</th>
+                                            <th class="product-table__price">{{__('text.product_price_title')}}</th>
+                                            <th></th>
+                                        </tr>
+                                        @php
+                                            $prev_dosage = $key;
+                                        @endphp
+                            @endif
+                                <tr class="product-table__list">
+                                    <th class="product-table__package">
+                                        {{ "{$item['num']} {$product['type']}" }}
+                                        @if ($product['image'] != 'gift-card')
+                                            @if ($item['price'] >= 300)
+                                                <span class="product-table__prompt">{{__('text.cart_free_express')}}</span>
+                                            @elseif($item['price'] < 300 && $item['price'] >= 200)
+                                                <span class="product-table__prompt">{{__('text.cart_free_regular')}}</span>
+                                            @endif
+                                        @endif
+                                    </th>
+                                    <th class="product-table__per">${{ round($item['price'] / $item['num'], 2) }}</th>
+                                    <th class="product-table__price">
+                                        @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
+                                            <span class="product-table__old">${{ $dosage['max_pill_price'] * $item['num'] }}</span>
+                                            <span class="product-table__discount">-{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span>
+                                        @endif
+                                        <span class="product-table__current">@if ($product['image'] != 'gift-card'){!!__('text.product_only')!!} @endif ${{ $item['price'] }}</span>
+                                    </th>
+                                    <th class="product-table__add">
+                                        <button class="product-table__btn" type="button" onclick="location.href = add_pack({{ $item['id'] }})">
+                                            <span class="sr-only">{{__('text.product_add_to_cart_text_d2')}}</span>
+                                        </button>
+                                        <button class="product-table__cart" type="button" onclick="location.href = add_pack({{ $item['id'] }})">
+                                            {{__('text.product_add_to_cart_text_d2')}}
+                                        </button>
+                                    </th>
+                                </tr>
+                        @endforeach
+                                </tbody>
+                            </table>
+                        </li>
+                    </ul>
+            @endforeach
+                    <div class="product__info-content">
+                        @if ($product['full_desc'])
+                            {!! $product['full_desc'] !!}
+                        @endif
                 </div>
             </aside>
 
@@ -102,15 +174,15 @@
                                             </div>
                                         </td>
                                         <td class="product__price-per-pill" data-caption="Per Pill:">
-                                            ${{ round($item['price'] / $item['num'], 2) }}</td>
+                                            {{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</td>
                                         <td class="product__price-wrapper" data-caption="Special Price:">
                                             @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                                 <div class="product__discount">
-                                                    <s>${{ $dosage['max_pill_price'] * $item['num'] }}</s>
+                                                    <s>{{ $Currency::convert($dosage['max_pill_price'] * $item['num'], true) }}</s>
                                                     -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
                                                 </div>
                                             @endif
-                                            <div class="product__price">{!!__('text.product_only')!!} ${{ $item['price'] }}</div>
+                                            <div class="product__price">Only {{ $Currency::convert($item['price'], true) }}</div>
                                         </td>
                                         <td class="product__button-wrapper">
                                             <form action="{{ route('cart.add', $item['id']) }}" method="post">
@@ -136,5 +208,6 @@
                 {!! $product['full_desc'] !!}
             </div>
         </main>
+
     </div>
 @endsection

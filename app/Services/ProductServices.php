@@ -42,12 +42,11 @@ class ProductServices
         }
 
 
-        for($i = 0; $i < count($products); $i++)
-        {
+        for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -108,7 +107,7 @@ class ProductServices
                 $product['name'] = $products_desc[$product['id']]['name'];
                 $product['desc'] = $products_desc[$product['id']]['desc'];
                 $product['url'] = $products_desc[$product['id']]['url'];
-                $product['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$product['aktiv'])));
+                $product['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $product['aktiv'])));
             }
             unset($product);
 
@@ -140,11 +139,9 @@ class ProductServices
         }
 
         $products_desc = [];
-        foreach($products_desc_raw as $key => $p)
-        {
+        foreach ($products_desc_raw as $key => $p) {
             $products_desc[$key] = $p[0];
-            if(!empty($url))
-            {
+            if (!empty($url)) {
                 return $p[0];
             }
         }
@@ -161,8 +158,7 @@ class ProductServices
         // }
 
         $category_desc = [];
-        foreach($category_desc_raw as $key => $p)
-        {
+        foreach ($category_desc_raw as $key => $p) {
             $category_desc[$key] = $p[0]['name'];
         }
 
@@ -179,9 +175,8 @@ class ProductServices
 
 
         $product_price = [];
-        foreach($product as $p)
-        {
-            $product_price[$p->product_id] = CurrencyServices::format(CurrencyServices::upgrade(round($p->min, 2)));
+        foreach ($product as $p) {
+            $product_price[$p->product_id] = round($p->min, 2);
         }
 
         return $product_price;
@@ -210,12 +205,11 @@ class ProductServices
                 ->toArray();
         }
 
-        for($i = 0; $i < count($products); $i++)
-        {
+        for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -235,8 +229,7 @@ class ProductServices
         }
 
         $product_id = [];
-        foreach($diseases as $item)
-        {
+        foreach ($diseases as $item) {
             $product_id[] = $item->product_id;
         }
 
@@ -258,12 +251,11 @@ class ProductServices
                 ->toArray();
         }
 
-        for($i = 0; $i < count($products); $i++)
-        {
+        for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -294,12 +286,11 @@ class ProductServices
             ->toArray();
         }
 
-        for($i = 0; $i < count($products); $i++)
-        {
+        for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -330,11 +321,9 @@ class ProductServices
 
         #region Category
         $categories = [];
-        foreach($product[0]->category as $category)
-        {
+        foreach ($product[0]->category as $category) {
             $names = $category->category_desc->where('language_id', '=', $language_id);
-            foreach($names as $n)
-            {
+            foreach ($names as $n) {
                 $name = $n['name'];
             }
             $categories[] = ['name' => $name, 'url' => $category->url];
@@ -342,12 +331,14 @@ class ProductServices
         #endregion
 
         #region Analogs
-        $analogs = DB::select('SELECT pd.name, pd.url
+        $analogs = DB::select(
+            'SELECT pd.name, pd.url
         FROM product_analog pa
         JOIN product_desc pd ON pd.product_id = pa.analog_id
         JOIN product p ON p.id = pa.analog_id
         WHERE pa.product_id = ? AND pd.language_id = ? AND p.is_showed = 1',
-        [$products_desc['product_id'], $language_id]);
+            [$products_desc['product_id'], $language_id]
+        );
         #endregion
 
         #region Product Disease
@@ -358,8 +349,7 @@ class ProductServices
             ->get('disease')
             ->toArray();
 
-        foreach($product_diseases as $disease)
-        {
+        foreach ($product_diseases as $disease) {
             $product_disease[] = $disease['disease'];
         }
         #endregion
@@ -375,12 +365,10 @@ class ProductServices
             ->toArray();
 
         $product_type = 1; //defualt pills
-        foreach($packs as &$pack)
-        {
+        foreach ($packs as &$pack) {
 
             $max_pill_price = 0;
-            foreach($pack as $p)
-            {
+            foreach ($pack as $p) {
                 $product_type = $p['type_id'];
                 $max_pill_price = ($p['price'] / $p['num']) > $max_pill_price ? round($p['price'] / $p['num'], 2) : $max_pill_price;
                 // break;
@@ -395,9 +383,9 @@ class ProductServices
 
         #region Product Type
         $type = ProductTypeDesc::query()
-        ->where('type_id', '=', $product_type) //$product_type получен в регионе Packaging
-        ->where('language_id', '=', $language_id)
-        ->first('name')->name;
+            ->where('type_id', '=', $product_type) //$product_type получен в регионе Packaging
+            ->where('language_id', '=', $language_id)
+            ->first('name')->name;
         #endregion
 
         $product = $product->toArray()[0];
@@ -420,16 +408,15 @@ class ProductServices
     public static function GetMaxPriceForPill($product_id, $dosage)
     {
         $packs = ProductPackaging::query()
-        ->where('product_id', '=', $product_id)
-        ->where('dosage', '=', $dosage)
-        ->where('price', '!=', 0)
-        ->where('is_showed', '=', 1)
-        ->get()
-        ->toArray();
+            ->where('product_id', '=', $product_id)
+            ->where('dosage', '=', $dosage)
+            ->where('price', '!=', 0)
+            ->where('is_showed', '=', 1)
+            ->get()
+            ->toArray();
 
         $max_pill_price = 0;
-        foreach($packs as $pack)
-        {
+        foreach ($packs as $pack) {
             $max_pill_price = ($pack['price'] / $pack['num']) > $max_pill_price ? round($pack['price'] / $pack['num'], 2) : $max_pill_price;
         }
 
@@ -441,18 +428,17 @@ class ProductServices
         $product_pack = ProductPackaging::query()->find($pack_id);
 
         $upgrade_pack = ProductPackaging::query()
-                    ->where('product_id', '=', $product_pack->product_id)
-                    ->where('dosage', '=', $product_pack->dosage)
-                    ->where('price', '!=', 0)
-                    ->where('is_showed', '=', 1)
-                    ->where('num', '>', $product_pack->num)
-                    ->orderBy('num', 'asc')
-                    ->limit(1)
-                    ->get()
-                    ->toArray();
+            ->where('product_id', '=', $product_pack->product_id)
+            ->where('dosage', '=', $product_pack->dosage)
+            ->where('price', '!=', 0)
+            ->where('is_showed', '=', 1)
+            ->where('num', '>', $product_pack->num)
+            ->orderBy('num', 'asc')
+            ->limit(1)
+            ->get()
+            ->toArray();
 
-        if(!empty($upgrade_pack))
-        {
+        if (!empty($upgrade_pack)) {
             $upgrade_pack = $upgrade_pack[0];
 
             return [
@@ -460,31 +446,26 @@ class ProductServices
                 'price' => $upgrade_pack['price'],
                 'num' => $upgrade_pack['num']
             ];
-        }
-        else
-        {
+        } else {
             return [];
         }
-
     }
 
     public static function SearchProduct($search_text, $design)
     {
-        if(str_contains($search_text, ' '))
-        {
+        if (str_contains($search_text, ' ')) {
             $search_text = '(' . $search_text . ')';
         }
 
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         $product_price = self::GetAllProductPillPrice($design);
         $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
-                                    ->distinct()
-                                    ->get(['product_id'])
-                                    ->toArray();
+            ->distinct()
+            ->get(['product_id'])
+            ->toArray();
 
         $product_id = [];
-        foreach($product_ids as $item)
-        {
+        foreach ($product_ids as $item) {
             $product_id[] = $item['product_id'];
         }
 
@@ -507,16 +488,85 @@ class ProductServices
 
 
 
-        for($i = 0; $i < count($products); $i++)
-        {
+        for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '',$products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
         return $products;
     }
 
+    public static function GetBonuses($pack_id = null)
+    {
+        $language_id = Language::$languages[App::currentLocale()];
+        if (empty($pack_id)) {
+            $bonus = DB::select("SELECT pack_id, pd.name, price, ptd.name as type
+                            FROM bonus_packs bp
+                            JOIN product_packaging pp ON pp.id = bp.pack_id
+                            JOIN product_desc pd ON pd.product_id = pp.product_id
+                            JOIN product_type_desc ptd on pp.type_id = ptd.type_id
+                            WHERE pd.language_id = $language_id AND ptd.language_id = $language_id AND bp.is_showed = 1");
+        }
+        else
+        {
+            $bonus = DB::select("SELECT pack_id, pd.name, price, ptd.name as type
+                            FROM bonus_packs bp
+                            JOIN product_packaging pp ON pp.id = bp.pack_id
+                            JOIN product_desc pd ON pd.product_id = pp.product_id
+                            JOIN product_type_desc ptd on pp.type_id = ptd.type_id
+                            WHERE pd.language_id = $language_id AND ptd.language_id = $language_id AND bp.is_showed = 1 AND bp.pack_id = $pack_id");
+        }
+
+        foreach ($bonus as &$product) {
+            switch ($product->pack_id) {
+                case 11630:
+                    $desc = "Viagra 100 mg x 1 $product->type, Cialis 20 mg x 1 $product->type, Levitra 20 mg x 1 $product->type";
+                    break;
+                case 4576:
+                    $desc = "Viagra 100 mg x 5 $product->type, Cialis 20 mg x 5 $product->type, Levitra 20 mg x 5 $product->type";
+                    break;
+                case 4577:
+                    $desc = "Viagra 100 mg x 10 $product->type, Cialis 20 mg x 10 $product->type, Levitra 20 mg x 10 $product->type";
+                    break;
+                case 4919:
+                    $desc = "Viagra 100 mg x 20 $product->type, Cialis 20 mg x 20 $product->type, Levitra 20 mg x 20 $product->type";
+                    break;
+                case 11656:
+                    $desc = "Viagra 100 mg x 30 $product->type, Cialis 20 mg x 30 $product->type, Levitra 20 mg x 30 $product->type";
+                    break;
+                case 11655:
+                    $desc = "Viagra 100 mg x 30 $product->type, Female Viagra 100 mg x 30 $product->type";
+                    break;
+                default:
+                    $desc = "";
+                    break;
+            }
+
+            $product->desc = $desc;
+        }
+        unset($product);
+
+        if (!empty($pack_id))
+            $bonus = $bonus[0];
+
+        return $bonus;
+    }
+
+    public static function GetGiftCard()
+    {
+        $language_id = Language::$languages[App::currentLocale()];
+        $cards = DB::select("SELECT pp.id as pack_id, pd.name, price
+            FROM product_packaging pp
+            JOIN product_desc pd ON pd.product_id = pp.product_id
+            WHERE pd.language_id = $language_id
+            AND pp.is_showed = 1
+            AND dosage = '1card'
+            ORDER BY price ASC
+            ");
+
+        return $cards;
+    }
 }
