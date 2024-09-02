@@ -382,7 +382,7 @@ class CheckoutController extends Controller
                 'card_year' => e($request->card_year),
                 'card_cvv' => e($request->cvc_2),
                 'ip' => request()->ip(),
-                'aff' => 0, // need aff
+                'aff' => config('app.design'),
                 'ref' => '',
                 'refc' => '',
                 'keyword' => '0',
@@ -393,7 +393,7 @@ class CheckoutController extends Controller
                 'saff' => '',
                 'language' => App::currentLocale(),
                 'currency' => session('currency'),
-                'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language'),
+                'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
                 'fingerprint' => '',
                 'product_total' => session('total.product_total'),
                 'customer_id' => '',
@@ -425,7 +425,177 @@ class CheckoutController extends Controller
         }
     }
 
-    public function complete() : View
+    public function paypal(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => ['required', 'min:5', 'max:16'],
+            'email' => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email' => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone' => ['nullable', 'min:5', 'max:16'],
+            'firstname' => ['required', 'max:255'],
+            'lastname' => ['required', 'max:255'],
+            'billing_country' => ['required', 'max:2'],
+            'billing_city' => ['required', 'max:255'],
+            'billing_address' => ['required', 'max:255'],
+            'billing_zip' => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        }
+        else
+        {
+            $products = [];
+
+            foreach(session('cart') as $product)
+            {
+                $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
+            }
+
+            if(session('cart_option.bonus_id') != 0)
+            {
+                $products[session('cart_option.bonus_id')] = ['qty' => 1, 'price' => session('cart_option.bonus_price'), 'is_ed_category' => false];
+            }
+
+            $products_str = json_encode($products);
+
+            // $products = str_replace(['[',']'], '', $products);
+
+            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+            $phone_code = $phone_code->phonecode;
+
+            $data = [
+                'method' => 'order',
+                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'phone' => e('+' . $phone_code . $request->phone),
+                'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+                'email' => e($request->email),
+                'alter_email' => !empty($request->alt_email) ? e($request->alt_email) : '',
+                'firstname' => e($request->firstname),
+                'lastname' => e($request->lastname),
+                'billing_country' => e($request->billing_country),
+                'billing_state' => e($request->billing_state),
+                'billing_city' => e($request->billing_city),
+                'billing_address' => e($request->billing_address),
+                'billing_zip' => e($request->billing_zip),
+                'shipping_country' => !empty($request->address_match) ? e($request->shipping_country) : e($request->billing_country),
+                'shipping_state' => !empty($request->address_match) ? e($request->shipping_state) : e($request->billing_state),
+                'shipping_city' => !empty($request->address_match) ? e($request->shipping_city) : e($request->billing_city),
+                'shipping_address' => !empty($request->address_match) ? e($request->shipping_address) : e($request->billing_address),
+                'shipping_zip' => !empty($request->address_match) ? e($request->shipping_zip) : e($request->billing_zip),
+                'payment_type' => e('paypal'),
+                'ip' => request()->ip(),
+                'aff' => config('app.design'),
+                'ref' => '',
+                'refc' => '',
+                'keyword' => '0',
+                'domain_from' => '',
+                'total' => session('total.all'),
+                'shipping' => session('cart_option.shipping'),
+                'products' => $products_str,
+                'saff' => '',
+                'language' => App::currentLocale(),
+                'currency' => session('currency'),
+                'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
+                'fingerprint' => '',
+                'product_total' => session('total.product_total'),
+                'customer_id' => '',
+                'reorder' => 0,
+                'reorder_discount' => 0,
+                'shipping_price' => session('total.shipping_total'),
+                'insurance' => session('session.insurance'),
+                'secret_package' => session('session.secret_package'),
+                'store_skin' => config('app.design'),
+                'recurring_period' => 0,
+                'coupon' => session('coupon.coupon', ''),
+                'bonus' => '',
+                'gift_card_code' => '',
+                'gift_card_discount' => 0,
+                'theme' => 13,
+                'coupon_discount' => session('total.coupon_discount'),
+                'sessid' => ''
+            ];
+
+            session(['data' => $data]);
+
+            $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
+
+            $response = json_decode($response, true);
+
+            session(['order' => $response]);
+
+            return response()->json(['response' => $response], 200);
+        }
+
+    }
+
+    public function crypto_info(Request $request)
+    {
+        $data = [
+            'method' => 'get_crypt',
+            'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'price' => session('total.all') * 0.85,
+            'email' => $request->email,
+            'currency' => $request->currency,
+         ];
+
+        $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
+
+        $response = json_decode($response, true);
+        $response['crypto_total'] = Currency::Convert(session('total.all') * 0.85);
+        $response['qr'] = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
+        $response['currency'] = $request->currency;
+
+        session(['crypto' => $response]);
+
+        return response()->json(json_encode($response));
+    }
+
+    public function validate_for_crypt(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => ['required', 'min:5', 'max:16'],
+            'email' => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email' => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone' => ['nullable', 'min:5', 'max:16'],
+            'firstname' => ['required', 'max:255'],
+            'lastname' => ['required', 'max:255'],
+            'billing_country' => ['required', 'max:2'],
+            'billing_city' => ['required', 'max:255'],
+            'billing_address' => ['required', 'max:255'],
+            'billing_zip' => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        }
+        else
+        {
+            session(['form.payment_type' => 'crypto']);
+        }
+    }
+
+    public function complete()
     {
         if (empty(session('order'))) {
             return redirect(route('home.index'));
@@ -436,5 +606,113 @@ class CheckoutController extends Controller
             'Language' => Language::class,
             'Currency' => Currency::class,
         ]);
+    }
+
+    public function check_payment(Request $request)
+    {
+        if(!empty(session('crypto')))
+        {
+            $data = [
+                'method' => 'check_payment',
+                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'invoiceId' => session('crypto.invoiceId'),
+             ];
+
+            $response_payment = Http::post('http://true-services.net/checkout/order_test.php', $data);
+
+            $response_payment = json_decode($response_payment, true);
+
+            session(['check_payment' => $response_payment]);
+
+            if($response_payment['status'] == 3 || $response_payment == 5)
+            {
+                $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+                $phone_code = $phone_code->phonecode;
+
+                $products = [];
+
+                foreach(session('cart') as $product)
+                {
+                    $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
+                }
+
+                if(session('cart_option.bonus_id') != 0)
+                {
+                    $products[session('cart_option.bonus_id')] = ['qty' => 1, 'price' => session('cart_option.bonus_price'), 'is_ed_category' => false];
+                }
+
+                $products_str = json_encode($products);
+
+                $data = [
+                    'method' => 'order',
+                    'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                    'phone' => e('+' . $phone_code . $request->phone),
+                    'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+                    'email' => e($request->email),
+                    'alter_email' => !empty($request->alt_email) ? e($request->alt_email) : '',
+                    'firstname' => e($request->firstname),
+                    'lastname' => e($request->lastname),
+                    'billing_country' => e($request->billing_country),
+                    'billing_state' => e($request->billing_state),
+                    'billing_city' => e($request->billing_city),
+                    'billing_address' => e($request->billing_address),
+                    'billing_zip' => e($request->billing_zip),
+                    'shipping_country' => !empty($request->address_match) ? e($request->shipping_country) : e($request->billing_country),
+                    'shipping_state' => !empty($request->address_match) ? e($request->shipping_state) : e($request->billing_state),
+                    'shipping_city' => !empty($request->address_match) ? e($request->shipping_city) : e($request->billing_city),
+                    'shipping_address' => !empty($request->address_match) ? e($request->shipping_address) : e($request->billing_address),
+                    'shipping_zip' => !empty($request->address_match) ? e($request->shipping_zip) : e($request->billing_zip),
+                    'payment_type' => e($request->payment_type),
+                    'crypto_currency' => e($response_payment['payCurrency']),
+                    'invoiceId' => e($response_payment['invoiceId']),
+                    'merchant_id' => e($response_payment['merchantId']),
+                    'purse' => e($response_payment['purse']),
+                    'amount' => e($response_payment['amount']),
+                    'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
+                    'commission' => e($response_payment['merchantCommission']),
+                    'crypto_status' => e($response_payment['status']),
+                    'ip' => request()->ip(),
+                    'aff' => config('app.aff'),
+                    'ref' => '',
+                    'refc' => '',
+                    'keyword' => '0',
+                    'domain_from' => '',
+                    'total' => session('total.all'),
+                    'shipping' => session('cart_option.shipping'),
+                    'products' => $products_str,
+                    'saff' => '',
+                    'language' => App::currentLocale(),
+                    'currency' => session('currency'),
+                    'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $request->screen_resolution,
+                    'fingerprint' => '',
+                    'product_total' => session('total.product_total'),
+                    'customer_id' => '',
+                    'reorder' => 0,
+                    'reorder_discount' => 0,
+                    'shipping_price' => session('total.shipping_total'),
+                    'insurance' => session('session.insurance'),
+                    'secret_package' => session('session.secret_package'),
+                    'store_skin' => config('app.design'),
+                    'recurring_period' => 0,
+                    'coupon' => session('coupon.coupon', ''),
+                    'bonus' => '',
+                    'gift_card_code' => '',
+                    'gift_card_discount' => 0,
+                    'theme' => 13,
+                    'coupon_discount' => session('total.coupon_discount'),
+                    'sessid' => ''
+                ];
+
+                session(['data' => $data]);
+
+                $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
+
+                $response = json_decode($response, true);
+
+                session(['order' => $response]);
+            }
+
+            return response()->json(json_encode($response_payment));
+        }
     }
 }
