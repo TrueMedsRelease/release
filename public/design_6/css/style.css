@@ -6993,3 +6993,242 @@ textarea.input {
     left: 2%;
   }
 }
+
+.bonus-line {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    border-top: 1px solid var(--gray-light);
+  }
+
+  .delivery-line {
+    border-top: 1px solid var(--gray-light);
+  }
+
+  .bonus-line__label {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .bonus-line__label--final-order {
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+
+  .bonus-line__items {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+  }
+
+  .bonus-line__button {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 1.25rem;
+            flex: 0 0 1.25rem;
+    color: var(--red);
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+  }
+
+  .bonus-line__total {
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .gift_card {
+    width: 100%;
+    border-top: 1px solid var(--gray-light);
+  }
+
+  .gift_block {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 30px;
+    gap: 10px;
+    border-top: 1px solid white;
+  }
+
+  .gift_top_block__item {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .gift_checkbox {
+    content: "";
+    -ms-flex-item-align: start;
+    align-self: flex-start;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 1.5rem;
+    flex: 0 0 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: url(../images/icons/checkmark.svg) center/15px 15px no-repeat;
+    background-color: #dfe5ec;
+    -webkit-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+
+  .gift_checkbox.get-gift {
+    background-color: var(--green);
+  }
+
+  .top_left_text {
+    font-weight: 500;
+  }
+
+  .button_add_gift {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 50px;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: var(--green);
+  }
+
+  .button_add_gift:hover {
+    opacity: 0.8;
+  }
+
+  .gift_bottom_block {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .bottom_left_text {
+    font-weight: 500;
+  }
+
+  .select_gift {
+    width: 175px;
+    height: 50px;
+    position: relative;
+  }
+
+  .gift_bottom_block {
+    display: none;
+  }
+
+  .select_gift.is-active .select_body_gifts {
+    display: block;
+    z-index: 100;
+  }
+
+  .select_header_gift {
+    border: 1px solid #cccccc;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    height: 50px;
+    background: white;
+    border-radius: 10px;
+    padding: 0 20px;
+  }
+
+  .select_current_gift {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .select_icon {
+    width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .select_body_gifts {
+    border: 1px solid #cccccc;
+    border-top: 0;
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .select_item_gift {
+    line-height: 24px;
+    padding: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .select_item_gift:hover {
+    color: var(--accent-color);
+  }
+
+  @media (max-width: 1199px) {
+    .gift_block {
+      padding: 15px 20px;
+    }
+  }
+
+  @media (max-width: 522px) {
+    .bonus-line__item {
+      width: unset;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .gift_block {
+      padding: 15px 10px;
+    }
+  }
+
+  .bonus_top {
+    display: flex;
+    gap: 15px;
+  }
+
+  .bonus_name {
+    font-weight: 600;
+  }
+
+  .bonus_price {
+    color: var(--red);
+  }
+
+  .bonus_desc {
+    font-size: 12px;
+    line-height: 14px;
+  }
+
+  .bonus-line__items {
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .bonus-line__item {
+    width: 195px;
+  }
+
+  @media (max-width: 522px) {
+    .bonus-line__item {
+      width: unset;
+    }
+  }

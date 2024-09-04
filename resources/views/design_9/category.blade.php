@@ -11,7 +11,7 @@
                     <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.main_best_selling_title')}}</button>
                     <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
                         @foreach ($bestsellers as $bestseller)
-                            <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">${{ $bestseller['price'] }}</span></li>
+                            <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
                         @endforeach
                     </ul>
                 </div>
@@ -24,7 +24,7 @@
                                     <a href="{{ route('home.product', $item['url']) }}">
                                         {{ $item['name'] }}
                                     </a>
-                                    <span style="font-size: 12px;">${{ $item['price'] }}</span>
+                                    <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
                                 </li>
                             @endforeach
                         </ul>
@@ -68,7 +68,7 @@
                                     </div>
                                 </a>
                                 <div class="product_right_block">
-                                    <div class="product_price">${{ $product['price'] }}</div>
+                                    <div class="product_price">{{ $Currency::convert($product['price']) }}</div>
                                     <button type="button" class="product-card__button button button--accent" title="{{__('text.product_add_to_cart_text')}}" onclick="location.href='{{ route('home.product', $product['url']) }}'">
                                         <svg width="24" height="24">
                                             <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart-white") }}"></use>

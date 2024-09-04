@@ -58,13 +58,13 @@
                         <a class="request_call">{{ __('text.common_callback') }}</a>
                         <div class="request_text">{{__('text.common_call_us_top')}}</div>
                     </div>
-                    <a class="top-phones-header__item" href="tel:+17185503732">US: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">DE: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}{{__('text.phones_title_phone_1')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}{{__('text.phones_title_phone_2')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}{{__('text.phones_title_phone_3')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}{{__('text.phones_title_phone_4')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}{{__('text.phones_title_phone_5')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}{{__('text.phones_title_phone_6')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}{{__('text.phones_title_phone_7')}}</a>
                 </div>
             </div>
 		</div>
@@ -121,18 +121,16 @@
                     <div class="header__actions" data-one-select data-da=".top-header__container, 700, last">
                         <div class="header__select">
                             <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                                @foreach ($languages as $language)
+                                @foreach ($Language::GetAllLanuages() as $language)
                                     <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="header__select">
                             <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                                <option value="1">USD</option>
-                                <option value="2">RUB</option>
-                                <option value="3">EUR</option>
-                                <option value="4">KZT</option>
-                                <option value="5">CNY</option>
+                                @foreach ($Currency::GetAllCurrency() as $item)
+                                    <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                @endforeach
                             </select>
                         </div>
                         <a href='{{ config('app.url') }}/login' target="_blank" class="header__status">{{__('text.common_profile')}}</a>
@@ -159,8 +157,8 @@
                                 <span>{{__('text.common_cart_text_d2')}}</span>
                             </div>
                             <div class="cart-header__info">
-                                <div class="cart-header__quantity">{{$cart_count}}</div>
-                                <div class="cart-header__total">{{$cart_total}}</div>
+                                <div class="cart-header__quantity">{{$cart_count}} {{__('text.common_items_d4')}}</div>
+                                <div class="cart-header__total">{{ $Currency::convert($cart_total) }}</div>
                             </div>
                         @else
                             <span class="cart__icon">
@@ -334,7 +332,7 @@
                                             <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
                                             <ul class="spollers__body main_bestsellers" id="main_bestsellers">
                                                 @foreach ($bestsellers as $bestseller)
-                                                    <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">${{ $bestseller['price'] }}</span></li>
+                                                    <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -349,7 +347,7 @@
                                                                 <a href="{{ route('home.product', $item['url']) }}">
                                                                     {{ $item['name'] }}
                                                                 </a>
-                                                                <span style="font-size: 12px;">${{ $item['price'] }}</span>
+                                                                <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
                                                             </li>
                                                         @endforeach
                                                     </ul>
@@ -363,7 +361,7 @@
                                                                 <a href="{{ route('home.product', $item['url']) }}">
                                                                     {{ $item['name'] }}
                                                                 </a>
-                                                                <span style="font-size: 12px;">${{ $item['price'] }}</span>
+                                                                <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
                                                             </li>
                                                         @endforeach
                                                     </ul>
@@ -497,11 +495,18 @@
                     <div class="phone">
                         <div class="enter-info__country phone_code">
                             <select name="phone_code" class="form" data-scroll>
-                                <option data-id="1" value="+5">+5</option>
-                                <option data-id="2" value="+2">+2</option>
-                                <option data-id="3" value="+5423">+5423</option>
-                                <option data-id="4" value="+455">+455</option>
-                                <option data-id="5" value="+4313">+4313</option>
+                                @foreach ($phone_codes as $item)
+                                    <option id=""
+                                    @if (empty(session('form')))
+                                            @selected($item['iso'] == session('location.country', ''))
+                                    @else
+                                        @selected($item['iso'] == session('form.phone_code', ''))
+                                    @endif
+                                        data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                        value="{{ $item['iso'] }}">
+                                        +{{ $item['phonecode'] }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="enter-info__input enter-info__input--country">
@@ -584,6 +589,173 @@
         </div>
     </section>
 
+    <section class="reviews">
+        <div class="reviews__container">
+            <div class="reviews__body">
+                <div class="reviews__slider">
+                    <div class="reviews__swiper">
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_1')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_1')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_2')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_2')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_3')!!}</div>
+                                <div class="reviews__stars">
+
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_3')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_4')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_4')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_5')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_5')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_6')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_6')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_7')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_7')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_8')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_8')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_9')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_9')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_10')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_10')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_11')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_11')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_12')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_12')}}</div>
+                        </div>
+                        <div class="reviews__slide">
+                            <div class="reviews__top">
+                                <div class="reviews__name">{!!__('text.testimonials_author_t_13')!!}</div>
+                                <div class="reviews__stars">
+                                    <svg width="98" height="18">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="reviews__text">{{__('text.testimonials_t_13')}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews__controls">
+                    <button type="button" class="reviews__arrow reviews__arrow--prev">
+                        <svg width="8.5" height="15">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-prev") }}"></use>
+                        </svg>
+                    </button>
+                    <button type="button" class="reviews__arrow reviews__arrow--next">
+                        <svg width="8.5" height="15">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="footer__top">
             <div class="footer__container">
@@ -600,7 +772,7 @@
                     <a href="{{ route('home.affiliate') }}" class="top-footer__affiliate">
                         <div class="top-footer__icon">
                             <svg width="22" height="15">
-                                <use xlink:href="{$path.image}/icons/icons.svg#svg-affiliate"></use>
+                                <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-affiliate") }}"></use>
                             </svg>
                         </div>
                         <span>{{__('text.common_affiliate_main_menu_button')}}</span>

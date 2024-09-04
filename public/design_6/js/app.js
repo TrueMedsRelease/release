@@ -425,37 +425,37 @@
             return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(formRequiredItem.value);
         }
     };
-    function formQuantity() {
-        document.addEventListener("click", (function(e) {
-            let targetElement = e.target;
-            if (targetElement.closest("[data-quantity-plus]") || targetElement.closest("[data-quantity-minus]")) {
-                const valueElement = targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]");
-                let value = parseInt(valueElement.value);
-                    let id = parseInt(valueElement.id);
-                if (targetElement.hasAttribute("data-quantity-plus")) {
-                    value++;
-                    if (+valueElement.dataset.quantityMax && +valueElement.dataset.quantityMax < value) value = valueElement.dataset.quantityMax;
-                } else {
-                    --value;
-                    if (+valueElement.dataset.quantityMin) {
-                        if (+valueElement.dataset.quantityMin > value) value = valueElement.dataset.quantityMin;
-                    } else if (value < 1) value = 1;
-                }
-                targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]").value = value;
-                    let value_ship = $("input[name='delivery']:checked").val();
-                    let value_bonus = $("input[name='bonus']:checked").attr('id');
-                    $.ajax({
-                        url: "/app/ajax_cart.php",
-                        type: 'POST',
-                        data: {'num': value, 'id': id, 'bonus_id': value_bonus, 'shipping_code': value_ship},
-                        dataType: 'html',
-                        success : function(data) {
-                            $(".basket").html(data);
-                        }
-                    });
-            }
-        }));
-    }
+    // function formQuantity() {
+    //     document.addEventListener("click", (function(e) {
+    //         let targetElement = e.target;
+    //         if (targetElement.closest("[data-quantity-plus]") || targetElement.closest("[data-quantity-minus]")) {
+    //             const valueElement = targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]");
+    //             let value = parseInt(valueElement.value);
+    //                 let id = parseInt(valueElement.id);
+    //             if (targetElement.hasAttribute("data-quantity-plus")) {
+    //                 value++;
+    //                 if (+valueElement.dataset.quantityMax && +valueElement.dataset.quantityMax < value) value = valueElement.dataset.quantityMax;
+    //             } else {
+    //                 --value;
+    //                 if (+valueElement.dataset.quantityMin) {
+    //                     if (+valueElement.dataset.quantityMin > value) value = valueElement.dataset.quantityMin;
+    //                 } else if (value < 1) value = 1;
+    //             }
+    //             targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]").value = value;
+    //                 let value_ship = $("input[name='delivery']:checked").val();
+    //                 let value_bonus = $("input[name='bonus']:checked").attr('id');
+    //                 $.ajax({
+    //                     url: "/app/ajax_cart.php",
+    //                     type: 'POST',
+    //                     data: {'num': value, 'id': id, 'bonus_id': value_bonus, 'shipping_code': value_ship},
+    //                     dataType: 'html',
+    //                     success : function(data) {
+    //                         $(".basket").html(data);
+    //                     }
+    //                 });
+    //         }
+    //     }));
+    // }
     class SelectConstructor {
         constructor(props, data = null) {
             let defaultConfig = {
@@ -629,7 +629,7 @@
             this.getSelectedOptionsData(originalSelect).values.length ? selectItem.classList.add(this.selectClasses.classSelectActive) : selectItem.classList.remove(this.selectClasses.classSelectActive);
             if (originalSelect.hasAttribute("data-search")) return `<div class="${this.selectClasses.classSelectTitle}"><span${pseudoAttribute} class="${this.selectClasses.classSelectValue}"><input autocomplete="off" type="text" placeholder="${selectTitleValue}" data-placeholder="${selectTitleValue}" class="${this.selectClasses.classSelectInput}"></span></div>`; else {
                 const customClass = this.getSelectedOptionsData(originalSelect).elements.length && this.getSelectedOptionsData(originalSelect).elements[0].dataset.class ? ` ${this.getSelectedOptionsData(originalSelect).elements[0].dataset.class}` : "";
-                return `\n\t\t\t<button type="button" class="${this.selectClasses.classSelectTitle}">\n\t\t\t\t${pseudoAttribute}\n\t\t\t\t<span class="${this.selectClasses.classSelectValue}">\n\t\t\t\t\t<span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span>\n\t\t\t\t\t<span class="select__icon"> \n\t\t\t\t\t\t<svg width="16" height="16">\n\t\t\t\t\t\t\t<use xlink:href="${$('#path_image').val()}/icons/icons.svg#svg-arr-down"></use>\n\t\t\t\t\t\t</svg>\n\t\t\t\t\t</span>\n\t\t\t\t</span>\n\t\t\t</button>`;
+                return `\n\t\t\t<button type="button" class="${this.selectClasses.classSelectTitle}">\n\t\t\t\t${pseudoAttribute}\n\t\t\t\t<span class="${this.selectClasses.classSelectValue}">\n\t\t\t\t\t<span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span>\n\t\t\t\t\t<span class="select__icon"> \n\t\t\t\t\t\t<svg width="16" height="16">\n\t\t\t\t\t\t\t<use xlink:href="design_${design}/images/icons/icons.svg#svg-arr-down"></use>\n\t\t\t\t\t\t</svg>\n\t\t\t\t\t</span>\n\t\t\t\t</span>\n\t\t\t</button>`;
             }
         }
         getSelectElementContent(selectOption) {
@@ -1038,7 +1038,7 @@
         viewPass: false,
         autoHeight: false
     });
-    formQuantity();
+    // formQuantity();
 })();
 
 $(document).on('click', '.request_call', function () {

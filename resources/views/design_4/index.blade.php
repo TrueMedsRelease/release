@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', __('text.common_best_selling_title'))
 
 @section('content')
 <script>
@@ -26,7 +26,7 @@
                             @endforeach
                         </div>
                         <div class="item-product__bottom-row">
-                            <div class="item-product__price">${{ $product['price'] }}</div>
+                            <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
                             <a type="button" href="{{ route('home.product', $product['url']) }}" class="item-product__button button button--filled button--narrow">
                                 {{-- {if !in_array($data.language.code, ['de', 'fr', 'it', 'es'])}
                                     {#buy_button#}

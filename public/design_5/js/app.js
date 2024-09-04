@@ -340,37 +340,37 @@
                 return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(formRequiredItem.value);
             }
         };
-        function formQuantity() {
-            document.addEventListener("click", (function(e) {
-                let targetElement = e.target;
-                if (targetElement.closest("[data-quantity-plus]") || targetElement.closest("[data-quantity-minus]")) {
-                    const valueElement = targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]");
-                    let value = parseInt(valueElement.value);
-                    let id = parseInt(valueElement.id); 
-                    if (targetElement.hasAttribute("data-quantity-plus")) {
-                        value++;
-                        if (+valueElement.dataset.quantityMax && +valueElement.dataset.quantityMax < value) value = valueElement.dataset.quantityMax;
-                    } else {
-                        --value;
-                        if (+valueElement.dataset.quantityMin) {
-                            if (+valueElement.dataset.quantityMin > value) value = valueElement.dataset.quantityMin;
-                        } else if (value < 1) value = 1;
-                    }
-                    targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]").value = value;
-                    let value_ship = $("input[name='delivery']:checked").val();
-                    let value_bonus = $("input[name='bonus']:checked").attr('id');
-                    $.ajax({
-                        url: "/app/ajax_cart.php",
-                        type: 'POST',
-                        data: {'num': value, 'id': id, 'bonus_id': value_bonus, 'shipping_code': value_ship}, 
-                        dataType: 'html',
-                        success : function(data) {
-                            $(".basket").html(data);
-                        }
-                    });
-                }
-            }));
-        }
+        // function formQuantity() {
+        //     document.addEventListener("click", (function(e) {
+        //         let targetElement = e.target;
+        //         if (targetElement.closest("[data-quantity-plus]") || targetElement.closest("[data-quantity-minus]")) {
+        //             const valueElement = targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]");
+        //             let value = parseInt(valueElement.value);
+        //             let id = parseInt(valueElement.id);
+        //             if (targetElement.hasAttribute("data-quantity-plus")) {
+        //                 value++;
+        //                 if (+valueElement.dataset.quantityMax && +valueElement.dataset.quantityMax < value) value = valueElement.dataset.quantityMax;
+        //             } else {
+        //                 --value;
+        //                 if (+valueElement.dataset.quantityMin) {
+        //                     if (+valueElement.dataset.quantityMin > value) value = valueElement.dataset.quantityMin;
+        //                 } else if (value < 1) value = 1;
+        //             }
+        //             targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]").value = value;
+        //             let value_ship = $("input[name='delivery']:checked").val();
+        //             let value_bonus = $("input[name='bonus']:checked").attr('id');
+        //             $.ajax({
+        //                 url: "/app/ajax_cart.php",
+        //                 type: 'POST',
+        //                 data: {'num': value, 'id': id, 'bonus_id': value_bonus, 'shipping_code': value_ship},
+        //                 dataType: 'html',
+        //                 success : function(data) {
+        //                     $(".basket").html(data);
+        //                 }
+        //             });
+        //         }
+        //     }));
+        // }
         class SelectConstructor {
             constructor(props, data = null) {
                 let defaultConfig = {
@@ -3516,24 +3516,24 @@
                 on: {}
             });
         }
-        $(document).ready(function() {
-            let reviewspromise = new Promise((resolve, reject) => {
-                $.ajax({
-                    method: 'GET',
-                    data: { lang : $('#languagecode').val() },
-                    url: "/app/ajax_testimonials.php",
-                    dataType: 'html',
-                    success : function(data) {
-                        resolve();
-                        $(".page__reviews").html(data);
-                    }
-                });
-            });
-            reviewspromise.then(() => {
-                bildSliders();
-                initSliders();
-            });
-        });
+        // $(document).ready(function() {
+        //     let reviewspromise = new Promise((resolve, reject) => {
+        //         $.ajax({
+        //             method: 'GET',
+        //             data: { lang : $('#languagecode').val() },
+        //             url: "/app/ajax_testimonials.php",
+        //             dataType: 'html',
+        //             success : function(data) {
+        //                 resolve();
+        //                 $(".page__reviews").html(data);
+        //             }
+        //         });
+        //     });
+        //     reviewspromise.then(() => {
+        //         bildSliders();
+        //         initSliders();
+        //     });
+        // });
         // window.addEventListener("load", (function(e) {
         //     bildSliders();
         //     initSliders();
@@ -4682,7 +4682,7 @@
         isWebp();
         menuInit();
         spollers();
-        formQuantity();
+        // formQuantity();
     })();
 })();
 
@@ -4692,13 +4692,13 @@
 //     const submit = true;
 //     $.ajax({
 //         url:     '/app/ajax_contact_us.php',
-//         type:     "POST", 
+//         type:     "POST",
 //         data: {
 //         'form' : "chat",
 //         'email' : email,
 //         'message' : message,
 //         'submit' : submit },
-//         dataType: "html", 
+//         dataType: "html",
 //         success: function(data) { //Данные отправлены успешно
 //         	// const popup = document.getElementById('myForm')/* .style.display = " " */;
 //           // popup.classList.toggle('ac-hid');
@@ -4953,19 +4953,19 @@ if (shipIndex) {
 //         });
 //       }
 //     }
-//     } 
-    
+//     }
+
 //     btnUp.addEventListener();
 
 //     if (flagc) {
 //         document.querySelector(".modal_cart").style.display = "none";
 //         setTimeout(() => document.querySelector(".modal_cart").style.display = "", 6000); //
 //         setTimeout(() => document.querySelector(".modal_cart").style.display = "none", 14000);
-//       } 
+//       }
 //       if (flagp) {
 //         document.querySelector(".cmcmodal").style.display = "none";
 //         setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 8000); //
-//         setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 16000); 
+//         setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 16000);
 //       }
 
 // function Unloader() {
@@ -5007,6 +5007,5 @@ if (shipIndex) {
 //         window.obUnloader = new Unloader();
 //     }
 // })
-    
-    
-    
+
+

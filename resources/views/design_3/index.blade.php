@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', __('text.common_best_selling_title'))
 @section('title_2', __('text.main_best_selling_title'))
 @section('content')
     <div class="page__products products">
@@ -17,7 +17,7 @@
                                     @endforeach
                                 </p>
                             </div>
-                            <div class="item-product__price">${{ $product['price'] }}</div>
+                            <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
                         </div>
                         <div class="item-product__image-ibg">
                             @if ($product['image'] != "gift-card")

@@ -199,7 +199,6 @@ class Cart extends Model
         {
             $shipping_total = 0;
             $bonus_total = 0;
-            $bonus_total = 0;
             $insurance = 0;
             $secret_package = 0;
         }

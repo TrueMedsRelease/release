@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', __('text.aktiv_aktiv_result_title') . ' ' . $active)
 
 @section('content')
 <div class="products">
@@ -21,7 +21,7 @@
                                 @endforeach
                             </div>
                             <div class="item-product__bottom-row">
-                                <div class="item-product__price">${{ $product['price'] }}</div>
+                                <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
                                 <a type="button" href="{{ route('home.product', $product['url']) }}" class="item-product__button button button--filled button--narrow">{{__('text.common_buy_button')}}</a>
                             </div>
                         </div>

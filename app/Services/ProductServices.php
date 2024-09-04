@@ -187,23 +187,23 @@ class ProductServices
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         $product_price = self::GetAllProductPillPrice($design);
 
-        if ($design == 'design_5') {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->where('first_letter', '=', $letter)
-                ->where('category_id', '=', 14)
-                ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
-                ->toArray();
+        // if ($design == 'design_5') {
+        //     $products = Product::query()
+        //         ->where('is_showed', '=', 1)
+        //         ->where('first_letter', '=', $letter)
+        //         ->where('category_id', '=', 14)
+        //         ->orderBy('main_order', 'asc')
+        //         ->get(['id', 'image', 'aktiv'])
+        //         ->toArray();
 
-        } else {
+        // } else {
             $products = Product::query()
                 ->where('is_showed', '=', 1)
                 ->where('first_letter', '=', $letter)
                 ->orderBy('main_order', 'asc')
                 ->get(['id', 'image', 'aktiv'])
                 ->toArray();
-        }
+        // }
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
@@ -222,34 +222,34 @@ class ProductServices
         $product_price = self::GetAllProductPillPrice($design);
         $disease = str_replace('-', ' ', $disease);
 
-        if ($design == 'design_5') {
-            $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ? AND category_id = ?', [Language::$languages[App::currentLocale()], $disease, 14]);
-        } else {
+        // if ($design == 'design_5') {
+        //     $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ? AND category_id = ?', [Language::$languages[App::currentLocale()], $disease, 14]);
+        // } else {
             $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ?', [Language::$languages[App::currentLocale()], $disease]);
-        }
+        // }
 
         $product_id = [];
         foreach ($diseases as $item) {
             $product_id[] = $item->product_id;
         }
 
-        if ($design == 'design_5') {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->where('category_id', '=', 14)
-                ->whereIn('id', $product_id)
-                ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
-                ->toArray();
+        // if ($design == 'design_5') {
+        //     $products = Product::query()
+        //         ->where('is_showed', '=', 1)
+        //         ->where('category_id', '=', 14)
+        //         ->whereIn('id', $product_id)
+        //         ->orderBy('main_order', 'asc')
+        //         ->get(['id', 'image', 'aktiv'])
+        //         ->toArray();
 
-        } else {
+        // } else {
             $products = Product::query()
                 ->where('is_showed', '=', 1)
                 ->whereIn('id', $product_id)
                 ->orderBy('main_order', 'asc')
                 ->get(['id', 'image', 'aktiv'])
                 ->toArray();
-        }
+        // }
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
@@ -267,24 +267,24 @@ class ProductServices
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         $product_price = self::GetAllProductPillPrice($design);
 
-        if ($design == 'design_5') {
+        // if ($design == 'design_5') {
+        //     $products = Product::query()
+        //     ->where('is_showed', '=', 1)
+        //     ->where('aktiv', 'LIKE', "%$active%")
+        //     ->where('category_id', 14)
+        //     ->orderBy('main_order', 'asc')
+        //     // ->orderBy('image', 'asc')
+        //     ->get(['id', 'image', 'aktiv'])
+        //     ->toArray();
+        // } else {
             $products = Product::query()
             ->where('is_showed', '=', 1)
             ->where('aktiv', 'LIKE', "%$active%")
-            ->where('category_id', 14)
             ->orderBy('main_order', 'asc')
             // ->orderBy('image', 'asc')
             ->get(['id', 'image', 'aktiv'])
             ->toArray();
-        } else {
-            $products = Product::query()
-            ->where('is_showed', '=', 1)
-            ->where('aktiv', 'LIKE', "%$active%")
-            ->orderBy('main_order', 'asc')
-            // ->orderBy('image', 'asc')
-            ->get(['id', 'image', 'aktiv'])
-            ->toArray();
-        }
+        // }
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
@@ -469,29 +469,29 @@ class ProductServices
             $product_id[] = $item['product_id'];
         }
 
-        if ($design == 'design_5') {
+        // if ($design == 'design_5') {
+        //     $products = Product::query()
+        //         ->where('is_showed', '=', 1)
+        //         ->where('caterogy_id', '=', 14)
+        //         ->whereIn('id', $product_id)
+        //         ->orderBy('main_order', 'asc')
+        //         ->get(['id', 'image', 'aktiv'])
+        //         ->toArray();
+        // } else {
             $products = Product::query()
                 ->where('is_showed', '=', 1)
-                ->where('caterogy_id', '=', 14)
                 ->whereIn('id', $product_id)
                 ->orderBy('main_order', 'asc')
                 ->get(['id', 'image', 'aktiv'])
                 ->toArray();
-        } else {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->whereIn('id', $product_id)
-                ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
-                ->toArray();
-        }
+        // }
 
 
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['url'] = 'product/' . $products_desc[$products[$i]['id']]['url'];
             $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
@@ -549,6 +549,16 @@ class ProductServices
         }
         unset($product);
 
+        $bonus_free = (object)[
+            'pack_id' => 0,
+            'name' => 'No Select',
+            'price' => 0,
+            'type' => 'none',
+            'desc' => ''
+        ];
+
+        array_unshift($bonus, $bonus_free);
+
         if (!empty($pack_id))
             $bonus = $bonus[0];
 
@@ -564,8 +574,7 @@ class ProductServices
             WHERE pd.language_id = $language_id
             AND pp.is_showed = 1
             AND dosage = '1card'
-            ORDER BY price ASC
-            ");
+            ORDER BY price ASC");
 
         return $cards;
     }

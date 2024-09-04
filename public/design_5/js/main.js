@@ -164,55 +164,55 @@ $(document).on('click', '#affiliate_send_button', function () {
     }
 });
 
-$(document).on('click', '.number-spinner>.ns-btn>span', function () {
-    let btn = $(this),
-        oldValue = $('[data-quantity-value]').val(),
-        newVal = 0,
-        id = $('[data-quantity-value]').attr('id');
+// $(document).on('click', '.number-spinner>.ns-btn>span', function () {
+//     let btn = $(this),
+//         oldValue = $('[data-quantity-value]').val(),
+//         newVal = 0,
+//         id = $('[data-quantity-value]').attr('id');
 
-    if (btn.attr('data-dir') === 'up') {
-        newVal = parseInt(oldValue) + 1;
-    } else {
-        if (oldValue > 1) {
-            newVal = parseInt(oldValue) - 1;
-        } else {
-            newVal = 1;
-        }
-    }
-    btn.closest('.number-spinner').find('input').val(newVal);
+//     if (btn.attr('data-dir') === 'up') {
+//         newVal = parseInt(oldValue) + 1;
+//     } else {
+//         if (oldValue > 1) {
+//             newVal = parseInt(oldValue) - 1;
+//         } else {
+//             newVal = 1;
+//         }
+//     }
+//     btn.closest('.number-spinner').find('input').val(newVal);
 
-    $.ajax({
-        url: "app/ajax_cart.php",
-        type: 'POST',
-        data: {'num': newVal, 'id': id},
-        dataType: 'html',
-        success : function(data) {
-            $(".basket").html(data);
-        }
-    });
-});
+//     $.ajax({
+//         url: "app/ajax_cart.php",
+//         type: 'POST',
+//         data: {'num': newVal, 'id': id},
+//         dataType: 'html',
+//         success : function(data) {
+//             $(".basket").html(data);
+//         }
+//     });
+// });
 
-$(document).on('click', '.back-to-main', function () {
-    location.href = '/';
-});
+// $(document).on('click', '.back-to-main', function () {
+//     location.href = '/';
+// });
 
-$(document).on('click', '.button-checkout', function () {
-    location.href = '/checkout';
-});
+// $(document).on('click', '.button-checkout', function () {
+//     location.href = '/checkout';
+// });
 
-$(document).on('change', '[data-quantity-value]', function () {
-    let id = $('[data-quantity-value]').attr('id'),
-        value = $('[data-quantity-value]').val();
-    $.ajax({
-        url: "app/ajax_cart.php",
-        type: 'POST',
-        data: {'num': value, 'id': id},
-        dataType: 'html',
-        success : function(data) {
-            $(".basket").html(data);
-        }
-    });
-});
+// $(document).on('change', '[data-quantity-value]', function () {
+//     let id = $('[data-quantity-value]').attr('id'),
+//         value = $('[data-quantity-value]').val();
+//     $.ajax({
+//         url: "app/ajax_cart.php",
+//         type: 'POST',
+//         data: {'num': value, 'id': id},
+//         dataType: 'html',
+//         success : function(data) {
+//             $(".basket").html(data);
+//         }
+//     });
+// });
 
 $(document).on('keypress', '.number-spinner>input', function (evt) {
     evt = (evt) ? evt : window.event;
@@ -415,20 +415,20 @@ $(document).on('click', '.visible.gift', function () {
     }
 });
 
-function addCard() {
-    let value_card = $('.select_current_gift').attr('curr_packaging_id');
-    $.ajax({
-        url: "/app/ajax_cart.php",
-        type: 'POST',
-        data: {
-            'card_pack_id': value_card
-        },
-        dataType: 'html',
-        success : function(data) {
-            $('.basket').html(data);
-        },
-    });
-}
+// function addCard() {
+//     let value_card = $('.select_current_gift').attr('curr_packaging_id');
+//     $.ajax({
+//         url: "/app/ajax_cart.php",
+//         type: 'POST',
+//         data: {
+//             'card_pack_id': value_card
+//         },
+//         dataType: 'html',
+//         success : function(data) {
+//             $('.basket').html(data);
+//         },
+//     });
+// }
 
 $('.feedback:not(.slick-initialized)').slick({
     dots: false,

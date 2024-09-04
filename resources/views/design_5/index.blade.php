@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', __('text.common_best_selling_title'))
 
 @section('content')
 <script>
@@ -211,7 +211,7 @@
                         <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
                         <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
                             @foreach ($bestsellers as $bestseller)
-                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">${{ $bestseller['price'] }}</span></li>
+                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
                             @endforeach
                         </ul>
                     </div>
@@ -239,7 +239,7 @@
                                             <a href="{{ route('home.product', $item['url']) }}">
                                                 {{ $item['name'] }}
                                             </a>
-                                            <span style="font-size: 12px;">${{ $item['price'] }}</span>
+                                            <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -267,7 +267,7 @@
                             </a>
                         </div>
                         <div class="box">
-                            <span class="price">${{ $product['price'] }}</span>
+                            <span class="price">{{ $Currency::convert($product['price']) }}</span>
                             <a href="{{ route('home.product', $product['url']) }}" class="btn btn-primary main">
                                 <img src="{{ asset("$design/images/icon/ico-basket.svg") }}" alt="">
                                 <span>{{__('text.common_add_to_cart_text_d2')}}</span>

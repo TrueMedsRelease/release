@@ -11,7 +11,7 @@ use App\Services\ProductServices;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use App\Services\CurrencyServices;
+use App\Models\PhoneCodes;
 
 class CartController extends Controller
 {
@@ -22,7 +22,8 @@ class CartController extends Controller
             return redirect(route('home.index'));
         }
 
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
+        $phone_codes = PhoneCodes::all()->toArray();
 
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
@@ -32,28 +33,28 @@ class CartController extends Controller
             'bestsellers' => $bestsellers,
             'Currency' => Currency::class,
             'Language' => Language::class,
-            'menu' => $menu
-
+            'menu' => $menu,
+            'phone_codes' => $phone_codes,
         ]);
     }
 
     public function cart()
     {
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
         $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        if ($design == 'design_5') {
+        // if ($design == 'design_5') {
+        //     $types = ProductTypeDesc::query()
+        //         ->where('language_id', '=', $language_id)
+        //         ->where('category_id', '=', 14)
+        //         ->get(['type_id', 'name']);
+        // } else {
             $types = ProductTypeDesc::query()
                 ->where('language_id', '=', $language_id)
-                ->where('category_id', '=', 14)
                 ->get(['type_id', 'name']);
-        } else {
-            $types = ProductTypeDesc::query()
-                ->where('language_id', '=', $language_id)
-                ->get(['type_id', 'name']);
-        }
+        // }
 
         $product_total = 0;
         foreach($products as &$item)
@@ -132,7 +133,45 @@ class CartController extends Controller
 
         $bonus = ProductServices::GetBonuses();
         $cards = ProductServices::GetGiftCard();
+        $phone_codes = PhoneCodes::all()->toArray();
         Cart::update_cart_total();
+
+        $has_card = 0;
+        $sum_card = 0;
+        $is_only_card = 0;
+        $count_card = 0;
+        foreach ($products as $product) {
+            if ($product['product_id'] == 616) {
+                $has_card = 1;
+                $sum_card += $product["price"];
+                $count_card++;
+            }
+        }
+
+        if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+            $is_only_card = 1;
+        }
+
+        $is_only_card_with_bonus = 0;
+        if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+            $is_only_card_with_bonus = 1;
+        }
+
+        if ($is_only_card) {
+            foreach ($bonus as $key => $value) {
+                if ($value->pack_id == 11630) {
+                    unset($bonus[$key]);
+                }
+            }
+        }
+
+        if ($is_only_card_with_bonus) {
+            foreach ($bonus as $key => $value) {
+                if ($value->pack_id == 11630) {
+                    unset($bonus[$key]);
+                }
+            }
+        }
 
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
@@ -141,8 +180,13 @@ class CartController extends Controller
             'shipping' => $shipping,
             'bonus' => $bonus,
             'cards' => $cards,
+            'phone_codes' => $phone_codes,
             'Currency' => Currency::class,
             'Language' => Language::class,
+            'has_card' => $has_card,
+            'is_only_card' => $is_only_card,
+            'is_only_card_with_bonus' => $is_only_card_with_bonus,
+
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -155,22 +199,22 @@ class CartController extends Controller
 
     public function up(Request $request)
     {
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
         $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         Cart::add($request->pack_id);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        if ($design == 'design_5') {
+        // if ($design == 'design_5') {
+        //     $types = ProductTypeDesc::query()
+        //         ->where('language_id', '=', $language_id)
+        //         ->where('category_id', '=', 14)
+        //         ->get(['type_id', 'name']);
+        // } else {
             $types = ProductTypeDesc::query()
                 ->where('language_id', '=', $language_id)
-                ->where('category_id', '=', 14)
                 ->get(['type_id', 'name']);
-        } else {
-            $types = ProductTypeDesc::query()
-                ->where('language_id', '=', $language_id)
-                ->get(['type_id', 'name']);
-        }
+        // }
 
         $product_total = 0;
         foreach($products as &$item)
@@ -217,8 +261,46 @@ class CartController extends Controller
 
         $bonus = ProductServices::GetBonuses();
         $cards = ProductServices::GetGiftCard();
+        $phone_codes = PhoneCodes::all()->toArray();
 
         Cart::update_cart_total();
+
+        $has_card = 0;
+        $sum_card = 0;
+        $is_only_card = 0;
+        $count_card = 0;
+        foreach ($products as $product) {
+            if ($product['product_id'] == 616) {
+                $has_card = 1;
+                $sum_card += $product["price"];
+                $count_card++;
+            }
+        }
+
+        if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+            $is_only_card = 1;
+        }
+
+        $is_only_card_with_bonus = 0;
+        if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+            $is_only_card_with_bonus = 1;
+        }
+
+        if ($is_only_card) {
+            foreach ($bonus as $key => $value) {
+                if ($value->pack_id == 11630) {
+                    unset($bonus[$key]);
+                }
+            }
+        }
+
+        if ($is_only_card_with_bonus) {
+            foreach ($bonus as $key => $value) {
+                if ($value->pack_id == 11630) {
+                    unset($bonus[$key]);
+                }
+            }
+        }
 
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
@@ -228,29 +310,33 @@ class CartController extends Controller
             'cards' => $cards,
             'Currency' => Currency::class,
             'Language' => Language::class,
-            'bonus' => $bonus
+            'bonus' => $bonus,
+            'phone_codes' => $phone_codes,
+            'has_card' => $has_card,
+            'is_only_card' => $is_only_card,
+            'is_only_card_with_bonus' => $is_only_card_with_bonus,
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
 
     public function down(Request $request)
     {
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
         $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         Cart::decrease($request->pack_id);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        if ($design == 'design_5') {
+        // if ($design == 'design_5') {
+        //     $types = ProductTypeDesc::query()
+        //         ->where('language_id', '=', $language_id)
+        //         ->where('category_id', '=', 14)
+        //         ->get(['type_id', 'name']);
+        // } else {
             $types = ProductTypeDesc::query()
                 ->where('language_id', '=', $language_id)
-                ->where('category_id', '=', 14)
                 ->get(['type_id', 'name']);
-        } else {
-            $types = ProductTypeDesc::query()
-                ->where('language_id', '=', $language_id)
-                ->get(['type_id', 'name']);
-        }
+        // }
 
         $product_total = 0;
         foreach($products as &$item)
@@ -297,8 +383,45 @@ class CartController extends Controller
 
         $bonus = ProductServices::GetBonuses();
         $cards = ProductServices::GetGiftCard();
-
+        $phone_codes = PhoneCodes::all()->toArray();
         Cart::update_cart_total();
+
+        $has_card = 0;
+        $sum_card = 0;
+        $is_only_card = 0;
+        $count_card = 0;
+        foreach ($products as $product) {
+            if ($product['product_id'] == 616) {
+                $has_card = 1;
+                $sum_card += $product["price"];
+                $count_card++;
+            }
+        }
+
+        if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+            $is_only_card = 1;
+        }
+
+        $is_only_card_with_bonus = 0;
+        if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+            $is_only_card_with_bonus = 1;
+        }
+
+        if ($is_only_card) {
+            foreach ($bonus as $key => $value) {
+                if ($value->pack_id == 11630) {
+                    unset($bonus[$key]);
+                }
+            }
+        }
+
+        if ($is_only_card_with_bonus) {
+            foreach ($bonus as $key => $value) {
+                if ($value->pack_id == 11630) {
+                    unset($bonus[$key]);
+                }
+            }
+        }
 
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
@@ -308,7 +431,11 @@ class CartController extends Controller
             'cards' => $cards,
             'Currency' => Currency::class,
             'Language' => Language::class,
-            'bonus' => $bonus
+            'bonus' => $bonus,
+            'phone_codes' => $phone_codes,
+            'has_card' => $has_card,
+            'is_only_card' => $is_only_card,
+            'is_only_card_with_bonus' => $is_only_card_with_bonus,
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -318,22 +445,22 @@ class CartController extends Controller
         Cart::remove($request->pack_id);
         $products = !empty(session('cart')) ? session('cart') : '';
         $language_id = Language::$languages[App::currentLocale()];
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
 
         if($products != '')
         {
             $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
 
-            if ($design == 'design_5') {
+            // if ($design == 'design_5') {
+            //     $types = ProductTypeDesc::query()
+            //         ->where('language_id', '=', $language_id)
+            //         ->where('category_id', '=', 14)
+            //         ->get(['type_id', 'name']);
+            // } else {
                 $types = ProductTypeDesc::query()
                     ->where('language_id', '=', $language_id)
-                    ->where('category_id', '=', 14)
                     ->get(['type_id', 'name']);
-            } else {
-                $types = ProductTypeDesc::query()
-                    ->where('language_id', '=', $language_id)
-                    ->get(['type_id', 'name']);
-            }
+            // }
 
             $product_total = 0;
             foreach($products as &$item)
@@ -380,8 +507,45 @@ class CartController extends Controller
 
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
-
+            $phone_codes = PhoneCodes::all()->toArray();
             Cart::update_cart_total();
+
+            $has_card = 0;
+            $sum_card = 0;
+            $is_only_card = 0;
+            $count_card = 0;
+            foreach ($products as $product) {
+                if ($product['product_id'] == 616) {
+                    $has_card = 1;
+                    $sum_card += $product["price"];
+                    $count_card++;
+                }
+            }
+
+            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+                $is_only_card = 1;
+            }
+
+            $is_only_card_with_bonus = 0;
+            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+                $is_only_card_with_bonus = 1;
+            }
+
+            if ($is_only_card) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
+
+            if ($is_only_card_with_bonus) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
 
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
@@ -391,7 +555,11 @@ class CartController extends Controller
                 'cards' => $cards,
                 'Currency' => Currency::class,
                 'Language' => Language::class,
-                'bonus' => $bonus
+                'bonus' => $bonus,
+                'phone_codes' => $phone_codes,
+                'has_card' => $has_card,
+                'is_only_card' => $is_only_card,
+                'is_only_card_with_bonus' => $is_only_card_with_bonus,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -406,22 +574,23 @@ class CartController extends Controller
         Cart::upgrade($request->pack_id);
         $products = !empty(session('cart')) ? session('cart') : '';
         $language_id = Language::$languages[App::currentLocale()];
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
 
         if($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
             $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
 
-            if ($design == 'design_5') {
+            // if ($design == 'design_5') {
+            //     $types = ProductTypeDesc::query()
+            //         ->where('language_id', '=', $language_id)
+            //         ->where('category_id', '=', 14)
+            //         ->get(['type_id', 'name']);
+            // } else {
                 $types = ProductTypeDesc::query()
                     ->where('language_id', '=', $language_id)
-                    ->where('category_id', '=', 14)
                     ->get(['type_id', 'name']);
-            } else {
-                $types = ProductTypeDesc::query()
-                    ->where('language_id', '=', $language_id)
-                    ->get(['type_id', 'name']);
-            }
+            // }
+            $product_total = 0;
             foreach($products as &$item)
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
@@ -466,8 +635,45 @@ class CartController extends Controller
 
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
-
+            $phone_codes = PhoneCodes::all()->toArray();
             Cart::update_cart_total();
+
+            $has_card = 0;
+            $sum_card = 0;
+            $is_only_card = 0;
+            $count_card = 0;
+            foreach ($products as $product) {
+                if ($product['product_id'] == 616) {
+                    $has_card = 1;
+                    $sum_card += $product["price"];
+                    $count_card++;
+                }
+            }
+
+            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+                $is_only_card = 1;
+            }
+
+            $is_only_card_with_bonus = 0;
+            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+                $is_only_card_with_bonus = 1;
+            }
+
+            if ($is_only_card) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
+
+            if ($is_only_card_with_bonus) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
 
 
             $returnHTML = view($design . '.ajax.cart_content')->with([
@@ -478,7 +684,11 @@ class CartController extends Controller
                 'cards' => $cards,
                 'Currency' => Currency::class,
                 'Language' => Language::class,
-                'bonus' => $bonus
+                'bonus' => $bonus,
+                'phone_codes' => $phone_codes,
+                'has_card' => $has_card,
+                'is_only_card' => $is_only_card,
+                'is_only_card_with_bonus' => $is_only_card_with_bonus,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -498,13 +708,14 @@ class CartController extends Controller
         $option['shipping_price'] = $shipping_price;
 
         session(['cart_option' => $option]);
+        $design = session('design') ? session('design') : config('app.design');
 
         $products = !empty(session('cart')) ? session('cart') : '';
         $language_id = Language::$languages[App::currentLocale()];
 
         if($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
 
             $types = ProductTypeDesc::query()
             ->where('language_id', '=', $language_id)
@@ -555,10 +766,47 @@ class CartController extends Controller
 
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
-
+            $phone_codes = PhoneCodes::all()->toArray();
             Cart::update_cart_total();
 
-            $design = config('app.design');
+            $has_card = 0;
+            $sum_card = 0;
+            $is_only_card = 0;
+            $count_card = 0;
+            foreach ($products as $product) {
+                if ($product['product_id'] == 616) {
+                    $has_card = 1;
+                    $sum_card += $product["price"];
+                    $count_card++;
+                }
+            }
+
+            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+                $is_only_card = 1;
+            }
+
+            $is_only_card_with_bonus = 0;
+            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+                $is_only_card_with_bonus = 1;
+            }
+
+            if ($is_only_card) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
+
+            if ($is_only_card_with_bonus) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
+
+            $design = session('design') ? session('design') : config('app.design');
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
@@ -567,7 +815,11 @@ class CartController extends Controller
                 'cards' => $cards,
                 'Currency' => Currency::class,
                 'Language' => Language::class,
-                'bonus' => $bonus
+                'bonus' => $bonus,
+                'phone_codes' => $phone_codes,
+                'has_card' => $has_card,
+                'is_only_card' => $is_only_card,
+                'is_only_card_with_bonus' => $is_only_card_with_bonus,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -577,6 +829,7 @@ class CartController extends Controller
     {
         $bonus_id = $request->bonus_id;
         $bonus_price = $request->bonus_price;
+        $design = session('design') ? session('design') : config('app.design');
 
         if(!empty(session('cart_option')))
         {
@@ -592,7 +845,7 @@ class CartController extends Controller
 
         if($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
 
             $types = ProductTypeDesc::query()
             ->where('language_id', '=', $language_id)
@@ -643,10 +896,47 @@ class CartController extends Controller
 
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
-
+            $phone_codes = PhoneCodes::all()->toArray();
             Cart::update_cart_total();
 
-            $design = config('app.design');
+            $has_card = 0;
+            $sum_card = 0;
+            $is_only_card = 0;
+            $count_card = 0;
+            foreach ($products as $product) {
+                if ($product['product_id'] == 616) {
+                    $has_card = 1;
+                    $sum_card += $product["price"];
+                    $count_card++;
+                }
+            }
+
+            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+                $is_only_card = 1;
+            }
+
+            $is_only_card_with_bonus = 0;
+            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+                $is_only_card_with_bonus = 1;
+            }
+
+            if ($is_only_card) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
+
+            if ($is_only_card_with_bonus) {
+                foreach ($bonus as $key => $value) {
+                    if ($value->pack_id == 11630) {
+                        unset($bonus[$key]);
+                    }
+                }
+            }
+
+            $design = session('design') ? session('design') : config('app.design');
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
@@ -655,7 +945,11 @@ class CartController extends Controller
                 'cards' => $cards,
                 'Currency' => Currency::class,
                 'Language' => Language::class,
-                'bonus' => $bonus
+                'bonus' => $bonus,
+                'phone_codes' => $phone_codes,
+                'has_card' => $has_card,
+                'is_only_card' => $is_only_card,
+                'is_only_card_with_bonus' => $is_only_card_with_bonus,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }

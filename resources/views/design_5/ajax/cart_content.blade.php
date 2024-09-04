@@ -35,10 +35,10 @@
 							</div>
 						</div>
 						<div class="item" style="display: flex; flex-direction: column">
-							<span>${{ $product['price'] }}</span>
+							<span>{{ $Currency::convert($product['price']) }}</span>
 						</div>
 						<div class="item" style="display: flex; flex-direction: column">
-							<strong>${{ $product['price'] }}</strong>
+							<strong>{{ $Currency::convert($product['price']) }}</strong>
 						</div>
 						<div class="item">
 							<button class="btn btn-remove" onclick="remove({{ $product['pack_id'] }})">
@@ -68,12 +68,12 @@
 							</div>
 						</div>
 						<div class="item" style="display: flex; flex-direction: column">
-                            <span class="old-price" style="color: var(--red); font-size: 12px"><span style="text-decoration: line-through">${{ $product['max_pill_price'] * $product['num'] }}</span> -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
-                            <span class="new-price">{{__('text.cart_only')}} ${{ $product['price'] }}</span>
+                            <span class="old-price" style="color: var(--red); font-size: 12px"><span style="text-decoration: line-through">{{ $Currency::convert($product['max_pill_price'] * $product['num']) }}</span> -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
+                            <span class="new-price">{{__('text.cart_only')}} {{ $Currency::convert($product['price']) }}</span>
 						</div>
 						<div class="item" style="display: flex; flex-direction: column">
-                            <span class="old-price" style="color: var(--red); font-size: 12px"><span style="text-decoration: line-through">${{ $product['max_pill_price'] * $product['num'] * $product['q'] }}</span> -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
-                            <span class="new-price"><strong>{{__('text.cart_only')}} ${{ $product['price'] * $product['q'] }}</strong></span>
+                            <span class="old-price" style="color: var(--red); font-size: 12px"><span style="text-decoration: line-through">{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q']) }}</span> -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
+                            <span class="new-price"><strong>{{__('text.cart_only')}} {{ $Currency::convert($product['price'] * $product['q']) }}</strong></span>
 						</div>
 						<div class="item">
 							<button class="btn btn-remove" onclick="remove({{ $product['pack_id'] }})">
@@ -87,11 +87,11 @@
 						<div class="line line-info">
 							<div class="item">
                                 <span onclick="upgrade({{ $product['pack_id'] }})">
-                                    {{__('text.cart_upgrade')}}<b>{{ $product['upgrade_pack']['num'] }} {{ $product['type_name'] }} {{__('text.cart_for_only')}} ${{ $product['upgrade_pack']['price'] - $product['price'] }}</b>
-                                    {{__('text.cart_savei')}} ${{ $product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'] }}
-                                    @if ($cart_total + ($product['upgrade_pack']['price'] - $product['price']) >= 200 && $cart_total + ($product['upgrade_pack']['price'] - $product['price']) < 300)
+                                    {{__('text.cart_upgrade')}}<b>{{ $product['upgrade_pack']['num'] }} {{ $product['type_name'] }} {{__('text.cart_for_only')}} {{ $Currency::convert($product['upgrade_pack']['price'] - $product['price']) }}</b>
+                                    {{__('text.cart_savei')}} {{ $Currency::convert($product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price']) }}
+                                    @if ($product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 200 && $product_total + ($product['upgrade_pack']['price'] - $product['price']) < 300)
                                         <b>{{__('text.cart_get_regular')}}</b>
-                                    @elseif ($cart_total + ($product['upgrade_pack']['price'] - $product['price']) >= 300)
+                                    @elseif ($product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 300)
                                         <b>{{__('text.cart_get_ems')}}</b>
                                     @endif
                                 </span>
@@ -101,200 +101,176 @@
 				@endif
 			@endforeach
 
-			<div class="line full-line delivery-line">
-                <div class="delivery-box">
-                    <div class="checkbox">
-                        <input {{--onclick = "Ship()"--}} class="checkbox__input" id="delivery-1" data-delivery type="radio" name="delivery" value="delivery-1">
-                        <label for="delivery-1">
-                            <span class="checkbox__delivery delivery-item">
-                                <strong class="name-delivery">
-                                    {{__('text.checkout_express')}}
-                                    <span class="price">
-                                        {{-- {{__('text.checkout_free')}}
-                                        <span style="text-decoration: line-through;">$29.99</span> --}}
-                                        $29.99
+            @if (!$is_only_card)
+                <div class="line full-line delivery-line">
+                    <div class="delivery-box">
+                        <div class="checkbox">
+                            <input class="checkbox__input" id="delivery-1" data-delivery type="radio" name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif
+                            onchange="change_shipping('ems', {{ $product_total >= 300 ? 0 : $shipping['ems'] }})">
+                            <label for="delivery-1">
+                                <span class="checkbox__delivery delivery-item">
+                                    <strong class="name-delivery">
+                                        {{__('text.checkout_express')}}
+                                        <span class="price">
+                                            @if ($is_only_card)
+                                                {{ $Currency::convert($shipping['ems']) }}
+                                            @elseif ($is_only_card_with_bonus)
+                                                {{ $Currency::convert($shipping['ems']) }}
+                                            @else
+                                                @if ($product_total >= 300)
+                                                    {{__('text.cart_free')}} <span style="text-decoration: line-through;">{{ $Currency::convert($shipping['ems']) }}</span>
+                                                @else
+                                                    {{ $Currency::convert($shipping['ems']) }}
+                                                @endif
+                                            @endif
+                                        </span>
+                                    </strong>
+                                    <span>
+                                        {{__('text.checkout_express_text')}}
                                     </span>
-                                </strong>
-                                <span>
-                                    {{__('text.checkout_express_text')}}
                                 </span>
-                            </span>
-                        </label>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="delivery-line__item">
+                        <div class="checkbox">
+                            <input class="checkbox__input" id="delivery-2" data-delivery type="radio" name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif
+                            onchange="change_shipping('regular', {{ $product_total >= 200 ? 0 : $shipping['regular'] }})">
+                            <label for="delivery-2" class="checkbox__label">
+                                <span class="checkbox__delivery delivery-item">
+                                    <strong class="name-delivery">
+                                        {{__('text.checkout_regular')}}
+                                        <span class="price">
+                                            @if ($is_only_card)
+                                                {{ $Currency::convert($shipping['regular']) }}
+                                            @elseif ($is_only_card_with_bonus)
+                                                {{ $Currency::convert($shipping['regular']) }}
+                                            @else
+                                                @if ($product_total >= 200)
+                                                    {{__('text.cart_free')}} <span style="text-decoration: line-through;">{{ $Currency::convert($shipping['regular']) }}</span>
+                                                @else
+                                                    {{ $Currency::convert($shipping['regular']) }}
+                                                @endif
+                                            @endif
+                                        </span>
+                                    </strong>
+                                    <span>
+                                        {{__('text.checkout_regular_text')}}
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
                     </div>
                 </div>
-                <div class="delivery-line__item">
-                    <div class="checkbox">
-                        <input {{--onclick = "Ship()"--}} class="checkbox__input" id="delivery-2" data-delivery type="radio" name="delivery" value="delivery-2">
-                        <label for="delivery-2" class="checkbox__label">
-                            <span class="checkbox__delivery delivery-item">
-                                <strong class="name-delivery">
-                                    {{__('text.checkout_regular')}}
-                                    <span class="price">
-                                        {{__('text.checkout_free')}}
-                                        <span style="text-decoration: line-through;">$14.99</span>
-                                    </span>
-                                </strong>
-                                <span>
-                                    {{__('text.checkout_regular_text')}}
-                                </span>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+            @endif
 
             <div class="line full-line">
                 <div class="bonus-box">
-                    <div class="checkbox bonus">
-                        <input {{--onclick = "Bonus()"--}} data-bonus  id="0" class="checkbox__input" type="radio" value="0" name="bonus" checked>
-                        <label for="0">
-                            <div class="order-bonus__content">
-                                <span class="order-bonus__name">
-                                    <span class="bonus_name">No Bonus</span>
+                    @foreach ($bonus as $product)
+                        <div class="checkbox bonus">
+                            <input data-bonus  id="pack-{{ $loop->iteration + 1 }}" class="checkbox__input" type="radio" value="{{ $product->pack_id }}" name="bonus" @checked(session('cart_option')['bonus_id'] == $product->pack_id)
+                            onchange="change_bonus({{ $product->pack_id }}, {{ $product->price }})">
+                            <label for="pack-{{ $loop->iteration + 1 }}">
+                                <span class="order-bonus__content">
+                                    <span class="order-bonus__name">
+                                        <span class="bonus_name">{{ $product->name }}</span>
+                                        <span class="bonus_price">
+                                            @if ($product->pack_id > 0)
+                                                {{ $product->price == 0 ? 'Free' : $Currency::convert($product->price) }}
+                                            @endif
+                                        </span>
+                                    </span>
+                                    <span class="order-bonus__package">{{ $product->desc }}</span>
                                 </span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="checkbox bonus">
-                        <input {{--onclick = "Bonus()"--}} data-bonus  id="11630" class="checkbox__input" type="radio" value="11630" name="bonus">
-                        <label for="11630">
-                            <span class="order-bonus__content">
-                                <span class="order-bonus__name">
-                                    <span class="bonus_name">Free ED Pack</span>
-                                    <span class="bonus_price">Free</span>
-                                </span>
-                                <span class="order-bonus__package">Viagra 100 mg x 1 tablett, Cialis 20 mg x 1 tablett, Levitra 20 mg x 1 tablett</span>
-                            </span>
-                        </label>
-                    </div>
-                    <div class="checkbox bonus">
-                        <input {{--onclick = "Bonus()"--}} data-bonus  id="4576" class="checkbox__input" type="radio" value="4576" name="bonus">
-                        <label for="4576">
-                            <span class="order-bonus__content">
-                                <span class="order-bonus__name">
-                                    <span class="bonus_name">Trial ED Pack</span>
-                                    <span class="bonus_price">$60</span>
-                                </span>
-                                <span class="order-bonus__package">Viagra 100 mg x 5 tablett, Cialis 20 mg x 5 tablett, Levitra 20 mg x 5 tablett</span>
-                            </span>
-                        </label>
-                    </div>
-                    <div class="checkbox bonus">
-                        <input {{--onclick = "Bonus()"--}} data-bonus  id="4577" class="checkbox__input" type="radio" value="4577" name="bonus">
-                        <label for="4577">
-                            <span class="order-bonus__content">
-                                <span class="order-bonus__name">
-                                    <span class="bonus_name">Super ED Pack</span>
-                                    <span class="bonus_price">$90</span>
-                                </span>
-                                <span class="order-bonus__package">Viagra 100 mg x 10 tablett, Cialis 20 mg x 10 tablett, Levitra 20 mg x 10 tablett</span>
-                            </span>
-                        </label>
-                    </div>
-                    <div class="checkbox bonus">
-                        <input {{--onclick = "Bonus()"--}} data-bonus  id="4919" class="checkbox__input" type="radio" value="4919" name="bonus">
-                        <label for="4919">
-                            <span class="order-bonus__content">
-                                <span class="order-bonus__name">
-                                    <span class="bonus_name">Extra ED Pack</span>
-                                    <span class="bonus_price">$120</span>
-                                </span>
-                                <span class="order-bonus__package">Viagra 100 mg x 20 tablett, Cialis 20 mg x 20 tablett, Levitra 20 mg x 20 tablett</span>
-                            </span>
-                        </label>
-                    </div>
-                    <div class="checkbox bonus">
-                        <input {{--onclick = "Bonus()"--}} data-bonus  id="11656" class="checkbox__input" type="radio" value="11656" name="bonus">
-                        <label for="11656">
-                            <span class="order-bonus__content">
-                                <span class="order-bonus__name">
-                                    <span class="bonus_name">Mega ED Pack</span>
-                                    <span class="bonus_price">$150</span>
-                                </span>
-                                <span class="order-bonus__package">Viagra 100 mg x 30 tablett, Cialis 20 mg x 30 tablett, Levitra 20 mg x 30 tablett</span>
-                            </span>
-                        </label>
-                    </div>
-                    <div class="checkbox bonus">
-                        <input {{--onclick = "Bonus()"--}} data-bonus  id="11655" class="checkbox__input" type="radio" value="11655" name="bonus">
-                        <label for="11655">
-                            <span class="order-bonus__content">
-                                <span class="order-bonus__name">
-                                    <span class="bonus_name">He&She ED Pack</span>
-                                    <span class="bonus_price">$100</span>
-                                </span>
-                                <span class="order-bonus__package">Viagra 100 mg x 30 tablett, Female Viagra 100 mg x 30 tablett</span>
-                            </span>
-                        </label>
-                    </div>
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
-			{{-- {if $data.gift_card_setting.enable}
-				{if !$has_card} --}}
-                <form class="gift_card" action="#">
-                    <div class="gift_block">
-                        <div class="gift_top_block__item">
-                            <span class="visible gift"></span>
-                            <div class="top_left_text">{{__('text.cart_add_gift')}}</div>
-                        </div>
-                        <div class="gift_bottom_block">
-                            <div class="bottom_left_text">{{__('text.common_gift_card')}}</div>
-                            <div>
-                                <div class="select_gift">
-                                    <div class="select_header_gift">
-                                        <span class="select_current_gift" curr_packaging_id = "11631">$50</span>
-                                        <div class="select_icon">
-                                            <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+			@if (env('APP_GIFT_CARD') == 1)
+                @if (!$has_card)
+                    <form class="gift_card" action="#">
+                        <div class="gift_block">
+                            <div class="gift_top_block__item">
+                                <span class="visible gift"></span>
+                                <div class="top_left_text">{{__('text.cart_add_gift')}}</div>
+                            </div>
+                            <div class="gift_bottom_block">
+                                <div class="bottom_left_text">{{__('text.common_gift_card')}}</div>
+                                <div>
+                                    <div class="select_gift">
+                                        <div class="select_header_gift">
+                                            <span class="select_current_gift" curr_packaging_id = "{{ $cards[0]->pack_id }}">{{ $Currency::convert($cards[0]->price) }}</span>
+                                            <div class="select_icon">
+                                                <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                            </div>
+                                        </div>
+                                        <div class="select_body_gifts">
+                                            @foreach ($cards as $card)
+                                                <div class="select_item_gift" packaging_id = "{{ $card->pack_id }}">
+                                                    {{ $Currency::convert($card->price) }}
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
-                                    <div class="select_body_gifts">
-                                        <div class="select_item_gift" packaging_id = "11631">$50</div>
-                                        <div class="select_item_gift" packaging_id = "11632">$100</div>
-                                        <div class="select_item_gift" packaging_id = "11633">$200</div>
-                                        <div class="select_item_gift" packaging_id = "11634">$300</div>
-                                        <div class="select_item_gift" packaging_id = "11635">$400</div>
-                                        <div class="select_item_gift" packaging_id = "11636">$500</div>
-                                    </div>
                                 </div>
+                                <div class="button_add_gift" onclick="addCard()">{{__('text.common_add_to_cart_text_d2')}}</div>
                             </div>
-                            <div class="button_add_gift" onclick="addCard()">{{__('text.common_add_to_cart_text_d2')}}</div>
                         </div>
-                    </div>
-                </form>
-				{{-- {/if}
-			{/if} --}}
+                    </form>
+                @endif
+            @endif
+            @php
+                $total_discount = 0;
 
+                foreach ($products as $product) {
+                    if($product['dosage'] != '1card')
+                    {
+                        $total_discount += $product['max_pill_price'] * $product['num'] * $product['q'];
+                    }
+                    else {
+                        $total_discount += $product['price'];
+                    }
+                }
+
+                $total_discount += session('cart_option')['bonus_price'];
+                if (!$is_only_card) {
+                    $total_discount += $shipping[session('cart_option')['shipping']];
+                }
+
+                $discount = ceil(100 - (session('total')['all'] / $total_discount) * 100);
+
+                if ($is_only_card_with_bonus) {
+                    $saving = 0;
+                    $discount = 0;
+                } else {
+                    $saving = $total_discount - session('total')['all'];
+                }
+
+            @endphp
 			<div class="line full-line total-line">
 				<div class="total-box">
 					<div class="column price">
 						<strong class="title">{{__('text.cart_total_price_text')}}</strong>
 						<span class="sum">
-							{{-- {if $data.discount != 0 && !$is_only_card}
-								{if $total_save > 0} --}}
-									<div class="total-line__old-price" style="color: var(--red); font-size: 13px">
-										<span style="text-decoration: line-through">$649.80</span> -70%
-										<span class="total-line__savings" style="font-weight: 400; color: #262D38">{{__('text.cart_saving')}} $540</span>
-									</div>
-										<div class="total-line__new-price">
-										<div class="total-line__digits">{{__('text.cart_only')}} $195.31</div>
-									</div>
-                    			{{-- {else}
-                        			<div class="total-line__digits">{$data.total_price}</div>
-								{/if}
-							{/if}
-							{if $data.discount == 0 || $is_only_card}
-								<div class="total-line__digits">{$data.total_price}</div>
-							{/if} --}}
+                            @if (!$is_only_card && $discount != 0)
+                                <div class="total-line__old-price" style="color: var(--red); font-size: 13px">
+                                    <span style="text-decoration: line-through">{{ $Currency::convert($total_discount) }}</span> {{ $discount }}%
+                                    <span class="total-line__savings" style="font-weight: 400; color: #262D38">{{__('text.cart_saving')}} {{ $Currency::convert($saving) }}</span>
+                                </div>
+                                    <div class="total-line__new-price">
+                                    <div class="total-line__digits">{{__('text.cart_only')}} {{ session('total')['all_in_currency'] }}</div>
+                                </div>
+                            @endif
+                            @if ($discount == 0 || $is_only_card)
+								<div class="total-line__digits">{{ session('total')['all_in_currency'] }}</div>
+                            @endif
 						</span>
 					</div>
 					<div class="column">
-						<button class="btn btn-default blue back-to-main">{{__('text.cart_back_to_shop')}}</button>
-						{{-- {if $data.checkout_type === "internal"}
-							<button class="btn btn-primary button-checkout">{{__('text.cart_pay_button')}}</button>
-						{else} --}}
-							<button class="btn btn-primary button-checkout">{{__('text.cart_pay_button')}}</button>
-						{{-- {/if} --}}
+						<button class="btn btn-default blue back-to-main" onclick="location.href='{{ route('home.index') }}'">{{__('text.cart_back_to_shop')}}</button>
+                        <button class="btn btn-primary button-checkout" onclick="location.href='{{ route('checkout.index') }}'">{{__('text.cart_pay_button')}}</button>
 					</div>
 				</div>
 			</div>

@@ -44,7 +44,7 @@ $(document).ready(
         if (!!document.getElementById("shopping_cart")) {
             $.ajax({
                 url: '/cart_content',
-                type: 'POST',
+                type: 'GET',
                 cache: false,
                 dataType: 'html',
                 data: {},

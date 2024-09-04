@@ -548,4 +548,5 @@ return [
     "success_title_phone_6" => "+34-51-889-9156",
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "تم ارسال طلبك.",
+    "success_thank" => "شكرا لاختياركم لنا!",
 ];

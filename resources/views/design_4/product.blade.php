@@ -175,19 +175,19 @@
                                     @endif
                                 @endif
                             </th>
-                            <th class="item-product-info__per-pill">${{ round($item['price'] / $item['num'], 2) }}</th>
+                            <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</th>
                             <th class="item-product-info__price">
                                 @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                     <span class="item-product-info__old-price">
-                                        <span>${{ $dosage['max_pill_price'] * $item['num'] }}</span>
+                                        <span>{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }}</span>
                                         <span>-{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span>
                                     </span>
                                 @endif
                                 <span class="item-product-info__new-price">
                                     @if ($product['image'] != 'gift-card')
-                                        <span>{!!__('text.product_only')!!}&nbsp;<span>${{ $item['price'] }}</span>
+                                        <span>{!!__('text.product_only')!!}&nbsp;<span>{{ $Currency::convert($item['price']) }}</span>
                                     @else
-                                        ${{ $item['price'] }}
+                                        {{ $Currency::convert($item['price']) }}
                                     @endif
                                 </span>
                             </th>

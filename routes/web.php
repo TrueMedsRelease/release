@@ -42,7 +42,7 @@ Route::controller(SearchController::class)->group(function() {
 
 Route::controller(CartController::class)->group(function(){
     Route::get('/cart', 'index')->name('cart.index');
-    Route::post('/cart_content', 'cart')->name('cart.content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/cart_content', 'cart')->name('cart.content')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/add/{product}', 'add')->name('cart.add');
     Route::post('/cart/up', 'up')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/down', 'down')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
@@ -54,7 +54,7 @@ Route::controller(CartController::class)->group(function(){
 
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'index')->name('checkout.index');
-    Route::post('/checkout_content', 'checkout')->name('checkout.content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/checkout_content', 'checkout')->name('checkout.content')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/insurance', 'insurance')->name('checkout.insurance')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/secret_package', 'secret_package')->name('checkout.secret_package')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/change-shipping', 'change_shipping')->name('checkout.shipping')->withoutMiddleware(VerifyCsrfToken::class);
@@ -80,10 +80,6 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/category/{category}', 'category')->name('home.category');
     Route::get('/active/{active}', 'active')->name('home.active');
     Route::get('disease/{disease}', 'disease')->name('home.disease');
-    Route::get('/{product_name}', 'product')->name('home.product');
+    Route::get('/product/{product_name}', 'product')->name('home.product');
+    Route::get('/design={design}', 'design')->name('home.design');
 });
-
-
-
-
-

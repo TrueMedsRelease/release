@@ -57,13 +57,13 @@
             <div class="header__container">
                 <div class="top-phones-header__items">
                     <div class="top-phones-header__item request" style="pointer-events: none; font-weight: 600"><a class="request_call">{{ __('text.common_callback') }}</a><div class="request_text">{{__('text.common_call_us_top')}}</div></div>
-                    <a class="top-phones-header__item" href="tel:+17185503732">US: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">DE: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}{{__('text.phones_title_phone_1')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}{{__('text.phones_title_phone_2')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}{{__('text.phones_title_phone_3')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}{{__('text.phones_title_phone_4')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}{{__('text.phones_title_phone_5')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}{{__('text.phones_title_phone_6')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}{{__('text.phones_title_phone_7')}}</a>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
 											<button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
 											<ul class="spollers__body main_bestsellers" id="main_bestsellers">
 												@foreach ($bestsellers as $bestseller)
-													<li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">${{ $bestseller['price'] }}</span></li>
+													<li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
                                                 @endforeach
 											</ul>
 										</div>
@@ -120,7 +120,7 @@
 																<a href="{{ route('home.product', $item['url']) }}">
 																	{{ $item['name'] }}
 																</a>
-																<span style="font-size: 12px;">${{ $item['price'] }}</span>
+																<span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
 															</li>
                                                         @endforeach
 													</ul>
@@ -177,7 +177,7 @@
 										</div>
 										<div class="actions__select">
 											<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
-												@foreach ($languages as $language)
+												@foreach ($Language::GetAllLanuages() as $language)
                                                     <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
                                                 @endforeach
 											</select>
@@ -191,11 +191,9 @@
 										</div>
 										<div class="actions__select">
 											<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
-												<option value="1">USD</option>
-                                                <option value="2">RUB</option>
-                                                <option value="3">EUR</option>
-                                                <option value="4">KZT</option>
-                                                <option value="5">CNY</option>
+												@foreach ($Currency::GetAllCurrency() as $item)
+                                                    <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                                @endforeach
 											</select>
 										</div>
 									</div>
@@ -232,7 +230,7 @@
                                             <span class="cart__quantity">{{$cart_count}}</span>
                                         @endif
 									</span>
-									<span class="cart__total">${{$cart_total}}</span>
+									<span class="cart__total">{{ $Currency::convert($cart_total) }}</span>
 								</button>
 							</div>
 						</div>
@@ -379,11 +377,18 @@
 					<div class="phone">
 						<div class="enter-info__country phone_code">
 							<select name="phone_code" class="form" data-scroll>
-								<option data-id="1" value="+5">+5</option>
-                                <option data-id="2" value="+2">+2</option>
-                                <option data-id="3" value="+5423">+5423</option>
-                                <option data-id="4" value="+455">+455</option>
-                                <option data-id="5" value="+4313">+4313</option>
+								@foreach ($phone_codes as $item)
+                                    <option id=""
+                                    @if (empty(session('form')))
+                                            @selected($item['iso'] == session('location.country', ''))
+                                    @else
+                                        @selected($item['iso'] == session('form.phone_code', ''))
+                                    @endif
+                                        data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                        value="{{ $item['iso'] }}">
+                                        +{{ $item['phonecode'] }}
+                                    </option>
+                                @endforeach
 							</select>
 						</div>
 						<div class="enter-info__input enter-info__input--country">
@@ -424,13 +429,13 @@
         <div class="footer__container">
             <div class="footer__inner">
                 <ul class="footer__row footer__row--large">
-                    <li class="footer__item"><a href="tel:+17185503732" class="footer__phone">US: +1 718 550 3732</a></li>
-                    <li class="footer__item"><a href="tel:+17185503732" class="footer__phone">UK: +1 718 550 3732</a></li>
-                    <li class="footer__item"><a href="tel:+17185503732" class="footer__phone">UK: +1 718 550 3732</a></li>
-                    <li class="footer__item"><a href="tel:+17185503732" class="footer__phone">UK: +1 718 550 3732</a></li>
-                    <li class="footer__item"><a href="tel:+17185503732" class="footer__phone">UK: +1 718 550 3732</a></li>
-                    <li class="footer__item"><a href="tel:+17185503732" class="footer__phone">UK: +1 718 550 3732</a></li>
-                    <li class="footer__item"><a href="tel:+17185503732" class="footer__phone">UK: +1 718 550 3732</a></li>
+                    <li class="footer__item"><a href="tel:{{__('text.phones_title_phone_1')}}" class="footer__phone">{{__('text.phones_title_phone_1_code')}}{{__('text.phones_title_phone_1')}}</a></li>
+                    <li class="footer__item"><a href="tel:{{__('text.phones_title_phone_2')}}" class="footer__phone">{{__('text.phones_title_phone_2_code')}}{{__('text.phones_title_phone_2')}}</a></li>
+                    <li class="footer__item"><a href="tel:{{__('text.phones_title_phone_3')}}" class="footer__phone">{{__('text.phones_title_phone_3_code')}}{{__('text.phones_title_phone_3')}}</a></li>
+                    <li class="footer__item"><a href="tel:{{__('text.phones_title_phone_4')}}" class="footer__phone">{{__('text.phones_title_phone_4_code')}}{{__('text.phones_title_phone_4')}}</a></li>
+                    <li class="footer__item"><a href="tel:{{__('text.phones_title_phone_5')}}" class="footer__phone">{{__('text.phones_title_phone_5_code')}}{{__('text.phones_title_phone_5')}}</a></li>
+                    <li class="footer__item"><a href="tel:{{__('text.phones_title_phone_6')}}" class="footer__phone">{{__('text.phones_title_phone_6_code')}}{{__('text.phones_title_phone_6')}}</a></li>
+                    <li class="footer__item"><a href="tel:{{__('text.phones_title_phone_7')}}" class="footer__phone">{{__('text.phones_title_phone_7_code')}}{{__('text.phones_title_phone_7')}}</a></li>
                 </ul>
                 <ul class="footer__row">
                     <li class="footer__item"><a href="{{ route('home.index') }}" class="footer__link">{{__('text.common_best_sellers_main_menu_item')}}</a></li>
@@ -452,7 +457,7 @@
             </div>
         </div>
         <div class="fixed-bar">
-            <a href="{$path.page}/{$smarty.const.PAGE_MAIN}" class="fixed-bar__item">
+            <a href="{{ route('home.index') }}" class="fixed-bar__item">
                 <div class="fixed-bar__icon fixed-bar__icon--home">
                     <svg width="24" height="24">
                         <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-home") }}"></use>

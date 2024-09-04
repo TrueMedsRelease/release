@@ -5335,3 +5335,8 @@ strong {
   }
 
 }
+
+.product-card__active {
+    display: flex;
+    gap: 5px;
+}

@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', __('text.common_best_selling_title'))
 
 @section('content')
 <script>
@@ -253,13 +253,17 @@
                                                     </div>
                                                 @endif
                                             </span>
-                                            <span class="product_per_pill">${{ round($item['price'] / $item['num'], 2) }}</span>
+                                            <span class="product_per_pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</span>
 
                                             <span class="product_offer">
-                                                <span class="old_price">
-                                                    <span>${{ $dosage['max_pill_price'] * $item['num'] }}</span>
-                                                    -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
-                                                </span>{!!__('text.product_only')!!} <span>${{ $item['price'] }}</span>
+                                                @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) > 0)
+                                                    <span class="old_price">
+                                                        <span>{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }}</span>
+                                                        -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
+                                                    </span>{!!__('text.product_only')!!} <span>{{ $Currency::convert($item['price']) }}</span>
+                                                @else
+                                                    <span>{{ $Currency::convert($item['price']) }}</span>
+                                                @endif
                                             </span>
 
                                             <form method="POST" action="{{ route('cart.add', $item['id']) }}">

@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', 'Delivery')
+@section('title', __('text.shipping_title'))
 
 @section('content')
 <main class="default">

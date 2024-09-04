@@ -65,11 +65,18 @@
 				<div class="phone">
 					<div class="enter-info__country phone_code">
 						<select name="phone_code" class="form" data-scroll>
-							<option data-id="1" value="+5">+5</option>
-                            <option data-id="2" value="+2">+2</option>
-                            <option data-id="3" value="+5423">+5423</option>
-                            <option data-id="4" value="+455">+455</option>
-                            <option data-id="5" value="+4313">+4313</option>
+							@foreach ($phone_codes as $item)
+                                    <option id=""
+                                    @if (empty(session('form')))
+                                            @selected($item['iso'] == session('location.country', ''))
+                                    @else
+                                        @selected($item['iso'] == session('form.phone_code', ''))
+                                    @endif
+                                        data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                        value="{{ $item['iso'] }}">
+                                        +{{ $item['phonecode'] }}
+                                    </option>
+                                @endforeach
 						</select>
 					</div>
 					<div class="enter-info__input enter-info__input--country">
@@ -107,13 +114,13 @@
             <div class="header__container">
                 <div class="top-phones-header__items">
                     <div class="top-phones-header__item request" style="pointer-events: none; font-weight: 600"><a class="request_call">{{ __('text.common_callback') }}</a><div class="request_text">{{__('text.common_call_us_top')}}</div></div>
-                    <a class="top-phones-header__item" href="tel:+17185503732">US: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">DE: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}{{__('text.phones_title_phone_1')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}{{__('text.phones_title_phone_2')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}{{__('text.phones_title_phone_3')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}{{__('text.phones_title_phone_4')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}{{__('text.phones_title_phone_5')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}{{__('text.phones_title_phone_6')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}{{__('text.phones_title_phone_7')}}</a>
                 </div>
             </div>
         </div>
@@ -135,7 +142,7 @@
 										</div>
 										<div class="actions__select">
 											<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
-												@foreach ($languages as $language)
+												@foreach ($Language::GetAllLanuages() as $language)
                                                     <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
                                                 @endforeach
 											</select>
@@ -147,11 +154,9 @@
 										</div>
 										<div class="actions__select">
 											<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
-												<option value="1">USD</option>
-                                                <option value="2">RUB</option>
-                                                <option value="3">EUR</option>
-                                                <option value="4">KZT</option>
-                                                <option value="5">CNY</option>
+												@foreach ($Currency::GetAllCurrency() as $item)
+                                                    <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                                @endforeach
 											</select>
 										</div>
 									</div>
@@ -174,7 +179,7 @@
                                             <span class="cart__quantity">{{$cart_count}}</span>
                                         @endif
 									</span>
-									<span class="cart__total">${{$cart_total}}</span>
+									<span class="cart__total">{{ $Currency::convert($cart_total) }}</span>
 								</button>
 							</div>
 						</div>
@@ -191,13 +196,13 @@
             <div class="header__container">
                 <div class="top-phones-header__items">
                     <div class="top-phones-header__item request" style="pointer-events: none; font-weight: 600"><a class="request_call">{{ __('text.common_callback') }}</a><div class="request_text">{{__('text.common_call_us_top')}}</div></div>
-                    <a class="top-phones-header__item" href="tel:+17185503732">US: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">DE: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">UK: +1 718 550 3732</a>
-                    <a class="top-phones-header__item" href="tel:+17185503732">AU: +1 718 550 3732</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}{{__('text.phones_title_phone_1')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}{{__('text.phones_title_phone_2')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}{{__('text.phones_title_phone_3')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}{{__('text.phones_title_phone_4')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}{{__('text.phones_title_phone_5')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}{{__('text.phones_title_phone_6')}}</a>
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}{{__('text.phones_title_phone_7')}}</a>
                 </div>
             </div>
         </div>

@@ -649,42 +649,42 @@ if (day == null) {
             FLS(`[Формы]: ${message}`);
         }
     }
-    function formQuantity() {
-        document.addEventListener("click", (function(e) {
-            let targetElement = e.target;
-            if (targetElement.closest("[data-quantity-plus]") || targetElement.closest("[data-quantity-minus]")) {
-                const valueElement = targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]");
-                let value = parseInt(valueElement.value);
-                let id = parseInt(valueElement.id);
-                if (targetElement.hasAttribute("data-quantity-plus")) {
-                    value++;
-                    if (+valueElement.dataset.quantityMax && +valueElement.dataset.quantityMax < value)
-                        value = valueElement.dataset.quantityMax;
-                } else {
-                    --value;
-                    if (+valueElement.dataset.quantityMin) {
-                        if (+valueElement.dataset.quantityMin > value)
-                            value = valueElement.dataset.quantityMin;
-                    } else if (value < 1) value = 1;
-                }
-                targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]").value = value;
-                let value_ship = $("input[name='delivery']:checked").val();
-                let value_bonus = $("input[name='bonus']:checked").attr('id');
-                $.ajax({
-                    url: "app/ajax_cart.php",
-                    type: 'POST',
-                    data: {'num': value,
-                           'id': id,
-                           'shipping_code': value_ship,
-                           'bonus_id': value_bonus},
-                    dataType: 'html',
-                    success : function(data) {
-                        $(".basket").html(data);
-                    }
-                });
-            }
-        }));
-    }
+    // function formQuantity() {
+    //     document.addEventListener("click", (function(e) {
+    //         let targetElement = e.target;
+    //         if (targetElement.closest("[data-quantity-plus]") || targetElement.closest("[data-quantity-minus]")) {
+    //             const valueElement = targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]");
+    //             let value = parseInt(valueElement.value);
+    //             let id = parseInt(valueElement.id);
+    //             if (targetElement.hasAttribute("data-quantity-plus")) {
+    //                 value++;
+    //                 if (+valueElement.dataset.quantityMax && +valueElement.dataset.quantityMax < value)
+    //                     value = valueElement.dataset.quantityMax;
+    //             } else {
+    //                 --value;
+    //                 if (+valueElement.dataset.quantityMin) {
+    //                     if (+valueElement.dataset.quantityMin > value)
+    //                         value = valueElement.dataset.quantityMin;
+    //                 } else if (value < 1) value = 1;
+    //             }
+    //             targetElement.closest("[data-quantity]").querySelector("[data-quantity-value]").value = value;
+    //             let value_ship = $("input[name='delivery']:checked").val();
+    //             let value_bonus = $("input[name='bonus']:checked").attr('id');
+    //             $.ajax({
+    //                 url: "app/ajax_cart.php",
+    //                 type: 'POST',
+    //                 data: {'num': value,
+    //                        'id': id,
+    //                        'shipping_code': value_ship,
+    //                        'bonus_id': value_bonus},
+    //                 dataType: 'html',
+    //                 success : function(data) {
+    //                     $(".basket").html(data);
+    //                 }
+    //             });
+    //         }
+    //     }));
+    // }
     class SelectConstructor {
         constructor(props, data = null) {
             let defaultConfig = {
@@ -1186,7 +1186,7 @@ if (day == null) {
         autoHeight: false
     });
     formSubmit();
-    formQuantity();
+    // formQuantity();
     // sendMessage();
     pageNavigation();
 })();
@@ -1384,20 +1384,20 @@ $(document).on('click', '.visible.gift', function () {
     }
 });
 
-function addCard() {
-    let value_card = $('.select_current_gift').attr('curr_packaging_id');
-    $.ajax({
-        url: "/app/ajax_cart.php",
-        type: 'POST',
-        data: {
-            'card_pack_id': value_card
-        },
-        dataType: 'html',
-        success : function(data) {
-            $('.basket').html(data);
-        },
-    });
-}
+// function addCard() {
+//     let value_card = $('.select_current_gift').attr('curr_packaging_id');
+//     $.ajax({
+//         url: "/app/ajax_cart.php",
+//         type: 'POST',
+//         data: {
+//             'card_pack_id': value_card
+//         },
+//         dataType: 'html',
+//         success : function(data) {
+//             $('.basket').html(data);
+//         },
+//     });
+// }
 
 const drugIndex = document.querySelector('.pay-index');
 const mqDrugIndex = window.matchMedia('(max-width: 2560px)');
@@ -1703,8 +1703,3 @@ sc.scrollIntoView({block: "start", behavior: "smooth"});
 
 //};
 
-function maxLengthCheck(object)
-{
-    if (object.value.length > object.maxLength)
-        object.value = object.value.slice(0, object.maxLength)
-}

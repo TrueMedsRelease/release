@@ -1,25 +1,14 @@
 {
-<<<<<<< HEAD
-  "name": "truemeds",
-  "short_name": "truemeds",
-=======
   "name": "True Pharmacy",
   "short_name": "TruePharm",
   "description":"High-Quality Generic Drugs with big discounts. Fast & Worldwide Delivery. Safe & Secure Payments.",
->>>>>>> main
   "dir": "auto",
   "lang": "en-US",
   "display": "standalone",
   "orientation": "any",
-<<<<<<< HEAD
-  "start_url": "../../index.html",
-  "background_color": "#fff",
-  "theme_color": "#fff",
-=======
   "start_url": "/",
   "background_color": "#fff",
   "theme_color": "#5b7f2c",
->>>>>>> main
   "screenshots": [
     {
         "src":"screen_1.webp",

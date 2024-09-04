@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', __('text.aktiv_aktiv_result_title') . ' ' . $active)
 
 @section('content')
 <main class="page">
@@ -12,7 +12,7 @@
                         <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.main_best_selling_title')}}</button>
                         <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
                             @foreach ($bestsellers as $bestseller)
-                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">${{ $bestseller['price'] }}</span></li>
+                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
                             @endforeach
                         </ul>
                     </div>
@@ -25,7 +25,7 @@
                                         <a href="{{ route('home.product', $item['url']) }}">
                                             {{ $item['name'] }}
                                         </a>
-                                        <span style="font-size: 12px;">${{ $item['price'] }}</span>
+                                        <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -52,7 +52,7 @@
                         </a>
                         <div class="product-card__bottom">
                             <div class="product-card__left">
-                                <div class="product-card__price">${{ $product['price'] }}</div>
+                                <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
                             </div>
                             <button type="button" class="product-card__button button button--accent" title="Add to cart" onclick="location.href='{{ route('home.product', $product['url']) }}'">
                                 <svg width="24" height="24">

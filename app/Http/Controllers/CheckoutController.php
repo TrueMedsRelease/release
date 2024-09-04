@@ -24,13 +24,14 @@ class CheckoutController extends Controller
         if (empty(session('cart'))) {
             return redirect(route('home.index'));
         }
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
         return view($design . '.checkout');
     }
 
     public function checkout()
     {
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $design = session('design') ? session('design') : config('app.design');
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
@@ -105,7 +106,6 @@ class CheckoutController extends Controller
 
         $states = State::$states;
 
-        $design = config('app.design');
         $returnHTML = view($design . '.ajax.checkout_content')->with([
             'Language' => Language::class,
             'Currency' => Currency::class,
@@ -431,7 +431,7 @@ class CheckoutController extends Controller
             return redirect(route('home.index'));
         }
 
-        $design = config('app.design');
+        $design = session('design') ? session('design') : config('app.design');
         return view($design . '.complete')->with([
             'Language' => Language::class,
             'Currency' => Currency::class,

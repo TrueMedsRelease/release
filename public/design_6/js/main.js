@@ -141,3 +141,23 @@ $(document).on('click', '#affiliate_send_button', function () {
 $(document).on('click', '.search_button', function () {
     location.href='/app/search.php?search=' + $('[name="search"]').val();
 });
+
+$(document).on('click', '.gift_checkbox', function () {
+    if ($(this).hasClass('get-gift')) {
+        $(this).removeClass('get-gift');
+        $('.gift_bottom_block').hide();
+    } else {
+        $(this).addClass('get-gift');
+        $('.gift_bottom_block').css('display', 'flex');
+    }
+});
+
+$(document).on('click', '.select_header_gift', function () {
+    $(this).parent().toggleClass('is-active');
+});
+
+$(document).on('click', '.select_item_gift', function () {
+    $('.select_current_gift').text($(this).text());
+    $('.select_current_gift').attr('curr_packaging_id', $(this).attr('packaging_id'));
+    $(this).parent().parent().removeClass('is-active');
+});

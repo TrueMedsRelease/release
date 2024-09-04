@@ -111,12 +111,12 @@
                         @endif
                     </div>
                     <div class="col">
-                        <span>${{ round($item['price'] / $item['num'], 2) }}</span>
+                        <span>{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</span>
                     </div>
                     @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
-                        <div class="col"><span><span class="red">${{ $dosage['max_pill_price'] * $item['num'] }} -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span> {!!__('text.product_only')!!} ${{ $item['price'] }}</span></div>
+                        <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span></div>
                     @else
-                        <div class="col"><span>${{ $item['price'] }}</span></div>
+                        <div class="col"><span>{{ $Currency::convert($item['price']) }}</span></div>
                     @endif
                     <div class="col">
                         <form method="POST" action="{{ route('cart.add', $item['id']) }}">

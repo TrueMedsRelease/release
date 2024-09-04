@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'TrueMeds')
+@section('title', __('text.aktiv_aktiv_result_title') . ' ' . $active)
 @section('title_2', __('text.aktiv_aktiv_result_title') . ' ' . $active)
 @section('content')
 <div class="page__products products">
@@ -17,7 +17,7 @@
                                 @endforeach
                             </p>
                         </div>
-                        <div class="item-product__price">${{ $product['price'] }}</div>
+                        <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
                     </div>
                     <div class="item-product__image-ibg">
                         <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}">

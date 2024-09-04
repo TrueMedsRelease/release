@@ -27,14 +27,17 @@
                         </picture>
                     </div>
 
-                    <div class="info-panel__row">
-                        {!!__('text.product_active')!!}
-                        @foreach ($product['aktiv'] as $aktiv)
-                            <a href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
-                        @endforeach
-                    </div>
+                    @if ($product['image'] != 'gift-card')
+                        <div class="info-panel__row">
+                            {!!__('text.product_active')!!}
+                            @foreach ($product['aktiv'] as $aktiv)
+                                <a href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
+                            @endforeach
+                        </div>
 
-                    <div class="info-panel__row">{!!__('text.product_pack1_1')!!}<b>{{__('text.product_pack2_1')}}{{ random_int(10, 40) }}{{__('text.product_pack3_1')}}</b></div>
+                        <div class="info-panel__row">{!!__('text.product_pack1_1')!!}<b>{{__('text.product_pack2_1')}}{{ random_int(10, 40) }}{{__('text.product_pack3_1')}}</b></div>
+
+                    @endif
 
                     <div class="info-panel__row">{{ $product['desc'] }}</div>
 
@@ -52,93 +55,44 @@
                     @if (!empty($product['analog']))
                         <div class="info-panel__row">
                             {{ $product['name'] }} {!!__('text.product_analogs')!!}
-                            @foreach ($product['analog'] as $analog)
-                                <a href="{{ route('home.product', $analog['url']) }}"
-                                    class="analog">{{ $analog['name'] }}</a>
-                            @endforeach
+                            {{-- @if ($data.is_mobile)
+                                <div class="text-box">
+                                    <span class="text">
+                                        @foreach ($product['analog'] as $analog)
+                                            <a href="{{ route('home.product', $analog['url']) }}"
+                                                class="analog">{{ $analog['name'] }}</a>
+                                        @endforeach
+                                    </span>
+                                        @if (count($product['analog']) > 10)<a href="#" class="more">view all</a>@endisset
+                                </div>
+                            @else --}}
+                                @foreach ($product['analog'] as $analog)
+                                    <a href="{{ route('home.product', $analog['url']) }}"
+                                        class="analog">{{ $analog['name'] }}</a>
+                                @endforeach
+                            {{-- @endif --}}
                         </div>
                     @endif
 
                     @if (!empty($product['sinonim']))
                         <div class="info-panel__row">
                             {{ $product['name'] }} {!!__('text.product_others')!!}
-                            @foreach ($product['sinonim'] as $sinonim)
-                                <a href = "" class="others">{{ $sinonim }}</a>
-                            @endforeach
+                            {{-- @if ($data.is_mobile)
+                                <div class="text-box">
+                                    <span class="text">
+                                        @foreach ($product['sinonim'] as $sinonim)
+                                            <a href = "" class="others">{{ $sinonim }}</a>
+                                        @endforeach
+                                    </span>
+                                        @if (count($product['sinonim']) > 10)<a href="#" class="more">view all</a>@endisset
+                                </div>
+                            @else --}}
+                                @foreach ($product['sinonim'] as $sinonim)
+                                    <a href = "" class="others">{{ $sinonim }}</a>
+                                @endforeach
+                            {{-- @endif --}}
                         </div>
                     @endif
-                </ul>
-            </div>
-            <div class="product__info">
-            @foreach ($product['packs'] as $key => $dosage)
-                    <ul class="product__info-items">
-                        @php
-                            $prev_dosage = 0;
-                        @endphp
-                        @foreach ($dosage as $item)
-                            @if ($loop->last)
-                                @continue
-                            @endif
-                            @if ($loop->iteration != 1 && $key != $prev_dosage)
-                                </tbody>
-                                </table>
-                                </li>
-                            @endif
-                            @if ($key != $prev_dosage)
-                                <li class="product__info-item">
-                                    <h3 class="product__info-title">
-                                        {{ "{$product['name']} $key" }}
-                                    </h3>
-                                    <table class="product-table">
-                                        <tbody>
-                                        <tr class="product-table__list product-table__list--top">
-                                            <th class="product-table__package">{{__('text.product_quantity_title')}}</th>
-                                            <th class="product-table__per">{{__('text.product_price_per_pill_title')}}</th>
-                                            <th class="product-table__price">{{__('text.product_price_title')}}</th>
-                                            <th></th>
-                                        </tr>
-                                        @php
-                                            $prev_dosage = $key;
-                                        @endphp
-                            @endif
-                                <tr class="product-table__list">
-                                    <th class="product-table__package">
-                                        {{ "{$item['num']} {$product['type']}" }}
-                                        @if ($product['image'] != 'gift-card')
-                                            @if ($item['price'] >= 300)
-                                                <span class="product-table__prompt">{{__('text.cart_free_express')}}</span>
-                                            @elseif($item['price'] < 300 && $item['price'] >= 200)
-                                                <span class="product-table__prompt">{{__('text.cart_free_regular')}}</span>
-                                            @endif
-                                        @endif
-                                    </th>
-                                    <th class="product-table__per">${{ round($item['price'] / $item['num'], 2) }}</th>
-                                    <th class="product-table__price">
-                                        @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
-                                            <span class="product-table__old">${{ $dosage['max_pill_price'] * $item['num'] }}</span>
-                                            <span class="product-table__discount">-{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span>
-                                        @endif
-                                        <span class="product-table__current">@if ($product['image'] != 'gift-card'){!!__('text.product_only')!!} @endif ${{ $item['price'] }}</span>
-                                    </th>
-                                    <th class="product-table__add">
-                                        <button class="product-table__btn" type="button" onclick="location.href = add_pack({{ $item['id'] }})">
-                                            <span class="sr-only">{{__('text.product_add_to_cart_text_d2')}}</span>
-                                        </button>
-                                        <button class="product-table__cart" type="button" onclick="location.href = add_pack({{ $item['id'] }})">
-                                            {{__('text.product_add_to_cart_text_d2')}}
-                                        </button>
-                                    </th>
-                                </tr>
-                        @endforeach
-                                </tbody>
-                            </table>
-                        </li>
-                    </ul>
-            @endforeach
-                    <div class="product__info-content">
-                        @if ($product['full_desc'])
-                            {!! $product['full_desc'] !!}
-                        @endif
                 </div>
             </aside>
 
@@ -182,7 +136,7 @@
                                                     -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
                                                 </div>
                                             @endif
-                                            <div class="product__price">Only {{ $Currency::convert($item['price'], true) }}</div>
+                                            <div class="product__price">{{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}</div>
                                         </td>
                                         <td class="product__button-wrapper">
                                             <form action="{{ route('cart.add', $item['id']) }}" method="post">
@@ -190,7 +144,7 @@
                                                 <button class="button product__button" type="submit">
                                                     <span class="icon">
                                                         <svg width="1em" height="1em" fill="currentColor">
-                                                            <use href="{{ $design }}/svg/icons/sprite.svg#cart"></use>
+                                                            <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
                                                         </svg>
                                                     </span>
                                                     <span class="button__text">{{__('text.product_add_to_cart_text_d2')}}</span>
@@ -204,10 +158,40 @@
                     </div>
                 @endforeach
             </div>
-            <div class="raw-content raw-content--small">
-                {!! $product['full_desc'] !!}
-            </div>
+            @if ($product['full_desc'])
+                <div class="raw-content raw-content--small">
+                    {!! $product['full_desc'] !!}
+                </div>
+            @endif
         </main>
-
+        <aside class="aside categories-sidebar">
+            <div class="categories-sidebar__inner">
+                <div data-spollers class="categories-sidebar__spollers spollers">
+                    <div class="spollers__item">
+                        <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
+                        <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
+                            @foreach ($bestsellers as $bestseller)
+                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($bestseller['price']) }}</span></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @foreach ($menu as $category)
+                        <div class="spollers__item">
+                            <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
+                            <ul class="spollers__body">
+                                @foreach ($category['products'] as $item)
+                                    <li class="spollers__item-list">
+                                        <a href="{{ route('home.product', $item['url']) }}">
+                                            {{ $item['name'] }}
+                                        </a>
+                                        <span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($item['price']) }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </aside>
     </div>
 @endsection
