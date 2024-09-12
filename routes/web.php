@@ -7,6 +7,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Currency;
 use App\Services\GeoIpService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,17 +21,74 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-if(empty(session('location')))
+if(!session()->has('location'))
 {
     session(['location' => GeoIpService::GetInfoByIp()]);
 }
 
-if(empty(session('currency')))
+if(!session()->has('currency'))
 {
     $currency = config('app.currency');
     $coef = Currency::GetCoef($currency);
     session(['currency' => $currency]);
     session(['currency_c' => $coef]);
+}
+
+if(!session()->has('referer'))
+{
+    $request = new Request();
+    if(!empty($request->referer))
+    {
+        session(['referer' => $request->referer]);
+    }
+    else
+    {
+        session(['referer' => '']);
+    }
+}
+
+if(!session()->has('aff'))
+{
+    if(!empty(request('aff')))
+    {
+        session(['aff' => request('aff')]);
+    }
+    else
+    {
+        session(['aff' => config('app.aff')]);
+    }
+}
+
+if(!session()->has('saff'))
+{
+    if(!empty(request('saff')))
+    {
+        session(['saff' => request('saff')]);
+    }
+}
+
+if(!session()->has('keyword'))
+{
+    if(!empty(request('keyword')))
+    {
+        session(['keyword' => request('keyword')]);
+    }
+}
+
+if(!session()->has('refc'))
+{
+    if(!empty(request('refc')))
+    {
+        session(['refc' => request('refc')]);
+    }
+}
+
+if(!session()->has('coupon_get'))
+{
+    if(!empty(request('coupon')))
+    {
+        session(['coupon_get' => request('coupon')]);
+    }
 }
 
 Route::controller(SearchController::class)->group(function() {
@@ -61,6 +119,10 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/checkout/order', 'order')->name('checkout.order');
     Route::post('/checkout/auth', 'auth')->name('checkout.auth');
     Route::post('/checkout/change_country', 'change_country')->name('checkout.country')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/crypto_info', 'crypto_info')->name('checkout.crypto_info')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/validate_for_crypt', 'validate_for_crypt')->name('checkout.validate_for_crypt');
+    Route::post('/paypal', 'paypal')->name('checkout.paypal');
+    Route::post('/check_payment', 'check_payment')->name('checkout.check_payment')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/complete', 'complete')->name('checkout.complete');
 });
 

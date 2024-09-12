@@ -12,11 +12,13 @@ use App\Services\GeoIpService;
 use Illuminate\View\View;
 use App\Services\ProductServices;
 use App\Models\PhoneCodes;
+use App\Services\StatisticService;
 
 class HomeController extends Controller
 {
     public function index() : View
     {
+        StatisticService::SendStatistic('index');
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
 
@@ -63,6 +65,7 @@ class HomeController extends Controller
 
     public function first_letter($letter) : View
     {
+        StatisticService::SendStatistic('first_letter');
         $design = session('design') ? session('design') : config('app.design');
         $products = ProductServices::GetProductByFirstLetter($letter, $design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -85,6 +88,7 @@ class HomeController extends Controller
 
     public function active($active)
     {
+        StatisticService::SendStatistic('active');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -111,6 +115,7 @@ class HomeController extends Controller
 
     public function category($category) : View
     {
+        StatisticService::SendStatistic('category');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -131,6 +136,7 @@ class HomeController extends Controller
 
     public function disease($disease) : View
     {
+        StatisticService::SendStatistic('disease');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -152,12 +158,12 @@ class HomeController extends Controller
 
     public function product($product) : View
     {
+        StatisticService::SendStatistic($product);
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $product = ProductServices::GetProductInfoByUrl($product, $design);
-        // $packs = ProductServices::GetPacksById()
 
         return view($design . '.product', [
             'design' => $design,
@@ -172,6 +178,7 @@ class HomeController extends Controller
 
     public function about() : View
     {
+        StatisticService::SendStatistic('about_us');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -189,6 +196,7 @@ class HomeController extends Controller
 
     public function help() : View
     {
+        StatisticService::SendStatistic('faq');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -206,6 +214,7 @@ class HomeController extends Controller
 
     public function testimonials() : View
     {
+        StatisticService::SendStatistic('testimonials');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -223,6 +232,7 @@ class HomeController extends Controller
 
     public function delivery() : View
     {
+        StatisticService::SendStatistic('shipping');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -240,6 +250,7 @@ class HomeController extends Controller
 
     public function moneyback() : View
     {
+        StatisticService::SendStatistic('moneyback');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();

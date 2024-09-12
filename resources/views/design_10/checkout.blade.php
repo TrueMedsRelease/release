@@ -10,6 +10,21 @@
     <title>{{__('text.checkout_title')}}</title>
 </head>
 <body>
+    <div class="preloader">
+		<div class="preloader__row">
+			<div class="preloader__item"></div>
+			<div class="preloader__item"></div>
+		</div>
+	</div>
+	<div class="ploader">
+		<div class="ploader__row">
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+		</div>
+	</div>
 
     <div class="wrapper">
 
@@ -45,7 +60,7 @@
 			<div class="popup_text">
 				<p>{{__('text.checkout_insurance_popup')}}</p>
 			</div>
-			<button id="change_insur">
+			<button id="change_insur" onclick="Insurance()">
 				{{__('text.checkout_ok')}}
 			</button>
 		</div>
