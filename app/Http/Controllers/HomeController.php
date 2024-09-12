@@ -9,11 +9,14 @@ use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Services\ProductServices;
+use App\Services\StatisticService;
 
 class HomeController extends Controller
 {
     public function index() : View
     {
+        StatisticService::SendStatistic('index');
+
         $bestsellers = ProductServices::GetBestsellers();
 
         $menu = ProductServices::GetCategoriesWithProducts();
@@ -30,6 +33,8 @@ class HomeController extends Controller
 
     public function first_letter($letter) : View
     {
+        StatisticService::SendStatistic('first_letter');
+
         $products = ProductServices::GetProductByFirstLetter($letter);
 
         $bestsellers = ProductServices::GetBestsellers();
@@ -50,6 +55,8 @@ class HomeController extends Controller
 
     public function active($active) : View
     {
+        StatisticService::SendStatistic('active');
+
         $bestsellers = ProductServices::GetBestsellers();
 
         $menu = ProductServices::GetCategoriesWithProducts();
@@ -70,6 +77,7 @@ class HomeController extends Controller
 
     public function category($category) : View
     {
+        StatisticService::SendStatistic('category');
 
         $bestsellers = ProductServices::GetBestsellers();
 
@@ -90,6 +98,7 @@ class HomeController extends Controller
 
     public function disease($disease) : View
     {
+        StatisticService::SendStatistic('disease');
 
         $bestsellers = ProductServices::GetBestsellers();
 
@@ -111,6 +120,8 @@ class HomeController extends Controller
 
     public function product($product) : View
     {
+        StatisticService::SendStatistic($product);
+
         $design = config('app.design');
         $bestsellers = ProductServices::GetBestsellers();
         $menu = ProductServices::GetCategoriesWithProducts();
@@ -129,6 +140,8 @@ class HomeController extends Controller
 
     public function about() : View
     {
+        StatisticService::SendStatistic('about_us');
+
         $bestsellers = ProductServices::GetBestsellers();
 
         $menu = ProductServices::GetCategoriesWithProducts();
@@ -145,6 +158,8 @@ class HomeController extends Controller
 
     public function help() : View
     {
+        StatisticService::SendStatistic('faq');
+
         $bestsellers = ProductServices::GetBestsellers();
 
         $menu = ProductServices::GetCategoriesWithProducts();
@@ -161,6 +176,8 @@ class HomeController extends Controller
 
     public function testimonials() : View
     {
+        StatisticService::SendStatistic('testimonials');
+
         $bestsellers = ProductServices::GetBestsellers();
 
         $menu = ProductServices::GetCategoriesWithProducts();
@@ -177,6 +194,8 @@ class HomeController extends Controller
 
     public function delivery() : View
     {
+        StatisticService::SendStatistic('shipping');
+
         $bestsellers = ProductServices::GetBestsellers();
 
         $menu = ProductServices::GetCategoriesWithProducts();
@@ -193,6 +212,8 @@ class HomeController extends Controller
 
     public function moneyback() : View
     {
+        StatisticService::SendStatistic('moneyback');
+
         $bestsellers = ProductServices::GetBestsellers();
 
         $menu = ProductServices::GetCategoriesWithProducts();

@@ -9,8 +9,9 @@ use App\Models\Language;
 use App\Models\PhoneCodes;
 use App\Models\ProductTypeDesc;
 use App\Models\State;
+use App\Services\CacheServices;
 use App\Services\ProductServices;
-use Illuminate\Contracts\View\View;
+use App\Services\StatisticService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
@@ -24,6 +25,9 @@ class CheckoutController extends Controller
         if (empty(session('cart'))) {
             return redirect(route('home.index'));
         }
+
+        StatisticService::SendStatistic('checkout');
+
         $design = config('app.design');
         return view($design . '.checkout');
     }
@@ -33,6 +37,8 @@ class CheckoutController extends Controller
         $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
+
+        CacheServices::CheckCountryInfo();
 
         $types = ProductTypeDesc::query()
             ->where('language_id', '=', $language_id)

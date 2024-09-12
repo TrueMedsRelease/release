@@ -8,6 +8,7 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\ProductTypeDesc;
 use App\Services\ProductServices;
+use App\Services\StatisticService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -20,6 +21,8 @@ class CartController extends Controller
         {
             return redirect(route('home.index'));
         }
+
+        StatisticService::SendStatistic('cart');
 
         $bestsellers = ProductServices::GetBestsellers();
         $menu = ProductServices::GetCategoriesWithProducts();
