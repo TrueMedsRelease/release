@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Currency;
+use App\Models\Language;
 use App\Models\ProductSearch;
 use App\Services\ProductServices;
 use Illuminate\Http\Request;
@@ -29,7 +31,9 @@ class SearchController extends Controller
             'search_text' => $search_text,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
-            'products' => $products
+            'products' => $products,
+            'Currency' => Currency::class,
+            'Language' => Language::class,
         ]);
     }
 
