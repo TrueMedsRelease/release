@@ -4162,10 +4162,10 @@ document.cookie = "day=" + day + ";max-age=" + age;
     //         initSliders();
     //     });
     // });
-    // window.addEventListener("load", (function(e) {
-    //     bildSliders();
-    //     initSliders();
-    // }));
+    window.addEventListener("load", (function(e) {
+        bildSliders();
+        initSliders();
+    }));
     let addWindowScrollEvent = false;
     setTimeout((() => {
         if (addWindowScrollEvent) {
@@ -4457,13 +4457,13 @@ $(document).on('click', '.push_allow', function () {
     enableNotif();
 });
 
-if (location.pathname != '/'){
-    $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
-    //document.getElementById('main_bestsellers').hidden = true;
-    if (document.getElementById('main_bestsellers_body')) {
-        document.getElementById('main_bestsellers_body').hidden = true;
-    }
-}
+// if (location.pathname != '/'){
+//     $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
+//     //document.getElementById('main_bestsellers').hidden = true;
+//     if (document.getElementById('main_bestsellers_body')) {
+//         document.getElementById('main_bestsellers_body').hidden = true;
+//     }
+// }
 
 if (window.innerWidth > 1925) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');

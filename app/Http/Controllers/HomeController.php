@@ -83,7 +83,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function active($active) : View
+    public function active($active)
     {
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -91,6 +91,11 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetProductByActive($active, $design);
+
+
+        if (count($products) == 1) {
+            return redirect(route('home.product', $products[0]['url']));
+        }
 
         return view($design . '.active',[
             'design' => $design,

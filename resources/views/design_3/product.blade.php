@@ -95,8 +95,8 @@
                                     <h2 class="details-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                     <div class="details-product__links limiter">
                                         @foreach ($product['sinonim'] as $sinonim)
-                                            <a href="">
-                                                {{ $sinonim }}
+                                            <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                                {{ $sinonim['name'] }}
                                             </a>
                                         @endforeach
                                         <div class="bottom"></div>
@@ -108,8 +108,8 @@
                                     <h2 class="details-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                     <div class="details-product__links">
                                         @foreach ($product['sinonim'] as $sinonim)
-                                            <a href = "">
-                                                {{ $sinonim }}
+                                            <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                                {{ $sinonim['name'] }}
                                             </a>
                                         @endforeach
                                     </div>
@@ -137,7 +137,13 @@
                     @endif
                     @if ($key != $prev_dosage)
                         <div class="product__item">
-                        <h3 class="item-product-info__name">{{ "{$product['name']} $key" }}</h3>
+                        <h3 class="item-product-info__name">
+                            @if (!in_array($product['id'], [616, 619, 620, 483, 484, 501, 615]))
+                                {{ "{$product['name']} $key" }}@if ($loop->parent->iteration == 1 && $product['rec_name'] != 'none')<span style="font-weight:lighter;">, {{__('text.product_need_more')}}</span> <span class="details-product__links"><a href="{{route('home.product', $product['rec_url'])}}">{{ $product['rec_name'] }}</a></span> @endif
+                            @else
+                                {{ $product['name'] }}
+                            @endif
+                        </h3>
                         <table class="item-product-info__table">
                         <thead>
                         <tr class="item-product-info__row item-product-info__row--top">
@@ -151,7 +157,7 @@
                             $prev_dosage = $key;
                         @endphp
                     @endif
-                    <tbody>
+                    <tbody @if ($loop->iteration == 1 && $product['image'] != 'gift-card') class="item-product-info__row--discount" @endif>
                     <tr class="item-product-info__row">
                         <th class="item-product-info__package">
                             {{ "{$item['num']} {$product['type']}" }}
@@ -163,7 +169,7 @@
                                 @endif
                             @endif
                         </th>
-                        <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</th>
+                        <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
                         <th class="item-product-info__price">
                             @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                 <span class="item-product-info__old-price">

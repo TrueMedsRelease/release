@@ -347,7 +347,9 @@ return [
     "testimonials_prev" => "Sebelumnya",
     "testimonials_next" => "Seterusnya",
     "moneyback_title" => "Pulangan Wang",
-    "moneyback_text" => "<p>Anda mempunyai 24 jam untuk membatalkan pesanan anda setelah ia ditempatkan. Selepas tempoh itu, pakej akan dihantar, dan pembatalan tidak tersedia. Walau bagaimanapun, anda boleh menolak pakej itu apabila ia tiba di pintu rumah anda.</p>",
+    "moneyback_text" => "<p>Anda mempunyai 24 jam untuk membatalkan pesanan anda setelah ia ditempatkan. Selepas tempoh itu, pakej akan dihantar, dan pembatalan tidak tersedia. Walau bagaimanapun, anda boleh menolak pakej itu apabila ia tiba di pintu rumah anda.</p>
+<p>Kami menawarkan jaminan wang kembali selama 30 hari kepada semua pelanggan kami, yang membolehkan anda menghubungi perkhidmatan pelanggan dalam masa 30 hari selepas ketibaan pakej anda untuk mendapatkan bayaran balik penuh.</p>
+<p><b>Sila ambil perhatian</b> bahawa kami tidak dapat menerima pemulangan sebarang ubat-ubatan setelah pakej dibuka kerana sekatan dan peraturan undang-undang.</p>",
     "affiliate_title" => "Program Rakan Kongsi",
     "affiliate_contact_message" => "Sila hantar mesej dengan kenalan anda dan anda akan menerima jawapan yang pasti.",
     "affiliate_name" => "Nama",
@@ -546,4 +548,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Permintaan anda telah dihantar.",
     "success_thank" => "Terima kasih kerana memilih kami!",
+    "search_nothing" => "Tiada apa yang dijumpai",
 ];

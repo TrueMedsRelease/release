@@ -351,7 +351,9 @@ return [
     "testimonials_prev" => "以前",
     "testimonials_next" => "下一个",
     "moneyback_title" => "退款",
-    "moneyback_text" => "<p>下单后，您可以在24小时内取消订单。超过24小时后，包裹将被发出，无法再被取消。但是，您可以在包裹到达后拒收。</p>",
+    "moneyback_text" => "<p>下单后，您可以在24小时内取消订单。超过24小时后，包裹将被发出，无法再被取消。但是，您可以在包裹到达后拒收。</p>
+<p>我们为所有客户提供30天退款保证。您可以在包裹到达后的30天内联系客服，获得全额退款。</p>
+<p><b>请注意</b>，由于法律法规的限制，我们不接受已经打开包装的药品退货。</p>",
     "affiliate_title" => "加盟计划",
     "affiliate_contact_message" => "请与您的联系人发送消息，您肯定会收到回复。",
     "affiliate_name" => "名字",
@@ -550,4 +552,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "您的申请已经提交。",
     "success_thank" => "感谢您选择我们！",
+    "search_nothing" => "未找到任何内容",
 ];

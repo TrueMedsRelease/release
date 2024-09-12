@@ -162,7 +162,13 @@
                                                 <span class="checkbox__add-text">
                                                     {{__('text.checkout_over')}} {{ $Currency::convert(300) }}
                                                 </span>
-                                                <span class="checkbox__add-text">{{__('text.checkout_express_text')}}</span>
+                                                <span class="checkbox__add-text">
+                                                    @if ($product_total >= 300)
+                                                    @else
+                                                        <p>{{__('text.shipping_ems_discount')}}</p>
+                                                    @endif
+                                                    {{__('text.checkout_express_text')}}
+                                                </span>
                                             </span></label>
                                     </div>
                                     <div style="font-size: 14px;font-weight: 500;"

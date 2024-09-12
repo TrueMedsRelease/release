@@ -4269,13 +4269,13 @@ $(document).on('click', '.button_request_call', function () {
     }
 });
 
-if (location.pathname != '/'){
-    $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
-    document.getElementById('main_bestsellers').hidden = true;
-    if (document.getElementById('main_bestsellers_body')) {
-        document.getElementById('main_bestsellers_body').hidden = true;
-    }
-}
+// if (location.pathname != '/'){
+//     $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
+//     document.getElementById('main_bestsellers').hidden = true;
+//     if (document.getElementById('main_bestsellers_body')) {
+//         document.getElementById('main_bestsellers_body').hidden = true;
+//     }
+// }
 
 function getCookie(name) {
     var value = "; " + document.cookie;

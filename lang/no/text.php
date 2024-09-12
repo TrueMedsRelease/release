@@ -346,7 +346,9 @@ return [
     "testimonials_prev" => "Forrige",
     "testimonials_next" => "Neste",
     "moneyback_title" => "Pengen tilbake",
-    "moneyback_text" => "<p>Du har 24 timer på deg til å kansellere bestillingen din etter den har blitt sendt inn. Etter det vil pakken mest sannsynlig ha blitt sendt, og kansellering er ikke lenger tilgjengelig. Du kan imidlertid nekte å ta imot pakken når den blir levert på døren din.</p>",
+    "moneyback_text" => "<p>Du har 24 timer på deg til å kansellere bestillingen din etter den har blitt sendt inn. Etter det vil pakken mest sannsynlig ha blitt sendt, og kansellering er ikke lenger tilgjengelig. Du kan imidlertid nekte å ta imot pakken når den blir levert på døren din.</p>
+<p>Vi tilbyr alle kundene våre en 30-dagers pengene-tilbake-garanti, som gir deg muligheten til å kontakte kundestøtten innen 30 dager etter at pakken har blitt levert for full refusjon.</p>
+<p><b>Vær oppmerksom</b> på at vi ikke kan akseptere retur av medisiner etter at pakkene er åpnet på grunn av lovbegrensninger og forskrifter.</p>",
     "affiliate_title" => "Tilknyttet program",
     "affiliate_contact_message" => "Send melding med din kontakt så får du sikkert svar.",
     "affiliate_name" => "Navn",
@@ -548,4 +550,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Din forespørsel er sendt.",
     "success_thank" => "Takk for at du valgte oss!",
+    "search_nothing" => "Ingenting funnet",
 ];

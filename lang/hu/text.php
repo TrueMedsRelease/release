@@ -352,7 +352,9 @@ return [
     "testimonials_prev" => "Előző",
     "testimonials_next" => "Következő",
     "moneyback_title" => "Pénzvisszafizetés",
-    "moneyback_text" => "<p>Önnek 24 órája van rendelése visszavonására, miután elküldte azt. Ezután a csomagot elküldik, és visszavonás nem lehetséges. Azonban a csomag megérkezése után visszautasíthatja azt az ajtónál.</p>",
+    "moneyback_text" => "<p>Önnek 24 órája van rendelése visszavonására, miután elküldte azt. Ezután a csomagot elküldik, és visszavonás nem lehetséges. Azonban a csomag megérkezése után visszautasíthatja azt az ajtónál.</p>
+<p>Mindannyi ügyfelünknek 30 napos pénzvisszafizetési garanciát kínálunk, amely lehetővé teszi, hogy kapcsolatba lépjen az ügyfélszolgálattal a csomag megérkezését követő 30 napon belül teljes visszatérítésért.</p>
+<p><b>Kérjük, vegye figyelembe,</b> hogy a gyógyszerek visszatérítését nem fogadjuk el, miután a csomagokat felnyitották, jogi korlátozások és szabályozások miatt.</p>",
     "affiliate_title" => "Partnerprogram",
     "affiliate_contact_message" => "Kérjük, küldjön üzenetet a kapcsolattartójával, és biztosan választ fog kapni.",
     "affiliate_name" => "Név",
@@ -551,4 +553,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Az Ön kérését elküldtük.",
     "success_thank" => "Köszönjük, hogy minket választott!",
+    "search_nothing" => "Semmi nem található",
 ];

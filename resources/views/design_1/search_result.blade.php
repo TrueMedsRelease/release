@@ -22,7 +22,7 @@
                                 @endforeach
                             </h4>
                         </div>
-                        <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
+                        <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
                         <div class="product-card__image">
                             <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}">
@@ -51,7 +51,7 @@
                                 @endforeach
                             </h4>
                         </div>
-                        <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
+                        <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
                         <div class="product-card__image">
                             <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}">

@@ -245,8 +245,8 @@ return [
     "cart_upgrade" => "Faça o upgrade deste pack para ",
     "cart_for_only" => " por apenas ",
     "cart_savei" => ", poupe ",
-    "cart_get_ems" => ". Bônus: Entrega Expresso Grátis!",
-    "cart_get_regular" => ". Bónus: Entrega Standard Gratuita!",
+    "cart_get_ems" => " Bônus: Entrega Expresso Grátis!",
+    "cart_get_regular" => " Bónus: Entrega Standard Gratuita!",
     "cart_bonus" => "Bónus Gratuito: ",
     "cart_saving" => "Poupanças: ",
     "cart_pay_button" => "Pagar pela encomenda ",
@@ -467,7 +467,9 @@ return [
     "testimonials_prev" => "Anterior",
     "testimonials_next" => "Seguinte",
     "moneyback_title" => "Reembolso",
-    "moneyback_text" => "<p>Tem até 24 horas para cancelar a sua encomenda a partir do momento da sua submissão. Após esse período, a encomenda será expedida e os cancelamentos indisponíveis. No entanto, pode rejeitar o pacote assim que este chegar à sua porta.</p><p>Oferecemos a todos os nossos clientes uma garantia de devolução do dinheiro de 30 dias, que lhe permite contactar o serviço de apoio ao cliente nos 30 dias após a chegada da sua encomenda para um reembolso total.</p><p><b>Por favor note</b> que não aceitamos o retorno de quaisquer medicamentos após a abertura das embalagens devido a restrições e regulações legais.</p>",
+    "moneyback_text" => "<p>Ai 24 de ore pentru a anula o comandă după ce aceasta a fost plasată. Apoi, coletul va fi livrat, iar anulările nu vor mai fi valabile. Chiar și așa, poți refuza colectul de îndată ce acesta ajunge la tine.</p>
+<p>Oferim clienților noștri garanția returnării banilor în 30 de zile, lucru care îți permite sa iei legătura cu serviciul de clienți în maximum 30 de zile de la sosirea coletului, pentru returnarea banilor în întregime. </p>
+<p><b>Te rugăm reține că</b>, din cauza restricțiilor legale și a reglementărilor, nu putem accepta returnarea medicamentelor dacă acestea au fost desfăcute.</p>",
     "affiliate_title" => "Programa de afiliados",
     "affiliate_contact_message" => "Por favor, envie uma mensagem com o seu contacto e receberá uma resposta com certeza.",
     "affiliate_name" => "Nome",
@@ -667,4 +669,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Sua solicitação foi enviada.",
     "success_thank" => "Obrigado por nos escolher!",
+    "search_nothing" => "Aqui não há nada",
 ];

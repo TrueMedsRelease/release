@@ -208,8 +208,8 @@
         </div>
 
         <p class="footer_copyright">
-            {{__('text.license_text_license1_d2')}}
-            {{__('text.license_text_license2_d1')}}
+            {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+            {{__('text.license_text_license2_d8')}}
         </p>
 
 <script src="{{ asset("$design/js/app.js") }}"></script>

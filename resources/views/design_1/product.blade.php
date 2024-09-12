@@ -22,7 +22,7 @@
                     @if ($product['image'] != 'gift-card')
                         <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                     @endif
-                    <img class="product-about__img" src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/products/gift-card.svg') }}"
+                    <img class="product-about__img" src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift_card_img.svg') }}"
                         alt="{{ $product['image'] }}">
                 </picture>
                 <ul class="product-about__characteristics">
@@ -91,21 +91,23 @@
                         </li>
                     @endif
 
-                    @if (!empty($product['sinonim']))
-                        <li class="product-about__characteristic">
-                            <span class="product-about__characteristic-name">
-                                {{ $product['name'] }} {!!__('text.product_others')!!}
-                            </span>
-                            <ul>
-                                <li>
-                                    @foreach ($product['sinonim'] as $sinonim)
-                                        <a href = "" class="product-about__characteristic-meaning--link">
-                                            {{ $sinonim }}
-                                        </a>
-                                    @endforeach
-                                </li>
-                            </ul>
-                        </li>
+                    @if ($product['image'] != 'gift-card')
+                        @if (!empty($product['sinonim']))
+                            <li class="product-about__characteristic">
+                                <span class="product-about__characteristic-name">
+                                    {{ $product['name'] }} {!!__('text.product_others')!!}
+                                </span>
+                                <ul>
+                                    <li>
+                                        @foreach ($product['sinonim'] as $sinonim)
+                                            <a href = "{{ route('home.product', $sinonim['url']) }}" class="product-about__characteristic-meaning--link">
+                                                {{ $sinonim['name'] }}
+                                            </a>
+                                        @endforeach
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                     @endif
                 </ul>
             </div>
@@ -129,7 +131,11 @@
                             @if ($key != $prev_dosage)
                                 <li class="product__info-item">
                                     <h3 class="product__info-title">
-                                        {{ "{$product['name']} $key" }}
+                                        @if (!in_array($product['id'], [616, 619, 620, 483, 484, 501, 615]))
+                                            {{ "{$product['name']} $key" }}@if ($loop->parent->iteration == 1 && $product['rec_name'] != 'none')<span style="font-weight:lighter;">, {{__('text.product_need_more')}}</span> <a class="product-about__characteristic-meaning--link" href="{{route('home.product', $product['rec_url'])}}">{{ $product['rec_name'] }}</a> @endif
+                                        @else
+                                            {{ $product['name'] }}
+                                        @endif
                                     </h3>
                                     <table class="product-table">
                                         <tbody>
@@ -143,33 +149,40 @@
                                             $prev_dosage = $key;
                                         @endphp
                             @endif
-                                        <tr class="product-table__list @if ($loop->iteration == 1) product-table__list--badge @endif">
+                                        <tr class="product-table__list @if ($loop->iteration == 1 && $product['image'] != 'gift-card') product-table__list--badge @endif">
                                             <th class="product-table__package">
                                                 {{ "{$item['num']} {$product['type']}" }}
-                                                @if ($item['price'] >= 300)
-                                                    <span class="product-table__prompt">{{__('text.cart_free_express')}}</span>
-                                                @elseif($item['price'] < 300 && $item['price'] >= 200)
-                                                    <span class="product-table__prompt">{{__('text.cart_free_regular')}}</span>
+                                                @if ($product['image'] != 'gift-card')
+                                                    @if ($item['price'] >= 300)
+                                                        <span class="product-table__prompt">{{__('text.cart_free_express')}}</span>
+                                                    @elseif($item['price'] < 300 && $item['price'] >= 200)
+                                                        <span class="product-table__prompt">{{__('text.cart_free_regular')}}</span>
+                                                    @endif
                                                 @endif
                                             </th>
-                                            <th class="product-table__per">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</th>
+                                            <th class="product-table__per">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
                                             <th class="product-table__price">
                                                 @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                                     <span class="product-table__old">{{ $Currency::convert($dosage['max_pill_price'] * $item['num'], true) }}</span>
                                                     <span class="product-table__discount">-{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span>
-                                                    {{-- <span class="product-table__current">{{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}</span> --}}
                                                 @endif
-                                                <span class="product-table__current">{{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}</span>
-                                                {{-- {if $cur_product_packaging.discount == 0}
-                                                    <span class="product-table__current--discount">{$cur_product_packaging.price}</span>
-                                                {/if} --}}
+
+                                                @if ($product['image'] != 'gift-card')
+                                                    @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) == 0)
+                                                        <span class="product-table__current--discount">{{ $Currency::convert($item['price'], true) }}</span>
+                                                    @else
+                                                        <span class="product-table__current">{{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}</span>
+                                                    @endif
+                                                @else
+                                                    <span class="product-table__current">{{ $Currency::convert($item['price'], true) }}</span>
+                                                @endif
                                             </th>
                                             <th class="product-table__add">
                                                 <form action="{{ route('cart.add', $item['id']) }}" method="post">
                                                     @csrf
-                                                    {{-- <button class="product-table__btn" type="submit">
+                                                    <button class="product-table__btn" type="submit">
                                                         <span class="sr-only">{{__('text.product_add_to_cart_text')}}</span>
-                                                    </button> --}}
+                                                    </button>
                                                     <button class="product-table__cart" type="submit">
                                                         {{__('text.product_add_to_cart_text')}}
                                                     </button>

@@ -246,8 +246,8 @@ return [
     "cart_upgrade" => "このパックを次のようにアップグレードします ",
     "cart_for_only" => " のみのために ",
     "cart_savei" => " と保存 ",
-    "cart_get_ems" => ". ボーナス：無料の速達便！",
-    "cart_get_regular" => ". ボーナス：無料定期配信！",
+    "cart_get_ems" => " ボーナス：無料の速達便！",
+    "cart_get_regular" => " ボーナス：無料定期配信！",
     "cart_bonus" => "無料ボーナス：",
     "cart_no_bonus" => "ボーナスなし。",
     "cart_add_bonus" => "ボーナスを追加",
@@ -668,4 +668,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "あなたのリクエストは送信されました。",
     "success_thank" => "弊社をお選びいただきありがとうございます！",
+    "search_nothing" => "何も見つかりませんでした",
 ];

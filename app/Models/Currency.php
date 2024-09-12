@@ -47,7 +47,7 @@ class Currency extends Model
         return $currency[0]['coef'];
     }
 
-    public static function Convert($number, $round = false)
+    public static function Convert($number, $round = false, $format = false)
     {
         $current_currency = session('currency', 'usd');
         $coef = session('currency_c');
@@ -60,10 +60,14 @@ class Currency extends Model
         {
             $total = round($number * $coef, 2);
         }
-        return $prefix . $total;
+
+        if ($format) {
+            return $prefix . number_format($total, 2, '.', '');
+        } else {
+            return $prefix . $total;
+        }
+
     }
-
-
 
     public static function SumInCurrency($numbers = [])
     {

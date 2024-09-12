@@ -17,7 +17,7 @@
                                 @endforeach
                             </p>
                         </div>
-                        <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
+                        <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                     </div>
                     <div class="item-product__image-ibg">
                         <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}">

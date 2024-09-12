@@ -65,9 +65,9 @@
 								<h2 class="product__image_label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
 								<div class="product__image_links">
 									@foreach ($product['sinonim'] as $sinonim)
-										<a href="">
-											{{ $sinonim }}
-										</a>
+                                        <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                            {{ $sinonim['name'] }}
+                                        </a>
                                     @endforeach
 								</div>
 								@if (count($product['sinonim']) > 10)<div class="more">view all</div>@endif
@@ -138,7 +138,7 @@
                                     <span class="item-product-info__delivery">{{__('text.cart_free_regular')}}</span>
                                 @endif
 							</th>
-							<th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</th>
+							<th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
 							<th class="item-product-info__price">
                                 @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
 									<span class="item-product-info__old-price">

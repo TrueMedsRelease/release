@@ -19,7 +19,7 @@ class ProductServices
 {
     public static function GetBestsellers($design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
 
         if ($design == 'design_5') {
@@ -56,7 +56,7 @@ class ProductServices
     public static function GetCategoriesWithProducts($design, $url = '')
     {
         $category_desc = self::GetAllCategoryDesc(Language::$languages[App::currentLocale()], $design);
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
 
         if(empty($url))
@@ -119,23 +119,24 @@ class ProductServices
         return $categories;
     }
 
-    public static function GetProductDesc($language_id, $design, $url = '')
+    public static function GetProductDesc($language_id, $url = '')
     {
         if(empty($url))
         {
-            // if ($design == 'design_5') {
-            //     $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('category_id', '=', 14)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
-            // } else {
-                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
-            // }
+            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
         }
         else
         {
-            // if ($design == 'design_5') {
-            //     $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('category_id', '=', 14)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
-            // } else {
-                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
-            // }
+            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+
+            if (!$products_desc_raw || empty($products_desc_raw)) {
+                $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '=', $product_id[0]->id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+
+                foreach($products_desc_raw as $key => $product) {
+                    $products_desc_raw[$key][0]['name'] = ucfirst($url) . ' (' . __('text.product_other_name') . $product[0]['name'] . ')';
+                }
+            }
         }
 
         $products_desc = [];
@@ -184,7 +185,7 @@ class ProductServices
 
     public static function GetProductByFirstLetter($letter, $design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
 
         // if ($design == 'design_5') {
@@ -218,7 +219,7 @@ class ProductServices
 
     public static function GetProductByDisease($disease, $design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
         $disease = str_replace('-', ' ', $disease);
 
@@ -264,7 +265,7 @@ class ProductServices
 
     public static function GetProductByActive($active, $design)
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
 
         // if ($design == 'design_5') {
@@ -300,24 +301,13 @@ class ProductServices
     public static function GetProductInfoByUrl($url, $design)
     {
         $language_id = Language::$languages[App::currentLocale()];
-        $products_desc = self::GetProductDesc($language_id, $design, $url);
+        $products_desc = self::GetProductDesc($language_id, $url);
 
-        // if ($design == 'design_5') {
-        //     $product = Product::query()
-        //         ->where('id', '=', $products_desc['product_id'])
-        //         ->where('is_showed', '=', 1)
-        //         ->where('category_id', '=', 14)
-        //         ->with('category.category_desc')
-        //         ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
-
-        // } else {
-            $product = Product::query()
-                ->where('id', '=', $products_desc['product_id'])
-                ->where('is_showed', '=', 1)
-                ->with('category.category_desc')
-                ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
-
-        // }
+        $product = Product::query()
+            ->where('id', '=', $products_desc['product_id'])
+            ->where('is_showed', '=', 1)
+            ->with('category.category_desc')
+            ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
 
         #region Category
         $categories = [];
@@ -390,17 +380,83 @@ class ProductServices
 
         $product = $product->toArray()[0];
         unset($product['category']);
+
+        $sinonims = DB::select("SELECT p.sinonim from product p WHERE p.id = ?", [$products_desc['product_id']]);
+        $sinonims = preg_replace('/\b(\w.+)\b/', '$0/', $sinonims[0]->sinonim);
+        $sinonims = explode('/', $sinonims);
+        if ($sinonims[0] == "﻿" || $sinonims[0] == "")
+        for ($i = 0; $i < count($sinonims); $i++)
+            if ($i+1 != count($sinonims))
+                $sinonims[$i] = $sinonims[$i+1];
+        if ($sinonims[0] != "﻿" || $sinonims[0] != "")
+        for ($i = 0; $i < count($sinonims); $i++)
+            $sinonims[$i] = $sinonims[$i];
+
+        $sinonims_new = [];
+        foreach($sinonims as $ps) {
+            if ($ps != "") {
+                $sinonim_name = trim(str_replace('-', ' ', str_replace("\u{FEFF}", '', $ps)));
+                $sinonim_url = strtolower(htmlentities(trim(str_replace('&', '-', (str_replace(' ', '-', str_replace("\u{FEFF}", '', $ps)))))));
+                $sinonims_new[] = array (
+                    "name" => $sinonim_name,
+                    "url" => $sinonim_url
+                );
+            }
+        }
+
+        $product['sinonim'] = [];
+
+        if ($sinonims_new) {
+            $product['sinonim'] = array_merge($product['sinonim'], $sinonims_new);
+        } else {
+            $product['sinonim'] = '';
+        }
+
+        $rec_name = 'none';
+        $rec_url = '';
+        if ($products_desc['name'] === 'Viagra') {
+            $rec_name = 'Viagra Extra Dosage';
+            $rec_url = 'viagra-extra-dosage';
+        }
+        if ($products_desc['name'] === 'Cialis') {
+            $rec_name = 'Cialis Extra Dosage';
+            $rec_url = 'cialis-extra-dosage';
+        }
+        if ($products_desc['name'] === 'Levitra') {
+            $rec_name = 'Levitra Extra Dosage';
+            $rec_url = 'levitra-extra-dosage';
+        }
+        if ($products_desc['name'] === 'Super Viagra') {
+            $rec_name = 'Extra Super Viagra';
+            $rec_url = 'extra-super-viagra';
+        }
+        if ($products_desc['name'] === 'Super Cialis') {
+            $rec_name = 'Extra Super Cialis';
+            $rec_url = 'extra-super-cialis';
+        }
+        if ($products_desc['name'] === 'Super Levitra') {
+            $rec_name = 'Extra Super Levitra';
+            $rec_url = 'extra-super-levitra';
+        }
+        if ($products_desc['name'] === 'Super Avana') {
+            $rec_name = 'Extra Super Avana';
+            $rec_url = 'extra-super-avana';
+        }
+
+
         $product['categories'] = $categories;
         $product['name'] = $products_desc['name'];
         $product['desc'] = $products_desc['desc'];
         $product['aktiv'] = explode(',', str_replace(' ', '', ucwords($product['aktiv'])));
         $product['disease'] = $product_disease;
         $product['analog'] = json_decode(json_encode($analogs), true);
-        $product['sinonim'] = explode("\n", str_replace("\u{FEFF}", '', $product['sinonim']));
+        $product['sinonim'] = $product['sinonim'];
         $path = public_path() . '/languages/' . App::currentLocale() . '/tablets_descriptions/' . $product['product_info_file_path'];
         $product['full_desc'] = File::exists($path) ? File::get($path) : '';
         $product['packs'] = $packs;
         $product['type'] = $type;
+        $product['rec_name'] = $rec_name;
+        $product['rec_url'] = $rec_url;
 
         return $product;
     }
@@ -457,7 +513,7 @@ class ProductServices
             $search_text = '(' . $search_text . ')';
         }
 
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
         $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
             ->distinct()
@@ -551,7 +607,7 @@ class ProductServices
 
         $bonus_free = (object)[
             'pack_id' => 0,
-            'name' => 'No Select',
+            'name' => 'No Bonus',
             'price' => 0,
             'type' => 'none',
             'desc' => ''

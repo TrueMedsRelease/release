@@ -229,7 +229,7 @@
                                 @endif
                             </span>
 
-                            <span class="product_per_pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</span>
+                            <span class="product_per_pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
 
                             <span class="product_offer">
                                 @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) > 0)

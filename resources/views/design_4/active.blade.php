@@ -21,7 +21,7 @@
                                 @endforeach
                             </div>
                             <div class="item-product__bottom-row">
-                                <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
+                                <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                                 <a type="button" href="{{ route('home.product', $product['url']) }}" class="item-product__button button button--filled button--narrow">{{__('text.common_buy_button')}}</a>
                             </div>
                         </div>

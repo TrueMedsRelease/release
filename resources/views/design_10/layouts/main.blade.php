@@ -534,7 +534,10 @@
             </div>
             <!-- Copyrights-->
             <div class="footer__copyrights">
-                <p>{{__('text.license_text_license1_d2')}} {{__('text.license_text_license2_d10')}}</p>
+                <p>
+                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license2_d10')}}
+                </p>
             </div>
             <!-- Footer controls-->
             <div class="footer-buttons">

@@ -434,7 +434,9 @@ return [
     "testimonials_t_20" => "“Nakupoval jsem tu poprvé, a jakmile budu potřebovat další léky, určitě se sem vrátím. Pro někoho, kdo obvykle zboží na internetu neobjednává, to byla docela příjemná zkušenost.”",
     "testimonials_author_t_20" => " <b>Leo P</b>",
     "moneyback_title" => "Vrácení peněz",
-    "moneyback_text" => "<p>Po odeslání objednávky máte 24 hodin na její zrušení. Po uplynutí této doby vám bude balíček odeslán a zrušení již není možné. Jakmile k vám však balíček dorazí, máte právo ho odmítnout.</p>",
+    "moneyback_text" => "<p>Po odeslání objednávky máte 24 hodin na její zrušení. Po uplynutí této doby vám bude balíček odeslán a zrušení již není možné. Jakmile k vám však balíček dorazí, máte právo ho odmítnout.</p>
+<p>Všem našim zákazníkům nabízíme 30denní záruku vrácení peněz, která vám umožňuje do 30 dní od doručení zásilky kontaktovat zákaznický servis a získat plnou náhradu.</p>
+<p><b>Vezměte prosím na vědomí,</b> že z důvodu zákonných omezení a dodržení předpisů nemůžeme akceptovat vrácení jakýchkoli léčebných přípravků po jejich rozbalení.</p>",
     "affiliate_title" => "Affiliate program",
     "affiliate_contact_message" => "Zašlete prosím zprávu se svým kontaktem a pro jistotu obdržíte odpověď.",
     "affiliate_name" => "Jméno",
@@ -633,4 +635,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Vaše žádost byla odeslána.",
     "success_thank" => "Děkujeme, že jste si vybrali nás!",
+    "search_nothing" => "Nic nenalezeno",
 ];

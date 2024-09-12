@@ -11,7 +11,7 @@
                     <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.main_best_selling_title')}}</button>
                     <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
                         @foreach ($bestsellers as $bestseller)
-                            <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
+                            <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price'], false, true) }}</span></li>
                         @endforeach
                     </ul>
                 </div>
@@ -24,7 +24,7 @@
                                     <a href="{{ route('home.product', $item['url']) }}">
                                         {{ $item['name'] }}
                                     </a>
-                                    <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
+                                    <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
                                 </li>
                             @endforeach
                         </ul>
@@ -70,7 +70,7 @@
                                         </div>
                                     </a>
                                     <div class="product_right_block">
-                                        <div class="product_price">{{ $Currency::convert($product['price']) }}</div>
+                                        <div class="product_price">{{ $Currency::convert($product['price'], false, true) }}</div>
                                         <button type="button" class="product-card__button button button--accent" title="{{__('text.product_add_to_cart_text')}}" onclick="location.href='{{ route('home.product', $product['url']) }}'">
                                             <svg width="24" height="24">
                                                 <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart-white") }}"></use>
@@ -123,7 +123,7 @@
                                     </div>
                                 </a>
                                 <div class="product_right_block">
-                                    <div class="product_price">{{ $Currency::convert($product['price']) }}</div>
+                                    <div class="product_price">{{ $Currency::convert($product['price'], false, true) }}</div>
                                     <button type="button" class="product-card__button button button--accent" title="{{__('text.product_add_to_cart_text')}}" onclick="location.href='{{ route('home.product', $product['url']) }}'">
                                         <svg width="24" height="24">
                                             <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart-white") }}"></use>
@@ -143,109 +143,45 @@
     @endif
 </section>
 
-
-<div class="subscribe_body">
-    <div class="left_block">
-        <div class="subscribe_img">
-            <img src="{{ asset("$design/images/icons/subscribe.svg") }}">
-        </div>
-        <div class="text_subscribe">
-            <span class="top_text">{{__('text.common_subscribe')}}</span>
-            <span class="bottom_text">{{__('text.common_spec_offer')}}</span>
-        </div>
-    </div>
-    <div class="right_block">
-        <input type="text" placeholder="Email" class="form__input input" id="email_sub">
-        <div class="button_sub">
-            <img src="{{ asset("$design/images/icons/subscribe_mini.svg") }}" class="sub_mini">
-            <span class="button_text">{{__('text.common_subscribe')}}</span>
-        </div>
-    </div>
-</div>
-
-<section class="ship-index">
-    <div class="ship-index__container">
-        <ul class="ship-index__list">
-            <li class="ship-index__item">
-                <img src="/images/shipping/usps.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/ems.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/dhl.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/ups.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/fedex.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/tnt.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/postnl.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/deutsche_post.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/dpd.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/gls.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/australia_post.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/colissimo.svg" alt="">
-            </li>
-            <li class="ship-index__item">
-                <img src="/images/shipping/correos.svg" alt="">
-            </li>
-        </ul>
-    </div>
-</section>
-
-<div class="reviews_block">
-    <div class="review">
-        <div class="review_top">
-            <div class="person_name">{!!__('text.testimonials_author_t_1')!!}</div>
-            <div class="stars">
-                <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+@section('testimonial')
+    <div class="reviews_block">
+        <div class="review">
+            <div class="review_top">
+                <div class="person_name">{!!__('text.testimonials_author_t_1')!!}</div>
+                <div class="stars">
+                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                </div>
             </div>
+            <div class="review_text">{{__('text.testimonials_t_1')}}</div>
         </div>
-        <div class="review_text">{{__('text.testimonials_t_1')}}</div>
-    </div>
-    <div class="review">
-        <div class="review_top">
-            <div class="person_name">{!!__('text.testimonials_author_t_7')!!}</div>
-            <div class="stars">
-                <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+        <div class="review">
+            <div class="review_top">
+                <div class="person_name">{!!__('text.testimonials_author_t_7')!!}</div>
+                <div class="stars">
+                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                </div>
             </div>
+            <div class="review_text">{{__('text.testimonials_t_7')}}</div>
         </div>
-        <div class="review_text">{{__('text.testimonials_t_7')}}</div>
-    </div>
-    <div class="review">
-        <div class="review_top">
-            <div class="person_name">{!!__('text.testimonials_author_t_13')!!}</div>
-            <div class="stars">
-                <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+        <div class="review">
+            <div class="review_top">
+                <div class="person_name">{!!__('text.testimonials_author_t_13')!!}</div>
+                <div class="stars">
+                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                </div>
             </div>
+            <div class="review_text">{{__('text.testimonials_t_13')}}</div>
         </div>
-        <div class="review_text">{{__('text.testimonials_t_13')}}</div>
-    </div>
-    <div class="review">
-        <div class="review_top">
-            <div class="person_name">{!!__('text.testimonials_author_t_17')!!}</div>
-            <div class="stars">
-                <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+        <div class="review">
+            <div class="review_top">
+                <div class="person_name">{!!__('text.testimonials_author_t_17')!!}</div>
+                <div class="stars">
+                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                </div>
             </div>
+            <div class="review_text">{{__('text.testimonials_t_17')}}</div>
         </div>
-        <div class="review_text">{{__('text.testimonials_t_17')}}</div>
     </div>
-</div>
+@endsection
 
 @endsection

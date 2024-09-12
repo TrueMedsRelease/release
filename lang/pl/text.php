@@ -347,7 +347,9 @@ return [
     "testimonials_prev" => "Poprzedni",
     "testimonials_next" => "Następny",
     "moneyback_title" => "Zwrot pieniędzy",
-    "moneyback_text" => "<p>Masz 24 godziny na anulowanie zamówienia po jego złożeniu. Po tym czasie paczka zostanie wysłana, a anulowanie zamówienia nie jest możliwe. Możesz jednak odmówić przyjęcia paczki, gdy dotrze ona do Twoich drzwi.</p>",
+    "moneyback_text" => "<p>Masz 24 godziny na anulowanie zamówienia po jego złożeniu. Po tym czasie paczka zostanie wysłana, a anulowanie zamówienia nie jest możliwe. Możesz jednak odmówić przyjęcia paczki, gdy dotrze ona do Twoich drzwi.</p>
+<p>Oferujemy wszystkim naszym klientom 30-dniową gwarancję zwrotu pieniędzy, która pozwala skontaktować się z obsługą klienta w ciągu 30 dni od otrzymania paczki w celu uzyskania pełnego zwrotu pieniędzy. </p>
+<p><b>Należy pamiętać,</b> że nie możemy przyjąć zwrotu żadnych leków po otwarciu paczek ze względu na ograniczenia prawne i przepisy.</p>",
     "affiliate_title" => "Program partnerski",
     "affiliate_contact_message" => "Wyślij wiadomość ze swoim kontaktem, a na pewno otrzymasz odpowiedź.",
     "affiliate_name" => "Imię",
@@ -546,4 +548,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Twoje zapytanie zostało wysłane.",
     "success_thank" => "Dziękujemy za wybranie nas!",
+    "search_nothing" => "Nic nie znaleziono",
 ];

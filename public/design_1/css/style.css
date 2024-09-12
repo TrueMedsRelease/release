@@ -2706,7 +2706,7 @@ body::after {
   display: flex;
   flex-direction: column;
   background: #F3F6EF;
-  padding: 15px 30px;
+  padding: 15px 40px 15px 20px;
   gap: 10px;
   border-top: 1px solid white;
 }

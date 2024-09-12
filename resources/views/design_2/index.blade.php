@@ -103,91 +103,6 @@
         </div>
     </section>
 
-    {{-- <section class="pay-index">
-        <div class="pay-index__container">
-            <ul class="pay-index__list">
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/visa.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/mastercard.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/maestro.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/discover.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/amex.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/jsb.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/unionpay.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/dinners-club.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/apple-pay.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/google-pay.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/amazon-pay.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/stripe.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/paypal.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/sepa.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/cashapp.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/adyen.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/skrill.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/worldpay.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/payline.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/bitcoin.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/binance-coin.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/ethereum.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/litecoin.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/tron.svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/usdt(erc20).svg" alt="">
-                </li>
-                <li class="pay-index__item">
-                    <img src="/images/pay_icons/usdt(trc20).svg" alt="">
-                </li>
-            </ul>
-        </div>
-    </section> --}}
-
     <section class="page__bestsellers bestsellers">
         <aside class="categories-sidebar">
             <div class="categories-sidebar__inner">
@@ -196,20 +111,20 @@
                         <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.main_best_selling_title')}}</button>
                         <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
                             @foreach ($bestsellers as $bestseller)
-                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
+                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price'], false, true) }}</span></li>
                             @endforeach
                         </ul>
                     </div>
                     @foreach ($menu as $category)
                         <div class="spollers__item">
-                            <button type="button" data-spoller class="spollers__title _spoller-active">{{ $category['name'] }}</button>
+                            <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
                             <ul class="spollers__body" id="this_product_category">
                                 @foreach ($category['products'] as $item)
                                     <li class="spollers__item-list">
                                         <a href="{{ route('home.product', $item['url']) }}">
                                             {{ $item['name'] }}
                                         </a>
-                                        <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
+                                        <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
                                     </li>
                                 @endforeach
                             </ul>
@@ -245,7 +160,7 @@
                         </a>
                         <div class="product-card__bottom">
                             <div class="product-card__left">
-                                <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
+                                <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                             </div>
                             <button type="button" class="product-card__button button button--accent" title="{{__('text.product_add_to_cart_text')}}" onclick="location.href='{{ route('home.product', $product['url']) }}'">
                                 <svg width="24" height="24">
@@ -260,5 +175,142 @@
         </div>
     </section>
 </main>
+
+@endsection
+
+@section('reviews')
+
+<section class="reviews">
+    <div class="reviews__container">
+        <div class="reviews__body">
+            <div class="reviews__slider">
+                <div class="reviews__swiper">
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_1')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_1')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_2')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_2')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_3')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_3')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_4')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_4')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_5')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_5')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_6')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_6')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_7')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_7')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_8')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_8')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_9')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_9')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_10')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_10')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_11')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_11')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_12')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_12')}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="reviews__controls">
+                <button type="button" class="reviews__arrow reviews__arrow--prev">
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-prev") }}"></use>
+                    </svg>
+                    <span>{{__('text.testimonials_prev')}}</span>
+                </button>
+                <button type="button" class="reviews__arrow reviews__arrow--next">
+                    <span>{{__('text.testimonials_next')}}</span>
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
 @endsection

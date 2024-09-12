@@ -346,7 +346,9 @@ return [
     "testimonials_prev" => "Tidigare",
     "testimonials_next" => "Nästa",
     "moneyback_title" => "Pengarna-tillbaka",
-    "moneyback_text" => "<p>Du har 24 timmar på dig att avbryta din beställning när den är gjord. Efter den tiden skickas paketet och avbokningar är inte längre möjliga. Du kan dock vägra att ta emot paketet när det väl anländer till din dörr.</p>",
+    "moneyback_text" => "<p>Du har 24 timmar på dig att avbryta din beställning när den är gjord. Efter den tiden skickas paketet och avbokningar är inte längre möjliga. Du kan dock vägra att ta emot paketet när det väl anländer till din dörr.</p>
+<p>Vi erbjuder alla våra kunder en 30-dagars pengarna-tillbaka-garanti som gör att du kan kontakta kundtjänsten inom 30 dagar efter att paketet anlänt för att få full återbetalning.</p>
+<p><b>Observera</b> att vi inte kan acceptera återlämning av läkemedel efter att förpackningen har brutits på grund av juridiska restriktioner och bestämmelser.</p>",
     "affiliate_title" => "Partnerprogram",
     "affiliate_contact_message" => "Vänligen skicka meddelande med din kontakt och du kommer att få ett svar säkert.",
     "affiliate_name" => "Namn",
@@ -545,4 +547,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Din förfrågan har skickats.",
     "success_thank" => "Tack för att du valde oss!",
+    "search_nothing" => "Inget hittades",
 ];

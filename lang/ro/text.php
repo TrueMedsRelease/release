@@ -543,4 +543,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Cererea ta a fost trimisă.",
     "success_thank" => "Vă mulțumim că ne-ați ales!",
+    "search_nothing" => "Nimic găsit",
 ];

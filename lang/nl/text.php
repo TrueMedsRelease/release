@@ -386,7 +386,9 @@ return [
     "testimonials_prev" => "Vorig",
     "testimonials_next" => "Volgend",
     "moneyback_title" => "Geld terug",
-    "moneyback_text" => "<p>Je hebt 24 uur de tijd om je bestelling te annuleren zodra deze geplaatst is. Na die tijd wordt het pakket verzonden, en is annuleren niet meer mogelijk. Je kunt het pakket echter weigeren zodra het bij je aankomt.</p>",
+    "moneyback_text" => "<p>Je hebt 24 uur de tijd om je bestelling te annuleren zodra deze geplaatst is. Na die tijd wordt het pakket verzonden, en is annuleren niet meer mogelijk. Je kunt het pakket echter weigeren zodra het bij je aankomt.</p>
+<p>We bieden al onze klanten een 30 dagen geld-terug garantie, waarmee je binnen 30 dagen na aankomst van je pakket contact kunt opnemen met de klantenservice voor een volledige terugbetaling.</p>
+<p><b>Let op</b>: vanwege wettelijke beperkingen en voorschriften kunnen wij geen medicijnen terugnemen nadat de pakketten zijn geopend..</p>",
     "affiliate_title" => "Partnerprogramma",
     "affiliate_contact_message" => "Stuur een bericht met uw contactpersoon en u zult zeker een antwoord ontvangen.",
     "affiliate_name" => "Naam",
@@ -585,4 +587,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Uw verzoek is verstuurd.",
     "success_thank" => "Bedankt dat u voor ons hebt gekozen!",
+    "search_nothing" => "Niets gevonden",
 ];

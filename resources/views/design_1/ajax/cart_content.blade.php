@@ -4,7 +4,7 @@
         {{__('text.cart_cart_title')}}
     </h2>
     <ul class="basket-benefits">
-        <li class="basket-benefits__item basket-benefits__item--regular">
+        <li class="basket-benefits__item @if($product_total_check >= 200 && $product_total_check <= 300) basket-benefits__item--regular @else basket-benefits__item--express @endif">
             <span class="basket-benefits__title">
                 {{__('text.cart_free_regular')}}
             </span>
@@ -12,7 +12,7 @@
                 {{__('text.cart_sum_regular')}}
             </p>
         </li>
-        <li class="basket-benefits__item basket-benefits__item--express">
+        <li class="basket-benefits__item @if($product_total_check >= 300) basket-benefits__item--regular @else basket-benefits__item--express @endif">
             <span class="basket-benefits__title">
                 {{__('text.cart_free_express')}}
             </span>
@@ -71,8 +71,7 @@
                     <li class="order__item">
                         <div class="order__product" id = "{{ $product['product_id'] }}">
                         <span class="order__name">
-                            {{-- <a href="{$path.page}/{$cur_product_in_cart_info.url}" class="product-about__characteristic-meaning--link">{{ $product['pack_name'] }}</a> --}}
-                            {{ $product['name'] }}
+                            <a href="{{route('home.product', $product['url'])}}" class="product-about__characteristic-meaning--link">{{ $product['name'] }}</a>
                         </span>
                             <div class="quantity" data-quantity>
                                 <button class="quantity__button quantity__button_plus" data-quantity-plus type="button" onclick="up({{ $product['pack_id'] }})">
@@ -86,10 +85,10 @@
                                 </button>
                             </div>
                             <div class="order__pack">
-                                <span class="order__only">{{ $Currency::convert($product['price']) }}</span>
+                                <span class="order__only">{{ $Currency::convert($product['price'], false, true) }}</span>
                             </div>
                             <div class="order__price">
-                                <span class="order__only">{{ $Currency::convert($product['price']) }}</span>
+                                <span class="order__only">{{ $Currency::convert($product['price'] * $product['q']) }}</span>
                             </div>
                             <button type="button" data-remove class="remove-button" onclick="remove({{ $product['pack_id'] }})">
                                 x
@@ -100,8 +99,7 @@
                     <li class="order__item">
                         <div class="order__product" id = "{{ $product['product_id'] }}">
                         <span class="order__name">
-                            {{-- <a href="{$path.page}/{$cur_product_in_cart_info.url}" class="product-about__characteristic-meaning--link">{{ $product['pack_name'] }}</a> --}}
-                            {{ $product['pack_name'] }}
+                            <a href="{{route('home.product', $product['url'])}}" class="product-about__characteristic-meaning--link">{{ $product['name'] }}</a> {{$product['dosage_name']}}
                         </span>
                             <div class="quantity" data-quantity>
                                 <button class="quantity__button quantity__button_plus" data-quantity-plus type="button" onclick="up({{ $product['pack_id'] }})">
@@ -135,7 +133,7 @@
                         @if (!empty($product['upgrade_pack']))
                             <p onclick="upgrade({{ $product['pack_id'] }})" class="order__text" data-upgrade>
                                 {{__('text.cart_upgrade')}}<span class="order__text-accent"> {{ $product['upgrade_pack']['num'] }} {{ $product['type_name'] }} {{__('text.cart_for_only')}} {{ $Currency::convert($product['upgrade_pack']['price'] - $product['price'], true) }} </span>
-                                {{__('text.cart_savei')}} {{ $Currency::convert($product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'], true) }}
+                                {{__('text.cart_savei')}} {{ $Currency::convert($product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'], true) }}.
                                 @if ($product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 200 &&
                                                                 $product_total + ($product['upgrade_pack']['price'] - $product['price']) < 300)
                                     {{__('text.cart_get_regular')}}
@@ -155,7 +153,7 @@
                 @csrf
                 <div class="order-delivery__item">
                     <input class="hidden" id="delivery-1" data-delivery type="radio" name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif
-                    onchange="change_shipping('ems', {{ $product_total >= 300 ? 0 : $shipping['ems'] }})">
+                    onchange="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
                     <label class="visible" for="delivery-1">
                         <span class="sr-only">delivery-1</span>
                     </label>
@@ -163,6 +161,7 @@
                         <div class="order-delivery__top">
                             <span class="order-delivery__name">
                                 {{__('text.checkout_express')}}
+                                <img style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                             </span>
                             <span>
                                 @if ($is_only_card)
@@ -170,7 +169,7 @@
                                 @elseif ($is_only_card_with_bonus)
                                     {{ $Currency::convert($shipping['ems']) }}
                                 @else
-                                    @if ($product_total >= 300)
+                                    @if ($product_total_check >= 300)
                                         {{__('text.cart_free')}} <span style="text-decoration: line-through;">{{ $Currency::convert($shipping['ems']) }}</span>
                                     @else
                                         {{ $Currency::convert($shipping['ems']) }}
@@ -179,13 +178,17 @@
                             </span>
                         </div>
                         <p class="order-delivery__text">
+                            @if ($product_total_check >= 300)
+                            @else
+                                <p>{{__('text.shipping_ems_discount')}}</p>
+                            @endif
                             {{__('text.checkout_express_text')}}
                         </p>
                     </div>
                 </div>
                 <div class="order-delivery__item">
                     <input class="hidden" id="delivery-2" data-delivery type="radio" name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif
-                    onchange="change_shipping('regular', {{ $product_total >= 200 ? 0 : $shipping['regular'] }})">
+                    onchange="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                     <label class="visible" for="delivery-2">
                         <span class="sr-only">delivery-2</span>
                     </label>
@@ -193,6 +196,7 @@
                         <div class="order-delivery__top">
                             <span class="order-delivery__name">
                                 {{__('text.checkout_regular')}}
+                                <img style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                             </span>
                             <span>
                                 @if ($is_only_card)
@@ -200,7 +204,7 @@
                                 @elseif ($is_only_card_with_bonus)
                                     {{ $Currency::convert($shipping['regular']) }}
                                 @else
-                                    @if ($product_total >= 200)
+                                    @if ($product_total_check >= 200)
                                         {{__('text.cart_free')}} <span style="text-decoration: line-through;">{{ $Currency::convert($shipping['regular']) }}</span>
                                     @else
                                         {{ $Currency::convert($shipping['regular']) }}
@@ -209,6 +213,10 @@
                             </span>
                         </div>
                         <p class="order-delivery__text">
+                            @if ($product_total_check >= 200)
+                            @else
+                                <p>{{__('text.shipping_regular_discount')}}</p>
+                            @endif
                             {{__('text.checkout_regular_text')}}
                         </p>
                     </div>
@@ -283,7 +291,7 @@
                     $total_discount += $product['max_pill_price'] * $product['num'] * $product['q'];
                 }
                 else {
-                    $total_discount += $product['price'];
+                    $total_discount += $product['price'] * $product['q'];
                 }
             }
 

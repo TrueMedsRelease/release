@@ -34,7 +34,7 @@
 
                             </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                         </button>
-                    <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
+                    <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                     </div>
                 </article>
                 @if ($loop->index == 1)
@@ -83,7 +83,7 @@
 
                             </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                         </button>
-                    <div class="product-card__price">{{ $Currency::convert($product['price']) }}</div>
+                    <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                     </div>
                 </article>
                 @if ($loop->index == 1)
@@ -113,7 +113,7 @@
                 <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
                 <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
                     @foreach ($bestsellers as $bestseller)
-                        <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($bestseller['price']) }}</span></li>
+                        <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::convert($bestseller['price'], false, true) }}</span></li>
                     @endforeach
                 </ul>
             </div>
@@ -126,7 +126,7 @@
                                 <a href="{{ route('home.product', $item['url']) }}">
                                     {{ $item['name'] }}
                                 </a>
-                                <span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($item['price']) }}</span>
+                                <span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($item['price'], false, true) }}</span>
                             </li>
                         @endforeach
                     </ul>

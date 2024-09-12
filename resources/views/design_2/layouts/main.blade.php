@@ -453,6 +453,8 @@
         </div>
     </section>
 
+    @yield('reviews')
+
     <footer class="footer">
         <div class="footer__container">
             <div class="footer__top">
@@ -470,8 +472,8 @@
         </div>
         <div class="footer__copyright">
             <p>
-                {{__('text.license_text_license1_d2')}}
-                {{__('text.license_text_license2_d1')}}
+                {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                {{__('text.license_text_license2_d2')}}
             </p>
         </div>
         <div class="fixed-bar">

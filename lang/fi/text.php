@@ -353,7 +353,9 @@ return [
     "testimonials_prev" => "Edellinen",
     "testimonials_next" => "Seuraava",
     "moneyback_title" => "Rahat takaisin",
-    "moneyback_text" => "<p>Sinulla on 24 tuntia aikaa peruuttaa tilauksesi sen tekemisen jälkeen. Tämän ajan jälkeen pakkaus tullaan toimittamaan, eikä peruminen ole mahdollista. Voit kuitenkin kieltäytyä vastaanottamasta pakkausta sen saapuessa ovellesi.</p>",
+    "moneyback_text" => "<p>Sinulla on 24 tuntia aikaa peruuttaa tilauksesi sen tekemisen jälkeen. Tämän ajan jälkeen pakkaus tullaan toimittamaan, eikä peruminen ole mahdollista. Voit kuitenkin kieltäytyä vastaanottamasta pakkausta sen saapuessa ovellesi.</p>
+<p>Me tarjoamme kaikille asiakkaillemme 30 päivän rahat takaisin -takuuta, minkä ansiosta voit ottaa yhteyttä asiakaspalveluun 30 päivän ajan pakkauksesi saapumisesta hyvitystä varten.</p>
+<p><b>Ole hyvä ja huomaa</b>, että me emme voi hyväksyä laillisten rajoitusten ja määräysten takia minkään lääkkeen palautusta, jos pakkaukset ovat avattuja.</p>",
     "affiliate_title" => "Yhteistyökumppanin ohjelma",
     "affiliate_contact_message" => "Lähetä viesti yhteystietosi kanssa ja saat vastauksen varmasti.",
     "affiliate_name" => "Nimi",
@@ -552,4 +554,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Pyyntösi on lähetetty.",
     "success_thank" => "Kiitos, että valitsit meidät!",
+    "search_nothing" => "Mitään ei löytynyt",
 ];

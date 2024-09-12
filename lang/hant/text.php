@@ -347,7 +347,9 @@ return  [
     "testimonials_prev" => "上一頁",
     "testimonials_next" => "下一步",
     "moneyback_title" => "退款",
-    "moneyback_text" => "<p>下單後，您有24小時的時間取消訂單。在那之後，包裹將被運送，並且不能取消。但是，您可以在包裹到達您家門口後拒收。</p>",
+    "moneyback_text" => "<p>下單後，您有24小時的時間取消訂單。在那之後，包裹將被運送，並且不能取消。但是，您可以在包裹到達您家門口後拒收。</p>
+<p>我們為所有客戶提供30天退款保證，您可以在包裹到達後30天內聯繫客戶服務以獲得全額退款。</p>
+<p><b>請注意</b>，由於法律限制和規定，我們不接受打開包裝後的任何藥物退貨。</p>",
     "affiliate_title" => "會員計劃",
     "affiliate_contact_message" => "請與您的聯繫人發送消息，您肯定會收到回復。",
     "affiliate_name" => "姓名",
@@ -546,4 +548,5 @@ return  [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "您的申請已經提交。",
     "success_thank" => "感謝您選擇我們！",
+    "search_nothing" => "未找到任何內容",
 ];

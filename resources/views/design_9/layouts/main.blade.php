@@ -502,6 +502,73 @@
 
 @yield('content')
 
+<section class="ship-index">
+    <div class="ship-index__container">
+        <ul class="ship-index__list">
+            <li class="ship-index__item">
+                <img src="/images/shipping/usps.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/ems.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/dhl.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/ups.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/fedex.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/tnt.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/postnl.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/deutsche_post.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/dpd.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/gls.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/australia_post.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/colissimo.svg" alt="">
+            </li>
+            <li class="ship-index__item">
+                <img src="/images/shipping/correos.svg" alt="">
+            </li>
+        </ul>
+    </div>
+</section>
+
+<div class="subscribe_body">
+    <div class="left_block">
+        <div class="subscribe_img">
+            <img src="{{ asset("$design/images/icons/subscribe.svg") }}">
+        </div>
+        <div class="text_subscribe">
+            <span class="top_text">{{__('text.common_subscribe')}}</span>
+            <span class="bottom_text">{{__('text.common_spec_offer')}}</span>
+        </div>
+    </div>
+    <div class="right_block">
+        <input type="text" placeholder="Email" class="form__input input" id="email_sub">
+        <div class="button_sub">
+            <img src="{{ asset("$design/images/icons/subscribe_mini.svg") }}" class="sub_mini">
+            <span class="button_text">{{__('text.common_subscribe')}}</span>
+        </div>
+    </div>
+</div>
+
+@yield('testimonial', '')
+
 <footer class="footer">
     <div class="footer_container">
         <div class="footer_left">
@@ -510,8 +577,8 @@
             </div>
             <div class="footer_copyright">
                 <p>
-                    {{__('text.license_text_license1_d2')}}
-                    {{__('text.license_text_license2_d1')}}
+                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license2_d10')}}
                 </p>
             </div>
         </div>
@@ -529,8 +596,8 @@
         </div>
         <div class="footer_copyright bottom_license">
             <p>
-                {{__('text.license_text_license1_d2')}}
-                {{__('text.license_text_license2_d1')}}
+                {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                {{__('text.license_text_license2_d10')}}
             </p>
         </div>
     </div>

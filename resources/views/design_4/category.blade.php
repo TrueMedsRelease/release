@@ -1,10 +1,11 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'Category')
+
 
 @section('content')
 
 @foreach ($products as $category)
+    @section('title', $category['name'])
     <div class="products">
         <h2 class="products__title title" id="scroll">{{$category['name']}}</h2>
         <div class="products__items">
@@ -23,7 +24,7 @@
                                     @endforeach
                                 </div>
                                 <div class="item-product__bottom-row">
-                                    <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
+                                    <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                                     <a type="button" href="{{ route('home.product', $product['url']) }}" class="item-product__button button button--filled button--narrow">{{__('text.common_buy_button')}}</a>
                                 </div>
                             </div>

@@ -8,7 +8,6 @@ use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Currency;
 use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Route;
-use App\Services\CurrencyServices;
 
 /*
 |--------------------------------------------------------------------------

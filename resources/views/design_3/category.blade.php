@@ -1,10 +1,9 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'Category')
-
 @section('content')
 @foreach ($products as $category)
     @section('title_2', $category['name'])
+    @section('title', $category['name'])
     <div class="page__products products">
         <div class="products__items">
             @foreach ($category['products'] as $product)
@@ -19,7 +18,7 @@
                                     @endforeach
                                 </p>
                             </div>
-                            <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
+                            <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
                         <div class="item-product__image-ibg">
                             <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}">

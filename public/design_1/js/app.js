@@ -1222,7 +1222,7 @@ $(document).on('click', '.button_request_call', function () {
 });
 
 if (location.pathname !== '/') {
-    $('.menu__lists').find('.menu__list').first().hide();
+    // $('.menu__lists').find('.menu__list').first().hide();
 }
 
 function getCookie(name) {

@@ -41,36 +41,42 @@ class CartController extends Controller
     public function cart()
     {
         $design = session('design') ? session('design') : config('app.design');
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        // if ($design == 'design_5') {
-        //     $types = ProductTypeDesc::query()
-        //         ->where('language_id', '=', $language_id)
-        //         ->where('category_id', '=', 14)
-        //         ->get(['type_id', 'name']);
-        // } else {
-            $types = ProductTypeDesc::query()
-                ->where('language_id', '=', $language_id)
-                ->get(['type_id', 'name']);
-        // }
+        $types = ProductTypeDesc::query()
+            ->where('language_id', '=', $language_id)
+            ->get(['type_id', 'name']);
+
+        $product_total_check = 0;
+        foreach($products as $value){
+            if($value['product_id'] == 616) {
+                continue;
+            }
+            $product_total_check += $value['price'] * $value['q'];
+        }
 
         $product_total = 0;
         foreach($products as &$item)
         {
             $item['name'] = $desc[$item['product_id']]['name'];
+            $item['url'] = $desc[$item['product_id']]['url'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
+
             if($item['dosage'] != '1card')
             {
                 $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
             }
             else
             {
                 $item['pack_name'] = $item['name'] ;
             }
             $product_total += $item['price'] * $item['q'];
+
         }
+
         unset($item);
 
         $country_info = CountryInfoCache::query()
@@ -84,11 +90,11 @@ class CartController extends Controller
         if(empty(session('cart_option')))
         {
             $shipping_name = $shipping['ems'] != 0 ? 'ems' : 'regular';
-            if($shipping_name == 'regular' && $product_total >= 200)
+            if($shipping_name == 'regular' && $product_total_check >= 200)
             {
                 $shipping_price = 0;
             }
-            elseif($shipping_name == 'ems' && $product_total >= 300)
+            elseif($shipping_name == 'ems' && $product_total_check >= 300)
             {
                 $shipping_price = 0;
             }
@@ -114,12 +120,14 @@ class CartController extends Controller
             $cart_option = session('cart_option');
 
             $product_total += $cart_option['bonus_price'];
+            $product_total_check += $cart_option['bonus_price'];
 
-            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+
+            if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
             {
                 $cart_option['shipping_price'] = 0;
             }
-            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            elseif($cart_option['shipping'] == 'ems' && $product_total_check >= 300)
             {
                 $cart_option['shipping_price'] = 0;
             }
@@ -173,10 +181,12 @@ class CartController extends Controller
             }
         }
 
+
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
             'products' => $products,
             'product_total' => $product_total,
+            'product_total_check' => $product_total_check,
             'shipping' => $shipping,
             'bonus' => $bonus,
             'cards' => $cards,
@@ -200,30 +210,33 @@ class CartController extends Controller
     public function up(Request $request)
     {
         $design = session('design') ? session('design') : config('app.design');
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
         Cart::add($request->pack_id);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        // if ($design == 'design_5') {
-        //     $types = ProductTypeDesc::query()
-        //         ->where('language_id', '=', $language_id)
-        //         ->where('category_id', '=', 14)
-        //         ->get(['type_id', 'name']);
-        // } else {
-            $types = ProductTypeDesc::query()
-                ->where('language_id', '=', $language_id)
-                ->get(['type_id', 'name']);
-        // }
+        $types = ProductTypeDesc::query()
+            ->where('language_id', '=', $language_id)
+            ->get(['type_id', 'name']);
+
+        $product_total_check = 0;
+        foreach($products as $value){
+            if($value['product_id'] == 616) {
+                continue;
+            }
+            $product_total_check += $value['price'] * $value['q'];
+        }
 
         $product_total = 0;
         foreach($products as &$item)
         {
             $item['name'] = $desc[$item['product_id']]['name'];
+            $item['url'] = $desc[$item['product_id']]['url'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
             if($item['dosage'] != '1card')
             {
                 $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
             }
             else
             {
@@ -231,8 +244,10 @@ class CartController extends Controller
             }
             $product_total += $item['price'] * $item['q'];
         }
+
         unset($item);
         $product_total += session('cart_option')['bonus_price'];
+        $product_total_check += session('cart_option')['bonus_price'];
 
         $country_info = CountryInfoCache::query()
         ->where('country_iso2', '=', session('location')['country'])
@@ -244,11 +259,11 @@ class CartController extends Controller
 
         $cart_option = session('cart_option');
 
-        if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+        if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
         {
             $cart_option['shipping_price'] = 0;
         }
-        elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+        elseif($cart_option['shipping'] == 'ems' && $product_total_check >= 300)
         {
             $cart_option['shipping_price'] = 0;
         }
@@ -306,6 +321,7 @@ class CartController extends Controller
             'design' => $design,
             'products' => $products,
             'product_total' => $product_total,
+            'product_total_check' => $product_total_check,
             'shipping' => $shipping,
             'cards' => $cards,
             'Currency' => Currency::class,
@@ -322,30 +338,33 @@ class CartController extends Controller
     public function down(Request $request)
     {
         $design = session('design') ? session('design') : config('app.design');
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
         Cart::decrease($request->pack_id);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 
-        // if ($design == 'design_5') {
-        //     $types = ProductTypeDesc::query()
-        //         ->where('language_id', '=', $language_id)
-        //         ->where('category_id', '=', 14)
-        //         ->get(['type_id', 'name']);
-        // } else {
-            $types = ProductTypeDesc::query()
-                ->where('language_id', '=', $language_id)
-                ->get(['type_id', 'name']);
-        // }
+        $types = ProductTypeDesc::query()
+            ->where('language_id', '=', $language_id)
+            ->get(['type_id', 'name']);
+
+        $product_total_check = 0;
+        foreach($products as $value){
+            if($value['product_id'] == 616) {
+                continue;
+            }
+            $product_total_check += $value['price'] * $value['q'];
+        }
 
         $product_total = 0;
         foreach($products as &$item)
         {
             $item['name'] = $desc[$item['product_id']]['name'];
+            $item['url'] = $desc[$item['product_id']]['url'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
             if($item['dosage'] != '1card')
             {
                 $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
             }
             else
             {
@@ -353,8 +372,10 @@ class CartController extends Controller
             }
             $product_total += $item['price'] * $item['q'];
         }
+
         unset($item);
         $product_total += session('cart_option')['bonus_price'];
+        $product_total_check += session('cart_option')['bonus_price'];
 
         $country_info = CountryInfoCache::query()
         ->where('country_iso2', '=', session('location')['country'])
@@ -366,11 +387,11 @@ class CartController extends Controller
 
         $cart_option = session('cart_option');
 
-        if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+        if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
         {
             $cart_option['shipping_price'] = 0;
         }
-        elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+        elseif($cart_option['shipping'] == 'ems' && $product_total_check >= 300)
         {
             $cart_option['shipping_price'] = 0;
         }
@@ -427,6 +448,7 @@ class CartController extends Controller
             'design' => $design,
             'products' => $products,
             'product_total' => $product_total,
+            'product_total_check' => $product_total_check,
             'shipping' => $shipping,
             'cards' => $cards,
             'Currency' => Currency::class,
@@ -449,27 +471,30 @@ class CartController extends Controller
 
         if($products != '')
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
 
-            // if ($design == 'design_5') {
-            //     $types = ProductTypeDesc::query()
-            //         ->where('language_id', '=', $language_id)
-            //         ->where('category_id', '=', 14)
-            //         ->get(['type_id', 'name']);
-            // } else {
-                $types = ProductTypeDesc::query()
-                    ->where('language_id', '=', $language_id)
-                    ->get(['type_id', 'name']);
-            // }
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->get(['type_id', 'name']);
+
+            $product_total_check = 0;
+            foreach($products as $value){
+                if($value['product_id'] == 616) {
+                    continue;
+                }
+                $product_total_check += $value['price'] * $value['q'];
+            }
 
             $product_total = 0;
             foreach($products as &$item)
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
+                $item['url'] = $desc[$item['product_id']]['url'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
                 if($item['dosage'] != '1card')
                 {
                     $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                    $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
                 }
                 else
                 {
@@ -477,8 +502,12 @@ class CartController extends Controller
                 }
                 $product_total += $item['price'] * $item['q'];
             }
+
+
+
             unset($item);
             $product_total += session('cart_option')['bonus_price'];
+            $product_total_check += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -490,11 +519,11 @@ class CartController extends Controller
 
             $cart_option = session('cart_option');
 
-            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
             {
                 $cart_option['shipping_price'] = 0;
             }
-            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            elseif($cart_option['shipping'] == 'ems' && $product_total_check >= 300)
             {
                 $cart_option['shipping_price'] = 0;
             }
@@ -551,6 +580,7 @@ class CartController extends Controller
                 'design' => $design,
                 'products' => $products,
                 'product_total' => $product_total,
+                'product_total_check' => $product_total_check,
                 'shipping' => $shipping,
                 'cards' => $cards,
                 'Currency' => Currency::class,
@@ -578,26 +608,30 @@ class CartController extends Controller
 
         if($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
 
-            // if ($design == 'design_5') {
-            //     $types = ProductTypeDesc::query()
-            //         ->where('language_id', '=', $language_id)
-            //         ->where('category_id', '=', 14)
-            //         ->get(['type_id', 'name']);
-            // } else {
-                $types = ProductTypeDesc::query()
-                    ->where('language_id', '=', $language_id)
-                    ->get(['type_id', 'name']);
-            // }
+            $types = ProductTypeDesc::query()
+                ->where('language_id', '=', $language_id)
+                ->get(['type_id', 'name']);
+
+            $product_total_check = 0;
+            foreach($products as $value){
+                if($value['product_id'] == 616) {
+                    continue;
+                }
+                $product_total_check += $value['price'] * $value['q'];
+            }
+
             $product_total = 0;
             foreach($products as &$item)
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
+                $item['url'] = $desc[$item['product_id']]['url'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
                 if($item['dosage'] != '1card')
                 {
                     $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                    $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
                 }
                 else
                 {
@@ -605,8 +639,10 @@ class CartController extends Controller
                 }
                 $product_total += $item['price'] * $item['q'];
             }
+
             unset($item);
             $product_total += session('cart_option')['bonus_price'];
+            $product_total_check += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -618,11 +654,11 @@ class CartController extends Controller
 
             $cart_option = session('cart_option');
 
-            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
             {
                 $cart_option['shipping_price'] = 0;
             }
-            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            elseif($cart_option['shipping'] == 'ems' && $product_total_check >= 300)
             {
                 $cart_option['shipping_price'] = 0;
             }
@@ -675,11 +711,11 @@ class CartController extends Controller
                 }
             }
 
-
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
                 'product_total' => $product_total,
+                'product_total_check' => $product_total_check,
                 'shipping' => $shipping,
                 'cards' => $cards,
                 'Currency' => Currency::class,
@@ -715,20 +751,30 @@ class CartController extends Controller
 
         if($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
 
             $types = ProductTypeDesc::query()
-            ->where('language_id', '=', $language_id)
-            ->get(['type_id', 'name']);
+                ->where('language_id', '=', $language_id)
+                ->get(['type_id', 'name']);
+
+            $product_total_check = 0;
+            foreach($products as $value){
+                if($value['product_id'] == 616) {
+                    continue;
+                }
+                $product_total_check += $value['price'] * $value['q'];
+            }
 
             $product_total = 0;
             foreach($products as &$item)
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
+                $item['url'] = $desc[$item['product_id']]['url'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
                 if($item['dosage'] != '1card')
                 {
                     $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                    $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
                 }
                 else
                 {
@@ -736,8 +782,10 @@ class CartController extends Controller
                 }
                 $product_total += $item['price'] * $item['q'];
             }
+
             unset($item);
             $product_total += session('cart_option')['bonus_price'];
+            $product_total_check += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -749,11 +797,11 @@ class CartController extends Controller
 
             $cart_option = session('cart_option');
 
-            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
             {
                 $cart_option['shipping_price'] = 0;
             }
-            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            elseif($cart_option['shipping'] == 'ems' && $product_total_check >= 300)
             {
                 $cart_option['shipping_price'] = 0;
             }
@@ -811,6 +859,7 @@ class CartController extends Controller
                 'design' => $design,
                 'products' => $products,
                 'product_total' => $product_total,
+                'product_total_check' => $product_total_check,
                 'shipping' => $shipping,
                 'cards' => $cards,
                 'Currency' => Currency::class,
@@ -845,20 +894,30 @@ class CartController extends Controller
 
         if($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
 
             $types = ProductTypeDesc::query()
-            ->where('language_id', '=', $language_id)
-            ->get(['type_id', 'name']);
+                ->where('language_id', '=', $language_id)
+                ->get(['type_id', 'name']);
+
+            $product_total_check = 0;
+            foreach($products as $value){
+                if($value['product_id'] == 616) {
+                    continue;
+                }
+                $product_total_check += $value['price'] * $value['q'];
+            }
 
             $product_total = 0;
             foreach($products as &$item)
             {
                 $item['name'] = $desc[$item['product_id']]['name'];
+                $item['url'] = $desc[$item['product_id']]['url'];
                 $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
                 if($item['dosage'] != '1card')
                 {
                     $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                    $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
                 }
                 else
                 {
@@ -866,8 +925,10 @@ class CartController extends Controller
                 }
                 $product_total += $item['price'] * $item['q'];
             }
+
             unset($item);
             $product_total += $bonus_price;
+            $product_total_check += $bonus_price;
 
             $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('location')['country'])
@@ -879,11 +940,11 @@ class CartController extends Controller
 
             $cart_option = session('cart_option');
 
-            if($cart_option['shipping'] == 'regular' && $product_total >= 200)
+            if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
             {
                 $cart_option['shipping_price'] = 0;
             }
-            elseif($cart_option['shipping'] == 'ems' && $product_total >= 300)
+            elseif($cart_option['shipping'] == 'ems' && $product_total_check >= 300)
             {
                 $cart_option['shipping_price'] = 0;
             }
@@ -941,6 +1002,7 @@ class CartController extends Controller
                 'design' => $design,
                 'products' => $products,
                 'product_total' => $product_total,
+                'product_total_check' => $product_total_check,
                 'shipping' => $shipping,
                 'cards' => $cards,
                 'Currency' => Currency::class,

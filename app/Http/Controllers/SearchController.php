@@ -12,6 +12,7 @@ use App\Services\LanguageServices;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\PhoneCodes;
+use Illuminate\Support\Facades\App;
 
 class SearchController extends Controller
 {
@@ -52,6 +53,10 @@ class SearchController extends Controller
         foreach($products as $product)
         {
             $tips .= $product['name'] . '||' . $product['url'] . "\n";
+        }
+
+        if (!$tips) {
+            $tips = __('text.search_nothing') . "||search/" . $search_text;
         }
 
         return $tips;

@@ -4452,12 +4452,12 @@ $(document).on('click', '.push_allow', function () {
     enableNotif();
 });
 
-if (location.pathname != '/'){
-    $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
-    if (document.getElementById('main_bestsellers_body')) {
-        document.getElementById('main_bestsellers_body').hidden = true;
-    }
-}
+// if (location.pathname != '/'){
+//     $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
+//     if (document.getElementById('main_bestsellers_body')) {
+//         document.getElementById('main_bestsellers_body').hidden = true;
+//     }
+// }
 /*
 if (window.innerWidth > 1925) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');

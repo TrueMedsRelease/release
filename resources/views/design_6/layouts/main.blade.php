@@ -92,7 +92,7 @@
 											<button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
 											<ul class="spollers__body main_bestsellers" id="main_bestsellers">
 												@foreach ($bestsellers as $bestseller)
-													<li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
+													<li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price'], false, true) }}</span></li>
                                                 @endforeach
 											</ul>
 										</div>
@@ -120,7 +120,7 @@
 																<a href="{{ route('home.product', $item['url']) }}">
 																	{{ $item['name'] }}
 																</a>
-																<span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
+																<span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
 															</li>
                                                         @endforeach
 													</ul>
@@ -449,8 +449,8 @@
                 </ul>
                 <a href="{{ route('home.affiliate') }}" class="footer__button button">{{__('text.common_affiliate_main_menu_button')}}</a>
                 <p class="footer__copyright">
-                    {{__('text.license_text_license1_d2')}}
-                    {{__('text.license_text_license2_d1')}}
+                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license2_d6')}}
                 </p>
                 <picture><source srcset="{{ asset("$design/images/decor/petal-footer.webp") }}" type="image/webp"><img class="footer__petal" src="{{ asset("$design/images/decor/petal-footer.png") }}" width="44" height="71"></picture>
                 <picture><source srcset="{{ asset("$design/images/decor/petal-footer-02.webp") }}" type="image/webp"><img class="footer__petal-02" src="{{ asset("$design/images/decor/petal-footer-02.png") }}" width="96" height="107"></picture>

@@ -403,8 +403,8 @@
                                 </li>
                                 <ul class="menu__list">
                                     @foreach ($bestsellers as $bestseller)
-                                        <li class="tabs__item">
-                                            <a href="{{ route('home.product', $bestseller['url']) }}" style="display: flex; justify-content:space-between; align-items:baseline;">{{ $bestseller['name'] }} <span style="font-size: 13px;">{{ $Currency::convert($bestseller['price']) }}</span></a>
+                                        <li>
+                                            <a href="{{ route('home.product', $bestseller['url']) }}" style="display: flex; justify-content:space-between; align-items:baseline;">{{ $bestseller['name'] }} <span style="font-size: 13px;">{{ $Currency::convert($bestseller['price'], false, true) }}</span></a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -416,8 +416,8 @@
                                     </li>
                                     <ul class="menu__list" style="display: none">
                                         @foreach ($category['products'] as $item)
-                                            <li class="tabs__item">
-                                                <a href="{{ route('home.product', $item['url']) }}" style="display: flex; justify-content:space-between; align-items:baseline;">{{ $item['name'] }} <span style="font-size: 13px;">{{ $Currency::convert($item['price']) }}</span></a>
+                                            <li>
+                                                <a href="{{ route('home.product', $item['url']) }}" style="display: flex; justify-content:space-between; align-items:baseline;">{{ $item['name'] }} <span style="font-size: 13px;">{{ $Currency::convert($item['price'], false, true) }}</span></a>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -546,7 +546,7 @@
         <div class="container footer__container">
             <div class="footer__top">
                 <p class="footer__text">
-                    {{__('text.license_text_license1_d2')}}
+                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
                     {{__('text.license_text_license2_d1')}}
                 </p>
                 <a class="footer__link c-button" href="{{ route('home.affiliate') }}">{{__('text.common_affiliate_main_menu_button')}}</a>

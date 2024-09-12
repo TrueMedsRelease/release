@@ -31,7 +31,7 @@ class CheckoutController extends Controller
     public function checkout()
     {
         $design = session('design') ? session('design') : config('app.design');
-        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()], $design);
+        $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
 

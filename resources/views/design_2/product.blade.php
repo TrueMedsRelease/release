@@ -90,8 +90,8 @@
                                         <input type="checkbox" class="read-more-checker" id="read-more-checker" />
                                         <div class="details-product__links limiter">
                                             @foreach ($product['sinonim'] as $sinonim)
-                                                <a href="">
-                                                    {{ $sinonim }}
+                                                <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                                    {{ $sinonim['name'] }}
                                                 </a>
                                             @endforeach
                                             <div class="bottom"></div>
@@ -103,8 +103,8 @@
                                         <h2 class="details-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                         <div class="details-product__links">
                                             @foreach ($product['sinonim'] as $sinonim)
-                                                <a href = "">
-                                                    {{ $sinonim }}
+                                                <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                                    {{ $sinonim['name'] }}
                                                 </a>
                                             @endforeach
                                         </div>
@@ -126,7 +126,9 @@
 
             <div class="product__content">
                 <div class="product__top-line" data-da=".product__image, 650, last">
-                    <h1 class="product__title">{{ $product['name'] }}</h1>
+                    <h1 class="product__title">
+                        {{ $product['name'] }}
+                    </h1>
                     <span class="product__group">
                         @foreach ($product['categories'] as $category)
                             <a href="{{ route('home.category', $category['url']) }}">{{ $category['name'] }}</a> <br>
@@ -148,7 +150,13 @@
                         @endif
                         @if ($key != $prev_dosage)
                             <div class="product__item">
-                            <h3 class="item-product-info__name">{{ "{$product['name']} $key" }}</h3>
+                            <h3 class="item-product-info__name">
+                                @if (!in_array($product['id'], [616, 619, 620, 483, 484, 501, 615]))
+                                    {{ "{$product['name']} $key" }}@if ($loop->parent->iteration == 1 && $product['rec_name'] != 'none')<span style="font-weight:lighter;">, {{__('text.product_need_more')}}</span> <span class="details-product__links"><a href="{{route('home.product', $product['rec_url'])}}">{{ $product['rec_name'] }}</a></span> @endif
+                                @else
+                                    {{ $product['name'] }}
+                                @endif
+                            </h3>
                             <table class="item-product-info__table">
                             <thead>
                             <tr class="item-product-info__row item-product-info__row--top">
@@ -162,7 +170,7 @@
                                 $prev_dosage = $key;
                             @endphp
                         @endif
-                        <tbody>
+                        <tbody @if ($loop->iteration == 1 && $product['image'] != 'gift-card') class="item-product-info__row--discount" @endif>
                         <tr class="item-product-info__row">
                             <th class="item-product-info__package">
                                 {{ "{$item['num']} {$product['type']}" }}
@@ -174,7 +182,7 @@
                                     @endif
                                 @endif
                             </th>
-                            <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</th>
+                            <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
                             <th class="item-product-info__price">
                                 @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                     <span class="item-product-info__old-price">
@@ -184,7 +192,12 @@
                                 @endif
                                 <span class="item-product-info__new-price">
                                     @if ($product['image'] != 'gift-card')
-                                        {!!__('text.product_only')!!}&nbsp;<span>{{ $Currency::convert($item['price']) }}</span>
+                                        @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) == 0)
+                                            {{ $Currency::convert($item['price']) }}
+                                        @else
+                                            {!!__('text.product_only')!!}<span>{{ $Currency::convert($item['price']) }}</span>
+                                        @endif
+
                                     @else
                                         {{ $Currency::convert($item['price']) }}
                                     @endif
@@ -215,5 +228,142 @@
         @endif
     </div>
 </main>
+
+@endsection
+
+@section('reviews')
+
+<section class="reviews">
+    <div class="reviews__container">
+        <div class="reviews__body">
+            <div class="reviews__slider">
+                <div class="reviews__swiper">
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_1')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_1')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_2')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_2')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_3')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_3')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_4')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_4')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_5')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_5')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_6')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_6')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_7')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_7')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_8')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_8')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_9')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_9')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_10')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_10')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_11')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_11')}}</div>
+                    </div>
+                    <div class="reviews__slide">
+                        <div class="reviews__top">
+                            <div class="reviews__name">{!!__('text.testimonials_author_t_12')!!}</div>
+                            <div class="reviews__stars">
+                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                            </div>
+                        </div>
+                        <div class="reviews__text">{{__('text.testimonials_t_12')}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="reviews__controls">
+                <button type="button" class="reviews__arrow reviews__arrow--prev">
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-prev") }}"></use>
+                    </svg>
+                    <span>{{__('text.testimonials_prev')}}</span>
+                </button>
+                <button type="button" class="reviews__arrow reviews__arrow--next">
+                    <span>{{__('text.testimonials_next')}}</span>
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
 @endsection

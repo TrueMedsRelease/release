@@ -177,8 +177,8 @@ return [
     "cart_upgrade" => "Upgrade this pack to ",
     "cart_for_only" => " for only ",
     "cart_savei" => " and save ",
-    "cart_get_ems" => ". Bonus: Free Express Delivery!",
-    "cart_get_regular" => ". Bonus: Free Regular Delivery",
+    "cart_get_ems" => " Bonus: Free Express Delivery!",
+    "cart_get_regular" => " Bonus: Free Regular Delivery!",
     "cart_bonus" => "Free Bonus: ",
     "cart_no_bonus" => "No bonus.",
     "cart_add_bonus" => "Add bonus",
@@ -400,7 +400,8 @@ return [
     "testimonials_prev" => "Previous",
     "testimonials_next" => "Next",
     "moneyback_title" => "Moneyback",
-    "moneyback_text" => "<p>You have 24 hours to cancel your order once it is placed. After that time, the package will be shipped, and cancellations are not available. However, you can refuse the package once it arrives at your door.</p>",
+    "moneyback_text" => "<p>You have 24 hours to cancel your order once it is placed. After that time, the package will be shipped, and cancellations are not available. However, you can refuse the package once it arrives at your door.</p><p>We offer all our customers a 30-day money-back guarantee, which allows you to get in touch with customer service within 30 days of your package’s arrival for a full refund.</p>
+<p><b>Please note</b> that we cannot accept the return of any medications after the packages are opened due to legal restrictions and regulations.</p>",
     "affiliate_title" => "Affiliate program",
     "affiliate_contact_message" => "Please send message with your contact and you will receive a response for sure.",
     "affiliate_name" => "Name",
@@ -599,4 +600,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Your request has been sent.",
     "success_thank" => "Thank you for choosing us!",
+    "search_nothing" => "Nothing found",
 ];

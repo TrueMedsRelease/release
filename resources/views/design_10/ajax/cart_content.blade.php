@@ -108,7 +108,7 @@
                             @if ($shipping['ems'] != 0)
                                 <div class="form-radio-wrapper"><input class="form-radio-input" id="delivery-2" type="radio"
                                         name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif
-                                        onchange="change_shipping('ems', {{ $product_total >= 300 ? 0 : $shipping['ems'] }})"><label
+                                        onchange="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})"><label
                                         class="form-radio" for="delivery-2">
                                         <div class="form-radio__title">{{__('text.shipping_ems')}}</div>
                                         <div class="form-radio__text">{{__('text.shipping_ems_text')}}</div>
@@ -118,7 +118,7 @@
                                             @elseif ($is_only_card_with_bonus)
                                                 {{ $Currency::convert($shipping['ems']) }}
                                             @else
-                                                @if ($product_total >= 300)
+                                                @if ($product_total_check >= 300)
                                                     {{__('text.cart_free')}} <span style="text-decoration: line-through;">{{ $Currency::convert($shipping['ems']) }}</span>
                                                 @else
                                                     {{ $Currency::convert($shipping['ems']) }}
@@ -131,7 +131,7 @@
                             @if ($shipping['regular'] != 0)
                                 <div class="form-radio-wrapper"><input class="form-radio-input" id="delivery-1" type="radio"
                                         name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif
-                                        onchange="change_shipping('regular', {{ $product_total >= 200 ? 0 : $shipping['regular'] }})">
+                                        onchange="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                                     <label class="form-radio" for="delivery-1">
                                         <div class="form-radio__title">{{__('text.shipping_regular')}}</div>
                                         <div class="form-radio__text">{{__('text.shipping_regular_text')}}</div>
@@ -141,7 +141,7 @@
                                             @elseif ($is_only_card_with_bonus)
                                                 {{ $Currency::convert($shipping['regular']) }}
                                             @else
-                                                @if ($product_total >= 200)
+                                                @if ($product_total_check >= 200)
                                                     {{__('text.cart_free')}} <span style="text-decoration: line-through;">{{ $Currency::convert($shipping['regular']) }}</span>
                                                 @else
                                                     {{ $Currency::convert($shipping['regular']) }}
@@ -228,7 +228,7 @@
                                 $total_discount += $product['max_pill_price'] * $product['num'] * $product['q'];
                             }
                             else {
-                                $total_discount += $product['price'];
+                                $total_discount += $product['price'] * $product['q'];
                             }
                         }
 

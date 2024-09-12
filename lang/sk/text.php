@@ -346,7 +346,9 @@ return [
     "testimonials_prev" => "Predchádzajúci",
     "testimonials_next" => "Ďalší",
     "moneyback_title" => "Vrátenie peňazí",
-    "moneyback_text" => "<p>Po odoslaní objednávky máte 24 hodín na jej zrušenie. Po tomto čase bude balík odoslaný a zrušenie objednávky nie je možné. Balík však môžete odmietnuť, keď vám príde domov.</p>",
+    "moneyback_text" => "<p>Po odoslaní objednávky máte 24 hodín na jej zrušenie. Po tomto čase bude balík odoslaný a zrušenie objednávky nie je možné. Balík však môžete odmietnuť, keď vám príde domov.</p>
+<p>Všetkým našim zákazníkom ponúkame 30-dňovú záruku vrátenia peňazí, vďaka ktorej môžete do 30 dní od doručenia balíka kontaktovať zákaznícky servis a získať späť celú sumu.</p>
+<p><b>Upozorňujeme</b>, že z dôvodu zákonných obmedzení a predpisov nemôžeme prijímať vrátenie akýchkoľvek liekov po otvorení obalov. </p>",
     "affiliate_title" => "Partnerský program",
     "affiliate_contact_message" => "Pošlite správu so svojím kontaktom a určite dostanete odpoveď.",
     "affiliate_name" => "Meno",
@@ -545,4 +547,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Vaša žiadosť bola odoslaná.",
     "success_thank" => "Ďakujeme, že ste si vybrali nás!",
+    "search_nothing" => "Nič sa nenašlo",
 ];

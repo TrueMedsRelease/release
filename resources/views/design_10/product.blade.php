@@ -81,14 +81,18 @@
                                 <div class="text-box">
                                     <span class="text">
                                         @foreach ($product['sinonim'] as $sinonim)
-                                            <a href = "" class="others">{{ $sinonim }}</a>
+                                           <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                                {{ $sinonim['name'] }}
+                                            </a>
                                         @endforeach
                                     </span>
                                         @if (count($product['sinonim']) > 10)<a href="#" class="more">view all</a>@endisset
                                 </div>
                             @else --}}
                                 @foreach ($product['sinonim'] as $sinonim)
-                                    <a href = "" class="others">{{ $sinonim }}</a>
+                                    <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                        {{ $sinonim['name'] }}
+                                    </a>
                                 @endforeach
                             {{-- @endif --}}
                         </div>
@@ -128,7 +132,7 @@
                                             </div>
                                         </td>
                                         <td class="product__price-per-pill" data-caption="Per Pill:">
-                                            {{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</td>
+                                            {{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</td>
                                         <td class="product__price-wrapper" data-caption="Special Price:">
                                             @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                                 <div class="product__discount">
@@ -171,7 +175,7 @@
                         <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
                         <ul class="spollers__body main_bestsellers" id="main_bestsellers_body">
                             @foreach ($bestsellers as $bestseller)
-                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($bestseller['price']) }}</span></li>
+                                <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::convert($bestseller['price'], false, true) }}</span></li>
                             @endforeach
                         </ul>
                     </div>
@@ -184,7 +188,7 @@
                                         <a href="{{ route('home.product', $item['url']) }}">
                                             {{ $item['name'] }}
                                         </a>
-                                        <span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($item['price']) }}</span>
+                                        <span style="font-size: 13px; color: var(--color-secondary);">{{ $Currency::Convert($item['price'], false, true) }}</span>
                                     </li>
                                 @endforeach
                             </ul>

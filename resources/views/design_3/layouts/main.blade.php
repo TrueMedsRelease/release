@@ -74,7 +74,7 @@
                     <button type="button" class="menu__icon icon-menu"><span></span></button>
                     <nav class="menu__body">
                         <ul class="menu__list">
-                            <li class="menu__item best"><a class="menu__link" href="{{ route('home.index') }}" data-bestsellers>{{__('text.common_best_sellers_main_menu_item')}}</a></li>
+                            <li class="menu__item best"><a class="menu__link" data-bestsellers>{{__('text.common_best_sellers_main_menu_item')}}</a></li>
                             <li class="menu__item"><a href="{{ route('home.about') }}" class="menu__link">{{__('text.common_about_us_main_menu_item')}}</a></li>
                             <li class="menu__item"><a href="{{ route('home.help') }}" class="menu__link">{{__('text.common_help_main_menu_item')}}</a></li>
                             <li class="menu__item"><a href="{{ route('home.testimonials') }}" class="menu__link">{{__('text.common_testimonials_main_menu_item')}}</a></li>
@@ -332,7 +332,7 @@
                                             <button type="button" data-spoller class="spollers__title _spoller-active">{{__('text.common_best_selling_title')}}</button>
                                             <ul class="spollers__body main_bestsellers" id="main_bestsellers">
                                                 @foreach ($bestsellers as $bestseller)
-                                                    <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price']) }}</span></li>
+                                                    <li class="spollers__item-list"><a href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }}</a><span style="font-size: 12px;">{{ $Currency::convert($bestseller['price'], false, true) }}</span></li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -347,7 +347,7 @@
                                                                 <a href="{{ route('home.product', $item['url']) }}">
                                                                     {{ $item['name'] }}
                                                                 </a>
-                                                                <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
+                                                                <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
                                                             </li>
                                                         @endforeach
                                                     </ul>
@@ -361,7 +361,7 @@
                                                                 <a href="{{ route('home.product', $item['url']) }}">
                                                                     {{ $item['name'] }}
                                                                 </a>
-                                                                <span style="font-size: 12px;">{{ $Currency::convert($item['price']) }}</span>
+                                                                <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
                                                             </li>
                                                         @endforeach
                                                     </ul>
@@ -784,8 +784,8 @@
             <div class="footer__container">
                 <div class="footer__copyright">
                     <p>
-                        {{__('text.license_text_license1_d2')}}
-                        {{__('text.license_text_license2_d1')}}
+                        {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                        {{__('text.license_text_license2_d3')}}
                     </p>
                 </div>
             </div>

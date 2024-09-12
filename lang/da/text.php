@@ -395,7 +395,9 @@ return [
     "testimonials_prev" => "Tidligere",
     "testimonials_next" => "Næste",
     "moneyback_title" => "Tilbagebetaling",
-    "moneyback_text" => "<p>Du har 24 timer til at fortryde din bestilling når den er afgivet. Derefter bliver forsendelsen afsendt og fortrydelse er ikke længere muligt. Du kan dog afvise forsendelsen når den når frem til dig.</p>",
+    "moneyback_text" => "<p>Du har 24 timer til at fortryde din bestilling når den er afgivet. Derefter bliver forsendelsen afsendt og fortrydelse er ikke længere muligt. Du kan dog afvise forsendelsen når den når frem til dig.</p>
+<p>Vi tilbyder alle vore kunder en 30-dages fuld returret, som giver dig mulighed for at kontakte kundeservice indenfor 30 dage efter din forsendelse er ankommet og få alle pengene tilbage.</p>
+<p><b>Bemærk venligst</b> at vi ikke på grund af restriktioner og regulativer ikke kan acceptere retur af nogen medikamenter hvor pakningerne har været åbnet.</p>",
     "affiliate_title" => "Affilieringsprogram",
     "affiliate_contact_message" => "Send venligst besked med din kontaktperson, og du vil modtage et svar for sikker.",
     "affiliate_name" => "Navn",
@@ -594,4 +596,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Din anmodning er blevet sendt.",
     "success_thank" => "Tak fordi du valgte os!",
+    "search_nothing" => "Intet fundet",
 ];

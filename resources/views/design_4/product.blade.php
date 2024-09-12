@@ -41,7 +41,7 @@
                             </p>
                         @endif
 
-                        <p class="details-product__row">
+                        <p class="details-page-product__row">
                             {!!__('text.product_pack1_1')!!}
                             <b style="color: #f2d43a;">{{__('text.product_pack2_1')}}{{ random_int(10, 40) }}{{__('text.product_pack3_1')}}</b>
                         </p>
@@ -107,8 +107,8 @@
                                     <h2 class="details-page-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                     <div class="details-page-product__links">
                                         @foreach ($product['sinonim'] as $sinonim)
-                                            <a href="">
-                                                {{ $sinonim }}
+                                            <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                                {{ $sinonim['name'] }}
                                             </a>
                                         @endforeach
                                     </div>
@@ -118,8 +118,8 @@
                                     <h2 class="details-page-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                     <div class="details-page-product__links">
                                         @foreach ($product['sinonim'] as $sinonim)
-                                            <a href="">
-                                                {{ $sinonim }}
+                                            <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                                {{ $sinonim['name'] }}
                                             </a>
                                         @endforeach
                                     </div>
@@ -147,9 +147,12 @@
 
                             @if ($key != $prev_dosage)
                                 <div class="page-product__item item-product-info">
-                                    {{-- <h3 class="item-product-info__name">{$data.product_info.name}{if !$data.product_info.name|strstr:"Pack"} {$cur_product_packaging.dosage}{/if}{if $smarty.foreach.product_dosages.iteration == 1 && $data.product_info.rec_name != 'none'}<span style="font-weight:lighter;">, {#need_more#}</span> <span  class="details-page-product"><a href="{$path.page}/{$data.product_info.rec_url}" style="font-weight: normal;">{$data.product_info.rec_name}</a></span> {/if}</h3> --}}
                                     <h3 class="item-product-info__name">
-                                        @if ($product['image'] != 'gift-card') {{ "{$product['name']} $key" }} @else {{ $product['name'] }} @endif
+                                        @if (!in_array($product['id'], [616, 619, 620, 483, 484, 501, 615]))
+                                            {{ "{$product['name']} $key" }}@if ($loop->parent->iteration == 1 && $product['rec_name'] != 'none')<span style="font-weight:lighter;">, {{__('text.product_need_more')}}</span> <span class="details-page-product"><a href="{{route('home.product', $product['rec_url'])}}">{{ $product['rec_name'] }}</a></span> @endif
+                                        @else
+                                            {{ $product['name'] }}
+                                        @endif
                                     </h3>
                                     <table class="item-product-info__table">
                                         <thead>
@@ -175,7 +178,7 @@
                                     @endif
                                 @endif
                             </th>
-                            <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</th>
+                            <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
                             <th class="item-product-info__price">
                                 @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                                     <span class="item-product-info__old-price">
@@ -185,7 +188,11 @@
                                 @endif
                                 <span class="item-product-info__new-price">
                                     @if ($product['image'] != 'gift-card')
-                                        <span>{!!__('text.product_only')!!}&nbsp;<span>{{ $Currency::convert($item['price']) }}</span>
+                                        @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) == 0)
+                                            {{ $Currency::convert($item['price']) }}
+                                        @else
+                                            <span>{!!__('text.product_only')!!}&nbsp;<span>{{ $Currency::convert($item['price']) }}</span>
+                                        @endif
                                     @else
                                         {{ $Currency::convert($item['price']) }}
                                     @endif

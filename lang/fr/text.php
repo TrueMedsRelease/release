@@ -680,4 +680,5 @@ return [
     "success_title_phone_7" => "+64-80-074-8315",
     "phone_request_mes_text" => "Votre demande à été envoyé.",
     "success_thank" => "Merci de nous avoir choisi !",
+    "search_nothing" => "Aucun résultat trouvé",
 ];

@@ -238,7 +238,7 @@
                                         @endif
                                         <span class="line_table"></span>
                                         <div class="table_row">
-                                            <span class="product_package">
+                                            <span class="product_package" >
                                                 <div class="package_text @if ($item['num'] == 360) big_bonus @endif">
                                                     {{ "{$item['num']} {$product['type']}" }}
                                                     @if ($item['price'] >= 300)
@@ -253,7 +253,7 @@
                                                     </div>
                                                 @endif
                                             </span>
-                                            <span class="product_per_pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</span>
+                                            <span class="product_per_pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
 
                                             <span class="product_offer">
                                                 @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) > 0)

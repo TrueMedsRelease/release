@@ -17,7 +17,7 @@
                                     @endforeach
                                 </p>
                             </div>
-                            <div class="item-product__price">{{ $Currency::convert($product['price']) }}</div>
+                            <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
                         <div class="item-product__image-ibg">
                             @if ($product['image'] != "gift-card")

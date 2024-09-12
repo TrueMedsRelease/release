@@ -49,7 +49,11 @@
 				<div class="info">
 					<span>{{ $product['name'] }} {!!__('text.product_others')!!}</span>
 					@foreach ($product['sinonim'] as $sinonim)
-						<strong><a href="">{{ $sinonim }}</a></strong>
+						<strong>
+                            <a href = "{{ route('home.product', $sinonim['url']) }}">
+                                {{ $sinonim['name'] }}
+                            </a>
+                        </strong>
                     @endforeach
 				</div>
             @endif
@@ -111,7 +115,7 @@
                         @endif
                     </div>
                     <div class="col">
-                        <span>{{ $Currency::convert(round($item['price'] / $item['num'], 2)) }}</span>
+                        <span>{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
                     </div>
                     @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
                         <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span></div>
