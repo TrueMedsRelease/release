@@ -7,6 +7,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Currency;
 use App\Services\GeoIpService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,12 +21,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-if(empty(session('location')))
+if(!session()->has('location'))
 {
     session(['location' => GeoIpService::GetInfoByIp()]);
 }
 
-if(empty(session('currency')))
+if(!session()->has('currency'))
 {
     $currency = config('app.currency');
     $coef = Currency::GetCoef($currency);
@@ -33,9 +34,61 @@ if(empty(session('currency')))
     session(['currency_c' => $coef]);
 }
 
-if(empty(session('referer')))
+if(!session()->has('referer'))
 {
-    session(['referer' => request()->header('referer')]);
+    $request = new Request();
+    if(!empty($request->referer))
+    {
+        session(['referer' => $request->referer]);
+    }
+    else
+    {
+        session(['referer' => '']);
+    }
+}
+
+if(!session()->has('aff'))
+{
+    if(!empty(request('aff')))
+    {
+        session(['aff' => request('aff')]);
+    }
+    else
+    {
+        session(['aff' => config('app.aff')]);
+    }
+}
+
+if(!session()->has('saff'))
+{
+    if(!empty(request('saff')))
+    {
+        session(['saff' => request('saff')]);
+    }
+}
+
+if(!session()->has('keyword'))
+{
+    if(!empty(request('keyword')))
+    {
+        session(['keyword' => request('keyword')]);
+    }
+}
+
+if(!session()->has('refc'))
+{
+    if(!empty(request('refc')))
+    {
+        session(['refc' => request('refc')]);
+    }
+}
+
+if(!session()->has('coupon_get'))
+{
+    if(!empty(request('coupon')))
+    {
+        session(['coupon_get' => request('coupon')]);
+    }
 }
 
 Route::controller(SearchController::class)->group(function() {

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\ProductServices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
 
 class Cart extends Model
 {
@@ -212,6 +213,37 @@ class Cart extends Model
             {
                 $coupon_discount = ceil($product_total * ($coupon['percent']) / 100);
             }
+        }
+        elseif(session()->has('coupon_get'))
+        {
+            $data = [
+                'method' => 'coupon',
+                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'coupon' => session('coupon_get'),
+            ];
+
+            $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+
+            $response = json_decode($response, true);
+
+            if ($response['status'] == 'success') {
+                if ($response['coupon']['type'] == 'coupon') {
+                    $result['coupon'] = session('coupon_get');
+                    $result['percent'] = $response['coupon']['percent'];
+                    $result['type'] = $response['coupon']['type'];
+
+                    session(['coupon' => $result]);
+
+                    if($result['type'] == 'coupon')
+                    {
+                        $coupon_discount = ceil($product_total * ($result['percent']) / 100);
+                    }
+                }
+            } else {
+                session()->forget('coupon_get');
+                $coupon_discount = 0;
+            }
+
         }
         else
         {
