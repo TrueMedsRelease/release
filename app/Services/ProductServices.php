@@ -322,7 +322,7 @@ class ProductServices
 
         #region Analogs
         $analogs = DB::select(
-            'SELECT pd.name, pd.url
+            'SELECT DISTINCT pd.name, pd.url
         FROM product_analog pa
         JOIN product_desc pd ON pd.product_id = pa.analog_id
         JOIN product p ON p.id = pa.analog_id
@@ -383,6 +383,7 @@ class ProductServices
 
         $sinonims = DB::select("SELECT p.sinonim from product p WHERE p.id = ?", [$products_desc['product_id']]);
         $sinonims = preg_replace('/\b(\w.+)\b/', '$0/', $sinonims[0]->sinonim);
+        $sinonims = str_replace("\u{FEFF}", '', $sinonims);
         $sinonims = explode('/', $sinonims);
         if ($sinonims[0] == "﻿" || $sinonims[0] == "")
         for ($i = 0; $i < count($sinonims); $i++)
@@ -507,7 +508,7 @@ class ProductServices
         }
     }
 
-    public static function SearchProduct($search_text, $design)
+    public static function SearchProduct($search_text, $is_autocomplete, $design)
     {
         if (str_contains($search_text, ' ')) {
             $search_text = '(' . $search_text . ')';
@@ -515,39 +516,50 @@ class ProductServices
 
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
-        $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
-            ->distinct()
-            ->get(['product_id'])
-            ->toArray();
 
-        $product_id = [];
-        foreach ($product_ids as $item) {
-            $product_id[] = $item['product_id'];
+        if ($design == 'design_5') {
+            $product_ids = DB::table('product_search')
+                ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                ->whereFullText('product_search.keyword', $search_text . '*', ['mode' => 'boolean'])
+                // ->where('product_search.keyword', 'like', "$search_text%")
+                ->where('product_category.category_id', '=', 14)
+                ->where('product_search.is_showed', '=', 1)
+                ->get(['product_search.product_id'])
+                ->groupBy('product_search.en_name')
+                ->toArray();
+        } else {
+            $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                ->distinct()
+                ->where('is_showed', '=', 1)
+                ->get(['product_id'])
+                ->toArray();
         }
 
-        // if ($design == 'design_5') {
-        //     $products = Product::query()
-        //         ->where('is_showed', '=', 1)
-        //         ->where('caterogy_id', '=', 14)
-        //         ->whereIn('id', $product_id)
-        //         ->orderBy('main_order', 'asc')
-        //         ->get(['id', 'image', 'aktiv'])
-        //         ->toArray();
-        // } else {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->whereIn('id', $product_id)
-                ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
-                ->toArray();
-        // }
+        $product_id = [];
 
+        if ($design == 'design_5') {
+            foreach ($product_ids as $product) {
+                foreach ($product as $item) {
+                    $product_id[] = $item->product_id;
+                }
+            }
+        } else {
+            foreach ($product_ids as $item) {
+                $product_id[] = $item['product_id'];
+            }
+        }
 
+        $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->whereIn('id', $product_id)
+            ->orderBy('main_order', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-            $products[$i]['url'] = 'product/' . $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['url'] = $is_autocomplete ? 'product/' . $products_desc[$products[$i]['id']]['url'] : $products_desc[$products[$i]['id']]['url'];
             $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
@@ -604,16 +616,6 @@ class ProductServices
             $product->desc = $desc;
         }
         unset($product);
-
-        $bonus_free = (object)[
-            'pack_id' => 0,
-            'name' => 'No Bonus',
-            'price' => 0,
-            'type' => 'none',
-            'desc' => ''
-        ];
-
-        array_unshift($bonus, $bonus_free);
 
         if (!empty($pack_id))
             $bonus = $bonus[0];

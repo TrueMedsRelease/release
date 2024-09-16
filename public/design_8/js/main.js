@@ -237,14 +237,14 @@ $(document).on('click', '.button_sub', function () {
     let email = $('#email_sub').val();
     if (email) {
         $.ajax({
-            url: '/app/ajax_subscribe.php',
+            url: '/request_subscribe',
             type: "POST",
+            cache: false,
             data: {email: email},
-            dataType: "html",
+            dataType: "json",
             success: function (res) {
-                var status = JSON.parse(res);
-                if (status['status'] == 'error') {
-                    alert(status['text']);
+                if (res['status'] == 'error') {
+                    alert(res['text']);
                 } else {
                     $('.popup_gray').show();
                     $('.popup_bottom').hide();

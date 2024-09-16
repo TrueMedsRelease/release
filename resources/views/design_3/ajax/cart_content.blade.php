@@ -61,7 +61,10 @@
                         <div class="order__row">
                             <div class="order__package" id = "{{ $product['product_id'] }}">
                                 <span class="details-product__links">
-                                    <a href="{{route('home.product', $product['url'])}}">{{ $product['name'] }}</a> {{$product['dosage_name']}}
+                                    <a href="{{route('home.product', $product['url'])}}">{{ $product['name'] }}</a>
+                                    @if (!in_array($product['product_id'], [616, 619, 620, 483, 484, 501, 615]))
+                                        {{$product['dosage_name']}}
+                                    @endif
                                 </span>
                             </div>
                             <div class="order__quantity">
@@ -82,18 +85,26 @@
                                 </div>
                             </div>
                             <div class="order__per-pack">
-                                <div class="order__old-price">
-                                    <span>{{ $Currency::convert($product['max_pill_price'] * $product['num']) }}</span>
-                                    -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
-                                </div>
-                                <div class="order__new-price">{{__('text.cart_only')}} {{ $Currency::convert($product['price'], false, true) }}</div>
+                                @if (ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) == 0)
+                                    <div class="order__new-price">{{ $Currency::convert($product['price'], true) }}</div>
+                                @else
+                                    <div class="order__old-price">
+                                        <span>{{ $Currency::convert($product['max_pill_price'] * $product['num'], true) }}</span>
+                                        -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
+                                    </div>
+                                    <div class="order__new-price">{{__('text.cart_only')}} {{ $Currency::convert($product['price'], true) }}</div>
+                                @endif
                             </div>
                             <div class="order__price">
-                                <div class="order__old-price">
-                                    <span>{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q']) }}</span>
-                                    -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
-                                </div>
-                                <div class="order__new-price">{{__('text.cart_only')}} {{ $Currency::convert($product['price'] * $product['q']) }}</div>
+                                @if (ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) == 0)
+                                    <div class="order__new-price">{{__('text.cart_only')}} {{ $Currency::convert($product['price'] * $product['q'], true) }}</div>
+                                @else
+                                    <div class="order__old-price">
+                                        <span>{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}</span>
+                                        -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
+                                    </div>
+                                    <div class="order__new-price">{{__('text.cart_only')}} {{ $Currency::convert($product['price'] * $product['q'], true) }}</div>
+                                @endif
                             </div>
                             <button type="button" data-remove class="order__remove" onclick="remove({{ $product['pack_id'] }})">
                                 <svg width="20" height="20">
@@ -196,6 +207,25 @@
             <div class="order__line bonus-line">
                 <div class="bonus-line__inner">
                     <div class="bonus-line__items"  style="justify-content: left;">
+                        <div class="bonus-line__item">
+                            <div class="checkbox">
+                                <input data-bonus  id="pack-0" class="checkbox__input" type="radio" value="0" name="bonus" @checked(session('cart_option')['bonus_id'] == 0)
+                                onchange="change_bonus(0, 0)">
+                                <label for="pack-0" class="checkbox__label bonus">
+                                    <span class="checkbox__text">
+                                        <span class="bonus_top">
+                                            <span class="bonus_name">No Bonus</span>
+                                            <span class="bonus_price">
+
+                                            </span>
+                                        </span>
+                                        <span class="bonus_bottom">
+                                            <span class="bonus_desc"></span>
+                                        </span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
                         @foreach ($bonus as $product)
                             <div class="bonus-line__item">
                                 <div class="checkbox">
@@ -269,6 +299,8 @@
                     }
                 }
 
+                $total_discount_product = $total_discount;
+
                 $total_discount += session('cart_option')['bonus_price'];
                 if (!$is_only_card) {
                     $total_discount += $shipping[session('cart_option')['shipping']];
@@ -287,14 +319,14 @@
             <div class="order__total total-line">
                 <h3 class="total-line__label">{{__('text.cart_total_price_text')}}</h3>
                 <div class="total-line__data">
-                    @if (!$is_only_card && $discount != 0)
-                        <div class="total-line__old-price"><span>{{ $Currency::convert($total_discount) }}</span> {{ $discount }}%</div>
+                    @if (!$is_only_card && $total_discount_product != (session('total.product_total') - session('total.bonus_total')))
+                        <div class="total-line__old-price"><span>{{ $Currency::convert($total_discount) }}</span> -{{ $discount }}%</div>
                         <div class="total-line__new-price">
                             <div class="total-line__savings">{{__('text.cart_saving')}} {{ $Currency::convert($saving) }}</div>
                             <div class="total-line__digits">{{__('text.cart_only')}} {{ session('total')['all_in_currency'] }}</div>
                         </div>
                     @endif
-                    @if ($discount == 0 || $is_only_card)
+                    @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                         <div class="total-line__digits">{{ session('total')['all_in_currency'] }}</div>
                     @endif
                 </div>

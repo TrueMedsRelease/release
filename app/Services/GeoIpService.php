@@ -9,8 +9,8 @@ class GeoIpService
 {
     public static function GetInfoByIp()
     {
-        $ip = '89.187.179.179';//request()->ip();
-        // $ip = request()->ip();
+        // $ip = '89.187.179.179';//request()->ip();
+        $ip = request()->ip();
         $reader = new Reader(public_path() . '/GeoIp/GeoLite2-City.mmdb');
 
         try

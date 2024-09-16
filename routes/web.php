@@ -143,4 +143,6 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('disease/{disease}', 'disease')->name('home.disease');
     Route::get('/product/{product_name}', 'product')->name('home.product');
     Route::get('/design={design}', 'design')->name('home.design');
+    Route::post('/request_call', 'request_call')->name('home.request_call')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/request_subscribe', 'request_subscribe')->name('home.request_subscribe')->withoutMiddleware(VerifyCsrfToken::class);
 });

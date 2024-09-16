@@ -17,7 +17,7 @@
                         <div class="preference-page-cart__icon">
                             <picture><source srcset="{{ asset("$design/images/icons/c-02.webp") }}" type="image/webp"><img decoding="async" loading="lazy" src="{{ asset("$design/images/icons/c-02.png") }}" alt=""></picture>
                         </div>
-                        <h2 class="preference-page-cart__label"></h2>
+                        <h2 class="preference-page-cart__label">{{__('text.cart_free_regular')}}</h2>
                     </div>
                     <p class="preference-page-cart__descr">{{__('text.cart_sum_regular')}}</p>
                 </div>

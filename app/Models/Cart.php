@@ -110,6 +110,15 @@ class Cart extends Model
         $products = session('cart');
         $pack = ProductPackaging::query()->find($pack_id);
 
+        $count = 1;
+        foreach ($products as $key => $val) {
+            if($val['pack_id'] == $pack_id)
+            {
+                $count = $val['q'];
+                break;
+            }
+        }
+
         $product_pack = ProductPackaging::query()
                         ->where('product_id', '=', $pack->product_id)
                         ->where('dosage', '=', $pack->dosage)
@@ -133,7 +142,7 @@ class Cart extends Model
             'dosage' => $product_pack['dosage'],
             'num' => $product_pack['num'],
             'type' => $product_pack['type_id'],
-            'q' => 1,
+            'q' => $count,
             'price' => $product_pack['price'],
             'max_pill_price' => $max_pill_price,
             'upgrade_pack' => $upgrade_pack
@@ -161,7 +170,7 @@ class Cart extends Model
             {
                 if($product['dosage'] != '1card')
                 {
-                    $insurance += round($product['price'] * 0.1,2);
+                    $insurance += round(($product['price'] * 0.1) * $product['q'],2);
                 }
             }
             $insurance += session('cart_option')['bonus_price'] * 0.1;
@@ -266,26 +275,20 @@ class Cart extends Model
         }
 
         if ($is_only_card) {
-            $all = $product_total + $insurance + $secret_package - $coupon_discount;//+ $bonus_total
+            $all = $product_total;//+ $bonus_total
 
             $all_in_currency = Currency::SumInCurrency([
                 Currency::Convert($product_total, true),
                 // Currency::Convert($bonus_total, true),
-                Currency::Convert($insurance),
-                Currency::Convert($secret_package),
-                Currency::Convert($coupon_discount * (-1)),
             ]);
         } else {
 
-            $all = $product_total + $shipping_total + $insurance + $secret_package - $coupon_discount;//+ $bonus_total
+            $all = $product_total + $shipping_total;//+ $bonus_total
 
             $all_in_currency = Currency::SumInCurrency([
                 Currency::Convert($product_total, true),
                 Currency::Convert($shipping_total),
                 // Currency::Convert($bonus_total, true),
-                Currency::Convert($insurance),
-                Currency::Convert($secret_package),
-                Currency::Convert($coupon_discount * (-1)),
             ]);
         }
 
@@ -296,6 +299,13 @@ class Cart extends Model
             "insurance" => $insurance,
             "secret_package" => $secret_package,
             'coupon_discount' => $coupon_discount,
+            'checkout_total' => $all + $insurance + $secret_package - $coupon_discount,
+            'checkout_total_in_currency' => Currency::SumInCurrency([
+                Currency::Convert($all, true),
+                Currency::Convert($insurance),
+                Currency::Convert($secret_package),
+                Currency::Convert($coupon_discount * (-1)),
+            ]),
             "all" => $all,
             "all_in_currency" => $all_in_currency,
         ];

@@ -22,7 +22,7 @@
                             @if ($product['image'] != 'gift-card')
                                 <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                             @endif
-                            <img src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/products/gift-card.svg') }}"
+                            <img src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift-card.svg') }}"
                                 alt="{{ $product['image'] }}">
                         </picture>
                     </div>
@@ -103,7 +103,17 @@
             <div class="main__content">
                 @foreach ($product['packs'] as $key => $dosage)
                     <div class="panel product-panel">
-                        <h2 class="h2">{{ "{$product['name']} $key" }} {{-- , Need more? <a href="#!">Viagra Extra Dosage</a> --}}</h2>
+                        <h2 class="h2">
+                            @if ($product['image'] != 'gift-card')
+                                @if (in_array($product['id'], [619, 620, 483, 484, 501, 615]))
+                                    {{ $product['name'] }}
+                                @else
+                                    {{ "{$product['name']} $key" }}@if ($loop->iteration == 1 && $product['rec_name'] != 'none')<span style="font-weight:lighter;">, {{__('text.product_need_more')}}</span> <a href="{{route('home.product', $product['rec_url'])}}">{{ $product['rec_name'] }}</a> @endif
+                                @endif
+                            @else
+                                {{ $product['name'] }}
+                            @endif
+                        </h2>
                         <table class="table product-table">
                             <thead>
                                 <tr>
@@ -121,13 +131,16 @@
                                     <tr class="product">
                                         <td class="product__info-wrapper" data-caption="Package:">
                                             <div
-                                                class="product__info @if ($loop->iteration == 1) product__info--sale @endif">
-                                                <div class="product__quantity">{{ "{$item['num']} {$product['type']}" }}
+                                                class="product__info @if ($loop->iteration == 1 && $product['image'] != 'gift-card') product__info--sale @endif">
+                                                <div class="product__quantity">
+                                                    {{ "{$item['num']} {$product['type']}" }}
                                                 </div>
-                                                @if ($item['price'] >= 300)
-                                                    <div class="product__delivery">{{__('text.cart_free_express')}}</div>
-                                                @elseif($item['price'] < 300 && $item['price'] >= 200)
-                                                    <div class="product__delivery">{{__('text.cart_free_regular')}}</div>
+                                                @if ($product['image'] != 'gift-card')
+                                                    @if ($item['price'] >= 300)
+                                                        <div class="product__delivery">{{__('text.cart_free_express')}}</div>
+                                                    @elseif($item['price'] < 300 && $item['price'] >= 200)
+                                                        <div class="product__delivery">{{__('text.cart_free_regular')}}</div>
+                                                    @endif
                                                 @endif
                                             </div>
                                         </td>
@@ -140,7 +153,13 @@
                                                     -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
                                                 </div>
                                             @endif
-                                            <div class="product__price">{{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}</div>
+                                            <div class="product__price">
+                                                @if ($product['image'] != 'gift-card')
+                                                    {{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}
+                                                @else
+                                                   {{ $Currency::convert($item['price'], true) }}
+                                                @endif
+                                            </div>
                                         </td>
                                         <td class="product__button-wrapper">
                                             <form action="{{ route('cart.add', $item['id']) }}" method="post">
@@ -197,5 +216,70 @@
                 </div>
             </div>
         </aside>
+    </div>
+@endsection
+
+@section('rewies')
+    <div class="footer-testimonials">
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_1')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_1')}}</div>
+        </div>
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_7')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_7')}}</div>
+        </div>
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_13')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_13')}}</div>
+        </div>
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_17')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_17')}}</div>
+        </div>
     </div>
 @endsection

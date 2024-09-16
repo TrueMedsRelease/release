@@ -131,12 +131,14 @@
                                 <div class="your-order__checkbox checkbox">
                                     <input @if (session('cart_option.insurance')) checked="checked" @endif id="c_82"
                                         class="checkbox__input" type="checkbox" value="1" name="insurance"
-                                        pop_show="true" onclick="Insurance()">
+                                        pop_show="true" @if (!session('cart_option.insurance', false))
+                                        onclick="Insurance()"
+                                        @endif >
                                     <label for="c_82" class="checkbox__label"><span class="checkbox__text"><b
                                                 style="font-weight: 500;">{{__('text.checkout_insurance')}}</b></span></label>
                                 </div>
                                 <div class="your-order__price" style="font-weight: 500;">
-                                    {{ $Currency::convert(session('cart_option.insurance_price')) }}
+                                    {{ $Currency::convert(session('cart_option.insurance_price'), false, true) }}
                                 </div>
                             </div>
                             <div class="your-order__row">
@@ -148,7 +150,7 @@
                                                 style="font-weight: 500;">{{__('text.checkout_secret')}}</b></span></label>
                                 </div>
                                 <div class="your-order__price" style="font-weight: 500;">
-                                    {{ $Currency::convert(session('cart_option.secret_price')) }}
+                                    {{ $Currency::convert(session('cart_option.secret_price'), false, true) }}
                                 </div>
                             </div>
                             @if ($shipping['ems'] != 0)
@@ -156,19 +158,23 @@
                                     <div class="your-order__checkbox checkbox">
                                         <input @if (session('cart_option.shipping') == 'ems') checked @endif id="c_86"
                                             class="checkbox__input" type="radio" value="ems" name="delivery"
-                                            onclick="change_shipping('ems', {{ $product_total >= 300 ? 0 : $shipping['ems'] }})">
+                                            onclick="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
                                         <label for="c_86" class="checkbox__label"><span class="checkbox__text">
                                                 <b style="font-weight: 500;">{{__('text.checkout_express')}}</b>
+
                                                 <span class="checkbox__add-text">
-                                                    {{__('text.checkout_over')}} {{ $Currency::convert(300) }}
+                                                    @if ($product_total_check >= 300)
+                                                    @else
+                                                        <p>{{__('text.shipping_ems_discount')}}</p>
+                                                    @endif
+                                                    {{__('text.checkout_express_text')}}
                                                 </span>
-                                                <span class="checkbox__add-text">{{__('text.checkout_express_text')}}</span>
                                             </span></label>
                                     </div>
                                     <div style="font-size: 14px;font-weight: 500;"
-                                        class="your-order__price @if ($product_total >= 300) totals-order__old-price @endif">
+                                        class="your-order__price @if ($product_total_check >= 300) totals-order__old-price @endif">
                                         <span>{{ $Currency::convert($shipping['ems']) }}</span>
-                                        @if ($product_total >= 300)
+                                        @if ($product_total_check >= 300)
                                             <p style="color: var(--green);">{{__('text.checkout_free')}}</p>
                                         @endif
                                     </div>
@@ -179,19 +185,23 @@
                                     <div class="your-order__checkbox checkbox">
                                         <input @if (session('cart_option.shipping') == 'regular') checked @endif id="c_85"
                                             class="checkbox__input" type="radio" value="regular" name="delivery"
-                                            onclick="change_shipping('regular', {{ $product_total >= 200 ? 0 : $shipping['regular'] }})">
+                                            onclick="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                                         <label for="c_85" class="checkbox__label"><span class="checkbox__text">
                                                 <b style="font-weight: 500;">{{__('text.checkout_regular')}}</b>
+
                                                 <span class="checkbox__add-text">
-                                                    {{__('text.checkout_over')}} {{ $Currency::convert(200) }}
+                                                    @if ($product_total_check >= 200)
+                                                    @else
+                                                        <p>{{__('text.shipping_regular_discount')}}</p>
+                                                    @endif
+                                                    {{__('text.checkout_regular_text')}}
                                                 </span>
-                                                <span class="checkbox__add-text">{{__('text.checkout_regular_text')}}</span>
                                             </span></label>
                                     </div>
                                     <div style="font-size: 14px;font-weight: 500;"
-                                        class="your-order__price @if ($product_total >= 200) totals-order__old-price @endif">
+                                        class="your-order__price @if ($product_total_check >= 200) totals-order__old-price @endif">
                                         <span>{{ $Currency::convert($shipping['regular']) }}</span>
-                                        @if ($product_total >= 200)
+                                        @if ($product_total_check >= 200)
                                             <p style="color: var(--green);">{{__('text.checkout_free')}}</p>
                                         @endif
                                     </div>
@@ -273,33 +283,43 @@
                                     <div class="totals-order__total" style="color: var(--green); font-size:18px;">
                                     </div>
                                     {else} --}}
-                                    <p class="totals-order__old-price">
-                                        <span id="total_old">
-                                            @php
-                                                $total_discount = 0;
-                                                foreach ($products as $product) {
-                                                    if ($product['dosage'] != '1card') {
-                                                        $total_discount += $product['max_pill_price'] * $product['num'];
-                                                    } else {
-                                                        $total_discount += $product['price'];
-                                                    }
-                                                }
-                                                $total_discount += session('cart_option.bonus_price');
-                                                $total_discount += $shipping[session('cart_option.shipping')];
-                                                $total_discount += session('total.coupon_discount');
-                                            @endphp
-                                            {{ $Currency::convert($total_discount) }}
-                                        </span>
-                                        <span id="discount_text"
-                                            style="text-decoration: none;">-{{ ceil(100 - (session('total.all') / $total_discount) * 100) }}%</span>
-                                    </p>
-                                    <div class="totals-order__savings"
-                                        style="color: rgb(148, 148, 148);font-size: 13px;">{{__('text.checkout_savings')}} <span
-                                            id="saving">{{ $Currency::convert($total_discount - session('total.all')) }}</span>
-                                    </div>
-                                    <div class="totals-order__total" style="color: var(--green); font-size:18px;">
-                                        {{ session('total.all_in_currency') }}
-                                    </div>
+                                    @php
+                                        $total_discount = 0;
+                                        foreach ($products as $product) {
+                                            if ($product['dosage'] != '1card') {
+                                                $total_discount += $product['max_pill_price'] * $product['num'] * $product['q'];
+                                            } else {
+                                                $total_discount += $product['price'];
+                                            }
+                                        }
+
+                                        $total_discount_product = $total_discount;
+
+                                        $total_discount += session('cart_option.bonus_price');
+                                        $total_discount += $shipping[session('cart_option.shipping')];
+                                        $total_discount += session('total.coupon_discount');
+                                    @endphp
+
+                                    @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
+                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">
+                                            {{ session('total.checkout_total_in_currency') }}
+                                        </div>
+                                    @else
+                                        <p class="totals-order__old-price">
+                                            <span id="total_old">
+                                                {{ $Currency::convert($total_discount) }}
+                                            </span>
+                                            <span id="discount_text"
+                                                style="text-decoration: none;">-{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%</span>
+                                        </p>
+                                        <div class="totals-order__savings"
+                                            style="color: rgb(148, 148, 148);font-size: 13px;">{{__('text.checkout_savings')}} <span
+                                                id="saving">{{ $Currency::convert($total_discount - session('total.checkout_total')) }}</span>
+                                        </div>
+                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">
+                                            {{ session('total.checkout_total_in_currency') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -539,18 +559,16 @@
                                         value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
                                     <select name="payment_type" class="form" id="payment_type_select"
                                         data-pseudo-label="Type of Payment">
-                                        <option value="card" selected>{{__('text.checkout_bank_card')}}</option>
-                                        <option value="crypto">{{__('text.checkout_crypto')}} -15% extra off</option>
-
-                                        {{-- {if $data.info.gift_card} --}}
-											{{-- <option value="gift_card" {if $data.info.payment_type == 'gift_card'}selected{/if}>{{__('text.common_gift_card')}}</option> --}}
-										{{-- {/if} --}}
+                                        <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
+                                        <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>
+                                        {{-- {{-- <option value="paypal" @selected(session('form.payment_type', 'paypal') == 'paypal')>Paypal</option> --}} --}}
+                                        {{-- <option value="gift_card">{#gift_card#}</option> --}}
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="enter-info__card-content">
+                        <div class="enter-info__card-content" @if (session('form.payment_type', 'card') != 'card')) hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>
@@ -610,7 +628,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="enter-info__crypto-content" hidden>
+                        <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'card') != 'crypto')) hidden @endif>
                             <input type="hidden" id="pay_yes" value="0">
                             <input type="hidden" id="invoiceId" value="">
                             <div class="info_text_crypto" style="line-height: 24px">
@@ -629,7 +647,7 @@
                             <div class="content-crypto">
                                 <div class="content-crypto__items">
                                     <div class="content-crypto__item">
-                                        <input id="cr_01" value="ETH_ETHEREUM" type="radio"
+                                        <input id="cr_01" @checked(session('crypto.currency', '') == 'ETH_ETHEREUM') value="ETH_ETHEREUM" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_01">
                                             <svg width="40" height="40">
@@ -641,7 +659,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_02" value="BTC_BITCOIN" type="radio"
+                                        <input id="cr_02" @checked(session('crypto.currency', '') == 'BTC_BITCOIN') value="BTC_BITCOIN" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_02">
                                             <svg width="40" height="40">
@@ -653,7 +671,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_03" value="USDT_TRON" type="radio"
+                                        <input id="cr_03" @checked(session('crypto.currency', '') == 'USDT_TRON') value="USDT_TRON" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_03">
                                             <svg width="40" height="40">
@@ -665,7 +683,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_04" value="USDT_ETHEREUM" type="radio"
+                                        <input id="cr_04" @checked(session('crypto.currency', '') == 'USDT_ETHEREUM') value="USDT_ETHEREUM" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_04">
                                             <svg width="40" height="40">
@@ -677,7 +695,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_05" value="LTC_LITECOIN" type="radio"
+                                        <input id="cr_05" @checked(session('crypto.currency', '') == 'LTC_LITECOIN') value="LTC_LITECOIN" type="radio"
                                             name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_05">
                                             <svg width="40" height="40">
@@ -689,7 +707,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_06" value="TRX_TRON" type="radio" name="crypt_currency">
+                                        <input id="cr_06" @checked(session('crypto.currency', '') == 'TRX_TRON') value="TRX_TRON" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_06">
                                             <svg width="40" height="40">
                                                 <use
@@ -700,7 +718,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_07" value="BNB_BSC" type="radio" name="crypt_currency">
+                                        <input id="cr_07" @checked(session('crypto.currency', '') == 'BNB_BSC') value="BNB_BSC" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_07">
                                             <svg width="40" height="40">
                                                 <use
@@ -711,7 +729,7 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_08" value="TON_TON" type="radio" name="crypt_currency">
+                                        <input id="cr_08" @checked(session('crypto.currency', '') == 'TON_TON') value="TON_TON" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_08">
                                             <picture style="margin-bottom: 3px;">
                                                 <source srcset="{{ asset('style_checkout/images/icons/ton.png') }}"
@@ -724,7 +742,7 @@
                                         </label>
                                     </div>
                                     {{-- <div class="content-crypto__item">
-                                        <input id="cr_09" value="BUSD_BSC" type="radio" name="crypt_currency">
+                                           <input id="cr_09" @checked(session('crypto.currency', '') == 'BUSD_BSC') value="BUSD_BSC" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_08">
                                             <svg width="40" height="40">
                                                 <use
@@ -738,7 +756,7 @@
                                 <div style="text-align: center;" id="requisites_load" hidden>
                                     <img src="{{ asset('style_checkout/images/loading.gif') }}">
                                 </div>
-                                <div id="requisites" hidden>
+                                <div id="requisites" @if (empty(session('crypto'))) hidden @endif>
                                     <div class="enter-info__note">
                                         <svg width="18" height="18">
                                             <use
@@ -749,7 +767,7 @@
                                     </div>
                                     <div class="content-crypto__details details-payment">
                                         <div class="details-payment__qr-code">
-                                            <picture><img id="qr_code" src="" width="140"
+                                            <picture><img id="qr_code" src="{{ session('crypto.qr') }}" width="140"
                                                     height="140" alt="Awesome image"></picture>
                                         </div>
                                         <div class="details-payment__rows">
@@ -758,11 +776,11 @@
                                                     <h3 class="details-payment__title">{{__('text.checkout_amount')}}</h3>
                                                     <div class="details-payment__cells">
                                                         <span class="details-payment__amount"
-                                                            id="crypto_total"></span>
+                                                            id="crypto_total">{{ session('crypto.amount') }}</span>
                                                         <span class="details-payment__old-price"
-                                                            id="crypto_price"></span>
+                                                            id="crypto_price"> {{ $Currency::Convert(session('total.checkout_total', 0)) }} </span>
                                                         <span class="details-payment__price"
-                                                            id="crypto_discount_price"></span>
+                                                            id="crypto_discount_price">{{ session('crypto.crypto_total') }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -786,7 +804,7 @@
                                                     <h3 class="details-payment__title">{{__('text.checkout_funds')}}</h3>
                                                     <div class="details-payment__cells">
                                                         <span id="purse"
-                                                            class="details-payment__amount">0xbcec7dc127978e0733ef40cd3255ba54a450b87c</span>
+                                                            class="details-payment__amount">{{ session('crypto.purse') }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -808,11 +826,11 @@
                                         </div>
                                     </div>
                                     <div class="enter-info__note enter-info__note--has-offset">
-                                        <p>{{__('text.checkout_payment_id')}}<span id="invoce_p"></span></p>
+                                        <p>{{__('text.checkout_payment_id')}} <span id="invoce_p">{{ session('crypto.invoiceId') }}</span></p>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="enter-info__button button" id="paid">
+                            <button type="button" class="enter-info__button button" id="paid">
                                 <span>{{__('text.checkout_paid')}}</span>
                             </button>
                             <button style="display: none;" type="submit" class="enter-info__button button"
@@ -821,13 +839,13 @@
                                     width="30px" height="30px">
                             </button>
                         </div>
-                        <div class="enter-info__paypal-content" hidden>
+                        <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal')) hidden @endif>
                             <div class="details-payment__row">
                                 <div class="details-payment__data" style="text-align: center;">
                                     {{__('text.checkout_sepa_text')}}
                                 </div>
                             </div>
-                            <button id="proccess_paypal" name="proccess" class="enter-info__button button">
+                            <button type="button" id="proccess_paypal" name="proccess" class="enter-info__button button">
                                 <span>{{__('text.checkout_sepa_button')}}</span>
                             </button>
                         </div>

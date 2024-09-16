@@ -138,7 +138,7 @@
                                                 style="font-weight: 500;">{{__('text.checkout_insurance')}}</b></span></label>
                                 </div>
                                 <div class="your-order__price" style="font-weight: 500;">
-                                    {{ $Currency::convert(session('cart_option.insurance_price')) }}
+                                    {{ $Currency::convert(session('cart_option.insurance_price'), false, true) }}
                                 </div>
                             </div>
                             <div class="your-order__row">
@@ -150,7 +150,7 @@
                                                 style="font-weight: 500;">{{__('text.checkout_secret')}}</b></span></label>
                                 </div>
                                 <div class="your-order__price" style="font-weight: 500;">
-                                    {{ $Currency::convert(session('cart_option.secret_price')) }}
+                                    {{ $Currency::convert(session('cart_option.secret_price'), false, true) }}
                                 </div>
                             </div>
                             @if ($shipping['ems'] != 0)
@@ -158,14 +158,12 @@
                                     <div class="your-order__checkbox checkbox">
                                         <input @if (session('cart_option.shipping') == 'ems') checked @endif id="c_86"
                                             class="checkbox__input" type="radio" value="ems" name="delivery"
-                                            onclick="change_shipping('ems', {{ $product_total >= 300 ? 0 : $shipping['ems'] }})">
+                                            onclick="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
                                         <label for="c_86" class="checkbox__label"><span class="checkbox__text">
                                                 <b style="font-weight: 500;">{{__('text.checkout_express')}}</b>
+
                                                 <span class="checkbox__add-text">
-                                                    {{__('text.checkout_over')}} {{ $Currency::convert(300) }}
-                                                </span>
-                                                <span class="checkbox__add-text">
-                                                    @if ($product_total >= 300)
+                                                    @if ($product_total_check >= 300)
                                                     @else
                                                         <p>{{__('text.shipping_ems_discount')}}</p>
                                                     @endif
@@ -174,9 +172,9 @@
                                             </span></label>
                                     </div>
                                     <div style="font-size: 14px;font-weight: 500;"
-                                        class="your-order__price @if ($product_total >= 300) totals-order__old-price @endif">
+                                        class="your-order__price @if ($product_total_check >= 300) totals-order__old-price @endif">
                                         <span>{{ $Currency::convert($shipping['ems']) }}</span>
-                                        @if ($product_total >= 300)
+                                        @if ($product_total_check >= 300)
                                             <p style="color: var(--green);">{{__('text.checkout_free')}}</p>
                                         @endif
                                     </div>
@@ -187,19 +185,23 @@
                                     <div class="your-order__checkbox checkbox">
                                         <input @if (session('cart_option.shipping') == 'regular') checked @endif id="c_85"
                                             class="checkbox__input" type="radio" value="regular" name="delivery"
-                                            onclick="change_shipping('regular', {{ $product_total >= 200 ? 0 : $shipping['regular'] }})">
+                                            onclick="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                                         <label for="c_85" class="checkbox__label"><span class="checkbox__text">
                                                 <b style="font-weight: 500;">{{__('text.checkout_regular')}}</b>
+
                                                 <span class="checkbox__add-text">
-                                                    {{__('text.checkout_over')}} {{ $Currency::convert(200) }}
+                                                    @if ($product_total_check >= 200)
+                                                    @else
+                                                        <p>{{__('text.shipping_regular_discount')}}</p>
+                                                    @endif
+                                                    {{__('text.checkout_regular_text')}}
                                                 </span>
-                                                <span class="checkbox__add-text">{{__('text.checkout_regular_text')}}</span>
                                             </span></label>
                                     </div>
                                     <div style="font-size: 14px;font-weight: 500;"
-                                        class="your-order__price @if ($product_total >= 200) totals-order__old-price @endif">
+                                        class="your-order__price @if ($product_total_check >= 200) totals-order__old-price @endif">
                                         <span>{{ $Currency::convert($shipping['regular']) }}</span>
-                                        @if ($product_total >= 200)
+                                        @if ($product_total_check >= 200)
                                             <p style="color: var(--green);">{{__('text.checkout_free')}}</p>
                                         @endif
                                     </div>
@@ -281,33 +283,43 @@
                                     <div class="totals-order__total" style="color: var(--green); font-size:18px;">
                                     </div>
                                     {else} --}}
-                                    <p class="totals-order__old-price">
-                                        <span id="total_old">
-                                            @php
-                                                $total_discount = 0;
-                                                foreach ($products as $product) {
-                                                    if ($product['dosage'] != '1card') {
-                                                        $total_discount += $product['max_pill_price'] * $product['num'];
-                                                    } else {
-                                                        $total_discount += $product['price'];
-                                                    }
-                                                }
-                                                $total_discount += session('cart_option.bonus_price');
-                                                $total_discount += $shipping[session('cart_option.shipping')];
-                                                $total_discount += session('total.coupon_discount');
-                                            @endphp
-                                            {{ $Currency::convert($total_discount) }}
-                                        </span>
-                                        <span id="discount_text"
-                                            style="text-decoration: none;">-{{ ceil(100 - (session('total.all') / $total_discount) * 100) }}%</span>
-                                    </p>
-                                    <div class="totals-order__savings"
-                                        style="color: rgb(148, 148, 148);font-size: 13px;">{{__('text.checkout_savings')}} <span
-                                            id="saving">{{ $Currency::convert($total_discount - session('total.all')) }}</span>
-                                    </div>
-                                    <div class="totals-order__total" style="color: var(--green); font-size:18px;">
-                                        {{ session('total.all_in_currency') }}
-                                    </div>
+                                    @php
+                                        $total_discount = 0;
+                                        foreach ($products as $product) {
+                                            if ($product['dosage'] != '1card') {
+                                                $total_discount += $product['max_pill_price'] * $product['num'] * $product['q'];
+                                            } else {
+                                                $total_discount += $product['price'];
+                                            }
+                                        }
+
+                                        $total_discount_product = $total_discount;
+
+                                        $total_discount += session('cart_option.bonus_price');
+                                        $total_discount += $shipping[session('cart_option.shipping')];
+                                        $total_discount += session('total.coupon_discount');
+                                    @endphp
+
+                                    @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
+                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">
+                                            {{ session('total.checkout_total_in_currency') }}
+                                        </div>
+                                    @else
+                                        <p class="totals-order__old-price">
+                                            <span id="total_old">
+                                                {{ $Currency::convert($total_discount) }}
+                                            </span>
+                                            <span id="discount_text"
+                                                style="text-decoration: none;">-{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%</span>
+                                        </p>
+                                        <div class="totals-order__savings"
+                                            style="color: rgb(148, 148, 148);font-size: 13px;">{{__('text.checkout_savings')}} <span
+                                                id="saving">{{ $Currency::convert($total_discount - session('total.checkout_total')) }}</span>
+                                        </div>
+                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">
+                                            {{ session('total.checkout_total_in_currency') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -549,7 +561,7 @@
                                         data-pseudo-label="Type of Payment">
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
                                         <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>
-                                        <option value="paypal" @selected(session('form.payment_type', 'paypal') == 'paypal')>Paypal</option>
+                                        {{-- <option value="paypal" @selected(session('form.payment_type', 'paypal') == 'paypal')>Paypal</option> --}}
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
@@ -766,7 +778,7 @@
                                                         <span class="details-payment__amount"
                                                             id="crypto_total">{{ session('crypto.amount') }}</span>
                                                         <span class="details-payment__old-price"
-                                                            id="crypto_price"> {{ $Currency::Convert(session('total.all', 0)) }} </span>
+                                                            id="crypto_price"> {{ $Currency::Convert(session('total.checkout_total', 0)) }} </span>
                                                         <span class="details-payment__price"
                                                             id="crypto_discount_price">{{ session('crypto.crypto_total') }}</span>
                                                     </div>

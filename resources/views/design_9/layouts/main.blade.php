@@ -50,6 +50,45 @@
     </script>
 
 <div class="wrapper">
+    <div class="popup_gray" style="display: none">
+        <div class="popup_call">
+            <div class="button_close">
+                <svg class="close_popup" width="15" height="15">
+                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                </svg>
+            </div>
+            <div class="popup_bottom">
+                <div class="popup_text">{{__('text.common_callback')}}</div>
+                <div class="phone">
+                    <div class="enter-info__country phone_code">
+                        <select name="phone_code" class="form" data-scroll>
+                            @foreach ($phone_codes as $item)
+                                <option id=""
+                                @if (empty(session('form')))
+                                        @selected($item['iso'] == session('location.country', ''))
+                                @else
+                                    @selected($item['iso'] == session('form.phone_code', ''))
+                                @endif
+                                    data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                    value="+{{ $item['phonecode'] }}">
+                                    +{{ $item['phonecode'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="enter-info__input enter-info__input--country">
+                        <input required autocomplete="off" type="number" id="phone" name="phone" placeholder="000 000 00 00" class="input" maxlength = "14" oninput="maxLengthCheck(this)">
+                    </div>
+                </div>
+                <div class="button_request_call">{{__('text.common_callback')}}</div>
+            </div>
+            <div class="message_sended hidden">
+                <h2>{{__('text.contact_us_thanks')}}</h2>
+                <br>
+                <p>{{__('text.phone_request_mes_text')}}</p>
+            </div>
+        </div>
+    </div>
 	<header class="header">
 		<div class="header__phones-top top-phones-header">
             <div class="header__container">
@@ -214,45 +253,6 @@
                         </ul>
                     </nav>
                 </div>
-        </div>
-    </div>
-    <div class="popup_gray" style="display: none">
-        <div class="popup_call">
-            <div class="button_close">
-                <svg class="close_popup" width="15" height="15">
-                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
-                </svg>
-            </div>
-            <div class="popup_bottom">
-                <div class="popup_text">{{__('text.common_callback')}}</div>
-                <div class="phone">
-                    <div class="enter-info__country phone_code">
-                        <select name="phone_code" class="form" data-scroll>
-                            @foreach ($phone_codes as $item)
-                                <option id=""
-                                @if (empty(session('form')))
-                                        @selected($item['iso'] == session('location.country', ''))
-                                @else
-                                    @selected($item['iso'] == session('form.phone_code', ''))
-                                @endif
-                                    data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
-                                    value="{{ $item['iso'] }}">
-                                    +{{ $item['phonecode'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="enter-info__input enter-info__input--country">
-                        <input required autocomplete="off" type="number" id="phone" name="phone" placeholder="000 000 00 00" class="input" maxlength = "14" oninput="maxLengthCheck(this)">
-                    </div>
-                </div>
-                <div class="button_request_call">{{__('text.common_callback')}}</div>
-            </div>
-            <div class="message_sended hidden">
-                <h2>{{__('text.contact_us_thanks')}}</h2>
-                <br>
-                <p>{{__('text.phone_request_mes_text')}}</p>
-            </div>
         </div>
     </div>
     <div class="popup_white hide">

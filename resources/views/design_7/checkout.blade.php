@@ -10,7 +10,21 @@
     <title>{{__('text.checkout_title')}}</title>
 </head>
 <body>
-
+    <div class="preloader">
+		<div class="preloader__row">
+			<div class="preloader__item"></div>
+			<div class="preloader__item"></div>
+		</div>
+	</div>
+	<div class="ploader">
+		<div class="ploader__row">
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+			<div class="ploader__item"></div>
+		</div>
+	</div>
     <div class="wrapper">
 
 	</div>

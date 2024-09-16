@@ -93,7 +93,7 @@
                                         @selected($item['iso'] == session('form.phone_code', ''))
                                     @endif
                                         data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
-                                        value="{{ $item['iso'] }}">
+                                        value="+{{ $item['phonecode'] }}">
                                         +{{ $item['phonecode'] }}
                                     </option>
                                 @endforeach

@@ -4319,16 +4319,21 @@ $(document).on('click', '.button_request_call', function () {
 
     if (number) {
         $.ajax({
-            url: '/app/ajax_request_phone.php',
+            url: '/request_call',
             type: "POST",
+            cache: false,
             data: {phone: phone_code+number},
-            dataType: "html",
-            success: function () {
-                $('.popup_bottom').hide();
+            dataType: "json",
+            success: function (res) {
+                if (res['status'] == 'success') {
+                    $('.popup_bottom').hide();
 
-                const mesa = document.querySelector('.message_sended');
-                mesa.classList.remove('hidden');
-                mesa.classList.add('active');
+                    const mesa = document.querySelector('.message_sended');
+                    mesa.classList.remove('hidden');
+                    mesa.classList.add('active');
+                } else {
+                    alert(res['text']);
+                }
             }
         });
     }
@@ -4354,20 +4359,20 @@ $(document).on('click', '.visible.gift', function () {
     }
 });
 
-function addCard() {
-    let value_card = $('.select_current_gift').attr('curr_packaging_id');
-    $.ajax({
-        url: "/app/ajax_cart.php",
-        type: 'POST',
-        data: {
-            'card_pack_id': value_card
-        },
-        dataType: 'html',
-        success : function(data) {
-            $('.basket').html(data);
-        },
-    });
-}
+// function addCard() {
+//     let value_card = $('.select_current_gift').attr('curr_packaging_id');
+//     $.ajax({
+//         url: "/app/ajax_cart.php",
+//         type: 'POST',
+//         data: {
+//             'card_pack_id': value_card
+//         },
+//         dataType: 'html',
+//         success : function(data) {
+//             $('.basket').html(data);
+//         },
+//     });
+// }
 
 function getCookie(name) {
     var value = "; " + document.cookie;
@@ -4421,14 +4426,14 @@ $(document).on('click', '.button_sub', function () {
     let email = $('#email_sub').val();
     if (email) {
         $.ajax({
-            url: '/app/ajax_subscribe.php',
+            url: '/request_subscribe',
             type: "POST",
+            cache: false,
             data: {email: email},
-            dataType: "html",
+            dataType: "json",
             success: function (res) {
-                var status = JSON.parse(res);
-                if (status['status'] == 'error') {
-                    alert(status['text']);
+                if (res['status'] == 'error') {
+                    alert(res['text']);
                 } else {
                     $('.popup_gray').show();
                     $('.popup_bottom').hide();

@@ -88,8 +88,11 @@
         @if ($key != $prev_dosage)
             <div class="package-box">
             <h2>
-                {{-- {$data.product_info.name}{if !$data.product_info.name|strstr:"Pack"} {$cur_product_packaging.dosage}{/if}{if $smarty.foreach.product_dosages.iteration == 1 && $data.product_info.rec_name != 'none'}<span style="font-weight:lighter;">, {#need_more#}</span> <span  class="details-page-product"><a href="{$path.page}/{$data.product_info.rec_url}" style="font-weight: normal;">{$data.product_info.rec_name}</a></span> {/if} --}}
-                @if ($product['image'] != 'gift-card') {{ "{$product['name']} $key" }} @else {{ $product['name'] }} @endif
+                @if ($product['image'] != 'gift-card')
+                {{ "{$product['name']} $key" }}@if ($loop->parent->iteration == 1 && $product['rec_name'] != 'none')<span style="font-weight:lighter;">, {{__('text.product_need_more')}}</span> <span class="details-page-product"><a href="{{route('home.product', $product['rec_url'])}}" style="font-weight: normal;">{{ $product['rec_name'] }}</a></span> @endif
+                @else
+                    {{ $product['name'] }}
+                @endif
             </h2>
             <div class="package-table">
                 <div class="head">

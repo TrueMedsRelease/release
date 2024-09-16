@@ -4254,16 +4254,21 @@ $(document).on('click', '.button_request_call', function () {
 
     if (number) {
         $.ajax({
-            url: '/app/ajax_request_phone.php',
+            url: '/request_call',
             type: "POST",
+            cache: false,
             data: {phone: phone_code+number},
-            dataType: "html",
-            success: function () {
-                $('.popup_bottom').hide();
+            dataType: "json",
+            success: function (res) {
+                if (res['status'] == 'success') {
+                    $('.popup_bottom').hide();
 
-                const mesa = document.querySelector('.message_sended');
-                mesa.classList.remove('hidden');
-                mesa.classList.add('active');
+                    const mesa = document.querySelector('.message_sended');
+                    mesa.classList.remove('hidden');
+                    mesa.classList.add('active');
+                } else {
+                    alert(res['text']);
+                }
             }
         });
     }
@@ -4306,14 +4311,14 @@ $(document).on('click', '.button_sub', function () {
     let email = $('#email_sub').val();
     if (email) {
         $.ajax({
-            url: '/app/ajax_subscribe.php',
+            url: '/request_subscribe',
             type: "POST",
+            cache: false,
             data: {email: email},
-            dataType: "html",
+            dataType: "json",
             success: function (res) {
-                var status = JSON.parse(res);
-                if (status['status'] == 'error') {
-                    alert(status['text']);
+                if (res['status'] == 'error') {
+                    alert(res['text']);
                 } else {
                     $('.popup_gray').show();
                     $('.popup_bottom').hide();

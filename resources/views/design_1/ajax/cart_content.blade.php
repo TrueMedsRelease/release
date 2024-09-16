@@ -99,7 +99,12 @@
                     <li class="order__item">
                         <div class="order__product" id = "{{ $product['product_id'] }}">
                         <span class="order__name">
-                            <a href="{{route('home.product', $product['url'])}}" class="product-about__characteristic-meaning--link">{{ $product['name'] }}</a> {{$product['dosage_name']}}
+                            <a href="{{route('home.product', $product['url'])}}" class="product-about__characteristic-meaning--link">
+                                {{ $product['name'] }}
+                            </a>
+                            @if (!in_array($product['product_id'], [616, 619, 620, 483, 484, 501, 615]))
+                                {{$product['dosage_name']}}
+                            @endif
                         </span>
                             <div class="quantity" data-quantity>
                                 <button class="quantity__button quantity__button_plus" data-quantity-plus type="button" onclick="up({{ $product['pack_id'] }})">
@@ -113,18 +118,26 @@
                                 </button>
                             </div>
                             <div class="order__pack">
-                                <div class="order__pack-top">
-                                    <span class="order__price line-through">{{ $Currency::convert($product['max_pill_price'] * $product['num'], true) }}</span>
-                                    <span class="order__discount">-{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
-                                </div>
-                                <span class="order_only">{{__('text.cart_only')}} {{ $Currency::convert($product['price'],true) }}</span>
+                                @if (ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) == 0)
+                                    <span class="order_only">{{ $Currency::convert($product['price'], true) }}</span>
+                                @else
+                                    <div class="order__pack-top">
+                                        <span class="order__price line-through">{{ $Currency::convert($product['max_pill_price'] * $product['num'], true) }}</span>
+                                        <span class="order__discount">-{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
+                                    </div>
+                                    <span class="order_only">{{__('text.cart_only')}} {{ $Currency::convert($product['price'], true) }}</span>
+                                @endif
                             </div>
                             <div class="order__price">
-                                <div class="order__price-top">
-                                    <span class="order__price line-through">{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}</span>
-                                    <span class="order__discount">-{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
-                                </div>
-                                <span class="order__only">{{__('text.cart_only')}} {{ $Currency::convert($product['price'] * $product['q'], true) }}</span>
+                                @if (ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) == 0)
+                                    <span class="order__only">{{__('text.cart_only')}} {{ $Currency::convert($product['price'] * $product['q'], true) }}</span>
+                                @else
+                                    <div class="order__price-top">
+                                        <span class="order__price line-through">{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}</span>
+                                        <span class="order__discount">-{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
+                                    </div>
+                                    <span class="order__only">{{__('text.cart_only')}} {{ $Currency::convert($product['price'] * $product['q'], true) }}</span>
+                                @endif
                             </div>
                             <button type="button" data-remove class="remove-button" onclick="remove({{ $product['pack_id'] }})">
                                 x
@@ -227,6 +240,20 @@
         <form class="order-bonus" action="#">
             @csrf
             <div class="order-bonus__items">
+                <label class="order-bonus__item">
+                    <input data-bonus class="hidden" id="pack-0" type="radio" name="bonus" value="0" @checked(session('cart_option')['bonus_id'] == 0)
+                    onchange="change_bonus(0, 0)">
+                    <span class="visible"></span>
+                    <div class="order-bonus__content">
+                        <span class="order-bonus__name">
+                            <span class="bonus_name">No Bonus</span>
+                            <span class="bonus_price">
+
+                            </span>
+                        </span>
+                        <span class="order-bonus__package"></span>
+                    </div>
+                </label>
                 @foreach ($bonus as $product)
                     <label class="order-bonus__item">
                         <input data-bonus class="hidden" id="pack-{{ $loop->iteration + 1 }}" type="radio" name="bonus" value="{{ $product->pack_id }}" @checked(session('cart_option')['bonus_id'] == $product->pack_id)
@@ -295,6 +322,8 @@
                 }
             }
 
+            $total_discount_product = $total_discount;
+
             $total_discount += session('cart_option')['bonus_price'];
             if (!$is_only_card) {
                 $total_discount += $shipping[session('cart_option')['shipping']];
@@ -313,15 +342,15 @@
         <div class="order-total">
             <span class="order-total__title">{{__('text.cart_total_price_text')}}</span>
             <div class="order-total__content">
-                @if (!$is_only_card && $discount != 0)
+                @if (!$is_only_card && $total_discount_product != (session('total.product_total') - session('total.bonus_total')))
                     <div class="order-total__price">
                         <span class="order-total__old line-through">{{ $Currency::convert($total_discount) }}</span>
-                        <span class="order-total__discount">{{ $discount }}%</span>
+                        <span class="order-total__discount">-{{ $discount }}%</span>
                     </div>
                     <span class="order-total__saving">{{__('text.cart_saving')}} {{ $Currency::convert($saving) }}</span>
                     <span class="order-total__only">{{__('text.cart_only')}} {{ session('total')['all_in_currency'] }}</span>
                 @endif
-                @if ($discount == 0 || $is_only_card)
+                @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                     <div class="order-total__only">{{ session('total')['all_in_currency'] }}</div>
                 @endif
             </div>

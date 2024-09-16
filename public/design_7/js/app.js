@@ -1058,16 +1058,21 @@ $(document).on('click', '.button_request_call', function () {
 
     if (number) {
         $.ajax({
-            url: '/app/ajax_request_phone.php',
+            url: '/request_call',
             type: "POST",
+            cache: false,
             data: {phone: phone_code+number},
-            dataType: "html",
-            success: function () {
-                $('.popup_bottom').hide();
+            dataType: "json",
+            success: function (res) {
+                if (res['status'] == 'success') {
+                    $('.popup_bottom').hide();
 
-                const mesa = document.querySelector('.message_sended');
-                mesa.classList.remove('hidden');
-                mesa.classList.add('active');
+                    const mesa = document.querySelector('.message_sended');
+                    mesa.classList.remove('hidden');
+                    mesa.classList.add('active');
+                } else {
+                    alert(res['text']);
+                }
             }
         });
     }

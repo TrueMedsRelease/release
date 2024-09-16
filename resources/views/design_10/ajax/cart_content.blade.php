@@ -27,7 +27,11 @@
                                             <tr class="cart-item-content">
                                                 <td class="cart-item__brand" width="45.2%">
                                                     <span class="cart-item__brand-wrapper">
-                                                        {{ $product['pack_name'] }}</span>
+                                                        <a href="{{route('home.product', $product['url'])}}">{{ $product['name'] }}</a>
+                                                        @if (!in_array($product['product_id'], [616, 619, 620, 483, 484, 501, 615]))
+                                                            {{$product['dosage_name']}}
+                                                        @endif
+                                                    </span>
                                                 </td>
                                                 <td class="cart-item__qty" width="15.2%" data-caption="QTY:">
                                                     <div class="qty-input">
@@ -110,8 +114,17 @@
                                         name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif
                                         onchange="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})"><label
                                         class="form-radio" for="delivery-2">
-                                        <div class="form-radio__title">{{__('text.shipping_ems')}}</div>
-                                        <div class="form-radio__text">{{__('text.shipping_ems_text')}}</div>
+                                        <div class="form-radio__title" style="display: flex; align-items: center;">
+                                            {{__('text.shipping_ems')}}
+                                            <img style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                        </div>
+                                        <div class="form-radio__text">
+                                            @if ($product_total_check >= 300)
+                                            @else
+                                                {{__('text.shipping_ems_discount')}}<br>
+                                            @endif
+                                            {{__('text.shipping_ems_text')}}
+                                        </div>
                                         <div class="form-radio__price">
                                             @if ($is_only_card)
                                                 {{ $Currency::convert($shipping['ems']) }}
@@ -133,8 +146,17 @@
                                         name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif
                                         onchange="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                                     <label class="form-radio" for="delivery-1">
-                                        <div class="form-radio__title">{{__('text.shipping_regular')}}</div>
-                                        <div class="form-radio__text">{{__('text.shipping_regular_text')}}</div>
+                                        <div class="form-radio__title" style="display: flex; align-items: center;">
+                                            {{__('text.shipping_regular')}}
+                                            <img style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                        </div>
+                                        <div class="form-radio__text">
+                                            @if ($product_total_check >= 200)
+                                            @else
+                                                {{__('text.shipping_regular_discount')}}<br>
+                                            @endif
+                                            {{__('text.shipping_regular_text')}}
+                                        </div>
                                         <div class="form-radio__price">
                                             @if ($is_only_card)
                                                 {{ $Currency::convert($shipping['regular']) }}
@@ -159,6 +181,19 @@
             <fieldset class="form__fieldset form-panel">
                 <div class="form__field">
                     <div class="pack-radios">
+                        <div class="form-radio-wrapper"><input class="form-radio-input"
+                                id="pack-0" type="radio" name="pack"
+                                @checked(session('cart_option')['bonus_id'] == 0)
+                                onchange="change_bonus(0, 0)"
+                                value="0"><label class="form-radio"
+                                for="pack-0">
+                                <div class="form-radio__title">No Bonus</div>
+                                <div class="form-radio__text"></div>
+                                <div class="form-radio__price">
+
+                                </div>
+                            </label>
+                        </div>
                         @foreach ($bonus as $product)
                             <div class="form-radio-wrapper"><input class="form-radio-input"
                                     id="pack-{{ $loop->iteration + 1 }}" type="radio" name="pack"
@@ -232,6 +267,8 @@
                             }
                         }
 
+                        $total_discount_product = $total_discount;
+
                         $total_discount += session('cart_option')['bonus_price'];
                         if (!$is_only_card) {
                             $total_discount += $shipping[session('cart_option')['shipping']];
@@ -248,18 +285,18 @@
 
                     @endphp
                     <div class="cart-total">
-                        @if (!$is_only_card && $discount != 0)
+                        @if (!$is_only_card && $total_discount_product != (session('total.product_total') - session('total.bonus_total')))
                             <div class="cart-total__title h3">{{__('text.cart_total_price_text')}}</div>
                             <div class="cart-total__discount">
                                 <s> {{ $Currency::convert($total_discount) }} </s>
-                                {{ $discount }}%
+                                -{{ $discount }}%
                             </div>
                             <div class="cart-total__savings">
                                 {{__('text.cart_saving')}}{{ $Currency::convert($saving) }}
                             </div>
                             <div class="cart-total__price h3">{{__('text.cart_only')}} {{ session('total')['all_in_currency'] }} </div>
                         @endif
-                        @if ($discount == 0 || $is_only_card)
+                        @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                             <div class="cart-total__price h3">{{ session('total')['all_in_currency'] }}</div>
                         @endif
                     </div>

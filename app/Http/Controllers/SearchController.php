@@ -28,7 +28,7 @@ class SearchController extends Controller
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $products = ProductServices::SearchProduct($search_text, $design);
+        $products = ProductServices::SearchProduct($search_text, false, $design);
         $phone_codes = PhoneCodes::all()->toArray();
 
         return view($design . '.search_result', [
@@ -47,7 +47,7 @@ class SearchController extends Controller
     {
         $search_text = $request->query('q');
         $design = session('design') ? session('design') : config('app.design');
-        $products = ProductServices::SearchProduct($search_text, $design);
+        $products = ProductServices::SearchProduct($search_text, true, $design);
 
         $tips = '';
         foreach($products as $product)

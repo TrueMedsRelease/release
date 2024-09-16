@@ -13,6 +13,8 @@ use Illuminate\View\View;
 use App\Services\ProductServices;
 use App\Models\PhoneCodes;
 use App\Services\StatisticService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -320,4 +322,78 @@ class HomeController extends Controller
         return Redirect::back();
     }
 
+    public function request_call(Request $request)
+    {
+        $phone = $request->phone;
+
+        $error = 0;
+        if (empty($phone)) {
+            $error = 1;
+        }
+
+        $data = [
+            'method' => 'send_request',
+            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'phone' => $phone,
+            'shop' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'aff' => session('aff'),
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ];
+
+        if (!$error) {
+            $response = Http::timeout(3)->post('http://true-services.net/support/messages/phone_request.php', $data);
+            $response = json_decode($response, true);
+        } else {
+            $response = [
+                'status' => 'error',
+                'text' => __('text.errors_empty_field')
+            ];
+        }
+
+        return json_encode($response);
+    }
+
+    public function request_subscribe(Request $request)
+    {
+        $email = $request->email;
+
+        $error = 0;
+        if (empty($email)) {
+            $error = 1;
+        }
+
+        if(!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {
+            $error = 2;
+        }
+
+        $data = [
+            'method' => 'subscribe',
+            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'email' => $email,
+            'shop' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'aff' => session('aff'),
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ];
+
+        if (!$error) {
+            $response = Http::timeout(3)->post('http://true-services.net/support/messages/subscribe.php', $data);
+            $response = json_decode($response, true);
+        } else {
+            if ($error == 1) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_empty_field')
+                ];
+            } else if ($error == 2) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_wrong_email')
+                ];
+            }
+        }
+
+        return json_encode($response);
+    }
 }
