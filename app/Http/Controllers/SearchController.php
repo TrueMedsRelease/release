@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Currency;
+use App\Models\Language;
 use App\Models\ProductSearch;
 use App\Services\ProductServices;
 use Illuminate\Http\Request;
