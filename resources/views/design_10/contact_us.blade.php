@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.contact_us_title'))
+@section('title', $title)
 
 @section('content')
 <div class="container page-wrapper contact_us_block default">
@@ -35,10 +35,11 @@
                 <label class="form__label form__label--text" for="captcha">{{__('text.contact_us_code')}}</label>
                 <div style="display: flex">
                     <picture>
-                        <source srcset="/captcha" type="image/webp">
-                        <img src="/captcha">
+                        <source srcset="{{ captcha_src() }}" type="image/webp">
+                        <img src="{{ captcha_src() }}">
                     </picture>
-                    <input class="form__text-input input-text" type="text" id="captcha">
+                    <div class="mt-2"></div>
+                    <input class="form__text-input input-text form-control" type="text" id="captcha" name="captcha" >
                 </div>
             </div>
             <div class="form__field">

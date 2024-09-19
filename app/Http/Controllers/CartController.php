@@ -27,7 +27,7 @@ class CartController extends Controller
 
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
-
+        $title = ProductServices::getPageTitle('cart');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
@@ -38,6 +38,8 @@ class CartController extends Controller
             'Language' => Language::class,
             'menu' => $menu,
             'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => ''
         ]);
     }
 

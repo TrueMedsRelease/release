@@ -636,4 +636,76 @@ class ProductServices
 
         return $cards;
     }
+
+    public static function getPageTitle($page) {
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        switch($page){
+            case 'index':
+                $main_titles = [
+                    'Cheap Online Pharmacy',
+                    'Cheap Medicines Online',
+                    'Pharmacy Discount & Special Offers',
+                    'Discount Online Pharmacy',
+                    'Only Today: Big Discounts',
+                    'Low Prices Today Only'
+                ];
+
+                $main_title_cache = DB::select("SELECT title FROM main_cache");
+
+                if (count($main_title_cache) > 0) {
+                    $title = $main_title_cache[0]->title;
+                } else {
+                    $new_title_key = array_rand($main_titles, 1);
+                    $title = $main_titles[$new_title_key];
+                    DB::insert("INSERT INTO `main_cache` (`title`) VALUES ('{$title}')");
+                }
+
+                $title = $domain . ' - ' . $title;
+                break;
+            case 'first_letter':
+                $title = __('text.first_letter_title') . ' - ' . $domain;
+                break;
+            case 'active':
+                $title = __('text.aktiv_title') . ' - ' . $domain;
+                break;
+            case 'disease':
+                $title = __('text.disease_title') . ' - ' . $domain;
+                break;
+            case 'about_us':
+                $title = __('text.about_us_title') . ' - ' . $domain;
+                break;
+            case 'faq':
+                $title = __('text.faq_title') . ' - ' . $domain;
+                break;
+            case 'testimonials':
+                $title = __('text.testimonials_title') . ' - ' . $domain;
+                break;
+            case 'shipping':
+                $title = __('text.shipping_title') . ' - ' . $domain;
+                break;
+            case 'moneyback':
+                $title = __('text.moneyback_title') . ' - ' . $domain;
+                break;
+            case 'contact_us':
+                $title = __('text.contact_us_title') . ' - ' . $domain;
+                break;
+            case 'affiliate':
+                $title = __('text.affiliate_title') . ' - ' . $domain;
+                break;
+            case 'login':
+                $title = __('text.login_title') . ' - ' . $domain;
+                break;
+            case 'search':
+                $title = __('text.search_result_title') . ' - ' . $domain;
+                break;
+            case 'cart':
+                $title = __('text.cart_title') . ' - ' . $domain;
+                break;
+            default:
+                $title = $domain;
+                break;
+        }
+
+        return $title;
+    }
 }

@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.testimonials_title'))
+@section('title', $title)
 
 @section('content')
 <main class="default">

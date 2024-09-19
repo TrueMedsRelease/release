@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.affiliate_title'))
+@section('title', $title)
 
 @section('content')
 <div class="bonus_block all_padding">
@@ -49,8 +49,8 @@
                                 <label for="name" class="form__label">{{__('text.affiliate_code')}}</label>
                                 <div class="form__input">
                                     <picture>
-                                        <source srcset="/captcha" type="image/webp">
-                                        <img src="/captcha">
+                                        <source srcset="{{ captcha_src() }}" type="image/webp">
+                                        <img src="{{ captcha_src() }}">
                                     </picture>
                                     <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" class="form__input input">
                                 </div>

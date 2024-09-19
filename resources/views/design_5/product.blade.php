@@ -1,11 +1,19 @@
 @extends($design . '.layouts.main')
 
-@section('title', $product['name'])
+@section('title', $title)
+
+@section('announce')
+    <div class="announce__item announce__item--blue">
+        <div class="announce__icon">
+            <svg width="24" height="24">
+                <use xlink:href="{{ asset($design . '/images/icons/icons.svg#svg-checkmark') }}"></use>
+            </svg>
+        </div>
+        <div class="announce__text"><b>{{random_int(2, 30)}}{{__('text.common_product1')}}</b>{{__('text.common_product2')}}</div>
+    </div>
+@endsection
 
 @section('content')
-<script>
-    flagp = true;
-</script>
 <div class="product-box">
 	<div class="holder-info">
 		<div class="img">

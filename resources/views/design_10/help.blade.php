@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.faq_faq_title'))
+@section('title', $title)
 
 @section('content')
 <div class="container page-wrapper faq_block">

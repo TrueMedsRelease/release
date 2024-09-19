@@ -156,7 +156,7 @@
                     </select>
                 </div>
                 <div class="header__currency header__control profile" data-da=".controls, 768, last">
-                    <a href='' target="_blank">
+                    <a href='{{ route('home.login') }}' target="_blank">
                         <picture>
                             <source srcset="{{ asset("$design/images/user.png") }}" type="image/png">
                             <img src="{{ asset("$design/images/user.png") }}" alt="profile" width="25" height="25" loading="lazy">
@@ -414,7 +414,7 @@
                                     <li>
                                         <a href="{{ route('home.category', $category['url']) }}" class = "menu__label">{{ $category['name'] }}</a>
                                     </li>
-                                    <ul class="menu__list" style="display: none">
+                                    <ul class="menu__list" @if ($cur_category != $category['name']) style="display: none"  @endif>
                                         @foreach ($category['products'] as $item)
                                             <li>
                                                 <a href="{{ route('home.product', $item['url']) }}" style="display: flex; justify-content:space-between; align-items:baseline;">{{ $item['name'] }} <span style="font-size: 13px;">{{ $Currency::convert($item['price'], false, true) }}</span></a>
@@ -546,7 +546,7 @@
         <div class="container footer__container">
             <div class="footer__top">
                 <p class="footer__text">
-                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
                     {{__('text.license_text_license2_d1')}}
                 </p>
                 <a class="footer__link c-button" href="{{ route('home.affiliate') }}">{{__('text.common_affiliate_main_menu_button')}}</a>

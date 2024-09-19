@@ -97,28 +97,31 @@ $(document).on('click', '#message_send_button', function () {
     const submit = true;
 
     $.ajax({
-        url:     '/app/ajax_contact_us.php',
-        type:     "POST",
+        url: '/request_contact_us',
+        type: "POST",
+        cache: false,
         data: { 'name' : name,
-            'email' : email,
-            'subject' : subject,
-            'message' : message,
-            'captcha' : captcha,
-            'submit' : submit },
-        dataType: "html",
-        success: function(data) {
-            const mesa = document.querySelector('.message_sended');
+        'email' : email,
+        'subject' : subject,
+        'message' : message,
+        'captcha' : captcha,
+        'submit' : submit },
+        dataType: "json",
+        success: function(data) { //Данные отправлены успешно
+            if (data['status'] == 'error') {
+                alert(data['text']);
+            } else {
+                $('.page-text__top-row').hide();
+                $('.page-text__inner').hide();
+                $('.message_sended').removeClass('hidden');
+                $('.message_sended').addClass('active');
 
-            $('.page-text__top-row').hide();
-            $('.page-text__inner').hide();
-            mesa.classList.remove('hidden');
-            mesa.classList.add('active');
-
-            setTimeout((() => {
-                location.href = '/' + location.search;
-            }), 2000);
+                setTimeout((() => {
+                    location.href = '/' + location.search;
+                }), 2000);
+            }
         }
-    });
+     });
 });
 
 $(document).on('click', '#affiliate_send_button', function () {
@@ -130,28 +133,31 @@ $(document).on('click', '#affiliate_send_button', function () {
     const submit = true;
 
     $.ajax({
-        url:     '/app/ajax_affiliate.php',
+        url:     '/request_affiliate',
         type:     "POST",
+        cache: false,
         data: { 'name' : name,
-            'email' : email,
-            'jabber' : jabber,
-            'message' : message,
-            'captcha' : captcha,
-            'submit' : submit },
-        dataType: "html",
-        success: function(data) {
-            const mesa = document.querySelector('.message_sended');
+        'email' : email,
+        'jabber' : jabber,
+        'message' : message,
+        'captcha' : captcha,
+        'submit' : submit },
+        dataType: "json",
+        success: function(data) { //Данные отправлены успешно
+            if (data['status'] == 'error') {
+                alert(data['text']);
+            } else {
+                $('.page-text__top-row').hide();
+                $('.page-text__inner').hide();
+                $('.message_sended').removeClass('hidden');
+                $('.message_sended').addClass('active');
 
-            $('.page-text__top-row').hide();
-            $('.page-text__inner').hide();
-            mesa.classList.remove('hidden');
-            mesa.classList.add('active');
-
-            setTimeout((() => {
-                location.href = '/' + location.search;
-            }), 2000);
+                setTimeout((() => {
+                    location.href = '/' + location.search;
+                }), 2000);
+            }
         }
-    });
+     });
 });
 
 $(document).on('click', '.search_button', function () {

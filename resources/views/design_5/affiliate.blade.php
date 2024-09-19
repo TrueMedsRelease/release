@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.affiliate_title'))
+@section('title', $title)
 
 @section('content')
 
@@ -49,8 +49,8 @@
 							<input type="text" autocomplete="off" placeholder="{{__('text.affiliate_code')}}" name="captcha" id="captcha" onkeyup="undisabled('affiliate')">
 							<div class="img">
 								<picture>
-									<source srcset="/captcha" type="image/webp">
-									<img src="/captcha">
+									<source srcset="{{ captcha_src() }}" type="image/webp">
+									<img src="{{ captcha_src() }}">
 								</picture>
 							</div>
 						</div>

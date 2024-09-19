@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', $search_text)
+@section('title', $title)
 
 @section('content')
 <div class="container page-wrapper">

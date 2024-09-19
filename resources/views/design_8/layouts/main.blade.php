@@ -208,7 +208,7 @@
         </div>
 
         <p class="footer_copyright">
-            {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+            {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
             {{__('text.license_text_license2_d8')}}
         </p>
 

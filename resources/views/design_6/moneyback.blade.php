@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', 'Moneyback')
+@section('title', $title)
 
 @section('content')
 <main class="page-text">

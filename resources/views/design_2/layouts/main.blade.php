@@ -137,7 +137,7 @@
 								</div>
 							</div>
 							<div class="actions__item actions__item--order" data-da=".fixed-bar, 700, 1">
-								<a href='{{ config('app.url') }}/login' target="_blank">
+								<a href='{{ route('home.login') }}' target="_blank">
 									<div class="actions__icon">
 										<svg width="20" height="20">
 											<use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-profile") }}"></use>
@@ -472,7 +472,7 @@
         </div>
         <div class="footer__copyright">
             <p>
-                {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
                 {{__('text.license_text_license2_d2')}}
             </p>
         </div>

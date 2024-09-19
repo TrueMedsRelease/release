@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'Testimonials')
+@section('title', $title)
 
 @section('content')
 <main class="page-text page-text--faq">

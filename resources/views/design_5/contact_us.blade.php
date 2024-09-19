@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.contact_us_title'))
+@section('title', $title)
 
 @section('content')
 
@@ -49,8 +49,8 @@
 							<input type="text" autocomplete="off" placeholder="{{__('text.contact_us_code')}}" name="captcha" id="captcha" onkeyup="undisabled('contact_us')">
 							<div class="img">
 								<picture>
-									<source srcset="/captcha" type="image/webp">
-									<img src="/captcha">
+									<source srcset="{{ captcha_src() }}" type="image/webp">
+									<img src="{{ captcha_src() }}">
 								</picture>
 							</div>
 						</div>

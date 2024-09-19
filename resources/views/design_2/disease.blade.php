@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', str_replace('-', ' ', $disease))
+@section('title', $title)
 
 @section('content')
 <main class="page">
@@ -25,7 +25,7 @@
                                         <a href="{{ route('home.product', $item['url']) }}">
                                             {{ $item['name'] }}
                                         </a>
-                                        <span style="font-size: 12px;">{{  }}</span>
+                                        <span style="font-size: 12px;">{{ $Currency::convert($item['price'], false, true) }}</span>
                                     </li>
                                 @endforeach
                             </ul>

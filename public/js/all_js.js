@@ -146,3 +146,61 @@ function addCard() {
         }
     });
 }
+
+function enterProfile() {
+    let email = $('[name="form[email]"]').val();
+    let captcha = $('[name="form[code]"]').val();
+    let validRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+
+    if (!email) {
+        $('#email_error').show();
+    } else if (!email.match(validRegex)) {
+        $('#email_error .input').text(email_invalid_text);
+        $('#email_error').show();
+    } else {
+        $('#email_error').hide();
+    }
+
+    if (!captcha) {
+        $('#captcha_error').show();
+    } else {
+        $.ajax({
+            url: '/check_code',
+            type: 'POST',
+            cache: false,
+            dataType: 'json',
+            data: {
+                'captcha': captcha,
+            },
+            success: function (data) {
+                if (data['result'] == false) {
+                    $('#captcha_error .input').text(code_invalid_text);
+                    $('#captcha_error').show();
+                } else {
+                    $('#captcha_error').hide();
+                }
+
+                if (!$('#captcha_error').is(':visible') && !$('#email_error').is(':visible')) {
+                    $.ajax({
+                        url: '/request_login',
+                        type: 'POST',
+                        cache: false,
+                        dataType: 'json',
+                        data: {
+                            'email': email,
+                            'captcha': captcha,
+                        },
+                        success: function (data) {
+                            if (data['status'] == 'error') {
+                                alert(data['text']);
+                            } else {
+                                $('#preloader').show();
+                                window.location.href = data['url'];
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+}

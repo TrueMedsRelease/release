@@ -52,13 +52,13 @@ $( function() {
         $('.nav').toggleClass('active');
     });
 
-    // if (location.pathname != '/'){
-    //     $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
-    //     document.getElementById("main_bestsellers").hidden = true;
-    //     if (document.getElementById('main_bestsellers_body')) {
-    //         document.getElementById('main_bestsellers_body').hidden = true;
-    //     }
-    // }
+    if (location.pathname != '/'){
+        $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
+        document.getElementById("main_bestsellers").hidden = true;
+        if (document.getElementById('main_bestsellers_body')) {
+            document.getElementById('main_bestsellers_body').hidden = true;
+        }
+    }
 } );
 
 function undisabled(page) {
@@ -92,28 +92,32 @@ $(document).on('click', '#message_send_button', function () {
     const submit = true;
 
     $.ajax({
-        url:     '/app/ajax_contact_us.php',
-        type:     "POST",
+        url: '/request_contact_us',
+        type: "POST",
+        cache: false,
         data: { 'name' : name,
-            'email' : email,
-            'subject' : subject,
-            'message' : message,
-            'captcha' : captcha,
-            'submit' : submit },
-        dataType: "html",
-        success: function(data) {
+        'email' : email,
+        'subject' : subject,
+        'message' : message,
+        'captcha' : captcha,
+        'submit' : submit },
+        dataType: "json",
+        success: function(data) { //Данные отправлены успешно
+            if (data['status'] == 'error') {
+                alert(data['text']);
+            } else {
+                $(".title-page").hide();
+                $('#message_send_form').hide();
+                $('.text-bottom-desc').hide();
+                $('.message_sended').removeClass('hidden');
+                $('.message_sended').addClass('active');
 
-            $(".title-page").hide();
-            $('#message_send_form').hide();
-            $('.text-bottom-desc').hide();
-            $('.message_sended').removeClass('hidden');
-            $('.message_sended').addClass('active');
-
-            setTimeout((() => {
-                location.href = '/' + location.search;
-            }), 2000);
+                setTimeout((() => {
+                    location.href = '/' + location.search;
+                }), 2000);
+            }
         }
-    });
+     });
 });
 
 $(document).on('click', '#affiliate_send_button', function () {
@@ -140,27 +144,33 @@ $(document).on('click', '#affiliate_send_button', function () {
 
     if (!error) {
         $.ajax({
-            url:     '/app/ajax_affiliate.php',
+            url:     '/request_affiliate',
             type:     "POST",
+            cache: false,
             data: { 'name' : name,
-                'email' : email,
-                'jabber' : jabber,
-                'message' : message,
-                'captcha' : captcha,
-                'submit' : submit },
-            dataType: "html",
+            'email' : email,
+            'jabber' : jabber,
+            'message' : message,
+            'captcha' : captcha,
+            'submit' : submit },
+            dataType: "json",
             success: function(data) { //Данные отправлены успешно
-                $(".contact-form").html(data);
-                $(".content__title").hide();
-                $(".contact-form").hide();
-                $('.message_sended').removeClass('hidden');
-                $('.message_sended').addClass('active');
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                } else {
+                    // $(".contact-form").html(data);
+                    $(".title-page").hide();
+                    $('#message_send_form').hide();
+                    $('.text-bottom-desc').hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
 
-                setTimeout((() => {
-                    location.href = '/' + location.search;
-                }), 2000);
-            }
-        });
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
+        	}
+     	});
     }
 });
 

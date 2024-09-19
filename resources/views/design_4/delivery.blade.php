@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', 'Delivery')
+@section('title', $title)
 
 @section('content')
 <h1 class="content__title title">{{__('text.shipping_title')}}</h1>

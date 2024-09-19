@@ -97,35 +97,19 @@
 											</ul>
 										</div>
 										@foreach ($menu as $category)
-											{{-- {if $cur_category.name eq $data.product_info.category_name}
-												<div class="spollers__item">
-													<button type="button" data-spoller class="spollers__title _spoller-active">{$cur_category.name}</button>
-													<ul class="spollers__body" id="this_product_category">
-														{foreach item=cur_product from=$cur_category.products}
-															<li class="spollers__item-list">
-																<a href="{$path.page}/{$cur_product.url}">
-																	{$cur_product.name}
-																</a>
-																<span style="font-size: 12px;">{$cur_product.min_price_per_pill}</span>
-															</li>
-														{/foreach}
-													</ul>
-												</div>
-											{else} --}}
-												<div class="spollers__item">
-													<button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
-													<ul class="spollers__body">
-														@foreach ($category['products'] as $item)
-															<li class="spollers__item-list">
-																<a href="{{ route('home.product', $item['url']) }}">
-																	{{ $item['name'] }}
-																</a>
-																<span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
-															</li>
-                                                        @endforeach
-													</ul>
-												</div>
-											{{-- {/if} --}}
+                                            <div class="spollers__item">
+                                                <button type="button" data-spoller class="spollers__title @if($cur_category == $category['name']) _spoller-active @endif">{{ $category['name'] }}</button>
+                                                <ul class="spollers__body">
+                                                    @foreach ($category['products'] as $item)
+                                                        <li class="spollers__item-list">
+                                                            <a href="{{ route('home.product', $item['url']) }}">
+                                                                {{ $item['name'] }}
+                                                            </a>
+                                                            <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         @endforeach
 									</div>
 								</div>
@@ -204,7 +188,7 @@
 											</svg>
 										</div>
 										<div class="actions__select">
-											<a href="{{ config('app.url') }}/login" class="item" target="_blank">
+											<a href="{{ route('home.login') }}" class="item" target="_blank">
 												<span class="name">{{__('text.common_profile')}}</span>
 											</a>
 										</div>
@@ -445,11 +429,11 @@
                     <li class="footer__item"><a href="{{ route('home.delivery') }}" class="footer__link">{{__('text.common_shipping_main_menu_item')}}</a></li>
                     <li class="footer__item"><a href="{{ route('home.moneyback') }}" class="footer__link">{{__('text.common_moneyback_main_menu_item')}}</a></li>
                     <li class="footer__item"><a href="{{ route('home.contact_us') }}" class="footer__link">{{__('text.common_contact_us_main_menu_item')}}</a></li>
-                    <li class="footer__item"><a href="{{ config('app.url') }}/login" class="footer__link" target="_blank">{{__('text.common_profile')}}</a></li>
+                    <li class="footer__item"><a href="{{ route('home.login') }}" class="footer__link" target="_blank">{{__('text.common_profile')}}</a></li>
                 </ul>
                 <a href="{{ route('home.affiliate') }}" class="footer__button button">{{__('text.common_affiliate_main_menu_button')}}</a>
                 <p class="footer__copyright">
-                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
                     {{__('text.license_text_license2_d6')}}
                 </p>
                 <picture><source srcset="{{ asset("$design/images/decor/petal-footer.webp") }}" type="image/webp"><img class="footer__petal" src="{{ asset("$design/images/decor/petal-footer.png") }}" width="44" height="71"></picture>
@@ -465,7 +449,7 @@
                 </div>
                 <div class="fixed-bar__label">{{__('text.common_home_main_menu_item')}}</div>
             </a>
-            <a href="{{ config('app.url') }}/login" target="_blank" class="fixed-bar__item">
+            <a href="{{ route('home.login') }}" target="_blank" class="fixed-bar__item">
                 <div class="fixed-bar__item">
                     <div class="fixed-bar__icon">
                         <svg width="24" height="24">

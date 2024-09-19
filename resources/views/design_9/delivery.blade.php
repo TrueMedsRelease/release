@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', 'Delivery')
+@section('title', $title)
 
 @section('content')
 <div class="bonus_block all_padding">

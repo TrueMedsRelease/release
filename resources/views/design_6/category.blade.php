@@ -1,5 +1,7 @@
 @extends($design . '.layouts.main')
 
+@section('title', $title)
+
 @section('content')
 
 <main class="page">
@@ -35,7 +37,6 @@
         </aside>
         <div class="home-grid-items__container">
             @foreach ($products as $category)
-                @section('title', $category['name'])
                 <h2 class="home-grid-items__title title">{{$category['name']}}</h2>
                 <div class="home-grid-items__body">
                     @foreach ($category['products'] as $product)

@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.common_cart_text'))
+@section('title', $title)
 
 @section('content')
     <div class="container page-wrapper cart_block basket" id = "shopping_cart">

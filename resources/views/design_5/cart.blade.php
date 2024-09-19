@@ -1,11 +1,19 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.cart_cart_title'))
+@section('title', $title)
+
+@section('announce')
+    <div class="announce__item announce__item--yellow">
+        <div class="announce__icon">
+            <svg width="24" height="24">
+                <use xlink:href="{{ asset($design . '/images/icons/icons.svg#svg-clock') }}"></use>
+            </svg>
+        </div>
+        <div class="announce__text">{{__('text.common_cart1')}}<b>{{ucfirst(session('location.country_name'))}}{{__('text.common_cart2')}}</b></div>
+    </div>
+@endsection
 
 @section('content')
-<script>
-    flagc = true;
-</script>
 <div class="column-box">
 	<div class="basket" id="shopping_cart">
 

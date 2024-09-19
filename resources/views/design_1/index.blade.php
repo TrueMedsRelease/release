@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.main_best_selling_title'))
+@section('title', $title)
 @section('title_2', __('text.main_best_selling_title'))
 
 @section('content')

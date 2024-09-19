@@ -96,35 +96,19 @@
                             </ul>
                         </div>
                         @foreach ($menu as $category)
-                            {{-- {if $cur_category.name eq $data.product_info.category_name || $cur_category.name eq $data.category_name}
-                                <div class="spollers__item">
-                                    <button type="button" data-spoller class="spollers__title _spoller-active">{$cur_category.name}</button>
-                                    <ul class="spollers__body" id="this_product_category">
-                                        {foreach item=cur_product from=$cur_category.products}
-                                            <li class="spollers__item-list">
-                                                <a href="{$path.page}/{$cur_product.url}">
-                                                    {$cur_product.name}
-                                                </a>
-                                                <span style="font-size: 12px;">{$cur_product.min_price_per_pill}</span>
-                                            </li>
-                                        {/foreach}
-                                    </ul>
-                                </div>
-                            {else} --}}
-                                <div class="spollers__item">
-                                    <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
-                                    <ul class="spollers__body">
-                                        @foreach ($category['products'] as $item)
-                                            <li class="spollers__item-list">
-                                                <a href="{{ route('home.product', $item['url']) }}">
-                                                    {{ $item['name'] }}
-                                                </a>
-                                                <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            {{-- {/if} --}}
+                            <div class="spollers__item">
+                                <button type="button" data-spoller class="spollers__title @if($cur_category == $category['name']) _spoller-active @endif">{{ $category['name'] }}</button>
+                                <ul class="spollers__body">
+                                    @foreach ($category['products'] as $item)
+                                        <li class="spollers__item-list">
+                                            <a href="{{ route('home.product', $item['url']) }}">
+                                                {{ $item['name'] }}
+                                            </a>
+                                            <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -152,7 +136,7 @@
                         </select>
                     </div>
                     <div class="profile_top_block">
-                        <a href="{{ config('app.url') }}/login" class="item profile_top" target="_blank">
+                        <a href="{{ route('home.login') }}" class="item profile_top" target="_blank">
                             <span class="ico">
                               <img src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt="" width="20" height="20">
                             </span>
@@ -456,7 +440,7 @@
             </div>
             <div class="copyright">
                 <p>
-                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
                     {{__('text.license_text_license2_d5')}}
                 </p>
             </div>
@@ -476,7 +460,7 @@
         </span>
         <span class="name">{{__('text.common_home_main_menu_item')}}</span>
     </a>
-    <a href="{{ config('app.url') }}/login" class="item" target="_blank">
+    <a href="{{ route('home.login') }}" class="item" target="_blank">
         <span class="ico">
           <img src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt="">
         </span>
@@ -489,6 +473,19 @@
         </span>
         <span class="name">{{ $Currency::convert($cart_total) }}</span>
     </a>
+</div>
+<div class="announce">
+    @yield('announce')
+    {{-- {if $data.is_cart_page}
+        <div class="announce__item announce__item--yellow">
+        <div class="announce__icon">
+        <svg width="24" height="24">
+            <use xlink:href="{$path.image}/icons/icons.svg#svg-clock"></use>
+        </svg>
+    </div>
+    <div class="announce__text">{#cart1#}<b>{$data.customer.country}{#cart2#}</b></div>
+        </div>
+    {/if} --}}
 </div>
 
 <input hidden id="stattemp" value="{$data.web_statistic.params_string}">

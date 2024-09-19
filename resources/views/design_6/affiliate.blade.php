@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.affiliate_title'))
+@section('title', $title)
 
 @section('content')
 <main class="page-text page-text--faq">
@@ -52,7 +52,7 @@
                                         <input id="captcha" autocomplete="off" type="text" name="form[]" class="input" onkeyup="undisabled('affiliate')">
                                     </div>
                                     <div class="contact-us-form__captcha">
-                                        <picture><source srcset="/captcha" type="image/webp"><img src="/captcha" width="140" height="70" alt="{{__('text.affiliate_code')}}"></picture>
+                                        <picture><source srcset="{{ captcha_src() }}" type="image/webp"><img src="{{ captcha_src() }}" width="140" height="70" alt="{{__('text.affiliate_code')}}"></picture>
                                     </div>
                                 </div>
                             </div>

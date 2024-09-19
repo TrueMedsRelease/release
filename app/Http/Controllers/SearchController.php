@@ -12,6 +12,7 @@ use App\Services\LanguageServices;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\PhoneCodes;
+use App\Services\StatisticService;
 use Illuminate\Support\Facades\App;
 
 class SearchController extends Controller
@@ -25,11 +26,13 @@ class SearchController extends Controller
 
     public static function search_result($search_text) : View
     {
+        StatisticService::SendStatistic('search');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $products = ProductServices::SearchProduct($search_text, false, $design);
         $phone_codes = PhoneCodes::all()->toArray();
+        $title = ProductServices::getPageTitle('search');
 
         return view($design . '.search_result', [
             'design' => $design,
@@ -40,6 +43,8 @@ class SearchController extends Controller
             'Language' => Language::class,
             'Currency' => Currency::class,
             'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => ''
         ]);
     }
 

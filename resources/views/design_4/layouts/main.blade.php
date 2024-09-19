@@ -148,7 +148,7 @@
                         <div class="header__phone2">
                             <div class="profile">
                                 <img src="{{ asset("$design/images/user_blue_2.png") }}">
-                                <a href="{{ config('app.url') }}/login" target="_blank">{{__('text.common_profile')}}</a>
+                                <a href="{{ route('home.login') }}" target="_blank">{{__('text.common_profile')}}</a>
                             </div>
                         </div>
                     </div>
@@ -444,35 +444,19 @@
                                     </ul>
                                 </div>
                                 @foreach ($menu as $category)
-                                    {{-- {if $cur_category.name eq $data.product_info.category_name || $cur_category.name eq $data.category_name} --}}
-                                        {{-- <div class="spollers__item">
-                                            <button type="button" data-spoller class="spollers__title _spoller-active">{{ $category['name'] }}</button>
-                                            <ul class="spollers__body" id="this_product_category">
-                                                @foreach ($category['products'] as $item)
-                                                    <li class="spollers__item-list">
-                                                        <a href="{{ route('home.product', $item['url']) }}">
-                                                            {{ $item['name'] }}
-                                                        </a>
-                                                        <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div> --}}
-                                    {{-- {else} --}}
-                                        <div class="spollers__item">
-                                            <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
-                                            <ul class="spollers__body">
-                                                @foreach ($category['products'] as $item)
-                                                    <li class="spollers__item-list">
-                                                        <a href="{{ route('home.product', $item['url']) }}">
-                                                            {{ $item['name'] }}
-                                                        </a>
-                                                        <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    {{-- {/if} --}}
+                                    <div class="spollers__item">
+                                        <button type="button" data-spoller class="spollers__title @if($cur_category == $category['name']) _spoller-active @endif">{{ $category['name'] }}</button>
+                                        <ul class="spollers__body">
+                                            @foreach ($category['products'] as $item)
+                                                <li class="spollers__item-list">
+                                                    <a href="{{ route('home.product', $item['url']) }}">
+                                                        {{ $item['name'] }}
+                                                    </a>
+                                                    <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -707,7 +691,7 @@
             </ul>
             <div class="licen">
                 <p class="footer__copyright">
-                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
                     {{__('text.license_text_license2_d4')}}
                 </p>
             </div>
@@ -734,7 +718,7 @@
                     <h3 class="actions-mobile__label">{{__('text.common_categories_menu')}}</h3>
                 </div>
                 <div class="actions-mobile__item">
-                    <a href="{{ config('app.url') }}/login" target="_blank">
+                    <a href="{{ route('home.login') }}" target="_blank">
                         <div class="actions-mobile__icon">
                             <img src="{{ asset("$design/images/user_blue_2.png") }}">
                         </div>

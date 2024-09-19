@@ -2193,7 +2193,9 @@ input[type=number] {
 /*    .table-box.cart-table .table .body .line.full-line .bonus-box .checkbox {*/
 /*        margin-top: 10px; } }*/
 .table-box.cart-table .table .body .line.full-line.delivery-line {
-    background: #F2F5F9; }
+    background: #F2F5F9;
+    gap: 10px;
+}
 .table-box.cart-table .table .body .line.full-line.delivery-line .delivery-box {
     display: flex;
     align-items: center;

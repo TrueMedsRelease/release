@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', str_replace('-', ' ', $disease))
+@section('title', $title)
 
 @section('content')
 <div class="products">

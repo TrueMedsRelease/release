@@ -106,7 +106,7 @@
                             </svg></span><span class="icon header-select-wrapper__chevron"><svg width="1em"
                                 height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg#chevron-down") }}"></use>
-                            </svg></span></div><a class="header__auth" href="#!"><span class="icon"><svg
+                            </svg></span></div><a class="header__auth" href="{{ route('home.login') }}"><span class="icon"><svg
                                 width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg#profile") }}"></use>
                             </svg></span>{{__('text.common_profile')}}</a>
@@ -535,28 +535,46 @@
             <!-- Copyrights-->
             <div class="footer__copyrights">
                 <p>
-                    {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
                     {{__('text.license_text_license2_d10')}}
                 </p>
             </div>
             <!-- Footer controls-->
             <div class="footer-buttons">
-                <div class="footer-buttons__container"><a class="footer-button" href="{{ route('home.index') }}"><span
-                            class="icon"><svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset("$design/svg/icons/sprite.svg#home") }}"></use>
-                            </svg></span> <span class="button__text">{{__('text.common_home_main_menu_item')}}</span></a><button
-                        class="footer-button footer-button--cat"><span class="icon"><svg width="1em"
-                                height="1em" fill="currentColor">
+                <div class="footer-buttons__container">
+                    <a class="footer-button" href="{{ route('home.index') }}">
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor">
+                                    <use href="{{ asset("$design/svg/icons/sprite.svg#home") }}"></use>
+                            </svg>
+                        </span>
+                        <span class="button__text">{{__('text.common_home_main_menu_item')}}</span>
+                    </a>
+                    <button class="footer-button footer-button--cat">
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg#hotdog") }}"></use>
-                            </svg></span> <span class="button__text">{{__('text.common_categories_menu')}}</span></button><a
-                        class="footer-button" href="profile.html"><span class="icon"><svg width="1em"
-                                height="1em" fill="currentColor">
+                            </svg>
+                        </span>
+                        <span class="button__text">{{__('text.common_categories_menu')}}</span>
+                    </button>
+                    <a class="footer-button" href="{{ route('home.login') }}">
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg#profile") }}"></use>
-                            </svg></span> <span class="button__text">{{__('text.common_profile')}}</span></a><a
-                        class="footer-button footer-button--cart" href="{{ route('cart.index') }}" data-counter="{{ $cart_count }}"><span
-                            class="icon"><svg width="1em" height="1em" fill="currentColor">
+                            </svg>
+                        </span>
+                        <span class="button__text">{{__('text.common_profile')}}</span>
+                    </a>
+                    <a class="footer-button footer-button--cart" href="{{ route('cart.index') }}" data-counter="{{ $cart_count }}">
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
-                            </svg></span> <span class="button__text">{{ $Currency::Convert($cart_total, true) }}</span></a></div>
+                            </svg>
+                        </span>
+                        <span class="button__text">{{ $Currency::Convert($cart_total, true) }}</span>
+                    </a>
+                </div>
             </div>
         </div>
     </footer>

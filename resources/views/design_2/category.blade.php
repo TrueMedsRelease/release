@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.category_title'))
+@section('title', $title)
 
 
 
@@ -19,7 +19,7 @@
                 </div>
                 @foreach ($menu as $category)
                     <div class="spollers__item">
-                        <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
+                        <button type="button" data-spoller class="spollers__title @if($cur_category == $category['name']) _spoller-active @endif">{{ $category['name'] }}</button>
                         <ul class="spollers__body" id="this_product_category">
                             @foreach ($category['products'] as $item)
                                 <li class="spollers__item-list">

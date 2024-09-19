@@ -135,6 +135,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/testimonials', 'testimonials')->name('home.testimonials');
     Route::get('/delivery', 'delivery')->name('home.delivery');
     Route::get('/moneyback', 'moneyback')->name('home.moneyback');
+    Route::get('/login', 'login')->name('home.login');
     Route::get('/lang={locale}', 'language')->name('home.language');
     Route::get('/curr={currency}', 'currency')->name('home.currency');
     Route::get('/first_letter/{letter}', 'first_letter')->name('home.first_letter');
@@ -145,4 +146,8 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/design={design}', 'design')->name('home.design');
     Route::post('/request_call', 'request_call')->name('home.request_call')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/request_subscribe', 'request_subscribe')->name('home.request_subscribe')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/request_contact_us', 'request_contact_us')->name('home.request_contact_us')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/request_affiliate', 'request_affiliate')->name('home.request_affiliate')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/request_login', 'request_login')->name('home.request_login')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/check_code', 'check_code')->name('home.check_code')->withoutMiddleware(VerifyCsrfToken::class);
 });

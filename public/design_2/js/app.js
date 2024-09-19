@@ -4462,13 +4462,13 @@ $(document).on('click', '.push_allow', function () {
     enableNotif();
 });
 
-// if (location.pathname != '/'){
-//     $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
-//     //document.getElementById('main_bestsellers').hidden = true;
-//     if (document.getElementById('main_bestsellers_body')) {
-//         document.getElementById('main_bestsellers_body').hidden = true;
-//     }
-// }
+if (location.pathname != '/'){
+    $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
+    //document.getElementById('main_bestsellers').hidden = true;
+    if (document.getElementById('main_bestsellers_body')) {
+        document.getElementById('main_bestsellers_body').hidden = true;
+    }
+}
 
 if (window.innerWidth > 1925) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
@@ -4722,23 +4722,31 @@ function sendAjaxContact() {
     const captcha = document.getElementById("captcha").value;
     const submit = true;
     if (!error) {
-        $.ajax({
-            url:     '/app/ajax_contact_us.php',
-            type:     "POST",
+         $.ajax({
+            url: '/request_contact_us',
+            type: "POST",
+            cache: false,
             data: { 'name' : name,
             'email' : email,
             'subject' : subject,
             'message' : message,
             'captcha' : captcha,
             'submit' : submit },
-            dataType: "html",
+            dataType: "json",
             success: function(data) { //Данные отправлены успешно
-            	$(".default").html(data);
-                $(".form").hide();
-                $(".default__title").hide();
-                const mesa = document.querySelector('.message_sended');
-                mesa.classList.remove('hidden');
-                mesa.classList.add('active');
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                } else {
+                    // $(".default").html(data);
+                    $(".form").hide();
+                    $(".default__title").hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
+
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
         	}
  	    });
     }
@@ -4766,23 +4774,30 @@ function sendAjaxAffiliate() {
     const captcha = document.getElementById("captcha").value;
     const submit = true;
     if (!error) {
-        $.ajax({
-            url:     '/app/ajax_affiliate.php',
+         $.ajax({
+            url:     '/request_affiliate',
             type:     "POST",
+            cache: false,
             data: { 'name' : name,
             'email' : email,
             'jabber' : jabber,
             'message' : message,
             'captcha' : captcha,
             'submit' : submit },
-            dataType: "html",
+            dataType: "json",
             success: function(data) { //Данные отправлены успешно
-            	$(".default").html(data);
-                $(".form").hide();
-                $(".default__title").hide();
-                const mesa = document.querySelector('.message_sended');
-                mesa.classList.remove('hidden');
-                mesa.classList.add('active');
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                } else {
+                    $(".form").hide();
+                    $(".default__title").hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
+
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
         	}
      	});
     }

@@ -133,7 +133,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <a href='{{ config('app.url') }}/login' target="_blank" class="header__status">{{__('text.common_profile')}}</a>
+                        <a href='{{ route('home.login') }}' target="_blank" class="header__status">{{__('text.common_profile')}}</a>
                     </div>
                     <a href="{{ route('cart.index') }}" class="header__cart cart-header">
                         @php
@@ -338,35 +338,19 @@
                                         </div>
 
                                         @foreach ($menu as $category)
-                                            {{-- {if $cur_category.name eq $data.product_info.category_name || $cur_category.name eq $data.category_name} --}}
-                                                {{-- <div class="spollers__item">
-                                                    <button type="button" data-spoller class="spollers__title _spoller-active">{{ $category['name'] }}</button>
-                                                    <ul class="spollers__body" id="this_product_category">
-                                                        @foreach ($category['products'] as $item)
-                                                            <li class="spollers__item-list">
-                                                                <a href="{{ route('home.product', $item['url']) }}">
-                                                                    {{ $item['name'] }}
-                                                                </a>
-                                                                <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div> --}}
-                                            {{-- {else} --}}
-                                                <div class="spollers__item">
-                                                    <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
-                                                    <ul class="spollers__body">
-                                                        @foreach ($category['products'] as $item)
-                                                            <li class="spollers__item-list">
-                                                                <a href="{{ route('home.product', $item['url']) }}">
-                                                                    {{ $item['name'] }}
-                                                                </a>
-                                                                <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            {{-- {/if} --}}
+                                            <div class="spollers__item">
+                                                <button type="button" data-spoller class="spollers__title @if($cur_category == $category['name']) _spoller-active @endif">{{ $category['name'] }}</button>
+                                                <ul class="spollers__body">
+                                                    @foreach ($category['products'] as $item)
+                                                        <li class="spollers__item-list">
+                                                            <a href="{{ route('home.product', $item['url']) }}">
+                                                                {{ $item['name'] }}
+                                                            </a>
+                                                            <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -784,7 +768,7 @@
             <div class="footer__container">
                 <div class="footer__copyright">
                     <p>
-                        {{__('text.license_text_license1_1')}} {{Request::getHost()}} {{__('text.license_text_license1_2')}}
+                        {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
                         {{__('text.license_text_license2_d3')}}
                     </p>
                 </div>

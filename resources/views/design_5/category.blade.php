@@ -1,5 +1,7 @@
 @extends($design . '.layouts.main')
 
+@section('title', $title)
+
 @section('content')
     <section class="pay-index">
         <div class="pay-index__container">
@@ -181,9 +183,6 @@
             </aside>
         </div>
         @foreach ($products as $category)
-
-            @section('title', $category['name'])
-
             <div class="products">
                 <h2 class="title-page">{{ $category['name'] }}</h2>
                 <div class="product-list">

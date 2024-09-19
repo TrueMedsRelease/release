@@ -1,10 +1,10 @@
 @extends($design . '.layouts.main')
 
+@section('title', $title)
+
 @section('content')
 <section class="page__bestsellers bestsellers">
     @foreach ($products as $category)
-        @section('title', $category['name'])
-
         <aside class="categories-sidebar">
             <div class="categories-sidebar__inner">
                 <div data-spollers class="categories-sidebar__spollers spollers">

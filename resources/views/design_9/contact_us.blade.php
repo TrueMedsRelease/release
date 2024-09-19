@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.common_contact_us_main_menu_item'))
+@section('title', $title)
 
 @section('content')
 <main class="default">
@@ -40,8 +40,8 @@
                                 <label for="name" class="form__label">{{__('text.contact_us_code')}}</label>
                                 <div class="form__input">
                                     <picture>
-                                        <source srcset="/captcha" type="image/webp">
-                                        <img src="/captcha">
+                                        <source srcset="{{ captcha_src() }}" type="image/webp">
+                                        <img src="{{ captcha_src() }}">
                                     </picture>
                                     <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" data-error="" placeholder="{{__('text.contact_us_code')}}" class="form__input input" style="width: auto">
                                 </div>

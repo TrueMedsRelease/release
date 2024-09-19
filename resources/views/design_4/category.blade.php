@@ -1,11 +1,10 @@
 @extends($design . '.layouts.main')
 
-
+@section('title', $title)
 
 @section('content')
 
 @foreach ($products as $category)
-    @section('title', $category['name'])
     <div class="products">
         <h2 class="products__title title" id="scroll">{{$category['name']}}</h2>
         <div class="products__items">

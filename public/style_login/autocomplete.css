@@ -1,0 +1,49 @@
+#autocomplete {width: 200px;  background : url('/images/autocomplete/search.gif') right center no-repeat;}
+.ac_results {
+        padding: 0px;
+        border: 1px solid #9BB937;
+        background-color: Window;
+        overflow: hidden;
+        text-align: left;
+}
+
+.ac_results ul {
+        width: 100%;
+        list-style-position: outside;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+}
+
+.ac_results iframe {
+        display:none;/*sorry for IE5*/
+        display/**/:block;/*sorry for IE5*/
+        position:absolute;
+        top:0;
+        left:0;
+        z-index:-1;
+        width:3000px;
+        height:3000px;
+}
+
+.ac_results li {
+        color:green;
+        background-color: white;
+        margin: 0px;
+        padding: 2px 5px;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        font: menu;
+        font-size: 12px;
+        overflow: hidden;
+}
+
+.ac_loading {
+        background : url('/images/autocomplete/search_process.gif') right center no-repeat;
+}
+
+.ac_over {
+        background-color: #9BB937;
+        color: HighlightText;
+}

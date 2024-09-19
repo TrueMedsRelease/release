@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.cart_cart_title'))
+@section('title', $title)
 
 @section('content')
 <script>

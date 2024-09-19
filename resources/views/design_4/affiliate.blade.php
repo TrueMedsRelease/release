@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.affiliate_title'))
+@section('title', $title)
 
 @section('content')
 
@@ -44,8 +44,8 @@
 				<label for="captcha" class="contact-form__label">{{__('text.affiliate_code')}}</label>
 				<div class="contact-form__captcha">
 					<picture>
-            		    <source srcset="/captcha" type="image/webp">
-            		    <img src="/captcha">
+            		    <source srcset="{{ captcha_src() }}" type="image/webp">
+            		    <img src="{{ captcha_src() }}">
             		</picture>
 				</div>
 				<div class="contact-form__input">

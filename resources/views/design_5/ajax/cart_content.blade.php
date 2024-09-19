@@ -140,7 +140,7 @@
                                     <span>
                                         @if ($product_total_check >= 300)
                                         @else
-                                            <p>{{__('text.shipping_ems_discount')}}</p>
+                                            <p style="margin: 0;">{{__('text.shipping_ems_discount')}}</p>
                                         @endif
                                         {{__('text.checkout_express_text')}}
                                     </span>
@@ -176,7 +176,7 @@
                                     <span>
                                         @if ($product_total_check >= 200)
                                         @else
-                                            <p>{{__('text.shipping_regular_discount')}}</p>
+                                            <p style="margin: 0;">{{__('text.shipping_regular_discount')}}</p>
                                         @endif
                                         {{__('text.checkout_regular_text')}}
                                     </span>

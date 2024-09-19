@@ -29,7 +29,7 @@ class CheckoutController extends Controller
         StatisticService::SendStatistic('checkout');
 
         $design = session('design') ? session('design') : config('app.design');
-        return view($design . '.checkout');
+        return view('checkout');
     }
 
     public function checkout()
@@ -125,7 +125,7 @@ class CheckoutController extends Controller
 
         $states = State::$states;
 
-        $returnHTML = view($design . '.ajax.checkout_content')->with([
+        $returnHTML = view('checkout_content')->with([
             'Language' => Language::class,
             'Currency' => Currency::class,
             'products' => $products,
@@ -622,7 +622,7 @@ class CheckoutController extends Controller
         }
 
         $design = session('design') ? session('design') : config('app.design');
-        return view($design . '.complete')->with([
+        return view('complete')->with([
             'Language' => Language::class,
             'Currency' => Currency::class,
         ]);

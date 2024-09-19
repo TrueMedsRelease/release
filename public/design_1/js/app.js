@@ -1227,7 +1227,7 @@ $(document).on('click', '.button_request_call', function () {
 });
 
 if (location.pathname !== '/') {
-    // $('.menu__lists').find('.menu__list').first().hide();
+    $('.menu__lists').find('.menu__list').first().hide();
 }
 
 function getCookie(name) {
@@ -1599,25 +1599,31 @@ function sendAjaxContact() {
     const submit = true;
     if (!error) {
         $.ajax({
-            url:     '/app/ajax_contact_us.php',
-            type:     "POST",
+            url: '/request_contact_us',
+            type: "POST",
+            cache: false,
             data: { 'name' : name,
             'email' : email,
             'subject' : subject,
             'message' : message,
             'captcha' : captcha,
             'submit' : submit },
-            dataType: "html",
+            dataType: "json",
             success: function(data) { //Данные отправлены успешно
-                $(".page__body").html(data);
-                // const popup = document.getElementById('popup')/* .style.display = " " */;
-                // popup.classList.toggle('active');
-                $(".form-block__container").hide();
-                const mesa = document.querySelector('.message_sended');
-                mesa.classList.remove('hidden');
-                mesa.classList.add('active');
-            }
-        });
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                } else {
+                    // $(".default").html(data);
+                    $(".form-block__container").hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
+
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
+        	}
+ 	    });
     }
 }
 
@@ -1644,25 +1650,30 @@ function sendAjaxAffiliate() {
     const submit = true;
     if (!error) {
         $.ajax({
-            url:     '/app/ajax_affiliate.php',
+            url:     '/request_affiliate',
             type:     "POST",
+            cache: false,
             data: { 'name' : name,
             'email' : email,
             'jabber' : jabber,
             'message' : message,
             'captcha' : captcha,
             'submit' : submit },
-            dataType: "html",
+            dataType: "json",
             success: function(data) { //Данные отправлены успешно
-                $(".page__body").html(data);
-                // const popup = document.getElementById('popup')/* .style.display = " " */;
-                // popup.classList.toggle('active');
-                $(".form-block__container").hide();
-                const mesa = document.querySelector('.message_sended');
-                mesa.classList.remove('hidden');
-                mesa.classList.add('active');
-            }
-        });
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                } else {
+                    $(".form-block__container").hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
+
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
+        	}
+     	});
     }
 }
 

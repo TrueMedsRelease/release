@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.moneyback_title'))
+@section('title', $title)
 
 @section('content')
     <div class="container page-wrapper moneyback_block">

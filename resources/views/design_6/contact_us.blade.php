@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.contact_us_title'))
+@section('title', $title)
 
 @section('content')
 <main class="page-text page-text--faq">
@@ -52,7 +52,7 @@
                                         <input id="captcha" autocomplete="off" type="text" name="form[]" class="input" onkeyup="undisabled('contact_us')">
                                     </div>
                                     <div class="contact-us-form__captcha">
-                                        <picture><source srcset="/captcha" type="image/webp"><img src="/captcha" width="140" height="70" alt="{{__('text.contact_us_code')}}"></picture>
+                                        <picture><source srcset="{{ captcha_src() }}" type="image/webp"><img src="{{ captcha_src() }}" width="140" height="70" alt="{{__('text.contact_us_code')}}"></picture>
                                     </div>
                                 </div>
                             </div>

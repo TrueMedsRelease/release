@@ -1,0 +1,9 @@
+.bestseller {
+    background: url(../images/elements/bestseller.png) no-repeat;
+    width: 31px;
+    height: 42px;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+}

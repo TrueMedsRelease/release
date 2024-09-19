@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', str_replace('-', ' ', $disease))
+@section('title', $title)
 @section('title_2', __('text.disease_disease_result_title') . ' «' . str_replace('-', ' ', $disease) . '»')
 @section('content')
 <div class="page__products products">

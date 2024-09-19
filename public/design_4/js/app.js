@@ -4725,13 +4725,13 @@ $(document).on('click', '.button_request_call', function () {
     }
 });
 
-// if (location.pathname != '/'){
-//     $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
-//     document.getElementById('main_bestsellers').hidden = true;
-//     if (document.getElementById('main_bestsellers_body')) {
-//         document.getElementById('main_bestsellers_body').hidden = true;
-//     }
-// }
+if (location.pathname != '/'){
+    $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
+    document.getElementById('main_bestsellers').hidden = true;
+    if (document.getElementById('main_bestsellers_body')) {
+        document.getElementById('main_bestsellers_body').hidden = true;
+    }
+}
 
 
 function getCookie(name) {
@@ -5104,29 +5104,34 @@ function sendAjaxContact() {
   const captcha = document.getElementById("captcha").value;
   const submit = true;
 
-  if (!error) {
-  $.ajax({
-      url:     '/app/ajax_contact_us.php',
-      type:     "POST",
-      data: { 'name' : name,
-      'email' : email,
-      'subject' : subject,
-      'message' : message,
-      'captcha' : captcha,
-      'submit' : submit },
-      dataType: "html",
-      success: function(data) { //Данные отправлены успешно
-        $(".contact-form").html(data);
-        // const popup = document.getElementById('popup')/* .style.display = " " */;
-        // popup.classList.toggle('active');
-        $(".content__title").hide();
-        // $(".contact-us__descr").hide();
-        $(".contact-form").hide();
-        $('.message_sended').removeClass('hidden');
-        $('.message_sended').addClass('active');
+    if (!error) {
+        $.ajax({
+            url: '/request_contact_us',
+            type: "POST",
+            cache: false,
+            data: { 'name' : name,
+            'email' : email,
+            'subject' : subject,
+            'message' : message,
+            'captcha' : captcha,
+            'submit' : submit },
+            dataType: "json",
+            success: function(data) {
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                } else {
+                    $(".content__title").hide();
+                    $(".contact-form").hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
+
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
+            }
+        });
     }
- });
-}
 }
 
 function sendAjaxAffiliate() {
@@ -5147,32 +5152,38 @@ function sendAjaxAffiliate() {
         document.getElementById("email").style.backgroundColor = "#f4f4f4";
     }
     const jabber = document.getElementById("jabber").value;
-  const message = document.getElementById("message").value;
-  const captcha = document.getElementById("captcha").value;
-  const submit = true;
-  if (!error) {
-    $.ajax({
-        url:     '/app/ajax_affiliate.php',
-        type:     "POST",
-        data: { 'name' : name,
-        'email' : email,
-        'jabber' : jabber,
-      'message' : message,
-      'captcha' : captcha,
-      'submit' : submit },
-      dataType: "html",
-      success: function(data) { //Данные отправлены успешно
-        $(".contact-form").html(data);
-        // const popup = document.getElementById('popup')/* .style.display = " " */;
-        // popup.classList.toggle('active');
-        $(".content__title").hide();
-        // $(".contact-us__descr").hide();
-        $(".contact-form").hide();
-        $('.message_sended').removeClass('hidden');
-        $('.message_sended').addClass('active');
+    const message = document.getElementById("message").value;
+    const captcha = document.getElementById("captcha").value;
+    const submit = true;
+
+    if (!error) {
+        $.ajax({
+            url:     '/request_affiliate',
+            type:     "POST",
+            cache: false,
+            data: { 'name' : name,
+            'email' : email,
+            'jabber' : jabber,
+            'message' : message,
+            'captcha' : captcha,
+            'submit' : submit },
+            dataType: "json",
+            success: function(data) { //Данные отправлены успешно
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                } else {
+                    $(".content__title").hide();
+                    $(".contact-form").hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
+
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
+            }
+        });
     }
- });
-}
 }
 
 document.addEventListener('click', e => {

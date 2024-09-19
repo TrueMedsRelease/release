@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', 'Testimonials')
+@section('title', $title)
 
 @section('content')
 <h1 class="content__title title" id="scroll">{{__('text.testimonials_title')}}</h1>

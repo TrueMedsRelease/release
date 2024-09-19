@@ -4730,36 +4730,31 @@ function sendAjaxAffiliate() {
         document.getElementById("email").style.backgroundColor = "#f4f4f4";
     }
     const jabber = document.getElementById("jabber").value;
-  const message = document.getElementById("message").value;
-  const captcha = document.getElementById("captcha").value;
-  const submit = true;
+    const message = document.getElementById("message").value;
+    const captcha = document.getElementById("captcha").value;
+    const submit = true;
 
-  if (!error) {
-    $.ajax({
-        url:     '/app/ajax_affiliate.php',
-        type:     "POST",
-        data: { 'name' : name,
-        'email' : email,
-        'jabber' : jabber,
-      'message' : message,
-      'captcha' : captcha,
-      'submit' : submit },
-      dataType: "html",
-      success: function(data) { //Данные отправлены успешно
-        $(".contact-form").html(data);
-        // const popup = document.getElementById('popup')/* .style.display = " " */;
-        // popup.classList.toggle('active');
-        $(".content__title").hide();
-        // $(".contact-us__descr").hide();
-        $(".contact-form").hide();
-        //$('.message_sended').removeClass('hidden');
-        //$('.message_sended').addClass('active');
-        const mesa = document.querySelector('.message_sended');
-        mesa.classList.remove('hidden');
-        mesa.classList.add('active');
+    if (!error) {
+        $.ajax({
+            url:     '/request_affiliate',
+            type:     "POST",
+            cache: false,
+            data: { 'name' : name,
+            'email' : email,
+            'jabber' : jabber,
+            'message' : message,
+            'captcha' : captcha,
+            'submit' : submit },
+            dataType: "json",
+            success: function(data) { //Данные отправлены успешно
+                $(".content__title").hide();
+                $(".contact-form").hide();
+                const mesa = document.querySelector('.message_sended');
+                mesa.classList.remove('hidden');
+                mesa.classList.add('active');
+            }
+        });
     }
- });
-}
 }
 
 document.addEventListener('click', e => {

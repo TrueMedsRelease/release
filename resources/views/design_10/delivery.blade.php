@@ -1,7 +1,7 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', __('text.shipping_title'))
+@section('title', $title)
 
 @section('content')
 <div class="container page-wrapper shipping_block">

@@ -1,9 +1,9 @@
 @extends($design . '.layouts.main')
+@section('title', $title)
 
 @section('content')
 @foreach ($products as $category)
     @section('title_2', $category['name'])
-    @section('title', $category['name'])
     <div class="page__products products">
         <div class="products__items">
             @foreach ($category['products'] as $product)

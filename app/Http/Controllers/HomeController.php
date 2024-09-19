@@ -15,6 +15,8 @@ use App\Models\PhoneCodes;
 use App\Services\StatisticService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Mews\Captcha\Captcha;
+use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,7 @@ class HomeController extends Controller
         StatisticService::SendStatistic('index');
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
+        $title = ProductServices::getPageTitle('index');
 
         if (!in_array($design, ['design_7', 'design_8'])) {
 
@@ -34,6 +37,8 @@ class HomeController extends Controller
                 'bestsellers' => $bestsellers,
                 'menu' => $menu,
                 'phone_codes' => $phone_codes,
+                'title' => $title,
+                'cur_category' => '',
                 'Language' => Language::class,
                 'Currency' => Currency::class
             ]);
@@ -45,10 +50,12 @@ class HomeController extends Controller
                 'design' => $design,
                 'product' => $product,
                 'phone_codes' => $phone_codes,
+                'title' => 'Rybelsus - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+                'cur_category' => '',
                 'Language' => Language::class,
                 'Currency' => Currency::class
             ]);
-        } else {
+        } elseif ($design == 'design_8') {
             $products_urls = ['viagra', 'cialis', 'levitra'];
 
             foreach ($products_urls as $product_url) {
@@ -59,6 +66,8 @@ class HomeController extends Controller
                 'design' => $design,
                 'products' => $products,
                 'phone_codes' => $phone_codes,
+                'title' => 'EdSale - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+                'cur_category' => '',
                 'Language' => Language::class,
                 'Currency' => Currency::class
             ]);
@@ -74,7 +83,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
 
         $menu = ProductServices::GetCategoriesWithProducts($design);
-
+        $title = ProductServices::getPageTitle('first_letter');
 
         return view($design . '.first_letter',[
             'design' => $design,
@@ -83,6 +92,8 @@ class HomeController extends Controller
             'menu' => $menu,
             'letter' => $letter,
             'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => '',
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -97,7 +108,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetProductByActive($active, $design);
-
+        $title = ProductServices::getPageTitle('active');
 
         if (count($products) == 1) {
             return redirect(route('home.product', $products[0]['url']));
@@ -110,6 +121,8 @@ class HomeController extends Controller
             'menu' => $menu,
             'active' => $active,
             'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => '',
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -131,6 +144,8 @@ class HomeController extends Controller
             'menu' => $menu,
             'products' => $products,
             'phone_codes' => $phone_codes,
+            'title' => $category . ' - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'cur_category' => $category,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -145,6 +160,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetProductByDisease($disease, $design);
+        $title = ProductServices::getPageTitle('disease');
 
         return view($design . '.disease',[
             'design' => $design,
@@ -153,6 +169,8 @@ class HomeController extends Controller
             'products' => $products,
             'disease' => $disease,
             'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => '',
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -161,11 +179,18 @@ class HomeController extends Controller
     public function product($product) : View
     {
         StatisticService::SendStatistic($product);
+        $product_name = $product;
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $product = ProductServices::GetProductInfoByUrl($product, $design);
+
+        $product_name = explode('-', $product_name);
+        foreach ($product_name as $key => $val) {
+            $product_name[$key] = ucfirst($val);
+        }
+        $product_name = implode(' ', $product_name);
 
         return view($design . '.product', [
             'design' => $design,
@@ -173,6 +198,8 @@ class HomeController extends Controller
             'menu' => $menu,
             'product' => $product,
             'phone_codes' => $phone_codes,
+            'title' => $product_name . ' - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'cur_category' => $product['categories'][0]['name'],
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -185,12 +212,15 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $title = ProductServices::getPageTitle('about_us');
 
         return view($design . '.about', [
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => '',
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -203,12 +233,15 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $title = ProductServices::getPageTitle('faq');
 
         return view($design . '.help', [
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
+           'title' => $title,
+           'cur_category' => '',
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -221,12 +254,15 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $title = ProductServices::getPageTitle('testimonials');
 
         return view($design . '.testimonials', [
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
+           'title' => $title,
+           'cur_category' => '',
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -239,12 +275,15 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $title = ProductServices::getPageTitle('shipping');
 
         return view($design . '.delivery', [
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
+           'title' => $title,
+           'cur_category' => '',
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -257,12 +296,15 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $title = ProductServices::getPageTitle('moneyback');
 
         return view($design . '.moneyback', [
            'design' => $design,
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
+           'title' => $title,
+           'cur_category' => '',
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -270,16 +312,20 @@ class HomeController extends Controller
 
     public function contact_us() : View
     {
+        StatisticService::SendStatistic('contact_us');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $title = ProductServices::getPageTitle('contact_us');
 
         return view($design . '.contact_us', [
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => '',
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -287,15 +333,33 @@ class HomeController extends Controller
 
     public function affiliate() : View
     {
+        StatisticService::SendStatistic('affiliate');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $title = ProductServices::getPageTitle('affiliate');
 
         return view($design . '.affiliate', [
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
+            'phone_codes' => $phone_codes,
+            'title' => $title,
+            'cur_category' => '',
+            'Language' => Language::class,
+            'Currency' => Currency::class
+        ]);
+    }
+
+    public function login() : View
+    {
+        StatisticService::SendStatistic('login');
+        $design = session('design') ? session('design') : config('app.design');
+        $phone_codes = PhoneCodes::all()->toArray();
+
+        return view('login', [
+            'design' => $design,
             'phone_codes' => $phone_codes,
             'Language' => Language::class,
             'Currency' => Currency::class
@@ -395,5 +459,197 @@ class HomeController extends Controller
         }
 
         return json_encode($response);
+    }
+
+    public function request_contact_us(Request $request) {
+
+        $name = $request->name;
+        $email = $request->email;
+        $subject = $request->subject;
+        $message = $request->message;
+        $captcha = $request->captcha;
+
+        $error = 0;
+
+        if(empty($name)) {
+            $error = 1;
+        }
+        if(empty($email)) {
+            $error = 1;
+        }
+        else {
+            if(!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {
+                $error = 2;
+            }
+        }
+        if(empty($captcha)) {
+            $error = 1;
+        }
+        elseif(!captcha_check($captcha)) {
+            $error = 3;
+        }
+
+        $data = [
+            'page' => 'contact',
+            'name' => $name,
+            'email' => $email,
+            'subject' => $subject,
+            'message' => $message,
+            'url_from' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'aff' => session('aff'),
+            'customer_ip' => $request->ip(),
+            'customer_user_agent' => $request->userAgent(),
+            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
+        ];
+
+        if (!$error) {
+            $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
+            $response = json_decode($response, true);
+        } else {
+            if ($error == 1) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_empty_field')
+                ];
+            } else if ($error == 2) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_wrong_email')
+                ];
+            } else if ($error == 3) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_wrong_captcha_value_text')
+                ];
+            }
+        }
+
+        return json_encode($response);
+    }
+
+    public function request_affiliate(Request $request) {
+        $name = $request->name;
+        $email = $request->email;
+        $jabber = $request->jabber;
+        $message = $request->message;
+        $captcha = $request->captcha;
+
+        $error = 0;
+
+        if (empty($name)) {
+            $error = 1;
+        }
+
+        if (empty($jabber)) {
+            $error = 1;
+        }
+
+        if (empty($email)) {
+            $error = 1;
+        } else {
+            if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {
+                $error = 2;
+            }
+        }
+
+        if (empty($captcha)) {
+            $error = 1;
+        } elseif (!captcha_check($captcha)) {
+            $error = 3;
+        }
+
+        $data = [
+            'page' => 'affiliate',
+            'name' => $name,
+            'email' => $email,
+            'jabber' => $jabber,
+            'message' => $message,
+            'url_from' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'aff' => session('aff'),
+            'customer_ip' => $request->ip(),
+            'customer_user_agent' => $request->userAgent(),
+            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
+        ];
+
+        if (!$error) {
+            $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
+            $response = json_decode($response, true);
+        } else {
+            if ($error == 1) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_empty_field')
+                ];
+            } else if ($error == 2) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_wrong_email')
+                ];
+            } else if ($error == 3) {
+                $response = [
+                    'status' => 'error',
+                    'text' => __('text.errors_wrong_captcha_value_text')
+                ];
+            }
+        }
+
+        return json_encode($response);
+    }
+
+    public function request_login(Request $request) {
+        $captcha = $request->captcha;
+        $email = $request->email;
+        $api_key = 'fe179d54d30c306db93e191751cc7ae9';
+
+        if ($captcha && $email) {
+            $data = [
+                "email" => $email,
+                'method' => 'login',
+                'key' => $api_key
+            ];
+
+            $response = Http::timeout(3)->post('https://true-services.net/api/customer_api.php', $data);
+            $response = json_decode($response, true);
+
+            if ($response['status'] == 'ERROR') {
+                if ($response['message'] == 'Unknown customer!') {
+                    $result = [
+                        'status' => 'error',
+                        'text' => __('text.login_email_unknow')
+                    ];
+                }
+            } elseif ($response['status'] == 'OK') {
+                if ($response['message'] == 'Access is allowed!') {
+                    $_SESSION['user'] = $response['uid'];
+                    $lang = App::currentLocale();
+                    if ($lang === 'gr')
+                        $lang === 'el';
+                    if ($lang === 'arb')
+                        $lang === 'ar';
+
+                    $result = [
+                        'status' => 'success',
+                        'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
+                    ];
+                }
+            }
+        } else {
+            $result = [
+                'status' => 'error',
+                'text' => __('text.errors_empty_field')
+            ];
+        }
+
+        return json_encode($result);
+    }
+
+    public function check_code(Request $request) {
+        $captcha = $request->captcha;
+
+        $result = [
+            'result' => captcha_check($captcha)
+        ];
+
+        return json_encode($result);
     }
 }

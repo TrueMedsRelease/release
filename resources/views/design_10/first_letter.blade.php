@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.first_letter_first_letter_result_title') . ' «' . $letter . '»')
+@section('title', $title)
 
 @section('content')
 <div class="container page-wrapper">

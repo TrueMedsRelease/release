@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', __('text.aktiv_aktiv_result_title') . ' ' . $active)
+@section('title', $title)
 @section('title_2', __('text.aktiv_aktiv_result_title') . ' ' . $active)
 @section('content')
 <div class="page__products products">

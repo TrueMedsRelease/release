@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', $product['name'])
+@section('title', $title)
 
 @section('content')
 <div class="cmcmodal">

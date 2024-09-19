@@ -1,6 +1,6 @@
 @extends($design . '.layouts.main')
 
-@section('title', $letter)
+@section('title', $title)
 
 @section('content')
 <section class="pay-index">
