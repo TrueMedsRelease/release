@@ -28,12 +28,13 @@ class CheckoutController extends Controller
 
         StatisticService::SendStatistic('checkout');
 
-        $design = config('app.design');
-        return view($design . '.checkout');
+        $design = session('design') ? session('design') : config('app.design');
+        return view('checkout');
     }
 
     public function checkout()
     {
+        $design = session('design') ? session('design') : config('app.design');
         $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
         $products = session('cart');
         $language_id = Language::$languages[App::currentLocale()];
@@ -44,13 +45,25 @@ class CheckoutController extends Controller
             ->where('language_id', '=', $language_id)
             ->get(['type_id', 'name']);
 
+        $product_total_check = 0;
+        foreach($products as $value){
+            if($value['product_id'] == 616) {
+                continue;
+            }
+            $product_total_check += $value['price'] * $value['q'];
+        }
+
         $product_total = 0;
         $card_only = true;
         foreach ($products as &$item) {
             $item['name'] = $desc[$item['product_id']]['name'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
             if ($item['dosage'] != '1card') {
-                $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                if (in_array($item['product_id'], [619, 620, 483, 484, 501, 615])) {
+                    $item['pack_name'] = $item['name'];
+                } else {
+                    $item['pack_name'] = $item['name'] . ' ' . $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
+                }
                 $card_only = false;
             } else {
                 $item['pack_name'] = $item['name'];
@@ -60,6 +73,7 @@ class CheckoutController extends Controller
         unset($item);
 
         $product_total += session('cart_option.bonus_price');
+        $product_total_check += session('cart_option.bonus_price');
 
         $country_info = CountryInfoCache::query()
             ->where('country_iso2', '=', session('form.billing_country',session('location.country')))
@@ -75,9 +89,9 @@ class CheckoutController extends Controller
         $cart_option['insurance_price'] = Cart::ClacInsurance();
         $cart_option['secret_price'] = $shipping['secret_package'];
 
-        if ($cart_option['shipping'] == 'regular' && $product_total >= 200) {
+        if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
             $cart_option['shipping_price'] = 0;
-        } elseif ($cart_option['shipping'] == 'ems' && $product_total >= 300) {
+        } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
             $cart_option['shipping_price'] = 0;
         } else {
             $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
@@ -111,8 +125,7 @@ class CheckoutController extends Controller
 
         $states = State::$states;
 
-        $design = config('app.design');
-        $returnHTML = view($design . '.ajax.checkout_content')->with([
+        $returnHTML = view('checkout_content')->with([
             'Language' => Language::class,
             'Currency' => Currency::class,
             'products' => $products,
@@ -121,6 +134,7 @@ class CheckoutController extends Controller
             'design' => $design,
             'shipping' => $shipping,
             'product_total' => $product_total,
+            'product_total_check' => $product_total_check,
             'phone_codes' => $phone_codes,
             'countries' => $countries,
             'states' => $states,
@@ -607,8 +621,8 @@ class CheckoutController extends Controller
             return redirect(route('home.index'));
         }
 
-        $design = config('app.design');
-        return view($design . '.complete')->with([
+        $design = session('design') ? session('design') : config('app.design');
+        return view('complete')->with([
             'Language' => Language::class,
             'Currency' => Currency::class,
         ]);

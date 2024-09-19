@@ -1,41 +1,103 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', 'Delivery')
+@section('title', $title)
 
 @section('content')
-<main class="main">
-    <article class="raw-content">
-      <h1>Delivery</h1>
-      <h2>Our online drugstore offers customers two shipping methods:</h2>
-      <ul>
-        <li><b>Regular Delivery:</b> Delivery can take a few weeks, and online tracking is <b>unavailable.</b></li>
-        <li><b>Express Delivery:</b> Delivery takes a few days, and online tracking is <b>available.</b></li>
-      </ul>
-      <p>The exact delivery time can change depending on the country you live in and national and religious
-        holidays.</p>
-      <p><strong>Note: Your package will be packed and labeled discreetly for your protection and privacy.</strong>
-      </p>
-      <div class="raw-content__section-mt">
-        <p>Our company will do its best to ensure your order is shipped promptly. Every item on our site is in stock
-          and is available for shipping immediately after orders are placed. All orders are sent out within 48
-          hours, most being dispatched within 24 hours. All orders placed over the weekend will go out on Monday.
-        </p>
-        <p>In the unlikely event that your order does not arrive within 10 business days (EMS) or within 3 weeks
-          (airmail), you should contact us immediately through one of the following methods.</p>
-      </div>
-      <div class="raw-content__section-mt">
-        <ul>
-          <li>Reply to our email</li>
-          <li>Submit a request using our website</li>
-          <li>Log in on our support center website and submit a ticket</li>
-          <li>Call our support team for an immediate and satisfying solution to rectify the situation.</li>
-        </ul>
-      </div>
-      <div class="raw-content__section-mt">
-        <p>If you have any questions or require further information, please <a href="contact.html">contact us</a>.
-        </p>
-      </div>
-    </article>
-  </main>
-  @endsection
+<div class="container page-wrapper shipping_block">
+    <main class="main">
+        <article class="raw-content">
+          <h1>{{__('text.shipping_title')}}</h1>
+          <h2>{{__('text.shipping_title1')}}</h2>
+          <ul>
+            <li>{!!__('text.shipping_text_1')!!}</li>
+            <li>{!!__('text.shipping_text_2')!!}</li>
+          </ul>
+          <p>{{__('text.shipping_text_3')}}</p>
+          <p><strong>{{__('text.shipping_title2')}}</strong></p>
+          <div class="raw-content__section-mt">
+            <p>{{__('text.shipping_text_4')}}</p>
+            <p>{{__('text.shipping_text_5')}}</p>
+          </div>
+          <div class="raw-content__section-mt">
+            <ul>
+              <li>{{__('text.shipping_text_6')}}</li>
+              <li>{{__('text.shipping_text_7')}}</li>
+              <li>{{__('text.shipping_text_8')}}</li>
+              <li>{{__('text.shipping_text_9')}}</li>
+            </ul>
+          </div>
+          <div class="raw-content__section-mt">
+            <p>{{__('text.shipping_text_10')}}<a href="{{ route('home.contact_us') }}">{{__('text.shipping_contact_us_shipping')}}</a>
+            </p>
+          </div>
+        </article>
+      </main>
+</div>
+
+@endsection
+
+@section('rewies')
+    <div class="footer-testimonials">
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_1')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_1')}}</div>
+        </div>
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_7')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_7')}}</div>
+        </div>
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_13')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_13')}}</div>
+        </div>
+        <div class="testimonial card">
+            <div class="testimonial__header">
+                <div class="testimonial__author">{!!__('text.testimonials_author_t_17')!!}</div>
+                <div class="testimonial__rating">
+                    <div class="rating">
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                        <div class="rating__star"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial__text">{{__('text.testimonials_t_17')}}</div>
+        </div>
+    </div>
+@endsection

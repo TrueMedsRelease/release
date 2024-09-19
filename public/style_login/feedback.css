@@ -1,0 +1,107 @@
+.feedback-panel {
+    padding:10px 20px 10px 20px;
+    width: 370px;
+    height: auto;
+    background: #FFF;
+    border: #CCC 1px solid;
+    border-right-width: 0;
+    position:fixed;
+    top:200px;
+    right:-411px;
+    z-index: 9999;
+    text-align: left;
+}
+ 
+.feedback-panel div.feedback-tab {
+    background:transparent url('/images/feedback/feedback.png') no-repeat scroll 0 0;
+    border-width: 1px 1px 1px 0;
+    display:block;
+    height:130px;
+    right:60px;
+    bottom:11px;
+    position:relative;
+    float:left;
+    text-indent:-9999px;
+    width:40px;
+    outline:none;
+    padding: 0;
+} 
+.feedback-panel div.feedback-tab:hover{
+    cursor: pointer;
+}
+.feedback-panel div.feedback-content{
+    width:330px;
+    float: right;
+    position:relative;
+    right: 20px;
+}
+textarea {
+    width:90%;
+    padding:5px;
+}
+ 
+#response-message {
+    background: #ccc;
+    border: 1px solid #999;
+    padding:50px;
+}
+.feedback-panel .process{
+    display: block;
+    background: url(/images/feedback/ajax-loader.gif) no-repeat right center;
+    color: #333;
+    font-size: 18px;
+    width: 120px;
+    margin-left: 80px;
+    height: 32px;
+    padding-top: 8px;
+}
+.feedback-panel .successfull{
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    color: #9BB937;
+}
+.feedback-panel .error{
+    border: 1px solid #AE2E3D;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: normal;
+    color:#Cd0a0a;
+}
+.feedback-panel form {padding: 0; margin: 0;}
+
+.feedback-panel input, .feedback-panel textarea
+ {
+     font-size: 13px;
+     margin-bottom: 5px;
+     display: block;
+     padding: 2px;
+     width: 230px;
+ }
+ .feedback-panel input.optional, .feedback-panel textarea.optional{
+     width: 150px;
+     float: right;
+ }
+ .feedback-panel textarea{
+     resize: none;
+ }
+  .feedback-panel input, .feedback-panel select,  .feedback-panel textarea{border-style: solid; border-width: 1px;}
+ .feedback-panel input.field_error, .feedback-panel select.field_error, .feedback-panel textarea.field_error {
+     background-color: #FFE5C9;
+ }
+ .feedback-panel input.field_successfull, .feedback-panel select.field_successfull, .feedback-panel textarea.field_successfull {
+     background-color: #E7F2C4;
+ }
+ .feedback-panel #title{
+     margin-bottom: 8px;
+     color: #444;
+     font-size: 18px;
+     font-weight: normal;
+     text-align: left;
+ }
+ .feedback-panel label{display: block; padding: 6px 0; font-size: 16px; color: #555;}
+ .feedback-panel label.optional {float: left; width: 150px; padding: 2px 0 6px 0}
+ .feedback-panel div.optional_block {margin: 10px 0;}
+ .feedback-panel div.optional_row {float: left;}
+ #feedback_response {margin: 8px 0 16px 0; display: block;}

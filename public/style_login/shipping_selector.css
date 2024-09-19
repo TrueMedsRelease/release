@@ -1,0 +1,35 @@
+#shippingList{
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+.ship{
+    background: url(../images/elements/shipping_selector.gif) repeat-x;
+    border: 1px solid #c8c8c8;
+    height: 39px;
+    line-height: 39px;
+    font-weight: bold;
+    color: #5b5b5b;
+    font-size: 12px;
+    margin: 0;
+    padding: 0 10px;
+}
+.coup{
+    font-size: 11px;
+    margin: 10px 0;
+}
+#shipping_price{
+    color: #ff7e00;
+}
+
+#timeShipping{
+    text-align: right; 
+    float: right;
+    font-size: 14px;
+    font-weight: bold;
+    font-size: 11px;
+    margin: 10px 0;
+}
+
+#loadingShipping{
+    height: 39px; margin-left: 4px; float: left;
+}
