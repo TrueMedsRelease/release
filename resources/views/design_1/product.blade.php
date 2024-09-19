@@ -18,12 +18,20 @@
                 <h2 class="product-about__title" id = "scroll">
                     {{ $product['name'] }}
                 </h2>
-                <picture class="product_center">
+                {{-- <picture class="product_center">
                     @if ($product['image'] != 'gift-card')
                         <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                     @endif
                     <img class="product-about__img" src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift_card_img.svg') }}"
                         alt="{{ $product['image'] }}">
+                </picture> --}}
+                <picture class="product_center">
+                    @if ($product['image'] == 'gift-card')
+                        <img class="product-about__img" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                    @else
+                        <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                        <img class="product-about__img" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                    @endif
                 </picture>
                 <ul class="product-about__characteristics">
                     @if ($product['image'] != 'gift-card')

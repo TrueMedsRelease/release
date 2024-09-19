@@ -53,7 +53,15 @@
                                 <div class="product_info_top">
                                     <a href="{{ route('home.product', $product['url']) }}">
                                         <div class="product_img">
-                                            <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}">
+                                            @if ($product['image'] == 'gift-card')
+                                                <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                                            @else
+                                                <picture>
+                                                    <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                                </picture>
+                                            @endif
+                                            {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
                                         </div>
                                     </a>
                                     <a href="{{ route('home.product', $product['url']) }}" class="product_center">
@@ -106,7 +114,15 @@
                             <div class="product_info_top">
                                 <a href="{{ route('home.product', $product['url']) }}">
                                     <div class="product_img">
-                                        <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}">
+                                        @if ($product['image'] == 'gift-card')
+                                            <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                                        @else
+                                            <picture>
+                                                <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                            </picture>
+                                        @endif
+                                        {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
                                     </div>
                                 </a>
                                 <a href="{{ route('home.product', $product['url']) }}" class="product_center">

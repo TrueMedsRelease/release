@@ -179,8 +179,8 @@
         <div class="price_table">
             <div class="product_img">
                 <picture>
-                    <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
-                    <img src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
+                    <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                 </picture>
             </div>
             <div class="product_price">

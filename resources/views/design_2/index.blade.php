@@ -117,7 +117,7 @@
                     </div>
                     @foreach ($menu as $category)
                         <div class="spollers__item">
-                            <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
+                            <button type="button" data-spoller class="spollers__title @if ($cur_category == $category['name']) _spoller-active @endif">{{ $category['name'] }}</button>
                             <ul class="spollers__body" id="this_product_category">
                                 @foreach ($category['products'] as $item)
                                     <li class="spollers__item-list">
@@ -148,7 +148,15 @@
                     @endif
                     <div class="product-card">
                         <a href="{{ route('home.product', $product['url']) }}" class="product-card__image">
-                            <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}">
+                            @if ($product['image'] == 'gift-card')
+                                <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                            @else
+                                <picture>
+                                    <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                </picture>
+                            @endif
+                            {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                         </a>
                         <a href="{{ route('home.product', $product['url']) }}" class="product-card__info">
                             <h3 class="product-card__label">{{ $product['name'] }}</h3>

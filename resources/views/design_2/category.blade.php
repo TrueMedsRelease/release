@@ -42,7 +42,15 @@
                 @foreach ($category['products'] as $product)
                     <div class="product-card">
                         <a href="{{ route('home.product', $product['url']) }}" class="product-card__image">
-                            <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}">
+                            @if ($product['image'] == 'gift-card')
+                                <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                            @else
+                                <picture>
+                                    <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                </picture>
+                            @endif
+                            {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
                         </a>
                         <a href="{{ route('home.product', $product['url']) }}" class="product-card__info">
                             <h3 class="product-card__label">{{ $product['name'] }}</h3>

@@ -19,12 +19,20 @@
                 <div class="info-panel panel">
                     <div class="info-panel__image">
                         <picture>
+                            @if ($product['image'] == 'gift-card')
+                                <img src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
+                            @else
+                                <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                            @endif
+                        </picture>
+                        {{-- <picture>
                             @if ($product['image'] != 'gift-card')
                                 <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                             @endif
                             <img src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift-card.svg') }}"
                                 alt="{{ $product['image'] }}">
-                        </picture>
+                        </picture> --}}
                     </div>
 
                     @if ($product['image'] != 'gift-card')
@@ -55,7 +63,7 @@
                     @if (!empty($product['analog']))
                         <div class="info-panel__row">
                             {{ $product['name'] }} {!!__('text.product_analogs')!!}
-                            {{-- @if ($data.is_mobile)
+                            @if ($agent->IsMobile())
                                 <div class="text-box">
                                     <span class="text">
                                         @foreach ($product['analog'] as $analog)
@@ -63,21 +71,21 @@
                                                 class="analog">{{ $analog['name'] }}</a>
                                         @endforeach
                                     </span>
-                                        @if (count($product['analog']) > 10)<a href="#" class="more">view all</a>@endisset
+                                    @if (count($product['analog']) > 10)<a href="#" class="more">view all</a>@endisset
                                 </div>
-                            @else --}}
+                            @else
                                 @foreach ($product['analog'] as $analog)
                                     <a href="{{ route('home.product', $analog['url']) }}"
                                         class="analog">{{ $analog['name'] }}</a>
                                 @endforeach
-                            {{-- @endif --}}
+                            @endif
                         </div>
                     @endif
 
                     @if (!empty($product['sinonim']))
                         <div class="info-panel__row">
                             {{ $product['name'] }} {!!__('text.product_others')!!}
-                            {{-- @if ($data.is_mobile)
+                            @if ($agent->IsMobile())
                                 <div class="text-box">
                                     <span class="text">
                                         @foreach ($product['sinonim'] as $sinonim)
@@ -88,13 +96,13 @@
                                     </span>
                                         @if (count($product['sinonim']) > 10)<a href="#" class="more">view all</a>@endisset
                                 </div>
-                            @else --}}
+                            @else
                                 @foreach ($product['sinonim'] as $sinonim)
                                     <a href = "{{ route('home.product', $sinonim['url']) }}">
                                         {{ $sinonim['name'] }}
                                     </a>
                                 @endforeach
-                            {{-- @endif --}}
+                            @endif
                         </div>
                     @endif
                 </div>

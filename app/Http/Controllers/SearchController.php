@@ -14,6 +14,7 @@ use App\Models\Language;
 use App\Models\PhoneCodes;
 use App\Services\StatisticService;
 use Illuminate\Support\Facades\App;
+use Phattarachai\LaravelMobileDetect\Agent;
 
 class SearchController extends Controller
 {
@@ -33,6 +34,7 @@ class SearchController extends Controller
         $products = ProductServices::SearchProduct($search_text, false, $design);
         $phone_codes = PhoneCodes::all()->toArray();
         $title = ProductServices::getPageTitle('search');
+        $agent = new Agent();
 
         return view($design . '.search_result', [
             'design' => $design,
@@ -44,7 +46,8 @@ class SearchController extends Controller
             'Currency' => Currency::class,
             'phone_codes' => $phone_codes,
             'title' => $title,
-            'cur_category' => ''
+            'cur_category' => '',
+            'agent' => $agent,
         ]);
     }
 

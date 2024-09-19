@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Models\PhoneCodes;
+use Phattarachai\LaravelMobileDetect\Agent;
 
 class CartController extends Controller
 {
@@ -30,6 +31,7 @@ class CartController extends Controller
         $title = ProductServices::getPageTitle('cart');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $agent = new Agent();
 
         return view($design . '.cart', [
             'design' => $design,
@@ -39,7 +41,8 @@ class CartController extends Controller
             'menu' => $menu,
             'phone_codes' => $phone_codes,
             'title' => $title,
-            'cur_category' => ''
+            'cur_category' => '',
+            'agent' => $agent,
         ]);
     }
 

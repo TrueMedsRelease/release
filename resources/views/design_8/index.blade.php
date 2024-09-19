@@ -191,8 +191,8 @@
                 <div class="product_new @if ($loop->iteration == 1) active @endif" prod_name="{{$key}}">
                     <div class="product_img_top">
                         <picture>
-                            <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
-                            <img src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}" width="60">
+                            <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                            <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                         </picture>
                     </div>
                     <div class="product_text">

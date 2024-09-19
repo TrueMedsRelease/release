@@ -148,35 +148,19 @@
                         </ul>
                     </div>
                     @foreach ($menu as $category)
-                        {{-- {if $cur_category.name eq $data.product_info.category_name}
-                            <div class="spollers__item">
-                                <button type="button" data-spoller class="spollers__title _spoller-active">{$cur_category.name}</button>
-                                <ul class="spollers__body" id="this_product_category">
-                                    {foreach item=cur_product from=$cur_category.products}
-                                        <li class="spollers__item-list">
-                                            <a href="{$path.page}/{$cur_product.url}">
-                                                {$cur_product.name}
-                                            </a>
-                                            <span style="font-size: 12px;">{$cur_product.min_price_per_pill}</span>
-                                        </li>
-                                    {/foreach}
-                                </ul>
-                            </div>
-                        {else} --}}
-                            <div class="spollers__item">
-                                <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
-                                <ul class="spollers__body">
-                                    @foreach ($category['products'] as $item)
-                                        <li class="spollers__item-list">
-                                            <a href="{{ route('home.product', $item['url']) }}">
-                                                {{ $item['name'] }}
-                                            </a>
-                                            <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        {{-- {/if} --}}
+                        <div class="spollers__item">
+                            <button type="button" data-spoller class="spollers__title">{{ $category['name'] }}</button>
+                            <ul class="spollers__body">
+                                @foreach ($category['products'] as $item)
+                                    <li class="spollers__item-list">
+                                        <a href="{{ route('home.product', $item['url']) }}">
+                                            {{ $item['name'] }}
+                                        </a>
+                                        <span style="font-size: 12px;">{{ $Currency::Convert($item['price'], false, true) }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -188,7 +172,15 @@
             @foreach ($products as $product)
                 <div class="item">
                     <a href="{{ route('home.product', $product['url']) }}" class="img">
-                        <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}">
+                        @if ($product['image'] == 'gift-card')
+                            <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                        @else
+                            <picture>
+                                <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                            </picture>
+                        @endif
+                        {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                     </a>
                     <div class="info">
                         <div class="box">

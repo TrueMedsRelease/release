@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Mews\Captcha\Captcha;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Redis;
+use Phattarachai\LaravelMobileDetect\Agent;
 
 class HomeController extends Controller
 {
@@ -26,6 +28,7 @@ class HomeController extends Controller
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
         $title = ProductServices::getPageTitle('index');
+        $agent = new Agent();
 
         if (!in_array($design, ['design_7', 'design_8'])) {
 
@@ -39,6 +42,7 @@ class HomeController extends Controller
                 'phone_codes' => $phone_codes,
                 'title' => $title,
                 'cur_category' => '',
+                'agent' => $agent,
                 'Language' => Language::class,
                 'Currency' => Currency::class
             ]);
@@ -52,6 +56,7 @@ class HomeController extends Controller
                 'phone_codes' => $phone_codes,
                 'title' => 'Rybelsus - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
                 'cur_category' => '',
+                'agent' => $agent,
                 'Language' => Language::class,
                 'Currency' => Currency::class
             ]);
@@ -68,6 +73,7 @@ class HomeController extends Controller
                 'phone_codes' => $phone_codes,
                 'title' => 'EdSale - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
                 'cur_category' => '',
+                'agent' => $agent,
                 'Language' => Language::class,
                 'Currency' => Currency::class
             ]);
@@ -84,6 +90,7 @@ class HomeController extends Controller
 
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('first_letter');
+        $agent = new Agent();
 
         return view($design . '.first_letter',[
             'design' => $design,
@@ -94,6 +101,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $title,
             'cur_category' => '',
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -109,6 +117,7 @@ class HomeController extends Controller
 
         $products = ProductServices::GetProductByActive($active, $design);
         $title = ProductServices::getPageTitle('active');
+        $agent = new Agent();
 
         if (count($products) == 1) {
             return redirect(route('home.product', $products[0]['url']));
@@ -123,6 +132,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $title,
             'cur_category' => '',
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -137,6 +147,8 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetCategoriesWithProducts($design, $category);
+        $agent = new Agent();
+        $category = str_replace('-', ' ', $category);
 
         return view($design . '.category',[
             'design' => $design,
@@ -146,6 +158,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $category . ' - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
             'cur_category' => $category,
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -161,6 +174,7 @@ class HomeController extends Controller
 
         $products = ProductServices::GetProductByDisease($disease, $design);
         $title = ProductServices::getPageTitle('disease');
+        $agent = new Agent();
 
         return view($design . '.disease',[
             'design' => $design,
@@ -171,6 +185,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $title,
             'cur_category' => '',
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -185,6 +200,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $product = ProductServices::GetProductInfoByUrl($product, $design);
+        $agent = new Agent();
 
         $product_name = explode('-', $product_name);
         foreach ($product_name as $key => $val) {
@@ -200,6 +216,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $product_name . ' - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
             'cur_category' => $product['categories'][0]['name'],
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -213,6 +230,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('about_us');
+        $agent = new Agent();
 
         return view($design . '.about', [
             'design' => $design,
@@ -221,6 +239,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $title,
             'cur_category' => '',
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -234,6 +253,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('faq');
+        $agent = new Agent();
 
         return view($design . '.help', [
            'design' => $design,
@@ -242,6 +262,7 @@ class HomeController extends Controller
            'phone_codes' => $phone_codes,
            'title' => $title,
            'cur_category' => '',
+           'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -255,6 +276,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('testimonials');
+        $agent = new Agent();
 
         return view($design . '.testimonials', [
            'design' => $design,
@@ -263,6 +285,7 @@ class HomeController extends Controller
            'phone_codes' => $phone_codes,
            'title' => $title,
            'cur_category' => '',
+           'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -276,6 +299,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('shipping');
+        $agent = new Agent();
 
         return view($design . '.delivery', [
            'design' => $design,
@@ -284,6 +308,7 @@ class HomeController extends Controller
            'phone_codes' => $phone_codes,
            'title' => $title,
            'cur_category' => '',
+           'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -297,6 +322,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('moneyback');
+        $agent = new Agent();
 
         return view($design . '.moneyback', [
            'design' => $design,
@@ -305,6 +331,7 @@ class HomeController extends Controller
            'phone_codes' => $phone_codes,
            'title' => $title,
            'cur_category' => '',
+           'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class
         ]);
@@ -318,6 +345,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('contact_us');
+        $agent = new Agent();
 
         return view($design . '.contact_us', [
             'design' => $design,
@@ -326,6 +354,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $title,
             'cur_category' => '',
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -339,6 +368,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $title = ProductServices::getPageTitle('affiliate');
+        $agent = new Agent();
 
         return view($design . '.affiliate', [
             'design' => $design,
@@ -347,6 +377,7 @@ class HomeController extends Controller
             'phone_codes' => $phone_codes,
             'title' => $title,
             'cur_category' => '',
+            'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class
         ]);
@@ -369,7 +400,7 @@ class HomeController extends Controller
     public function language($locale)
     {
         session(['locale' => $locale]);
-        return Redirect::back();
+        return redirect()->route('home.index');
     }
 
     public function currency($currency)
@@ -377,13 +408,92 @@ class HomeController extends Controller
         $coef = Currency::GetCoef($currency);
         session(['currency' => $currency]);
         session(['currency_c' => $coef]);
-        return Redirect::back();
+        return redirect()->route('home.index');
     }
 
     public function design($design)
     {
         session(['design' => 'design_' . $design]);
-        return Redirect::back();
+        return redirect()->route('home.index');
+    }
+
+    public function set_images($pill) {
+        if ($pill) {
+            $pill = str_replace('&', '-', (str_replace(' ', '-', strtolower(trim($pill)))));
+            $safari = false;
+
+            if (preg_match('/iPhone|iPad|iPod|Macintosh/i', $_SERVER ['HTTP_USER_AGENT'])) {
+                if (file_exists(public_path() . "/images/" . $pill . ".png") && file_get_contents(public_path() . "/images/" . $pill . ".png") !== "error") {
+                    header('Content-type: image/png');
+                    echo file_get_contents(public_path() . "/images/" . $pill . ".png");
+                    $safari = true;
+                } else {
+                    $water_string = $_SERVER["HTTP_HOST"];
+                    $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=png&url=' . $water_string);
+
+                    file_put_contents(public_path() . "/images/" . $pill . ".png", $server_answer);
+                    header('Content-type: image/png');
+                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".png");
+                    if ($temp != "error") {
+                        echo $temp;
+                        $safari = true;
+                    }
+                }
+                if (!$safari) {
+                    if (file_exists(public_path() . "/images/" . $pill . ".jpg") && file_get_contents(public_path() . "/images/" . $pill . ".jpg") !== "error") {
+                        header('Content-type: image/png');
+                        echo file_get_contents(public_path() . "/images/" . $pill . ".jpg");
+                        $safari = true;
+                    } else {
+                        $water_string = $_SERVER["HTTP_HOST"];
+                        $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpg&url=' . $water_string);
+
+                        file_put_contents(public_path() . "/images/" . $pill . ".jpg", $server_answer);
+                        header('Content-type: image/png');
+                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpg");
+                        if ($temp != "error") {
+                            echo $temp;
+                            $safari = true;
+                        }
+                    }
+                }
+                if (!$safari) {
+                    if (file_exists(public_path() . "/images/" . $pill . ".jpeg") && file_get_contents(public_path() . "/images/" . $pill . ".jpeg") !== "error") {
+                        header('Content-type: image/png');
+                        echo file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
+                        $safari = true;
+                    } else {
+                        $water_string = $_SERVER["HTTP_HOST"];
+                        $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpeg&url=' . $water_string);
+
+                        file_put_contents(public_path() . "/images/" . $pill . ".jpeg", $server_answer);
+                        header('Content-type: image/png');
+                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
+                        if ($temp != "error") {
+                            echo $temp;
+                            $safari = true;
+                        }
+                    }
+                }
+            } else {
+                if (file_exists(public_path() . "/images/" . $pill . ".webp") && file_get_contents(public_path() . "/images/" . $pill . ".webp") !== "error") {
+                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
+                    echo $temp;
+                    $safari = true;
+                } else {
+                    $water_string = $_SERVER["HTTP_HOST"];
+                    $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=webp&url=' . $water_string);
+                    file_put_contents(public_path() . "/images/" . $pill . ".webp", $server_answer);
+                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
+                    if ($temp != "error") {
+                        echo $temp;
+                        $safari = true;
+                    }
+                }
+            }
+        } else {
+            echo "SERVER ERROR";
+        }
     }
 
     public function request_call(Request $request)

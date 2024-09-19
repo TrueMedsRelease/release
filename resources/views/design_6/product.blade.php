@@ -13,13 +13,21 @@
 				<div class="product__descr">
 					<div class="product__image">
 						<div class="product__image-wrapper">
-							<picture>
+                            <picture>
+                                @if ($product['image'] == 'gift-card')
+                                    <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                                @else
+                                    <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                @endif
+                            </picture>
+							{{-- <picture>
 								@if ($product['image'] != 'gift-card')
                                     <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                                 @endif
                                 <img class="product-about__img" src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/products/gift-card.svg') }}"
                                     alt="{{ $product['image'] }}">
-							</picture>
+							</picture> --}}
 						</div>
                         @if ($product['image'] != 'gift-card')
                             @if (count($product['aktiv']) != 0)

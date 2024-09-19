@@ -19,14 +19,22 @@
             <div class="page-product__descr">
                 <div class="page-product__image">
                     <div class="page-product__image-wrapper">
-                        @if ($product['image'] != 'gift-card')
+                        @if ($product['image'] == 'gift-card')
+                            <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                        @else
+                            <picture>
+                                <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
+                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                            </picture>
+                        @endif
+                        {{-- @if ($product['image'] != 'gift-card')
                             <picture>
                                 <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                                 <img src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
                             </picture>
                         @else
                             <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
                 <div class="page-product__details details-page-product">

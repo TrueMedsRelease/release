@@ -336,7 +336,6 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-
                                         @foreach ($menu as $category)
                                             <div class="spollers__item">
                                                 <button type="button" data-spoller class="spollers__title @if($cur_category == $category['name']) _spoller-active @endif">{{ $category['name'] }}</button>
