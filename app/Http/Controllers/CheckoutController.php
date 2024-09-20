@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -27,6 +28,18 @@ class CheckoutController extends Controller
         }
 
         StatisticService::SendStatistic('checkout');
+
+        $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
+        if (count($unsent_order) > 0) {
+            foreach ($unsent_order as $order) {
+                $response = Http::post('http://true-services.net/checkout/order_test.php', $order->message);
+                $response = json_decode($response, true);
+
+                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
+                    DB::delete("DELETE FROM order_cache WHERE `id` = {$order->id}");
+                }
+            }
+        }
 
         $design = session('design') ? session('design') : config('app.design');
         return view('checkout');
@@ -142,10 +155,10 @@ class CheckoutController extends Controller
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
     }
 
-    public function insurance()
+    public function insurance(Request $request)
     {
         $cart_option = session('cart_option');
-        if ($cart_option['insurance'])
+        if ($request->value == 0)
             $cart_option['insurance'] = false;
         else
             $cart_option['insurance'] = true;
@@ -548,11 +561,22 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
+            $order_cache_id = DB::table('order_cache')->insertGetId([
+                'message' => json_encode($data),
+                'is_send' => 0
+            ]);
+
             $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
 
             $response = json_decode($response, true);
 
-            session(['order' => $response]);
+            if ($response['status'] === 'SUCCESS') {
+                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                session(['order' => $response]);
+            }
+            if ($response->status === 'ERROR' || $response->status === 'error') {
+                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+            }
 
             return response()->json(['response' => $response], 200);
         }
@@ -725,11 +749,22 @@ class CheckoutController extends Controller
 
                 session(['data' => $data]);
 
+                $order_cache_id = DB::table('order_cache')->insertGetId([
+                    'message' => json_encode($data),
+                    'is_send' => 0
+                ]);
+
                 $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
 
                 $response = json_decode($response, true);
 
-                session(['order' => $response]);
+                if ($response['status'] === 'SUCCESS') {
+                    DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                    session(['order' => $response]);
+                }
+                if ($response->status === 'ERROR' || $response->status === 'error') {
+                    DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                }
             }
 
             return response()->json(json_encode($response_payment));

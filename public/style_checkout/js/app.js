@@ -2180,19 +2180,46 @@ $("#paid").click(function (e) {
     // document.getElementById("payment_type_select").disabled = true;
 });
 
-function Insurance() {
-    $('#insur_popup').hide();
-    $.ajax({
-        url: '/checkout/insurance',
-        type: 'POST',
-        cache: false,
-        dataType: 'html',
-        data: {},
-        success: function (data) {
-            data = JSON.parse(data);
-            $('.wrapper').html(data.html);
-        }
-    });
+function Insurance(val) {
+    if (val == 1) {
+
+        $.ajax({
+            url: '/checkout/insurance',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'value': val
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
+
+                $('#c_82').attr('checked', 'checked');
+                $('#c_82').prop('checked', true);
+                $('#c_82').prop('onclick', null);
+            }
+        });
+    } else {
+
+        $.ajax({
+            url: '/checkout/insurance',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'value': val
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
+
+                $('#c_82').removeAttr('checked');
+                $('#c_82').prop('checked', false);
+                $('#c_82').attr('onclick', 'Insurance(1)');
+            }
+        });
+    }
 }
 
 function secretPackage() {
@@ -2303,7 +2330,8 @@ function processForm(e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            data = JSON.parse(data);
+            var data = JSON.parse(data);
+            // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 window.location.replace("/complete");
             }
@@ -2318,6 +2346,7 @@ function processForm(e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
+            // console.log(errors);
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -2355,7 +2384,8 @@ $("#proccess_paypal").click(function (e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            data = JSON.parse(data);
+            var data = JSON.parse(data);
+            // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 window.location.replace(data.response.url);
             }
@@ -2370,6 +2400,7 @@ $("#proccess_paypal").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
+            // console.log(errors);
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -2431,6 +2462,11 @@ if (!(typeof (window.countdownfunction1) !== "undefined" && window.countdownfunc
         }
     }, 1000);
 }
+
+$('#change_insur').click(function () {
+    Insurance(0);
+    $('#insur_popup').hide();
+});
 
 
 function getCookie(name) {

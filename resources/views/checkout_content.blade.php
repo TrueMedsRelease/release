@@ -131,9 +131,7 @@
                                 <div class="your-order__checkbox checkbox">
                                     <input @if (session('cart_option.insurance')) checked="checked" @endif id="c_82"
                                         class="checkbox__input" type="checkbox" value="1" name="insurance"
-                                        pop_show="true" @if (!session('cart_option.insurance', false))
-                                        onclick="Insurance()"
-                                        @endif >
+                                        pop_show="true">
                                     <label for="c_82" class="checkbox__label"><span class="checkbox__text"><b
                                                 style="font-weight: 500;">{{__('text.checkout_insurance')}}</b></span></label>
                                 </div>
@@ -568,7 +566,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="enter-info__card-content" @if (session('form.payment_type', 'card') != 'card')) hidden @endif>
+                        <div class="enter-info__card-content" @if (session('form.payment_type', 'card') != 'card') hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>
@@ -628,7 +626,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'card') != 'crypto')) hidden @endif>
+                        <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'card') != 'crypto') hidden @endif>
                             <input type="hidden" id="pay_yes" value="0">
                             <input type="hidden" id="invoiceId" value="">
                             <div class="info_text_crypto" style="line-height: 24px">
@@ -839,7 +837,7 @@
                                     width="30px" height="30px">
                             </button>
                         </div>
-                        <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal')) hidden @endif>
+                        <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal') hidden @endif>
                             <div class="details-payment__row">
                                 <div class="details-payment__data" style="text-align: center;">
                                     {{__('text.checkout_sepa_text')}}
@@ -891,7 +889,7 @@
             </div>
         </form>
     </div>
-    <script src="{{ asset('style_checkout/js/app.js') }}?v=11062021"></script>
+    <script src="{{ asset('style_checkout/js/app.js') }}"></script>
 </main>
 <footer class="footer">
     <div class="footer__container">
