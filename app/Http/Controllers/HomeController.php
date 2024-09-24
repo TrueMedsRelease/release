@@ -4,20 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Currency;
 use App\Models\Language;
-use App\Services\CurrencyServices;
-use App\Services\LanguageServices;
-use Illuminate\Support\Facades\Redirect;
-use App\Services\CacheServices;
-use App\Services\GeoIpService;
 use Illuminate\View\View;
 use App\Services\ProductServices;
 use App\Models\PhoneCodes;
 use App\Services\StatisticService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Mews\Captcha\Captcha;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Redis;
 use Phattarachai\LaravelMobileDetect\Agent;
 
 class HomeController extends Controller
@@ -422,7 +415,7 @@ class HomeController extends Controller
             $pill = str_replace('&', '-', (str_replace(' ', '-', strtolower(trim($pill)))));
             $safari = false;
 
-            if (preg_match('/iPhone|iPad|iPod|Macintosh/i', $_SERVER ['HTTP_USER_AGENT'])) {
+            if (preg_match('/iPhone|iPad|iPod|Macintosh/i', $_SERVER['HTTP_USER_AGENT'])) {
                 if (file_exists(public_path() . "/images/" . $pill . ".png") && file_get_contents(public_path() . "/images/" . $pill . ".png") !== "error") {
                     header('Content-type: image/png');
                     echo file_get_contents(public_path() . "/images/" . $pill . ".png");
@@ -762,4 +755,32 @@ class HomeController extends Controller
 
         return json_encode($result);
     }
+
+    // public static function downloadImageFromWeb() {
+    //     $products_images = Product::query()
+    //         ->where('is_showed', '=', 1)
+    //         ->get(['image'])
+    //         ->toArray();
+
+    //     $water_string = str_replace(['http://', 'https://'], '', env('APP_URL'));
+
+    //     foreach ($products_images as $image) {
+    //         if (!file_exists(public_path() . '/test_image/' . $image['image'] . '.webp')) {
+    //             $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $image['image'] .'&img=webp&url=' . $water_string);
+    //             if ($server_answer != 'error') {
+    //                 file_put_contents(public_path() . "/test_image/" . $image['image'] . ".webp", $server_answer);
+    //             }
+    //         }
+
+    //         if (!file_exists(public_path() . '/test_image/' . $image['image'] . '.png')) {
+    //             $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $image['image'] .'&img=png&url=' . $water_string);
+    //             file_put_contents(public_path() . "/images/" . $image['image'] . ".png", $server_answer);
+    //             if ($server_answer != 'error') {
+    //                 file_put_contents(public_path() . "/test_image/" . $image['image'] . ".webp", $server_answer);
+    //             }
+    //         }
+
+    //         echo $image['image'];
+    //     }
+    // }
 }

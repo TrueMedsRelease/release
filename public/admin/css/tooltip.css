@@ -1,0 +1,73 @@
+#tooltip{
+	background:#FFFFFF;
+	border:1px solid #AAA;
+	border-radius: 4px;
+	color:#888;
+	margin:0px;
+	padding:3px 5px;
+	opacity: 0.8;
+	filter: alpha(opacity=80); 
+	font-size: 12px;
+	position:absolute;
+	visibility:hidden;
+}
+.bubbleInfo {
+    position: relative;
+    left: 40px;
+}
+.trigger {
+    position: absolute;
+}
+
+.popup {
+    position: absolute;
+    left: 100px;
+    top: 300px;
+    display: none;
+    z-index: 50;
+    border-collapse: collapse;
+    font-size: .8em;
+}
+
+.popup td.corner {
+    height: 15px;
+    width: 19px;
+}
+
+.popup td#topleft { 
+    background-image: url(../images/tooltip2/bubble-1.png); 
+} 
+
+.popup td.top { 
+    background-image: url(../images/tooltip2/bubble-2.png); 
+}
+
+.popup td#topright { 
+    background-image: url(../images/tooltip2/bubble-3.png); 
+}
+
+.popup td.left { 
+    background-image: url(../images/tooltip2/bubble-4.png); 
+}
+
+.popup td.right { 
+    background-image: url(../images/tooltip2/bubble-5.png); 
+}
+
+.popup td#bottomleft { 
+    background-image: url(../images/tooltip2/bubble-6.png); 
+}
+
+.popup td.bottom { 
+    background-image: url(../images/tooltip2/bubble-7.png); 
+    text-align: center;
+}
+
+.popup td.bottom img { 
+    display: block; 
+    margin: 0 auto; 
+}
+
+.popup td#bottomright { 
+    background-image: url(../images/tooltip2/bubble-8.png); 
+}

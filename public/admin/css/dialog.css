@@ -1,0 +1,58 @@
+.jqifade{
+	position: absolute; 
+	background-color: #aaaaaa; 
+}
+div.jqi{ 
+	width: 400px; 
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+	position: absolute; 
+	background-color: #ffffff; 
+	font-size: 11px; 
+	text-align: left; 
+	border: solid 1px #eeeeee;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 7px;
+}
+div.jqi .jqicontainer{ 
+	font-weight: bold; 
+}
+div.jqi .jqiclose{ 
+	position: absolute;
+	top: 4px; right: -2px; 
+	width: 18px; 
+	cursor: default; 
+	color: #bbbbbb; 
+	font-weight: bold; 
+}
+div.jqi .jqimessage{ 
+	padding: 10px; 
+	line-height: 20px; 
+	color: #59F;
+	font-size: 14px; 
+}
+div.jqi .jqibuttons{ 
+	text-align: right; 
+	padding: 5px 0 5px 0; 
+	border: solid 1px #eeeeee; 
+	background-color: rgb(250,250,250);
+}
+div.jqi button{ 
+	padding: 3px 10px; 
+	margin: 0 10px; 
+	background-color: #6D7; 
+	border: solid 2px #EEE; 
+	color: #ffffff; 
+	font-weight: bold; 
+	font-size: 12px; 
+	cursor: pointer;
+}
+div.jqi button:hover{ 
+	background-color: #7E8;
+}
+div.jqi button.jqidefaultbutton{ 
+	background-color: #7CF;
+}
+.jqiwarning .jqi .jqibuttons{ 
+	background-color: #EEE;
+}
