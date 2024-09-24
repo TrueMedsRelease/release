@@ -1,0 +1,393 @@
+Общие стили для стандартных элементов
+body { 
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Verdana, sans-serif; 
+    /* background-image: url('../images/body_bg.gif');  */
+    /* color: #555;  */
+    font-size: 14px;}
+
+h1 { 
+    font-size: 24px; 
+    color:#59F; 
+    line-height: 36px; 
+    margin-bottom: 18px; 
+}
+h2 { 
+    font-size: 16px; 
+    color:#59F; 
+    line-height: 18px; 
+    margin-bottom: 18px; 
+}
+h3 { 
+    font-size: 14px; 
+    color:#59F; 
+    line-height: 18px; 
+}
+h4 { 
+    font-size: 10px; 
+    color:#59F; 
+    line-height: 18px; 
+}
+
+a { 
+    font-size: 14px; 
+    color:#7CF; 
+    text-decoration: none;
+}
+a:hover {
+    color:#59F; 
+    text-decoration: underline;
+}
+
+fieldset {
+    border: 1px solid #EEE;
+}
+legend {
+    font-size: 14px; 
+    color:#59F;
+}
+
+.form_table {
+    width: 100%; 
+    margin: 5px 0 5px 0; 
+    padding: 0;
+}
+.form_table tr {
+    border: 1px solid rgb(250,250,250);
+}
+.form_table .table_head{ 
+    color: #888; 
+    font-size: 14px; 
+    background-color: rgb(253,253,255);
+}
+
+h1, h2, h3, h4 {
+    color: #77F;
+}
+
+/* Стили для текстов*/
+.text {
+    font-size: 12px; 
+    color: #888;
+}
+.strong_text {
+    font-size: 12px; 
+    font-weight: bold; 
+    color: #665;
+}
+.label {
+    font-size: 14px; 
+    color: #888; 
+    font-weight: bold;
+}
+
+.loading {
+    display: inline-block; 
+    min-height:24px; 
+    padding-left: 28px;	
+    margin-left: auto;	
+    margin-right: auto;	
+    color: #59F; 
+    font-size: 14px; 
+    font-weight: bold; 
+    background: url("../images/loading.gif") left top no-repeat;}
+
+.info, 
+.notice, 
+.error, 
+.successful, 
+.delete, 
+.add,
+.left_icon, 
+.right_icon, 
+.up_icon, 
+.down_icon, 
+.sort_asc_icon, 
+.sort_desc_icon  {
+    display: inline-block; 
+    min-height: 32px; 
+    font-size: 14px;	
+    font-weight: bold;	
+    padding-left: 28px;	
+    background-repeat: no-repeat;
+}
+
+.input_error, 
+.input_successfull, 
+.input_notice , 
+.input_info{
+    margin: 3px 3px 0 0; 
+    width: 24px; 
+    min-height: 24px; 
+    float: right; 
+    background-repeat: no-repeat;
+}
+
+.info, 
+.input_info {	
+    background-image: url("../images/icon_info.png"); color: rgb(100,100,150);
+}
+.notice, 
+.input_notice {
+    color: #FA6; 
+    background-image: url("../images/icon_notice.png");
+}
+.successful, 
+.input_successfull {
+    color: #7F9; 
+    background-image: url("../images/icon_successfull.png");
+}
+.error, 
+.input_error {
+    color: #F87; 
+    background-image: url("../images/icon_error.png");
+}
+.delete {
+    color: #F87; 
+    background-image: url("../images/icon_delete.png");
+}
+.add {
+    color: #6D6; 
+    background-image: url("../images/icon_add.png");
+}
+.left_icon {
+    color: #FA6; 
+    background-image: url("../images/icon_left.png");
+}
+.right_icon {
+    color: #FA6; 
+    background-image: url("../images/icon_right.png");
+}
+.up_icon {
+    color: #FA6; 
+    background-image: url("../images/icon_up.png");
+}
+.down_icon {
+    color: #FA6; 
+    background-image: url("../images/icon_down.png");
+}
+.sort_asc_icon{
+    background-image: url("../images/asc.png");
+}
+.sort_desc_icon{
+    background-image: url("../images/desc.png");
+}
+/* Стили для описания структуры страницы*/
+#main_block{
+    position: absolute; 
+    left: 1%; 
+    width: 98%; 
+    top: 0;  
+    min-width: 1024px;}
+
+#head, 
+#content, 
+#footer{
+    width: 100%; 
+    float: left;  
+}
+
+/* Стили для оконтовки главного окна */
+#content_head, 
+#content_body, 
+#content_body_br, 
+#content_footer {
+    width: 100%; 
+    float: left;
+}
+
+#content_head {
+    height: 19px; 
+    /* background: url('../images/main_br/main_br_top.gif') bottom center  repeat-x; */
+}
+#content_head_left {
+    float: left; 
+    width: 19px; 
+    height: 19px; 
+    /* background: url('../images/main_br/main_br_top_left.gif') bottom left no-repeat; */
+}
+#content_head_right {
+    float: right; 
+    width: 19px; 
+    height: 19px; 
+    /* background: url('../images/main_br/main_br_top_right.gif') bottom right no-repeat; */
+}
+
+#content_body {
+    /* background: #FFF url('../images/main_br/main_br_middle_left.gif') top left  repeat-y; */
+}
+#content_body_br {
+    /* background: url('../images/main_br/main_br_middle_right.gif') top right  repeat-y; */
+}
+#content_body_content {
+    margin: 5px 22px 5px 22px;
+}
+	
+#content_footer {
+    height: 19px; 
+    /* background: url('../images/main_br/main_br_bottom.gif') top center  repeat-x; */
+}
+#content_footer_left {
+    float: left; 
+    width: 19px; 
+    height: 19px; 
+    /* background: url('../images/main_br/main_br_bottom_left.gif') top left no-repeat; */
+}
+#content_footer_right {
+    float: right; 
+    width: 19px; 
+    height: 19px; 
+    /* background: url('../images/main_br/main_br_bottom_right.gif') top right no-repeat; */
+}
+/* Стили для оконтовки информационных блоков  */
+.block {
+    position: relative;
+}
+.block_head, 
+.block_body, 
+.block_body_br, 
+.block_footer {
+    width: 100%; 
+    float: left;}
+
+.block_head {
+    height: 7px; 
+    /* background: url('../images/block_br/block_br_top.png') bottom center  repeat-x; */
+}
+.block_head_left {
+    float: left; 
+    width: 7px; 
+    height: 7px; 
+    /* background: url('../images/block_br/block_br_top_left.png') bottom left no-repeat; */
+}
+.block_head_right {
+    float: right; 
+    width: 7px; 
+    height: 7px; 
+    /* background: url('../images/block_br/block_br_top_right.png') bottom right no-repeat; */
+}
+
+/* .block_body { */
+    /* background: #FFF url('../images/block_br/block_br_middle_left.png') top left  repeat-y; */
+/* } */
+/* .block_body_br { */
+    /* background: url('../images/block_br/block_br_middle_right.png') top right  repeat-y; */
+/* } */
+.block_body_content, 
+.block_title {
+    margin: 5px 15px 5px 15px;
+}
+.block_title {
+    margin-bottom: 15px; 
+    text-align: center; 
+    font-size: 14px; 
+    font-weight: bold; 
+    color:#59F; 
+}
+	
+.block_footer {
+    height: 7px; 
+    /* background: url('../images/block_br/block_br_bottom.png') top center  repeat-x; */
+}
+.block_footer_left {
+    float: left; 
+    width: 7px; 
+    height: 7px; 
+    /* background: url('../images/block_br/block_br_bottom_left.png') top left no-repeat; */
+}
+.block_footer_right {
+    float: right; 
+    width: 7px; 
+    height: 7px; 
+    /* background: url('../images/block_br/block_br_bottom_right.png') top right no-repeat; */
+}
+
+/* Блок с именем страницы */
+#page_name {
+    width:100%; 
+    margin-bottom: 10px; 
+    color: #DDD; 
+    font-size: 14px;
+}
+
+/* Блок с формой логина */
+#login {
+    width: 400px; 
+    margin-left: 50%; 
+    right: 200px; 
+    text-align: center;
+}
+
+/* Блок с формой настроек тайтлов и мета-тегов */
+#titles_and_tags_properties {
+    width: 98%; 
+    margin-left: 1%; 
+    float: left;   
+    text-align: center;
+}
+
+/* Блок с формой выбора дизайна каталога */
+#templates_properties {
+    width: 35%; 
+    margin-left: 1%; 
+    text-align: center; 
+    float: left; 
+    margin-bottom: 10px;
+}
+#checkout_templates_properties {
+    width: 41%; 
+    margin-left: 1%; 
+    text-align: center; 
+    float: left; 
+    margin-bottom: 10px;
+}
+#user_properties {
+    width: 20%; 
+    margin-left: 1%; 
+    text-align: center; 
+    float: left; 
+    margin-bottom: 10px;
+}
+
+/* Блок с формой для управления языками*/
+#languages {
+    width: 94%; 
+    margin-left: 3%;  
+    text-align: center;
+}
+
+/* Блок с формой для управления валютами*/
+#currencies {
+    width: 95%; 
+    margin-left: 2%; 
+    text-align: center;
+}
+
+/* Блок с формой для управления товаром на главной странице*/
+#main_page {
+    width: 80%; 
+    margin-left: 10%;  
+    text-align: center;
+}
+
+/*Блок со параметрами продуктов*/
+#products {
+    width: 94%; 
+    margin-left: 3%;  
+    text-align: center;
+}
+
+#updates {
+    width: 40%; 
+    margin-left: 30%; 
+    text-align: left; 
+    float: left;
+}
+#products_in_menu {
+    text-align: center;
+}
+#mobile_traff {
+    width: 70%; 
+    margin-left: 15%; 
+    text-align: left; 
+    float: left;
+}

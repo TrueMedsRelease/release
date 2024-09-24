@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Currency;
@@ -151,4 +152,8 @@ Route::controller(HomeController::class)->group(function() {
     Route::post('/request_login', 'request_login')->name('home.request_login')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/check_code', 'check_code')->name('home.check_code')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/set_images/{pill}', 'set_images')->name('home.set_images');
+});
+
+Route::controller(AdminController::class)->group(function() {
+    Route::get('/admin/login', 'admin_login')->name('admin.admin_login');
 });
