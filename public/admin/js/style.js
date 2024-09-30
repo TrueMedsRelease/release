@@ -435,3 +435,63 @@ function deletePackagngFromShowed() {
         });
     }
 }
+
+function packagingUpInSort() {
+    let selected_ids = $('#showed_packagings_field').val();
+    let product_id = $('#all_products_field').val();
+
+    if (product_id) {
+        $.ajax({
+            url: '/admin/available_packagings/packaging_up_in_sort',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'selected_packaging': selected_ids,
+                'product_id': product_id
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    alert(data.text);
+                } else {
+                    $('#available_packagings').html(data.html);
+
+                    $('#all_products_field option[value=' + product_id + ']').attr('selected', "selected");
+                    let position = $('#all_products_field option[value=' + product_id + ']').offset().top;
+                    $('#all_products_field').scrollTop(position - 500);
+                }
+            }
+        });
+    }
+}
+
+function packagingDownInSort() {
+    let selected_ids = $('#showed_packagings_field').val();
+    let product_id = $('#all_products_field').val();
+
+    if (product_id) {
+        $.ajax({
+            url: '/admin/available_packagings/packaging_down_in_sort',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'selected_packaging': selected_ids,
+                'product_id': product_id
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    alert(data.text);
+                } else {
+                    $('#available_packagings').html(data.html);
+
+                    $('#all_products_field option[value=' + product_id + ']').attr('selected', "selected");
+                    let position = $('#all_products_field option[value=' + product_id + ']').offset().top;
+                    $('#all_products_field').scrollTop(position - 500);
+                }
+            }
+        });
+    }
+}

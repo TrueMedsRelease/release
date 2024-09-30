@@ -39,9 +39,9 @@
             </td>
             <td valign="middle" width="10%">
                 <span class="up_icon" id="up_button" title='{#up_pos_text#}' style="cursor: pointer"
-                onclick="xajax_package_up_in_sort_list(xajax.getFormValues('show_packagings_form'));">&nbsp;</span><br />
+                onclick="packagingUpInSort()">&nbsp;</span><br />
                 <span class="down_icon" id="down_button" title='{#down_pos_text#}' style="cursor: pointer"
-                onclick="xajax_package_down_in_sort_list(xajax.getFormValues('show_packagings_form'));">&nbsp;</span><br />
+                onclick="packagingDownInSort()">&nbsp;</span><br />
             </td>
         </tr>
         </tbody>

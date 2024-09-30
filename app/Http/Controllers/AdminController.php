@@ -612,13 +612,132 @@ class AdminController extends Controller
         return response()->json($response);
     }
 
-    // public function add_pack_to_showed() {
 
-    // }
+    public function packaging_up_in_sort(Request $request) {
+        $selected_packagings_id = $request->selected_packaging;
+        $product_id = $request->product_id;
 
-    // public function add_pack_to_showed() {
+        if ($selected_packagings_id == 'null') {
+            $response = [
+                'status' => 'error',
+                'text' => __('text.admin_common_form_empty_field')
+            ];
+        } else {
+            $showed_packaging_old = AdminServices::getShowedProductPackaging($product_id, 1);
 
-    // }
+            for($i = count($selected_packagings_id) - 1; $i >= 0;  $i--) {
+                $cur_packaging_id = $selected_packagings_id[$i];
+                $cur_packaging_order = DB::table('product_packaging')
+                    ->where('id', '=', $cur_packaging_id)
+                    ->where('is_showed', '=', 1)
+                    ->get(['ord'])
+                    ->toArray();
+
+                $prev_packaging_index = -1;
+                foreach ($showed_packaging_old as $key => $value) {
+                    if ($value->id == $cur_packaging_id) {
+                        $prev_packaging_index = $key - 1;
+                        break;
+                    }
+                }
+
+                if($prev_packaging_index < 0) {
+                    continue;
+                } else {
+                    $prev_packaging_id = $showed_packaging_old[$prev_packaging_index]->id;
+                    $prev_packaging_order = DB::table('product_packaging')
+                        ->where('id', '=', $prev_packaging_id)
+                        ->where('is_showed', '=', 1)
+                        ->get(['ord'])
+                        ->toArray();
+
+                    DB::update("UPDATE product_packaging SET ord = '{$cur_packaging_order[0]->ord}' WHERE `id` = '$prev_packaging_id'");
+                    DB::update("UPDATE product_packaging SET ord = '{$prev_packaging_order[0]->ord}' WHERE `id` = '$cur_packaging_id'");
+                }
+
+            }
+
+            $all_products_info = AdminServices::getAllProductWithCategory();
+            $showed_packagings = AdminServices::getShowedProductPackaging($product_id, 1);
+            $not_showed_packagings = AdminServices::getShowedProductPackaging($product_id, 0);
+
+            $returnHTML = view('admin.ajax.available_packagings_content')->with([
+                'all_products_info' => $all_products_info,
+                'showed_packagings' => $showed_packagings,
+                'not_showed_packagings' => $not_showed_packagings
+            ])->render();
+
+            $response = [
+                'status' => 'success',
+                'html' => "$returnHTML"
+            ];
+        }
+
+        return response()->json($response);
+    }
+
+    public function packaging_down_in_sort(Request $request) {
+        $selected_packagings_id = $request->selected_packaging;
+        $product_id = $request->product_id;
+
+        if ($selected_packagings_id == 'null') {
+            $response = [
+                'status' => 'error',
+                'text' => __('text.admin_common_form_empty_field')
+            ];
+        } else {
+            $showed_packaging_old = AdminServices::getShowedProductPackaging($product_id, 1);
+
+            for($i = count($selected_packagings_id) - 1; $i >= 0;  $i--) {
+                $cur_packaging_id = $selected_packagings_id[$i];
+                $cur_packaging_order = DB::table('product_packaging')
+                    ->where('id', '=', $cur_packaging_id)
+                    ->where('is_showed', '=', 1)
+                    ->get(['ord'])
+                    ->toArray();
+
+                $next_packaging_index = 0;
+                foreach ($showed_packaging_old as $key => $value) {
+                    if ($value->id == $cur_packaging_id) {
+                        $next_packaging_index = $key + 1;
+                        break;
+                    }
+                }
+
+                if($next_packaging_index > count($showed_packaging_old) - 1) {
+                    continue;
+                } else {
+                    $next_packaging_id = $showed_packaging_old[$next_packaging_index]->id;
+                    $next_packaging_order = DB::table('product_packaging')
+                        ->where('id', '=', $next_packaging_id)
+                        ->where('is_showed', '=', 1)
+                        ->get(['ord'])
+                        ->toArray();
+
+                    DB::update("UPDATE product_packaging SET ord = '{$cur_packaging_order[0]->ord}' WHERE `id` = '$next_packaging_id'");
+                    DB::update("UPDATE product_packaging SET ord = '{$next_packaging_order[0]->ord}' WHERE `id` = '$cur_packaging_id'");
+                }
+
+            }
+
+            $all_products_info = AdminServices::getAllProductWithCategory();
+            $showed_packagings = AdminServices::getShowedProductPackaging($product_id, 1);
+            $not_showed_packagings = AdminServices::getShowedProductPackaging($product_id, 0);
+
+            $returnHTML = view('admin.ajax.available_packagings_content')->with([
+                'all_products_info' => $all_products_info,
+                'showed_packagings' => $showed_packagings,
+                'not_showed_packagings' => $not_showed_packagings
+            ])->render();
+
+            $response = [
+                'status' => 'success',
+                'html' => "$returnHTML"
+            ];
+        }
+
+        return response()->json($response);
+    }
 
     public function pageAdminTitle($page) {
         switch ($page){
