@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
- 	<title>{#title#}</title>
+ 	<title>@yield('title', 'Defult')</title>
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
@@ -11,7 +11,6 @@
     <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
 	<script src="{{ asset("vendor/jquery/dialog/dialog.js") }}"></script>
 	<script src="{{ asset("vendor/jquery/jqtransformplugin/jquery.jqtransform.js") }}"></script>
-	{{-- {$page_properties.xjavascript} --}}
  	<script language="javascript">
 		$(document).ready(function(){
 				$('form').jqTransform({imgPath:''});
@@ -37,7 +36,7 @@
 </head>
 <body>
 	<div class="wrapper">
-	{{-- {if $is_user_logged_in}
+@if ($logged_in)
 	<header class="header">
 		<div class="header__container">
 			<div class="header__row">
@@ -46,19 +45,19 @@
 						<nav class="menu__body">
 							<ul class="menu__list">
 								<li class="menu__item">
-								    <a href="{$path.page}/main_properties">{{__('text.admin_common_main_menu_1_element')}}</a>
+								    <a href="{{ route('admin.main_properties') }}">{{__('text.admin_common_main_menu_1_element')}}</a>
 								</li>
 								<li class="menu__item">
 								    <a href="{$path.page}/products">{{__('text.admin_common_main_menu_4_element')}}</a>
 								</li>
 								<li class="menu__item">
-								    <a href="{$path.page}/products_show">{{__('text.admin_common_main_menu_5_element')}}</a>
+								    <a href="{{ route('admin.available_products') }}">{{__('text.admin_common_main_menu_5_element')}}</a>
 								</li>
 								<li class="menu__item">
-								    <a href="{$path.page}/packagings_show">{{__('text.admin_common_main_menu_6_element')}}</a>
+								    <a href="{{ route('admin.available_packagings') }}">{{__('text.admin_common_main_menu_6_element')}}</a>
 								</li>
 								<li class="menu__item">
-								    <a href="{$path.page}/main_page">{{__('text.admin_common_main_menu_7_element')}}</a>
+								    <a href="{{ route('admin.index') }}">{{__('text.admin_common_main_menu_7_element')}}</a>
 								</li>
 								<li class="menu__item">
 								    <a href="{$path.page}/langs">{{__('text.admin_common_main_menu_9_element')}}</a>
@@ -84,7 +83,7 @@
 							</svg>
 						</div>
 						<div class="profile-header__info">
-							<p class="profile-header__name profile-header__name--desktop">User Login</p>
+							<p class="profile-header__name profile-header__name--desktop">Admin</p>
 							<p class="profile-header__name profile-header__name--mobile">profile</p>
 							<!-- <a href="profile.php" class="profile-header__link">Profile</a> -->
 						</div>
@@ -100,11 +99,11 @@
 			</div>
 		</div>
 	</header>
-{/if} --}}
+@endif
 	<main class="page">
 		<div class="page__container">
 			<section class="page__inner">
-				<h1 class="main-title">{{__('text.admin_main_properties_page_name')}}</h1>
+				<h1 class="main-title">@yield('page_name', 'Defult')</h1>
 
                 @yield('content')
 
@@ -178,5 +177,6 @@
     </footer>
 
     </div>
+    <script src="{{ asset("admin/js/style.js") }}"></script>
 </body>
 </html>
