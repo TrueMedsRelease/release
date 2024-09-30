@@ -156,4 +156,32 @@ Route::controller(HomeController::class)->group(function() {
 
 Route::controller(AdminController::class)->group(function() {
     Route::get('/admin/login', 'admin_login')->name('admin.admin_login');
+    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/main_page', 'index')->name('admin.index');
+    Route::get('/admin/admin_main_page', 'admin_main_content')->name('admin.admin_main_content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_page/add_to_main', 'add_to_main')->name('admin.add_to_main')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_page/delete_from_main', 'delete_from_main')->name('admin.delete_from_main')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_page/product_up_in_sort', 'product_up_in_sort')->name('admin.product_up_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_page/product_down_in_sort', 'product_down_in_sort')->name('admin.product_down_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/main_properties', 'main_properties')->name('admin.main_properties');
+    Route::get('/admin/main_properties_content', 'main_properties_content')->name('admin.main_properties_content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_properties/save_user_properties', 'save_user_properties')->name('admin.save_user_properties')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_properties/load_page_properties', 'load_page_properties')->name('admin.load_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_properties/save_page_properties', 'save_page_properties')->name('admin.save_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_properties/save_template', 'save_template')->name('admin.save_template')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/available_products', 'available_products')->name('admin.available_products');
+    Route::get('/admin/available_products_content', 'available_products_content')->name('admin.available_products_content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_products/add_to_showed', 'add_to_showed')->name('admin.add_to_showed')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_products/delete_from_showed', 'delete_from_showed')->name('admin.delete_from_showed')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/available_packagings', 'available_packagings')->name('admin.available_packagings');
+    Route::get('/admin/available_packagings_content', 'available_packagings_content')->name('admin.available_packagings_content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_packagings/load_packaging_info', 'load_packaging_info')->name('admin.load_packaging_info')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_packagings/add_pack_to_showed', 'add_pack_to_showed')->name('admin.add_pack_to_showed')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_packagings/delete_pack_from_showed', 'delete_pack_from_showed')->name('admin.delete_pack_from_showed')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_packagings/packaging_up_in_sort', 'packaging_up_in_sort')->name('admin.packaging_up_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_packagings/packaging_down_in_sort', 'packaging_down_in_sort')->name('admin.packaging_down_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
 });

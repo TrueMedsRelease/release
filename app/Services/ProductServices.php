@@ -639,8 +639,17 @@ class ProductServices
 
     public static function getPageTitle($page) {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $language_id = Language::$languages[App::currentLocale()];
+
+        $page_properties = DB::select("SELECT * FROM page_properties WHERE `page` = '$page' AND `language` = $language_id");
+        $page_properties = $page_properties[0];
+
+        $page_properties->title = str_replace('(host_name)', $domain, $page_properties->title);
+        $page_properties->keyword = str_replace('(host_name)', $domain, $page_properties->keyword);
+        $page_properties->description = str_replace('(host_name)', $domain, $page_properties->description);
+
         switch($page){
-            case 'index':
+            case 'main':
                 $main_titles = [
                     'Cheap Online Pharmacy',
                     'Cheap Medicines Online',
@@ -660,51 +669,139 @@ class ProductServices
                     DB::insert("INSERT INTO `main_cache` (`title`) VALUES ('{$title}')");
                 }
 
-                $title = $domain . ' - ' . $title;
+                $page_properties->title = str_replace('(random_text)', $title, $page_properties->title);
+
+                $robots_index_enable = 1;
+                $title = $page_properties->title;
+
                 break;
             case 'first_letter':
-                $title = __('text.first_letter_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'active':
-                $title = __('text.aktiv_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'disease':
-                $title = __('text.disease_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'about_us':
-                $title = __('text.about_us_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'faq':
-                $title = __('text.faq_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'testimonials':
-                $title = __('text.testimonials_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'shipping':
-                $title = __('text.shipping_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'moneyback':
-                $title = __('text.moneyback_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'contact_us':
-                $title = __('text.contact_us_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'affiliate':
-                $title = __('text.affiliate_title') . ' - ' . $domain;
+
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
+
                 break;
             case 'login':
                 $title = __('text.login_title') . ' - ' . $domain;
+
                 break;
             case 'search':
                 $title = __('text.search_result_title') . ' - ' . $domain;
+                $mob_title = __('text.search_result_title');
+                $keyword = $domain . ', ';
+                $description = $domain . ', ';
+                $robots_index_enable = 0;
+                $title = $page_properties->title;
                 break;
             case 'cart':
+
+                $total = session('total.all_in_currency') ? session('total.all_in_currency') : 0;
+
                 $title = __('text.cart_title') . ' - ' . $domain;
+                $mob_title = __('text.cart_title') . ' - ' . $total;
+                $keyword = $total . ', ' . __('text.cart_title');
+                $description = $total . ', ' . __('text.cart_title');
+                $robots_index_enable = 0;
+
+                $page_properties->mob_title = str_replace('(cart_total)', $total, $page_properties->title);
+                $page_properties->keyword = str_replace('(cart_total)', $total, $page_properties->keyword);
+                $page_properties->description = str_replace('(cart_total)', $total, $page_properties->description);
+
+
+                $title = $page_properties->mob_title;
+                break;
+            case 'category':
+
+                $category_name = session('category_name') ? session('category_name') : __('text.category_title');
+
+                $title = $category_name . ' - ' . $domain;
+                $mob_title = __('text.category_title');
+                $keyword = $domain . ', ' . $category_name;
+                $description = $domain . ', ' . $category_name;
+                $robots_index_enable = 1;
+                $title = $page_properties->title;
+                break;
+            case 'product':
+
+                $product_name = session('product_name') ? session('product_name') : __('text.common_product_text');
+
+                $title = $product_name . ' - ' . $domain;
+                $mob_title = $product_name;
+                $keyword = $domain . ', ' . $product_name;
+                $description = $domain . ', ' . $product_name;
+                $robots_index_enable = 1;
+                $title = $page_properties->title;
                 break;
             default:
                 $title = $domain;
+                $mob_title = $domain;
+                $keyword = $domain;
+                $description = $domain;
+                $robots_index_enable = 0;
                 break;
         }
+
+        // $page_properties = [
+        //     'title' => $title,
+        //     'mob_title' => $mob_title,
+        //     'keyword' => $keyword,
+        //     'description' => $description,
+        //     'robots_index_enable' => $robots_index_enable
+        // ];
 
         return $title;
     }

@@ -20,7 +20,7 @@ class HomeController extends Controller
         StatisticService::SendStatistic('index');
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
-        $title = ProductServices::getPageTitle('index');
+        $title = ProductServices::getPageTitle('main');
         $agent = new Agent();
 
         if (!in_array($design, ['design_7', 'design_8'])) {
@@ -143,13 +143,17 @@ class HomeController extends Controller
         $agent = new Agent();
         $category = str_replace('-', ' ', $category);
 
+        session(['category_name' => $category]);
+
+        $title = ProductServices::getPageTitle('category');
+
         return view($design . '.category',[
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'products' => $products,
             'phone_codes' => $phone_codes,
-            'title' => $category . ' - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'title' => $title,
             'cur_category' => $category,
             'agent' => $agent,
             'Language' => Language::class,
@@ -201,13 +205,17 @@ class HomeController extends Controller
         }
         $product_name = implode(' ', $product_name);
 
+        session(['product_name' => $product_name]);
+
+        $title = ProductServices::getPageTitle('product');
+
         return view($design . '.product', [
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'product' => $product,
             'phone_codes' => $phone_codes,
-            'title' => $product_name . ' - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'title' => $title,
             'cur_category' => $product['categories'][0]['name'],
             'agent' => $agent,
             'Language' => Language::class,
