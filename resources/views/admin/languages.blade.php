@@ -64,6 +64,7 @@
 	</div> --}}
 	<div class="statistic__rows">
 		<form id="languages_form" name="languages_form" action="" method="POST">
+            @csrf
             <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
                 <tbody valign="middle" align="center">
                     <tr>

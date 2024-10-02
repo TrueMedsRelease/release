@@ -78,6 +78,7 @@
 		</form> --}}
 		<h3 class="payment-details__caption">{{__('text.admin_currencies_currencies_title')}}</h3>
 		<form id="currencies_form" name="currencies_form" action="" method="POST">
+            @csrf
             <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
                 <tbody valign="middle" align="center">
                 @foreach ($currencies_info as $cur_currency_info)
