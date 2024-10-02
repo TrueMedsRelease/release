@@ -136,7 +136,6 @@ class AdminServices
         return $products_info;
     }
 
-
     public static function getShowedProductPackaging($product_id, $is_showed) {
 
         if ($product_id != 0) {
@@ -146,12 +145,98 @@ class AdminServices
                 ->where('product_packaging.price', '>', 0)
                 ->where('product_packaging.product_id', '=', $product_id)
                 ->orderBy('product_packaging.ord')
-                ->get(['product_packaging.id', 'product_packaging.dosage', 'product_packaging.num', 'product_type.name'])
+                ->get(['product_packaging.id', 'product_packaging.dosage', 'product_packaging.num', 'product_packaging.min_price', 'product_packaging.price', 'product_type.name'])
                 ->toArray();
         } else {
             $packaging = [];
         }
 
         return $packaging;
+    }
+
+    public static function getProductProperties($product_id) {
+        if ($product_id != 0) {
+
+            $product = DB::table('product')
+                ->where('id', '=', $product_id)
+                ->get(['is_showed', 'sinonim'])
+                ->toArray();
+            $product = $product[0];
+
+            $product->sinonim = preg_replace('/\b(\w.+)\b/', '$0/', $product->sinonim);
+            $product->sinonim = str_replace("\u{FEFF}", '', $product->sinonim);
+            $product->sinonim = explode('/', $product->sinonim);
+            if ($product->sinonim[0] == "﻿" || $product->sinonim[0] == "")
+            for ($i = 0; $i < count($product->sinonim); $i++)
+                if ($i+1 != count($product->sinonim))
+                    $product->sinonim[$i] = $product->sinonim[$i+1];
+            if ($product->sinonim[0] != "﻿" || $product->sinonim[0] != "")
+            for ($i = 0; $i < count($product->sinonim); $i++)
+                $product->sinonim[$i] = $product->sinonim[$i];
+
+            foreach($product->sinonim as $i => $ps) {
+                if ($ps != "") {
+                    $product->sinonim[$i] = trim(str_replace('-', ' ', str_replace("\u{FEFF}", '', $ps)));
+                }
+            }
+
+            $product->sinonim = array_filter($product->sinonim);
+
+            $product_info = DB::table('product_desc')
+                    ->where('product_id', '=', $product_id)
+                    ->get(['language_id', 'name', 'desc', 'url', 'title', 'keywords', 'description'])
+                    ->toArray();
+
+            $names = [];
+            $descriptions = [];
+            $seo = [];
+            $urls = [];
+            foreach ($product_info as $product_val) {
+                $names[$product_val->language_id] = $product_val->name;
+                $descriptions[$product_val->language_id] = trim($product_val->desc);
+                $urls[$product_val->language_id] = $product_val->url;
+                $seo[$product_val->language_id] = [
+                    'title' => $product_val->title == null ? '' : $product_val->title,
+                    'keywords' => $product_val->keywords == null ? '' : $product_val->keywords,
+                    'description' => $product_val->description == null ? '' : $product_val->description
+                ];
+            }
+
+            $product->names = $names;
+            $product->descriptions = $descriptions;
+            $product->urls = $urls;
+            $product->seo = $seo;
+
+            $dosage_list = DB::select("SELECT dosage FROM product_dosage WHERE product_id = $product_id");
+            $dosage_list_arr = [];
+            foreach ($dosage_list as $val) {
+                $dosage_list_arr[(int)$val->dosage] = $val->dosage;
+            }
+
+            krsort($dosage_list_arr);
+
+            $packaging_list = AdminServices::getShowedProductPackaging($product_id, 1);
+            $product_packaging_info = [];
+
+            foreach ($dosage_list_arr as $dosage_value) {
+                foreach ($packaging_list as $packaging) {
+                    if ($dosage_value == $packaging->dosage) {
+                        $product_packaging_info[$packaging->dosage][] = [
+                            'pack_id' => $packaging->id,
+                            'num' => $packaging->num,
+                            'price' => $packaging->price,
+                            'min_price' => $packaging->min_price
+                        ];
+                    }
+                }
+            }
+
+            $product->packaging_info = $product_packaging_info;
+
+        } else {
+            $product = [];
+        }
+
+        return $product;
     }
 }

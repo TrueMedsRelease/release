@@ -11,11 +11,16 @@ use App\Models\Product;
 use App\Services\AdminServices;
 use App\Models\Language;
 use App\Models\Category;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
-    public function admin_login() : View
+    public function admin_login()
     {
+        if (session()->has('logged_in') || session('logged_in')) {
+            return redirect()->route('admin.index');
+        }
+
         $design = session('design') ? session('design') : config('app.design');
         $title = $this->pageAdminTitle('login');
         $agent = new Agent();
@@ -27,6 +32,36 @@ class AdminController extends Controller
             'agent' => $agent,
             'logged_in' => false,
         ]);
+    }
+
+    public function admin_logout()
+    {
+        session(['logged_in' => false]);
+        return redirect()->route('admin.admin_login');
+    }
+
+    public function request_login(Request $request) {
+        $password = $request->password;
+        $md5_password = md5($password);
+
+        $user = DB::select("SELECT * FROM user WHERE md5_pw = '{$md5_password}'");
+
+        if (count($user) > 0) {
+
+            session(['logged_in' => true]);
+
+            $result = [
+                'status' => 'success',
+                'url' => route('admin.index'),
+            ];
+        } else {
+            $result = [
+                'status' => 'error',
+                'text' => __('text.admin_login_form_invalid_log_in'),
+            ];
+        }
+
+        return json_encode($result);
     }
 
     public function admin_main_content() {
@@ -41,8 +76,12 @@ class AdminController extends Controller
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
     }
 
-    public function index() : View
+    public function index()
     {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
         $design = session('design') ? session('design') : config('app.design');
         $title = $this->pageAdminTitle('main_page');
         $agent = new Agent();
@@ -56,10 +95,13 @@ class AdminController extends Controller
         ]);
     }
 
-    public function main_properties() : View {
+    public function main_properties() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
         $title = $this->pageAdminTitle('main_properties');
         $agent = new Agent();
-
 
         return view('admin.main_properties', [
             'title' => $title,
@@ -286,26 +328,6 @@ class AdminController extends Controller
         return response()->json($response);
     }
 
-    public function request_login(Request $request) {
-        $password = $request->password;
-        $md5_password = md5($password);
-
-        $user = DB::select("SELECT * FROM user WHERE md5_pw = '{$md5_password}'");
-
-        if (count($user) > 0) {
-            $result = [
-                'status' => 'success',
-                'url' => route('admin.index'),
-            ];
-        } else {
-            $result = [
-                'status' => 'error',
-                'text' => __('text.admin_login_form_invalid_log_in'),
-            ];
-        }
-
-        return json_encode($result);
-    }
 
     public function save_user_properties(Request $request) {
         $user_login = 'admin';
@@ -416,7 +438,11 @@ class AdminController extends Controller
         return $this->main_properties();
     }
 
-    public function available_products() : View {
+    public function available_products() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
         $title = $this->pageAdminTitle('available_product');
         $agent = new Agent();
 
@@ -503,7 +529,11 @@ class AdminController extends Controller
         return response()->json($response);
     }
 
-    public function available_packagings() : View {
+    public function available_packagings() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
         $title = $this->pageAdminTitle('available_packagings');
         $agent = new Agent();
 
@@ -739,6 +769,215 @@ class AdminController extends Controller
         return response()->json($response);
     }
 
+    public function products() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
+        $title = $this->pageAdminTitle('products');
+        $agent = new Agent();
+
+        return view('admin.products', [
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+        ]);
+    }
+
+    public function products_content() {
+        $all_products_info = AdminServices::getAllProductWithCategory();
+
+        $returnHTML = view('admin.ajax.products_content')->with([
+            'all_products_info' => $all_products_info,
+            'Language' => Language::class,
+            'product_info' => [],
+        ])->render();
+
+        return response()->json(array('success' => true, 'html' => "$returnHTML"));
+    }
+
+    public function load_product_info(Request $request) {
+        $product_id = $request->product_id;
+
+        $all_products_info = AdminServices::getAllProductWithCategory();
+        $product_info = AdminServices::getProductProperties($product_id);
+
+        $returnHTML = view('admin.ajax.products_content')->with([
+            'all_products_info' => $all_products_info,
+            'Language' => Language::class,
+            'product_info' => $product_info,
+        ])->render();
+
+        return response()->json(array('success' => true, 'html' => "$returnHTML"));
+    }
+
+    public function save_product_info(Request $request) {
+        $product_form = $request->product_form_data;
+
+        $product_id = $product_form['all_products_field'];
+        $product_show = isset($product_form["is_show_field"]) ? 1 : 0;
+        $product_sinonim = str_replace(', ', "\r\n", $product_form["sinonims_field"]);
+
+        DB::update("UPDATE product SET is_showed = $product_show, sinonim = '$product_sinonim' WHERE id = $product_id");
+
+        $error = [];
+        foreach (Language::GetAllLanuages() as $language) {
+            $product_name = $product_form[$language['id'] . "_name_field"];
+            $product_desc = $product_form[$language['id'] . "_desc_field"];
+            $product_url = $product_form[$language['id'] . "_url_field"];
+            $product_title = $product_form[$language['id'] . "_title_field"];
+            $product_keywords = $product_form[$language['id'] . "_keywords_field"];
+            $product_description = $product_form[$language['id'] . "_description_field"];
+
+            $has_errors = false;
+
+            if (empty($product_name)) {
+                $has_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => 'Empty Name'
+                ];
+            }
+
+            if (empty($product_url)) {
+                $has_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => 'Empty URL'
+                ];
+            }
+
+            if (empty($product_desc)) {
+                $has_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => 'Empty Desc'
+                ];
+            }
+
+            if (!$has_errors) {
+                $product_desc = str_replace("'", "\'", $product_desc);
+                $product_desc = str_replace('"', '\"', $product_desc);
+                $product_desc = str_replace('%', "\%", $product_desc);
+                $product_desc = str_replace('_', "\_", $product_desc);
+                $product_desc = str_replace('>', "\>", $product_desc);
+                $product_desc = str_replace('<', "\<", $product_desc);
+                $product_description = str_replace("'", "\'", $product_description);
+                $product_description = str_replace('"', '\"', $product_description);
+                $product_description = str_replace('%', "\%", $product_description);
+                $product_description = str_replace('_', "\_", $product_description);
+                $product_description = str_replace('>', "\>", $product_description);
+                $product_description = str_replace('<', "\<", $product_description);
+                $product_keywords = str_replace("'", "\'", $product_keywords);
+                $product_keywords = str_replace('"', '\"', $product_keywords);
+                $product_keywords = str_replace('%', "\%", $product_keywords);
+                $product_keywords = str_replace('_', "\_", $product_keywords);
+                $product_keywords = str_replace('>', "\>", $product_keywords);
+                $product_keywords = str_replace('<', "\<", $product_keywords);
+
+                $cur_language_id = $language['id'];
+
+                DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `url` = "' . $product_url . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+            }
+        }
+
+        $packaging_list = AdminServices::getShowedProductPackaging($product_id, 1);
+        foreach ($packaging_list as $packaging) {
+            $cur_min_price = $packaging->min_price;
+            $cur_product_packaging_id = $packaging->id;
+            $new_product_price = $product_form[$packaging->id . "_price"];
+
+            if ($new_product_price >= $cur_min_price) {
+                DB::update("UPDATE product_packaging SET price = $new_product_price WHERE id = $cur_product_packaging_id");
+            } else {
+                $error = [
+                    'status' => 'error',
+                    'text' => __('text.admin_products_form_invalid_price')
+                ];
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+            return response()->json(array('status' => 'success', 'url' => route('admin.products')));
+        }
+    }
+
+    public function admin_languages() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
+        $title = $this->pageAdminTitle('languages');
+        $agent = new Agent();
+
+        $all_languages = Language::query()->orderBy('ord','asc')->get()->toArray();
+        $default_language_code = config('app.language') ? config('app.language') : session('language');
+
+        return view('admin.languages', [
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+            'languages_info' => $all_languages,
+            'default_language_code' => $default_language_code
+        ]);
+    }
+
+    public function save_languages_info(Request $request) {
+        $languages_form = $request->languages_form_data;
+
+        $default_language_code = $languages_form["default_language_code_field"];
+        $this->envUpdate('APP_LANGUAGE', $default_language_code);
+
+        $all_languages = Language::query()->orderBy('ord','asc')->get()->toArray();
+        $error = [];
+        foreach ($all_languages as $cur_language) {
+            $was_errors = false;
+
+            $cur_language_name = $languages_form[$cur_language['id'] . "_name_field"];
+            $cur_language_code = $languages_form[$cur_language['id'] . "_code_field"];
+            $cur_currency_country_iso2 = $languages_form[$cur_language['id'] . "_country_iso2_field"];
+
+            if(empty($cur_language_name)) {
+                $was_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => __('text.admin_common_form_empty_field')
+                ];
+            }
+
+            if(empty($cur_language_code)) {
+                $was_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => __('text.admin_common_form_empty_field')
+                ];
+            }
+
+            if(!$was_errors) {
+                DB::update('UPDATE `language` SET `name` = "' . $cur_language_name . '", `code` = "' . $cur_language_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '" WHERE id = ' . $cur_language["id"] . ' ');
+            }
+
+            if(isset($languages_form[$cur_language['id'] . '_show_field'])) {
+                DB::update("UPDATE `language` SET `show` = 1 WHERE id = " . $cur_language['id']);
+            } else {
+                DB::update("UPDATE `language` SET `show` = 0 WHERE id = " . $cur_language['id']);
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_languages')));
+        }
+    }
+
     public function pageAdminTitle($page) {
         switch ($page){
             case 'login':
@@ -755,6 +994,12 @@ class AdminController extends Controller
                 break;
             case 'available_packagings':
                 $title = __('text.admin_packagings_show_title');
+                break;
+            case 'products':
+                $title = __('text.admin_products_title');
+                break;
+            case 'languages':
+                $title = __('text.admin_languages_title');
                 break;
         }
         return $title;
@@ -774,7 +1019,7 @@ class AdminController extends Controller
 
     public function envUpdate($flag,$value)
     {
-        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY'];
+        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE'];
 
         if (in_array($flag, $allow_flags))
         {

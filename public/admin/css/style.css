@@ -8100,3 +8100,11 @@ a:hover {
 #language_field option {
     width: 30px;
 }
+
+.packaging_price_input .jqTransformInput {
+    width: 130px !important;
+}
+
+.products_on_products .jqTransformSelectWrapper {
+    width: auto !important;
+}
