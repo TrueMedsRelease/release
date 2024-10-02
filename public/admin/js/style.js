@@ -571,3 +571,28 @@ function saveLanguagesInfo() {
         }
     });
 }
+
+function saveCurrenciesInfo() {
+    let data = $('#currencies_form').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+
+    $.ajax({
+        url: '/admin/save_currencies_info',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'currencies_form_data': data
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}

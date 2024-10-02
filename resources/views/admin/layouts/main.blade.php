@@ -64,7 +64,7 @@
 								    <a href="{{ route('admin.admin_languages') }}">{{__('text.admin_common_main_menu_9_element')}}</a>
 								</li>
 								<li class="menu__item">
-								    <a href="{$path.page}/currencies">{{__('text.admin_common_main_menu_10_element')}}</a>
+								    <a href="{{ route('admin.admin_currencies') }}">{{__('text.admin_common_main_menu_10_element')}}</a>
 								</li>
 								{{-- <li class="menu__item">
 								    <a href="{$path.page}/updates">{{__('text.admin_common_main_menu_11_element')}}</a>

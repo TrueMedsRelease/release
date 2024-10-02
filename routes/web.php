@@ -194,4 +194,7 @@ Route::controller(AdminController::class)->group(function() {
 
     Route::get('/admin/languages', 'admin_languages')->name('admin.admin_languages');
     Route::post('/admin/save_languages_info', 'save_languages_info')->name('admin.save_languages_info')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/currencies', 'admin_currencies')->name('admin.admin_currencies');
+    Route::post('/admin/save_currencies_info', 'save_currencies_info')->name('admin.save_currencies_info')->withoutMiddleware(VerifyCsrfToken::class);
 });

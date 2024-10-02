@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Services\AdminServices;
 use App\Models\Language;
+use App\Models\Currency;
 use App\Models\Category;
 use Illuminate\Support\Facades\Redirect;
 
@@ -17,7 +18,7 @@ class AdminController extends Controller
 {
     public function admin_login()
     {
-        if (session()->has('logged_in') || session('logged_in')) {
+        if (session('logged_in')) {
             return redirect()->route('admin.index');
         }
 
@@ -940,7 +941,7 @@ class AdminController extends Controller
 
             $cur_language_name = $languages_form[$cur_language['id'] . "_name_field"];
             $cur_language_code = $languages_form[$cur_language['id'] . "_code_field"];
-            $cur_currency_country_iso2 = $languages_form[$cur_language['id'] . "_country_iso2_field"];
+            $cur_language_country_iso2 = $languages_form[$cur_language['id'] . "_country_iso2_field"];
 
             if(empty($cur_language_name)) {
                 $was_errors = true;
@@ -961,7 +962,7 @@ class AdminController extends Controller
             }
 
             if(!$was_errors) {
-                DB::update('UPDATE `language` SET `name` = "' . $cur_language_name . '", `code` = "' . $cur_language_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '" WHERE id = ' . $cur_language["id"] . ' ');
+                DB::update('UPDATE `language` SET `name` = "' . $cur_language_name . '", `code` = "' . $cur_language_code . '", `country_iso2` = "' . $cur_language_country_iso2 . '" WHERE id = ' . $cur_language["id"] . ' ');
             }
 
             if(isset($languages_form[$cur_language['id'] . '_show_field'])) {
@@ -975,6 +976,97 @@ class AdminController extends Controller
             return response()->json(array('status' => 'error', 'text' => $error['text']));
         } else {
             return response()->json(array('status' => 'success', 'url' => route('admin.admin_languages')));
+        }
+    }
+
+    public function admin_currencies() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
+        $title = $this->pageAdminTitle('currencies');
+        $agent = new Agent();
+
+        $all_currencies = Currency::query()->get()->toArray();
+        $default_currency_code = config('app.currency') ? config('app.currency') : session('language');
+
+        return view('admin.currencies', [
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+            'default_currency_code' => $default_currency_code,
+            'currencies_info' => $all_currencies
+        ]);
+    }
+
+    public function save_currencies_info(Request $request) {
+        $currencies_form = $request->currencies_form_data;
+
+        $default_currency_code = $currencies_form["default_currency_code_field"];
+        $this->envUpdate('APP_CURRENCY', $default_currency_code);
+
+        $all_currencies = Currency::query()->get()->toArray();
+        $error = [];
+        foreach ($all_currencies as $cur_currency) {
+            $was_errors = false;
+            $cur_currency_id = $cur_currency['id'];
+            $cur_currency_name = $currencies_form[$cur_currency_id . "_name_field"];
+            $cur_currency_code = $currencies_form[$cur_currency_id . "_code_field"];
+            $cur_currency_prefix = $currencies_form[$cur_currency_id . "_prefix_field"];
+            $cur_currency_coef = $currencies_form[$cur_currency_id . "_coef_field"];
+            $cur_currency_country_iso2 = $currencies_form[$cur_currency_id . "_country_iso2_field"];
+
+            if(empty($cur_currency_name)) {
+                $was_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => __('text.admin_common_form_empty_field')
+                ];
+            }
+
+            if(empty($cur_currency_code)) {
+                $was_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => __('text.admin_common_form_empty_field')
+                ];
+            }
+
+            if(empty($cur_currency_prefix)) {
+                $was_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => __('text.admin_common_form_empty_field')
+                ];
+            }
+
+            if(empty($cur_currency_coef)) {
+                $was_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => __('text.admin_common_form_empty_field')
+                ];
+            }
+
+            if(!$was_errors) {
+                DB::update('UPDATE `currency` SET `name` = "' . $cur_currency_name . '", `code` = "' . $cur_currency_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '", `coef` = "' . $cur_currency_coef . '", `prefix` = "' . $cur_currency_prefix . '" WHERE id = ' . $cur_currency_id . ' ');
+            }
+
+            if(isset($currencies_form[$cur_currency_id . '_show_field'])) {
+                DB::update("UPDATE `currency` SET `show_in_menu` = 1 WHERE id = $cur_currency_id");
+            } else {
+                DB::update("UPDATE `currency` SET `show_in_menu` = 0 WHERE id = $cur_currency_id");
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_currencies')));
         }
     }
 
@@ -1000,6 +1092,12 @@ class AdminController extends Controller
                 break;
             case 'languages':
                 $title = __('text.admin_languages_title');
+                break;
+            case 'currencies':
+                $title = __('text.admin_currencies_title');
+                break;
+            default:
+                $title = 'Admin';
                 break;
         }
         return $title;
