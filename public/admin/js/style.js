@@ -495,3 +495,104 @@ function packagingDownInSort() {
         });
     }
 }
+
+function loadProductInfo(product_id) {
+    if (product_id) {
+        $.ajax({
+            url: '/admin/products/load_product_info',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'product_id': product_id
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    alert(data.text);
+                } else {
+                    $('#product_prop_content').html(data.html);
+
+                    $('#all_products_field option[value=' + product_id + ']').attr('selected', "selected");
+                    let position = $('#all_products_field option[value=' + product_id + ']').offset().top;
+                    $('#all_products_field').scrollTop(position - 500);
+                }
+            }
+        });
+    }
+}
+
+function saveProductInfo() {
+    let data = $('#products_form').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+
+    $.ajax({
+        url: '/admin/products/save_product_info',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'product_form_data': data
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
+function saveLanguagesInfo() {
+    let data = $('#languages_form').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+
+    $.ajax({
+        url: '/admin/save_languages_info',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'languages_form_data': data
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
+function saveCurrenciesInfo() {
+    let data = $('#currencies_form').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+
+    $.ajax({
+        url: '/admin/save_currencies_info',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'currencies_form_data': data
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
