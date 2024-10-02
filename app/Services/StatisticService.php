@@ -55,17 +55,18 @@ class StatisticService
         //     dump($response->body());
         // });
 
-        $fp = fsockopen("true-services.net", 80, $errno, $errstr, 30);
+        $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 3);
         if (!$fp) {
-            echo "$errstr ($errno)\n";
+            // echo "$errstr ($errno)\n";
         } else {
             $out = "GET /statistics/statistics.php?" . http_build_query($get) . " HTTP/1.1\r\n";
             $out .= "Host: true-services.net\r\n";
             $out .= "User-Agent: " . request()->userAgent() . "\r\n";
             $out .= "Connection: Close\r\n\r\n";
             fwrite($fp, $out);
-            fclose($fp);        
+            fclose($fp);
         }
+
     }
 
 }
