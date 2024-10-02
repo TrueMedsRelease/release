@@ -555,4 +555,5 @@ return [
     "phone_request_mes_text" => "Permintaan anda telah dihantar.",
     "success_thank" => "Terima kasih kerana memilih kami!",
     "search_nothing" => "Tiada apa yang dijumpai",
+    "information" => "maklumat",
 ];

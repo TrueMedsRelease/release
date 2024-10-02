@@ -554,4 +554,5 @@ return [
     "phone_request_mes_text" => "Vaša žiadosť bola odoslaná.",
     "success_thank" => "Ďakujeme, že ste si vybrali nás!",
     "search_nothing" => "Nič sa nenašlo",
+    "information" => "informácie",
 ];

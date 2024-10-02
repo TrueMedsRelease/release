@@ -554,4 +554,5 @@ return [
     "phone_request_mes_text" => "Din förfrågan har skickats.",
     "success_thank" => "Tack för att du valde oss!",
     "search_nothing" => "Inget hittades",
+    "information" => "information",
 ];

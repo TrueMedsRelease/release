@@ -642,4 +642,5 @@ return [
     "phone_request_mes_text" => "Vaše žádost byla odeslána.",
     "success_thank" => "Děkujeme, že jste si vybrali nás!",
     "search_nothing" => "Nic nenalezeno",
+    "information" => "informace",
 ];

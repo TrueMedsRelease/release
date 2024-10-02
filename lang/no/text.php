@@ -557,4 +557,5 @@ return [
     "phone_request_mes_text" => "Din forespørsel er sendt.",
     "success_thank" => "Takk for at du valgte oss!",
     "search_nothing" => "Ingenting funnet",
+    "information" => "informasjon",
 ];

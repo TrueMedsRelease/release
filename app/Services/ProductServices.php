@@ -567,6 +567,59 @@ class ProductServices
         return $products;
     }
 
+    public static function SearchPageTitle($search_text)
+    {
+        $information = trans('text.information');
+        $array = [];
+        $array[] = trans('text.common_about_us_main_menu_item') . " ($information)" . '||' . 'about';
+        $array[] = trans('text.common_help_main_menu_item') . " ($information)" . '||' . 'help';
+        $array[] = trans('text.common_testimonials_main_menu_item') . " ($information)" . '||' . 'testimonials';
+        $array[] = trans('text.common_shipping_main_menu_item') . " ($information)" . '||' . 'delivery';
+        $array[] = trans('text.common_moneyback_main_menu_item') . " ($information)" . '||' .  'moneyback';
+        $array[] = trans('text.common_contact_us_main_menu_item') . " ($information)" . '||' . 'contact_us';
+
+        $collection = collect($array);
+
+        $filtered = $collection->filter(function($item) use ($search_text) {
+            return stripos($item,$search_text) !== false;
+        });
+
+        $result = $filtered->first();
+
+        return $result;
+    }
+
+    public static function SearchCategory($search_text)
+    {
+        $category = trans('text.common_category_search');
+        $language_id = Language::$languages[App::currentLocale()];
+        $result = Category::where('en_name', 'LIKE', "%$search_text%")->get()->toArray();
+
+        $tips = "";
+        foreach($result as $item)
+        {
+            $desc = CategoryDesc::where('language_id', '=', $language_id)->where("category_id", "=", $item['id'])->get()->toArray();
+            $tips .= $desc[0]['name'] . " $category||category/" . $item['url'] . "\n";;
+        }
+
+        return $tips;
+    }
+
+    public static function SearchDisease($search_text)
+    {
+        $disease = trans('text.common_disease_search');
+        $language_id = Language::$languages[App::currentLocale()];
+        $result = ProductDisease::where("disease", "LIKE", "%$search_text%")->where('language_id', '=', $language_id)->distinct()->get('disease')->toArray();
+
+        $tips = "";
+        foreach($result as $item)
+        {
+            $tips .= $item['disease'] . " $disease||disease/" .  str_replace(' ', '-', strtolower($item['disease'])) . "\n";
+        }
+
+        return $tips;
+    }
+
     public static function GetBonuses($pack_id = null)
     {
         $language_id = Language::$languages[App::currentLocale()];

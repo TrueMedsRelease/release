@@ -558,4 +558,5 @@ return [
     "phone_request_mes_text" => "تم ارسال طلبك.",
     "success_thank" => "شكرا لاختياركم لنا!",
     "search_nothing" => "لم يتم العثور على شيء",
+    "information" => "معلومة",
 ];

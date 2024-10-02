@@ -821,4 +821,5 @@ return [
     "admin_products_form_invalid_price" => "New product price less than the minimum",
     "admin_products_form_invalid_url" => "Url must be in the format any_text.html",
     "admin_products_form_tabs_text" => "tabs",
+    "information" => "information",
 ];
