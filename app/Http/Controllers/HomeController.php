@@ -20,7 +20,7 @@ class HomeController extends Controller
         StatisticService::SendStatistic('index');
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
-        $title = ProductServices::getPageTitle('main');
+        $page_properties = ProductServices::getPageTitle('main');
         $agent = new Agent();
 
         if (!in_array($design, ['design_7', 'design_8'])) {
@@ -33,7 +33,7 @@ class HomeController extends Controller
                 'bestsellers' => $bestsellers,
                 'menu' => $menu,
                 'phone_codes' => $phone_codes,
-                'title' => $title,
+                'page_properties' => $page_properties,
                 'cur_category' => '',
                 'agent' => $agent,
                 'Language' => Language::class,
@@ -42,12 +42,13 @@ class HomeController extends Controller
 
         } elseif ($design == 'design_7') {
             $product = ProductServices::GetProductInfoByUrl('rybelsus', $design);
+            $page_properties->title = 'Rybelsus - ' . str_replace(['http://', 'https://'], '', env('APP_URL'));
             return view($design . '.index',
             [
                 'design' => $design,
                 'product' => $product,
                 'phone_codes' => $phone_codes,
-                'title' => 'Rybelsus - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+                'page_properties' => $page_properties,
                 'cur_category' => '',
                 'agent' => $agent,
                 'Language' => Language::class,
@@ -59,12 +60,14 @@ class HomeController extends Controller
             foreach ($products_urls as $product_url) {
                 $products[$product_url] =  ProductServices::GetProductInfoByUrl($product_url, $design);
             }
+
+            $page_properties->title = 'EdSale - ' . str_replace(['http://', 'https://'], '', env('APP_URL'));
             return view($design . '.index',
             [
                 'design' => $design,
                 'products' => $products,
                 'phone_codes' => $phone_codes,
-                'title' => 'EdSale - ' . str_replace(['http://', 'https://'], '', env('APP_URL')),
+                'page_properties' => $page_properties,
                 'cur_category' => '',
                 'agent' => $agent,
                 'Language' => Language::class,
@@ -82,7 +85,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
 
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('first_letter');
+        $page_properties = ProductServices::getPageTitle('first_letter');
         $agent = new Agent();
 
         return view($design . '.first_letter',[
@@ -92,7 +95,7 @@ class HomeController extends Controller
             'menu' => $menu,
             'letter' => $letter,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
@@ -109,7 +112,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetProductByActive($active, $design);
-        $title = ProductServices::getPageTitle('active');
+        $page_properties = ProductServices::getPageTitle('active');
         $agent = new Agent();
 
         if (count($products) == 1) {
@@ -123,7 +126,7 @@ class HomeController extends Controller
             'menu' => $menu,
             'active' => $active,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
@@ -145,7 +148,7 @@ class HomeController extends Controller
 
         session(['category_name' => $category]);
 
-        $title = ProductServices::getPageTitle('category');
+        $page_properties = ProductServices::getPageTitle('category');
 
         return view($design . '.category',[
             'design' => $design,
@@ -153,7 +156,7 @@ class HomeController extends Controller
             'menu' => $menu,
             'products' => $products,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => $category,
             'agent' => $agent,
             'Language' => Language::class,
@@ -170,7 +173,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetProductByDisease($disease, $design);
-        $title = ProductServices::getPageTitle('disease');
+        $page_properties = ProductServices::getPageTitle('disease');
         $agent = new Agent();
 
         return view($design . '.disease',[
@@ -180,7 +183,7 @@ class HomeController extends Controller
             'products' => $products,
             'disease' => $disease,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
@@ -207,7 +210,7 @@ class HomeController extends Controller
 
         session(['product_name' => $product_name]);
 
-        $title = ProductServices::getPageTitle('product');
+        $page_properties = ProductServices::getPageTitle('product');
 
         return view($design . '.product', [
             'design' => $design,
@@ -215,7 +218,7 @@ class HomeController extends Controller
             'menu' => $menu,
             'product' => $product,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => $product['categories'][0]['name'],
             'agent' => $agent,
             'Language' => Language::class,
@@ -230,7 +233,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('about_us');
+        $page_properties = ProductServices::getPageTitle('about_us');
         $agent = new Agent();
 
         return view($design . '.about', [
@@ -238,7 +241,7 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
@@ -253,7 +256,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('faq');
+        $page_properties = ProductServices::getPageTitle('faq');
         $agent = new Agent();
 
         return view($design . '.help', [
@@ -261,7 +264,7 @@ class HomeController extends Controller
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
-           'title' => $title,
+           'page_properties' => $page_properties,
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
@@ -276,7 +279,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('testimonials');
+        $page_properties = ProductServices::getPageTitle('testimonials');
         $agent = new Agent();
 
         return view($design . '.testimonials', [
@@ -284,7 +287,7 @@ class HomeController extends Controller
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
-           'title' => $title,
+           'page_properties' => $page_properties,
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
@@ -299,7 +302,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('shipping');
+        $page_properties = ProductServices::getPageTitle('shipping');
         $agent = new Agent();
 
         return view($design . '.delivery', [
@@ -307,7 +310,7 @@ class HomeController extends Controller
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
-           'title' => $title,
+           'page_properties' => $page_properties,
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
@@ -322,7 +325,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('moneyback');
+        $page_properties = ProductServices::getPageTitle('moneyback');
         $agent = new Agent();
 
         return view($design . '.moneyback', [
@@ -330,7 +333,7 @@ class HomeController extends Controller
            'bestsellers' => $bestsellers,
            'menu' => $menu,
            'phone_codes' => $phone_codes,
-           'title' => $title,
+           'page_properties' => $page_properties,
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
@@ -345,7 +348,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('contact_us');
+        $page_properties = ProductServices::getPageTitle('contact_us');
         $agent = new Agent();
 
         return view($design . '.contact_us', [
@@ -353,7 +356,7 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
@@ -368,7 +371,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $title = ProductServices::getPageTitle('affiliate');
+        $page_properties = ProductServices::getPageTitle('affiliate');
         $agent = new Agent();
 
         return view($design . '.affiliate', [
@@ -376,7 +379,7 @@ class HomeController extends Controller
             'bestsellers' => $bestsellers,
             'menu' => $menu,
             'phone_codes' => $phone_codes,
-            'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,

@@ -2,7 +2,7 @@
     <div class="parked-domains__col">
         <form method="post" id="user_properties_form" name="user_properties_form">
             <div class="payment-details__items">
-                <div class="payment-details__item">
+                <div class="payment-details__item" style="display: none">
                     <div class="payment-details__top-row">
                         <div class="payment-details__currency">
                             <h3 class="payment-details__caption">{{__('text.admin_main_properties_login_form')}}</h3>
@@ -12,7 +12,6 @@
                     <div class="payment-details__input input_elem">
                         <input autocomplete="off" type="text" maxlength="32" name="user_login_field" id="user_login_field" value="{{ $user_login }}" class="input">
                     </div>
-                    {{-- <div id="user_login_error"></div> --}}
                 </div>
                 <div class="payment-details__item">
                     <div class="payment-details__top-row">

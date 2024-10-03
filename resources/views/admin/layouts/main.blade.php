@@ -5,7 +5,8 @@
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
-    <meta charset="UTF-8">
+    <link rel="icon" href="{{ asset('/admin/images/favicon/favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset('/admin/images/favicon/apple-touch-icon-180x180.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/style.css') }}" />
     <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
