@@ -59,6 +59,8 @@ class SearchController extends Controller
         $page = ProductServices::SearchPageTitle($search_text);
         $category = ProductServices::SearchCategory($search_text);
         $disease = ProductServices::SearchDisease($search_text);
+        $active = ProductServices::SearchActive($search_text);
+        $sinonim = ProductServices::SearchSinonim($search_text);
 
         $tips = '';
         foreach($products as $product)
@@ -79,6 +81,16 @@ class SearchController extends Controller
         if(!empty($disease))
         {
             $tips .= $disease;
+        }
+
+        if(!empty($active))
+        {
+            $tips .= $active;
+        }
+
+        if(!empty($sinonim))
+        {
+            $tips .= $sinonim;
         }
 
         if (!$tips) {

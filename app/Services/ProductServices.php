@@ -14,6 +14,7 @@ use App\Models\ProductTypeDesc;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ProductServices
 {
@@ -46,7 +47,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -210,7 +211,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -256,7 +257,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -267,6 +268,8 @@ class ProductServices
     {
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
+
+        $active = str_replace('-', ' ', $active);
 
         // if ($design == 'design_5') {
         //     $products = Product::query()
@@ -291,7 +294,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -448,7 +451,7 @@ class ProductServices
         $product['categories'] = $categories;
         $product['name'] = $products_desc['name'];
         $product['desc'] = $products_desc['desc'];
-        $product['aktiv'] = explode(',', str_replace(' ', '', ucwords($product['aktiv'])));
+        $product['aktiv'] = explode(',', trim(ucwords($product['aktiv'])));
         $product['disease'] = $product_disease;
         $product['analog'] = json_decode(json_encode($analogs), true);
         $product['sinonim'] = $product['sinonim'];
@@ -560,7 +563,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $is_autocomplete ? 'product/' . $products_desc[$products[$i]['id']]['url'] : $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -615,6 +618,70 @@ class ProductServices
         foreach($result as $item)
         {
             $tips .= $item['disease'] . " $disease||disease/" .  str_replace(' ', '-', strtolower($item['disease'])) . "\n";
+        }
+
+        return $tips;
+    }
+
+    public static function SearchActive($search_text)
+    {
+        $aktiv = trans('text.common_aktiv_search');
+        $all_active = Product::distinct()->get('aktiv')->toArray();
+
+        $active = [];
+        foreach($all_active as $item)
+        {
+            $a = explode(',', $item['aktiv']);
+            foreach($a as $ak)
+            {
+                $active[] = ucfirst(trim($ak));
+            }
+        }
+
+        $active = array_values(array_unique($active));
+
+        $active = collect($active);
+
+        $result = $active->filter(function($item) use ($search_text) {
+            return stripos($item, $search_text) !== false;
+        });
+
+        $tips = "";
+        foreach($result->toArray() as $item)
+        {
+            if(trim($item) != '')
+            {
+                $url = str_replace(' ', '-', (Str::lower($item)));
+                $tips .= trim($item) . " $aktiv||active/" . $url . "\n";
+            }
+        }
+
+        return $tips;
+    }
+
+    public static function SearchSinonim($search_text)
+    {
+        try
+        {
+            $product = Product::query()
+            ->where('sinonim', 'LIKE', "%$search_text%")
+            ->where('sinonim', '!=', '')
+            ->where('is_showed', '=', 1)
+            ->first()->toArray();
+
+            $tips = "";
+            $sinonims = explode("\n", $product['sinonim']);
+            foreach($sinonims as $s)
+            {
+                if(stripos($s, $search_text) !== false)
+                {
+                    $tips .= $s . "||product/" . Str::lower($s) . "\n";
+                }
+            }
+        }
+        catch(\Exception $e)
+        {
+            $tips = "";
         }
 
         return $tips;
