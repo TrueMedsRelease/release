@@ -553,4 +553,5 @@ return [
     "phone_request_mes_text" => "Το αίτημά σας έχει σταλεί.",
     "success_thank" => "Ευχαριστούμε που μας επιλέξατε!",
     "search_nothing" => "Τίποτα δεν βρέθηκε",
+    "information" => "πληροφορίες",
 ];

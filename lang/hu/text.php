@@ -560,4 +560,5 @@ return [
     "phone_request_mes_text" => "Az Ön kérését elküldtük.",
     "success_thank" => "Köszönjük, hogy minket választott!",
     "search_nothing" => "Semmi nem található",
+    "information" => "információ",
 ];

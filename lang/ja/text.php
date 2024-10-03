@@ -675,4 +675,5 @@ return [
     "phone_request_mes_text" => "あなたのリクエストは送信されました。",
     "success_thank" => "弊社をお選びいただきありがとうございます！",
     "search_nothing" => "何も見つかりませんでした",
+    "information" => "情報",
 ];

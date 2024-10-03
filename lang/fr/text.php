@@ -687,4 +687,5 @@ return [
     "phone_request_mes_text" => "Votre demande à été envoyé.",
     "success_thank" => "Merci de nous avoir choisi !",
     "search_nothing" => "Aucun résultat trouvé",
+    "information" => "information",
 ];

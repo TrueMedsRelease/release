@@ -692,4 +692,5 @@ return [
     "phone_request_mes_text" => "La tua richiesta è stata inviata.",
     "success_thank" => "Grazie per averci scelto!",
     "search_nothing" => "Nessun risultato trovato",
+    "information" => "informazioni",
 ];

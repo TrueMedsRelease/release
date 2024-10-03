@@ -555,4 +555,5 @@ return [
     "phone_request_mes_text" => "Twoje zapytanie zostało wysłane.",
     "success_thank" => "Dziękujemy za wybranie nas!",
     "search_nothing" => "Nic nie znaleziono",
+    "information" => "informacja",
 ];

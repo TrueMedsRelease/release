@@ -594,4 +594,5 @@ return [
     "phone_request_mes_text" => "Uw verzoek is verstuurd.",
     "success_thank" => "Bedankt dat u voor ons hebt gekozen!",
     "search_nothing" => "Niets gevonden",
+    "information" => "informatie",
 ];
