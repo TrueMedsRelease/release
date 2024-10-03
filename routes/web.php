@@ -10,6 +10,7 @@ use App\Models\Currency;
 use App\Services\GeoIpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,12 @@ if(!session()->has('currency'))
     $coef = Currency::GetCoef($currency);
     session(['currency' => $currency]);
     session(['currency_c' => $coef]);
+}
+
+if(!session()->has('language'))
+{
+    $language = App::currentLocale();
+    session(['language' => config('app.language')]);
 }
 
 if(!session()->has('referer'))
@@ -129,6 +136,7 @@ Route::controller(CheckoutController::class)->group(function () {
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
+    Route::get('/{product_name}.html', 'product')->name('home.product');
     Route::get('/about', 'about')->name('home.about');
     Route::get('/contact_us', 'contact_us')->name('home.contact_us');
     Route::get('/affiliate', 'affiliate')->name('home.affiliate');
@@ -143,7 +151,6 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/category/{category}', 'category')->name('home.category');
     Route::get('/active/{active}', 'active')->name('home.active');
     Route::get('disease/{disease}', 'disease')->name('home.disease');
-    Route::get('/product/{product_name}', 'product')->name('home.product');
     Route::get('/design={design}', 'design')->name('home.design');
     Route::post('/request_call', 'request_call')->name('home.request_call')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/request_subscribe', 'request_subscribe')->name('home.request_subscribe')->withoutMiddleware(VerifyCsrfToken::class);

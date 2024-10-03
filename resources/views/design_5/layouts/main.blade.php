@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>@yield('title', 'Defult')</title>
-    <meta name="description" content="Verified Pharmacy Store">
-    <meta name="keywords" content="key, words">
+    <title>@yield('title', 'Title')</title>
+    <meta name="Description" content="@yield('description', 'Description')">
+    <meta name="Keywords" content="@yield('keywords', 'Keywords')">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#4FAFCD"/>
 	<meta name="format-detection" content="telephone=no">
