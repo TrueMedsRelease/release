@@ -37,6 +37,7 @@ class CheckoutController extends Controller
 
                 if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
                     DB::delete("DELETE FROM order_cache WHERE `id` = {$order->id}");
+                    session(['order' => $response]);
                 }
             }
         }
@@ -457,12 +458,9 @@ class CheckoutController extends Controller
 
             $response = json_decode($response, true);
 
-            if ($response['status'] === 'SUCCESS') {
+            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                 session(['order' => $response]);
-            }
-            if ($response->status === 'ERROR' || $response->status === 'error') {
-                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
             }
 
             // session(['order' => $response]);
@@ -583,12 +581,9 @@ class CheckoutController extends Controller
 
             $response = json_decode($response, true);
 
-            if ($response['status'] === 'SUCCESS') {
+            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                 session(['order' => $response]);
-            }
-            if ($response->status === 'ERROR' || $response->status === 'error') {
-                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
             }
 
             return response()->json(['response' => $response], 200);
@@ -733,7 +728,7 @@ class CheckoutController extends Controller
                     'ref' => '',
                     'refc' => '',
                     'keyword' => '0',
-                    'domain_from' => '',
+                    'domain_from' => request()->getHost(),
                     'total' => session('total.all'),
                     'shipping' => session('cart_option.shipping'),
                     'products' => $products_str,
@@ -771,12 +766,9 @@ class CheckoutController extends Controller
 
                 $response = json_decode($response, true);
 
-                if ($response['status'] === 'SUCCESS') {
+                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
                     DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                     session(['order' => $response]);
-                }
-                if ($response->status === 'ERROR' || $response->status === 'error') {
-                    DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                 }
             }
 
