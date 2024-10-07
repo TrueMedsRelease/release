@@ -302,7 +302,7 @@
                     </div>
                     <div class="cart-form__controls">
                         <button class="button button--outline" type="button" onclick="document.location.href='{{ route('home.index') }}'">{{__('text.cart_back_to_shop')}}</button>
-                        <button class="button cart-form__checkout" type="submit" onclick="document.location.href='{{ route('checkout.index') }}'">{{__('text.cart_pay_button')}}
+                        <button class="button cart-form__checkout" type="button" onclick="document.location.href='{{ route('checkout.index') }}'">{{__('text.cart_pay_button')}}
                             <span class="icon">
                                 <svg width="1em" height="1em" fill="currentColor">
                                     <use href="{{ asset("$design/svg/icons/sprite.svg") }}#arrow"></use>

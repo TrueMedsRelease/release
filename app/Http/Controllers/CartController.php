@@ -31,6 +31,7 @@ class CartController extends Controller
         $title = ProductServices::getPageProperties('cart');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
+        $page_properties = ProductServices::getPageProperties('cart');
         $agent = new Agent();
 
         return view($design . '.cart', [
@@ -41,6 +42,7 @@ class CartController extends Controller
             'menu' => $menu,
             'phone_codes' => $phone_codes,
             'title' => $title,
+            'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
         ]);
