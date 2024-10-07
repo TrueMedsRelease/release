@@ -223,6 +223,9 @@ return [
     //Currency
     'currency' => env('APP_CURRENCY', 'usd'),
 
+    //Language
+    'language' => env('APP_LANGUAGE', 'en'),
+
     //Aff
     'aff' => env('APP_AFF', 0),
 

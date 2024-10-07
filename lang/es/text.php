@@ -708,4 +708,5 @@ return [
     "phone_request_mes_text" => "Tu solicitud ha sido enviada.",
     "success_thank" => "¡Gracias por elegirnos!",
     "search_nothing" => "No se ha encontrado nada",
+    "information" => "información",
 ];

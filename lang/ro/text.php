@@ -550,4 +550,5 @@ return [
     "phone_request_mes_text" => "Cererea ta a fost trimisă.",
     "success_thank" => "Vă mulțumim că ne-ați ales!",
     "search_nothing" => "Nimic găsit",
+    "information" => "informação",
 ];

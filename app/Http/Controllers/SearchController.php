@@ -56,11 +56,41 @@ class SearchController extends Controller
         $search_text = $request->query('q');
         $design = session('design') ? session('design') : config('app.design');
         $products = ProductServices::SearchProduct($search_text, true, $design);
+        $page = ProductServices::SearchPageTitle($search_text);
+        $category = ProductServices::SearchCategory($search_text);
+        $disease = ProductServices::SearchDisease($search_text);
+        $active = ProductServices::SearchActive($search_text);
+        $sinonim = ProductServices::SearchSinonim($search_text);
 
         $tips = '';
         foreach($products as $product)
         {
             $tips .= $product['name'] . '||' . $product['url'] . "\n";
+        }
+
+        if(!empty($page))
+        {
+            $tips .=  $page;
+        }
+
+        if(!empty($category))
+        {
+            $tips .= $category;
+        }
+
+        if(!empty($disease))
+        {
+            $tips .= $disease;
+        }
+
+        if(!empty($active))
+        {
+            $tips .= $active;
+        }
+
+        if(!empty($sinonim))
+        {
+            $tips .= $sinonim;
         }
 
         if (!$tips) {

@@ -603,4 +603,5 @@ return [
     "phone_request_mes_text" => "Din anmodning er blevet sendt.",
     "success_thank" => "Tak fordi du valgte os!",
     "search_nothing" => "Intet fundet",
+    "information" => "information",
 ];

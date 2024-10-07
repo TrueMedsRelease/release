@@ -14,6 +14,7 @@ use App\Models\ProductTypeDesc;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ProductServices
 {
@@ -46,7 +47,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -210,7 +211,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -256,7 +257,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -267,6 +268,8 @@ class ProductServices
     {
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
+
+        $active = str_replace('-', ' ', $active);
 
         // if ($design == 'design_5') {
         //     $products = Product::query()
@@ -291,7 +294,7 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -448,7 +451,7 @@ class ProductServices
         $product['categories'] = $categories;
         $product['name'] = $products_desc['name'];
         $product['desc'] = $products_desc['desc'];
-        $product['aktiv'] = explode(',', str_replace(' ', '', ucwords($product['aktiv'])));
+        $product['aktiv'] = explode(',', trim(ucwords($product['aktiv'])));
         $product['disease'] = $product_disease;
         $product['analog'] = json_decode(json_encode($analogs), true);
         $product['sinonim'] = $product['sinonim'];
@@ -560,11 +563,128 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $is_autocomplete ? 'product/' . $products_desc[$products[$i]['id']]['url'] : $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
         return $products;
+    }
+
+    public static function SearchPageTitle($search_text)
+    {
+        $information = trans('text.information');
+        $array = [];
+        $array[] = trans('text.common_about_us_main_menu_item') . " ($information)" . '||' . 'about';
+        $array[] = trans('text.common_help_main_menu_item') . " ($information)" . '||' . 'help';
+        $array[] = trans('text.common_testimonials_main_menu_item') . " ($information)" . '||' . 'testimonials';
+        $array[] = trans('text.common_shipping_main_menu_item') . " ($information)" . '||' . 'delivery';
+        $array[] = trans('text.common_moneyback_main_menu_item') . " ($information)" . '||' .  'moneyback';
+        $array[] = trans('text.common_contact_us_main_menu_item') . " ($information)" . '||' . 'contact_us';
+
+        $collection = collect($array);
+
+        $filtered = $collection->filter(function($item) use ($search_text) {
+            return stripos($item,$search_text) !== false;
+        });
+
+        $result = $filtered->first();
+
+        return $result;
+    }
+
+    public static function SearchCategory($search_text)
+    {
+        $category = trans('text.common_category_search');
+        $language_id = Language::$languages[App::currentLocale()];
+        $result = Category::where('en_name', 'LIKE', "%$search_text%")->get()->toArray();
+
+        $tips = "";
+        foreach($result as $item)
+        {
+            $desc = CategoryDesc::where('language_id', '=', $language_id)->where("category_id", "=", $item['id'])->get()->toArray();
+            $tips .= $desc[0]['name'] . " $category||category/" . $item['url'] . "\n";;
+        }
+
+        return $tips;
+    }
+
+    public static function SearchDisease($search_text)
+    {
+        $disease = trans('text.common_disease_search');
+        $language_id = Language::$languages[App::currentLocale()];
+        $result = ProductDisease::where("disease", "LIKE", "%$search_text%")->where('language_id', '=', $language_id)->distinct()->get('disease')->toArray();
+
+        $tips = "";
+        foreach($result as $item)
+        {
+            $tips .= $item['disease'] . " $disease||disease/" .  str_replace(' ', '-', strtolower($item['disease'])) . "\n";
+        }
+
+        return $tips;
+    }
+
+    public static function SearchActive($search_text)
+    {
+        $aktiv = trans('text.common_aktiv_search');
+        $all_active = Product::distinct()->get('aktiv')->toArray();
+
+        $active = [];
+        foreach($all_active as $item)
+        {
+            $a = explode(',', $item['aktiv']);
+            foreach($a as $ak)
+            {
+                $active[] = ucfirst(trim($ak));
+            }
+        }
+
+        $active = array_values(array_unique($active));
+
+        $active = collect($active);
+
+        $result = $active->filter(function($item) use ($search_text) {
+            return stripos($item, $search_text) !== false;
+        });
+
+        $tips = "";
+        foreach($result->toArray() as $item)
+        {
+            if(trim($item) != '')
+            {
+                $url = str_replace(' ', '-', (Str::lower($item)));
+                $tips .= trim($item) . " $aktiv||active/" . $url . "\n";
+            }
+        }
+
+        return $tips;
+    }
+
+    public static function SearchSinonim($search_text)
+    {
+        try
+        {
+            $product = Product::query()
+            ->where('sinonim', 'LIKE', "%$search_text%")
+            ->where('sinonim', '!=', '')
+            ->where('is_showed', '=', 1)
+            ->first()->toArray();
+
+            $tips = "";
+            $sinonims = explode("\n", $product['sinonim']);
+            foreach($sinonims as $s)
+            {
+                if(stripos($s, $search_text) !== false)
+                {
+                    $tips .= $s . "||product/" . Str::lower($s) . "\n";
+                }
+            }
+        }
+        catch(\Exception $e)
+        {
+            $tips = "";
+        }
+
+        return $tips;
     }
 
     public static function GetBonuses($pack_id = null)
@@ -671,138 +791,43 @@ class ProductServices
 
                 $page_properties->title = str_replace('(random_text)', $title, $page_properties->title);
 
-                $robots_index_enable = 1;
-                $title = $page_properties->title;
-
-                break;
-            case 'first_letter':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'active':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'disease':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'about_us':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'faq':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'testimonials':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'shipping':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'moneyback':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'contact_us':
-
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
-
-                break;
-            case 'affiliate':
-
-                $robots_index_enable = 0;
                 $title = $page_properties->title;
 
                 break;
             case 'login':
-                $title = __('text.login_title') . ' - ' . $domain;
+                $page_properties->title = __('text.login_title') . ' - ' . $domain;
 
-                break;
-            case 'search':
-                $title = __('text.search_result_title') . ' - ' . $domain;
-                $mob_title = __('text.search_result_title');
-                $keyword = $domain . ', ';
-                $description = $domain . ', ';
-                $robots_index_enable = 0;
-                $title = $page_properties->title;
                 break;
             case 'cart':
 
                 $total = session('total.all_in_currency') ? session('total.all_in_currency') : 0;
-
-                $title = __('text.cart_title') . ' - ' . $domain;
-                $mob_title = __('text.cart_title') . ' - ' . $total;
-                $keyword = $total . ', ' . __('text.cart_title');
-                $description = $total . ', ' . __('text.cart_title');
-                $robots_index_enable = 0;
-
-                $page_properties->mob_title = str_replace('(cart_total)', $total, $page_properties->title);
                 $page_properties->keyword = str_replace('(cart_total)', $total, $page_properties->keyword);
                 $page_properties->description = str_replace('(cart_total)', $total, $page_properties->description);
 
-
-                $title = $page_properties->mob_title;
                 break;
             case 'category':
 
                 $category_name = session('category_name') ? session('category_name') : __('text.category_title');
+                $page_properties->title = str_replace('(category_name)', $category_name, $page_properties->title);
+                $page_properties->keyword = str_replace('(category_name)', $category_name, $page_properties->keyword);
+                $page_properties->description = str_replace('(category_name)', $category_name, $page_properties->description);
 
-                $title = $category_name . ' - ' . $domain;
-                $mob_title = __('text.category_title');
-                $keyword = $domain . ', ' . $category_name;
-                $description = $domain . ', ' . $category_name;
-                $robots_index_enable = 1;
-                $title = $page_properties->title;
                 break;
             case 'product':
 
                 $product_name = session('product_name') ? session('product_name') : __('text.common_product_text');
+                $page_properties->title = str_replace('(product_name)', $product_name, $page_properties->title);
+                $page_properties->keyword = str_replace('(product_name)', $product_name, $page_properties->keyword);
+                $page_properties->description = str_replace('(product_name)', $product_name, $page_properties->description);
 
-                $title = $product_name . ' - ' . $domain;
-                $mob_title = $product_name;
-                $keyword = $domain . ', ' . $product_name;
-                $description = $domain . ', ' . $product_name;
-                $robots_index_enable = 1;
-                $title = $page_properties->title;
                 break;
             default:
-                $title = $domain;
-                $mob_title = $domain;
-                $keyword = $domain;
-                $description = $domain;
-                $robots_index_enable = 0;
+                $page_properties->title = 'Title';
+                $page_properties->keyword = 'Keywords';
+                $page_properties->description = 'Description';
                 break;
         }
 
-        // $page_properties = [
-        //     'title' => $title,
-        //     'mob_title' => $mob_title,
-        //     'keyword' => $keyword,
-        //     'description' => $description,
-        //     'robots_index_enable' => $robots_index_enable
-        // ];
-
-        return $title;
+        return $page_properties;
     }
 }

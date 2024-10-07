@@ -555,4 +555,5 @@ return  [
     "phone_request_mes_text" => "您的申請已經提交。",
     "success_thank" => "感謝您選擇我們！",
     "search_nothing" => "未找到任何內容",
+    "information" => "資訊",
 ];

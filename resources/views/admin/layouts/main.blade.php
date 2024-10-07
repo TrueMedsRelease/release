@@ -5,6 +5,8 @@
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
+    <link rel="icon" href="{{ asset('/admin/images/favicon/favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset('/admin/images/favicon/apple-touch-icon-180x180.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/style.css') }}" />
     <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
@@ -48,7 +50,7 @@
 								    <a href="{{ route('admin.main_properties') }}">{{__('text.admin_common_main_menu_1_element')}}</a>
 								</li>
 								<li class="menu__item">
-								    <a href="{$path.page}/products">{{__('text.admin_common_main_menu_4_element')}}</a>
+								    <a href="{{ route('admin.products') }}">{{__('text.admin_common_main_menu_4_element')}}</a>
 								</li>
 								<li class="menu__item">
 								    <a href="{{ route('admin.available_products') }}">{{__('text.admin_common_main_menu_5_element')}}</a>
@@ -60,10 +62,10 @@
 								    <a href="{{ route('admin.index') }}">{{__('text.admin_common_main_menu_7_element')}}</a>
 								</li>
 								<li class="menu__item">
-								    <a href="{$path.page}/langs">{{__('text.admin_common_main_menu_9_element')}}</a>
+								    <a href="{{ route('admin.admin_languages') }}">{{__('text.admin_common_main_menu_9_element')}}</a>
 								</li>
 								<li class="menu__item">
-								    <a href="{$path.page}/currencies">{{__('text.admin_common_main_menu_10_element')}}</a>
+								    <a href="{{ route('admin.admin_currencies') }}">{{__('text.admin_common_main_menu_10_element')}}</a>
 								</li>
 								{{-- <li class="menu__item">
 								    <a href="{$path.page}/updates">{{__('text.admin_common_main_menu_11_element')}}</a>
@@ -76,7 +78,6 @@
 
 				<div class="header__actions">
 					<div class="header__profile profile-header" data-da=".header__row, 479.98, 1">
-					<!-- <div class="header__profile profile-header" data-da=".header__row, 479.98, 1"> -->
 						<div class="profile-header__icon">
 							<svg width="20" height="20">
 								<use xlink:href="/admin/images/icons/icons.svg#svg-user"></use>
@@ -85,11 +86,9 @@
 						<div class="profile-header__info">
 							<p class="profile-header__name profile-header__name--desktop">Admin</p>
 							<p class="profile-header__name profile-header__name--mobile">profile</p>
-							<!-- <a href="profile.php" class="profile-header__link">Profile</a> -->
 						</div>
-					<!-- </div> -->
 					</div>
-					<a href="{$path.page}/logout" class="header__sign-out" data-da=".header__row, 479.98, last">
+					<a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
 						<svg width="20" height="20">
 							<use xlink:href="/admin/images/icons/icons.svg#svg-sign-out"></use>
 						</svg>

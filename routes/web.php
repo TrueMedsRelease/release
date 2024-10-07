@@ -10,6 +10,7 @@ use App\Models\Currency;
 use App\Services\GeoIpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,12 @@ if(!session()->has('currency'))
     $coef = Currency::GetCoef($currency);
     session(['currency' => $currency]);
     session(['currency_c' => $coef]);
+}
+
+if(!session()->has('language'))
+{
+    $language = App::currentLocale();
+    session(['language' => config('app.language')]);
 }
 
 if(!session()->has('referer'))
@@ -129,6 +136,7 @@ Route::controller(CheckoutController::class)->group(function () {
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
+    Route::get('/{product_name}.html', 'product')->name('home.product');
     Route::get('/about', 'about')->name('home.about');
     Route::get('/contact_us', 'contact_us')->name('home.contact_us');
     Route::get('/affiliate', 'affiliate')->name('home.affiliate');
@@ -143,7 +151,6 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/category/{category}', 'category')->name('home.category');
     Route::get('/active/{active}', 'active')->name('home.active');
     Route::get('disease/{disease}', 'disease')->name('home.disease');
-    Route::get('/product/{product_name}', 'product')->name('home.product');
     Route::get('/design={design}', 'design')->name('home.design');
     Route::post('/request_call', 'request_call')->name('home.request_call')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/request_subscribe', 'request_subscribe')->name('home.request_subscribe')->withoutMiddleware(VerifyCsrfToken::class);
@@ -155,6 +162,8 @@ Route::controller(HomeController::class)->group(function() {
 });
 
 Route::controller(AdminController::class)->group(function() {
+    Route::get('/admin/logout', 'admin_logout')->name('admin.admin_logout');
+
     Route::get('/admin/login', 'admin_login')->name('admin.admin_login');
     Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware(VerifyCsrfToken::class);
 
@@ -184,4 +193,15 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('/admin/available_packagings/delete_pack_from_showed', 'delete_pack_from_showed')->name('admin.delete_pack_from_showed')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/available_packagings/packaging_up_in_sort', 'packaging_up_in_sort')->name('admin.packaging_up_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/available_packagings/packaging_down_in_sort', 'packaging_down_in_sort')->name('admin.packaging_down_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/products', 'products')->name('admin.products');
+    Route::get('/admin/products_content', 'products_content')->name('admin.products_content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/products/load_product_info', 'load_product_info')->name('admin.load_product_info')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/products/save_product_info', 'save_product_info')->name('admin.save_product_info')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/languages', 'admin_languages')->name('admin.admin_languages');
+    Route::post('/admin/save_languages_info', 'save_languages_info')->name('admin.save_languages_info')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/currencies', 'admin_currencies')->name('admin.admin_currencies');
+    Route::post('/admin/save_currencies_info', 'save_currencies_info')->name('admin.save_currencies_info')->withoutMiddleware(VerifyCsrfToken::class);
 });

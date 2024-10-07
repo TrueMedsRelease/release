@@ -1,7 +1,9 @@
 
 @extends($design . '.layouts.main')
 
-@section('title', $title)
+@section('title', $page_properties->title)
+@section('keywords', $page_properties->keyword)
+@section('description', $page_properties->description)
 
 @section('content')
 <div class="container page-wrapper affiliate_block default">
