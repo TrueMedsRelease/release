@@ -562,7 +562,7 @@ class ProductServices
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-            $products[$i]['url'] = $is_autocomplete ? 'product/' . $products_desc[$products[$i]['id']]['url'] : $products_desc[$products[$i]['id']]['url'];
+            $products[$i]['url'] = $is_autocomplete ? $products_desc[$products[$i]['id']]['url'] . '.html' : $products_desc[$products[$i]['id']]['url'];
             $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
@@ -675,7 +675,7 @@ class ProductServices
             {
                 if(stripos($s, $search_text) !== false)
                 {
-                    $tips .= $s . "||product/" . Str::lower($s) . "\n";
+                    $tips .= $s . "||" . Str::lower($s) . ".html\n";
                 }
             }
         }
@@ -757,7 +757,7 @@ class ProductServices
         return $cards;
     }
 
-    public static function getPageTitle($page) {
+    public static function getPageProperties($page) {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $language_id = Language::$languages[App::currentLocale()];
 

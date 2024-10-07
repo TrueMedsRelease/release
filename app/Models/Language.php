@@ -36,6 +36,31 @@ class Language extends Model
         'hans' => 26,
     ];
 
+    // public static $languages = [
+    //     1 => 'en',
+    //     2 => 'fr',
+    //     3 => 'es',
+    //     4 => 'it',
+    //     5 => 'de',
+    //     6 => 'gr',
+    //     8 => 'pt',
+    //     9 => 'ja',
+    //     13 => 'cs',
+    //     14 => 'da',
+    //     15 => 'nl',
+    //     16 => 'hu',
+    //     17 => 'ms',
+    //     18 => 'arb',
+    //     19 => 'no',
+    //     20 => 'pl',
+    //     21 => 'sk',
+    //     22 => 'sv',
+    //     23 => 'hant',
+    //     24 => 'fi',
+    //     25 => 'ro',
+    //     26 =>'hans',
+    // ];
+
     public static function GetAllLanuages()
     {
         $language = Language::query()->where('show', '=', 1)->orderBy('ord','asc')->get()->toArray();

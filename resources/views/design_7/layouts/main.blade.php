@@ -136,30 +136,34 @@
 							</div>
 							<div class="header__info-row">
 								<div class="header__actions actions">
-									<div class="actions__item">
-										<div class="actions__icon">
-											<img src="{{ asset("$design/images/icons/lang.svg") }}" width="24" height="20" alt="">
-										</div>
-										<div class="actions__select">
-											<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
-												@foreach ($Language::GetAllLanuages() as $language)
-                                                    <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
-                                                @endforeach
-											</select>
-										</div>
-									</div>
-									<div class="actions__item">
-										<div class="actions__icon">
-											<img src="{{ asset("$design/images/icons/wallet.svg") }}" width="24" height="20" alt="">
-										</div>
-										<div class="actions__select">
-											<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
-												@foreach ($Currency::GetAllCurrency() as $item)
-                                                    <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
-                                                @endforeach
-											</select>
-										</div>
-									</div>
+                                    @if (count($Language::GetAllLanuages()) > 1)
+                                        <div class="actions__item">
+                                            <div class="actions__icon">
+                                                <img src="{{ asset("$design/images/icons/lang.svg") }}" width="24" height="20" alt="">
+                                            </div>
+                                            <div class="actions__select">
+                                                <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
+                                                    @foreach ($Language::GetAllLanuages() as $language)
+                                                        <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if (count($Currency::GetAllCurrency()) > 1)
+                                        <div class="actions__item">
+                                            <div class="actions__icon">
+                                                <img src="{{ asset("$design/images/icons/wallet.svg") }}" width="24" height="20" alt="">
+                                            </div>
+                                            <div class="actions__select">
+                                                <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
+                                                    @foreach ($Currency::GetAllCurrency() as $item)
+                                                        <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
 								</div>
                                 @php
                                     $cart_count = 0;

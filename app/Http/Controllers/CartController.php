@@ -28,7 +28,7 @@ class CartController extends Controller
 
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
-        $title = ProductServices::getPageTitle('cart');
+        $title = ProductServices::getPageProperties('cart');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $agent = new Agent();

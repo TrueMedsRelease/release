@@ -121,20 +121,24 @@
                     <img src="{{ asset("$design/images/logo.svg") }}" width="145" height="40" alt="">
                 </a>
                 <div class="drop-info">
-                    <div class="lang drop">
-                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                            @foreach ($Language::GetAllLanuages() as $language)
-                                <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="wallet drop">
-                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                            @foreach ($Currency::GetAllCurrency() as $item)
-                                <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @if (count($Language::GetAllLanuages()) > 1)
+                        <div class="lang drop">
+                            <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                @foreach ($Language::GetAllLanuages() as $language)
+                                    <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+                    @if (count($Currency::GetAllCurrency()) > 1)
+                        <div class="wallet drop">
+                            <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                @foreach ($Currency::GetAllCurrency() as $item)
+                                    <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
                     <div class="profile_top_block">
                         <a href="{{ route('home.login') }}" class="item profile_top" target="_blank">
                             <span class="ico">
