@@ -81,35 +81,48 @@
                     </div>
                 </address><!-- Settings & auth-->
                 <div class="header__controls">
-                    <div class="header__lang header-select-wrapper">
-                        <select class="header-select" onchange="location.href=this.options[this.selectedIndex].value">
-                            @foreach ($Language::GetAllLanuages() as $item)
-                                <option value="/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
-                            @endforeach
-                        </select><span class="icon header-select-wrapper__icon"><svg width="1em" height="1em"
-                                fill="currentColor">
-                                <use href="{{ asset("$design/svg/icons/sprite.svg#world") }}"></use>
-                            </svg></span><span class="icon header-select-wrapper__chevron"><svg width="1em"
-                                height="1em" fill="currentColor">
-                                <use href="{{ asset("$design/svg/icons/sprite.svg#chevron-down") }}"></use>
-                            </svg></span>
-                    </div>
-                    <div class="header__currency header-select-wrapper">
-                        <select class="header-select" onchange="location.href=this.options[this.selectedIndex].value">
-                            @foreach ($Currency::GetAllCurrency() as $item)
-                                <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
-                            @endforeach
-                        </select>
-                        <span class="icon header-select-wrapper__icon"><svg width="1em" height="1em"
-                                fill="currentColor">
-                                <use href="{{ asset("$design/svg/icons/sprite.svg#money") }}"></use>
-                            </svg></span><span class="icon header-select-wrapper__chevron"><svg width="1em"
-                                height="1em" fill="currentColor">
-                                <use href="{{ asset("$design/svg/icons/sprite.svg#chevron-down") }}"></use>
-                            </svg></span></div><a class="header__auth" href="{{ route('home.login') }}"><span class="icon"><svg
-                                width="1em" height="1em" fill="currentColor">
+                    @if (count($Language::GetAllLanuages()) > 1)
+                        <div class="header__lang header-select-wrapper">
+                            <select class="header-select" onchange="location.href=this.options[this.selectedIndex].value">
+                                @foreach ($Language::GetAllLanuages() as $item)
+                                    <option value="/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
+                                @endforeach
+                            </select><span class="icon header-select-wrapper__icon"><svg width="1em" height="1em"
+                                    fill="currentColor">
+                                    <use href="{{ asset("$design/svg/icons/sprite.svg#world") }}"></use>
+                                </svg></span><span class="icon header-select-wrapper__chevron"><svg width="1em"
+                                    height="1em" fill="currentColor">
+                                    <use href="{{ asset("$design/svg/icons/sprite.svg#chevron-down") }}"></use>
+                                </svg></span>
+                        </div>
+                    @endif
+                    @if (count($Currency::GetAllCurrency()) > 1)
+                        <div class="header__currency header-select-wrapper">
+                            <select class="header-select" onchange="location.href=this.options[this.selectedIndex].value">
+                                @foreach ($Currency::GetAllCurrency() as $item)
+                                    <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                @endforeach
+                            </select>
+                            <span class="icon header-select-wrapper__icon">
+                                <svg width="1em" height="1em" fill="currentColor">
+                                    <use href="{{ asset("$design/svg/icons/sprite.svg#money") }}"></use>
+                                </svg>
+                            </span>
+                            <span class="icon header-select-wrapper__chevron">
+                                <svg width="1em" height="1em" fill="currentColor">
+                                    <use href="{{ asset("$design/svg/icons/sprite.svg#chevron-down") }}"></use>
+                                </svg>
+                            </span>
+                        </div>
+                    @endif
+                    <a class="header__auth" href="{{ route('home.login') }}">
+                        <span class="icon">
+                            <svg  width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg#profile") }}"></use>
-                            </svg></span>{{__('text.common_profile')}}</a>
+                            </svg>
+                        </span>
+                        {{__('text.common_profile')}}
+                    </a>
                 </div>
                 <!-- Logo-->
                 <a class="logo" href="{{ route('home.index') }}">

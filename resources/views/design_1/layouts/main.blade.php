@@ -139,22 +139,26 @@
                         <img class="logo__img" src="{{ asset("$design/images/logo.png") }}" alt="Logo" width="216" height="53">
                     </picture>
                 </a>
-                <div class="header__currency header__control" data-da=".controls, 768, first">
-                    <span class="header__label">{{__('text.common_language_text')}}</span>
-                    <select name="select__value" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                        @foreach ($Language::GetAllLanuages() as $item)
-                            <option value="/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="header__currency header__control" data-da=".controls, 768, first">
-                    <span class="header__label">{{__('text.common_currency_text')}}</span>
-                    <select name="select__options" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                        @foreach ($Currency::GetAllCurrency() as $item)
-                            <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
-                        @endforeach
-                    </select>
-                </div>
+                @if (count($Language::GetAllLanuages()) > 1)
+                    <div class="header__currency header__control" data-da=".controls, 768, first">
+                        <span class="header__label">{{__('text.common_language_text')}}</span>
+                        <select name="select__value" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                            @foreach ($Language::GetAllLanuages() as $item)
+                                <option value="/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+                @if (count($Currency::GetAllCurrency()) > 1)
+                    <div class="header__currency header__control" data-da=".controls, 768, first">
+                        <span class="header__label">{{__('text.common_currency_text')}}</span>
+                        <select name="select__options" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                            @foreach ($Currency::GetAllCurrency() as $item)
+                                <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
                 <div class="header__currency header__control profile" data-da=".controls, 768, last">
                     <a href='{{ route('home.login') }}' target="_blank">
                         <picture>

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\App;
 use Phattarachai\LaravelMobileDetect\Agent;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -20,7 +21,7 @@ class HomeController extends Controller
         StatisticService::SendStatistic('index');
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
-        $page_properties = ProductServices::getPageTitle('main');
+        $page_properties = ProductServices::getPageProperties('main');
         $agent = new Agent();
 
         if (!in_array($design, ['design_7', 'design_8'])) {
@@ -85,7 +86,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
 
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('first_letter');
+        $page_properties = ProductServices::getPageProperties('first_letter');
         $agent = new Agent();
 
         return view($design . '.first_letter',[
@@ -112,7 +113,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetProductByActive($active, $design);
-        $page_properties = ProductServices::getPageTitle('active');
+        $page_properties = ProductServices::getPageProperties('active');
         $agent = new Agent();
 
         if (count($products) == 1) {
@@ -148,7 +149,7 @@ class HomeController extends Controller
 
         session(['category_name' => $category]);
 
-        $page_properties = ProductServices::getPageTitle('category');
+        $page_properties = ProductServices::getPageProperties('category');
 
         return view($design . '.category',[
             'design' => $design,
@@ -173,7 +174,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetProductByDisease($disease, $design);
-        $page_properties = ProductServices::getPageTitle('disease');
+        $page_properties = ProductServices::getPageProperties('disease');
         $agent = new Agent();
 
         return view($design . '.disease',[
@@ -195,7 +196,11 @@ class HomeController extends Controller
     {
         StatisticService::SendStatistic($product);
         $product_name = $product;
+
         $design = session('design') ? session('design') : config('app.design');
+        $language_id = Language::$languages[App::currentLocale()];
+        $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `url` = '$product' AND `language_id` = $language_id");
+
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
@@ -210,7 +215,20 @@ class HomeController extends Controller
 
         session(['product_name' => $product_name]);
 
-        $page_properties = ProductServices::getPageTitle('product');
+        $page_properties = ProductServices::getPageProperties('product');
+        $product_properties_new = $product_properties_new[0];
+
+        if ($product_properties_new->title != '') {
+            $page_properties->title = $product_properties_new->title;
+        }
+
+        if ($product_properties_new->keywords != '') {
+            $page_properties->keyword = $product_properties_new->keywords;
+        }
+
+        if ($product_properties_new->description != '') {
+            $page_properties->description = $product_properties_new->description;
+        }
 
         return view($design . '.product', [
             'design' => $design,
@@ -226,6 +244,53 @@ class HomeController extends Controller
         ]);
     }
 
+    public function product_landing($product) : View
+    {
+        // StatisticService::SendStatistic($product);
+        // $product_name = $product;
+
+        $design = session('design') ? session('design') : config('app.design');
+        // $language_id = Language::$languages[App::currentLocale()];
+        // $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `url` = '$product' AND `language_id` = $language_id");
+
+        // $bestsellers = ProductServices::GetBestsellers($design);
+        // $menu = ProductServices::GetCategoriesWithProducts($design);
+        // $phone_codes = PhoneCodes::all()->toArray();
+        $product = ProductServices::GetProductInfoByUrl($product, $design);
+        $agent = new Agent();
+
+        // $product_name = explode('-', $product_name);
+        // foreach ($product_name as $key => $val) {
+        //     $product_name[$key] = ucfirst($val);
+        // }
+        // $product_name = implode(' ', $product_name);
+
+        // session(['product_name' => $product_name]);
+
+        // $page_properties = ProductServices::getPageProperties('product');
+        // $product_properties_new = $product_properties_new[0];
+
+        // if ($product_properties_new->title != '') {
+        //     $page_properties->title = $product_properties_new->title;
+        // }
+
+        // if ($product_properties_new->keywords != '') {
+        //     $page_properties->keyword = $product_properties_new->keywords;
+        // }
+
+        // if ($product_properties_new->description != '') {
+        //     $page_properties->description = $product_properties_new->description;
+        // }
+
+        return view($design . '.landing', [
+            'design' => $design,
+            'product' => $product,
+            'agent' => $agent,
+            'Language' => Language::class,
+            'Currency' => Currency::class
+        ]);
+    }
+
     public function about() : View
     {
         StatisticService::SendStatistic('about_us');
@@ -233,7 +298,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('about_us');
+        $page_properties = ProductServices::getPageProperties('about_us');
         $agent = new Agent();
 
         return view($design . '.about', [
@@ -256,7 +321,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('faq');
+        $page_properties = ProductServices::getPageProperties('faq');
         $agent = new Agent();
 
         return view($design . '.help', [
@@ -279,7 +344,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('testimonials');
+        $page_properties = ProductServices::getPageProperties('testimonials');
         $agent = new Agent();
 
         return view($design . '.testimonials', [
@@ -302,7 +367,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('shipping');
+        $page_properties = ProductServices::getPageProperties('shipping');
         $agent = new Agent();
 
         return view($design . '.delivery', [
@@ -325,7 +390,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('moneyback');
+        $page_properties = ProductServices::getPageProperties('moneyback');
         $agent = new Agent();
 
         return view($design . '.moneyback', [
@@ -348,7 +413,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('contact_us');
+        $page_properties = ProductServices::getPageProperties('contact_us');
         $agent = new Agent();
 
         return view($design . '.contact_us', [
@@ -371,7 +436,7 @@ class HomeController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
-        $page_properties = ProductServices::getPageTitle('affiliate');
+        $page_properties = ProductServices::getPageProperties('affiliate');
         $agent = new Agent();
 
         return view($design . '.affiliate', [

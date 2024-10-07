@@ -33,7 +33,7 @@ class SearchController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $products = ProductServices::SearchProduct($search_text, false, $design);
         $phone_codes = PhoneCodes::all()->toArray();
-        $title = ProductServices::getPageTitle('search');
+        $title = ProductServices::getPageProperties('search');
         $agent = new Agent();
 
         return view($design . '.search_result', [

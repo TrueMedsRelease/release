@@ -7,10 +7,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Currency;
+use App\Models\Language;
 use App\Services\GeoIpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
+use Illuminate\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,19 +30,63 @@ if(!session()->has('location'))
     session(['location' => GeoIpService::GetInfoByIp()]);
 }
 
-if(!session()->has('currency'))
-{
+// if(!session()->has('currency'))
+// {
+//     $currency = config('app.currency');
+//     $coef = Currency::GetCoef($currency);
+//     session(['currency' => $currency]);
+//     session(['currency_c' => $coef]);
+// }
+
+$currencies = Currency::GetAllCurrency();
+
+if (count($currencies) > 1) {
     $currency = config('app.currency');
     $coef = Currency::GetCoef($currency);
+
     session(['currency' => $currency]);
     session(['currency_c' => $coef]);
+} else {
+    if (count($currencies) == 1) {
+        $currency_code = $currencies[0]['code'];
+        $currenct_coef = Currency::GetCoef($currency_code);
+
+        session(['currency' => $currency_code]);
+        session(['currency_c' => $currenct_coef]);
+
+    } else {
+        $currency = config('app.currency');
+        $coef = Currency::GetCoef($currency);
+
+        session(['currency' => $currency]);
+        session(['currency_c' => $coef]);
+    }
 }
 
-if(!session()->has('language'))
-{
-    $language = App::currentLocale();
-    session(['language' => config('app.language')]);
+$languages = Language::GetAllLanuages();
+
+if (count($languages) > 1) {
+    $cur_language_code = App::currentLocale();
+    $cur_language_id = Language::$languages[App::currentLocale()];
+} else {
+    if (count($languages) == 1) {
+        $landuage_code = $languages[0]['code'];
+        $language_id = $languages[0]['id'];
+
+        if ($landuage_code == App::currentLocale()) {
+            $cur_language_code = App::currentLocale();
+            $cur_language_id = Language::$languages[App::currentLocale()];
+        } else {
+            $cur_language_code = config('app.language');
+            $cur_language_id = $language_id;
+        }
+    } else {
+        $cur_language_id = 1;
+        $cur_language_code = config('app.language');
+    }
 }
+
+App::setLocale($cur_language_code);
 
 if(!session()->has('referer'))
 {

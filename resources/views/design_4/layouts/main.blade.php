@@ -263,20 +263,24 @@
                                 </div>
                             </div>
                             <div class="hero-header__selects" data-one-select>
-                                <div class="hero-header__select">
-                                    <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                                        @foreach ($Language::GetAllLanuages() as $language)
-                                            <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="hero-header__select">
-                                    <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                                        @foreach ($Currency::GetAllCurrency() as $item)
-                                            <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @if (count($Language::GetAllLanuages()) > 1)
+                                    <div class="hero-header__select">
+                                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                            @foreach ($Language::GetAllLanuages() as $language)
+                                                <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                                @if (count($Currency::GetAllCurrency()) > 1)
+                                    <div class="hero-header__select">
+                                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                            @foreach ($Currency::GetAllCurrency() as $item)
+                                                <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="hero-header__features features-hero">

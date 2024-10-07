@@ -108,34 +108,38 @@
 							</div>
 						</form>
 						<div class="header__actions actions" data-da=".header__bottom, 479.98, first">
-							<div class="actions__item">
-								<div class="actions__icon">
-									<svg width="20" height="20">
-										<use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-global") }}"></use>
-									</svg>
-								</div>
-								<div class="actions__select">
-									<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-										@foreach ($Language::GetAllLanuages() as $language)
-                                            <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
-                                        @endforeach
-									</select>
-								</div>
-							</div>
-							<div class="actions__item">
-								<div class="actions__icon">
-									<svg width="20" height="20">
-										<use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-wallet") }}"></use>
-									</svg>
-								</div>
-								<div class="actions__select">
-									<select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
-                                        @foreach ($Currency::GetAllCurrency() as $item)
-                                            <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
-                                        @endforeach
-									</select>
-								</div>
-							</div>
+                            @if (count($Language::GetAllLanuages()) > 1)
+                                <div class="actions__item">
+                                    <div class="actions__icon">
+                                        <svg width="20" height="20">
+                                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-global") }}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="actions__select">
+                                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                            @foreach ($Language::GetAllLanuages() as $language)
+                                                <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (count($Currency::GetAllCurrency()) > 1)
+                                <div class="actions__item">
+                                    <div class="actions__icon">
+                                        <svg width="20" height="20">
+                                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-wallet") }}"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="actions__select">
+                                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                            @foreach ($Currency::GetAllCurrency() as $item)
+                                                <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
 							<div class="actions__item actions__item--order" data-da=".fixed-bar, 700, 1">
 								<a href='{{ route('home.login') }}' target="_blank">
 									<div class="actions__icon">
