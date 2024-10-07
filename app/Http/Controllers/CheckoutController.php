@@ -32,7 +32,7 @@ class CheckoutController extends Controller
         $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
         if (count($unsent_order) > 0) {
             foreach ($unsent_order as $order) {
-                $response = Http::post('http://true-services.net/checkout/order_test.php', $order->message);
+                $response = Http::post('http://true-services.net/checkout/order.php', $order->message);
                 $response = json_decode($response, true);
 
                 if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
@@ -453,7 +453,7 @@ class CheckoutController extends Controller
                 'is_send' => 0
             ]);
 
-            $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
+            $response = Http::post('http://true-services.net/checkout/order.php', $data);
 
             $response = json_decode($response, true);
 
@@ -579,7 +579,7 @@ class CheckoutController extends Controller
                 'is_send' => 0
             ]);
 
-            $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
+            $response = Http::post('http://true-services.net/checkout/order.php', $data);
 
             $response = json_decode($response, true);
 
@@ -606,7 +606,7 @@ class CheckoutController extends Controller
             'currency' => $request->currency,
          ];
 
-        $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
+        $response = Http::post('http://true-services.net/checkout/order.php', $data);
 
         $response = json_decode($response, true);
         $response['crypto_total'] = Currency::Convert(session('total.all') * 0.85);
@@ -675,7 +675,7 @@ class CheckoutController extends Controller
                 'invoiceId' => session('crypto.invoiceId'),
              ];
 
-            $response_payment = Http::post('http://true-services.net/checkout/order_test.php', $data);
+            $response_payment = Http::post('http://true-services.net/checkout/order.php', $data);
 
             $response_payment = json_decode($response_payment, true);
 
@@ -767,7 +767,7 @@ class CheckoutController extends Controller
                     'is_send' => 0
                 ]);
 
-                $response = Http::post('http://true-services.net/checkout/order_test.php', $data);
+                $response = Http::post('http://true-services.net/checkout/order.php', $data);
 
                 $response = json_decode($response, true);
 
