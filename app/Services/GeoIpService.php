@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\CountryInfoCache;
 use GeoIp2\Database\Reader;
 use Illuminate\Support\Facades\Log;
 
@@ -16,6 +17,17 @@ class GeoIpService
         try
         {
             $location = $reader->city($ip);
+
+            $country_info = CountryInfoCache::query()
+            ->where('country_iso2', '=', $location->country->isoCode)
+            ->get();
+
+            if($country_info->count() == 0)
+            {
+                $ip = '89.187.179.179';
+                $location = $reader->city($ip);
+            }
+
             $info = [
                 'country' => $location->country->isoCode,
                 'country_name' => strtolower($location->country->names['en']),
