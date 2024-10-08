@@ -199,7 +199,7 @@ class HomeController extends Controller
 
         $design = session('design') ? session('design') : config('app.design');
         $language_id = Language::$languages[App::currentLocale()];
-        $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `url` = '$product' AND `language_id` = $language_id");
+        $page_properties = ProductServices::getProductProperties($product);
 
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
@@ -215,21 +215,6 @@ class HomeController extends Controller
 
         session(['product_name' => $product_name]);
 
-        $page_properties = ProductServices::getPageProperties('product');
-        $product_properties_new = $product_properties_new[0];
-
-        if ($product_properties_new->title != '') {
-            $page_properties->title = $product_properties_new->title;
-        }
-
-        if ($product_properties_new->keywords != '') {
-            $page_properties->keyword = $product_properties_new->keywords;
-        }
-
-        if ($product_properties_new->description != '') {
-            $page_properties->description = $product_properties_new->description;
-        }
-
         return view($design . '.product', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -244,10 +229,15 @@ class HomeController extends Controller
         ]);
     }
 
-    public function product_landing($product) : View
+    public function product_landing($product, $landing) : View
     {
+        if ($landing == 0) {
+            return redirect()->route('home.product', $product);
+        }
         // StatisticService::SendStatistic($product);
         // $product_name = $product;
+
+        dump($landing);
 
         $design = session('design') ? session('design') : config('app.design');
         // $language_id = Language::$languages[App::currentLocale()];
@@ -286,8 +276,6 @@ class HomeController extends Controller
             'design' => $design,
             'product' => $product,
             'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class
         ]);
     }
 

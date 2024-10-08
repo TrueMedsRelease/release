@@ -830,4 +830,58 @@ class ProductServices
 
         return $page_properties;
     }
+
+    public static function getProductProperties($product) {
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $language_id = Language::$languages[App::currentLocale()];
+
+        $page_properties = DB::select("SELECT * FROM page_properties WHERE `page` = 'product' AND `language` = $language_id");
+        $page_properties = $page_properties[0];
+
+        $page_properties->title = str_replace('(host_name)', $domain, $page_properties->title);
+        $page_properties->keyword = str_replace('(host_name)', $domain, $page_properties->keyword);
+        $page_properties->description = str_replace('(host_name)', $domain, $page_properties->description);
+
+        $product_name = session('product_name') ? session('product_name') : __('text.common_product_text');
+        $page_properties->title = str_replace('(product_name)', $product_name, $page_properties->title);
+        $page_properties->keyword = str_replace('(product_name)', $product_name, $page_properties->keyword);
+        $page_properties->description = str_replace('(product_name)', $product_name, $page_properties->description);
+
+        $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `url` = '$product' AND `language_id` = $language_id");
+
+        if (count($product_properties_new) > 0) {
+            $product_properties_new = $product_properties_new[0];
+
+            if ($product_properties_new->title != '') {
+                $page_properties->title = $product_properties_new->title;
+            }
+
+            if ($product_properties_new->keywords != '') {
+                $page_properties->keyword = $product_properties_new->keywords;
+            }
+
+            if ($product_properties_new->description != '') {
+                $page_properties->description = $product_properties_new->description;
+            }
+        } else {
+            $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%'");
+            $product_id = $product_id[0]->id;
+            $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `product_id` = $product_id AND `language_id` = $language_id");
+            $product_properties_new = $product_properties_new[0];
+
+            if ($product_properties_new->title != '') {
+                $page_properties->title = $product_properties_new->title;
+            }
+
+            if ($product_properties_new->keywords != '') {
+                $page_properties->keyword = $product_properties_new->keywords;
+            }
+
+            if ($product_properties_new->description != '') {
+                $page_properties->description = $product_properties_new->description;
+            }
+        }
+
+        return $page_properties;
+    }
 }

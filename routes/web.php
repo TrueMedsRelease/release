@@ -183,6 +183,7 @@ Route::controller(CheckoutController::class)->group(function () {
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
     Route::get('/{product_name}.html', 'product')->name('home.product');
+    Route::get('/{product_name}.html/landing={landing}', 'product_landing')->name('home.product_landing');
     Route::get('/about', 'about')->name('home.about');
     Route::get('/contact_us', 'contact_us')->name('home.contact_us');
     Route::get('/affiliate', 'affiliate')->name('home.affiliate');
