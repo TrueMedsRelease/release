@@ -234,48 +234,21 @@ class HomeController extends Controller
         if ($landing == 0) {
             return redirect()->route('home.product', $product);
         }
-        // StatisticService::SendStatistic($product);
-        // $product_name = $product;
-
-        dump($landing);
 
         $design = session('design') ? session('design') : config('app.design');
-        // $language_id = Language::$languages[App::currentLocale()];
-        // $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `url` = '$product' AND `language_id` = $language_id");
 
-        // $bestsellers = ProductServices::GetBestsellers($design);
-        // $menu = ProductServices::GetCategoriesWithProducts($design);
-        // $phone_codes = PhoneCodes::all()->toArray();
+        if ($design == 7 || $design == 8) {
+            return redirect()->route('home.product', $product);
+        }
+
         $product = ProductServices::GetProductInfoByUrl($product, $design);
         $agent = new Agent();
-
-        // $product_name = explode('-', $product_name);
-        // foreach ($product_name as $key => $val) {
-        //     $product_name[$key] = ucfirst($val);
-        // }
-        // $product_name = implode(' ', $product_name);
-
-        // session(['product_name' => $product_name]);
-
-        // $page_properties = ProductServices::getPageProperties('product');
-        // $product_properties_new = $product_properties_new[0];
-
-        // if ($product_properties_new->title != '') {
-        //     $page_properties->title = $product_properties_new->title;
-        // }
-
-        // if ($product_properties_new->keywords != '') {
-        //     $page_properties->keyword = $product_properties_new->keywords;
-        // }
-
-        // if ($product_properties_new->description != '') {
-        //     $page_properties->description = $product_properties_new->description;
-        // }
 
         return view($design . '.landing', [
             'design' => $design,
             'product' => $product,
             'agent' => $agent,
+            'Currency' => Currency::class
         ]);
     }
 
@@ -470,7 +443,9 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        session(['design' => 'design_' . $design]);
+        if (in_array($design, [1,2,3,4,5,6,7,8,9,10])) {
+            session(['design' => 'design_' . $design]);
+        }
         return redirect()->route('home.index');
     }
 

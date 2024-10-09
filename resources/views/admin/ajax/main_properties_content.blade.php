@@ -17,7 +17,7 @@
                     <div class="payment-details__top-row">
                         <div class="payment-details__currency">
                             <div class="payment-details__icon">
-                                <img src="/admin/images/icons/lock.svg" width="25" height="25" alt="">
+                                <img src="/admin_style/images/icons/lock.svg" width="25" height="25" alt="">
                             </div>
                             <h3 class="payment-details__caption">{{__('text.admin_main_properties_new_password_form')}}</h3>
                         </div>
@@ -33,7 +33,7 @@
                     <div class="payment-details__top-row">
                         <div class="payment-details__currency">
                             <div class="payment-details__icon">
-                                <img src="/admin/images/icons/lock.svg" width="25" height="25" alt="">
+                                <img src="/admin_style/images/icons/lock.svg" width="25" height="25" alt="">
                             </div>
                             <h3 class="payment-details__caption">{{__('text.admin_main_properties_repeat_new_password_form')}}</h3>
                         </div>
@@ -56,7 +56,7 @@
                         </span>
                     </span>
                     <svg width="20" height="20">
-                        <use xlink:href="/admin/images/icons/icons.svg#svg-checkmark"></use>
+                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
                     </svg>
                 </button>
             </div>
@@ -131,7 +131,7 @@
                         {{__('text.admin_main_properties_password_form_submit')}}
                     </span>
                     <svg width="20" height="20">
-                        <use xlink:href="/admin/images/icons/icons.svg#svg-checkmark"></use>
+                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
                     </svg>
                 </button>
             </div>
@@ -189,48 +189,38 @@
                         </select>
                     </td>
                     <td width="5%">&nbsp;</td>
-                    {{-- <td width="20%" align="left"><span style="color: #888; font-size: 14px;" id="available_tags"></span></td> --}}
                     <td align="left" width="53%">
-                        {{-- <div class="payment-details__item" style="flex-direction: row;">
-                            <div class="label" style="width: 30%;"><label for="robots_index_enable_field">{{__('text.admin_main_properties_robots_index_enable_title')}}</label></div>
-                            <div class="input_elem" style="width: 50%;">
-                                <input type="checkbox" name="robots_index_enable_field" id="robots_index_enable_field" class="no_input_style" value="1">
-                            </div>
-                        </div> --}}
                         <div class="payment-details__item" style="flex-direction: row; padding-top: 6.2%; gap:25px;">
                             <div class="label">{{__('text.admin_main_properties_title_title')}}</div>
-                            <div class="input_elem">
+                            <div class="input_elem" style="width: 100%">
                                 <input type="text" id="title_field" name="title_field" size="30" maxlength="256" @if ($page_properties)
                                     value="{{ $page_properties->title }}"
                                 @else
                                     value=""
                                 @endif class="input"/>
                             </div>
-                            {{-- <div id="title_error"> --}}
                             </div>
                         </div>
                         <div class="payment-details__item" style="flex-direction: row; padding-top: 1.2%; padding-bottom: 7.6%; gap:25px;">
                             <div class="label">{{__('text.admin_main_properties_description_title')}}</div>
-                            <div class="input_elem">
+                            <div class="input_elem" style="width: 100%">
                                 <textarea id="description_field" name="description_field" class="input">
                                     @if ($page_properties)
                                         {{ $page_properties->description }}
                                     @endif
                                 </textarea>
                             </div>
-                            {{-- <div id="description_error"> --}}
                             </div>
                         </div>
                         <div class="payment-details__item" style="flex-direction: row;padding-top: 1.2%; padding-bottom: 7.6%; gap:25px;">
                             <div class="label">{{__('text.admin_main_properties_keywords_title')}}</div>
-                            <div class="input_elem">
+                            <div class="input_elem" style="width: 100%">
                                 <textarea id="keywords_field" name="keywords_field" class="input">
                                     @if ($page_properties)
                                         {{ $page_properties->keyword }}
                                     @endif
                                 </textarea>
                             </div>
-                            {{-- <div id="keywords_error"> --}}
                             </div>
                         </div>
                         <div  style="text-align: center;"><div id="titles_and_tags_messages">&nbsp;</div></div>
@@ -247,7 +237,7 @@
                     Load
                 </span>
                 <svg width="20" height="20">
-                    <use xlink:href="/admin/images/icons/icons.svg#svg-checkmark"></use>
+                    <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
                 </svg>
             </button>
             <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); savePageProperties();">
@@ -255,7 +245,7 @@
                     {{__('text.admin_main_properties_titles_and_tags_form_submit')}}
                 </span>
                 <svg width="20" height="20">
-                    <use xlink:href="/admin/images/icons/icons.svg#svg-checkmark"></use>
+                    <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
                 </svg>
             </button>
         </div>

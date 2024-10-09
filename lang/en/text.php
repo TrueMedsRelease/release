@@ -609,7 +609,7 @@ return [
     "search_nothing" => "Nothing found",
 
 
-    "admin_common_main_menu_1_element" => "Main Properties",
+    "admin_common_main_menu_1_element" => "Settings",
     "admin_common_main_menu_2_element" => "Categories",
     "admin_common_main_menu_3_element" => "Available Categories",
     "admin_common_main_menu_4_element" => "Products",
@@ -632,8 +632,8 @@ return [
     "admin_common_dialog_confirm_text" => "Are you shure?",
     "admin_common_ok_text" => "ok",
     "admin_common_cancel_text" => "cancel",
-    "admin_main_properties_title" => "Main properties",
-    "admin_main_properties_page_name" => "Main properties",
+    "admin_main_properties_title" => "Settings",
+    "admin_main_properties_page_name" => "Settings",
     "admin_main_properties_titles_adn_tags_title" => "Titles and tags",
     "admin_main_properties_page_names_title" => "Page names:",
     "admin_main_properties_available_tags_title" => "Available Tags:",

@@ -4375,6 +4375,7 @@ body::after {
   justify-content: space-between;
   align-items: center;
   padding-top: 1%;
+  gap: 15px;
 }
 
 .right_icon {
@@ -8107,4 +8108,8 @@ a:hover {
 
 .products_on_products .jqTransformSelectWrapper {
     width: auto !important;
+}
+
+.input_elem{
+    width: 100%;
 }

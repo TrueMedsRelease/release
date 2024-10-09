@@ -5,9 +5,9 @@
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
-    <link rel="icon" href="{{ asset('/admin/images/favicon/favicon.ico') }}" sizes="any">
-    <link rel="apple-touch-icon" href="{{ asset('/admin/images/favicon/apple-touch-icon-180x180.png') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/style.css') }}" />
+    <link rel="icon" href="{{ asset('/admin_style/images/favicon/favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset('/admin_style/images/favicon/apple-touch-icon-180x180.png') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin_style/css/style.css') }}" />
     <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
     <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
@@ -80,7 +80,7 @@
 					<div class="header__profile profile-header" data-da=".header__row, 479.98, 1">
 						<div class="profile-header__icon">
 							<svg width="20" height="20">
-								<use xlink:href="/admin/images/icons/icons.svg#svg-user"></use>
+								<use xlink:href="/admin_style/images/icons/icons.svg#svg-user"></use>
 							</svg>
 						</div>
 						<div class="profile-header__info">
@@ -90,7 +90,7 @@
 					</div>
 					<a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
 						<svg width="20" height="20">
-							<use xlink:href="/admin/images/icons/icons.svg#svg-sign-out"></use>
+							<use xlink:href="/admin_style/images/icons/icons.svg#svg-sign-out"></use>
 						</svg>
 						<span>Exit</span>
 					</a>
@@ -115,7 +115,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="20">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-tg"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-tg"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -128,7 +128,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="20">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-tg"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-tg"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -141,7 +141,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="19" height="28">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-jabber"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-jabber"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -154,7 +154,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="24">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-jabber"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-jabber"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -176,6 +176,6 @@
     </footer>
 
     </div>
-    <script src="{{ asset("admin/js/style.js") }}"></script>
+    <script src="{{ asset("/admin_style/js/style.js") }}"></script>
 </body>
 </html>

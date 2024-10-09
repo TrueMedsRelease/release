@@ -211,6 +211,7 @@ Route::controller(HomeController::class)->group(function() {
 Route::controller(AdminController::class)->group(function() {
     Route::get('/admin/logout', 'admin_logout')->name('admin.admin_logout');
 
+    Route::get('/admin', 'admin_enter')->name('admin.admin_enter');
     Route::get('/admin/login', 'admin_login')->name('admin.admin_login');
     Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware(VerifyCsrfToken::class);
 
