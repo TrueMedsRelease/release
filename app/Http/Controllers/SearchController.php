@@ -34,7 +34,6 @@ class SearchController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $products = ProductServices::SearchProduct($search_text, false, $design);
         $phone_codes = PhoneCodes::all()->toArray();
-        $title = ProductServices::getPageProperties('search');
         $page_properties = ProductServices::getPageProperties('search');
         $agent = new Agent();
 
@@ -54,7 +53,6 @@ class SearchController extends Controller
             'Language' => Language::class,
             'Currency' => Currency::class,
             'phone_codes' => $phone_codes,
-            'title' => $title,
             'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,

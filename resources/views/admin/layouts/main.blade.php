@@ -5,29 +5,29 @@
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
-    <link rel="icon" href="{{ asset('/admin/images/favicon/favicon.ico') }}" sizes="any">
-    <link rel="apple-touch-icon" href="{{ asset('/admin/images/favicon/apple-touch-icon-180x180.png') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin/css/style.css') }}" />
+    <link rel="icon" href="{{ asset('/admin_style/images/favicon/favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset('/admin_style/images/favicon/apple-touch-icon-180x180.png') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin_style/css/style.css') }}" />
     <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
     <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
 	<script src="{{ asset("vendor/jquery/dialog/dialog.js") }}"></script>
 	<script src="{{ asset("vendor/jquery/jqtransformplugin/jquery.jqtransform.js") }}"></script>
  	<script language="javascript">
-		$(document).ready(function(){
-				$('form').jqTransform({imgPath:''});
+		// $(document).ready(function(){
+		// 		$('form').jqTransform({imgPath:''});
 
-				$('.confirm').confirm({
-					msg:'<span class="notice">{{__('text.admin_common_confirm_text')}}</span>',
-							timeout:8000,
-					stopAfter:'ok',
-					buttons: {
-						ok:'{{__('text.admin_common_ok_text')}}',
-						cancel:'{{__('text.admin_common_cancel_text')}}',
-						separator:'  '
-					}
-					});
-		});
+		// 		$('.confirm').confirm({
+		// 			msg:'<span class="notice">{{__('text.admin_common_confirm_text')}}</span>',
+		// 					timeout:8000,
+		// 			stopAfter:'ok',
+		// 			buttons: {
+		// 				ok:'{{__('text.admin_common_ok_text')}}',
+		// 				cancel:'{{__('text.admin_common_cancel_text')}}',
+		// 				separator:'  '
+		// 			}
+		// 			});
+		// });
 		function show_loading_message(element_id, message){
 			document.getElementById(element_id).className = "loading";
 			if(message != ""){
@@ -40,7 +40,7 @@
 	<div class="wrapper">
 @if ($logged_in)
 	<header class="header">
-		<div class="header__container">
+		<div class="header__container" style="margin-top: 15px">
 			<div class="header__row">
 				<div class="header__wrapper">
 					<div class="header__menu menu">
@@ -48,6 +48,9 @@
 							<ul class="menu__list">
 								<li class="menu__item">
 								    <a href="{{ route('admin.main_properties') }}">{{__('text.admin_common_main_menu_1_element')}}</a>
+								</li>
+                                <li class="menu__item">
+								    <a href="{{ route('admin.admin_seo') }}">{{__('text.admin_common_main_menu_14_element')}}</a>
 								</li>
 								<li class="menu__item">
 								    <a href="{{ route('admin.products') }}">{{__('text.admin_common_main_menu_4_element')}}</a>
@@ -70,17 +73,23 @@
 								{{-- <li class="menu__item">
 								    <a href="{$path.page}/updates">{{__('text.admin_common_main_menu_11_element')}}</a>
 								</li> --}}
+                                <li class="menu__item">
+								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
+                                        <svg width="20" height="20">
+                                            <use xlink:href="/admin_style/images/icons/icons.svg#svg-sign-out"></use>
+                                        </svg>
+                                    </a>
+								</li>
 							</ul>
 						</nav>
 					</div>
-
 				</div>
 
-				<div class="header__actions">
+				{{-- <div class="header__actions">
 					<div class="header__profile profile-header" data-da=".header__row, 479.98, 1">
 						<div class="profile-header__icon">
 							<svg width="20" height="20">
-								<use xlink:href="/admin/images/icons/icons.svg#svg-user"></use>
+								<use xlink:href="/admin_style/images/icons/icons.svg#svg-user"></use>
 							</svg>
 						</div>
 						<div class="profile-header__info">
@@ -90,11 +99,10 @@
 					</div>
 					<a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
 						<svg width="20" height="20">
-							<use xlink:href="/admin/images/icons/icons.svg#svg-sign-out"></use>
+							<use xlink:href="/admin_style/images/icons/icons.svg#svg-sign-out"></use>
 						</svg>
-						<span>Exit</span>
 					</a>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 	</header>
@@ -107,6 +115,11 @@
                 @yield('content')
 
             </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container">
             <section class="page__contacts">
                 <div class="contacts" data-contacts-body="">
                     <h3 class="contacts__caption-social">contacts</h3>
@@ -115,7 +128,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="20">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-tg"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-tg"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -128,7 +141,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="20">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-tg"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-tg"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -141,7 +154,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="19" height="28">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-jabber"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-jabber"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -154,7 +167,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="24">
-                                        <use xlink:href="/admin/images/icons/icons.svg#svg-jabber"></use>
+                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-jabber"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -167,15 +180,9 @@
                 </div>
             </section>
         </div>
-    </main>
-
-    <footer class="footer">
-        <div class="footer__container">
-
-        </div>
     </footer>
 
     </div>
-    <script src="{{ asset("admin/js/style.js") }}"></script>
+    <script src="{{ asset("/admin_style/js/style.js") }}"></script>
 </body>
 </html>

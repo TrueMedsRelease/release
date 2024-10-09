@@ -1632,6 +1632,7 @@ body::after {
 .menu__list {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .menu__item {
@@ -4375,6 +4376,7 @@ body::after {
   justify-content: space-between;
   align-items: center;
   padding-top: 1%;
+  gap: 15px;
 }
 
 .right_icon {
@@ -8107,4 +8109,8 @@ a:hover {
 
 .products_on_products .jqTransformSelectWrapper {
     width: auto !important;
+}
+
+.input_elem{
+    width: 100%;
 }
