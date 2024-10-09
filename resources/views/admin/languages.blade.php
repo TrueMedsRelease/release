@@ -113,7 +113,7 @@
                                     {{__('text.admin_languages_languages_form_submit')}}
                                 </span>
                                 <svg width="20" height="20">
-                                    <use xlink:href="/admin/images/icons/icons.svg#svg-checkmark"></use>
+                                    <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
                                 </svg>
                             </button>
                         </td>

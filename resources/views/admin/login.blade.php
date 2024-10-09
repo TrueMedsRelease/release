@@ -13,8 +13,8 @@
 					<img id="captcha_image" name="captcha" src="{{ captcha_src() }}" alt="">
 					</picture>
 						<div></div>
-						<div class="popup__input log_login">
-							<input type="text" id="captcha_field" name="captcha_field" placeholder="code" size="6" maxlength="20" class="input"/>
+						<div class="popup__input">
+							<input type="text" id="captcha_field" name="captcha_field" placeholder="code" size="6" maxlength="20" class="input" autocomplete="off"/>
 						</div>
 						<div id="captcha_error">
                             {{__('text.admin_common_form_empty_field')}}
@@ -33,7 +33,7 @@
 					<button name="enter" type="button" onclick="show_loading_message('login_messages', '{{__('text.admin_common_loading_message')}}'); logIn();" class=" jqTransformButton jqTransformButton_hover popup__button popup__button--login button button--filled">
 						<span>{{__('text.admin_login_form_submit')}}</span>
 						<svg width="15" height="15">
-							<use xlink:href="/admin/images/icons/icons.svg#svg-arr-top-right"></use>
+							<use xlink:href="/admin_style/images/icons/icons.svg#svg-arr-top-right"></use>
 						</svg>
 					</button>
 				</div>

@@ -33,6 +33,15 @@ class ProductServices
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
 
+            $card = Product::query()
+                ->where('id', '=', 616)
+                ->where('is_showed_on_main', '=', 1)
+                ->where('is_showed', '=', 1)
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+
+            array_unshift($products, $card[0]);
+
         } else {
             $products = Product::query()
                 ->where('is_showed_on_main', '=', 1)
@@ -42,8 +51,16 @@ class ProductServices
                 ->toArray();
         }
 
+        if (env('APP_GIFT_CARD') == 0) {
+            foreach ($products as $key => $product) {
+                if ($product['id'] == 616) {
+                    unset($products[$key]);
+                    break;
+                }
+            }
+        }
 
-        for ($i = 0; $i < count($products); $i++) {
+        foreach ($products as $i => $product) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
@@ -96,11 +113,16 @@ class ProductServices
         $categories = [];
         foreach($categories_raw as $category)
         {
-            // if ($design == 'design_5') {
-            //     $products = $category->product->where('is_showed', '=', 1)->where('category_id', '=', 14)->sortBy('menu_order')->toArray();
-            // } else {
-                $products = $category->product->where('is_showed', '=', 1)->sortBy('menu_order')->toArray();
-            // }
+            $products = $category->product->where('is_showed', '=', 1)->sortBy('menu_order')->toArray();
+
+            if (env('APP_GIFT_CARD') == 0) {
+                foreach($products as $key => $product) {
+                    if ($product['id'] == 616) {
+                        unset($products[$key]);
+                        break;
+                    }
+                }
+            }
 
             foreach($products as &$product)
             {
@@ -122,23 +144,44 @@ class ProductServices
 
     public static function GetProductDesc($language_id, $url = '')
     {
-        if(empty($url))
-        {
-            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
-        }
-        else
-        {
-            $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+        // if (env('APP_GIFT_CARD')) {
+            if(empty($url))
+            {
+                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+            }
+            else
+            {
+                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
 
-            if (!$products_desc_raw || empty($products_desc_raw)) {
-                $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
-                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '=', $product_id[0]->id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+                if (!$products_desc_raw || empty($products_desc_raw)) {
+                    $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+                    $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '=', $product_id[0]->id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
 
-                foreach($products_desc_raw as $key => $product) {
-                    $products_desc_raw[$key][0]['name'] = ucfirst($url) . ' (' . __('text.product_other_name') . $product[0]['name'] . ')';
+                    foreach($products_desc_raw as $key => $product) {
+                        $products_desc_raw[$key][0]['name'] = ucfirst($url) . ' (' . __('text.product_other_name') . $product[0]['name'] . ')';
+                    }
                 }
             }
-        }
+        // } else {
+        //     if(empty($url))
+        //     {
+        //         $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '<>', 616)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+        //     }
+        //     else
+        //     {
+        //         $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '<>', 616)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+
+        //         if (!$products_desc_raw || empty($products_desc_raw)) {
+        //             $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.`id` <> 616 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+        //             $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '=', $product_id[0]->id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+
+        //             foreach($products_desc_raw as $key => $product) {
+        //                 $products_desc_raw[$key][0]['name'] = ucfirst($url) . ' (' . __('text.product_other_name') . $product[0]['name'] . ')';
+        //             }
+        //         }
+        //     }
+        // }
+
 
         $products_desc = [];
         foreach ($products_desc_raw as $key => $p) {
@@ -524,18 +567,26 @@ class ProductServices
             $product_ids = DB::table('product_search')
                 ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
                 ->whereFullText('product_search.keyword', $search_text . '*', ['mode' => 'boolean'])
-                // ->where('product_search.keyword', 'like', "$search_text%")
-                ->where('product_category.category_id', '=', 14)
+                ->whereIn('product_category.category_id', [14, 21])
                 ->where('product_search.is_showed', '=', 1)
-                ->get(['product_search.product_id'])
+                ->get(['product_search.product_id', 'product_category.category_id'])
                 ->groupBy('product_search.en_name')
                 ->toArray();
         } else {
-            $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
-                ->distinct()
-                ->where('is_showed', '=', 1)
-                ->get(['product_id'])
-                ->toArray();
+            if (env('APP_GIFT_CARD') == 0) {
+                $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                    ->distinct()
+                    ->where('is_showed', '=', 1)
+                    ->where('product_id', '<>', 616)
+                    ->get(['product_id'])
+                    ->toArray();
+            } else {
+                $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                    ->distinct()
+                    ->where('is_showed', '=', 1)
+                    ->get(['product_id'])
+                    ->toArray();
+            }
         }
 
         $product_id = [];
@@ -549,6 +600,14 @@ class ProductServices
         } else {
             foreach ($product_ids as $item) {
                 $product_id[] = $item['product_id'];
+            }
+        }
+
+        if (env('APP_GIFT_CARD') == 0) {
+            foreach ($product_id as $key => $val) {
+                if ($val == 616) {
+                    unset($product_id[$key]);
+                }
             }
         }
 

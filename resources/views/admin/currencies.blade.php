@@ -136,7 +136,7 @@
                                     {{__('text.admin_currencies_currencies_form_submit')}}
                                 </span>
                                 <svg width="20" height="20">
-                                    <use xlink:href="/admin/images/icons/icons.svg#svg-checkmark"></use>
+                                    <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
                                 </svg>
                             </span>
                         </button>

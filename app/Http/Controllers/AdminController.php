@@ -16,10 +16,19 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
+    public function admin_enter() {
+        if (session('logged_in')) {
+            return redirect()->route('admin.main_properties');
+        } else {
+            return redirect()->route('admin.admin_login');
+        }
+    }
+
+
     public function admin_login()
     {
         if (session('logged_in')) {
-            return redirect()->route('admin.index');
+            return redirect()->route('admin.main_properties');
         }
 
         $design = session('design') ? session('design') : config('app.design');
@@ -53,7 +62,7 @@ class AdminController extends Controller
 
             $result = [
                 'status' => 'success',
-                'url' => route('admin.index'),
+                'url' => route('admin.main_properties'),
             ];
         } else {
             $result = [

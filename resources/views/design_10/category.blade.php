@@ -38,7 +38,7 @@
                             <button class="button product-card__button" aria-label="Buy now" onclick="location.href='{{ route('home.product', $product['url']) }}'">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ $design }}/svg/icons/sprite.svg#cart"></use>
+                                        <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
                                     </svg>
                                 </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                             </button>
