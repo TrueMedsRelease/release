@@ -14,20 +14,20 @@
 	<script src="{{ asset("vendor/jquery/dialog/dialog.js") }}"></script>
 	<script src="{{ asset("vendor/jquery/jqtransformplugin/jquery.jqtransform.js") }}"></script>
  	<script language="javascript">
-		$(document).ready(function(){
-				$('form').jqTransform({imgPath:''});
+		// $(document).ready(function(){
+		// 		$('form').jqTransform({imgPath:''});
 
-				$('.confirm').confirm({
-					msg:'<span class="notice">{{__('text.admin_common_confirm_text')}}</span>',
-							timeout:8000,
-					stopAfter:'ok',
-					buttons: {
-						ok:'{{__('text.admin_common_ok_text')}}',
-						cancel:'{{__('text.admin_common_cancel_text')}}',
-						separator:'  '
-					}
-					});
-		});
+		// 		$('.confirm').confirm({
+		// 			msg:'<span class="notice">{{__('text.admin_common_confirm_text')}}</span>',
+		// 					timeout:8000,
+		// 			stopAfter:'ok',
+		// 			buttons: {
+		// 				ok:'{{__('text.admin_common_ok_text')}}',
+		// 				cancel:'{{__('text.admin_common_cancel_text')}}',
+		// 				separator:'  '
+		// 			}
+		// 			});
+		// });
 		function show_loading_message(element_id, message){
 			document.getElementById(element_id).className = "loading";
 			if(message != ""){
@@ -40,7 +40,7 @@
 	<div class="wrapper">
 @if ($logged_in)
 	<header class="header">
-		<div class="header__container">
+		<div class="header__container" style="margin-top: 15px">
 			<div class="header__row">
 				<div class="header__wrapper">
 					<div class="header__menu menu">
@@ -48,6 +48,9 @@
 							<ul class="menu__list">
 								<li class="menu__item">
 								    <a href="{{ route('admin.main_properties') }}">{{__('text.admin_common_main_menu_1_element')}}</a>
+								</li>
+                                <li class="menu__item">
+								    <a href="{{ route('admin.admin_seo') }}">{{__('text.admin_common_main_menu_14_element')}}</a>
 								</li>
 								<li class="menu__item">
 								    <a href="{{ route('admin.products') }}">{{__('text.admin_common_main_menu_4_element')}}</a>
@@ -70,13 +73,19 @@
 								{{-- <li class="menu__item">
 								    <a href="{$path.page}/updates">{{__('text.admin_common_main_menu_11_element')}}</a>
 								</li> --}}
+                                <li class="menu__item">
+								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
+                                        <svg width="20" height="20">
+                                            <use xlink:href="/admin_style/images/icons/icons.svg#svg-sign-out"></use>
+                                        </svg>
+                                    </a>
+								</li>
 							</ul>
 						</nav>
 					</div>
-
 				</div>
 
-				<div class="header__actions">
+				{{-- <div class="header__actions">
 					<div class="header__profile profile-header" data-da=".header__row, 479.98, 1">
 						<div class="profile-header__icon">
 							<svg width="20" height="20">
@@ -92,9 +101,8 @@
 						<svg width="20" height="20">
 							<use xlink:href="/admin_style/images/icons/icons.svg#svg-sign-out"></use>
 						</svg>
-						<span>Exit</span>
 					</a>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 	</header>
@@ -107,6 +115,11 @@
                 @yield('content')
 
             </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container">
             <section class="page__contacts">
                 <div class="contacts" data-contacts-body="">
                     <h3 class="contacts__caption-social">contacts</h3>
@@ -166,12 +179,6 @@
                     </ul>
                 </div>
             </section>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="footer__container">
-
         </div>
     </footer>
 

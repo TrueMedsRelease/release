@@ -222,8 +222,10 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('/admin/main_page/product_up_in_sort', 'product_up_in_sort')->name('admin.product_up_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_page/product_down_in_sort', 'product_down_in_sort')->name('admin.product_down_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
 
+    Route::get('/admin/seo', 'admin_seo')->name('admin.admin_seo');
+    Route::get('/admin/seo_content', 'admin_seo_content')->name('admin.admin_seo_content')->withoutMiddleware(VerifyCsrfToken::class);
+
     Route::get('/admin/main_properties', 'main_properties')->name('admin.main_properties');
-    Route::get('/admin/main_properties_content', 'main_properties_content')->name('admin.main_properties_content')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_properties/save_user_properties', 'save_user_properties')->name('admin.save_user_properties')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_properties/load_page_properties', 'load_page_properties')->name('admin.load_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_properties/save_page_properties', 'save_page_properties')->name('admin.save_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
