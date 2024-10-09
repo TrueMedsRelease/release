@@ -12,6 +12,9 @@
 </head>
 
 <body>
+
+    {!! isset($pixel) ? $pixel : '' !!}
+
     <div class="wrapper">
         <header class="header">
             <div class="header__phones-top top-phones-header">

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>@yield('title', 'Title')</title>
+    <meta name="robots" content="index, follow" />
     <meta name="Description" content="@yield('description', 'Description')">
     <meta name="Keywords" content="@yield('keywords', 'Keywords')">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -47,6 +48,9 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
 </head>
 <body>
+
+    {!! isset($pixel) ? $pixel : '' !!}
+
     <script>
         let flagc = false;
         let flagp = false;

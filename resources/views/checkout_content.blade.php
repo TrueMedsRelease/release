@@ -1,3 +1,5 @@
+{!! isset($pixel) ? $pixel : '' !!}
+
 <header class="header">
     {{-- <div class="christmas">
         <img src="../style_checkout/images/pay_big.png">

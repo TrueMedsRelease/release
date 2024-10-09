@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use App\Models\PhoneCodes;
+use Illuminate\Support\Facades\DB;
 use Phattarachai\LaravelMobileDetect\Agent;
 
 class CartController extends Controller
@@ -34,6 +35,13 @@ class CartController extends Controller
         $page_properties = ProductServices::getPageProperties('cart');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.cart', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -45,6 +53,7 @@ class CartController extends Controller
             'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
+            'pixel' => $pixel,
         ]);
     }
 
