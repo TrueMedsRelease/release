@@ -18,17 +18,16 @@ class AdminController extends Controller
 {
     public function admin_enter() {
         if (session('logged_in')) {
-            return redirect()->route('admin.main_properties');
+            return redirect()->route('admin.admin_seo');
         } else {
             return redirect()->route('admin.admin_login');
         }
     }
 
-
     public function admin_login()
     {
         if (session('logged_in')) {
-            return redirect()->route('admin.main_properties');
+            return redirect()->route('admin.admin_seo');
         }
 
         $design = session('design') ? session('design') : config('app.design');
@@ -105,22 +104,22 @@ class AdminController extends Controller
         ]);
     }
 
-    public function main_properties() {
+    public function admin_seo() {
         if (!session()->has('logged_in') || !session('logged_in')) {
             return redirect()->route('admin.admin_login');
         }
 
-        $title = $this->pageAdminTitle('main_properties');
+        $title = $this->pageAdminTitle('seo');
         $agent = new Agent();
 
-        return view('admin.main_properties', [
+        return view('admin.seo', [
             'title' => $title,
             'agent' => $agent,
             'logged_in' => true,
         ]);
     }
 
-    public function main_properties_content() {
+    public function admin_seo_content() {
         $cur_design = env('APP_DESIGN');
         $templates = [];
         $catalog_templates_path = resource_path() . '/views';
@@ -146,7 +145,7 @@ class AdminController extends Controller
         $user_login = $user_login[0];
 
 
-        $returnHTML = view('admin.ajax.main_properties_content')->with([
+        $returnHTML = view('admin.ajax.seo_content')->with([
             "user_login" => $user_login->login,
             "templates" => $templates,
             "cur_template_scrin" => $cur_template_scrin,
@@ -157,6 +156,59 @@ class AdminController extends Controller
 
         return response()->json(array('success' => true, 'html' => "$returnHTML", 'template' => $cur_design));
     }
+
+    public function main_properties() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
+        $title = $this->pageAdminTitle('main_properties');
+        $agent = new Agent();
+
+        $user_login = DB::select("SELECT `login` FROM `user` WHERE `role` = 'administrator'");
+        $user_login = $user_login[0];
+
+        return view('admin.main_properties', [
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+            "user_login" => $user_login->login,
+        ]);
+    }
+
+    // public function main_properties_content() {
+    //     $cur_design = env('APP_DESIGN');
+    //     $templates = [];
+    //     $catalog_templates_path = resource_path() . '/views';
+    //     $cur_template_scrin = "";
+    //     $templates_dir_content = scandir($catalog_templates_path);
+    //     foreach ($templates_dir_content as $cur_template) {
+    //         if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+    //             $cur_template_info = [];
+    //             $cur_template_info["name"] = $cur_template;
+    //             if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
+    //                 $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
+    //             }
+    //             $templates[] = $cur_template_info;
+    //             if ($cur_template_info["name"] == $cur_design) {
+    //                 $cur_template_scrin = $cur_template_info["scrin"];
+    //             }
+    //         } else {
+    //             continue;
+    //         }
+    //     }
+
+    //     $returnHTML = view('admin.ajax.main_properties_content')->with([
+    //         "user_login" => $user_login->login,
+    //         "templates" => $templates,
+    //         "cur_template_scrin" => $cur_template_scrin,
+    //         "cur_template" => $cur_design,
+    //         "page_properties" => '',
+    //         'language' => Language::class,
+    //     ])->render();
+
+    //     return response()->json(array('success' => true, 'html' => "$returnHTML", 'template' => $cur_design));
+    // }
 
     public function add_to_main(Request $request) {
         $selected_products_id = $request->selected_products;
@@ -338,7 +390,6 @@ class AdminController extends Controller
         return response()->json($response);
     }
 
-
     public function save_user_properties(Request $request) {
         $user_login = 'admin';
         $new_password = $request->new_password;
@@ -346,7 +397,7 @@ class AdminController extends Controller
         $md5_pw = md5($new_password);
         DB::update("UPDATE user SET md5_pw = '{$md5_pw}' WHERE `login` = '$user_login'");
 
-        return $this->main_properties_content();
+        return response()->json(['status' => 'success', 'url' => route('admin.main_properties')]);
     }
 
     public function save_template(Request $request) {
@@ -375,12 +426,7 @@ class AdminController extends Controller
             }
         }
 
-        $user_login = DB::select("SELECT `login` FROM `user` WHERE `role` = 'administrator'");
-        $user_login = $user_login[0];
-
-
-        $returnHTML = view('admin.ajax.main_properties_content')->with([
-            "user_login" => $user_login->login,
+        $returnHTML = view('admin.ajax.seo_content')->with([
             "templates" => $templates,
             "cur_template_scrin" => $cur_template_scrin,
             "cur_template" => $cur_design,
@@ -419,12 +465,7 @@ class AdminController extends Controller
             }
         }
 
-        $user_login = DB::select("SELECT `login` FROM `user` WHERE `role` = 'administrator'");
-        $user_login = $user_login[0];
-
-
-        $returnHTML = view('admin.ajax.main_properties_content')->with([
-            "user_login" => $user_login->login,
+        $returnHTML = view('admin.ajax.seo_content')->with([
             "templates" => $templates,
             "cur_template_scrin" => $cur_template_scrin,
             "cur_template" => $cur_design,
@@ -435,7 +476,6 @@ class AdminController extends Controller
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
     }
 
-
     public function save_page_properties(Request $request) {
         $page = $request->page;
         $language_id = $request->language_id;
@@ -445,7 +485,7 @@ class AdminController extends Controller
 
         DB::update('UPDATE page_properties SET title = "' . $title . '", keyword = "' . $keyword . '", description = "' . $description . '" WHERE page = "' . $page . '" AND language = ' . $language_id);
 
-        return $this->main_properties();
+        return response()->json(['status' => 'success', 'url' => route('admin.admin_seo')]);
     }
 
     public function available_products() {
@@ -1094,6 +1134,9 @@ class AdminController extends Controller
                 break;
             case 'main_page':
                 $title = __('text.admin_main_page_main_page_title');
+                break;
+            case 'seo':
+                $title = __('text.admin_common_main_menu_14_element');
                 break;
             case 'main_properties':
                 $title = __('text.admin_main_properties_title');
