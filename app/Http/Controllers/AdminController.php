@@ -111,11 +111,11 @@ class AdminController extends Controller
 
         $title = $this->pageAdminTitle('seo');
         $agent = new Agent();
-
+        
         return view('admin.seo', [
             'title' => $title,
             'agent' => $agent,
-            'logged_in' => true,
+            'logged_in' => true
         ]);
     }
 
@@ -141,20 +141,92 @@ class AdminController extends Controller
             }
         }
 
-        $user_login = DB::select("SELECT `login` FROM `user` WHERE `role` = 'administrator'");
-        $user_login = $user_login[0];
-
+        $all_products_info = AdminServices::getAllProductWithCategory();
 
         $returnHTML = view('admin.ajax.seo_content')->with([
-            "user_login" => $user_login->login,
             "templates" => $templates,
             "cur_template_scrin" => $cur_template_scrin,
             "cur_template" => $cur_design,
             "page_properties" => '',
             'language' => Language::class,
+            'all_products_info' => $all_products_info,
+            'product_url' => [],
         ])->render();
 
         return response()->json(array('success' => true, 'html' => "$returnHTML", 'template' => $cur_design));
+    }
+
+    public function load_product_url(Request $request) {
+        $product_id = $request->product_id;
+
+        $cur_design = env('APP_DESIGN');
+        $templates = [];
+        $catalog_templates_path = resource_path() . '/views';
+        $cur_template_scrin = "";
+        $templates_dir_content = scandir($catalog_templates_path);
+        foreach ($templates_dir_content as $cur_template) {
+            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+                $cur_template_info = [];
+                $cur_template_info["name"] = $cur_template;
+                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
+                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
+                }
+                $templates[] = $cur_template_info;
+                if ($cur_template_info["name"] == $cur_design) {
+                    $cur_template_scrin = $cur_template_info["scrin"];
+                }
+            } else {
+                continue;
+            }
+        }
+
+        $all_products_info = AdminServices::getAllProductWithCategory();
+        $product_url = AdminServices::getProductUrl($product_id);
+
+        $returnHTML = view('admin.ajax.seo_content')->with([
+            "templates" => $templates,
+            "cur_template_scrin" => $cur_template_scrin,
+            "cur_template" => $cur_design,
+            "page_properties" => '',
+            'language' => Language::class,
+            'all_products_info' => $all_products_info,
+            'product_url' => $product_url,
+        ])->render();
+
+        return response()->json(array('success' => true, 'html' => "$returnHTML"));
+    }
+
+    public function save_product_url(Request $request) {
+        $product_form = $request->product_form_data;
+        $product_id = $product_form['all_products_field'];
+        $error = [];
+
+        foreach (Language::GetAllLanuages() as $language) {
+            $product_url = $product_form[$language['id'] . "_url_field"];
+
+            $has_errors = false;
+
+            if (empty($product_url)) {
+                $has_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => 'Empty URL'
+                ];
+            }
+
+            if (!$has_errors) {
+                $cur_language_id = $language['id'];
+
+                DB::update('UPDATE product_desc SET `url` = "' . $product_url . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
+        }
     }
 
     public function main_properties() {
@@ -175,40 +247,6 @@ class AdminController extends Controller
             "user_login" => $user_login->login,
         ]);
     }
-
-    // public function main_properties_content() {
-    //     $cur_design = env('APP_DESIGN');
-    //     $templates = [];
-    //     $catalog_templates_path = resource_path() . '/views';
-    //     $cur_template_scrin = "";
-    //     $templates_dir_content = scandir($catalog_templates_path);
-    //     foreach ($templates_dir_content as $cur_template) {
-    //         if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
-    //             $cur_template_info = [];
-    //             $cur_template_info["name"] = $cur_template;
-    //             if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-    //                 $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-    //             }
-    //             $templates[] = $cur_template_info;
-    //             if ($cur_template_info["name"] == $cur_design) {
-    //                 $cur_template_scrin = $cur_template_info["scrin"];
-    //             }
-    //         } else {
-    //             continue;
-    //         }
-    //     }
-
-    //     $returnHTML = view('admin.ajax.main_properties_content')->with([
-    //         "user_login" => $user_login->login,
-    //         "templates" => $templates,
-    //         "cur_template_scrin" => $cur_template_scrin,
-    //         "cur_template" => $cur_design,
-    //         "page_properties" => '',
-    //         'language' => Language::class,
-    //     ])->render();
-
-    //     return response()->json(array('success' => true, 'html' => "$returnHTML", 'template' => $cur_design));
-    // }
 
     public function add_to_main(Request $request) {
         $selected_products_id = $request->selected_products;
@@ -874,7 +912,7 @@ class AdminController extends Controller
         foreach (Language::GetAllLanuages() as $language) {
             $product_name = $product_form[$language['id'] . "_name_field"];
             $product_desc = $product_form[$language['id'] . "_desc_field"];
-            $product_url = $product_form[$language['id'] . "_url_field"];
+            // $product_url = $product_form[$language['id'] . "_url_field"];
             $product_title = $product_form[$language['id'] . "_title_field"];
             $product_keywords = $product_form[$language['id'] . "_keywords_field"];
             $product_description = $product_form[$language['id'] . "_description_field"];
@@ -890,14 +928,14 @@ class AdminController extends Controller
                 ];
             }
 
-            if (empty($product_url)) {
-                $has_errors = true;
+            // if (empty($product_url)) {
+            //     $has_errors = true;
 
-                $error = [
-                    'status' => 'error',
-                    'text' => 'Empty URL'
-                ];
-            }
+            //     $error = [
+            //         'status' => 'error',
+            //         'text' => 'Empty URL'
+            //     ];
+            // }
 
             if (empty($product_desc)) {
                 $has_errors = true;
@@ -930,7 +968,8 @@ class AdminController extends Controller
 
                 $cur_language_id = $language['id'];
 
-                DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `url` = "' . $product_url . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+                // DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `url` = "' . $product_url . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+                DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
             }
         }
 

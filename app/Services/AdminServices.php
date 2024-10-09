@@ -239,4 +239,25 @@ class AdminServices
 
         return $product;
     }
+
+    public static function getProductUrl($product_id) {
+        if ($product_id != 0) {
+
+            $product_info = DB::table('product_desc')
+                    ->where('product_id', '=', $product_id)
+                    ->get(['language_id', 'name', 'desc', 'url', 'title', 'keywords', 'description'])
+                    ->toArray();
+
+            
+            $urls = [];
+            foreach ($product_info as $product_val) {
+                $urls[$product_val->language_id] = $product_val->url;
+            }
+            
+        } else {
+            $url = [];
+        }
+
+        return $urls;
+    }
 }

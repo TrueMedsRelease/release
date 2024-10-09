@@ -8114,3 +8114,12 @@ a:hover {
 .input_elem{
     width: 100%;
 }
+
+.label {
+    width: 140px;
+    text-align: justify;
+}
+
+fieldset {
+    margin-top: 15px;
+}

@@ -461,35 +461,49 @@ class ProductServices
 
         $rec_name = 'none';
         $rec_url = '';
-        if ($products_desc['name'] === 'Viagra') {
-            $rec_name = 'Viagra Extra Dosage';
-            $rec_url = 'viagra-extra-dosage';
+        $rec_id = 0;
+        if ($products_desc['product_id'] === 285) {
+            $rec_id = 286;
+            // $rec_name = 'Viagra Extra Dosage';
+            // $rec_url = 'viagra-extra-dosage';
         }
-        if ($products_desc['name'] === 'Cialis') {
-            $rec_name = 'Cialis Extra Dosage';
-            $rec_url = 'cialis-extra-dosage';
+        if ($products_desc['name'] === 233) {
+            $rec_id = 235;
+            // $rec_name = 'Cialis Extra Dosage';
+            // $rec_url = 'cialis-extra-dosage';
         }
-        if ($products_desc['name'] === 'Levitra') {
-            $rec_name = 'Levitra Extra Dosage';
-            $rec_url = 'levitra-extra-dosage';
+        if ($products_desc['name'] === 255) {
+            $rec_id = 256;
+            // $rec_name = 'Levitra Extra Dosage';
+            // $rec_url = 'levitra-extra-dosage';
         }
-        if ($products_desc['name'] === 'Super Viagra') {
-            $rec_name = 'Extra Super Viagra';
-            $rec_url = 'extra-super-viagra';
+        if ($products_desc['name'] === 278) {
+            $rec_id = 247;
+            // $rec_name = 'Extra Super Viagra';
+            // $rec_url = 'extra-super-viagra';
         }
-        if ($products_desc['name'] === 'Super Cialis') {
-            $rec_name = 'Extra Super Cialis';
-            $rec_url = 'extra-super-cialis';
+        if ($products_desc['name'] === 274) {
+            $rec_id = 245;
+            // $rec_name = 'Extra Super Cialis';
+            // $rec_url = 'extra-super-cialis';
         }
-        if ($products_desc['name'] === 'Super Levitra') {
-            $rec_name = 'Extra Super Levitra';
-            $rec_url = 'extra-super-levitra';
+        if ($products_desc['name'] === 275) {
+            $rec_id = 246;
+            // $rec_name = 'Extra Super Levitra';
+            // $rec_url = 'extra-super-levitra';
         }
-        if ($products_desc['name'] === 'Super Avana') {
-            $rec_name = 'Extra Super Avana';
-            $rec_url = 'extra-super-avana';
+        if ($products_desc['name'] === 273) {
+            $rec_id = 244;
+            // $rec_name = 'Extra Super Avana';
+            // $rec_url = 'extra-super-avana';
         }
 
+        if ($rec_id) {
+            $rec_info = DB::select("SELECT `name`, `url` FROM `product_desc` WHERE `product_id` = $rec_id AND `language_id` = $language_id");
+            $rec_info = $rec_info[0];
+            $rec_name = $rec_info->name;
+            $rec_url = $rec_info->url;
+        }
 
         $product['categories'] = $categories;
         $product['name'] = $products_desc['name'];

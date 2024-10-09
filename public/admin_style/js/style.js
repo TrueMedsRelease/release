@@ -523,6 +523,57 @@ function saveProductInfo() {
     });
 }
 
+function loadProductURL(product_id) {
+    if (product_id) {
+        $.ajax({
+            url: '/admin/seo/load_product_url',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'product_id': product_id
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    alert(data.text);
+                } else {
+                    $('#properties_content').html(data.html);
+
+                    $('#all_products_field option[value=' + product_id + ']').attr('selected', "selected");
+                    let position = $('#all_products_field option[value=' + product_id + ']').offset().top;
+                    $('#all_products_field').scrollTop(position - 500);
+                }
+            }
+        });
+    }
+}
+
+function saveProductURL() {
+    let data = $('#products_form').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+
+    $.ajax({
+        url: '/admin/seo/save_product_url',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'product_form_data': data
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
 function saveLanguagesInfo() {
     let data = $('#languages_form').serializeArray().reduce(function(obj, item) {
         obj[item.name] = item.value;
