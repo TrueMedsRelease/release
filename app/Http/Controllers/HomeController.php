@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\App;
 use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
@@ -575,7 +576,7 @@ class HomeController extends Controller
     public function language($locale)
     {
         session(['locale' => $locale]);
-        return redirect()->route('home.index');
+        return Redirect::back();
     }
 
     public function currency($currency)
@@ -583,7 +584,7 @@ class HomeController extends Controller
         $coef = Currency::GetCoef($currency);
         session(['currency' => $currency]);
         session(['currency_c' => $coef]);
-        return redirect()->route('home.index');
+        return Redirect::back();
     }
 
     public function design($design)
