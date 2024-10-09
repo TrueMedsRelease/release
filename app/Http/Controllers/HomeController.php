@@ -24,6 +24,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('main');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         if (!in_array($design, ['design_7', 'design_8'])) {
 
             $bestsellers = ProductServices::GetBestsellers($design);
@@ -38,7 +45,8 @@ class HomeController extends Controller
                 'cur_category' => '',
                 'agent' => $agent,
                 'Language' => Language::class,
-                'Currency' => Currency::class
+                'Currency' => Currency::class,
+                'pixel' => $pixel
             ]);
 
         } elseif ($design == 'design_7') {
@@ -53,7 +61,8 @@ class HomeController extends Controller
                 'cur_category' => '',
                 'agent' => $agent,
                 'Language' => Language::class,
-                'Currency' => Currency::class
+                'Currency' => Currency::class,
+                'pixel' => $pixel
             ]);
         } elseif ($design == 'design_8') {
             $products_urls = ['viagra', 'cialis', 'levitra'];
@@ -72,7 +81,8 @@ class HomeController extends Controller
                 'cur_category' => '',
                 'agent' => $agent,
                 'Language' => Language::class,
-                'Currency' => Currency::class
+                'Currency' => Currency::class,
+                'pixel' => $pixel
             ]);
         }
     }
@@ -89,6 +99,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('first_letter');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.first_letter',[
             'design' => $design,
             'products' => $products,
@@ -100,7 +117,8 @@ class HomeController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -115,6 +133,13 @@ class HomeController extends Controller
         $products = ProductServices::GetProductByActive($active, $design);
         $page_properties = ProductServices::getPageProperties('active');
         $agent = new Agent();
+
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
 
         if (count($products) == 1) {
             return redirect(route('home.product', $products[0]['url']));
@@ -131,7 +156,8 @@ class HomeController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -147,6 +173,13 @@ class HomeController extends Controller
         $agent = new Agent();
         $category = str_replace('-', ' ', $category);
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         session(['category_name' => $category]);
 
         $page_properties = ProductServices::getPageProperties('category');
@@ -161,7 +194,8 @@ class HomeController extends Controller
             'cur_category' => $category,
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -177,6 +211,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('disease');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.disease',[
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -188,7 +229,8 @@ class HomeController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -206,6 +248,13 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $product = ProductServices::GetProductInfoByUrl($product, $design);
         $agent = new Agent();
+
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
 
         $product_name = explode('-', $product_name);
         foreach ($product_name as $key => $val) {
@@ -225,7 +274,8 @@ class HomeController extends Controller
             'cur_category' => $product['categories'][0]['name'],
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -244,11 +294,42 @@ class HomeController extends Controller
         $product = ProductServices::GetProductInfoByUrl($product, $design);
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        // $product_name = explode('-', $product_name);
+        // foreach ($product_name as $key => $val) {
+        //     $product_name[$key] = ucfirst($val);
+        // }
+        // $product_name = implode(' ', $product_name);
+
+        // session(['product_name' => $product_name]);
+
+        // $page_properties = ProductServices::getPageProperties('product');
+        // $product_properties_new = $product_properties_new[0];
+
+        // if ($product_properties_new->title != '') {
+        //     $page_properties->title = $product_properties_new->title;
+        // }
+
+        // if ($product_properties_new->keywords != '') {
+        //     $page_properties->keyword = $product_properties_new->keywords;
+        // }
+
+        // if ($product_properties_new->description != '') {
+        //     $page_properties->description = $product_properties_new->description;
+        // }
+
         return view($design . '.landing', [
             'design' => $design,
             'product' => $product,
             'agent' => $agent,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -262,6 +343,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('about_us');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.about', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -271,7 +359,8 @@ class HomeController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -285,6 +374,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('faq');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.help', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -294,7 +390,8 @@ class HomeController extends Controller
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
-           'Currency' => Currency::class
+           'Currency' => Currency::class,
+           'pixel' => $pixel
         ]);
     }
 
@@ -308,6 +405,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('testimonials');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.testimonials', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -317,7 +421,8 @@ class HomeController extends Controller
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
-           'Currency' => Currency::class
+           'Currency' => Currency::class,
+           'pixel' => $pixel
         ]);
     }
 
@@ -331,6 +436,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('shipping');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.delivery', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -340,7 +452,8 @@ class HomeController extends Controller
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
-           'Currency' => Currency::class
+           'Currency' => Currency::class,
+           'pixel' => $pixel
         ]);
     }
 
@@ -354,6 +467,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('moneyback');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.moneyback', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -363,7 +483,8 @@ class HomeController extends Controller
            'cur_category' => '',
            'agent' => $agent,
            'Language' => Language::class,
-           'Currency' => Currency::class
+           'Currency' => Currency::class,
+           'pixel' => $pixel
         ]);
     }
 
@@ -377,6 +498,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('contact_us');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.contact_us', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -386,7 +514,8 @@ class HomeController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -400,6 +529,13 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('affiliate');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.affiliate', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -409,7 +545,8 @@ class HomeController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 
@@ -419,11 +556,19 @@ class HomeController extends Controller
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view('login', [
             'design' => $design,
             'phone_codes' => $phone_codes,
             'Language' => Language::class,
-            'Currency' => Currency::class
+            'Currency' => Currency::class,
+            'pixel' => $pixel
         ]);
     }
 

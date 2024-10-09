@@ -14,6 +14,7 @@ use App\Models\Language;
 use App\Models\PhoneCodes;
 use App\Services\StatisticService;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Phattarachai\LaravelMobileDetect\Agent;
 
 class SearchController extends Controller
@@ -36,6 +37,13 @@ class SearchController extends Controller
         $page_properties = ProductServices::getPageProperties('search');
         $agent = new Agent();
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         return view($design . '.search_result', [
             'design' => $design,
             'search_text' => $search_text,
@@ -48,6 +56,7 @@ class SearchController extends Controller
             'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
+            'pixel' => $pixel,
         ]);
     }
 
