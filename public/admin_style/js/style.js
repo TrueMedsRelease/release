@@ -623,3 +623,55 @@ function saveCurrenciesInfo() {
         }
     });
 }
+
+function loadPixelData(page) {
+    if (page) {
+        $.ajax({
+            url: '/admin/seo/load_pixel',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'page': page
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    alert(data.text);
+                } else {
+                    $('#pixel_text').text(data.text);
+                }
+            }
+        });
+    }
+}
+
+function SavePixelData() {
+    let selected_page = $('input[name="pixel_name_field"]:checked').val();
+    // let pixel_text = $('#pixel_text').val();
+    let pixel_text = $('#pixel_form').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+
+    if (selected_page) {
+        $.ajax({
+            url: '/admin/seo/save_pixel',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'selected_page': selected_page,
+                'pixel_text': pixel_text
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    alert(data.text);
+                } else {
+                    location.href = data.url;
+                }
+            }
+        });
+    }
+}

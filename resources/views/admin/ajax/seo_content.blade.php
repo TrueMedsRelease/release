@@ -73,6 +73,62 @@
             </div>
         </form>
     </div>
+    <div class="parked-domains__col">
+        <form method="post" id="pixel_form" name="pixel_form">
+            <div class="payment-details__items">
+                <div class="payment-details__item">
+                    <div class="payment-details__top-row">
+                        <div class="payment-details__currency">
+                            <h3 class="payment-details__caption">Pixel</h3>
+                        </div>
+                        <p class="payment-details__code"></p>
+                    </div>
+
+                    <table>
+                        <tr>
+                            <td width="40%;">
+                                <div id="pixel_shop_block" class="rowElem" style="padding: 20px 0;">
+                                    <input type="radio" name="pixel_name_field" id="pixel_shop" value="shop" onclick="loadPixelData(this.value)">
+                                    <label for='pixel_shop'>
+                                        shop
+                                    </label>
+                                </div>
+                                <div id="pixel_checkout_block" class="rowElem" style="padding: 20px 0;">
+                                    <input type="radio" name="pixel_name_field" id="pixel_checkout" value="checkout" onclick="loadPixelData(this.value)">
+                                    <label for='pixel_shop'>
+                                        checkout
+                                    </label>
+                                </div>
+                                <div id="pixel_complete_block" class="rowElem" style="padding: 20px 0;">
+                                    <input type="radio" name="pixel_name_field" id="pixel_complete" value="complete" onclick="loadPixelData(this.value)">
+                                    <label for='pixel_complete'>
+                                        complete
+                                    </label>
+                                </div>
+                            </td>
+                            <td width="10%;">&nbsp;</td>
+                            <td width="50%;" valign="center">
+                                <div class="input_elem" style="width: 100%">
+                                    <textarea id="pixel_text" name="pixel_text" class="input"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="payment-details__bottom">
+            <div id="templates_messages">&nbsp;</div>
+                <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
+                    <span>
+                        {{__('text.admin_main_properties_password_form_submit')}}
+                    </span>
+                    <svg width="20" height="20">
+                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="statistic" style="margin-top: 2%;">

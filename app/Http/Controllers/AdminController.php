@@ -111,7 +111,7 @@ class AdminController extends Controller
 
         $title = $this->pageAdminTitle('seo');
         $agent = new Agent();
-        
+
         return view('admin.seo', [
             'title' => $title,
             'agent' => $agent,
@@ -219,6 +219,64 @@ class AdminController extends Controller
                 $cur_language_id = $language['id'];
 
                 DB::update('UPDATE product_desc SET `url` = "' . $product_url . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
+        }
+    }
+
+    public function load_pixel(Request $request) {
+        $page = $request->page;
+
+        $pixel_text = DB::select("SELECT * FROM `pixel` WHERE `page` = '$page'");
+
+        if(count($pixel_text) > 0) {
+            $pixel_text = $pixel_text[0];
+            $text = $pixel_text->pixel;
+
+            return response()->json(array('status' => 'success', 'text' => $text));
+        } else {
+            return response()->json(array('status' => 'success', 'text' => ''));
+        }
+    }
+
+    public function save_pixel(Request $request) {
+        $page = $request->selected_page;
+        $pixel_text = $request->pixel_text['pixel_text'];
+        $has_error = false;
+        $error = [];
+
+        if (empty($page)) {
+            $has_error = true;
+            $error = [
+                'status' => 'error',
+                'text' => 'Empty Page'
+            ];
+        }
+
+        $pixel = DB::select("SELECT * FROM `pixel` WHERE `page` = '$page'");
+
+        if (!$has_error) {
+            if (count($pixel) > 0) {
+                $pixel = $pixel[0];
+                if ($pixel_text == null || $pixel_text == 'null') {
+                    $pixel_text = '';
+                }
+                DB::table('pixel')
+                    ->where('page', '=', $page)
+                    ->update(['pixel' => $pixel_text]);
+            } else {
+                if ($pixel_text == null || $pixel_text == 'null') {
+                    $pixel_text = '';
+                }
+                DB::table('pixel')->insert([
+                    'page' => $page,
+                    'pixel' => $pixel_text
+                ]);
             }
         }
 
@@ -947,29 +1005,40 @@ class AdminController extends Controller
             }
 
             if (!$has_errors) {
-                $product_desc = str_replace("'", "\'", $product_desc);
-                $product_desc = str_replace('"', '\"', $product_desc);
-                $product_desc = str_replace('%', "\%", $product_desc);
-                $product_desc = str_replace('_', "\_", $product_desc);
-                $product_desc = str_replace('>', "\>", $product_desc);
-                $product_desc = str_replace('<', "\<", $product_desc);
-                $product_description = str_replace("'", "\'", $product_description);
-                $product_description = str_replace('"', '\"', $product_description);
-                $product_description = str_replace('%', "\%", $product_description);
-                $product_description = str_replace('_', "\_", $product_description);
-                $product_description = str_replace('>', "\>", $product_description);
-                $product_description = str_replace('<', "\<", $product_description);
-                $product_keywords = str_replace("'", "\'", $product_keywords);
-                $product_keywords = str_replace('"', '\"', $product_keywords);
-                $product_keywords = str_replace('%', "\%", $product_keywords);
-                $product_keywords = str_replace('_', "\_", $product_keywords);
-                $product_keywords = str_replace('>', "\>", $product_keywords);
-                $product_keywords = str_replace('<', "\<", $product_keywords);
+                // $product_desc = str_replace("'", "\'", $product_desc);
+                // $product_desc = str_replace('"', '\"', $product_desc);
+                // $product_desc = str_replace('%', "\%", $product_desc);
+                // $product_desc = str_replace('_', "\_", $product_desc);
+                // $product_desc = str_replace('>', "\>", $product_desc);
+                // $product_desc = str_replace('<', "\<", $product_desc);
+                // $product_description = str_replace("'", "\'", $product_description);
+                // $product_description = str_replace('"', '\"', $product_description);
+                // $product_description = str_replace('%', "\%", $product_description);
+                // $product_description = str_replace('_', "\_", $product_description);
+                // $product_description = str_replace('>', "\>", $product_description);
+                // $product_description = str_replace('<', "\<", $product_description);
+                // $product_keywords = str_replace("'", "\'", $product_keywords);
+                // $product_keywords = str_replace('"', '\"', $product_keywords);
+                // $product_keywords = str_replace('%', "\%", $product_keywords);
+                // $product_keywords = str_replace('_', "\_", $product_keywords);
+                // $product_keywords = str_replace('>', "\>", $product_keywords);
+                // $product_keywords = str_replace('<', "\<", $product_keywords);
 
                 $cur_language_id = $language['id'];
 
+                DB::table('product_desc')
+                    ->where('product_id', '=', $product_id)
+                    ->where('language_id', '=', $cur_language_id)
+                    ->update([
+                        'name' => $product_name,
+                        'desc' => $product_desc,
+                        'title' => $product_title,
+                        'keywords' => $product_keywords,
+                        'description' => $product_description
+                    ]);
+
                 // DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `url` = "' . $product_url . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
-                DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+                // DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
             }
         }
 
@@ -1050,7 +1119,14 @@ class AdminController extends Controller
             }
 
             if(!$was_errors) {
-                DB::update('UPDATE `language` SET `name` = "' . $cur_language_name . '", `code` = "' . $cur_language_code . '", `country_iso2` = "' . $cur_language_country_iso2 . '" WHERE id = ' . $cur_language["id"] . ' ');
+                DB::table('language')
+                    ->where('id', '=', $cur_language["id"])
+                    ->update([
+                        'name' => $cur_language_name,
+                        'code' => $cur_language_code,
+                        'country_iso2' => $cur_language_country_iso2
+                    ]);
+                // DB::update('UPDATE `language` SET `name` = "' . $cur_language_name . '", `code` = "' . $cur_language_code . '", `country_iso2` = "' . $cur_language_country_iso2 . '" WHERE id = ' . $cur_language["id"] . ' ');
             }
 
             if(isset($languages_form[$cur_language['id'] . '_show_field'])) {
@@ -1143,7 +1219,16 @@ class AdminController extends Controller
             }
 
             if(!$was_errors) {
-                DB::update('UPDATE `currency` SET `name` = "' . $cur_currency_name . '", `code` = "' . $cur_currency_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '", `coef` = "' . $cur_currency_coef . '", `prefix` = "' . $cur_currency_prefix . '" WHERE id = ' . $cur_currency_id . ' ');
+                DB::table('currency')
+                    ->where('id', '=', $cur_currency_id)
+                    ->update([
+                        'name' => $cur_currency_name,
+                        'code' => $cur_currency_code,
+                        'country_iso2' => $cur_currency_country_iso2,
+                        'coef' => $cur_currency_coef,
+                        'prefix' => $cur_currency_prefix
+                    ]);
+                // DB::update('UPDATE `currency` SET `name` = "' . $cur_currency_name . '", `code` = "' . $cur_currency_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '", `coef` = "' . $cur_currency_coef . '", `prefix` = "' . $cur_currency_prefix . '" WHERE id = ' . $cur_currency_id . ' ');
             }
 
             if(isset($currencies_form[$cur_currency_id . '_show_field'])) {
