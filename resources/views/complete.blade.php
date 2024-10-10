@@ -2,7 +2,7 @@
 <html lang="ru">
 
 <head>
-    <title>{{__('text.success_title')}}</title>
+    <title>{{ __('text.success_title') }}</title>
     <meta charset="UTF-8">
     <meta name="format-detection" content="telephone=no">
     <meta name="robots" content="index, follow" />
@@ -10,41 +10,47 @@
     <link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
 <body>
-
-    {!! isset($pixel) ? $pixel : '' !!}
-
     <div class="wrapper">
         <header class="header">
             <div class="header__phones-top top-phones-header">
                 <div class="top-phones-header__container header__container">
                     <div class="top-phones-header__items">
-                        <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}
-                            {{__('text.phones_title_phone_1')}}</a>
-                        <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}
-                            {{__('text.phones_title_phone_2')}}</a>
-                        <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}
-                            {{__('text.phones_title_phone_3')}}</a>
-                        <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}
-                            {{__('text.phones_title_phone_4')}}</a>
-                        <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}
-                            {{__('text.phones_title_phone_5')}}</a>
-                        <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}
-                            {{__('text.phones_title_phone_6')}}</a>
-                        <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}
-                            {{__('text.phones_title_phone_7')}}</a>
+                        <a class="top-phones-header__item"
+                            href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }}
+                            {{ __('text.phones_title_phone_1') }}</a>
+                        <a class="top-phones-header__item"
+                            href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }}
+                            {{ __('text.phones_title_phone_2') }}</a>
+                        <a class="top-phones-header__item"
+                            href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }}
+                            {{ __('text.phones_title_phone_3') }}</a>
+                        <a class="top-phones-header__item"
+                            href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }}
+                            {{ __('text.phones_title_phone_4') }}</a>
+                        <a class="top-phones-header__item"
+                            href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }}
+                            {{ __('text.phones_title_phone_5') }}</a>
+                        <a class="top-phones-header__item"
+                            href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }}
+                            {{ __('text.phones_title_phone_6') }}</a>
+                        <a class="top-phones-header__item"
+                            href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }}
+                            {{ __('text.phones_title_phone_7') }}</a>
                     </div>
                 </div>
             </div>
             <div class="header__content">
                 <div class="header__container">
                     <div class="header__top">
-                        <a class="header__logo"><img src="{{ asset('style_checkout/images/logo.svg') }}" alt=""></a>
+                        <a class="header__logo"><img src="{{ asset('style_checkout/images/logo.svg') }}"
+                                alt=""></a>
                         <div class="header__selects">
                             <div class="currency header__select">
-                                <h2 class="header__caption">{{__('text.checkout_currency')}}</h2>
+                                <h2 class="header__caption">{{ __('text.checkout_currency') }}</h2>
                                 <select name="form[]" id="currency_select" class="form"
                                     onclick="location.href=this.options[this.selectedIndex].value" data-scroll>
                                     @foreach ($Currency::GetAllCurrency() as $item)
@@ -56,7 +62,7 @@
                                 </select>
                             </div>
                             <div class="header__select header__select--language language">
-                                <h2 class="header__caption">{{__('text.checkout_language')}}</h2>
+                                <h2 class="header__caption">{{ __('text.checkout_language') }}</h2>
                                 <select name="form[]" id="language_select" class="form"
                                     onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
                                     @foreach ($Language::GetAllLanuages() as $item)
@@ -72,14 +78,16 @@
                         <div class="header__inner">
                             <a href="{{ route('cart.index') }}" class="header__link-back">
                                 <svg width="18" height="18">
-                                    <use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-right"></use>
+                                    <use
+                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-right">
+                                    </use>
                                 </svg>
-                                <span>{{__('text.checkout_back')}}</span>
+                                <span>{{ __('text.checkout_back') }}</span>
                             </a>
                             <div class="header__partners">
                                 <div class="header__partner">
-                                    <img src="{{ asset('style_checkout/images/partners/geotrust.svg') }}" width="90"
-                                        height="30" alt="Awesome image">
+                                    <img src="{{ asset('style_checkout/images/partners/geotrust.svg') }}"
+                                        width="90" height="30" alt="Awesome image">
                                 </div>
                                 <div class="header__partner">
                                     <img src="{{ asset('style_checkout/images/partners/norton.svg') }}" width="70"
@@ -101,15 +109,16 @@
         </header>
         <main class="succes">
             <div class="succes__container">
-                <h1 class="succes__title">{{__('text.success_complete')}}</h1>
-                <h2 class="succes__subtitle">{{__('text.success_congrat')}}
-                    {{ session('form.firstname') . ' ' . session('form.lastname') }}{{__('text.success_choice')}}</h2>
+                <h1 class="succes__title">{{ __('text.success_complete') }}</h1>
+                <h2 class="succes__subtitle">{{ __('text.success_congrat') }}
+                    {{ session('form.firstname') . ' ' . session('form.lastname') }}{{ __('text.success_choice') }}
+                </h2>
                 <div class="succes__block">
-                    <b>{{__('text.success_order_number')}}<span> {{ session('order.order_id') }}</span></b>
+                    <b>{{ __('text.success_order_number') }}<span> {{ session('order.order_id') }}</span></b>
                 </div>
                 <div class="succes__block succes__block--transparent">
-                    {{__('text.success_charge')}}{{ $Currency::convert(session('total.all')) }}, <br>
-                    {{__('text.success_amount')}}
+                    {{ __('text.success_charge') }}{{ $Currency::convert(session('total.all')) }}, <br>
+                    {{ __('text.success_amount') }}
                 </div>
                 {{-- {if $data.success_info.gift_card}
 					<div class="gift_block">
@@ -126,56 +135,56 @@
 					</div>
 				{/if} --}}
                 <div class="succes__block">
-                    <p><b>{{__('text.success_confirm')}}</b></p>
+                    <p><b>{{ __('text.success_confirm') }}</b></p>
                     <div class="succes__row">
                         <a style="cursor: pointer;" class="succes__button button" id="succes__button">
                             <svg width="18" height="18">
                                 <use xlink:class="succes__link"
                                     href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-phone"></use>
                             </svg>
-                            <span>{{__('text.success_call_me')}}</span>
+                            <span>{{ __('text.success_call_me') }}</span>
                         </a>
                         <p id = "thank" hidden>
-                            {{__('text.success_shortly')}}
+                            {{ __('text.success_shortly') }}
                         </p>
                         <p class="succes__phones">
-                            <span>{{__('text.success_call_us')}}</span>
+                            <span>{{ __('text.success_call_us') }}</span>
                             <a class="succes__link"
-                                href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}{{__('text.phones_title_phone_1')}}</a> <a
-                                class="succes__link"
-                                href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}{{__('text.phones_title_phone_2')}}</a> <a
-                                class="succes__link"
-                                href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}{{__('text.phones_title_phone_3')}}</a> <a
-                                class="succes__link"
-                                href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}{{__('text.phones_title_phone_4')}}</a> <a
-                                class="succes__link"
-                                href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}{{__('text.phones_title_phone_5')}}</a> <a
-                                class="succes__link"
-                                href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}{{__('text.phones_title_phone_6')}}</a> <a
-                                class="succes__link"
-                                href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}{{__('text.phones_title_phone_7')}}</a>
+                                href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }}{{ __('text.phones_title_phone_1') }}</a>
+                            <a class="succes__link"
+                                href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }}{{ __('text.phones_title_phone_2') }}</a>
+                            <a class="succes__link"
+                                href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }}{{ __('text.phones_title_phone_3') }}</a>
+                            <a class="succes__link"
+                                href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }}{{ __('text.phones_title_phone_4') }}</a>
+                            <a class="succes__link"
+                                href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }}{{ __('text.phones_title_phone_5') }}</a>
+                            <a class="succes__link"
+                                href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }}{{ __('text.phones_title_phone_6') }}</a>
+                            <a class="succes__link"
+                                href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }}{{ __('text.phones_title_phone_7') }}</a>
                         </p>
                     </div>
                 </div>
                 <div class="succes__block">
-                    <b>{{__('text.success_support')}} </b> <a class="succes__link"
+                    <b>{{ __('text.success_support') }} </b> <a class="succes__link"
                         href="https://true-client-support.com">true-client-support.com</a>
                 </div>
                 <div class="succes__block">
-                    <b>{{__('text.success_email')}} </b> <a class="succes__link"
+                    <b>{{ __('text.success_email') }} </b> <a class="succes__link"
                         href="mailto:support@true-client-support.com">support@true-client-support.com</a>
                 </div>
                 <div class="succes__last-words">
-                    <p>{{__('text.common_receive')}}</p>
-                    <p>{{__('text.success_sms')}}</p>
-                    <p>{{__('text.success_help')}}</p>
-                    <p>{{__('text.success_thank')}}</p>
+                    <p>{{ __('text.common_receive') }}</p>
+                    <p>{{ __('text.success_sms') }}</p>
+                    <p>{{ __('text.success_help') }}</p>
+                    <p>{{ __('text.success_thank') }}</p>
                 </div>
             </div>
         </main>
         <footer class="footer">
             <div class="footer__container">
-                <p class="footer__text">{{__('text.success_copyright')}} {{__('text.success_ltd')}}</p>
+                <p class="footer__text">{{ __('text.success_copyright') }} {{ __('text.success_ltd') }}</p>
             </div>
         </footer>
     </div>

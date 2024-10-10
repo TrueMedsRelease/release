@@ -76,10 +76,22 @@
                 </tbody>
             </table>
 		</form> --}}
-		<h3 class="payment-details__caption">{{__('text.admin_currencies_currencies_title')}}</h3>
+		<h3 class="payment-details__caption" style="margin-bottom:15px;">{{__('text.admin_currencies_currencies_title')}}</h3>
 		<form id="currencies_form" name="currencies_form" action="" method="POST">
             @csrf
             <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
+                <thead class="table_head">
+                    <tr align="center">
+                        <th width="5%">{{__('text.admin_currencies_default_title')}}</th>
+                        <th width="5%">{{__('text.admin_currencies_show_title')}}</th>
+                        <th width="19%">{{__('text.admin_currencies_name_title')}}</th>
+                        <th width="12%">{{__('text.admin_currencies_prefix_title')}}</th>
+                        <th width="12%">{{__('text.admin_currencies_code_title')}}</th>
+                        <th width="12%">{{__('text.admin_currencies_coeff_title')}}</th>
+                        <th width="19%">{{__('text.admin_currencies_country_iso2_title')}}</th>
+                        <th width="16%">&nbsp;</th>
+                    </tr>
+                </thead>
                 <tbody valign="middle" align="center">
                 @foreach ($currencies_info as $cur_currency_info)
                     <tr>

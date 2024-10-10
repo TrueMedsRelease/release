@@ -115,7 +115,7 @@ class AdminController extends Controller
         return view('admin.seo', [
             'title' => $title,
             'agent' => $agent,
-            'logged_in' => true,
+            'logged_in' => true
         ]);
     }
 
@@ -141,20 +141,150 @@ class AdminController extends Controller
             }
         }
 
-        $user_login = DB::select("SELECT `login` FROM `user` WHERE `role` = 'administrator'");
-        $user_login = $user_login[0];
-
+        $all_products_info = AdminServices::getAllProductWithCategory();
 
         $returnHTML = view('admin.ajax.seo_content')->with([
-            "user_login" => $user_login->login,
             "templates" => $templates,
             "cur_template_scrin" => $cur_template_scrin,
             "cur_template" => $cur_design,
             "page_properties" => '',
             'language' => Language::class,
+            'all_products_info' => $all_products_info,
+            'product_url' => [],
         ])->render();
 
         return response()->json(array('success' => true, 'html' => "$returnHTML", 'template' => $cur_design));
+    }
+
+    public function load_product_url(Request $request) {
+        $product_id = $request->product_id;
+
+        $cur_design = env('APP_DESIGN');
+        $templates = [];
+        $catalog_templates_path = resource_path() . '/views';
+        $cur_template_scrin = "";
+        $templates_dir_content = scandir($catalog_templates_path);
+        foreach ($templates_dir_content as $cur_template) {
+            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+                $cur_template_info = [];
+                $cur_template_info["name"] = $cur_template;
+                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
+                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
+                }
+                $templates[] = $cur_template_info;
+                if ($cur_template_info["name"] == $cur_design) {
+                    $cur_template_scrin = $cur_template_info["scrin"];
+                }
+            } else {
+                continue;
+            }
+        }
+
+        $all_products_info = AdminServices::getAllProductWithCategory();
+        $product_url = AdminServices::getProductUrl($product_id);
+
+        $returnHTML = view('admin.ajax.seo_content')->with([
+            "templates" => $templates,
+            "cur_template_scrin" => $cur_template_scrin,
+            "cur_template" => $cur_design,
+            "page_properties" => '',
+            'language' => Language::class,
+            'all_products_info' => $all_products_info,
+            'product_url' => $product_url,
+        ])->render();
+
+        return response()->json(array('success' => true, 'html' => "$returnHTML"));
+    }
+
+    public function save_product_url(Request $request) {
+        $product_form = $request->product_form_data;
+        $product_id = $product_form['all_products_field'];
+        $error = [];
+
+        foreach (Language::GetAllLanuages() as $language) {
+            $product_url = $product_form[$language['id'] . "_url_field"];
+
+            $has_errors = false;
+
+            if (empty($product_url)) {
+                $has_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => 'Empty URL'
+                ];
+            }
+
+            if (!$has_errors) {
+                $cur_language_id = $language['id'];
+
+                DB::update('UPDATE product_desc SET `url` = "' . $product_url . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
+        }
+    }
+
+    public function load_pixel(Request $request) {
+        $page = $request->page;
+
+        $pixel_text = DB::select("SELECT * FROM `pixel` WHERE `page` = '$page'");
+
+        if(count($pixel_text) > 0) {
+            $pixel_text = $pixel_text[0];
+            $text = $pixel_text->pixel;
+
+            return response()->json(array('status' => 'success', 'text' => $text));
+        } else {
+            return response()->json(array('status' => 'success', 'text' => ''));
+        }
+    }
+
+    public function save_pixel(Request $request) {
+        $page = $request->selected_page;
+        $pixel_text = $request->pixel_text['pixel_text'];
+        $has_error = false;
+        $error = [];
+
+        if (empty($page)) {
+            $has_error = true;
+            $error = [
+                'status' => 'error',
+                'text' => 'Empty Page'
+            ];
+        }
+
+        $pixel = DB::select("SELECT * FROM `pixel` WHERE `page` = '$page'");
+
+        if (!$has_error) {
+            if (count($pixel) > 0) {
+                $pixel = $pixel[0];
+                if ($pixel_text == null || $pixel_text == 'null') {
+                    $pixel_text = '';
+                }
+                DB::table('pixel')
+                    ->where('page', '=', $page)
+                    ->update(['pixel' => $pixel_text]);
+            } else {
+                if ($pixel_text == null || $pixel_text == 'null') {
+                    $pixel_text = '';
+                }
+                DB::table('pixel')->insert([
+                    'page' => $page,
+                    'pixel' => $pixel_text
+                ]);
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
+        }
     }
 
     public function main_properties() {
@@ -175,40 +305,6 @@ class AdminController extends Controller
             "user_login" => $user_login->login,
         ]);
     }
-
-    // public function main_properties_content() {
-    //     $cur_design = env('APP_DESIGN');
-    //     $templates = [];
-    //     $catalog_templates_path = resource_path() . '/views';
-    //     $cur_template_scrin = "";
-    //     $templates_dir_content = scandir($catalog_templates_path);
-    //     foreach ($templates_dir_content as $cur_template) {
-    //         if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
-    //             $cur_template_info = [];
-    //             $cur_template_info["name"] = $cur_template;
-    //             if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-    //                 $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-    //             }
-    //             $templates[] = $cur_template_info;
-    //             if ($cur_template_info["name"] == $cur_design) {
-    //                 $cur_template_scrin = $cur_template_info["scrin"];
-    //             }
-    //         } else {
-    //             continue;
-    //         }
-    //     }
-
-    //     $returnHTML = view('admin.ajax.main_properties_content')->with([
-    //         "user_login" => $user_login->login,
-    //         "templates" => $templates,
-    //         "cur_template_scrin" => $cur_template_scrin,
-    //         "cur_template" => $cur_design,
-    //         "page_properties" => '',
-    //         'language' => Language::class,
-    //     ])->render();
-
-    //     return response()->json(array('success' => true, 'html' => "$returnHTML", 'template' => $cur_design));
-    // }
 
     public function add_to_main(Request $request) {
         $selected_products_id = $request->selected_products;
@@ -874,7 +970,7 @@ class AdminController extends Controller
         foreach (Language::GetAllLanuages() as $language) {
             $product_name = $product_form[$language['id'] . "_name_field"];
             $product_desc = $product_form[$language['id'] . "_desc_field"];
-            $product_url = $product_form[$language['id'] . "_url_field"];
+            // $product_url = $product_form[$language['id'] . "_url_field"];
             $product_title = $product_form[$language['id'] . "_title_field"];
             $product_keywords = $product_form[$language['id'] . "_keywords_field"];
             $product_description = $product_form[$language['id'] . "_description_field"];
@@ -890,14 +986,14 @@ class AdminController extends Controller
                 ];
             }
 
-            if (empty($product_url)) {
-                $has_errors = true;
+            // if (empty($product_url)) {
+            //     $has_errors = true;
 
-                $error = [
-                    'status' => 'error',
-                    'text' => 'Empty URL'
-                ];
-            }
+            //     $error = [
+            //         'status' => 'error',
+            //         'text' => 'Empty URL'
+            //     ];
+            // }
 
             if (empty($product_desc)) {
                 $has_errors = true;
@@ -909,28 +1005,40 @@ class AdminController extends Controller
             }
 
             if (!$has_errors) {
-                $product_desc = str_replace("'", "\'", $product_desc);
-                $product_desc = str_replace('"', '\"', $product_desc);
-                $product_desc = str_replace('%', "\%", $product_desc);
-                $product_desc = str_replace('_', "\_", $product_desc);
-                $product_desc = str_replace('>', "\>", $product_desc);
-                $product_desc = str_replace('<', "\<", $product_desc);
-                $product_description = str_replace("'", "\'", $product_description);
-                $product_description = str_replace('"', '\"', $product_description);
-                $product_description = str_replace('%', "\%", $product_description);
-                $product_description = str_replace('_', "\_", $product_description);
-                $product_description = str_replace('>', "\>", $product_description);
-                $product_description = str_replace('<', "\<", $product_description);
-                $product_keywords = str_replace("'", "\'", $product_keywords);
-                $product_keywords = str_replace('"', '\"', $product_keywords);
-                $product_keywords = str_replace('%', "\%", $product_keywords);
-                $product_keywords = str_replace('_', "\_", $product_keywords);
-                $product_keywords = str_replace('>', "\>", $product_keywords);
-                $product_keywords = str_replace('<', "\<", $product_keywords);
+                // $product_desc = str_replace("'", "\'", $product_desc);
+                // $product_desc = str_replace('"', '\"', $product_desc);
+                // $product_desc = str_replace('%', "\%", $product_desc);
+                // $product_desc = str_replace('_', "\_", $product_desc);
+                // $product_desc = str_replace('>', "\>", $product_desc);
+                // $product_desc = str_replace('<', "\<", $product_desc);
+                // $product_description = str_replace("'", "\'", $product_description);
+                // $product_description = str_replace('"', '\"', $product_description);
+                // $product_description = str_replace('%', "\%", $product_description);
+                // $product_description = str_replace('_', "\_", $product_description);
+                // $product_description = str_replace('>', "\>", $product_description);
+                // $product_description = str_replace('<', "\<", $product_description);
+                // $product_keywords = str_replace("'", "\'", $product_keywords);
+                // $product_keywords = str_replace('"', '\"', $product_keywords);
+                // $product_keywords = str_replace('%', "\%", $product_keywords);
+                // $product_keywords = str_replace('_', "\_", $product_keywords);
+                // $product_keywords = str_replace('>', "\>", $product_keywords);
+                // $product_keywords = str_replace('<', "\<", $product_keywords);
 
                 $cur_language_id = $language['id'];
 
-                DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `url` = "' . $product_url . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+                DB::table('product_desc')
+                    ->where('product_id', '=', $product_id)
+                    ->where('language_id', '=', $cur_language_id)
+                    ->update([
+                        'name' => $product_name,
+                        'desc' => $product_desc,
+                        'title' => $product_title,
+                        'keywords' => $product_keywords,
+                        'description' => $product_description
+                    ]);
+
+                // DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `url` = "' . $product_url . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
+                // DB::update('UPDATE product_desc SET `name` = "' . $product_name . '", `desc` = "' . $product_desc . '", `title` = "' . $product_title . '", `keywords` = "' . $product_keywords . '", `description` = "' . $product_description . '" WHERE product_id = ' . $product_id . ' AND language_id = ' . $cur_language_id . ' ');
             }
         }
 
@@ -1011,7 +1119,14 @@ class AdminController extends Controller
             }
 
             if(!$was_errors) {
-                DB::update('UPDATE `language` SET `name` = "' . $cur_language_name . '", `code` = "' . $cur_language_code . '", `country_iso2` = "' . $cur_language_country_iso2 . '" WHERE id = ' . $cur_language["id"] . ' ');
+                DB::table('language')
+                    ->where('id', '=', $cur_language["id"])
+                    ->update([
+                        'name' => $cur_language_name,
+                        'code' => $cur_language_code,
+                        'country_iso2' => $cur_language_country_iso2
+                    ]);
+                // DB::update('UPDATE `language` SET `name` = "' . $cur_language_name . '", `code` = "' . $cur_language_code . '", `country_iso2` = "' . $cur_language_country_iso2 . '" WHERE id = ' . $cur_language["id"] . ' ');
             }
 
             if(isset($languages_form[$cur_language['id'] . '_show_field'])) {
@@ -1104,7 +1219,16 @@ class AdminController extends Controller
             }
 
             if(!$was_errors) {
-                DB::update('UPDATE `currency` SET `name` = "' . $cur_currency_name . '", `code` = "' . $cur_currency_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '", `coef` = "' . $cur_currency_coef . '", `prefix` = "' . $cur_currency_prefix . '" WHERE id = ' . $cur_currency_id . ' ');
+                DB::table('currency')
+                    ->where('id', '=', $cur_currency_id)
+                    ->update([
+                        'name' => $cur_currency_name,
+                        'code' => $cur_currency_code,
+                        'country_iso2' => $cur_currency_country_iso2,
+                        'coef' => $cur_currency_coef,
+                        'prefix' => $cur_currency_prefix
+                    ]);
+                // DB::update('UPDATE `currency` SET `name` = "' . $cur_currency_name . '", `code` = "' . $cur_currency_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '", `coef` = "' . $cur_currency_coef . '", `prefix` = "' . $cur_currency_prefix . '" WHERE id = ' . $cur_currency_id . ' ');
             }
 
             if(isset($currencies_form[$cur_currency_id . '_show_field'])) {

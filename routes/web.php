@@ -224,6 +224,10 @@ Route::controller(AdminController::class)->group(function() {
 
     Route::get('/admin/seo', 'admin_seo')->name('admin.admin_seo');
     Route::get('/admin/seo_content', 'admin_seo_content')->name('admin.admin_seo_content')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/seo/load_pixel', 'load_pixel')->name('admin.load_pixel')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/seo/save_pixel', 'save_pixel')->name('admin.save_pixel')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/seo/load_product_url', 'load_product_url')->name('admin.load_product_url')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/seo/save_product_url', 'save_product_url')->name('admin.save_product_url')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/main_properties', 'main_properties')->name('admin.main_properties');
     Route::post('/admin/main_properties/save_user_properties', 'save_user_properties')->name('admin.save_user_properties')->withoutMiddleware(VerifyCsrfToken::class);
