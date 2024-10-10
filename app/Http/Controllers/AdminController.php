@@ -61,7 +61,7 @@ class AdminController extends Controller
 
             $result = [
                 'status' => 'success',
-                'url' => route('admin.main_properties'),
+                'url' => route('admin.admin_seo'),
             ];
         } else {
             $result = [
