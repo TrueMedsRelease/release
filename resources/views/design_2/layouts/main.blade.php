@@ -44,11 +44,9 @@
     <script src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
     <script src="{{ asset("vendor/jquery/init.js") }}"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    {!! isset($pixel) ? $pixel : '' !!}
 </head>
 <body>
-
-    {!! isset($pixel) ? $pixel : '' !!}
-
     <script>
         const design = 2;
     </script>

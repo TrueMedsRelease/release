@@ -9,11 +9,9 @@
 	<link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <title>{{__('text.checkout_title')}}</title>
+    {!! isset($pixel) ? $pixel : '' !!}
 </head>
 <body>
-    
-    {!! isset($pixel) ? $pixel : '' !!}
-
     <div class="preloader">
 		<div class="preloader__row">
 			<div class="preloader__item"></div>
