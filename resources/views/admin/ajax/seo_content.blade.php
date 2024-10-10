@@ -260,8 +260,7 @@
                         </select>
                     </td>
                     <td width="12%">
-                        &nbsp;
-                        <div id="products_loading_messages"></div>
+                        <div id="products_loading_messages" style="margin-bottom: 870px"></div>
                     </td>
                     @if (count($product_url) > 0)
                         <td valign="middle" width="60%" align="center">
@@ -277,7 +276,7 @@
                                     </div>
                                     </div>
                                 @endforeach
-                            </fieldset>                        
+                            </fieldset>
                             <fieldset>
                                 <div id="products_saving_messages"></div>
                             </fieldset>

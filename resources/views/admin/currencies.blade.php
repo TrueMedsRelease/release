@@ -89,7 +89,7 @@
                         <th width="12%">{{__('text.admin_currencies_code_title')}}</th>
                         <th width="12%">{{__('text.admin_currencies_coeff_title')}}</th>
                         <th width="19%">{{__('text.admin_currencies_country_iso2_title')}}</th>
-                        <th width="16%">&nbsp;</th>
+                        {{-- <th width="16%">&nbsp;</th> --}}
                     </tr>
                 </thead>
                 <tbody valign="middle" align="center">

@@ -1,7 +1,12 @@
 @extends('admin.layouts.main')
 
 @section('title', $title)
-@section('page_name', '')
+{{-- @section('page_name', '') --}}
+
+@section('style_title', 'text-align: center;')
+@section('page_name')
+    <img src="/admin_style/images/logo_truemeds.png">
+@endsection
 
 @section('content')
 <div class="popup login popup_show">
