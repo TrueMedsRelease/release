@@ -110,7 +110,7 @@
 	<main class="page">
 		<div class="page__container">
 			<section class="page__inner">
-				<h1 class="main-title">@yield('page_name', 'Defult')</h1>
+				<h1 class="main-title" style="@yield('style_title', '')">@yield('page_name', 'Defult')</h1>
 
                 @yield('content')
 

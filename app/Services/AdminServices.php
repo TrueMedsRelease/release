@@ -60,6 +60,7 @@ class AdminServices
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->where('product.is_showed', '=', 0)
                 ->where('product_category.category_id', '=', $cur_category_id->id)
+                ->whereNotIn('product.id', [615, 224, 223, 225])
                 ->orderBy('product_desc.name')
                 ->get(['product.id', 'product_desc.name', 'product.main_order'])
                 ->toArray();
@@ -91,6 +92,7 @@ class AdminServices
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->where('product.is_showed', '=', 1)
                 ->where('product_category.category_id', '=', $cur_category_id->id)
+                ->whereNotIn('product.id', [615, 224, 223, 225])
                 ->orderBy('product_desc.name')
                 ->get(['product.id', 'product_desc.name', 'product.main_order'])
                 ->toArray();
@@ -121,6 +123,7 @@ class AdminServices
                 ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->where('product_category.category_id', '=', $cur_category_id->id)
+                ->whereNotIn('product.id', [615, 224, 223, 225])
                 ->orderBy('product_desc.name')
                 ->get(['product.id', 'product_desc.name', 'product.main_order'])
                 ->toArray();
@@ -248,12 +251,12 @@ class AdminServices
                     ->get(['language_id', 'name', 'desc', 'url', 'title', 'keywords', 'description'])
                     ->toArray();
 
-            
+
             $urls = [];
             foreach ($product_info as $product_val) {
                 $urls[$product_val->language_id] = $product_val->url;
             }
-            
+
         } else {
             $url = [];
         }
