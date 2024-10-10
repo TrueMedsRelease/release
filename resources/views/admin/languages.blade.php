@@ -73,7 +73,7 @@
                     <th width="25%">{{__('text.admin_languages_name_title')}}</th>
                     <th width="15%">{{__('text.admin_languages_code_title')}}</th>
                     <th width="25%">{{__('text.admin_languages_country_iso2_title')}}</th>
-                    <th width="15%">&nbsp;</th>
+                    {{-- <th width="15%">&nbsp;</th> --}}
                 </thead>
                 <tbody valign="middle" align="center">
                     @foreach ($languages_info as $cur_lang_info)

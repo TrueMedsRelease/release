@@ -61,7 +61,7 @@ class AdminController extends Controller
 
             $result = [
                 'status' => 'success',
-                'url' => route('admin.main_properties'),
+                'url' => route('admin.admin_seo'),
             ];
         } else {
             $result = [
@@ -561,12 +561,16 @@ class AdminController extends Controller
             }
         }
 
+        $all_products_info = AdminServices::getAllProductWithCategory();
+
         $returnHTML = view('admin.ajax.seo_content')->with([
             "templates" => $templates,
             "cur_template_scrin" => $cur_template_scrin,
             "cur_template" => $cur_design,
             "page_properties" => $page_properties,
             'language' => Language::class,
+            'all_products_info' => $all_products_info,
+            'product_url' => []
         ])->render();
 
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
