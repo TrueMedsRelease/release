@@ -11,6 +11,9 @@
     <title>{{__('text.checkout_title')}}</title>
 </head>
 <body>
+    
+    {!! isset($pixel) ? $pixel : '' !!}
+
     <div class="preloader">
 		<div class="preloader__row">
 			<div class="preloader__item"></div>

@@ -42,8 +42,15 @@ class CheckoutController extends Controller
             }
         }
 
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'checkout'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
         $design = session('design') ? session('design') : config('app.design');
-        return view('checkout');
+        return view('checkout', ['pixel' => $pixel]);
     }
 
     public function checkout()
@@ -139,13 +146,6 @@ class CheckoutController extends Controller
 
         $states = State::$states;
 
-        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'checkout'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
-            $pixel .= stripcslashes($item->pixel) . "\n\n";
-        }
-
         $returnHTML = view('checkout_content')->with([
             'Language' => Language::class,
             'Currency' => Currency::class,
@@ -159,7 +159,7 @@ class CheckoutController extends Controller
             'phone_codes' => $phone_codes,
             'countries' => $countries,
             'states' => $states,
-            'pixel' => $pixel
+
         ])->render();
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
     }
