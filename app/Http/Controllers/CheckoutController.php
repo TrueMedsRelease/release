@@ -429,7 +429,7 @@ class CheckoutController extends Controller
                 'refc' => session('refc', ''),
                 'keyword' => session('keyword', ''),
                 'domain_from' => request()->getHost(),
-                'total' => session('total.all'),
+                'total' => session('total.checkout_total'),
                 'shipping' => session('cart_option.shipping'),
                 'products' => $products_str,
                 'saff' => session('saff', ''),
@@ -552,7 +552,7 @@ class CheckoutController extends Controller
                 'refc' => session('refc', ''),
                 'keyword' => session('keyword', ''),
                 'domain_from' => request()->getHost(),
-                'total' => session('total.all'),
+                'total' => session('total.checkout_total'),
                 'shipping' => session('cart_option.shipping'),
                 'products' => $products_str,
                 'saff' => session('saff', ''),
@@ -604,7 +604,7 @@ class CheckoutController extends Controller
         $data = [
             'method' => 'get_crypt',
             'api_key' => '7c73d5ca242607050422af5a4304ef71',
-            'price' => session('total.all') * 0.85,
+            'price' => session('total.checkout_total') * 0.85,
             'email' => $request->email,
             'currency' => $request->currency,
          ];
@@ -612,7 +612,7 @@ class CheckoutController extends Controller
         $response = Http::post('http://true-services.net/checkout/order.php', $data);
 
         $response = json_decode($response, true);
-        $response['crypto_total'] = Currency::Convert(session('total.all') * 0.85);
+        $response['crypto_total'] = Currency::Convert(session('total.checkout_total') * 0.85);
         $response['qr'] = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
         $response['currency'] = $request->currency;
 
@@ -745,7 +745,7 @@ class CheckoutController extends Controller
                     'refc' => session('refc', ''),
                     'keyword' => session('keyword', ''),
                     'domain_from' => request()->getHost(),
-                    'total' => session('total.all'),
+                    'total' => session('total.checkout_total'),
                     'shipping' => session('cart_option.shipping'),
                     'products' => $products_str,
                     'saff' => session('saff', ''),
