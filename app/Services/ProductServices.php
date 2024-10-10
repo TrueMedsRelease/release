@@ -740,17 +740,29 @@ class ProductServices
             ->where('sinonim', 'LIKE', "%$search_text%")
             ->where('sinonim', '!=', '')
             ->where('is_showed', '=', 1)
-            ->first()->toArray();
+            ->get()->toArray();
 
             $tips = "";
-            $sinonims = explode("\n", $product['sinonim']);
-            foreach($sinonims as $s)
+            $result = [];
+            foreach($product as $item)
             {
-                if(stripos($s, $search_text) !== false)
+                $sinonims = explode("\n", $item['sinonim']);
+                foreach($sinonims as $s)
                 {
-                    $tips .= $s . "||" . Str::lower($s) . ".html\n";
+                    if(stripos($s, $search_text) !== false)
+                    {
+                        $result[] = preg_replace('/[^A-Za-z0-9\-]/', '', $s);;
+                    }
                 }
             }
+
+            $result = array_unique($result);
+
+            foreach($result as $item)
+            {
+                $tips .= $item . "||" . Str::lower($item) . ".html\n";
+            }
+
         }
         catch(\Exception $e)
         {
