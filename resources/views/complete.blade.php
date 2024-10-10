@@ -117,7 +117,7 @@
                     <b>{{ __('text.success_order_number') }}<span> {{ session('order.order_id') }}</span></b>
                 </div>
                 <div class="succes__block succes__block--transparent">
-                    {{ __('text.success_charge') }}{{ $Currency::convert(session('total.all')) }}, <br>
+                    {{ __('text.success_charge') }}{{ $Currency::convert(session('total.checkout_total')) }}, <br>
                     {{ __('text.success_amount') }}
                 </div>
                 {{-- {if $data.success_info.gift_card}
