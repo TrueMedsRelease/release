@@ -100,9 +100,13 @@
 								<div class="search__inner inner-search">
 									<div class="inner-search__label">{{__('text.common_first_letter')}}</div>
 									<ul class="inner-search__list">
-                                        @foreach (range('A', 'Z') as $l)
+                                        @foreach ($first_letters as $key => $active_letter)
                                             <li class="inner-search__item">
-                                                <a href="{{ route('home.first_letter', $l) }}">{{ $l }}</a>
+                                                @if ($active_letter)
+                                                    <a href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                                                @else
+                                                    {{ $key }}
+                                                @endif
                                             </li>
                                         @endforeach
 									</ul>
@@ -478,7 +482,7 @@
         </div>
         <div class="footer__copyright">
             <p>
-                {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
+                {{__('text.license_text_license1_1')}} {{ $domain }} {{__('text.license_text_license1_2')}}
                 {{__('text.license_text_license2_d2')}}
             </p>
         </div>

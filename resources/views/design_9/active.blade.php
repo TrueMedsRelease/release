@@ -45,7 +45,7 @@
                     <img src="{{ asset("$design/images/bonus2_2.png") }}">
                 </div>
             </div>
-            <h2 class="bestsellers__title title">{{__('text.aktiv_aktiv_result_title')}} {{ $active }}</h2>
+            <h2 class="bestsellers__title title">{{__('text.aktiv_aktiv_result_title')}} {{ ucwords(str_replace('-', ' ', $active)) }}</h2>
             <div class="bestsellers__body">
                 <div class="product_list">
                     @foreach ($products as $product)
@@ -70,7 +70,7 @@
                                             <span class="product_name">{{ $product['name'] }}</span>
                                             <span class="product_active">
                                                 @foreach ($product['aktiv'] as $aktiv)
-                                                    {{ $aktiv }}
+                                                    {{ $aktiv['name'] }}
                                                 @endforeach
                                             </span>
                                         </div>

@@ -8097,6 +8097,14 @@ a:hover {
 
 #captcha_error, #password_error, #new_password_error, #new_password_repeat_error {
     display: none;
+    width: 160px;
+    text-align: center;
+}
+
+.popup__row{
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 #language_field option {

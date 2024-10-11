@@ -515,7 +515,7 @@
                 <div class="copyright">
                     <p>
                         {{ __('text.license_text_license1_1') }}
-                        {{ str_replace(['http://', 'https://'], '', env('APP_URL')) }}
+                        {{ $domain }}
                         {{ __('text.license_text_license1_2') }}
                         {{ __('text.license_text_license2_d5') }}
                     </p>
@@ -551,20 +551,19 @@
         </a>
     </div>
     <div class="announce">
-        @yield('announce')
-        {{-- {if $data.is_cart_page}
-        <div class="announce__item announce__item--yellow">
-        <div class="announce__icon">
-        <svg width="24" height="24">
-            <use xlink:href="{$path.image}/icons/icons.svg#svg-clock"></use>
-        </svg>
-    </div>
-    <div class="announce__text">{#cart1#}<b>{$data.customer.country}{#cart2#}</b></div>
+        <div class="announce__item @yield('announce_color', 'announce__item--blue')">
+            <div class="announce__icon">
+                <svg width="24" height="24">
+                    <use xlink:href="@yield('announce_img', asset($design . '/images/icons/icons.svg#svg-checkmark'))"></use>
+                </svg>
+            </div>
+            <div class="announce__text">
+                <b>@yield('announce_text_1', random_int(2, 30) .' ' .__('text.common_product1'))</b>@yield('announce_text_2', __('text.common_product2'))
+            </div>
         </div>
-    {/if} --}}
     </div>
 
-    <input hidden id="stattemp" value="{$data.web_statistic.params_string}">
+    {{-- <input hidden id="stattemp" value="{$data.web_statistic.params_string}"> --}}
 
     <script src="{{ asset("$design/js/app.js") }}"></script>
     <script src="{{ asset("$design/js/slick.js") }}"></script>

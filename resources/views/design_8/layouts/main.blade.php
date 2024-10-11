@@ -247,7 +247,7 @@
 
             <p class="footer_copyright">
                 {{ __('text.license_text_license1_1') }}
-                {{ str_replace(['http://', 'https://'], '', env('APP_URL')) }}
+                {{ $domain }}
                 {{ __('text.license_text_license1_2') }}
                 {{ __('text.license_text_license2_d8') }}
             </p>

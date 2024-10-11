@@ -51,10 +51,9 @@
                                 <label for="name" class="form__label">{{__('text.affiliate_code')}}</label>
                                 <div class="form__input">
                                     <picture>
-                                        <source srcset="{{ captcha_src() }}" type="image/webp">
-                                        <img src="{{ captcha_src() }}">
+                                        <img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 14px;">
                                     </picture>
-                                    <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" class="form__input input">
+                                    <input autocomplete="off" type="text" id="captcha" name="form[captcha]" class="form__input input" placeholder="{{__('text.affiliate_code')}}" style="width: auto">
                                 </div>
                             </div>
                             <button onclick="sendAjaxAffiliate()" type="button" class="form__button" id = "message_send_button">

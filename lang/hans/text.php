@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "空字段",
+    "errors_wrong_captcha_value" => "验证码错误！",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -285,7 +285,9 @@ return [
     "contact_us_thanks" => "感谢！",
     "contact_us_sended" => "您的消息已成功发出。",
     "about_us_title" => "关于我们",
-    "about_us_text" => "<p>凭借20多年的线上服务经验，我公司努力保持并持续改善我们的客户服务水平。我们致力于全方位满足客户的需求。我们所有的产品均有现货，因此我们能在收到您付款后的48小时内发货。</p>",
+    "about_us_text" => "<p>凭借20多年的线上服务经验，我公司努力保持并持续改善我们的客户服务水平。我们致力于全方位满足客户的需求。我们所有的产品均有现货，因此我们能在收到您付款后的48小时内发货。</p>
+<p>我们为客户提供100%的送货保证。也就是说，一旦出现药物没有准时送达的情况，我们将免费重新发货，或全额退款。此外，如果您对药物感到不满意或有任何的疑虑，我们的无忧退款政策允许您在30天内联系客服以获得全额退款。</p>
+<p>确保客户满意是我们的第一要务。我们为新客户提供了丰厚的福利，老客户也能享受折扣优惠。</p>",
     "about_us_title1" => "高质量仿制药s",
     "about_us_text1" => "我们网站上出售的仿制药在剂量、药力、质量和安全性上与品牌药是完全相同的。这些药物的治疗效果和品牌处方药并无二致，服用方式也没有任何不同。",
     "about_us_title2" => "免费快速送货",

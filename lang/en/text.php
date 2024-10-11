@@ -2,7 +2,7 @@
 
 return [
     "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_wrong_captcha_value" => "Wrong Captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -334,7 +334,9 @@ return [
     "order_status_reorder_now_text" => "Reorder Now",
     "we_are_legal_title" => "We Are Legal",
     "about_us_title" => "About Us",
-    "about_us_text" => "<p>With more than 20 years of experience online, our company strives to maintain and improve our customer service. Our business is determined to satisfy the needs of our customers from start to finish. All our products are always in stock, meaning they can be shipped within 48 hours once your payment has cleared.</p>",
+    "about_us_text" => "<p>With more than 20 years of experience online, our company strives to maintain and improve our customer service. Our business is determined to satisfy the needs of our customers from start to finish. All our products are always in stock, meaning they can be shipped within 48 hours once your payment has cleared.</p>
+<p>We offer customers a 100% delivery guarantee, which means any medications that do not reach you on time with be reshipped for <b>FREE</b>, or you will receive a full refund. Plus, if you are not fully satisfied with your medications or have any concerns, our hassle-free, money-back policy allows you to contact customer service within 30-days to receive a full refund.</p>
+<p>Our business strives to make customer satisfaction our number one priority. We welcome new customers offering outstanding benefits, and discounts are available for returning shoppers.</p>",
     "about_us_title1" => "High-Quality Generic Drugs",
     "about_us_text1" => "The generic drugs sold on our site provide the exact dosage, strength, quality, and safety as name-brand drugs. These medications provide the same therapeutic benefits as name-brand prescriptions, and you will take them the exact same way.",
     "about_us_title2" => "Fast and Free Delivery",

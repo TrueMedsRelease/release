@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Tomt felt",
+    "errors_wrong_captcha_value" => "Forkert Captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -329,7 +329,9 @@ return [
     "order_status_reorder_now_text" => "Reorder Now",
     "we_are_legal_title" => "We Are Legal",
     "about_us_title" => "Om Os",
-    "about_us_text" => "<p>Med mere end 20 års online erfaring, bestræber vores firma sig på at opretholde og forbedre vores kundeservice. Vores forretning er fast besluttet på at tilfredsstille vore kunders behov fra start til slut. Alle vore produkter er altid på lager, hvilket betyder at de kan afsendes indenfor 48 timer når først din betaling går igennem.</p",
+    "about_us_text" => "<p>Med mere end 20 års online erfaring, bestræber vores firma sig på at opretholde og forbedre vores kundeservice. Vores forretning er fast besluttet på at tilfredsstille vore kunders behov fra start til slut. Alle vore produkter er altid på lager, hvilket betyder at de kan afsendes indenfor 48 timer når først din betaling går igennem.</p>
+<p>Vi tilbyder vore kune en 100% leveringsgaranti, som betyder at alle medikamenter, der ikke når rettidigt frem til dig bliver gensendt helt GRATIS, eller også får du alle pengene tilbage. Desuden, hvis du ikke er fuldt ud tilfreds med dine medikamenter eller har nogen bekymringer, så giver vores problemfri tilbagebetalingspolitik dig mulighed for at kontakte kundeservice indenfor 30 dage og få en fuld refusion.</p>
+<p>Vores forretning bestræber sig på at gøre kundetilfredshed til vores førsteprioritet. Vi byder altid nye kunder velkommen og tilbyder fremragende fordele og rabatter, der er tilgængelige for tilbagevendende kunder.</p>",
     "about_us_title1" => "Høj-kvalitets generiske medikamenter",
     "about_us_text1" => "De generiske medikamenter, vi sælger på vores side indeholder den nøjagtige samme dosering, styrke, kvalitet og sikkerhed som mærkevare medikamenter. Disse medikamenter giver de samme behandlingsmæssige fordele som mærkevareudgaverne og du tager dem på præcis den samme måde.",
     "about_us_title2" => "Hurtig og Gratis Levering",

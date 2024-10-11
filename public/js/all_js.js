@@ -174,6 +174,7 @@ function enterProfile() {
             },
             success: function (data) {
                 if (data['result'] == false) {
+                    $('#captcha_image_log').attr('src', data['new_captcha']);
                     $('#captcha_error .input').text(code_invalid_text);
                     $('#captcha_error').show();
                 } else {

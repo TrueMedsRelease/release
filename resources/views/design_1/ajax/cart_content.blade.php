@@ -4,7 +4,7 @@
         {{__('text.cart_cart_title')}}
     </h2>
     <ul class="basket-benefits">
-        <li class="basket-benefits__item @if($product_total_check >= 200 && $product_total_check <= 300) basket-benefits__item--regular @else basket-benefits__item--express @endif">
+        <li class="basket-benefits__item @if (session('cart_option')['shipping'] == 'regular') basket-benefits__item--regular @else basket-benefits__item--express @endif ">
             <span class="basket-benefits__title">
                 {{__('text.cart_free_regular')}}
             </span>
@@ -12,7 +12,7 @@
                 {{__('text.cart_sum_regular')}}
             </p>
         </li>
-        <li class="basket-benefits__item @if($product_total_check >= 300) basket-benefits__item--regular @else basket-benefits__item--express @endif">
+        <li class="basket-benefits__item @if (session('cart_option')['shipping'] == 'ems') basket-benefits__item--regular @else basket-benefits__item--express @endif ">
             <span class="basket-benefits__title">
                 {{__('text.cart_free_express')}}
             </span>

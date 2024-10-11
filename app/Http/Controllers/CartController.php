@@ -33,6 +33,7 @@ class CartController extends Controller
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('cart');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -40,6 +41,12 @@ class CartController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.cart', [
@@ -54,6 +61,8 @@ class CartController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -161,6 +170,12 @@ class CartController extends Controller
         $bonus = ProductServices::GetBonuses();
         $cards = ProductServices::GetGiftCard();
         $phone_codes = PhoneCodes::all()->toArray();
+        $first_letters = ProductServices::getFirstLetters();
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
         Cart::update_cart_total();
 
         $has_card = 0;
@@ -215,7 +230,8 @@ class CartController extends Controller
             'has_card' => $has_card,
             'is_only_card' => $is_only_card,
             'is_only_card_with_bonus' => $is_only_card_with_bonus,
-
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -269,9 +285,9 @@ class CartController extends Controller
         $product_total_check += session('cart_option')['bonus_price'];
 
         $country_info = CountryInfoCache::query()
-        ->where('country_iso2', '=', session('location')['country'])
-        ->get()
-        ->toArray();
+            ->where('country_iso2', '=', session('location')['country'])
+            ->get()
+            ->toArray();
 
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
@@ -296,7 +312,12 @@ class CartController extends Controller
         $bonus = ProductServices::GetBonuses();
         $cards = ProductServices::GetGiftCard();
         $phone_codes = PhoneCodes::all()->toArray();
-
+        $first_letters = ProductServices::getFirstLetters();
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
         Cart::update_cart_total();
 
         $has_card = 0;
@@ -350,6 +371,8 @@ class CartController extends Controller
             'has_card' => $has_card,
             'is_only_card' => $is_only_card,
             'is_only_card_with_bonus' => $is_only_card_with_bonus,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -397,9 +420,9 @@ class CartController extends Controller
         $product_total_check += session('cart_option')['bonus_price'];
 
         $country_info = CountryInfoCache::query()
-        ->where('country_iso2', '=', session('location')['country'])
-        ->get()
-        ->toArray();
+            ->where('country_iso2', '=', session('location')['country'])
+            ->get()
+            ->toArray();
 
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
@@ -424,6 +447,12 @@ class CartController extends Controller
         $bonus = ProductServices::GetBonuses();
         $cards = ProductServices::GetGiftCard();
         $phone_codes = PhoneCodes::all()->toArray();
+        $first_letters = ProductServices::getFirstLetters();
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
         Cart::update_cart_total();
 
         $has_card = 0;
@@ -477,6 +506,8 @@ class CartController extends Controller
             'has_card' => $has_card,
             'is_only_card' => $is_only_card,
             'is_only_card_with_bonus' => $is_only_card_with_bonus,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -529,9 +560,9 @@ class CartController extends Controller
             $product_total_check += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'])
-            ->get()
-            ->toArray();
+                ->where('country_iso2', '=', session('location')['country'])
+                ->get()
+                ->toArray();
 
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
@@ -556,6 +587,12 @@ class CartController extends Controller
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
             $phone_codes = PhoneCodes::all()->toArray();
+            $first_letters = ProductServices::getFirstLetters();
+            $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+            $last_char = strlen($domain) - 1;
+            if ($domain[$last_char] == '/') {
+                $domain = substr($domain, 0, -1);
+            }
             Cart::update_cart_total();
 
             $has_card = 0;
@@ -609,6 +646,8 @@ class CartController extends Controller
                 'has_card' => $has_card,
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
+                'first_letters' => $first_letters,
+                'domain' => $domain
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -664,9 +703,9 @@ class CartController extends Controller
             $product_total_check += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'])
-            ->get()
-            ->toArray();
+                ->where('country_iso2', '=', session('location')['country'])
+                ->get()
+                ->toArray();
 
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
@@ -691,6 +730,12 @@ class CartController extends Controller
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
             $phone_codes = PhoneCodes::all()->toArray();
+            $first_letters = ProductServices::getFirstLetters();
+            $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+            $last_char = strlen($domain) - 1;
+            if ($domain[$last_char] == '/') {
+                $domain = substr($domain, 0, -1);
+            }
             Cart::update_cart_total();
 
             $has_card = 0;
@@ -744,6 +789,8 @@ class CartController extends Controller
                 'has_card' => $has_card,
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
+                'first_letters' => $first_letters,
+                'domain' => $domain
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -807,9 +854,9 @@ class CartController extends Controller
             $product_total_check += session('cart_option')['bonus_price'];
 
             $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'])
-            ->get()
-            ->toArray();
+                ->where('country_iso2', '=', session('location')['country'])
+                ->get()
+                ->toArray();
 
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
@@ -834,6 +881,12 @@ class CartController extends Controller
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
             $phone_codes = PhoneCodes::all()->toArray();
+            $first_letters = ProductServices::getFirstLetters();
+            $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+            $last_char = strlen($domain) - 1;
+            if ($domain[$last_char] == '/') {
+                $domain = substr($domain, 0, -1);
+            }
             Cart::update_cart_total();
 
             $has_card = 0;
@@ -888,6 +941,8 @@ class CartController extends Controller
                 'has_card' => $has_card,
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
+                'first_letters' => $first_letters,
+                'domain' => $domain
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -950,9 +1005,9 @@ class CartController extends Controller
             $product_total_check += $bonus_price;
 
             $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'])
-            ->get()
-            ->toArray();
+                ->where('country_iso2', '=', session('location')['country'])
+                ->get()
+                ->toArray();
 
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
@@ -977,6 +1032,12 @@ class CartController extends Controller
             $bonus = ProductServices::GetBonuses();
             $cards = ProductServices::GetGiftCard();
             $phone_codes = PhoneCodes::all()->toArray();
+            $first_letters = ProductServices::getFirstLetters();
+            $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+            $last_char = strlen($domain) - 1;
+            if ($domain[$last_char] == '/') {
+                $domain = substr($domain, 0, -1);
+            }
             Cart::update_cart_total();
 
             $has_card = 0;
@@ -1031,6 +1092,8 @@ class CartController extends Controller
                 'has_card' => $has_card,
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
+                'first_letters' => $first_letters,
+                'domain' => $domain
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }

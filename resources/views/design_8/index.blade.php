@@ -201,7 +201,7 @@
                         <div class="product_name_top">{{$product['name']}}</div>
                         <div class="product_active">{!!__('text.product_active')!!}
                             @foreach ($product['aktiv'] as $aktiv)
-                                {{$aktiv}}
+                                {{ $aktiv['name'] }}
                             @endforeach
                         </div>
                     </div>

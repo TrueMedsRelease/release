@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Leeg veld",
+    "errors_wrong_captcha_value" => "Verkeerde captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -320,7 +320,9 @@ return [
     "order_status_reorder_now_text" => "Reorder Now",
     "we_are_legal_title" => "We Are Legal",
     "about_us_title" => "Over Ons",
-    "about_us_text" => "<p>Met meer dan 20 jaar ervaring online, probeert ons bedrijf onze klantenservice constant te onderhouden en te verbeteren. Voor ons staat centraal dat we de behoeften van onze klanten van begin tot eind proberen tegemoet te komen. Al onze producten zijn altijd op voorraad, wat betekent dat ze binnen 48 uur kunnen worden verzonden zodra je betaling is goedgekeurd.</p>",
+    "about_us_text" => "<p>Met meer dan 20 jaar ervaring online, probeert ons bedrijf onze klantenservice constant te onderhouden en te verbeteren. Voor ons staat centraal dat we de behoeften van onze klanten van begin tot eind proberen tegemoet te komen. Al onze producten zijn altijd op voorraad, wat betekent dat ze binnen 48 uur kunnen worden verzonden zodra je betaling is goedgekeurd.</p>
+<p>We bieden klanten een 100% leveringsgarantie, wat betekent dat medicijnen die je niet op tijd bereiken GRATIS opnieuw worden verzonden, of dat je je geld terugkrijgt. Bovendien, als je niet volledig tevreden bent met je medicijnen of als je je zorgen maakt, kun je met ons probleemloze niet-goed-geld-terug-beleid binnen 30 dagen contact opnemen met de klantenservice voor een volledige terugbetaling.</p>
+<p>In ons bedrijf staat klanttevredenheid voorop. We verwelkomen onze nieuwe klanten met fantastische aanbiedingen, en er zijn mooie kortingen voor terugkerende klanten.</p>",
     "about_us_title1" => "Hoogwaardige generieke geneesmiddelen",
     "about_us_text1" => "De generieke medicijnen die op onze site worden verkocht hebben dezelfde dosering, sterkte, kwaliteit en veiligheid als merkmedicijnen. Deze medicijnen bieden dezelfde therapeutische voordelen als merkgeneesmiddelen, en je neemt ze op precies dezelfde manier in.",
     "about_us_title2" => "Snelle en gratis levering",

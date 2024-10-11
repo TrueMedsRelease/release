@@ -4769,7 +4769,7 @@ document.addEventListener('click', e => {
 
 if (!flagm) {
     const sc = document.getElementById('scroll');
-    sc.scrollIntoView({block: "start", behavior: "smooth"});
+    // sc.scrollIntoView({block: "start", behavior: "smooth"});
 } else {
     if (document.getElementById("main_bestsellers") !== null) {
         document.getElementById("main_bestsellers").hidden = false;

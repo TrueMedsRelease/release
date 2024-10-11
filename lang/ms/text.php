@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Medan Kosong",
+    "errors_wrong_captcha_value" => "Captcha yang salah!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -281,7 +281,10 @@ return [
     "contact_us_thanks" => "Terima kasih!",
     "contact_us_sended" => "Mesej anda telah dihantar.",
     "about_us_title" => "Tentang Kami",
-    "about_us_text" => "<p>Dengan lebih daripada 20 tahun pengalaman dalam talian, syarikat kami berusaha untuk mengekalkan dan menambah baik perkhidmatan pelanggan kami. Perniagaan kami bertekad untuk memenuhi keperluan pelanggan kami dari permulaan hingga ke akhir. Semua produk kami sentiasa ada dalam stok, bermakna mereka boleh dihantar dalam tempoh 48 jam setelah pembayaran anda dijelaskan.</p>",
+    "about_us_text" => "<p>Dengan lebih daripada 20 tahun pengalaman dalam talian, syarikat kami berusaha untuk mengekalkan dan menambah baik perkhidmatan pelanggan kami. Perniagaan kami bertekad untuk memenuhi keperluan pelanggan kami dari permulaan hingga ke akhir. Semua produk kami sentiasa ada dalam stok, bermakna mereka boleh dihantar dalam tempoh 48 jam setelah pembayaran anda dijelaskan.</p>
+<p>Kami menawarkan jaminan penghantaran 100% kepada pelanggan, ini bermaksud ubat-ubatan yang tidak sampai kepada anda pada masa yang ditetapkan akan dihantar semula secara PERCUMA, atau anda akan terima bayaran balik sepenuhnya. Selain itu, jika anda tidak berpuas hati dengan ubat-ubat anda atau mempunyai sebarang kebimbangan, dasar pulangan wang kami yang mudah membolehkan anda menghubungi perkhidmatan pelanggan dalam tempoh 30 hari untuk penerimaan bayaran balik penuh.</p>
+<p>Kami menawarkan jaminan penghantaran 100% kepada pelanggan, ini bermaksud ubat-ubatan yang tidak sampai kepada anda pada masa yang ditetapkan akan dihantar semula secara PERCUMA, atau anda akan terima bayaran balik sepenuhnya. Selain itu, jika anda tidak berpuas hati dengan ubat-ubat anda atau mempunyai sebarang kebimbangan, dasar pulangan wang kami yang mudah membolehkan anda menghubungi perkhidmatan pelanggan dalam tempoh 30 hari untuk penerimaan bayaran balik penuh.
+Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami mengalu-alukan pelanggan baru dengan menawarkan faedah yang luar biasa, dan diskaun tersedia untuk pembeli yang kembali.</p>",
     "about_us_title1" => "Ubat Generik Berkualiti Tinggi",
     "about_us_text1" => "Ubat generik yang dijual di laman web kami disediakan dengan dos yang tepat, kekuatan, kualiti, dan keselamatan seperti ubat berjenama. Ubat-ubatan ini menyediakan manfaat terapeutik yang sama seperti preskripsi berjenama, dan anda akan mengambilnya dengan cara yang sama.",
     "about_us_title2" => "Penghantaran Pantas dan Percumay",

@@ -35,6 +35,7 @@ class SearchController extends Controller
         $products = ProductServices::SearchProduct($search_text, false, $design);
         $phone_codes = PhoneCodes::all()->toArray();
         $page_properties = ProductServices::getPageProperties('search');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -42,6 +43,12 @@ class SearchController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.search_result', [
@@ -57,6 +64,8 @@ class SearchController extends Controller
             'cur_category' => '',
             'agent' => $agent,
             'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 

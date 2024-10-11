@@ -51,8 +51,7 @@
 							<input type="text" autocomplete="off" placeholder="{{__('text.affiliate_code')}}" name="captcha" id="captcha" onkeyup="undisabled('affiliate')">
 							<div class="img">
 								<picture>
-									<source srcset="{{ captcha_src() }}" type="image/webp">
-									<img src="{{ captcha_src() }}">
+									<img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 10px;">
 								</picture>
 							</div>
 						</div>
