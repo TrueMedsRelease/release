@@ -678,13 +678,13 @@ class ProductServices
     {
         $category = trans('text.common_category_search');
         $language_id = Language::$languages[App::currentLocale()];
-        $result = Category::where('en_name', 'LIKE', "%$search_text%")->get()->toArray();
+        $result = CategoryDesc::where('name', 'LIKE', "%$search_text%")->where('language_id', '=', $language_id)->get()->toArray();
 
         $tips = "";
         foreach($result as $item)
         {
-            $desc = CategoryDesc::where('language_id', '=', $language_id)->where("category_id", "=", $item['id'])->get()->toArray();
-            $tips .= $desc[0]['name'] . " $category||category/" . $item['url'] . "\n";;
+            $cat = Category::where('id', '=', $item['category_id'])->get()->toArray();
+            $tips .= $item['name'] . " $category||category/" . $cat[0]['url'] . "\n";
         }
 
         return $tips;
