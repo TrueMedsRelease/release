@@ -34,8 +34,7 @@
             </div>
             <div class="form__row captcha">
             <picture>
-            <source srcset="{{ captcha_src() }}" type="image/webp">
-            <img src="{{ captcha_src() }}">
+                <img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 10px;">
             </picture>
             <div class="form__input">
                     <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" data-error="Error" placeholder="{{__('text.contact_us_code')}}" class="input">

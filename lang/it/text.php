@@ -2,7 +2,7 @@
 
 return [
     "errors_empty_field" => "Casella vuota",
-    "errors_wrong_captcha_value" => "Valore errato!",
+    "errors_wrong_captcha_value" => "Captcha sbagliato!",
     "errors_wrong_email" => "Email Sbagliato!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Valore errato!",

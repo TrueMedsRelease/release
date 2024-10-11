@@ -61,7 +61,7 @@
                                         <span class="product_name">{{ $product['name'] }}</span>
                                         <span class="product_active">
                                             @foreach ($product['aktiv'] as $aktiv)
-                                                {{ $aktiv }}
+                                                {{ $aktiv['name'] }}
                                             @endforeach
                                         </span>
                                     </div>

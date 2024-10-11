@@ -280,8 +280,12 @@
                         <div class="search__caption">{{__('text.common_first_letter')}}</div>
                         {{-- <div class="search__selected-letter">{$data.first_letter}</div> --}}
                         <div class="search__buttons">
-                            @foreach (range('A', 'Z') as $l)
-                                <a href="{{ route('home.first_letter', $l) }}" type="button" class="search__button">{{ $l }}</a>
+                            @foreach ($first_letters as $key => $active_letter)
+                                @if ($active_letter)
+                                    <a type="button" class="search__button" href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                                @else
+                                    {{ $key }}
+                                @endif
                             @endforeach
                         </div>
                         <div class="search__icon-down">
@@ -773,7 +777,7 @@
             <div class="footer__container">
                 <div class="footer__copyright">
                     <p>
-                        {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
+                        {{__('text.license_text_license1_1')}} {{ $domain }} {{__('text.license_text_license1_2')}}
                         {{__('text.license_text_license2_d3')}}
                     </p>
                 </div>

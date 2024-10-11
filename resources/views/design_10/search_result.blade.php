@@ -29,7 +29,7 @@
                     </h2>
                     <div class="product-card__active">
                         @foreach ($product['aktiv'] as $aktiv)
-                            <a class="product-card__ingredient" href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
+                            <a class="product-card__ingredient" href="{{ route('home.active', $aktiv['url']) }}">{{ $aktiv['name'] }}</a>
                         @endforeach
                     </div>
                     <a class="product-card__text link-primary" href="{{ route('home.product', $product['url']) }}">
@@ -78,7 +78,7 @@
                     </h2>
                     <div class="product-card__active">
                         @foreach ($product['aktiv'] as $aktiv)
-                            <a class="product-card__ingredient" href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
+                            <a class="product-card__ingredient" href="{{ route('home.active', $aktiv['url']) }}">{{ $aktiv['name'] }}</a>
                         @endforeach
                     </div>
                     <a class="product-card__text link-primary" href="{{ route('home.product', $product['url']) }}">

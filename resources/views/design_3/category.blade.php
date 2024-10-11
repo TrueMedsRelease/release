@@ -17,7 +17,7 @@
                                 <div class="item-product__name">{{ $product['name'] }}</div>
                                 <p class="item-product__company">
                                     @foreach ($product['aktiv'] as $aktiv)
-                                        {{ $aktiv }}
+                                        {{ $aktiv['name'] }}
                                     @endforeach
                                 </p>
                             </div>

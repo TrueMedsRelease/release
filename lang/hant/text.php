@@ -1,8 +1,8 @@
 <?php
 
 return  [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "空場",
+    "errors_wrong_captcha_value" => "驗證碼錯誤！",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -281,7 +281,9 @@ return  [
     "contact_us_thanks" => "謝謝你！",
     "contact_us_sended" => "您的留言已發送。",
     "about_us_title" => "關於我們",
-    "about_us_text" => "<p>憑藉20多年的在線經驗，我們公司努力維護和改進我們的客戶服務。我們的業務決心自始至終滿足客戶的需求。我們所有的產品均有現貨，這意味著您的付款結清後，它們可以在48小時內發貨。</p>",
+    "about_us_text" => "<p>憑藉20多年的在線經驗，我們公司努力維護和改進我們的客戶服務。我們的業務決心自始至終滿足客戶的需求。我們所有的產品均有現貨，這意味著您的付款結清後，它們可以在48小時內發貨。</p>
+<p>我們為客戶提供100%的送貨保證，這意味著任何未按時送達您的藥物將免費重新發貨，否則您將獲得全額退款。此外，如果您對藥物不完全滿意或有任何疑慮，我們的無憂退款政策允許您在30天內聯繫客戶服務以獲得全額退款。</p>
+<p>我們的業務努力使客戶滿意成為我們的第一要務。我們歡迎新客戶提供卓越的優惠，並為回頭客提供折扣。</p>",
     "about_us_title1" => "優質仿製藥",
     "about_us_text1" => "我們網站上出售的仿製藥提供與名牌藥一樣的確切劑量、強度、質量和安全性。這些藥物提供與名牌處方藥相同的治療效果，您將以完全相同的方式服用它們。",
     "about_us_title2" => "快速免費送貨",

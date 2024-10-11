@@ -23,6 +23,7 @@ class HomeController extends Controller
         $design = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
         $page_properties = ProductServices::getPageProperties('main');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -30,6 +31,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         if (!in_array($design, ['design_7', 'design_8'])) {
@@ -47,12 +54,14 @@ class HomeController extends Controller
                 'agent' => $agent,
                 'Language' => Language::class,
                 'Currency' => Currency::class,
-                'pixel' => $pixel
+                'pixel' => $pixel,
+                'first_letters' => $first_letters,
+                'domain' => $domain
             ]);
 
         } elseif ($design == 'design_7') {
             $product = ProductServices::GetProductInfoByUrl('rybelsus', $design);
-            $page_properties->title = 'Rybelsus - ' . str_replace(['http://', 'https://'], '', env('APP_URL'));
+            $page_properties->title = 'Rybelsus - ' . $domain;
             return view($design . '.index',
             [
                 'design' => $design,
@@ -63,7 +72,9 @@ class HomeController extends Controller
                 'agent' => $agent,
                 'Language' => Language::class,
                 'Currency' => Currency::class,
-                'pixel' => $pixel
+                'pixel' => $pixel,
+                'first_letters' => $first_letters,
+                'domain' => $domain
             ]);
         } elseif ($design == 'design_8') {
             $products_urls = ['viagra', 'cialis', 'levitra'];
@@ -72,7 +83,7 @@ class HomeController extends Controller
                 $products[$product_url] =  ProductServices::GetProductInfoByUrl($product_url, $design);
             }
 
-            $page_properties->title = 'EdSale - ' . str_replace(['http://', 'https://'], '', env('APP_URL'));
+            $page_properties->title = 'EdSale - ' . $domain;
             return view($design . '.index',
             [
                 'design' => $design,
@@ -83,21 +94,24 @@ class HomeController extends Controller
                 'agent' => $agent,
                 'Language' => Language::class,
                 'Currency' => Currency::class,
-                'pixel' => $pixel
+                'pixel' => $pixel,
+                'first_letters' => $first_letters,
+                'domain' => $domain
             ]);
         }
     }
 
-    public function first_letter($letter) : View
+    public function first_letter($char) : View
     {
         StatisticService::SendStatistic('first_letter');
         $design = session('design') ? session('design') : config('app.design');
-        $products = ProductServices::GetProductByFirstLetter($letter, $design);
+        $products = ProductServices::GetProductByFirstLetter($char, $design);
         $phone_codes = PhoneCodes::all()->toArray();
         $bestsellers = ProductServices::GetBestsellers($design);
 
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('first_letter');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -107,19 +121,27 @@ class HomeController extends Controller
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         return view($design . '.first_letter',[
             'design' => $design,
             'products' => $products,
             'bestsellers' => $bestsellers,
             'menu' => $menu,
-            'letter' => $letter,
+            'letter' => $char,
             'phone_codes' => $phone_codes,
             'page_properties' => $page_properties,
             'cur_category' => '',
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -133,6 +155,7 @@ class HomeController extends Controller
 
         $products = ProductServices::GetProductByActive($active, $design);
         $page_properties = ProductServices::getPageProperties('active');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -144,6 +167,12 @@ class HomeController extends Controller
 
         if (count($products) == 1) {
             return redirect(route('home.product', $products[0]['url']));
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.active',[
@@ -158,7 +187,9 @@ class HomeController extends Controller
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -171,6 +202,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
 
         $products = ProductServices::GetCategoriesWithProducts($design, $category);
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
         $category = str_replace('-', ' ', $category);
 
@@ -185,6 +217,12 @@ class HomeController extends Controller
 
         $page_properties = ProductServices::getPageProperties('category');
 
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         return view($design . '.category',[
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -196,7 +234,9 @@ class HomeController extends Controller
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -210,6 +250,7 @@ class HomeController extends Controller
 
         $products = ProductServices::GetProductByDisease($disease, $design);
         $page_properties = ProductServices::getPageProperties('disease');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -217,6 +258,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.disease',[
@@ -231,7 +278,9 @@ class HomeController extends Controller
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -248,6 +297,7 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $product = ProductServices::GetProductInfoByUrl($product, $design);
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -265,6 +315,12 @@ class HomeController extends Controller
 
         session(['product_name' => $product_name]);
 
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         return view($design . '.product', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -276,7 +332,9 @@ class HomeController extends Controller
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -342,6 +400,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('about_us');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -349,6 +408,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.about', [
@@ -361,7 +426,9 @@ class HomeController extends Controller
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -373,6 +440,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('faq');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -380,6 +448,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.help', [
@@ -392,7 +466,9 @@ class HomeController extends Controller
            'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class,
-           'pixel' => $pixel
+           'pixel' => $pixel,
+           'first_letters' => $first_letters,
+           'domain' => $domain
         ]);
     }
 
@@ -404,6 +480,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('testimonials');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -411,6 +488,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.testimonials', [
@@ -423,7 +506,9 @@ class HomeController extends Controller
            'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class,
-           'pixel' => $pixel
+           'pixel' => $pixel,
+           'first_letters' => $first_letters,
+           'domain' => $domain
         ]);
     }
 
@@ -435,6 +520,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('shipping');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -442,6 +528,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.delivery', [
@@ -454,7 +546,9 @@ class HomeController extends Controller
            'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class,
-           'pixel' => $pixel
+           'pixel' => $pixel,
+           'first_letters' => $first_letters,
+           'domain' => $domain
         ]);
     }
 
@@ -466,6 +560,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('moneyback');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -473,6 +568,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.moneyback', [
@@ -485,7 +586,9 @@ class HomeController extends Controller
            'agent' => $agent,
            'Language' => Language::class,
            'Currency' => Currency::class,
-           'pixel' => $pixel
+           'pixel' => $pixel,
+           'first_letters' => $first_letters,
+           'domain' => $domain
         ]);
     }
 
@@ -497,6 +600,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('contact_us');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -504,6 +608,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.contact_us', [
@@ -516,7 +626,9 @@ class HomeController extends Controller
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -528,6 +640,7 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('affiliate');
+        $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -535,6 +648,12 @@ class HomeController extends Controller
         foreach($pixels as $item)
         {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
         }
 
         return view($design . '.affiliate', [
@@ -547,7 +666,9 @@ class HomeController extends Controller
             'agent' => $agent,
             'Language' => Language::class,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain
         ]);
     }
 
@@ -676,6 +797,12 @@ class HomeController extends Controller
 
     public function request_call(Request $request)
     {
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         $phone = $request->phone;
 
         $error = 0;
@@ -687,7 +814,7 @@ class HomeController extends Controller
             'method' => 'send_request',
             // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
             'phone' => $phone,
-            'shop' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'shop' => $domain,
             'aff' => session('aff'),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
@@ -708,6 +835,12 @@ class HomeController extends Controller
 
     public function request_subscribe(Request $request)
     {
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         $email = $request->email;
 
         $error = 0;
@@ -723,7 +856,7 @@ class HomeController extends Controller
             'method' => 'subscribe',
             // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
             'email' => $email,
-            'shop' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'shop' => $domain,
             'aff' => session('aff'),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
@@ -750,6 +883,12 @@ class HomeController extends Controller
     }
 
     public function request_contact_us(Request $request) {
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
 
         $name = $request->name;
         $email = $request->email;
@@ -783,11 +922,10 @@ class HomeController extends Controller
             'email' => $email,
             'subject' => $subject,
             'message' => $message,
-            'url_from' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'url_from' => $domain,
             'aff' => session('aff'),
             'customer_ip' => $request->ip(),
             'customer_user_agent' => $request->userAgent(),
-            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
         ];
 
         if (!$error) {
@@ -807,15 +945,23 @@ class HomeController extends Controller
             } else if ($error == 3) {
                 $response = [
                     'status' => 'error',
-                    'text' => __('text.errors_wrong_captcha_value_text')
+                    'text' => __('text.errors_wrong_captcha_value')
                 ];
             }
+            $response['new_captcha'] = captcha_src();
         }
 
         return json_encode($response);
     }
 
     public function request_affiliate(Request $request) {
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         $name = $request->name;
         $email = $request->email;
         $jabber = $request->jabber;
@@ -852,7 +998,7 @@ class HomeController extends Controller
             'email' => $email,
             'jabber' => $jabber,
             'message' => $message,
-            'url_from' => str_replace(['http://', 'https://'], '', env('APP_URL')),
+            'url_from' => $domain,
             'aff' => session('aff'),
             'customer_ip' => $request->ip(),
             'customer_user_agent' => $request->userAgent(),
@@ -876,9 +1022,10 @@ class HomeController extends Controller
             } else if ($error == 3) {
                 $response = [
                     'status' => 'error',
-                    'text' => __('text.errors_wrong_captcha_value_text')
+                    'text' => __('text.errors_wrong_captcha_value')
                 ];
             }
+            $response['new_captcha'] = captcha_src();
         }
 
         return json_encode($response);
@@ -934,9 +1081,18 @@ class HomeController extends Controller
     public function check_code(Request $request) {
         $captcha = $request->captcha;
 
-        $result = [
-            'result' => captcha_check($captcha)
-        ];
+        $check = captcha_check($captcha);
+
+        if ($check) {
+            $result = [
+                'result' => $check
+            ];
+        } else {
+            $result = [
+                'result' => $check,
+                'new_captcha' => captcha_src()
+            ];
+        }
 
         return json_encode($result);
     }

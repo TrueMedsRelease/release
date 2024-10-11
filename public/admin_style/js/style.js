@@ -28,6 +28,7 @@ function logIn() {
                     $('#captcha_error').text($('#captcha_invalid').val());
                     $('#captcha_error').show();
                     $('#login_messages').hide();
+                    $('#captcha_image').attr('src', data['new_captcha']);
                 } else {
                     $('#captcha_error').hide();
                 }
@@ -181,7 +182,7 @@ function saveUserProperties() {
                 data = JSON.parse(data);
                 if (data.status == 'error') {
                     alert(data.text);
-                } else {                    
+                } else {
                     alert('Password saved');
                     location.href = data.url;
                 }

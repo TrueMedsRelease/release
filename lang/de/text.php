@@ -2,7 +2,7 @@
 
 return [
     "errors_empty_field" => "leeres Feld",
-    "errors_wrong_captcha_value" => "falschen Wert",
+    "errors_wrong_captcha_value" => "Falsches Captcha!",
     "errors_wrong_email" => "Falsche E-Mail",
     "errors_wrong_jabber" => "Falscher Jabber/Telegramm!",
     "errors_wrong_captcha_value_text" => "Wrong value!",

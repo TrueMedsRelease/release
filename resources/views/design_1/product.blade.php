@@ -37,7 +37,7 @@
                 </picture>
                 <ul class="product-about__characteristics">
                     @if ($product['image'] != 'gift-card')
-                        @if (count($product['aktiv']) != 0)
+                        @if (count($product['aktiv']) > 0)
                             <li class="product-about__characteristic_">
                                 <span class="product-about__characteristic-name">
                                     {!!__('text.product_active')!!}
@@ -45,8 +45,8 @@
                                 <ul>
                                     <li>
                                         @foreach ($product['aktiv'] as $aktiv)
-                                            <a href="{{ route('home.active', $aktiv) }}" class="product-about__characteristic-meaning product-about__characteristic-meaning--link" >
-                                                {{ $aktiv }}
+                                            <a href="{{ route('home.active', $aktiv['url']) }}" class="product-about__characteristic-meaning product-about__characteristic-meaning--link" >
+                                                {{ $aktiv['name'] }}
                                             </a>
                                         @endforeach
                                     </li>

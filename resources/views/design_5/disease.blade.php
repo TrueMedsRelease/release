@@ -105,9 +105,13 @@
         </form>
         <div class="search-bar__nav" data-simplebar data-simplebar-auto-hide="false">
             <ul class="search-bar__letter-list">
-                @foreach (range('A', 'Z') as $l)
+                @foreach ($first_letters as $key => $active_letter)
                     <li class="search-bar__item-list">
-                        <a href="{{ route('home.first_letter', $l) }}">{{ $l }}</a>
+                        @if ($active_letter)
+                            <a href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                        @else
+                            {{ $key }}
+                        @endif
                     </li>
                 @endforeach
             </ul>
@@ -182,7 +186,7 @@
                             <a href="{{ route('home.product', $product['url']) }}" class="name">{{ $product['name'] }}</a>
                             <a href="{{ route('home.product', $product['url']) }}" class="cat">
                                 @foreach ($product['aktiv'] as $aktiv)
-                                    {{ $aktiv }}
+                                    {{ $aktiv['name'] }}
                                 @endforeach
                             </a>
                         </div>

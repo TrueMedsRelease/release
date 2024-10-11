@@ -54,7 +54,7 @@
                                         <input id="captcha" autocomplete="off" type="text" name="form[]" class="input" onkeyup="undisabled('contact_us')">
                                     </div>
                                     <div class="contact-us-form__captcha">
-                                        <picture><source srcset="{{ captcha_src() }}" type="image/webp"><img src="{{ captcha_src() }}" width="140" height="70" alt="{{__('text.contact_us_code')}}"></picture>
+                                        <picture><img id="captcha_image" src="{{ captcha_src() }}" alt="{{__('text.contact_us_code')}}" style="border-radius: 0.875rem;"></picture>
                                     </div>
                                 </div>
                             </div>

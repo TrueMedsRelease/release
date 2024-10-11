@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Câmp gol",
+    "errors_wrong_captcha_value" => "Captcha greșit!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -278,7 +278,9 @@ return [
     "contact_us_thanks" => "Mulțumim!",
     "contact_us_sended" => "Mesajul a fost trimis.",
     "about_us_title" => "Despre noi",
-    "about_us_text" => "<p>Cu peste 20 de ani de experiență în domeniul online, compania noastră muncește din greu sa mențină și să îmbunătățească serviciul nostru pentru clienți. Afacerea noastră este determinată să satisfacă toate nevoile clienților de la cap la coadă. Avem mereu produse în stoc, asta însemnând ca pot fi livrate în maximum 48 de ore de când plata a fost făcută.</p>",
+    "about_us_text" => "<p>Cu peste 20 de ani de experiență în domeniul online, compania noastră muncește din greu sa mențină și să îmbunătățească serviciul nostru pentru clienți. Afacerea noastră este determinată să satisfacă toate nevoile clienților de la cap la coadă. Avem mereu produse în stoc, asta însemnând ca pot fi livrate în maximum 48 de ore de când plata a fost făcută.</p>
+<p>Oferim clienților noștri 100% garanția livrării, lucru care înseamnă că orice medicament ce nu ajunge la tine în timpul estimat se va retrimite <b>GRATUIT</b>, sau vei primi banii înapoi. În plus, dacă nu ești pe deplin satisfăcut cu produsele noastre medicale sau ai vrei problemă, politica noastră de returnare bani îți permite să poți lua legătura cu serviciul nostru pentru clienți în limita a 30 de zile pentru a primi banii înapoi. </p>
+<p>Afacerea noastră muncește din greu ca satisfacția clienților noștri să fie mereu prioritatea numărul unu. Ne bucurăm să primim clienți noi oferindu-le mereu beneficii uimitoare, precum și reduceri pentru clienți care revin la noi.</p>",
     "about_us_title1" => "Medicamente Generice de Înaltă Calitate",
     "about_us_text1" => "Medicamentele generice vândute pe site-ul nostru oferă dozajul exact, puterea, calitatea, și siguranța precum varianta originală. Aceste medicamente ofera aceleași beneficii terapeutice precum variantele originale, și le vei putea administra exact în același mod. ",
     "about_us_title2" => "Livrare Rapidă și Gratuită",

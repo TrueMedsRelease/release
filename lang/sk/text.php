@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Prázdne pole",
+    "errors_wrong_captcha_value" => "Nesprávna captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -280,7 +280,9 @@ return [
     "contact_us_thanks" => "Ďakujeme!",
     "contact_us_sended" => "Vaša správa bola odoslaná.",
     "about_us_title" => "O nás",
-    "about_us_text" => "<p>Naša spoločnosť, ktorá má viac ako 20 ročné skúsenosti s online službami, sa usiluje udržiavať a zlepšovať služby zákazníkom. Naša firma je odhodlaná uspokojiť potreby našich zákazníkov od začiatku až do konca. Všetky naše výrobky sú vždy na sklade, čo znamená, že môžu byť odoslané do 48 hodín po uhradení vašej platby.</p>",
+    "about_us_text" => "<p>Naša spoločnosť, ktorá má viac ako 20 ročné skúsenosti s online službami, sa usiluje udržiavať a zlepšovať služby zákazníkom. Naša firma je odhodlaná uspokojiť potreby našich zákazníkov od začiatku až do konca. Všetky naše výrobky sú vždy na sklade, čo znamená, že môžu byť odoslané do 48 hodín po uhradení vašej platby.</p>
+<p>Zákazníkom ponúkame 100 % záruku doručenia, čo znamená, že všetky lieky, ktoré sa k vám nedostanú včas, vám budú zaslané ZADARMO, alebo vám bude vrátená celá suma. Navyše, ak nie ste s liekmi úplne spokojní alebo máte akékoľvek obavy, naše bezproblémové pravidlá vrátenia peňazí vám umožňujú kontaktovať zákaznícky servis do 30 dní a získať späť plnú sumu.</p>
+<p>Naša firma sa usiluje o to, aby spokojnosť zákazníkov bola našou prioritou číslo jeden. Vítame nových zákazníkov, ktorým ponúkame vynikajúce výhody, a pre zákazníkov, ktorí sa k nám vracajú, sú k dispozícii zľavy.</p>",
     "about_us_title1" => "Vysokokvalitné generické lieky",
     "about_us_text1" => "Generické lieky predávané na našich stránkach majú rovnaké dávkovanie, silu, kvalitu a bezpečnosť ako značkové lieky. Tieto lieky poskytujú rovnaké terapeutické výhody ako značkové lieky na predpis a budete ich užívať presne takým istým spôsobom. .",
     "about_us_title2" => "Rýchle a bezplatné doručenie",

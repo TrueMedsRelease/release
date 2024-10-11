@@ -5119,6 +5119,7 @@ function sendAjaxContact() {
             success: function(data) {
                 if (data['status'] == 'error') {
                     alert(data['text']);
+                    $('#captcha_image').attr('src', data['new_captcha']);
                 } else {
                     $(".content__title").hide();
                     $(".contact-form").hide();
@@ -5171,6 +5172,7 @@ function sendAjaxAffiliate() {
             success: function(data) { //Данные отправлены успешно
                 if (data['status'] == 'error') {
                     alert(data['text']);
+                    $('#captcha_image').attr('src', data['new_captcha']);
                 } else {
                     $(".content__title").hide();
                     $(".contact-form").hide();

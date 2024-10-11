@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Tyhjä kenttä",
+    "errors_wrong_captcha_value" => "Väärä Captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -287,7 +287,9 @@ return [
     "contact_us_thanks" => "Kiitos!",
     "contact_us_sended" => "Viestisi on lähetetty.",
     "about_us_title" => "Tietoja meistä",
-    "about_us_text" => "<p>Koska meillä on 20 vuoden kokemus verkosta, yhtiömme ponnistelee ylläpitääkseen ja parantaakseen asiakaspalveluamme. Liiketoimintamme pyrkii määrätietoisesti tyydyttämään asiakkaidemme tarpeet alusta loppuun asti. Kaikki tuotteemme ovat varastossa, mikä merkitsee sitä, että ne voidaan toimittaa 48 tunnin kuluessa, kun maksusi on selvitetty.</p>",
+    "about_us_text" => "<p>Koska meillä on 20 vuoden kokemus verkosta, yhtiömme ponnistelee ylläpitääkseen ja parantaakseen asiakaspalveluamme. Liiketoimintamme pyrkii määrätietoisesti tyydyttämään asiakkaidemme tarpeet alusta loppuun asti. Kaikki tuotteemme ovat varastossa, mikä merkitsee sitä, että ne voidaan toimittaa 48 tunnin kuluessa, kun maksusi on selvitetty.</p>
+<p>Me tarjoamme asiakkaille 100 % toimitustakuun. Tämä merkitsee sitä, että kaikki ne lääkkeet, jotka eivät saavu sinulle ajoissa, toimitetaan uudestaan ILMAISEKSI, tai tulet vastaanottamaan täyden hyvityksen. Lisäksi ellet ole täysin tyytyväinen lääkkeisiisi, tai sinulla on muita huolenaiheita, meidän ongelmattoman rahat takaisin -käytännön ansiosta voit ottaa yhteyttä asiakaspalveluun 30 päivän kuluessa, vastaanottaaksesi täyden hyvityksen.</p>
+<p>Ponnistelemme liiketoiminnassamme tekemään asiakastyytyväisyydestä tärkeimmän prioriteettimme. Toivotamme uudet asiakkaat tervetulleiksi tarjoamalla erinomaisia etuja, ja alennuksia on tarjolla takaisin palaaville ostajille.</p>",
     "about_us_title1" => "Korkealaatuiset geneeriset lääkkeet",
     "about_us_text1" => "Sivustollamme myytävät geneeriset lääkkeet tarjoavat tarkan annoksen, voimakkuuden, laadun ja turvallisuuden, kuin tunnettujen brandien lääkkeet. Nämä lääkkeet tarjoavat samoja terapeuttisia etuja, kuin brandien reseptit, ja otat niitä tarkalleen samalla tavalla.",
     "about_us_title2" => "Nopea ja ilmainen toimitus",

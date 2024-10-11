@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Tomt fält",
+    "errors_wrong_captcha_value" => "Fel Captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -280,7 +280,9 @@ return [
     "contact_us_thanks" => "Tack!",
     "contact_us_sended" => "Ditt meddelande har skickats.",
     "about_us_title" => "Om oss",
-    "about_us_text" => "<p>Med mer än 20 års erfarenhet på nätet strävar vårt företag alltid efter att upprätthålla och förbättra vår kundservice. Vårt företag är fast beslutna att tillfredsställa våra kunders behov från början till slut. Alla våra produkter finns alltid i lager, vilket innebär att de kan skickas inom 48 timmar så fort din betalning har godkänts.</p>",
+    "about_us_text" => "<p>Med mer än 20 års erfarenhet på nätet strävar vårt företag alltid efter att upprätthålla och förbättra vår kundservice. Vårt företag är fast beslutna att tillfredsställa våra kunders behov från början till slut. Alla våra produkter finns alltid i lager, vilket innebär att de kan skickas inom 48 timmar så fort din betalning har godkänts.</p>
+<p>Vi erbjuder dig som kund 100 % leveransgaranti, vilket innebär att alla läkemedel som inte når dig i tid skickas om GRATIS, eller att du får en fullständig återbetalning. Om du dessutom inte är helt nöjd med dina mediciner eller har några problem, kan du med vår problemfria pengarna-tillbaka-policy kontakta kundtjänsten inom 30 dagar för att få en fullständig återbetalning.</p>
+<p>Vi strävar efter att göra kundens nöjdhet vår främsta prioritet. Vi välkomnar alltid nya kunder med enastående förmåner, och rabatter finns tillgängliga för återkommande kunder.</p>",
     "about_us_title1" => "Högkvalitativa generiska läkemedel",
     "about_us_text1" => "De generiska läkemedel som säljs på vår sida har samma dosering, styrka, kvalitet och säkerhetskrav som märkesläkemedel. Dessa mediciner ger samma terapeutiska fördelar som recept från kända varumärken, och du tar dem på exakt samma sätt.",
     "about_us_title2" => "Snabb och gratis leverans",

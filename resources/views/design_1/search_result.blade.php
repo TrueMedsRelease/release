@@ -20,7 +20,7 @@
                             <h3 class="product-card__name">{{ $product['name'] }}</h3>
                             <h4 class="product-card__company">
                                 @foreach ($product['aktiv'] as $aktiv)
-                                    {{ $aktiv }}
+                                    {{ $aktiv['name'] }}
                                 @endforeach
                             </h4>
                         </div>
@@ -57,7 +57,7 @@
                             <h3 class="product-card__name">{{ $product['name'] }}</h3>
                             <h4 class="product-card__company">
                                 @foreach ($product['aktiv'] as $aktiv)
-                                    {{ $aktiv }}
+                                    {{ $aktiv['name'] }}
                                 @endforeach
                             </h4>
                         </div>

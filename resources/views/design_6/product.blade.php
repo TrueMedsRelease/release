@@ -32,11 +32,11 @@
 							</picture> --}}
 						</div>
                         @if ($product['image'] != 'gift-card')
-                            @if (count($product['aktiv']) != 0)
+                            @if (count($product['aktiv']) > 0)
                                 <p class="product__image-active">{!!__('text.product_active')!!}
                                     @foreach ($product['aktiv'] as $aktiv)
-                                        <a href="{{ route('home.active', $aktiv) }}">
-                                            {{ $aktiv }}
+                                        <a href="{{ route('home.active', $aktiv['url']) }}">
+                                            {{ $aktiv['name'] }}
                                         </a>
                                     @endforeach
                                 </p>

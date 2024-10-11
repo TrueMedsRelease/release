@@ -8,7 +8,7 @@
 <div class="main">
     <!-- content -->
     <section class="page__best-sellers best-sellers">
-        <h2 class="best-sellers__title title" id = "scroll">{{__('text.aktiv_aktiv_result_title')}} {{ $active }}</h2>
+        <h2 class="best-sellers__title title" id = "scroll">{{__('text.aktiv_aktiv_result_title')}} {{ ucwords(str_replace('-', ' ', $active)) }}</h2>
         <div class="best-sellers__items">
         @foreach ($products as $product)
             <a href="{{ route('home.product', $product['url']) }}" class="product-card">
@@ -18,7 +18,7 @@
                         <h3 class="product-card__name">{{ $product['name'] }}</h3>
                         <h4 class="product-card__company">
                             @foreach ($product['aktiv'] as $aktiv)
-                                {{ $aktiv }}
+                                {{ $aktiv['name'] }}
                             @endforeach
                         </h4>
                     </div>

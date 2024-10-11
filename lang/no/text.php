@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Tomt felt",
+    "errors_wrong_captcha_value" => "Feil Captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -280,7 +280,9 @@ return [
     "contact_us_thanks" => "Takk!",
     "contact_us_sended" => "Meldingen din har blitt sendt inn.",
     "about_us_title" => "Om oss",
-    "about_us_text" => "<p>Med mer enn 20 års erfaring på nettet, streber firmaet vårt alltid etter å opprettholde og forbedre kundeservicen vår. Virksomheten vår er fast bestemt på å tilfredsstille behovene til kundene våre fra begynnelse til slutt. Vi har alltid alle produktene våre på lager, noe som betyr at de kan sendes ut innen 48 timer etter at betalingen har blitt godkjent.</p>",
+    "about_us_text" => "<p>Med mer enn 20 års erfaring på nettet, streber firmaet vårt alltid etter å opprettholde og forbedre kundeservicen vår. Virksomheten vår er fast bestemt på å tilfredsstille behovene til kundene våre fra begynnelse til slutt. Vi har alltid alle produktene våre på lager, noe som betyr at de kan sendes ut innen 48 timer etter at betalingen har blitt godkjent.</p>
+<p>Vi tilbyr kundene våre en 100 % leveringsgaranti, noe som betyr at alle medisiner som ikke når deg i tide blir sendt på nytt GRATIS, ellers så vil du motta full refusjon. I tillegg, hvis du ikke er helt fornøyd med medisinene dine eller har noen bekymringer, vil vår problemfrie, pengene-tilbake-garanti gir deg muligheten til å kontakte kundestøtten vår innen 30 dager for å motta full refusjon.</p>
+<p>Vi streber etter å gjøre kundetilfredsheten til vår førsteprioritet. Vi ønsker alltid nye kunder velkommen og tilbyr dem enestående fordeler, og rabatter er tilgjengelige for tilbakevendende kunder.</p>",
     "about_us_title1" => "Generiske legemidler av høy kvalitet",
     "about_us_text1" => "De generiske legemidlene som selges på nettstedet vårt gir den nøyaktig samme dosen, styrken, kvaliteten og sikkerheten som merkevare medisiner. Disse medisinene gir de samme terapeutiske fordelene som merkevarer på resept, og du vil ta dem på nøyaktig samme måte.",
     "about_us_title2" => "Rask og gratis leveringy",
