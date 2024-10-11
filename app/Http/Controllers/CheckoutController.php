@@ -167,19 +167,20 @@ class CheckoutController extends Controller
     public function insurance(Request $request)
     {
         $cart_option = session('cart_option');
-        if ($request->value == 0)
+        if ($request->val == 0)
             $cart_option['insurance'] = false;
         else
             $cart_option['insurance'] = true;
 
         session(['cart_option' => $cart_option]);
+        session(['form' => $request->all()]);
 
         Cart::update_cart_total();
 
         return $this->checkout();
     }
 
-    public function secret_package()
+    public function secret_package(Request $request)
     {
         $cart_option = session('cart_option');
         if ($cart_option['secret_package'])
@@ -188,6 +189,7 @@ class CheckoutController extends Controller
             $cart_option['secret_package'] = true;
 
         session(['cart_option' => $cart_option]);
+        session(['form' => $request->all()]);
 
         return $this->checkout();
     }
@@ -202,6 +204,7 @@ class CheckoutController extends Controller
         $option['shipping_price'] = $shipping_price;
 
         session(['cart_option' => $option]);
+        session(['form' => $request->all()]);
 
         return $this->checkout();
     }
