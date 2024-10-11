@@ -42,8 +42,7 @@
                 <label for="captcha" class="form__label">{{__('text.affiliate_code')}}</label>
                 <div class="form__input">
                     <picture>
-                        <source srcset="{{ captcha_src() }}" type="image/webp">
-                        <img src="{{ captcha_src() }}">
+                        <img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 10px;">
                     </picture>
                     <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" class="form__input input">
                 </div>

@@ -110,6 +110,7 @@ $(document).on('click', '#message_send_button', function () {
         success: function(data) { //Данные отправлены успешно
             if (data['status'] == 'error') {
                 alert(data['text']);
+                $('#captcha_image').attr('src', data['new_captcha']);
             } else {
                 $('.page-text__top-row').hide();
                 $('.page-text__inner').hide();
@@ -146,6 +147,7 @@ $(document).on('click', '#affiliate_send_button', function () {
         success: function(data) { //Данные отправлены успешно
             if (data['status'] == 'error') {
                 alert(data['text']);
+                $('#captcha_image').attr('src', data['new_captcha']);
             } else {
                 $('.page-text__top-row').hide();
                 $('.page-text__inner').hide();

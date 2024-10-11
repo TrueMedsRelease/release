@@ -370,9 +370,14 @@
         <div class="drug-index">
             <div class="drug-index__container">
                 <ul class="drug-index__list">
-                    @foreach (range('A', 'Z') as $l)
-                        <li class="drug-index__item"><a class="drug-index__link"
-                                href="{{ route('home.first_letter', $l) }}">{{ $l }}</a></li>
+                    @foreach ($first_letters as $key => $active_letter)
+                        <li class="drug-index__item">
+                            @if ($active_letter)
+                                <a class="drug-index__link" href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                            @else
+                                {{ $key }}
+                            @endif
+                        </li>
                     @endforeach
                 </ul>
             </div>
@@ -599,7 +604,7 @@
             <div class="footer__copyrights">
                 <p>
                     {{ __('text.license_text_license1_1') }}
-                    {{ str_replace(['http://', 'https://'], '', env('APP_URL')) }}
+                    {{ $domain }}
                     {{ __('text.license_text_license1_2') }}
                     {{ __('text.license_text_license2_d10') }}
                 </p>

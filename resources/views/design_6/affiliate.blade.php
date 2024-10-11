@@ -54,7 +54,7 @@
                                         <input id="captcha" autocomplete="off" type="text" name="form[]" class="input" onkeyup="undisabled('affiliate')">
                                     </div>
                                     <div class="contact-us-form__captcha">
-                                        <picture><source srcset="{{ captcha_src() }}" type="image/webp"><img src="{{ captcha_src() }}" width="140" height="70" alt="{{__('text.affiliate_code')}}"></picture>
+                                        <picture><img id="captcha_image" src="{{ captcha_src() }}" alt="{{__('text.affiliate_code')}}" style="border-radius: 0.875rem;"></picture>
                                     </div>
                                 </div>
                             </div>

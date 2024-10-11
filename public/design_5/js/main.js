@@ -105,6 +105,7 @@ $(document).on('click', '#message_send_button', function () {
         success: function(data) { //Данные отправлены успешно
             if (data['status'] == 'error') {
                 alert(data['text']);
+                $('#captcha_image').attr('src', data['new_captcha']);
             } else {
                 $(".title-page").hide();
                 $('#message_send_form').hide();
@@ -157,6 +158,7 @@ $(document).on('click', '#affiliate_send_button', function () {
             success: function(data) { //Данные отправлены успешно
                 if (data['status'] == 'error') {
                     alert(data['text']);
+                    $('#captcha_image').attr('src', data['new_captcha']);
                 } else {
                     // $(".contact-form").html(data);
                     $(".title-page").hide();

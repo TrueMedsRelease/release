@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Campo vazio",
+    "errors_wrong_captcha_value" => "Captcha errado!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",

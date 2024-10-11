@@ -64,7 +64,13 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', ucwords(trim($products[$i]['aktiv']))));
+            foreach ($products[$i]['aktiv'] as $key => $value) {
+                $products[$i]['aktiv'][$key] = [
+                    'name' => trim($value),
+                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                ];
+            }
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -130,7 +136,14 @@ class ProductServices
                 $product['name'] = $products_desc[$product['id']]['name'];
                 $product['desc'] = $products_desc[$product['id']]['desc'];
                 $product['url'] = $products_desc[$product['id']]['url'];
-                $product['aktiv'] = explode(',', str_replace("\r\n", '', str_replace(' ', '', $product['aktiv'])));
+                $product['aktiv'] = explode(',', ucwords(trim(str_replace("\r\n", '', trim($product['aktiv'])))));
+
+                foreach ($product['aktiv'] as $key => $value) {
+                    $product['aktiv'][$key] = [
+                        'name' => trim($value),
+                        'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                    ];
+                }
             }
             unset($product);
 
@@ -232,29 +245,24 @@ class ProductServices
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
 
-        // if ($design == 'design_5') {
-        //     $products = Product::query()
-        //         ->where('is_showed', '=', 1)
-        //         ->where('first_letter', '=', $letter)
-        //         ->where('category_id', '=', 14)
-        //         ->orderBy('main_order', 'asc')
-        //         ->get(['id', 'image', 'aktiv'])
-        //         ->toArray();
-
-        // } else {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->where('first_letter', '=', $letter)
-                ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
-                ->toArray();
-        // }
+        $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->where('first_letter', '=', $letter)
+            ->orderBy('main_order', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+            foreach ($products[$i]['aktiv'] as $key => $value) {
+                $products[$i]['aktiv'][$key] = [
+                    'name' => trim($value),
+                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                ];
+            }
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -267,40 +275,31 @@ class ProductServices
         $product_price = self::GetAllProductPillPrice($design);
         $disease = str_replace('-', ' ', $disease);
 
-        // if ($design == 'design_5') {
-        //     $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ? AND category_id = ?', [Language::$languages[App::currentLocale()], $disease, 14]);
-        // } else {
-            $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ?', [Language::$languages[App::currentLocale()], $disease]);
-        // }
+        $diseases = DB::select('SELECT * FROM product_disease WHERE language_id = ? AND disease = ?', [Language::$languages[App::currentLocale()], $disease]);
 
         $product_id = [];
         foreach ($diseases as $item) {
             $product_id[] = $item->product_id;
         }
 
-        // if ($design == 'design_5') {
-        //     $products = Product::query()
-        //         ->where('is_showed', '=', 1)
-        //         ->where('category_id', '=', 14)
-        //         ->whereIn('id', $product_id)
-        //         ->orderBy('main_order', 'asc')
-        //         ->get(['id', 'image', 'aktiv'])
-        //         ->toArray();
-
-        // } else {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->whereIn('id', $product_id)
-                ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
-                ->toArray();
-        // }
+        $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->whereIn('id', $product_id)
+            ->orderBy('main_order', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+            foreach ($products[$i]['aktiv'] as $key => $value) {
+                $products[$i]['aktiv'][$key] = [
+                    'name' => trim($value),
+                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                ];
+            }
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -314,30 +313,24 @@ class ProductServices
 
         $active = str_replace('-', ' ', $active);
 
-        // if ($design == 'design_5') {
-        //     $products = Product::query()
-        //     ->where('is_showed', '=', 1)
-        //     ->where('aktiv', 'LIKE', "%$active%")
-        //     ->where('category_id', 14)
-        //     ->orderBy('main_order', 'asc')
-        //     // ->orderBy('image', 'asc')
-        //     ->get(['id', 'image', 'aktiv'])
-        //     ->toArray();
-        // } else {
-            $products = Product::query()
+        $products = Product::query()
             ->where('is_showed', '=', 1)
             ->where('aktiv', 'LIKE', "%$active%")
             ->orderBy('main_order', 'asc')
-            // ->orderBy('image', 'asc')
             ->get(['id', 'image', 'aktiv'])
             ->toArray();
-        // }
 
         for ($i = 0; $i < count($products); $i++) {
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+            foreach ($products[$i]['aktiv'] as $key => $value) {
+                $products[$i]['aktiv'][$key] = [
+                    'name' => trim($value),
+                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                ];
+            }
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -467,32 +460,32 @@ class ProductServices
             // $rec_name = 'Viagra Extra Dosage';
             // $rec_url = 'viagra-extra-dosage';
         }
-        if ($products_desc['name'] === 233) {
+        if ($products_desc['product_id'] === 233) {
             $rec_id = 235;
             // $rec_name = 'Cialis Extra Dosage';
             // $rec_url = 'cialis-extra-dosage';
         }
-        if ($products_desc['name'] === 255) {
+        if ($products_desc['product_id'] === 255) {
             $rec_id = 256;
             // $rec_name = 'Levitra Extra Dosage';
             // $rec_url = 'levitra-extra-dosage';
         }
-        if ($products_desc['name'] === 278) {
+        if ($products_desc['product_id'] === 278) {
             $rec_id = 247;
             // $rec_name = 'Extra Super Viagra';
             // $rec_url = 'extra-super-viagra';
         }
-        if ($products_desc['name'] === 274) {
+        if ($products_desc['product_id'] === 274) {
             $rec_id = 245;
             // $rec_name = 'Extra Super Cialis';
             // $rec_url = 'extra-super-cialis';
         }
-        if ($products_desc['name'] === 275) {
+        if ($products_desc['product_id'] === 275) {
             $rec_id = 246;
             // $rec_name = 'Extra Super Levitra';
             // $rec_url = 'extra-super-levitra';
         }
-        if ($products_desc['name'] === 273) {
+        if ($products_desc['product_id'] === 273) {
             $rec_id = 244;
             // $rec_name = 'Extra Super Avana';
             // $rec_url = 'extra-super-avana';
@@ -508,7 +501,17 @@ class ProductServices
         $product['categories'] = $categories;
         $product['name'] = $products_desc['name'];
         $product['desc'] = $products_desc['desc'];
-        $product['aktiv'] = explode(',', trim(ucwords($product['aktiv'])));
+        $product['aktiv'] = $product['aktiv'] ? explode(',', trim(ucwords($product['aktiv']))) : [];
+
+        if (count($product['aktiv']) > 0) {
+            foreach ($product['aktiv'] as $key => $value) {
+                $product['aktiv'][$key] = [
+                    'name' => trim($value),
+                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                ];
+            }
+        }
+
         $product['disease'] = $product_disease;
         $product['analog'] = json_decode(json_encode($analogs), true);
         $product['sinonim'] = $product['sinonim'];
@@ -636,7 +639,13 @@ class ProductServices
             $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
             $products[$i]['url'] = $is_autocomplete ? $products_desc[$products[$i]['id']]['url'] . '.html' : $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', trim($products[$i]['aktiv'])));
+            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+            foreach ($products[$i]['aktiv'] as $key => $value) {
+                $products[$i]['aktiv'][$key] = [
+                    'name' => trim($value),
+                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                ];
+            }
             $products[$i]['price'] = $product_price[$products[$i]['id']];
         }
 
@@ -844,6 +853,11 @@ class ProductServices
 
     public static function getPageProperties($page) {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         $language_id = Language::$languages[App::currentLocale()];
 
         $page_properties = DB::select("SELECT * FROM page_properties WHERE `page` = '$page' AND `language` = $language_id");
@@ -918,6 +932,11 @@ class ProductServices
 
     public static function getProductProperties($product) {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
         $language_id = Language::$languages[App::currentLocale()];
 
         $page_properties = DB::select("SELECT * FROM page_properties WHERE `page` = 'product' AND `language` = $language_id");
@@ -968,5 +987,46 @@ class ProductServices
         }
 
         return $page_properties;
+    }
+
+    public static function getFirstLetters() {
+        $design = session('design') ? session('design') : config('app.design');
+        if ($design == 'design_5') {
+            $first_letters_result = DB::table('product')
+                ->distinct()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'product_category.category_id', '=', 'category.id')
+                ->where('product.is_showed', '=', 1)
+                ->where('category.is_showed', '=', 1)
+                ->where('category.id', '=', 14)
+                ->get(['product.first_letter'])
+                ->toArray();
+
+        } else {
+            $first_letters_result = DB::table('product')
+                ->distinct()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'product_category.category_id', '=', 'category.id')
+                ->where('product.is_showed', '=', 1)
+                ->where('category.is_showed', '=', 1)
+                ->get(['product.first_letter'])
+                ->toArray();
+        }
+
+        $distinct_first_letters = [];
+        foreach ($first_letters_result as $cur_first_letter) {
+            $distinct_first_letters[] = $cur_first_letter->first_letter;
+        }
+
+        $first_letters = [];
+        for($index = ord('A'); $index <= ord('Z'); $index++) {
+            if(in_array(chr($index), $distinct_first_letters)) {
+                $first_letters[chr($index)] = true;
+            } else {
+                $first_letters[chr($index)] = false;
+            }
+        }
+
+        return $first_letters;
     }
 }

@@ -38,12 +38,14 @@
                     </div>
 
                     @if ($product['image'] != 'gift-card')
-                        <div class="info-panel__row">
-                            {!!__('text.product_active')!!}
-                            @foreach ($product['aktiv'] as $aktiv)
-                                <a href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
-                            @endforeach
-                        </div>
+                        @if (count($product['aktiv']) > 0)
+                            <div class="info-panel__row">
+                                {!!__('text.product_active')!!}
+                                @foreach ($product['aktiv'] as $aktiv)
+                                    <a href="{{ route('home.active', $aktiv['url']) }}">{{ $aktiv['name'] }}</a>
+                                @endforeach
+                            </div>
+                        @endif
 
                         <div class="info-panel__row">{!!__('text.product_pack1_1')!!}<b>{{__('text.product_pack2_1')}}{{ random_int(10, 40) }}{{__('text.product_pack3_1')}}</b></div>
 

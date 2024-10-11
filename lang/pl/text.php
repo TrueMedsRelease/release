@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Puste pole",
+    "errors_wrong_captcha_value" => "Błędna Captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -281,7 +281,9 @@ return [
     "contact_us_thanks" => "Dziękujemy!",
     "contact_us_sended" => "Twoja wiadomość została wysłana.",
     "about_us_title" => "O nas",
-    "about_us_text" => "<p>Z ponad 20-letnim doświadczeniem online, nasza firma stara się utrzymać obecny poziom usługi i jeszcze poprawić naszą obsługę klienta. Nasza firma jest zdeterminowana, aby zaspokoić potrzeby naszych klientów od początku do końca. Wszystkie nasze produkty są zawsze w magazynie, co oznacza, że mogą być wysłane w ciągu 48 godzin po rozliczeniu płatności.</p>",
+    "about_us_text" => "<p>Z ponad 20-letnim doświadczeniem online, nasza firma stara się utrzymać obecny poziom usługi i jeszcze poprawić naszą obsługę klienta. Nasza firma jest zdeterminowana, aby zaspokoić potrzeby naszych klientów od początku do końca. Wszystkie nasze produkty są zawsze w magazynie, co oznacza, że mogą być wysłane w ciągu 48 godzin po rozliczeniu płatności.</p>
+<p>Oferujemy klientom 100% gwarancję dostawy, co oznacza, że wszelkie leki, które nie dotrą do Ciebie na czas, zostaną wysłane ponownie za darmo lub otrzymasz pełny zwrot pieniędzy. Ponadto, jeśli nie jesteś w pełni zadowolony z leków lub masz jakiekolwiek obawy, nasza bezproblemowa polityka zwrotu pieniędzy pozwala na kontakt z obsługą klienta w ciągu 30 dni, aby otrzymać pełny zwrot pieniędzy.</p>
+<p>Nasza firma stara się, aby zadowolenie klienta było naszym priorytetem. Zapraszamy nowych klientów, oferując wyjątkowe korzyści, a dla powracających kupujących mamy zniżki.</p>",
     "about_us_title1" => "Leki generyczne wysokiej jakości",
     "about_us_text1" => "Leki generyczne sprzedawane na naszej stronie zapewniają dokładną dawkę, siłę, jakość i bezpieczeństwo jak leki oryginalne. Leki te zapewniają te same korzyści terapeutyczne, co recepty oryginalne i będziesz je przyjmował dokładnie w ten sam sposób.",
     "about_us_title2" => "Szybka i darmowa dostawa",

@@ -300,9 +300,13 @@
                     <ul class="search_result" style="display: none;"></ul>
                 </form>
                 <ul class="search__items">
-                    @foreach (range('A', 'Z') as $l)
+                    @foreach ($first_letters as $key => $active_letter)
                         <li class="search__item">
-                            <a class="search__link" href="{{ route('home.first_letter', $l) }}">{{ $l }}</a>
+                            @if ($active_letter)
+                                <a class="search__link" href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                            @else
+                                {{ $key }}
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -552,7 +556,7 @@
         <div class="container footer__container">
             <div class="footer__top">
                 <p class="footer__text">
-                    {{__('text.license_text_license1_1')}} {{str_replace(['http://', 'https://'], '', env('APP_URL'))}} {{__('text.license_text_license1_2')}}
+                    {{__('text.license_text_license1_1')}} {{ $domain }} {{__('text.license_text_license1_2')}}
                     {{__('text.license_text_license2_d1')}}
                 </p>
                 <a class="footer__link c-button" href="{{ route('home.affiliate') }}">{{__('text.common_affiliate_main_menu_button')}}</a>

@@ -4,17 +4,6 @@
 @section('keywords', $page_properties->keyword)
 @section('description', $page_properties->description)
 
-@section('announce')
-    <div class="announce__item announce__item--blue">
-        <div class="announce__icon">
-            <svg width="24" height="24">
-                <use xlink:href="{{ asset($design . '/images/icons/icons.svg#svg-checkmark') }}"></use>
-            </svg>
-        </div>
-        <div class="announce__text"><b>{{random_int(2, 30)}}{{__('text.common_product1')}}</b>{{__('text.common_product2')}}</div>
-    </div>
-@endsection
-
 @section('content')
 <div class="product-box">
 	<div class="holder-info">
@@ -43,7 +32,7 @@
 					@if (count($product['aktiv']) > 0)
 						<span>{!!__('text.product_active')!!}</span>
 						@foreach ($product['aktiv'] as $aktiv)
-							<strong><a href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a></strong>
+							<strong><a href="{{ route('home.active', $aktiv['url']) }}">{{ $aktiv['name'] }}</a></strong>
                         @endforeach
                     @endif
 				</div>

@@ -46,8 +46,7 @@
 									<div class="form__input form__input--has-image">
 										<input id="code" autocomplete="off" type="text" name="form[code]" id="code" data-error="Not correct" class="input">
 										<picture>
-											<source srcset="{{ captcha_src() }}" type="image/webp">
-											<img src="{{ captcha_src() }}">
+											<img id="captcha_image_log" src="{{ captcha_src() }}">
 										</picture>
 									</div>
 								</div>

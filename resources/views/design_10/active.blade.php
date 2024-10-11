@@ -7,7 +7,7 @@
 @section('content')
 <div class="container page-wrapper">
     <main class="main">
-        <h1>{{__('text.aktiv_aktiv_result_title')}} {{ $active }}</h1>
+        <h1>{{__('text.aktiv_aktiv_result_title')}} {{ ucwords(str_replace('-', ' ', $active)) }}</h1>
         <div class="product-cards">
             @foreach ($products as $product)
                 <article class="card product-card">
@@ -27,7 +27,7 @@
                     </h2>
                     <div class="product-card__active">
                         @foreach ($product['aktiv'] as $aktiv)
-                            <a class="product-card__ingredient" href="{{ route('home.active', $aktiv) }}">{{ $aktiv }}</a>
+                            <a class="product-card__ingredient" href="{{ route('home.active', $aktiv['url']) }}">{{ $aktiv['name'] }}</a>
                         @endforeach
                     </div>
                     <a class="product-card__text link-primary" href="{{ route('home.product', $product['url']) }}">

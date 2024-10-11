@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "Üres mező",
+    "errors_wrong_captcha_value" => "Rossz Captcha!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",
@@ -286,7 +286,9 @@ return [
     "contact_us_thanks" => "Köszönjük!",
     "contact_us_sended" => "Üzenete elküldve.",
     "about_us_title" => "Rólunk",
-    "about_us_text" => "<p>Több mint 20 éves online tapasztalattal rendelkező cégünk az ügyfélszolgálatunkat mindig javítani és fejleszteni törekszik. Üzletünk az ügyfelek igényeinek teljeskörű kielégítésére törekedik az indulástól a befejezésig. Az összes termékünk mindig raktáron van, ami azt jelenti, hogy 48 órán belül szállíthatók, miután a fizetés megtörtént.</p>",
+    "about_us_text" => "<p>Több mint 20 éves online tapasztalattal rendelkező cégünk az ügyfélszolgálatunkat mindig javítani és fejleszteni törekszik. Üzletünk az ügyfelek igényeinek teljeskörű kielégítésére törekedik az indulástól a befejezésig. Az összes termékünk mindig raktáron van, ami azt jelenti, hogy 48 órán belül szállíthatók, miután a fizetés megtörtént.</p>
+<p>Ügyfeleink számára 100%-os szállítási garanciát nyújtunk, ami azt jelenti, hogy az időben ki nem kézbesített gyógyszereket újraszállítjuk INGYEN, vagy teljes visszatérítést adunk. Emellett, ha nem teljesen elégedett a gyógyszereivel, vagy bármilyen aggodalma van, zökkenőmentes és pénzvisszafizetési üzletpolitikánk lehetővé teszi, hogy 30 napon belül kapcsolatba lépjen az ügyfélszolgálattal és teljes visszatérítést kapjon.</p>
+<p>Üzletünk ügyfeleink elégedettségét tekinti a legfontosabb prioritásunknak. Új ügyfeleink számára kiemelkedő előnyöket kínálunk, és kedvezmények nyújtunk visszatérő vásárlóink számára.</p>",
     "about_us_title1" => "Magas minőségű generikus gyógyszerek",
     "about_us_text1" => "Az oldalunkon árult generikus gyógyszerek ugyanazt az adagolást, hatóanyag-erősséget, minőséget és biztonságot nyújtják, mint a márkaneves gyógyszerek. Ezek a gyógyszerek ugyanazt a terápiás hatást nyújtják, mint az ismert márkaneveken kapható gyógyszerek, és alkalmazásuk is hasonló.",
     "about_us_title2" => "Gyors és ingyenes szállítás",

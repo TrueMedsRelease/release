@@ -3,17 +3,10 @@
 @section('title', $page_properties->title)
 @section('keywords', $page_properties->keyword)
 @section('description', $page_properties->description)
-
-@section('announce')
-    <div class="announce__item announce__item--yellow">
-        <div class="announce__icon">
-            <svg width="24" height="24">
-                <use xlink:href="{{ asset($design . '/images/icons/icons.svg#svg-clock') }}"></use>
-            </svg>
-        </div>
-        <div class="announce__text">{{__('text.common_cart1')}}<b>{{ucfirst(session('location.country_name'))}}{{__('text.common_cart2')}}</b></div>
-    </div>
-@endsection
+@section('announce_color', 'announce__item--yellow')
+@section('announce_img', asset($design . '/images/icons/icons.svg#svg-clock'))
+@section('announce_text_1', __('text.common_cart1'))
+@section('announce_text_2', ucfirst(session('location.country_name')) . ' ' . __('text.common_cart2'))
 
 @section('content')
 <div class="column-box">

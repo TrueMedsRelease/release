@@ -1,8 +1,8 @@
 <?php
 
 return [
-    "errors_empty_field" => "Empty Field",
-    "errors_wrong_captcha_value" => "Wrong Value!",
+    "errors_empty_field" => "空のフィールド",
+    "errors_wrong_captcha_value" => "キャプチャが間違っています!",
     "errors_wrong_email" => "Wrong Email!",
     "errors_wrong_jabber" => "Wrong jabber/telegram!",
     "errors_wrong_captcha_value_text" => "Wrong value!",

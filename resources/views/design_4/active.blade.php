@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="products">
-    <h2 class="products__title title">{{__('text.aktiv_aktiv_result_title')}} {{$active}}</h2>
+    <h2 class="products__title title">{{__('text.aktiv_aktiv_result_title')}} {{ ucwords(str_replace('-', ' ', $active)) }}</h2>
     <div class="products__items">
         @foreach ($products as $product)
             <div class="products__item item-product">
@@ -27,7 +27,7 @@
                             <div class="item-product__name">{{ $product['name'] }}</div>
                             <div class="item-product__company">
                                 @foreach ($product['aktiv'] as $aktiv)
-                                    {{ $aktiv }}
+                                    {{ $aktiv['name'] }}
                                 @endforeach
                             </div>
                             <div class="item-product__bottom-row">

@@ -633,7 +633,7 @@
                     <div class="footer_copyright">
                         <p>
                             {{ __('text.license_text_license1_1') }}
-                            {{ str_replace(['http://', 'https://'], '', env('APP_URL')) }}
+                            {{ $domain }}
                             {{ __('text.license_text_license1_2') }}
                             {{ __('text.license_text_license2_d10') }}
                         </p>
@@ -669,7 +669,7 @@
                 <div class="footer_copyright bottom_license">
                     <p>
                         {{ __('text.license_text_license1_1') }}
-                        {{ str_replace(['http://', 'https://'], '', env('APP_URL')) }}
+                        {{ $domain }}
                         {{ __('text.license_text_license1_2') }}
                         {{ __('text.license_text_license2_d10') }}
                     </p>

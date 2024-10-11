@@ -18,37 +18,36 @@
                 </div>
                 <form class="form" id = "message_send_form" method="post">
                     <div class="form__body">
-                        <div class="form__inner">
+                        <div class="form__inner" style="flex: 0 1 30.125rem; margin-right: 0">
                             <div class="form__default-rows">
                                 <div class="form__row">
-                                    <label for="name" class="form__label">{{__('text.affiliate_name')}}</label>
+                                    <label for="name" class="form__label" style="flex: 0 0 7.8rem">{{__('text.affiliate_name')}}</label>
                                     <input data-required id = "name" autocomplete="off" type="text" name="form[]" data-error="" placeholder="{{__('text.affiliate_name')}}" class="form__input input">
                                 </div>
                                 <div class="form__row">
-                                    <label for="email" class="form__label">{{__('text.affiliate_email')}}</label>
+                                    <label for="email" class="form__label" style="flex: 0 0 7.8rem">{{__('text.affiliate_email')}}</label>
                                     <input data-required id = "email" autocomplete="off" type="text" name="form[]" data-error="" placeholder="{{__('text.affiliate_email')}}" class="form__input input">
                                 </div>
                                 <div class="form__row">
-                                    <label for="name" class="form__label">{{__('text.affiliate_jabber')}}{{__('text.affiliate_telegram')}}</label>
+                                    <label for="name" class="form__label" style="flex: 0 0 7.8rem">{{__('text.affiliate_jabber')}}{{__('text.affiliate_telegram')}}</label>
                                     <input autocomplete="off" id = "jabber" type="text" name="form[]" data-error="" placeholder="{{__('text.affiliate_jabber')}}{{__('text.affiliate_telegram')}}" class="form__input input">
                                 </div>
                                 <div class="form__row form__row--top-alignment">
-                                    <label for="name" class="form__label">{{__('text.affiliate_message')}}</label>
+                                    <label for="name" class="form__label" style="flex: 0 0 7.8rem">{{__('text.affiliate_message')}}</label>
                                     <textarea autocomplete="off" id="message" type="text" name="form[]" data-error="" placeholder="{{__('text.affiliate_message')}}" class="form__input input"></textarea>
                                 </div>
                             </div>
                             <div class="form__row form__row--captcha">
-                                <label for="name" class="form__label">{{__('text.affiliate_code')}}</label>
+                                <label for="name" class="form__label" style="flex: 0 0 7.8rem">{{__('text.affiliate_code')}}</label>
                                 <div class="form__input">
                                 <picture>
-                                <source srcset="{{ captcha_src() }}" type="image/webp">
-                                <img src="{{ captcha_src() }}">
-                            </picture>
+                                    <img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 0.625rem; margin-bottom: 5px;">
+                                </picture>
                             <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" class="form__input input">
                                 </div>
                             </div>
                         </div>
-                        <div class="form__desrc">
+                        <div class="form__desrc" style="flex-basis: 20.125rem;">
                             <div class="form__text-block">
                                 <p>{{__('text.affiliate_contact_message')}}</p>
                             </div>

@@ -37,7 +37,7 @@
             </div>
         </aside>
         <div class="bestsellers__container">
-            <h2 class="bestsellers__title title">{{__('text.aktiv_aktiv_result_title')}} {{ $active }}</h2>
+            <h2 class="bestsellers__title title">{{__('text.aktiv_aktiv_result_title')}} {{ ucwords(str_replace('-', ' ', $active)) }}</h2>
             <div class="bestsellers__body">
                 @foreach ($products as $product)
                     <div class="product-card">
@@ -56,7 +56,7 @@
                             <h3 class="product-card__label">{{ $product['name'] }}</h3>
                             <h4 class="product-card__company">
                                 @foreach ($product['aktiv'] as $aktiv)
-                                    {{ $aktiv }}
+                                    {{ $aktiv['name'] }}
                                 @endforeach
                             </h4>
                         </a>

@@ -504,10 +504,13 @@
                                     </form>
                                     <div class="search-bar__nav" data-simplebar data-simplebar-auto-hide="false">
                                         <ul class="search-bar__letter-list">
-                                            @foreach (range('A', 'Z') as $l)
+                                            @foreach ($first_letters as $key => $active_letter)
                                                 <li class="search-bar__item-list">
-                                                    <a
-                                                        href="{{ route('home.first_letter', $l) }}">{{ $l }}</a>
+                                                    @if ($active_letter)
+                                                        <a href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                                                    @else
+                                                        {{ $key }}
+                                                    @endif
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -835,7 +838,7 @@
                 <div class="licen">
                     <p class="footer__copyright">
                         {{ __('text.license_text_license1_1') }}
-                        {{ str_replace(['http://', 'https://'], '', env('APP_URL')) }}
+                        {{ $domain }}
                         {{ __('text.license_text_license1_2') }}
                         {{ __('text.license_text_license2_d4') }}
                     </p>

@@ -1,31 +1,31 @@
-var date = new Date();
-var day = date.getDay();
-switch (date.getDay()) {
-    case 1: day = "monday";
-            break;
-    case 2: day = "tuesday";
-            break;
-    case 3: day = "wednesday";
-            break;
-    case 4: day = "thursday";
-            break;
-    case 5: day = "friday";
-            break;
-    case 6: day = "saturday";
-            break;
-    case 7: day = "sunday";
-            break;
-    default: break;
-}
-var age = 0;
-if (date.getHours() < 23)
-    age = (23-date.getHours())*60*60 + (59-date.getMinutes())*60 + (60-date.getSeconds());
-if (date.getHours() == 23)
-    age = (59-date.getMinutes())*60 + (60-date.getSeconds());
-document.cookie = "year=" + date.getFullYear() + ";max-age=" + age;
-document.cookie = "month=" + (date.getMonth()+1) + ";max-age=" + age;
-document.cookie = "date=" + date.getDate() + ";max-age=" + age;
-document.cookie = "day=" + day + ";max-age=" + age;
+// var date = new Date();
+// var day = date.getDay();
+// switch (date.getDay()) {
+//     case 1: day = "monday";
+//             break;
+//     case 2: day = "tuesday";
+//             break;
+//     case 3: day = "wednesday";
+//             break;
+//     case 4: day = "thursday";
+//             break;
+//     case 5: day = "friday";
+//             break;
+//     case 6: day = "saturday";
+//             break;
+//     case 7: day = "sunday";
+//             break;
+//     default: break;
+// }
+// var age = 0;
+// if (date.getHours() < 23)
+//     age = (23-date.getHours())*60*60 + (59-date.getMinutes())*60 + (60-date.getSeconds());
+// if (date.getHours() == 23)
+//     age = (59-date.getMinutes())*60 + (60-date.getSeconds());
+// document.cookie = "year=" + date.getFullYear() + ";max-age=" + age;
+// document.cookie = "month=" + (date.getMonth()+1) + ";max-age=" + age;
+// document.cookie = "date=" + date.getDate() + ";max-age=" + age;
+// document.cookie = "day=" + day + ";max-age=" + age;
 
 (() => {
     "use strict";
@@ -4736,6 +4736,7 @@ function sendAjaxContact() {
             success: function(data) { //Данные отправлены успешно
                 if (data['status'] == 'error') {
                     alert(data['text']);
+                    $('#captcha_image').attr('src', data['new_captcha']);
                 } else {
                     // $(".default").html(data);
                     $(".form").hide();
@@ -4788,6 +4789,7 @@ function sendAjaxAffiliate() {
             success: function(data) { //Данные отправлены успешно
                 if (data['status'] == 'error') {
                     alert(data['text']);
+                    $('#captcha_image').attr('src', data['new_captcha']);
                 } else {
                     $(".form").hide();
                     $(".default__title").hide();
