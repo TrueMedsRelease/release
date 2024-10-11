@@ -2181,6 +2181,8 @@ $("#paid").click(function (e) {
 });
 
 function Insurance(val) {
+    var form = $('form').serialize();
+    form += '&val=' + val;
     if (val == 1) {
 
         $.ajax({
@@ -2188,9 +2190,7 @@ function Insurance(val) {
             type: 'POST',
             cache: false,
             dataType: 'html',
-            data: {
-                'value': val
-            },
+            data: form,
             success: function (data) {
                 data = JSON.parse(data);
                 $('.wrapper').html(data.html);
@@ -2207,9 +2207,7 @@ function Insurance(val) {
             type: 'POST',
             cache: false,
             dataType: 'html',
-            data: {
-                'value': val
-            },
+            data: form,
             success: function (data) {
                 data = JSON.parse(data);
                 $('.wrapper').html(data.html);
@@ -2223,12 +2221,13 @@ function Insurance(val) {
 }
 
 function secretPackage() {
+    var form = $('form').serialize();
     $.ajax({
         url: '/checkout/secret_package',
         type: 'POST',
         cache: false,
         dataType: 'html',
-        data: {},
+        data: form,
         success: function (data) {
             data = JSON.parse(data);
             $('.wrapper').html(data.html);
@@ -2237,12 +2236,15 @@ function secretPackage() {
 }
 
 function change_shipping(shipping_name, shipping_price) {
+    var form = $('form').serialize();
+    form += '&shipping_name=' + shipping_name;
+    form += '&shipping_price=' + shipping_price;
     $.ajax({
         url: '/checkout/change-shipping',
         type: 'POST',
         cache: false,
         dataType: 'html',
-        data: { 'shipping_name': shipping_name, 'shipping_price': shipping_price },
+        data: form,
         success: function (data) {
             data = JSON.parse(data);
             $('.wrapper').html(data.html);
