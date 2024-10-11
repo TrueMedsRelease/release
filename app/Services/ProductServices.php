@@ -164,7 +164,7 @@ class ProductServices
             }
             else
             {
-                $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('url', '=', $url)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+                $products_desc_raw = ProductDesc::query()->join('product', 'product_desc.product_id', '=', 'product.id')->where('product.is_showed', '=', 1)->where('product_desc.language_id', '=', $language_id)->where('product_desc.url', '=', $url)->get(['product_desc.product_id', 'product_desc.name', 'product_desc.desc', 'product_desc.url'])->groupBy('product_desc.product_id')->toArray();
 
                 if (!$products_desc_raw || empty($products_desc_raw)) {
                     $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
@@ -912,19 +912,6 @@ class ProductServices
                 $page_properties->description = str_replace('(category_name)', $category_name, $page_properties->description);
 
                 break;
-            case 'product':
-
-                $product_name = session('product_name') ? session('product_name') : __('text.common_product_text');
-                $page_properties->title = str_replace('(product_name)', $product_name, $page_properties->title);
-                $page_properties->keyword = str_replace('(product_name)', $product_name, $page_properties->keyword);
-                $page_properties->description = str_replace('(product_name)', $product_name, $page_properties->description);
-
-                break;
-            default:
-                $page_properties->title = 'Title';
-                $page_properties->keyword = 'Keywords';
-                $page_properties->description = 'Description';
-                break;
         }
 
         return $page_properties;
@@ -946,7 +933,7 @@ class ProductServices
         $page_properties->keyword = str_replace('(host_name)', $domain, $page_properties->keyword);
         $page_properties->description = str_replace('(host_name)', $domain, $page_properties->description);
 
-        $product_name = session('product_name') ? session('product_name') : __('text.common_product_text');
+        $product_name = ucwords(str_replace('-', ' ', $product));
         $page_properties->title = str_replace('(product_name)', $product_name, $page_properties->title);
         $page_properties->keyword = str_replace('(product_name)', $product_name, $page_properties->keyword);
         $page_properties->description = str_replace('(product_name)', $product_name, $page_properties->description);
@@ -968,7 +955,7 @@ class ProductServices
                 $page_properties->description = $product_properties_new->description;
             }
         } else {
-            $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%'");
+            $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%' AND is_showed = 1");
             $product_id = $product_id[0]->id;
             $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `product_id` = $product_id AND `language_id` = $language_id");
             $product_properties_new = $product_properties_new[0];
