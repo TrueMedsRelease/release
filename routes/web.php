@@ -194,11 +194,14 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/login', 'login')->name('home.login');
     Route::get('/lang={locale}', 'language')->name('home.language');
     Route::get('/curr={currency}', 'currency')->name('home.currency');
+    Route::get('/{any_url}/lang={locale}', 'language_with_url')->name('home.language_with_url')->where('any_url', '(?!string1|string2)[^\/]+');
+    Route::get('/{any_url}/curr={currency}', 'currency_with_url')->name('home.currency_with_url')->where('any_url', '(?!string1|string2)[^\/]+');
     Route::get('/first_letter/{letter}', 'first_letter')->name('home.first_letter');
     Route::get('/category/{category}', 'category')->name('home.category');
     Route::get('/active/{active}', 'active')->name('home.active');
     Route::get('disease/{disease}', 'disease')->name('home.disease');
     Route::get('/design={design}', 'design')->name('home.design');
+    Route::get('/{any_url}/design={design}', 'design_with_url')->name('home.design_with_url')->where('any_url', '(?!string1|string2)[^\/]+');
     Route::post('/request_call', 'request_call')->name('home.request_call')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/request_subscribe', 'request_subscribe')->name('home.request_subscribe')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/request_contact_us', 'request_contact_us')->name('home.request_contact_us')->withoutMiddleware(VerifyCsrfToken::class);

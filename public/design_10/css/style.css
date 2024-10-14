@@ -2407,12 +2407,25 @@ body{
   -webkit-user-select:none;
   user-select:none;
 }
-.drug-index__link:hover, .drug-index__link:focus-visible{
+
+.drug-index__link a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+/* .drug-index__link:hover, .drug-index__link:focus-visible{
   color:var(--color-secondary);
 }
 .drug-index__link:active{
   color:var(--color-accent);
-}
+} */
+
+.drug-index__link a:hover, .drug-index__link a:focus-visible{
+    color:var(--color-secondary);
+  }
+  .drug-index__link a:active{
+    color:var(--color-accent);
+  }
 
 .store-info{
   display:flex;

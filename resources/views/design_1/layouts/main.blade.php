@@ -146,7 +146,7 @@
                         <span class="header__label">{{__('text.common_language_text')}}</span>
                         <select name="select__value" class="form" onchange="location.href=this.options[this.selectedIndex].value">
                             @foreach ($Language::GetAllLanuages() as $item)
-                                <option value="/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
+                                <option value="{{ url()->current() }}/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
                             @endforeach
                         </select>
                     </div>
@@ -156,7 +156,7 @@
                         <span class="header__label">{{__('text.common_currency_text')}}</span>
                         <select name="select__options" class="form" onchange="location.href=this.options[this.selectedIndex].value">
                             @foreach ($Currency::GetAllCurrency() as $item)
-                                <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                <option value="{{ url()->current() }}/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
                             @endforeach
                         </select>
                     </div>
