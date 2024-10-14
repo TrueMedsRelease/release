@@ -700,6 +700,17 @@ class HomeController extends Controller
         return Redirect::back();
     }
 
+    public function language_with_url($url, $locale)
+    {
+        session(['locale' => $locale]);
+
+        if ($url) {
+            return redirect('/' . $url);
+        } else {
+            return Redirect::back();
+        }
+    }
+
     public function currency($currency)
     {
         $coef = Currency::GetCoef($currency);
@@ -708,12 +719,39 @@ class HomeController extends Controller
         return Redirect::back();
     }
 
+    public function currency_with_url($url, $currency)
+    {
+        $coef = Currency::GetCoef($currency);
+        session(['currency' => $currency]);
+        session(['currency_c' => $coef]);
+
+        if ($url) {
+            return redirect('/' . $url);
+        } else {
+            return Redirect::back();
+        }
+    }
+
     public function design($design)
     {
         if (in_array($design, [1,2,3,4,5,6,7,8,9,10])) {
             session(['design' => 'design_' . $design]);
         }
+
         return redirect()->route('home.index');
+    }
+
+    public function design_with_url($url, $design)
+    {
+        if (in_array($design, [1,2,3,4,5,6,7,8,9,10])) {
+            session(['design' => 'design_' . $design]);
+        }
+
+        if ($url) {
+            return redirect('/' . $url);
+        } else {
+            return redirect()->route('home.index');
+        }
     }
 
     public function set_images($pill) {

@@ -2247,7 +2247,7 @@ body::after {
 }
 
 #iFrame1 {
-  height:2850px !important; 
+  height:2850px !important;
   width:100%;
 }
 
@@ -3760,6 +3760,10 @@ body::after {
     -webkit-transition: opacity 0.3s ease, visibility 0.3s ease;
     -o-transition: opacity 0.3s ease, visibility 0.3s ease;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
   }
 
   .active .search__buttons {
@@ -4242,7 +4246,7 @@ body::after {
   }
 
   #iFrame1 {
-    height:4100px !important; 
+    height:4100px !important;
     width:100%;
   }
 
@@ -5801,3 +5805,4 @@ body::after {
     margin-bottom: 35px;
   }
 }
+

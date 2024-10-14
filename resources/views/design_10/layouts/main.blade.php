@@ -98,7 +98,7 @@
                             <select class="header-select"
                                 onchange="location.href=this.options[this.selectedIndex].value">
                                 @foreach ($Language::GetAllLanuages() as $item)
-                                    <option value="/lang={{ $item['code'] }}"
+                                    <option value="{{ url()->current() }}/lang={{ $item['code'] }}"
                                         @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }}
                                     </option>
                                 @endforeach
@@ -116,7 +116,7 @@
                             <select class="header-select"
                                 onchange="location.href=this.options[this.selectedIndex].value">
                                 @foreach ($Currency::GetAllCurrency() as $item)
-                                    <option value="/curr={{ $item['code'] }}"
+                                    <option value="{{ url()->current() }}/curr={{ $item['code'] }}"
                                         @if (session('currency') == $item['code']) selected @endif>
                                         {{ Str::upper($item['code']) }} </option>
                                 @endforeach
@@ -373,9 +373,13 @@
                     @foreach ($first_letters as $key => $active_letter)
                         <li class="drug-index__item">
                             @if ($active_letter)
-                                <a class="drug-index__link" href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                                <div class="drug-index__link">
+                                    <a href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                                </div>
                             @else
-                                {{ $key }}
+                                <div class="drug-index__link">
+                                    {{ $key }}
+                                </div>
                             @endif
                         </li>
                     @endforeach

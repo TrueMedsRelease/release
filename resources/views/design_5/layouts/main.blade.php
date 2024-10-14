@@ -158,7 +158,7 @@
                                 <select name="form[]" class="form"
                                     onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Language::GetAllLanuages() as $language)
-                                        <option value="/lang={{ $language['code'] }}"
+                                        <option value="{{ url()->current() }}/lang={{ $language['code'] }}"
                                             @if (App::currentLocale() == $language['code']) selected @endif>{{ $language['name'] }}
                                         </option>
                                     @endforeach
@@ -170,7 +170,7 @@
                                 <select name="form[]" class="form"
                                     onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Currency::GetAllCurrency() as $item)
-                                        <option value="/curr={{ $item['code'] }}"
+                                        <option value="{{ url()->current() }}/curr={{ $item['code'] }}"
                                             @if (session('currency') == $item['code']) selected @endif>
                                             {{ Str::upper($item['code']) }} </option>
                                     @endforeach

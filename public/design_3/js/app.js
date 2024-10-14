@@ -4199,22 +4199,22 @@
             timeout += 3500;
         }
     }
-    /*const headerPhones = document.querySelector(".phones-header");
-    const searchLettersList = document.querySelector(".search__select");
-    if (headerPhones && window.innerWidth < 1024) {
-        document.addEventListener("click", (function (e) {
-            if (e.target === headerPhones || e.target.closest(".phones-header")) {
-                headerPhones.classList.toggle("active");
-                searchLettersList.classList.remove("active");
-            } else if (e.target === searchLettersList || e.target.closest(".search__select")) {
-                headerPhones.classList.remove("active");
-                searchLettersList.classList.toggle("active");
-            } else {
-                headerPhones.classList.remove("active");
-                searchLettersList.classList.remove("active");
-            }
-        }));
-    }*/
+    // const headerPhones = document.querySelector(".phones-header");
+    // const searchLettersList = document.querySelector(".search__select");
+    // if (window.innerWidth < 1024) {
+    //     document.addEventListener("click", (function (e) {
+    //         if (e.target === headerPhones || e.target.closest(".phones-header")) {
+    //             headerPhones.classList.toggle("active");
+    //             searchLettersList.classList.remove("active");
+    //         } else if (e.target === searchLettersList || e.target.closest(".search__select")) {
+    //             headerPhones.classList.remove("active");
+    //             searchLettersList.classList.toggle("active");
+    //         } else {
+    //             headerPhones.classList.remove("active");
+    //             searchLettersList.classList.remove("active");
+    //         }
+    //     }));
+    // }
 
     if (window.innerWidth < 1024) {
         $(document).on('click', '.search__select', function () {

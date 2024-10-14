@@ -125,7 +125,7 @@
                             <div class="header__select">
                                 <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Language::GetAllLanuages() as $language)
-                                        <option value="/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
+                                        <option value="{{ url()->current() }}/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -134,7 +134,7 @@
                             <div class="header__select">
                                 <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Currency::GetAllCurrency() as $item)
-                                        <option value="/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
+                                        <option value="{{ url()->current() }}/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -282,9 +282,13 @@
                         <div class="search__buttons">
                             @foreach ($first_letters as $key => $active_letter)
                                 @if ($active_letter)
-                                    <a type="button" class="search__button" href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                                    <div class="search__button">
+                                        <a type="button" href="{{ route('home.first_letter', $key) }}">{{ $key }}</a>
+                                    </div>
                                 @else
-                                    {{ $key }}
+                                    <div class="search__button">
+                                        {{ $key }}
+                                    </div>
                                 @endif
                             @endforeach
                         </div>

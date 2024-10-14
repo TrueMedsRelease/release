@@ -50,7 +50,11 @@ class CheckoutController extends Controller
         }
 
         $design = session('design') ? session('design') : config('app.design');
-        return view('checkout', ['pixel' => $pixel]);
+        return view('checkout', [
+            'pixel' => $pixel,
+            'Language' => Language::class,
+            'Currency' => Currency::class,
+        ]);
     }
 
     public function checkout()

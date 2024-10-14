@@ -54,7 +54,7 @@
                                 <select name="form[]" id="currency_select" class="form"
                                     onclick="location.href=this.options[this.selectedIndex].value" data-scroll>
                                     @foreach ($Currency::GetAllCurrency() as $item)
-                                        <option value="/curr={{ $item['code'] }}"
+                                        <option value="{{ url()->current() }}/curr={{ $item['code'] }}"
                                             @if (session('currency') == $item['code']) selected @endif>
                                             {{ Str::upper($item['code']) }}
                                         </option>
@@ -66,7 +66,7 @@
                                 <select name="form[]" id="language_select" class="form"
                                     onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
                                     @foreach ($Language::GetAllLanuages() as $item)
-                                        <option value="/lang={{ $item['code'] }}"
+                                        <option value="{{ url()->current() }}/lang={{ $item['code'] }}"
                                             @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }}
                                         </option>
                                     @endforeach
