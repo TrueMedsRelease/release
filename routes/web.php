@@ -12,7 +12,7 @@ use App\Services\GeoIpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
-use Illuminate\Session;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -199,7 +199,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/first_letter/{letter}', 'first_letter')->name('home.first_letter');
     Route::get('/category/{category}', 'category')->name('home.category');
     Route::get('/active/{active}', 'active')->name('home.active');
-    Route::get('disease/{disease}', 'disease')->name('home.disease');
+    Route::get('/disease/{disease}', 'disease')->name('home.disease');
     Route::get('/design={design}', 'design')->name('home.design');
     Route::get('/{any_url}/design={design}', 'design_with_url')->name('home.design_with_url')->where('any_url', '(?!string1|string2)[^\/]+');
     Route::post('/request_call', 'request_call')->name('home.request_call')->withoutMiddleware(VerifyCsrfToken::class);
@@ -261,4 +261,13 @@ Route::controller(AdminController::class)->group(function() {
 
     Route::get('/admin/currencies', 'admin_currencies')->name('admin.admin_currencies');
     Route::post('/admin/save_currencies_info', 'save_currencies_info')->name('admin.save_currencies_info')->withoutMiddleware(VerifyCsrfToken::class);
+});
+
+Route::fallback(function () {
+    $redirect_url = request()->server('REQUEST_URI');
+    $index = strripos($redirect_url, '/');
+    $redirect_url = substr($redirect_url, 0, $index);
+
+    return redirect($redirect_url);
+
 });

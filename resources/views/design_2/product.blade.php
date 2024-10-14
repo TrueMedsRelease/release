@@ -27,7 +27,7 @@
                             @if (count($product['aktiv']) > 0)
                                 <p class="details-product__row">{!!__('text.product_active')!!}
                                     @foreach ($product['aktiv'] as $aktiv)
-                                        <a href="{{ route('home.active', $aktiv) }}">
+                                        <a href="{{ route('home.active', $aktiv['url']) }}">
                                             {{ $aktiv['name'] }}
                                         </a>
                                     @endforeach
