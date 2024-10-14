@@ -36,9 +36,14 @@
 
     <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
-    <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+    <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
+    {{-- <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script> --}}
+
+    {{-- <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
 

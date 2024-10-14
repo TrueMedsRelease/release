@@ -297,6 +297,11 @@ class HomeController extends Controller
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $product = ProductServices::GetProductInfoByUrl($product, $design);
+
+        if (!$product) {
+            return redirect()->route('home.index');
+        }
+
         $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
