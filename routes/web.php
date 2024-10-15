@@ -209,6 +209,8 @@ Route::controller(HomeController::class)->group(function() {
     Route::post('/request_login', 'request_login')->name('home.request_login')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/check_code', 'check_code')->name('home.check_code')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/set_images/{pill}', 'set_images')->name('home.set_images');
+    Route::post('/pwa/pwa_info', 'pwa_info')->name('home.pwa_info')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/push/save_push', 'save_push_data')->name('home.save_push_data')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::controller(AdminController::class)->group(function() {

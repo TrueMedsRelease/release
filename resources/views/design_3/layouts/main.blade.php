@@ -50,7 +50,9 @@
     <script>
         const design = 3;
     </script>
-
+@if (session('locale'))
+    <input type="hidden" id="lang_session" value="{{ $Language::$languages_name[session('locale')] }}">
+@endif
 <div class="wrapper">
 	<header class="header">
 		<div class="header__phones-top top-phones-header">
@@ -123,16 +125,16 @@
                     <div class="header__actions" data-one-select data-da=".top-header__container, 700, last">
                         @if (count($Language::GetAllLanuages()) > 1)
                             <div class="header__select">
-                                <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                <select name="form[]" class="form" id="lang_select" onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Language::GetAllLanuages() as $language)
-                                        <option value="{{ url()->current() }}/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
+                                        <option value="{{ url()->current() }}/lang={{$language['code']}}" data-code="{{ $item['code'] }}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         @endif
                         @if (count($Currency::GetAllCurrency()) > 1)
                             <div class="header__select">
-                                <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                <select name="form[]" class="form" id="curr_select" onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Currency::GetAllCurrency() as $item)
                                         <option value="{{ url()->current() }}/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
                                     @endforeach
@@ -791,7 +793,9 @@
 </div>
 <script src="{{ asset("$design/js/app.js") }}"></script>
 <script src="{{ asset("/js/all_js.js") }}"></script>
-<input hidden id="stattemp" value="{$data.web_statistic.params_string}">
+@if ($web_statistic)
+    <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
+@endif
 {{-- <input hidden id="stattemp" style="display: none;" value="{$path.global_image}/elements/pixel?{$data.web_statistic.params_string}">
 <img id="stat" style="display: none;" alt="" src=""> --}}
 

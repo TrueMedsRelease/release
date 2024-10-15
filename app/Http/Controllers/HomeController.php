@@ -26,6 +26,21 @@ class HomeController extends Controller
         $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=main&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
+
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
         $pixel = "";
         foreach($pixels as $item)
@@ -56,7 +71,8 @@ class HomeController extends Controller
                 'Currency' => Currency::class,
                 'pixel' => $pixel,
                 'first_letters' => $first_letters,
-                'domain' => $domain
+                'domain' => $domain,
+                'web_statistic' => $web_statistic
             ]);
 
         } elseif ($design == 'design_7') {
@@ -74,7 +90,8 @@ class HomeController extends Controller
                 'Currency' => Currency::class,
                 'pixel' => $pixel,
                 'first_letters' => $first_letters,
-                'domain' => $domain
+                'domain' => $domain,
+                'web_statistic' => $web_statistic
             ]);
         } elseif ($design == 'design_8') {
             $products_urls = ['viagra', 'cialis', 'levitra'];
@@ -96,7 +113,8 @@ class HomeController extends Controller
                 'Currency' => Currency::class,
                 'pixel' => $pixel,
                 'first_letters' => $first_letters,
-                'domain' => $domain
+                'domain' => $domain,
+                'web_statistic' => $web_statistic
             ]);
         }
     }
@@ -127,6 +145,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=first_letter&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.first_letter',[
             'design' => $design,
             'products' => $products,
@@ -141,7 +173,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -175,6 +208,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=active&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.active',[
             'design' => $design,
             'products' => $products,
@@ -189,7 +236,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -223,6 +271,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=category&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.category',[
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -236,7 +298,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -266,6 +329,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=disease&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.disease',[
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -280,7 +357,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -326,6 +404,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=product&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.product', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -339,7 +431,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -421,6 +514,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=about_us&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.about', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -433,7 +540,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -461,6 +569,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=faq&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.help', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -473,7 +595,8 @@ class HomeController extends Controller
            'Currency' => Currency::class,
            'pixel' => $pixel,
            'first_letters' => $first_letters,
-           'domain' => $domain
+           'domain' => $domain,
+           'web_statistic' => $web_statistic
         ]);
     }
 
@@ -501,6 +624,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=testimonials&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.testimonials', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -513,7 +650,8 @@ class HomeController extends Controller
            'Currency' => Currency::class,
            'pixel' => $pixel,
            'first_letters' => $first_letters,
-           'domain' => $domain
+           'domain' => $domain,
+           'web_statistic' => $web_statistic
         ]);
     }
 
@@ -541,6 +679,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=shipping&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.delivery', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -553,7 +705,8 @@ class HomeController extends Controller
            'Currency' => Currency::class,
            'pixel' => $pixel,
            'first_letters' => $first_letters,
-           'domain' => $domain
+           'domain' => $domain,
+           'web_statistic' => $web_statistic
         ]);
     }
 
@@ -581,6 +734,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=moneyback&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.moneyback', [
            'design' => $design,
            'bestsellers' => $bestsellers,
@@ -593,7 +760,8 @@ class HomeController extends Controller
            'Currency' => Currency::class,
            'pixel' => $pixel,
            'first_letters' => $first_letters,
-           'domain' => $domain
+           'domain' => $domain,
+           'web_statistic' => $web_statistic
         ]);
     }
 
@@ -621,6 +789,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=contact_us&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.contact_us', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -633,7 +815,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -661,6 +844,20 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=affiliate&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.affiliate', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -673,7 +870,8 @@ class HomeController extends Controller
             'Currency' => Currency::class,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 
@@ -1139,6 +1337,96 @@ class HomeController extends Controller
 
         return json_encode($result);
     }
+
+    public function pwa_info(Request $request) {
+        $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 30);
+        if (!$fp) {
+            // echo "$errstr ($errno)\n";
+        } else {
+            $out = "GET /stat/catalog?" . $request->params . " HTTP/1.1\r\n";
+            $out .= "Host: true-services.net\r\n";
+            $out .= "User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "\r\n";
+            $out .= "Connection: Close\r\n\r\n";
+            fwrite($fp, $out);
+            fclose($fp);
+        }
+    }
+
+    public function save_push_data(Request $request) {
+        $errors = [];
+        $ip = request()->ip();;
+        $country_code = strtoupper(session('location.country'));
+        $aff = intval(session('aff', 0));
+        $saff = intval(session('saff', ''));
+        $user_agent = $request->user_agent;
+        $push_info = $request->push_info;
+        $shop_url = $request->shop_url;
+        $lang = $request->lang;
+        $curr = $request->curr;
+        $push_date = $request->date;
+        $time_zone = $request->time_zone;
+        $fingerprint = 'x';
+        $customer_id = $request->customer_id;
+
+        $method = $request->method ? $request->method : 'save';
+        $order_info = $request->order_info;
+        $user_push = $request->user_push;
+
+        if ($method == 'save') {
+            if(empty($user_agent) || empty($push_info) || empty($shop_url) || empty($lang) || empty($curr) || empty($push_date) || empty($time_zone)) {
+                $errors = __('text.errors_empty_field');
+            } else {
+                $push_info_decode = json_decode($push_info, true);
+                $user = $push_info_decode['keys']['auth'];
+            }
+        } else {
+            if ($user_push) {
+                $order_info = json_decode($order_info);
+                $order_id = $order_info['order_id'];
+            } else {
+                $errors = __('text.errors_empty_field');
+            }
+        }
+
+        if(!count($errors)) {
+            if ($method == 'save') {
+                $msg = [
+                    'method' => $method,
+                    'user' => $user,
+                    'ip' => $ip,
+                    'country_code' => $country_code,
+                    'user_agent' => $user_agent,
+                    'shop' => $shop_url,
+                    'aff' => $aff,
+                    'saff' => $saff,
+                    'customer_id' => $customer_id,
+                    'lang' => $lang,
+                    'curr' => $curr,
+                    'push_info' => $push_info,
+                    'push_date' => $push_date,
+                    'time_zone' => $time_zone,
+                    'fingerprint' => $fingerprint,
+                ];
+            } else {
+                $msg = [
+                    'method' => $method,
+                    'user_push' => $user_push,
+                    'order_id' => $order_id
+                ];
+            }
+
+            $response = Http::timeout(3)->post('https://true-services.net/subscribe/subscribe.php', $msg);
+            $response = json_decode($response, true);
+
+            $result = ['status' => 'success'];
+        } else {
+            $result = ['status' => 'error', 'text' => $errors];
+        }
+
+        return json_encode($result);
+    }
+
+
 
     // public static function downloadImageFromWeb() {
     //     $products_images = Product::query()

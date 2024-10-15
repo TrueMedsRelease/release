@@ -54,6 +54,9 @@
         let flagm = false;
         const design = 8;
     </script>
+    @if (session('locale'))
+        <input type="hidden" id="lang_session" value="{{ $Language::$languages_name[session('locale')] }}">
+    @endif
     <div class="wrapper">
         <input type="hidden" class="design" value="{{ $design }}">
         <div class="popup_gray" style="display: none">
@@ -156,11 +159,11 @@
                                                         width="24" height="20" alt="">
                                                 </div>
                                                 <div class="actions__select">
-                                                    <select name="form[]" class="form"
+                                                    <select name="form[]" class="form" id="lang_select"
                                                         onchange="location.href=this.options[this.selectedIndex].value"
                                                         data-scroll>
                                                         @foreach ($Language::GetAllLanuages() as $language)
-                                                            <option value="{{ url()->current() }}/lang={{ $language['code'] }}"
+                                                            <option value="{{ url()->current() }}/lang={{ $language['code'] }}" data-code="{{ $item['code'] }}"
                                                                 @if (App::currentLocale() == $language['code']) selected @endif>
                                                                 {{ $language['name'] }}</option>
                                                         @endforeach
@@ -175,7 +178,7 @@
                                                         width="24" height="20" alt="">
                                                 </div>
                                                 <div class="actions__select">
-                                                    <select name="form[]" class="form"
+                                                    <select name="form[]" class="form" id="curr_select"
                                                         onchange="location.href=this.options[this.selectedIndex].value"
                                                         data-scroll>
                                                         @foreach ($Currency::GetAllCurrency() as $item)
@@ -258,8 +261,9 @@
 
         </footer>
 
-        <input hidden id="stattemp" value="{$data.web_statistic.params_string}">
-
+        @if ($web_statistic)
+            <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
+        @endif
 </body>
 
 </html>

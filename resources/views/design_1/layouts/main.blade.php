@@ -41,9 +41,8 @@
 
 
     <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-    {{-- <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script> --}}
-
-    {{-- <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
+    <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+    <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script>
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
 
@@ -59,6 +58,14 @@
         let flagp = false;
         const design = 1;
     </script>
+
+    @if (session('locale'))
+        <input type="hidden" id="lang_session" value="{{ session('locale') }}">
+    @endif
+
+    @if (session('order'))
+        <input type="hidden" id="order_info_session" value="{{ json_encode(session('order')) }}">
+    @endif
 
 <div class="wrapper">
 	<header class="header">
@@ -149,9 +156,9 @@
                 @if (count($Language::GetAllLanuages()) > 1)
                     <div class="header__currency header__control" data-da=".controls, 768, first">
                         <span class="header__label">{{__('text.common_language_text')}}</span>
-                        <select name="select__value" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                        <select name="select__value" class="form" id="lang_select" onchange="location.href=this.options[this.selectedIndex].value">
                             @foreach ($Language::GetAllLanuages() as $item)
-                                <option value="{{ url()->current() }}/lang={{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
+                                <option value="{{ url()->current() }}/lang={{ $item['code'] }}" data-code="{{ $item['code'] }}" @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
                             @endforeach
                         </select>
                     </div>
@@ -159,7 +166,7 @@
                 @if (count($Currency::GetAllCurrency()) > 1)
                     <div class="header__currency header__control" data-da=".controls, 768, first">
                         <span class="header__label">{{__('text.common_currency_text')}}</span>
-                        <select name="select__options" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                        <select name="select__options" class="form" id="curr_select" onchange="location.href=this.options[this.selectedIndex].value">
                             @foreach ($Currency::GetAllCurrency() as $item)
                                 <option value="{{ url()->current() }}/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
                             @endforeach
@@ -611,11 +618,9 @@
 
 <script src="{{ asset("$design/js/app.js") }}"></script>
 <script src="{{ asset("/js/all_js.js") }}"></script>
-{{-- {if $data.page_name ne "checkout"}
-    {if $data.web_statistic}
-        <input hidden id="stattemp" value="{$data.web_statistic.params_string}">
-    {/if}
-{/if} --}}
+@if ($web_statistic)
+    <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
+@endif
 
 </body>
 </html>
