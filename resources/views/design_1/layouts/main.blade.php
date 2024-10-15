@@ -39,9 +39,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    @if (env('APP_PWA', 0))
+        <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
+        <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+    @endif
 
-    <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-    <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
     <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script>
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
@@ -66,6 +68,9 @@
     @if (session('order'))
         <input type="hidden" id="order_info_session" value="{{ json_encode(session('order')) }}">
     @endif
+
+    <input type="hidden" id="is_pwa_here" value="{{ env('APP_PWA', 0) }}">
+    <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
 
 <div class="wrapper">
 	<header class="header">

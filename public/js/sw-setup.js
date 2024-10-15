@@ -1,7 +1,7 @@
 const DEBUG = true;
 
 // Меняем версию файла, когда меняем service worker
-const serviceWorkerVer = "/js/sw.js?v=1";
+const serviceWorkerVer = "/sw.js?v=1";
 
 var url     = window.location.origin,
     fullUrl = url + serviceWorkerVer;
@@ -44,66 +44,67 @@ var flag    = false;
 }();
 
 function enableNotif() {
-    Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            // get service worker
-            navigator.serviceWorker.ready.then((sw) => {
-                //subscribe
-                sw.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: "BFp67dm6M0zqfOZmYE8wfvgVHG1vvJNxMx5p5tVMw1HYewacN_lCxggziYALT7rzPjE0KE7wOO3l8vXMJge5dUA"
-                }).then((subscription) => {
-                    let cur_date = new Date();
-                    let time_zone = -cur_date.getTimezoneOffset() / 60;
-                    let shop_url = location.host;
-                    let push_info = JSON.stringify(subscription);
+    if (atob($('#vapid_pub').val()) != '') {
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                // get service worker
+                navigator.serviceWorker.ready.then((sw) => {
+                    //subscribe
+                    sw.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: atob($('#vapid_pub').val())
+                    }).then((subscription) => {
+                        let cur_date = new Date();
+                        let time_zone = -cur_date.getTimezoneOffset() / 60;
+                        let shop_url = location.host;
+                        let push_info = JSON.stringify(subscription);
 
-                    let info = JSON.parse(push_info);
-                    let date_coockie = new Date;
-                    date_coockie.setDate(date_coockie.getDate() + 900);
-                    date_coockie = date_coockie.toUTCString();
-                    document.cookie = 'user_push=' + info['keys']['auth'] + '; path=/; expires=' + date_coockie;
+                        let info = JSON.parse(push_info);
+                        let date_coockie = new Date;
+                        date_coockie.setDate(date_coockie.getDate() + 900);
+                        date_coockie = date_coockie.toUTCString();
+                        document.cookie = 'user_push=' + info['keys']['auth'] + '; path=/; expires=' + date_coockie;
 
-                    let lang_lang = $('#lang_select :selected').attr('data-code').trim();
-                    let curr_curr = $('#curr_select :selected').text().trim();
+                        let lang_lang = $('#lang_select :selected').attr('data-code').trim();
+                        let curr_curr = $('#curr_select :selected').text().trim();
 
-                    let user_agent = window.navigator.userAgent;
+                        let user_agent = window.navigator.userAgent;
 
-                    let format_date, year, month, day, hours, minutes, seconds = '';
+                        let format_date, year, month, day, hours, minutes, seconds = '';
 
-                    day = cur_date.getDate() < 10 ? '0' + cur_date.getDate() : cur_date.getDate();
-                    month = cur_date.getMonth() < 10 ? '0' + cur_date.getMonth() : cur_date.getMonth();
-                    year = cur_date.getFullYear();
-                    hours = cur_date.getHours() < 10 ? '0' + cur_date.getHours() : cur_date.getHours();
-                    minutes = cur_date.getMinutes() < 10 ? '0' + cur_date.getMinutes() : cur_date.getMinutes();
-                    seconds = cur_date.getSeconds() < 10 ? '0' + cur_date.getSeconds() : cur_date.getSeconds();
+                        day = cur_date.getDate() < 10 ? '0' + cur_date.getDate() : cur_date.getDate();
+                        month = cur_date.getMonth() < 10 ? '0' + cur_date.getMonth() : cur_date.getMonth();
+                        year = cur_date.getFullYear();
+                        hours = cur_date.getHours() < 10 ? '0' + cur_date.getHours() : cur_date.getHours();
+                        minutes = cur_date.getMinutes() < 10 ? '0' + cur_date.getMinutes() : cur_date.getMinutes();
+                        seconds = cur_date.getSeconds() < 10 ? '0' + cur_date.getSeconds() : cur_date.getSeconds();
 
-                    format_date = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+                        format_date = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 
-                    $.ajax({
-                        url: '/push/save_push',
-                        type: "POST",
-                        data: {
-                            'user_agent': user_agent,
-                            'shop_url': shop_url,
-                            'lang': $('#lang_session').val() ? $('#lang_session').val() : lang_lang,
-                            'curr': curr_curr,
-                            'push_info': push_info,
-                            'date': format_date,
-                            'time_zone': time_zone,
-                            'customer_id': 0,
-                        },
-                        dataType: "json",
-                        success: function (res) {
-                            if (res['status'] == 'error') {
-                                alert(res['text']);
+                        $.ajax({
+                            url: '/push/save_push',
+                            type: "POST",
+                            data: {
+                                'shop_url': shop_url,
+                                'lang': $('#lang_session').val() ? $('#lang_session').val() : lang_lang,
+                                'curr': curr_curr,
+                                'push_info': push_info,
+                                'date': format_date,
+                                'time_zone': time_zone,
+                                'customer_id': 0,
+                            },
+                            dataType: "json",
+                            success: function (res) {
+                                if (res['status'] == 'error') {
+                                    alert(res['text']);
+                                }
                             }
-                        }
+                        });
                     });
                 });
-            });
-        }
-    });
+            }
+        });
+    }
 }
 
 
