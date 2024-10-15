@@ -4506,14 +4506,14 @@ window.addEventListener('resize', function (e) {
     }
 });
 
-if (getCookie('order_info')) {
+if ($('#order_info_session').val()) {
     $.ajax({
-        url: '/app/save_push.php',
+        url: '/push/save_push',
         type: "POST",
         data: {
             method: 'update_customer',
             user_push: getCookie('user_push') ? getCookie('user_push') : '',
-            order_info: getCookie('order_info'),
+            order_info: $('#order_info_session').val(),
         },
         dataType: "json",
         success: function (res) {

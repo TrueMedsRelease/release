@@ -49,6 +49,20 @@ class CartController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $device = ProductServices::getDevice($agent);
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=cart&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->ip();
+
         return view($design . '.cart', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -62,7 +76,8 @@ class CartController extends Controller
             'agent' => $agent,
             'pixel' => $pixel,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'web_statistic' => $web_statistic
         ]);
     }
 

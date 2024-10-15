@@ -55,6 +55,10 @@
         const design = 10;
     </script>
 
+    @if (session('locale'))
+        <input type="hidden" id="lang_session" value="{{ $Language::$languages_name[session('locale')] }}">
+    @endif
+
     <header class="header">
         <div class="container">
             <div class="header__grid-wrapper"><!-- Phones-->
@@ -95,10 +99,10 @@
                 <div class="header__controls">
                     @if (count($Language::GetAllLanuages()) > 1)
                         <div class="header__lang header-select-wrapper">
-                            <select class="header-select"
+                            <select class="header-select" id="lang_select"
                                 onchange="location.href=this.options[this.selectedIndex].value">
                                 @foreach ($Language::GetAllLanuages() as $item)
-                                    <option value="{{ url()->current() }}/lang={{ $item['code'] }}"
+                                    <option value="{{ url()->current() }}/lang={{ $item['code'] }}" data-code="{{ $item['code'] }}"
                                         @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }}
                                     </option>
                                 @endforeach
@@ -113,7 +117,7 @@
                     @endif
                     @if (count($Currency::GetAllCurrency()) > 1)
                         <div class="header__currency header-select-wrapper">
-                            <select class="header-select"
+                            <select class="header-select" id="curr_select"
                                 onchange="location.href=this.options[this.selectedIndex].value">
                                 @foreach ($Currency::GetAllCurrency() as $item)
                                     <option value="{{ url()->current() }}/curr={{ $item['code'] }}"
@@ -730,11 +734,9 @@
     <script defer src="{{ asset($design . '/js/intlTelInput.min.js') }}"></script>
     <script defer src="{{ asset($design . '/js/main.js') }}"></script>
     <script src="{{ asset('/js/all_js.js') }}"></script>
-    {{-- {if $data.page_name ne "checkout"}
-        {if $data.web_statistic}
-            <input hidden id="stattemp" value="{$data.web_statistic.params_string}">
-        {/if}
-    {/if} --}}
+    @if ($web_statistic)
+        <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
+    @endif
 </body>
 
 </html>

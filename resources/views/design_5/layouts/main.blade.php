@@ -57,6 +57,9 @@
         let flagm = false;
         const design = 5;
     </script>
+    @if (session('locale'))
+        <input type="hidden" id="lang_session" value="{{ $Language::$languages_name[session('locale')] }}">
+    @endif
     <header class="header">
         <div class="phone-box">
             <div class="container">
@@ -155,10 +158,10 @@
                     <div class="drop-info">
                         @if (count($Language::GetAllLanuages()) > 1)
                             <div class="lang drop">
-                                <select name="form[]" class="form"
+                                <select name="form[]" class="form" id="lang_select"
                                     onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Language::GetAllLanuages() as $language)
-                                        <option value="{{ url()->current() }}/lang={{ $language['code'] }}"
+                                        <option value="{{ url()->current() }}/lang={{ $language['code'] }}" data-code="{{ $item['code'] }}"
                                             @if (App::currentLocale() == $language['code']) selected @endif>{{ $language['name'] }}
                                         </option>
                                     @endforeach
@@ -167,7 +170,7 @@
                         @endif
                         @if (count($Currency::GetAllCurrency()) > 1)
                             <div class="wallet drop">
-                                <select name="form[]" class="form"
+                                <select name="form[]" class="form" id="curr_select"
                                     onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Currency::GetAllCurrency() as $item)
                                         <option value="{{ url()->current() }}/curr={{ $item['code'] }}"
@@ -563,7 +566,9 @@
         </div>
     </div>
 
-    {{-- <input hidden id="stattemp" value="{$data.web_statistic.params_string}"> --}}
+    @if ($web_statistic)
+        <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
+    @endif
 
     <script src="{{ asset("$design/js/app.js") }}"></script>
     <script src="{{ asset("$design/js/slick.js") }}"></script>

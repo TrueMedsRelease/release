@@ -50,7 +50,9 @@
     <script>
         const design = 2;
     </script>
-
+@if (session('locale'))
+    <input type="hidden" id="lang_session" value="{{ $Language::$languages_name[session('locale')] }}">
+@endif
 <div class="wrapper">
 	<header class="header">
 		<div class="header__phones-top top-phones-header">
@@ -122,9 +124,9 @@
                                         </svg>
                                     </div>
                                     <div class="actions__select">
-                                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                        <select name="form[]" class="form" id="lang_select" onchange="location.href=this.options[this.selectedIndex].value">
                                             @foreach ($Language::GetAllLanuages() as $language)
-                                                <option value="{{ url()->current() }}/lang={{$language['code']}}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
+                                                <option value="{{ url()->current() }}/lang={{$language['code']}}" data-code="{{ $item['code'] }}" @if (App::currentLocale() == $language['code']) selected @endif>{{$language['name']}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -138,7 +140,7 @@
                                         </svg>
                                     </div>
                                     <div class="actions__select">
-                                        <select name="form[]" class="form" onchange="location.href=this.options[this.selectedIndex].value">
+                                        <select name="form[]" class="form" id="curr_select" onchange="location.href=this.options[this.selectedIndex].value">
                                             @foreach ($Currency::GetAllCurrency() as $item)
                                                 <option value="{{ url()->current() }}/curr={{ $item['code'] }}" @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }} </option>
                                             @endforeach
@@ -500,11 +502,9 @@
 </div>
 <script src="{{ asset("$design/js/app.js") }}"></script>
 <script src="{{ asset("/js/all_js.js") }}"></script>
-{{-- {if $data.page_name ne "checkout"}
-    {if $data.web_statistic}
-        <input hidden id="stattemp" value="{$data.web_statistic.params_string}">
-    {/if}
-{/if} --}}
+@if ($web_statistic)
+    <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
+@endif
 
 </body>
 </html>

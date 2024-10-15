@@ -17,15 +17,15 @@ window.addEventListener('load', async () => {
         var params = document.getElementById("stattemp").value + "&theme=" + mode;
         // console.log(params);
         $.ajax({
-            url: "/app/js.php",
+            url: "/pwa/pwa_info",
             type: 'POST',
             data: {
-              'params':params,
-            }, 
-            dataType: 'html',
+              'params': params,
+            },
+            dataType: 'json',
             success : function(data) {
-                console.log(data);
-            }, 
+                // console.log(data);
+            },
         });
     });
 });
@@ -61,14 +61,14 @@ window.addEventListener('load', async () => {
 //         tag,
 //         icon: '../android-chrome-512x512.png',
 //         vibrate: [200, 100, 200],
-        
+
 //         // here you can add more properties like icon, image, vibrate, etc.
 //     };
 //     navigator.serviceWorker.ready.then(() => {
 //       registeration.showNotification(title, options);
 //     });
 //   }
-  
+
 //   if(permission === 'granted') {
 //     try {
 //       const applicationServerKey = urlB64ToUint8Array(
@@ -91,14 +91,14 @@ window.addEventListener('load', async () => {
 //   });
 //   if (event.data) {
 //     console.log('Push event!! ', event.data.text())
-    
+
 //   } else {
 //     console.log('Push event but no data')
 //   }
 // })
 
-      
-    
+
+
     // var subscriptionButton = document.getElementById('subscriptionButton');
 
     // navigator.serviceWorker.ready
@@ -206,10 +206,10 @@ window.addEventListener('load', async () => {
     //       return serviceWorkerRegistration.pushManager.subscribe({
     //         userVisibleOnly: true
     //       });
-  
+
     //       // // Keep your server in sync with the latest subscriptionId
     //       // sendSubscriptionToServer(subscription);
-  
+
     //       // showCurlCommand(subscription);
 
     //       // isPushEnabled = true;
@@ -219,15 +219,15 @@ window.addEventListener('load', async () => {
     //     });
 
 
-    
-    
+
+
 
     // self.addEventListener('push', function(event) {
     //   event.waitUntil(self.registration.showNotification('ServiceWorker Cookbook', {
     //     body: 'Push Notification Subscription Management'
     //   }));
     // });
-    
+
     // self.addEventListener('pushsubscriptionchange', function(event) {
     //   console.log('Subscription expired');
     //   event.waitUntil(
@@ -257,28 +257,28 @@ window.addEventListener('load', async () => {
   //       console.log('User has blocked push notification.');
   //       return;
   //     }
-  
+
   //     //Checks if current browser supports Push notification
   //     if (!('PushManager' in window)) {
   //       console.log('Sorry, Push notification isn\'t supported in your browser.');
   //       return;
   //     }
-  
+
   //     //Get `push notification` subscription id
-  
+
   //     //If `serviceWorker` is registered and ready
   //     navigator.serviceWorker.ready
   //     .then(function (registration) {
   //       registration.pushManager.getSubscription().then(function() {
   //         subscribePush(registration);
-  //         unsubscribePush(registration); 
+  //         unsubscribePush(registration);
   //       })
   //       .catch(function (error) {
   //         console.error('Error occurred while enabling push ', error);
   //       });
   //     });
   //   }
-    
+
   //   function subscribePush(registration) {
   //     //Subscribes user to Push notifications
   //     registration.pushManager.subscribe({
@@ -305,7 +305,7 @@ window.addEventListener('load', async () => {
   //           alert('Unable to unregister push notification.');
   //           return;
   //         }
-  
+
   //         //Unsubscribes user
   //         subscription.unsubscribe()
   //           .then(function () {

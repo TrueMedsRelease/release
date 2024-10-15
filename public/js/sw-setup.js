@@ -1,7 +1,7 @@
 const DEBUG = true;
 
 // Меняем версию файла, когда меняем service worker
-const serviceWorkerVer = "/sw.js?v=1";
+const serviceWorkerVer = "/js/sw.js?v=1";
 
 var url     = window.location.origin,
     fullUrl = url + serviceWorkerVer;
@@ -64,12 +64,8 @@ function enableNotif() {
                     date_coockie = date_coockie.toUTCString();
                     document.cookie = 'user_push=' + info['keys']['auth'] + '; path=/; expires=' + date_coockie;
 
-                    let lang_curr = [];
-                    $('[name="form[]"] option').each(function(i){
-                        if ($(this).attr('selected')) {
-                            lang_curr.push($(this).text());
-                        }
-                    });
+                    let lang_lang = $('#lang_select :selected').attr('data-code').trim();
+                    let curr_curr = $('#curr_select :selected').text().trim();
 
                     let user_agent = window.navigator.userAgent;
 
@@ -84,27 +80,26 @@ function enableNotif() {
 
                     format_date = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 
-                    // $.ajax({
-                    //     url: '/app/save_push.php',
-                    //     type: "POST",
-                    //     data: {
-                    //         user_agent: user_agent,
-                    //         shop_url: shop_url,
-                    //         lang: getCookie('lang') ? getCookie('lang') : lang_curr[0],
-                    //         curr: lang_curr[1],
-                    //         push_info: push_info,
-                    //         date: format_date,
-                    //         time_zone: time_zone,
-                    //         customer_id: 0,
-                    //     },
-                    //     dataType: "json",
-                    //     success: function (res) {
-                    //         var status = JSON.parse(res);
-                    //         if (res['status'] == 'error') {
-                    //             alert(status['text']);
-                    //         }
-                    //     }
-                    // });
+                    $.ajax({
+                        url: '/push/save_push',
+                        type: "POST",
+                        data: {
+                            'user_agent': user_agent,
+                            'shop_url': shop_url,
+                            'lang': $('#lang_session').val() ? $('#lang_session').val() : lang_lang,
+                            'curr': curr_curr,
+                            'push_info': push_info,
+                            'date': format_date,
+                            'time_zone': time_zone,
+                            'customer_id': 0,
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            if (res['status'] == 'error') {
+                                alert(res['text']);
+                            }
+                        }
+                    });
                 });
             });
         }

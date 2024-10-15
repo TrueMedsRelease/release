@@ -1016,4 +1016,24 @@ class ProductServices
 
         return $first_letters;
     }
+
+    public static function getDevice($agent) {
+        if ($agent->is('iPhone')) {
+            $device = 'apple';
+        }
+        if ($agent->is('iPad')) {
+            $device = 'apple';
+        }
+        if ($agent->is('iPod')) {
+            $device = 'apple';
+        }
+        if ($agent->isAndroidOS()) {
+            $device = 'android';
+        }
+        if ($agent->isDesktop()) {
+            $device = 'desktop';
+        }
+
+        return $device;
+    }
 }
