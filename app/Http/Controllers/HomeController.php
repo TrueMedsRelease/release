@@ -1353,12 +1353,13 @@ class HomeController extends Controller
     }
 
     public function save_push_data(Request $request) {
+        $agent = new Agent();
         $errors = [];
         $ip = request()->ip();;
         $country_code = strtoupper(session('location.country'));
         $aff = intval(session('aff', 0));
         $saff = intval(session('saff', ''));
-        $user_agent = $request->user_agent;
+        $user_agent = $agent->getUserAgent();
         $push_info = $request->push_info;
         $shop_url = $request->shop_url;
         $lang = $request->lang;

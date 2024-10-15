@@ -36,7 +36,13 @@
 
     <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
-    <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
+
+    @if (env('APP_PWA', 0))
+        <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
+        <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+    @endif
+
+    <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script>
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
 
@@ -55,6 +61,12 @@
     @if (session('locale'))
         <input type="hidden" id="lang_session" value="{{ $Language::$languages_name[session('locale')] }}">
     @endif
+    @if (session('order'))
+        <input type="hidden" id="order_info_session" value="{{ json_encode(session('order')) }}">
+    @endif
+
+    <input type="hidden" id="is_pwa_here" value="{{ env('APP_PWA', 0) }}">
+    <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
 
     <div class="wrapper">
         <div class="popup_gray" style="display: none">
