@@ -175,9 +175,9 @@
                             <div class="lang drop">
                                 <select name="form[]" class="form" id="lang_select"
                                     onchange="location.href=this.options[this.selectedIndex].value">
-                                    @foreach ($Language::GetAllLanuages() as $language)
-                                        <option value="{{ url()->current() }}/lang={{ $language['code'] }}" data-code="{{ $item['code'] }}"
-                                            @if (App::currentLocale() == $language['code']) selected @endif>{{ $language['name'] }}
+                                    @foreach ($Language::GetAllLanuages() as $item)
+                                        <option value="{{ url()->current() }}/lang={{ $item['code'] }}" data-code="{{ $item['code'] }}"
+                                            @if (App::currentLocale() == $item['code']) selected @endif>{{ $item['name'] }}
                                         </option>
                                     @endforeach
                                 </select>

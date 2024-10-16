@@ -1243,7 +1243,7 @@ class AdminController extends Controller
             }
         }
 
-        DB::update("UPDATE `currency` SET `show_in_menu` = 1 WHERE code = $default_currency_code");
+        DB::update("UPDATE `currency` SET `show_in_menu` = 1 WHERE code = '$default_currency_code'");
 
         if (count($error) > 0) {
             return response()->json(array('status' => 'error', 'text' => $error['text']));
