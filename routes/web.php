@@ -13,8 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Cookie\CookieJar;
-use Illuminate\Support\Facades\Cookie;
 
 /*
 |--------------------------------------------------------------------------
@@ -147,6 +145,49 @@ if(!session()->has('coupon_get'))
     }
 }
 
+// if (isset($_GET['design']) || isset($_GET['lang']) || isset($_GET['curr'])) {
+//     if ($_GET['design'] || $_GET['lang'] || $_GET['curr']) {
+//         $design = $_GET['design'] ? $_GET['design'] : config('app.design');
+//         $lang = $_GET['lang'] ? $_GET['lang'] : App::currentLocale();
+//         $curr = $_GET['curr'] ? $_GET['curr'] : config('app.currency');
+
+//         if (in_array($design, [1,2,3,4,5,6,7,8,9,10])) {
+//             session(['design' => 'design_' . $design]);
+//         }
+
+//         session(['locale' => $lang]);
+
+//         $coef = Currency::GetCoef($curr);
+//         session(['currency' => $curr]);
+//         session(['currency_c' => $coef]);
+
+//         Redirect::refresh();
+//     }
+// }
+
+if (isset($_GET['design']) && $_GET['design']) {
+    $design = $_GET['design'] ? $_GET['design'] : config('app.design');
+    unset($_GET['design']);
+
+    request()->route('home.design_with_url', ['any_url' => request()->server('REQUEST_URI'), 'design' => $design]);
+}
+
+if (isset($_GET['lang']) && $_GET['lang']) {
+    $lang = $_GET['lang'] ? $_GET['lang'] : App::currentLocale();
+    unset($_GET['lang']);
+
+    request()->route('home.language_with_url', ['any_url' => request()->server('REQUEST_URI'), 'locale' => $lang]);
+}
+
+if (isset($_GET['curr']) && $_GET['curr']) {
+    $curr = $_GET['curr'] ? $_GET['curr'] : config('app.currency');
+    unset($_GET['curr']);
+
+    request()->route('home.currency_with_url', ['any_url' => request()->server('REQUEST_URI'), 'currency' => $curr]);
+}
+
+// dump($_GET);
+
 Route::controller(SearchController::class)->group(function() {
     Route::post('/search', 'search_product')->name('search.search_product');
     Route::get('/search_autocomplete', 'search_autocomplete')->name('search.search_autocomplete');
@@ -273,5 +314,4 @@ Route::fallback(function () {
     $redirect_url = substr($redirect_url, 0, $index);
 
     return redirect($redirect_url);
-
 });
