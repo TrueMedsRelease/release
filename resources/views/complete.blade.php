@@ -120,20 +120,20 @@
                     {{ __('text.success_charge') }}{{ $Currency::convert(session('total.checkout_total')) }}, <br>
                     {{ __('text.success_amount') }}
                 </div>
-                {{-- {if $data.success_info.gift_card}
+                @if (session('order.gift_card'))
 					<div class="gift_block">
-						{foreach from=$data.success_info.gift_card item=card}
+						@foreach (session('order.gift_card') as $card)
 							<div class="gift">
-								<div class="gift_text">{#gift_card#} {$card->price_text}</div>
-								<img src="../style_checkout/images/gift_card_img.svg" class="gift_img">
+								<div class="gift_text">{{ __('text.common_gift_card') }} {{ $Currency::convert($card['price']) }}</div>
+								<img src="/style_checkout/images/gift_card_img.svg" class="gift_img">
 								<div class="gift_code">
-									<div class="code_text" id="code_text">{$card->code}</div>
-									<img src="../style_checkout/images/icons/copy.png" id="copy_img">
+									<div class="code_text" id="code_text">{{ $card['code'] }}</div>
+									<img src="/style_checkout/images/icons/copy.png" id="copy_img">
 								</div>
 							</div>
-						{/foreach}
+						@endforeach
 					</div>
-				{/if} --}}
+				@endif
                 <div class="succes__block">
                     <p><b>{{ __('text.success_confirm') }}</b></p>
                     <div class="succes__row">
