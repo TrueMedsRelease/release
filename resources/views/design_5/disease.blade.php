@@ -9,82 +9,82 @@
     <div class="pay-index__container">
         <ul class="pay-index__list">
             <li class="pay-index__item">
-                <img src="/images/pay_icons/visa.svg" alt="">
+                <img src="/pub_images/pay_icons/visa.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/mastercard.svg" alt="">
+                <img src="/pub_images/pay_icons/mastercard.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/maestro.svg" alt="">
+                <img src="/pub_images/pay_icons/maestro.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/discover.svg" alt="">
+                <img src="/pub_images/pay_icons/discover.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/amex.svg" alt="">
+                <img src="/pub_images/pay_icons/amex.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/jsb.svg" alt="">
+                <img src="/pub_images/pay_icons/jsb.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/unionpay.svg" alt="">
+                <img src="/pub_images/pay_icons/unionpay.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/dinners-club.svg" alt="">
+                <img src="/pub_images/pay_icons/dinners-club.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/apple-pay.svg" alt="">
+                <img src="/pub_images/pay_icons/apple-pay.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/google-pay.svg" alt="">
+                <img src="/pub_images/pay_icons/google-pay.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/amazon-pay.svg" alt="">
+                <img src="/pub_images/pay_icons/amazon-pay.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/stripe.svg" alt="">
+                <img src="/pub_images/pay_icons/stripe.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/paypal.svg" alt="">
+                <img src="/pub_images/pay_icons/paypal.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/sepa.svg" alt="">
+                <img src="/pub_images/pay_icons/sepa.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/cashapp.svg" alt="">
+                <img src="/pub_images/pay_icons/cashapp.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/adyen.svg" alt="">
+                <img src="/pub_images/pay_icons/adyen.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/skrill.svg" alt="">
+                <img src="/pub_images/pay_icons/skrill.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/worldpay.svg" alt="">
+                <img src="/pub_images/pay_icons/worldpay.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/payline.svg" alt="">
+                <img src="/pub_images/pay_icons/payline.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/bitcoin.svg" alt="">
+                <img src="/pub_images/pay_icons/bitcoin.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/binance-coin.svg" alt="">
+                <img src="/pub_images/pay_icons/binance-coin.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/ethereum.svg" alt="">
+                <img src="/pub_images/pay_icons/ethereum.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/litecoin.svg" alt="">
+                <img src="/pub_images/pay_icons/litecoin.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/tron.svg" alt="">
+                <img src="/pub_images/pay_icons/tron.svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/usdt(erc20).svg" alt="">
+                <img src="/pub_images/pay_icons/usdt(erc20).svg" alt="">
             </li>
             <li class="pay-index__item">
-                <img src="/images/pay_icons/usdt(trc20).svg" alt="">
+                <img src="/pub_images/pay_icons/usdt(trc20).svg" alt="">
             </li>
         </ul>
     </div>

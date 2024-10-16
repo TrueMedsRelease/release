@@ -355,43 +355,43 @@
         <div class="ship-index__container">
             <ul class="ship-index__list">
                 <li class="ship-index__item">
-                    <img src="/images/shipping/usps.svg" alt="">
+                    <img src="/pub_images/shipping/usps.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/ems.svg" alt="">
+                    <img src="/pub_images/shipping/ems.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/dhl.svg" alt="">
+                    <img src="/pub_images/shipping/dhl.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/ups.svg" alt="">
+                    <img src="/pub_images/shipping/ups.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/fedex.svg" alt="">
+                    <img src="/pub_images/shipping/fedex.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/tnt.svg" alt="">
+                    <img src="/pub_images/shipping/tnt.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/postnl.svg" alt="">
+                    <img src="/pub_images/shipping/postnl.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/deutsche_post.svg" alt="">
+                    <img src="/pub_images/shipping/deutsche_post.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/dpd.svg" alt="">
+                    <img src="/pub_images/shipping/dpd.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/gls.svg" alt="">
+                    <img src="/pub_images/shipping/gls.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/australia_post.svg" alt="">
+                    <img src="/pub_images/shipping/australia_post.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/colissimo.svg" alt="">
+                    <img src="/pub_images/shipping/colissimo.svg" alt="">
                 </li>
                 <li class="ship-index__item">
-                    <img src="/images/shipping/correos.svg" alt="">
+                    <img src="/pub_images/shipping/correos.svg" alt="">
                 </li>
             </ul>
         </div>
