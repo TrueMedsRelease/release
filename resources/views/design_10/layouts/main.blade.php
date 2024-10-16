@@ -43,7 +43,7 @@
         <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
     @endif
 
-    <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script>
+    {{-- <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
