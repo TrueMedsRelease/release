@@ -145,6 +145,27 @@ if(!session()->has('coupon_get'))
     }
 }
 
+if(!empty(request('lang')))
+{
+    session()->put('locale',request('lang'));
+}
+
+if(!empty(request('curr')))
+{
+    $coef = Currency::GetCoef(request('curr'));
+    session(['currency' => request('curr')]);
+    session(['currency_c' => $coef]);;
+}
+
+if(!empty(request('design')))
+{
+    if (in_array(request('design'), [1,2,3,4,5,6,7,8,9,10])) {
+        session(['design' => 'design_' . request('design')]);
+    }
+}
+
+
+
 // if (isset($_GET['design']) || isset($_GET['lang']) || isset($_GET['curr'])) {
 //     if ($_GET['design'] || $_GET['lang'] || $_GET['curr']) {
 //         $design = $_GET['design'] ? $_GET['design'] : config('app.design');

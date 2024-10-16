@@ -364,6 +364,11 @@ class HomeController extends Controller
 
     public function product($product) : View
     {
+        if(request('landing',0) == 1)
+        {
+            return $this->product_landing($product, 1);
+        }
+
         StatisticService::SendStatistic($product);
         $product_name = $product;
 
