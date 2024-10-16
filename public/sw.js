@@ -317,7 +317,7 @@ if (workbox) {
     })
   );
   workbox.routing.registerRoute(
-    /\b(?:\S(?!(.*)))+\.(?:php)+\b/,
+    /\b(?:\S(?!(.*)))+\b/,
     new workbox.strategies.CacheFirst({
       cacheName: 'app_cache',
       plugins: [
