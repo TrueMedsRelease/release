@@ -277,6 +277,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/set_images/{pill}', 'set_images')->name('home.set_images');
     Route::post('/pwa/pwa_info', 'pwa_info')->name('home.pwa_info')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/push/save_push', 'save_push_data')->name('home.save_push_data')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/check_landing', 'check_landing')->name('home.check_landing');
 });
 
 Route::controller(AdminController::class)->group(function() {
