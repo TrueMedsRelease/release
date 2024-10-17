@@ -460,7 +460,6 @@ class HomeController extends Controller
     public function product_landing($product, $landing) : View
     {
         header('Pragma: no-cache');
-        header("Access-Control-Allow-Origin: *");
 
         if ($landing == 0) {
             return redirect()->route('home.product', $product);
@@ -1481,4 +1480,9 @@ class HomeController extends Controller
     //     }
     // }
 
+    public function check_landing() {
+        return view('check_landing',[
+
+        ]);
+    }
 }
