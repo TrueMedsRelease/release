@@ -364,6 +364,23 @@ class HomeController extends Controller
 
     public function product($product) : View
     {
+        $language_id = Language::$languages[App::currentLocale()];
+
+        if (is_numeric($product)) {
+            $product_id = $product;
+
+            $product_name_begin = DB::table('product_desc')
+                ->where('product_id', '=', $product_id)
+                ->where('language_id', '=', $language_id)
+                ->get(['url'])
+                ->toArray();
+            $product = $product_name_begin[0]->url;
+
+            if (!$product) {
+                return redirect()->route('home.index');
+            }
+        }
+
         if(request('landing',0) == 1)
         {
             return $this->product_landing($product, 1);
@@ -373,7 +390,6 @@ class HomeController extends Controller
         $product_name = $product;
 
         $design = session('design') ? session('design') : config('app.design');
-        $language_id = Language::$languages[App::currentLocale()];
         $page_properties = ProductServices::getProductProperties($product);
 
         $bestsellers = ProductServices::GetBestsellers($design);
