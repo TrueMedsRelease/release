@@ -463,6 +463,9 @@ class HomeController extends Controller
             return redirect()->route('home.product', $product);
         }
 
+        header('Pragma: no-cache');
+        header("Access-Control-Allow-Origin: *");
+
         $design = session('design') ? session('design') : config('app.design');
 
         if ($design == 7 || $design == 8) {
@@ -1477,4 +1480,5 @@ class HomeController extends Controller
     //         echo $image['image'];
     //     }
     // }
+
 }
