@@ -194,7 +194,7 @@
                     <div class="product_img_top">
                         <picture>
                             <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                            <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                            <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="width: 100%">
                         </picture>
                     </div>
                     <div class="product_text">
