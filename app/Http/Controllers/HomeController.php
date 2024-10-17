@@ -510,7 +510,8 @@ class HomeController extends Controller
             'product' => $product,
             'agent' => $agent,
             'Currency' => Currency::class,
-            'pixel' => $pixel
+            'pixel' => $pixel,
+            'host' => request()->getHost()
         ]);
     }
 
