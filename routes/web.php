@@ -218,7 +218,7 @@ Route::controller(SearchController::class)->group(function() {
 Route::controller(CartController::class)->group(function(){
     Route::get('/cart', 'index')->name('cart.index');
     Route::get('/cart_content', 'cart')->name('cart.content')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::post('/cart/add/{product}', 'add')->name('cart.add');
+    Route::post('/cart/add/{product}', 'add')->name('cart.add')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/up', 'up')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/down', 'down')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/remove', 'remove')->name('cart.remove')->withoutMiddleware(VerifyCsrfToken::class);
