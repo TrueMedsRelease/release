@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
+header("Access-Control-Allow-Origin: *");
+
 if(!session()->has('location'))
 {
     session(['location' => GeoIpService::GetInfoByIp()]);
