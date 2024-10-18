@@ -678,13 +678,12 @@ class ProductServices
     {
         $category = trans('text.common_category_search');
         $language_id = Language::$languages[App::currentLocale()];
-        $result = CategoryDesc::where('name', 'LIKE', "%$search_text%")->where('language_id', '=', $language_id)->get()->toArray();
+        $result = DB::select("SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND language_id = ? AND cd.name LIKE ?", [$language_id, '%' . $search_text . '%']);
 
         $tips = "";
         foreach($result as $item)
         {
-            $cat = Category::where('id', '=', $item['category_id'])->get()->toArray();
-            $tips .= $item['name'] . " $category||category/" . $cat[0]['url'] . "\n";
+            $tips .= $item->name . " $category||category/" . $item->url . "\n";
         }
 
         return $tips;
@@ -694,12 +693,16 @@ class ProductServices
     {
         $disease = trans('text.common_disease_search');
         $language_id = Language::$languages[App::currentLocale()];
-        $result = ProductDisease::where("disease", "LIKE", "%$search_text%")->where('language_id', '=', $language_id)->distinct()->get('disease')->toArray();
+        // $result = ProductDisease::where("disease", "LIKE", "%$search_text%")->where('language_id', '=', $language_id)->distinct()->get('disease')->toArray();
+        $result = DB::select("SELECT pd.disease FROM product p
+                            JOIN product_disease pd ON pd.product_id = p.id
+                            WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1",
+                            ['%' . $search_text . '%', $language_id]);
 
         $tips = "";
         foreach($result as $item)
         {
-            $tips .= $item['disease'] . " $disease||disease/" .  str_replace(' ', '-', strtolower($item['disease'])) . "\n";
+            $tips .= $item->disease . " $disease||disease/" .  str_replace(' ', '-', strtolower($item->disease)) . "\n";
         }
 
         return $tips;
@@ -708,7 +711,7 @@ class ProductServices
     public static function SearchActive($search_text)
     {
         $aktiv = trans('text.common_aktiv_search');
-        $all_active = Product::distinct()->get('aktiv')->toArray();
+        $all_active = Product::distinct()->where('is_showed', '=', 1)->get('aktiv')->toArray();
 
         $active = [];
         foreach($all_active as $item)
