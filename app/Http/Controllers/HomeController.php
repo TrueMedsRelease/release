@@ -991,8 +991,10 @@ class HomeController extends Controller
             if (preg_match('/iPhone|iPad|iPod|Macintosh/i', $_SERVER['HTTP_USER_AGENT'])) {
                 if (file_exists(public_path() . "/images/" . $pill . ".png") && file_get_contents(public_path() . "/images/" . $pill . ".png") !== "error") {
                     header('Content-type: image/png');
-                    echo file_get_contents(public_path() . "/images/" . $pill . ".png");
+                    // echo file_get_contents(public_path() . "/images/" . $pill . ".png");
+                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".png");
                     $safari = true;
+                    return response($temp)->header('Content-type', 'image/png');
                 } else {
                     $water_string = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=png&url=' . $water_string);
@@ -1001,15 +1003,18 @@ class HomeController extends Controller
                     header('Content-type: image/png');
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".png");
                     if ($temp != "error") {
-                        echo $temp;
+                        // echo $temp;
                         $safari = true;
+                        return response($temp)->header('Content-type', 'image/png');
                     }
                 }
                 if (!$safari) {
                     if (file_exists(public_path() . "/images/" . $pill . ".jpg") && file_get_contents(public_path() . "/images/" . $pill . ".jpg") !== "error") {
                         header('Content-type: image/png');
-                        echo file_get_contents(public_path() . "/images/" . $pill . ".jpg");
+                        // echo file_get_contents(public_path() . "/images/" . $pill . ".jpg");
+                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpg");
                         $safari = true;
+                        return response($temp)->header('Content-type', 'image/png');
                     } else {
                         $water_string = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpg&url=' . $water_string);
@@ -1018,16 +1023,19 @@ class HomeController extends Controller
                         header('Content-type: image/png');
                         $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpg");
                         if ($temp != "error") {
-                            echo $temp;
+                            // echo $temp;
                             $safari = true;
+                            return response($temp)->header('Content-type', 'image/png');
                         }
                     }
                 }
                 if (!$safari) {
                     if (file_exists(public_path() . "/images/" . $pill . ".jpeg") && file_get_contents(public_path() . "/images/" . $pill . ".jpeg") !== "error") {
                         header('Content-type: image/png');
-                        echo file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
+                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
+                        // echo file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
                         $safari = true;
+                        return response($temp)->header('Content-type', 'image/png');
                     } else {
                         $water_string = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpeg&url=' . $water_string);
@@ -1036,24 +1044,27 @@ class HomeController extends Controller
                         header('Content-type: image/png');
                         $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
                         if ($temp != "error") {
-                            echo $temp;
+                            // echo $temp;
                             $safari = true;
+                            return response($temp)->header('Content-type', 'image/png');
                         }
                     }
                 }
             } else {
                 if (file_exists(public_path() . "/images/" . $pill . ".webp") && file_get_contents(public_path() . "/images/" . $pill . ".webp") !== "error") {
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
-                    echo $temp;
+                    // echo $temp;
                     $safari = true;
+                    return response($temp)->header('Content-type', 'image/png');
                 } else {
                     $water_string = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=webp&url=' . $water_string);
                     file_put_contents(public_path() . "/images/" . $pill . ".webp", $server_answer);
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
                     if ($temp != "error") {
-                        echo $temp;
+                        // echo $temp;
                         $safari = true;
+                        return response($temp)->header('Content-type', 'image/png');
                     }
                 }
             }
