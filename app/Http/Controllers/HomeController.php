@@ -385,6 +385,7 @@ class HomeController extends Controller
         {
             header('Pragma: no-cache');
             header("Access-Control-Allow-Origin: *");
+            header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
             return $this->product_landing($product, 1);
         }
@@ -464,6 +465,7 @@ class HomeController extends Controller
     {
         header('Pragma: no-cache');
         header("Access-Control-Allow-Origin: *");
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
         if ($landing == 0) {
             return redirect()->route('home.product', $product);
