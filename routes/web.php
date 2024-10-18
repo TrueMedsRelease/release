@@ -339,3 +339,7 @@ Route::fallback(function () {
 
     return redirect($redirect_url);
 });
+
+Route::options('/{any}', function () {
+    return response()->json([], 200);
+})->where('any', '.*');
