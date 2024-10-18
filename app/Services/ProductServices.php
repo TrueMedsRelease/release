@@ -88,12 +88,14 @@ class ProductServices
             if ($design == 'design_5') {
                 $categories_raw = Category::query()
                 ->whereIn('id', [13, 14])
+                ->where('is_showed' , '=', 1)
                 ->with(['product'])
                 ->orderBy('ord')
                 ->get();
             } else {
                 $categories_raw = Category::query()
                 ->with(['product'])
+                ->where('is_showed' , '=', 1)
                 ->orderBy('ord')
                 ->get();
             }
@@ -104,12 +106,14 @@ class ProductServices
                 $categories_raw = Category::query()
                     ->where('url', '=', $url)
                     ->whereIn('id', [13, 14])
+                    ->where('is_showed' , '=', 1)
                     ->with(['product'])
                     ->orderBy('ord')
                     ->get();
             } else {
                 $categories_raw = Category::query()
                     ->where('url', '=', $url)
+                    ->where('is_showed' , '=', 1)
                     ->with(['product'])
                     ->orderBy('ord')
                     ->get();
@@ -157,6 +161,7 @@ class ProductServices
 
     public static function GetProductDesc($language_id, $url = '')
     {
+        $products_desc_raw = [];
         // if (env('APP_GIFT_CARD')) {
             if(empty($url))
             {
@@ -168,10 +173,12 @@ class ProductServices
 
                 if (!$products_desc_raw || empty($products_desc_raw)) {
                     $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
-                    $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '=', $product_id[0]->id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
-
-                    foreach($products_desc_raw as $key => $product) {
-                        $products_desc_raw[$key][0]['name'] = ucfirst($url) . ' (' . __('text.product_other_name') . $product[0]['name'] . ')';
+                    if(!empty($product_id))
+                    {
+                        $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '=', $product_id[0]->id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
+                        foreach($products_desc_raw as $key => $product) {
+                            $products_desc_raw[$key][0]['name'] = ucfirst($url) . ' (' . __('text.product_other_name') . $product[0]['name'] . ')';
+                        }
                     }
                 }
             }
@@ -341,6 +348,11 @@ class ProductServices
     {
         $language_id = Language::$languages[App::currentLocale()];
         $products_desc = self::GetProductDesc($language_id, $url);
+
+        if(empty($products_desc))
+        {
+            return [];
+        }
 
         $product = Product::query()
             ->where('id', '=', $products_desc['product_id'])
