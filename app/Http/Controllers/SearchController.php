@@ -84,6 +84,18 @@ class SearchController extends Controller
         ]);
     }
 
+    public function search_for_aff()
+    {
+        if(!empty(request('search')))
+        {
+            return $this->search_result(request('search'));
+        }
+        else
+        {
+            return redirect(route('home.index'));
+        }
+    }
+
     public function search_autocomplete(Request $request)
     {
         $search_text = $request->query('q');
