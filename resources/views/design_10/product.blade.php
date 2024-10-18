@@ -75,7 +75,7 @@
                                                 class="analog">{{ $analog['name'] }}</a>
                                         @endforeach
                                     </span>
-                                    @if (count($product['analog']) > 10)<a href="#" class="more">view all</a>@endisset
+                                    @if (count($product['analog']) > 10)<a href="#" class="more">view all</a>@endif
                                 </div>
                             @else
                                 @foreach ($product['analog'] as $analog)
@@ -98,7 +98,7 @@
                                             </a>
                                         @endforeach
                                     </span>
-                                        @if (count($product['sinonim']) > 10)<a href="#" class="more">view all</a>@endisset
+                                        @if (count($product['sinonim']) > 10)<a href="#" class="more">view all</a>@endif
                                 </div>
                             @else
                                 @foreach ($product['sinonim'] as $sinonim)
