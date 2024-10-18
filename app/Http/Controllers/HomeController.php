@@ -77,7 +77,7 @@ class HomeController extends Controller
 
         } elseif ($design == 'design_7') {
             $product = ProductServices::GetProductInfoByUrl('rybelsus', $design);
-            $page_properties->title = 'Rybelsus - ' . $domain;
+            // $page_properties->title = 'Rybelsus - ' . $domain;
             return view($design . '.index',
             [
                 'design' => $design,
@@ -100,7 +100,7 @@ class HomeController extends Controller
                 $products[$product_url] =  ProductServices::GetProductInfoByUrl($product_url, $design);
             }
 
-            $page_properties->title = 'EdSale - ' . $domain;
+            // $page_properties->title = 'EdSale - ' . $domain;
             return view($design . '.index',
             [
                 'design' => $design,
