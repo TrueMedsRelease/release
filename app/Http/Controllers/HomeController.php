@@ -383,10 +383,6 @@ class HomeController extends Controller
 
         if(request('landing',0) == 1)
         {
-            header('Pragma: no-cache');
-            header("Access-Control-Allow-Origin: *");
-            header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-
             return $this->product_landing($product, 1);
         }
 
@@ -463,10 +459,6 @@ class HomeController extends Controller
 
     public function product_landing($product, $landing)
     {
-        header('Pragma: no-cache');
-        header("Access-Control-Allow-Origin: *");
-        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-
         if ($landing == 0) {
             return redirect()->route('home.product', $product);
         }
@@ -519,8 +511,7 @@ class HomeController extends Controller
                     'pixel' => $pixel,
                 ])
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-            ->header('Pragma', 'no-cache')
-            ->header('Access-Control-Allow-Origin', '*');
+            ->header('Pragma', 'no-cache');
     }
 
     public function about() : View
