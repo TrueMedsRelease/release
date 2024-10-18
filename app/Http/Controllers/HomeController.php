@@ -383,6 +383,9 @@ class HomeController extends Controller
 
         if(request('landing',0) == 1)
         {
+            header('Pragma: no-cache');
+            header("Access-Control-Allow-Origin: *");
+
             return $this->product_landing($product, 1);
         }
 
@@ -511,7 +514,7 @@ class HomeController extends Controller
             'agent' => $agent,
             'Currency' => Currency::class,
             'pixel' => $pixel,
-            'host' => request()->getHost()
+            'host' => public_path()
         ]);
     }
 
