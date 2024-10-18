@@ -289,7 +289,7 @@
                         </div>
                         <div class="enter-info__input enter-info__input--country">
                             <input required autocomplete="off" type="number" id="phone" name="phone"
-                                value="{$data.info.phone}" placeholder="000 000 00 00" class="input"
+                                value="" placeholder="000 000 00 00" class="input"
                                 maxlength = "14" oninput="maxLengthCheck(this)">
                         </div>
                     </div>
