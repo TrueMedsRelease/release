@@ -509,6 +509,7 @@ class HomeController extends Controller
                     'agent' => $agent,
                     'Currency' => Currency::class,
                     'pixel' => $pixel,
+                    'host' => $_SERVER['SERVER_NAME']
                 ])
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
