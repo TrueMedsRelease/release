@@ -194,7 +194,7 @@
                     <div class="product_img_top">
                         <picture>
                             <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                            <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                            <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" width="60">
                         </picture>
                     </div>
                     <div class="product_text">
@@ -240,7 +240,7 @@
                                         @endif
                                         <span class="line_table"></span>
                                         <div class="table_row">
-                                            <span class="product_package" >
+                                            <span class="product_package @if ($item['num'] == 360) bonus_block @endif">
                                                 <div class="package_text @if ($item['num'] == 360) big_bonus @endif">
                                                     {{ "{$item['num']} {$product['type']}" }}
                                                     @if ($item['price'] >= 300)

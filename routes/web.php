@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
+header("Access-Control-Allow-Origin: *");
+
 if(!session()->has('location'))
 {
     session(['location' => GeoIpService::GetInfoByIp()]);
@@ -218,7 +220,7 @@ Route::controller(SearchController::class)->group(function() {
 Route::controller(CartController::class)->group(function(){
     Route::get('/cart', 'index')->name('cart.index');
     Route::get('/cart_content', 'cart')->name('cart.content')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::post('/cart/add/{product}', 'add')->name('cart.add');
+    Route::post('/cart/add/{product}', 'add')->name('cart.add')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/up', 'up')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/down', 'down')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/remove', 'remove')->name('cart.remove')->withoutMiddleware(VerifyCsrfToken::class);
@@ -246,8 +248,8 @@ Route::controller(CheckoutController::class)->group(function () {
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
-    Route::get('/{product_name}.html', 'product')->name('home.product');
-    Route::get('/{product_name}.html/landing={landing}', 'product_landing')->name('home.product_landing');
+    Route::get('/{product_name}.html', 'product')->name('home.product')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/{product_name}.html/landing={landing}', 'product_landing')->name('home.product_landing')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/about', 'about')->name('home.about');
     Route::get('/contact_us', 'contact_us')->name('home.contact_us');
     Route::get('/affiliate', 'affiliate')->name('home.affiliate');
@@ -275,6 +277,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/set_images/{pill}', 'set_images')->name('home.set_images');
     Route::post('/pwa/pwa_info', 'pwa_info')->name('home.pwa_info')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/push/save_push', 'save_push_data')->name('home.save_push_data')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/check_landing', 'check_landing')->name('home.check_landing');
 });
 
 Route::controller(AdminController::class)->group(function() {

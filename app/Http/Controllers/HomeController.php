@@ -362,7 +362,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function product($product) : View
+    public function product($product)
     {
         $language_id = Language::$languages[App::currentLocale()];
 
@@ -383,6 +383,9 @@ class HomeController extends Controller
 
         if(request('landing',0) == 1)
         {
+            header('Pragma: no-cache');
+            header("Access-Control-Allow-Origin: *");
+
             return $this->product_landing($product, 1);
         }
 
@@ -457,8 +460,11 @@ class HomeController extends Controller
         ]);
     }
 
-    public function product_landing($product, $landing) : View
+    public function product_landing($product, $landing)
     {
+        header('Pragma: no-cache');
+        header("Access-Control-Allow-Origin: *");
+
         if ($landing == 0) {
             return redirect()->route('home.product', $product);
         }
@@ -502,13 +508,17 @@ class HomeController extends Controller
         //     $page_properties->description = $product_properties_new->description;
         // }
 
-        return view($design . '.landing', [
-            'design' => $design,
-            'product' => $product,
-            'agent' => $agent,
-            'Currency' => Currency::class,
-            'pixel' => $pixel
-        ]);
+        return response()
+           ->view($design . '.landing', [
+                    'design' => $design,
+                    'product' => $product,
+                    'agent' => $agent,
+                    'Currency' => Currency::class,
+                    'pixel' => $pixel,
+                ])
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Access-Control-Allow-Origin', '*');
     }
 
     public function about() : View
@@ -1477,4 +1487,10 @@ class HomeController extends Controller
     //         echo $image['image'];
     //     }
     // }
+
+    public function check_landing() {
+        return view('check_landing',[
+
+        ]);
+    }
 }
