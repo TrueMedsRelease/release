@@ -1033,6 +1033,7 @@ class ProductServices
     }
 
     public static function getDevice($agent) {
+        $device = 'desktop';
         if ($agent->is('iPhone')) {
             $device = 'apple';
         }
