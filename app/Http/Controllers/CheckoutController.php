@@ -386,10 +386,12 @@ class CheckoutController extends Controller
         else
         {
             $products = [];
+            $sessid = '';
 
             foreach(session('cart') as $product)
             {
                 $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
             if(session('cart_option.bonus_id') != 0)
@@ -459,7 +461,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => 0,
                 'theme' => 13,
                 'coupon_discount' => session('total.coupon_discount'),
-                'sessid' => ''
+                'sessid' => $sessid
             ];
 
             session(['data' => $data]);
@@ -515,10 +517,12 @@ class CheckoutController extends Controller
         else
         {
             $products = [];
+            $sessid = '';
 
             foreach(session('cart') as $product)
             {
                 $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
             if(session('cart_option.bonus_id') != 0)
@@ -582,7 +586,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => 0,
                 'theme' => 13,
                 'coupon_discount' => session('total.coupon_discount'),
-                'sessid' => ''
+                'sessid' => $sessid
             ];
 
             session(['data' => $data]);
@@ -705,10 +709,12 @@ class CheckoutController extends Controller
                 $phone_code = $phone_code->phonecode;
 
                 $products = [];
+                $sessid = '';
 
                 foreach(session('cart') as $product)
                 {
                     $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
+                    $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
                 }
 
                 if(session('cart_option.bonus_id') != 0)
@@ -775,7 +781,7 @@ class CheckoutController extends Controller
                     'gift_card_discount' => 0,
                     'theme' => 13,
                     'coupon_discount' => session('total.coupon_discount'),
-                    'sessid' => ''
+                    'sessid' => $sessid
                 ];
 
                 session(['data' => $data]);
