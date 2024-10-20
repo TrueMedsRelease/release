@@ -28,6 +28,7 @@ class CheckoutController extends Controller
         }
 
         StatisticService::SendStatistic('checkout');
+        StatisticService::SendCheckout();
 
         $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
         if (count($unsent_order) > 0) {
