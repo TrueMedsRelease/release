@@ -90,10 +90,9 @@ App::setLocale($cur_language_code);
 
 if(!session()->has('referer'))
 {
-    $request = new Request();
-    if(!empty($request->referer))
+    if(!empty($_SERVER['HTTP_REFERER']))
     {
-        session(['referer' => $request->referer]);
+        session(['referer' => $_SERVER['HTTP_REFERER']]);
     }
     else
     {
