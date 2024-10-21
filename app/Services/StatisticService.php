@@ -29,7 +29,7 @@ class StatisticService
             "country" => session('location.country'),
             "aff" => session('aff', 0),
             "saff" => session('saff', ''),
-            "domain_from" => parse_url(config('app.url'), PHP_URL_HOST),
+            "domain_from" => request()->getHost(),
             "ref" => session('referer', ''),
             "keyword" => session('keyword', ''),
             "user_agent" => request()->userAgent(),
