@@ -109,6 +109,9 @@ class CheckoutController extends Controller
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
 
+        if (session('aff') == 1051) {
+            $shipping['regular'] = 12.99;
+        }
 
         $cart_option = session('cart_option');
 

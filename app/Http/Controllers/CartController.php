@@ -130,6 +130,10 @@ class CartController extends Controller
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
 
+        if (session('aff') == 1051) {
+            $shipping['regular'] = 12.99;
+        }
+
         if(empty(session('cart_option')))
         {
             $shipping_name = $shipping['ems'] != 0 ? 'ems' : 'regular';
@@ -307,6 +311,10 @@ class CartController extends Controller
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
 
+        if (session('aff') == 1051) {
+            $shipping['regular'] = 12.99;
+        }
+
         $cart_option = session('cart_option');
 
         if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
@@ -441,6 +449,10 @@ class CartController extends Controller
 
         $country_info = $country_info[0];
         $shipping = json_decode($country_info['info'], true);
+
+        if (session('aff') == 1051) {
+            $shipping['regular'] = 12.99;
+        }
 
         $cart_option = session('cart_option');
 
@@ -581,6 +593,10 @@ class CartController extends Controller
 
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
+
+            if (session('aff') == 1051) {
+                $shipping['regular'] = 12.99;
+            }
 
             $cart_option = session('cart_option');
 
@@ -724,6 +740,10 @@ class CartController extends Controller
 
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
+
+            if (session('aff') == 1051) {
+                $shipping['regular'] = 12.99;
+            }
 
             $cart_option = session('cart_option');
 
@@ -876,6 +896,10 @@ class CartController extends Controller
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
 
+            if (session('aff') == 1051) {
+                $shipping['regular'] = 12.99;
+            }
+
             $cart_option = session('cart_option');
 
             if($cart_option['shipping'] == 'regular' && $product_total_check >= 200)
@@ -1026,6 +1050,10 @@ class CartController extends Controller
 
             $country_info = $country_info[0];
             $shipping = json_decode($country_info['info'], true);
+
+            if (session('aff') == 1051) {
+                $shipping['regular'] = 12.99;
+            }
 
             $cart_option = session('cart_option');
 
