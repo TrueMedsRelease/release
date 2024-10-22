@@ -1094,7 +1094,7 @@ class HomeController extends Controller
             // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
             'phone' => $phone,
             'shop' => $domain,
-            'aff' => session('aff'),
+            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ];
@@ -1136,7 +1136,7 @@ class HomeController extends Controller
             // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
             'email' => $email,
             'shop' => $domain,
-            'aff' => session('aff'),
+            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ];
@@ -1202,7 +1202,7 @@ class HomeController extends Controller
             'subject' => $subject,
             'message' => $message,
             'url_from' => $domain,
-            'aff' => session('aff'),
+            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
             'customer_ip' => $request->ip(),
             'customer_user_agent' => $request->userAgent(),
         ];
@@ -1278,7 +1278,7 @@ class HomeController extends Controller
             'jabber' => $jabber,
             'message' => $message,
             'url_from' => $domain,
-            'aff' => session('aff'),
+            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
             'customer_ip' => $request->ip(),
             'customer_user_agent' => $request->userAgent(),
             // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
@@ -1395,7 +1395,8 @@ class HomeController extends Controller
         $errors = [];
         $ip = request()->ip();;
         $country_code = strtoupper(session('location.country'));
-        $aff = intval(session('aff', 0));
+        $aff = session('aff') ? session('aff') : config('app.aff', 0);
+        $aff = intval($aff);
         $saff = intval(session('saff', ''));
         $user_agent = $agent->getUserAgent();
         $push_info = $request->push_info;
