@@ -1961,13 +1961,14 @@ $(".select_billing_country .select__option").click(function () {
     });
 });
 
-$('#c_82').click(function () {
+$('#c_82').off('click').click(function () {
     if ($(this).attr('checked')) {
         $('#insur_popup').show();
     }
 });
 
-$('.close_popup').click(function () {
+
+$('.close_popup').off('click').click(function () {
     $('#c_82').prop('onclick', null);
     $('#c_82').prop('checked', true);
     $('#insur_popup').hide();
@@ -2469,10 +2470,11 @@ if (!(typeof (window.countdownfunction1) !== "undefined" && window.countdownfunc
     }, 1000);
 }
 
-$('#change_insur').click(function () {
+$('#change_insur').off('click').click(function () {
     Insurance(0);
     $('#insur_popup').hide();
 });
+
 
 
 function getCookie(name) {
