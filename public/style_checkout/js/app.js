@@ -2333,12 +2333,12 @@ function processForm(e) {
         data: form,
         success: function (data) {
             var data = JSON.parse(data);
-            // console.log(data);
-            if(data.response.hasOwnProperty('url'))
+
+            if(typeof data.response.url !== 'undefined')
             {
-                window.location.replace(data.response.url);
+                window.location.replace("/redirect");
             }
-            if (data.response.status == 'SUCCESS') {
+            else if (data.response.status == 'SUCCESS') {
                 window.location.replace("/complete");
             }
             else {
