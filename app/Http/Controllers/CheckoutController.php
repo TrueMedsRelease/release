@@ -683,6 +683,18 @@ class CheckoutController extends Controller
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
+        if(isset($_GET['id']))
+        {
+            $id = $_GET['id'];
+            $data = [
+                'method' => 'hold',
+                'id' => $id,
+                'order_id' => session('order.order_id'),
+             ];
+
+            $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+        }
+
         $design = session('design') ? session('design') : config('app.design');
         return view('complete')->with([
             'Language' => Language::class,
