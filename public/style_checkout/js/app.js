@@ -2334,6 +2334,10 @@ function processForm(e) {
         success: function (data) {
             var data = JSON.parse(data);
             // console.log(data);
+            if(data.response.hasOwnProperty('url'))
+            {
+                window.location.replace(data.response.url);
+            }
             if (data.response.status == 'SUCCESS') {
                 window.location.replace("/complete");
             }
