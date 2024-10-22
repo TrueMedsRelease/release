@@ -244,6 +244,13 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::get('/complete', 'complete')->name('checkout.complete');
 });
 
+Route::get('/redirect', function () {
+    if(!empty(session('order.url')))
+    {
+        return redirect()->to(session('order.url'));
+    }
+});
+
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
     Route::get('/{product_name}.html', 'product')->name('home.product')->withoutMiddleware(VerifyCsrfToken::class);
