@@ -705,6 +705,7 @@ function saveCheckoutInfo() {
     let default_shipping = $('input[name="default_shipping"]:checked').val();
     let default_insur = $('input[name="default_insur"]:checked').val();
     let default_secret = $('input[name="default_secret"]:checked').val();
+    let paypal_setting = $('input[name="paypal_setting"]:checked').val();
     $.ajax({
         url: '/admin/checkout/save_checkout_info',
         type: 'POST',
@@ -714,6 +715,7 @@ function saveCheckoutInfo() {
             'default_shipping': default_shipping,
             'default_insur': default_insur,
             'default_secret': default_secret,
+            'paypal_setting': paypal_setting,
         },
         success: function (data) {
             data = JSON.parse(data);
