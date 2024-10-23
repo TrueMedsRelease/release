@@ -12,12 +12,14 @@ use App\Models\State;
 use App\Services\CacheServices;
 use App\Services\ProductServices;
 use App\Services\StatisticService;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -692,7 +694,13 @@ class CheckoutController extends Controller
                 'order_id' => session('order.order_id'),
              ];
 
-            $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+            try{
+                $response = Http::timeout(1)->post('http://true-services.net/checkout/order.php', $data);
+            }
+            catch(\Exception $e)
+            {
+                Log::error('Ошибка запроса: ' . $e->getMessage());
+            }
         }
 
         $design = session('design') ? session('design') : config('app.design');
