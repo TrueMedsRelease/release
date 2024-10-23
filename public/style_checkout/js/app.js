@@ -1961,6 +1961,10 @@ $(".select_billing_country .select__option").click(function () {
     });
 });
 
+if ($('#app_insur_on').val() == 0 && $('#c_82').is(':checked') == false) {
+    $('#c_82').attr('onclick', 'Insurance(1)');
+}
+
 $('#c_82').off('click').click(function () {
     if ($(this).attr('checked')) {
         $('#insur_popup').show();
@@ -2202,7 +2206,6 @@ function Insurance(val) {
             }
         });
     } else {
-
         $.ajax({
             url: '/checkout/insurance',
             type: 'POST',

@@ -1256,6 +1256,53 @@ class AdminController extends Controller
         }
     }
 
+    public function gift_card_info(Request $request) {
+        $card_info = $request->card_info;
+
+        if ($card_info == 'available') {
+            $this->envUpdate('APP_GIFT_CARD', 1);
+        } else {
+            $this->envUpdate('APP_GIFT_CARD', 0);
+        }
+
+        return response()->json(array('status' => 'success', 'url' => route('admin.available_products')));
+    }
+
+    public function admin_checkout() {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
+        $title = $this->pageAdminTitle('checkout');
+        $agent = new Agent();
+
+        return view('admin.admin_checkout', [
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+        ]);
+    }
+
+    public function save_checkout_info(Request $request) {
+        $default_shipping = $request->default_shipping;
+        $default_insur = $request->default_insur;
+        $default_secret = $request->default_secret;
+
+        $this->envUpdate('APP_DEFAULT_SHIPPING', $default_shipping);
+        $this->envUpdate('APP_INSUR_ON', $default_insur);
+        $this->envUpdate('APP_SECRET_ON', $default_secret);
+
+        return response()->json(array('status' => 'success', 'url' => route('admin.admin_checkout')));
+    }
+
+    public function save_subscribe_info(Request $request) {
+        $popup_status = $request->popup_status;
+
+        $this->envUpdate('SUBSCRIBE_POPUP_STATUS', $popup_status);
+
+        return response()->json(array('status' => 'success', 'url' => route('admin.index')));
+    }
+
     public function pageAdminTitle($page) {
         switch ($page){
             case 'login':
@@ -1285,6 +1332,9 @@ class AdminController extends Controller
             case 'currencies':
                 $title = __('text.admin_currencies_title');
                 break;
+            case 'checkout':
+                $title = 'Checkout';
+                break;
             default:
                 $title = 'Admin';
                 break;
@@ -1298,15 +1348,13 @@ class AdminController extends Controller
 
         if (file_exists($path)) {
 
-            file_put_contents($path, str_replace(
-                $key . '=' . env($key), $key . '=' . $val, file_get_contents($path)
-            ));
+            file_put_contents($path, str_replace($key . '=' . env($key), $key . '=' . $val, file_get_contents($path)));
         }
     }
 
     public function envUpdate($flag,$value)
     {
-        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE'];
+        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS'];
 
         if (in_array($flag, $allow_flags))
         {

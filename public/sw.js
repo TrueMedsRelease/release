@@ -96,201 +96,267 @@ var workbox = function() {
 
 if (workbox) {
   const versionPrecache = 1.0;
-  workbox.precaching.precacheAndRoute([
-    {
-        "url": "/public/js/all_js.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_1/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_1/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_1/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_1/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_2/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_2/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_2/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_2/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_3/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_3/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_3/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_3/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_4/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_4/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_4/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_4/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_5/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_5/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_5/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_5/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_5/js/main.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_6/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_6/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_6/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_6/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_6/js/main.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_7/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_7/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_7/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_7/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_7/js/main.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_8/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_8/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_8/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_8/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_8/js/main.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_9/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_9/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_9/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_9/js/app.js",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_10/layouts/main.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/resources/views/design_10/index.blade.php",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_10/css/style.css",
-        "revision": versionPrecache
-    },
-    {
-        "url": "/public/design_10/js/app.js",
-        "revision": versionPrecache
-    },
-  ]);
-  workbox.routing.registerRoute(
-    /(.*)\.(?:png|webp|svg|jpg)(.*)/,
-    new workbox.strategies.CacheFirst({
-      cacheName: 'images_cache',
-      plugins: [
-        new workbox.expiration.ExpirationPlugin({
-          maxEntries: 1000,
-          maxAgeSeconds: 60 * 60 * 24 * 7,
-          purgeOnQuotaError: true
-        })
-      ]
+
+//   workbox.precaching.precacheAndRoute([
+//     {
+//         "url": "/public/js/all_js.js",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": '/contact_us',
+//     },
+//     {
+//         "url": '/about',
+//     },
+//     {
+//         "url": '/help',
+//     },
+//     {
+//         "url": '/testimonials',
+//     },
+//     {
+//         "url": '/delivery',
+//     },
+//     {
+//         "url": '/moneyback',
+//     },
+//     {
+//         "url": '/affiliate',
+//     },
+//     // {
+//     //     "url": "/resources/views/design_1/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_1/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_1/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_2/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_2/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_2/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_2/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_3/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_3/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_3/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_3/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_4/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_4/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_4/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_4/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_5/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_5/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_5/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_5/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_5/js/main.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_6/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_6/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_6/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_6/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_6/js/main.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_7/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_7/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_7/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_7/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_7/js/main.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_8/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_8/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_8/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_8/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_8/js/main.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_9/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_9/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_9/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_9/js/app.js",
+//         "revision": versionPrecache
+//     },
+//     // {
+//     //     "url": "/resources/views/design_10/layouts/main.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     // {
+//     //     "url": "/resources/views/design_10/index.blade.php",
+//     //     "revision": versionPrecache
+//     // },
+//     {
+//         "url": "/public/design_10/css/style.css",
+//         "revision": versionPrecache
+//     },
+//     {
+//         "url": "/public/design_10/js/app.js",
+//         "revision": versionPrecache
+//     },
+//   ]);
+
+// top-level routes we want to precache
+workbox.precaching.precacheAndRoute(['/', '/contact_us', '/about_us', '/faq', '/testimonials', '/shipping', '/moneyback', '/affiliate']);
+
+// js/css files
+workbox.routing.registerRoute(
+    /\.(?:js|css|ico)$/,
+    new workbox.strategies.StaleWhileRevalidate({
+        cacheName: 'static-resources',
     })
-  );
+);
+
+workbox.routing.registerRoute(
+    new RegExp('/set_images/'),
+    new workbox.strategies.NetworkFirst({
+        cacheName: 'product-images',
+    })
+);
+
+// images
+workbox.routing.registerRoute(
+    /(.*)\.(?:png|webp|svg|jpg|jpeg)(.*)/,
+    new workbox.strategies.CacheFirst({
+        cacheName: 'image-cache',
+        plugins: [
+            new workbox.expiration.ExpirationPlugin({
+                maxEntries: 1000,
+                maxAgeSeconds: 7 * 24 * 60 * 60,
+                purgeOnQuotaError: true
+            })
+        ],
+    })
+);
+
+workbox.routing.registerRoute(
+    /(.*)\.(?:woff|woff2)(.*)/,
+    new workbox.strategies.CacheFirst({
+        cacheName: 'fonts-cache',
+        plugins: [
+            new workbox.expiration.ExpirationPlugin({
+                maxAgeSeconds: 7 * 24 * 60 * 60,
+                purgeOnQuotaError: true
+            })
+        ],
+    })
+);
+
+
+//   workbox.routing.registerRoute(
+//     /(.*)\.(?:png|webp|svg|jpg)(.*)/,
+//     new workbox.strategies.CacheFirst({
+//       cacheName: 'images_cache',
+//       plugins: [
+//         new workbox.expiration.ExpirationPlugin({
+//           maxEntries: 1000,
+//           maxAgeSeconds: 60 * 60 * 24 * 7,
+//           purgeOnQuotaError: true
+//         })
+//       ]
+//     })
+//   );
   workbox.routing.registerRoute(
     /(.*)\.(?:html)(.*)|common.conf/,
     new workbox.strategies.CacheFirst({
@@ -303,36 +369,36 @@ if (workbox) {
       ]
     })
   );
-  workbox.routing.registerRoute(
-    /\b(?:\S(?!(.*)cart|cart_content))+\.(?:blade.php)+\b/,
-    new workbox.strategies.CacheFirst({
-      cacheName: 'design_cache',
-      plugins: [
-        new workbox.expiration.ExpirationPlugin({
-          maxEntries: 300,
-          maxAgeSeconds: 60 * 60 * 24 * 7,
-          purgeOnQuotaError: true
-        })
-      ]
-    })
-  );
-  workbox.routing.registerRoute(
-    /\b(?:\S(?!(.*)))+\b/,
-    new workbox.strategies.CacheFirst({
-      cacheName: 'app_cache',
-      plugins: [
-        new workbox.expiration.ExpirationPlugin({
-          maxEntries: 300,
-          maxAgeSeconds: 60 * 60 * 24 * 7,
-          purgeOnQuotaError: true
-        })
-      ]
-    })
-  );
-  workbox.routing.registerRoute(
-    /(.*)(cart|cart_content|checkout|checkout_content|complete)\.(?:blade.php|php)/,
-    new workbox.strategies.NetworkFirst()
-  );
+//   workbox.routing.registerRoute(
+//     /\b(?:\S(?!(.*)cart|cart_content))+\.(?:blade.php)+\b/,
+//     new workbox.strategies.CacheFirst({
+//       cacheName: 'design_cache',
+//       plugins: [
+//         new workbox.expiration.ExpirationPlugin({
+//           maxEntries: 300,
+//           maxAgeSeconds: 60 * 60 * 24 * 7,
+//           purgeOnQuotaError: true
+//         })
+//       ]
+//     })
+//   );
+//   workbox.routing.registerRoute(
+//     /\b(?:\S(?!(.*)))+\b/,
+//     new workbox.strategies.CacheFirst({
+//       cacheName: 'app_cache',
+//       plugins: [
+//         new workbox.expiration.ExpirationPlugin({
+//           maxEntries: 300,
+//           maxAgeSeconds: 60 * 60 * 24 * 7,
+//           purgeOnQuotaError: true
+//         })
+//       ]
+//     })
+//   );
+//   workbox.routing.registerRoute(
+//     /(.*)(cart|cart_content|checkout|checkout_content|complete)\.(?:blade.php|php)/,
+//     new workbox.strategies.NetworkFirst()
+//   );
   workbox.routing.registerRoute(
     ({ request }) =>
     request.destination === 'style' ||

@@ -264,7 +264,7 @@ $(document).on('click', '.close_popup', function () {
     document.cookie = 'hide_push=1; path=/; expires=' + date;
 });
 
-if (getCookie('hide_push') != '' || Notification.permission === 'denied' || getCookie('user_push') != '' || $('#is_pwa_here').val() == 0) {
+if (getCookie('hide_push') != '' || Notification.permission === 'denied' || getCookie('user_push') != '' || $('#is_pwa_here').val() == 0 || $('#subsc_popup').val() == 0) {
     $('.popup_white').hide();
 } else {
     setTimeout(function(){
