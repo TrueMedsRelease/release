@@ -676,3 +676,74 @@ function SavePixelData() {
         });
     }
 }
+
+function saveGiftCardInfo() {
+    let card_info = $('input[name="gift_card_info"]:checked').val();
+
+    if (card_info) {
+        $.ajax({
+            url: '/admin/available_products/gift_card_info',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'card_info': card_info,
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    alert(data.text);
+                } else {
+                    location.href = data.url;
+                }
+            }
+        });
+    }
+}
+
+function saveCheckoutInfo() {
+    let default_shipping = $('input[name="default_shipping"]:checked').val();
+    let default_insur = $('input[name="default_insur"]:checked').val();
+    let default_secret = $('input[name="default_secret"]:checked').val();
+    $.ajax({
+        url: '/admin/checkout/save_checkout_info',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'default_shipping': default_shipping,
+            'default_insur': default_insur,
+            'default_secret': default_secret,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
+function saveSubscribePopupInfo() {
+    let popup_status = $('input[name="subsc_popup_info"]:checked').val();
+
+    $.ajax({
+        url: '/admin/main_page/save_subscribe_info',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'popup_status': popup_status,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}

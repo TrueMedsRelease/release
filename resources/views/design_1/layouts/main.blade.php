@@ -19,7 +19,7 @@
     <link rel="alternate" href="{{ config('app.url') }}/lang=es" hreflang="es" />
     <link rel="alternate" href="{{ config('app.url') }}/lang=fi" hreflang="fi" />
     <link rel="alternate" href="{{ config('app.url') }}/lang=fr" hreflang="fr" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=gr" hreflang="gr" />
+    <link rel="alternate" href="{{ config('app.url') }}/lang=gr" hreflang="el" />
     <link rel="alternate" href="{{ config('app.url') }}/lang=hans" hreflang="zh-Hans" />
     <link rel="alternate" href="{{ config('app.url') }}/lang=hant" hreflang="zh-Hant" />
     <link rel="alternate" href="{{ config('app.url') }}/lang=hu" hreflang="hu" />
@@ -71,6 +71,7 @@
 
     <input type="hidden" id="is_pwa_here" value="{{ env('APP_PWA', 0) }}">
     <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
+    <input type="hidden" id="subsc_popup" value="{{ env('SUBSCRIBE_POPUP_STATUS', 1) }}">
 
 <div class="wrapper">
 	<header class="header">

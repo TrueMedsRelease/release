@@ -64,6 +64,9 @@
 								<li class="menu__item">
 								    <a href="{{ route('admin.index') }}">{{__('text.admin_common_main_menu_7_element')}}</a>
 								</li>
+                                <li class="menu__item">
+								    <a href="{{ route('admin.admin_checkout') }}">Checkout</a>
+								</li>
 								<li class="menu__item">
 								    <a href="{{ route('admin.admin_languages') }}">{{__('text.admin_common_main_menu_9_element')}}</a>
 								</li>

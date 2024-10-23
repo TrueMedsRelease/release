@@ -255,12 +255,12 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
     Route::get('/{product_name}.html', 'product')->name('home.product')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/{product_name}.html/landing={landing}', 'product_landing')->name('home.product_landing')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::get('/about', 'about')->name('home.about');
+    Route::get('/about_us', 'about')->name('home.about');
     Route::get('/contact_us', 'contact_us')->name('home.contact_us');
     Route::get('/affiliate', 'affiliate')->name('home.affiliate');
-    Route::get('/help', 'help')->name('home.help');
+    Route::get('/faq', 'help')->name('home.help');
     Route::get('/testimonials', 'testimonials')->name('home.testimonials');
-    Route::get('/delivery', 'delivery')->name('home.delivery');
+    Route::get('/shipping', 'delivery')->name('home.delivery');
     Route::get('/moneyback', 'moneyback')->name('home.moneyback');
     Route::get('/login', 'login')->name('home.login');
     Route::get('/lang={locale}', 'language')->name('home.language');
@@ -298,6 +298,7 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('/admin/main_page/delete_from_main', 'delete_from_main')->name('admin.delete_from_main')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_page/product_up_in_sort', 'product_up_in_sort')->name('admin.product_up_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_page/product_down_in_sort', 'product_down_in_sort')->name('admin.product_down_in_sort')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_page/save_subscribe_info', 'save_subscribe_info')->name('admin.save_subscribe_info')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/seo', 'admin_seo')->name('admin.admin_seo');
     Route::get('/admin/seo_content', 'admin_seo_content')->name('admin.admin_seo_content')->withoutMiddleware(VerifyCsrfToken::class);
@@ -316,6 +317,7 @@ Route::controller(AdminController::class)->group(function() {
     Route::get('/admin/available_products_content', 'available_products_content')->name('admin.available_products_content')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/available_products/add_to_showed', 'add_to_showed')->name('admin.add_to_showed')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/available_products/delete_from_showed', 'delete_from_showed')->name('admin.delete_from_showed')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/available_products/gift_card_info', 'gift_card_info')->name('admin.gift_card_info')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/available_packagings', 'available_packagings')->name('admin.available_packagings');
     Route::get('/admin/available_packagings_content', 'available_packagings_content')->name('admin.available_packagings_content')->withoutMiddleware(VerifyCsrfToken::class);
@@ -335,6 +337,9 @@ Route::controller(AdminController::class)->group(function() {
 
     Route::get('/admin/currencies', 'admin_currencies')->name('admin.admin_currencies');
     Route::post('/admin/save_currencies_info', 'save_currencies_info')->name('admin.save_currencies_info')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/checkout', 'admin_checkout')->name('admin.admin_checkout');
+    Route::post('/admin/checkout/save_checkout_info', 'save_checkout_info')->name('admin.save_checkout_info')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::fallback(function () {
