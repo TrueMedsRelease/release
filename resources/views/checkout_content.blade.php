@@ -561,7 +561,9 @@
                                         data-pseudo-label="Type of Payment">
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
                                         <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>
-                                        {{-- <option value="paypal" @selected(session('form.payment_type', 'paypal') == 'paypal')>Paypal</option> --}}
+                                        @if(env('APP_PAYPAL_ON'))
+                                            <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
+                                        @endif
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>

@@ -80,6 +80,29 @@
                             </div>
                         </td>
                     </tr>
+                    <tr style="display:flex; justify-content: space-between; padding-bottom: 15px;">
+                        <td>
+                            <div>
+                                Paypal
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="radio" name="paypal_setting" id="paypal_on" value="1" @if (env('APP_PAYPAL_ON') == 1) checked @endif />
+                                <label for="paypal_on">
+                                    Available
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="radio" name="paypal_setting" id="paypal_off" value="0" @if (env('APP_PAYPAL_ON') == 0) checked @endif />
+                                <label for="paypal_off">
+                                    Unavailable
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="saveCheckoutInfo();">
