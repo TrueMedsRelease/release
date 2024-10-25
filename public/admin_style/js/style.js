@@ -239,9 +239,10 @@ function loadPageProperties() {
                 }
             }
         });
-    } else {
-        alert("Check one page and language");
     }
+    // else {
+    //     alert("Check one page and language");
+    // }
 }
 
 function savePageProperties() {

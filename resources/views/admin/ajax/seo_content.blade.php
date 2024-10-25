@@ -154,7 +154,7 @@
                 <tbody>
                     <tr>
                         <td class="table_head" width="22%">
-                            <select class="input" name="pages_field" id="pages_field" size="15" style="width: 100%; overflow: hidden;">
+                            <select class="input" name="pages_field" id="pages_field" size="15" style="width: 100%; overflow: hidden;" onchange="loadPageProperties();">
                                 <option value="main">{{__('text.admin_main_properties_main_page_name')}}</option>
                                 <option value="product">{{__('text.admin_main_properties_product_page_name')}}</option>
                                 <option value="category">{{__('text.admin_main_properties_category_page_name')}}</option>
@@ -173,7 +173,7 @@
                         </td>
                         <td width="5%">&nbsp;</td>
                         <td width="10%">
-                            <select class="input" name="language_field" id="language_field" size="15" style="width: 100%;">
+                            <select class="input" name="language_field" id="language_field" size="15" style="width: 100%;" onchange="loadPageProperties();">
                                 @foreach ($language::GetAllLanuages() as $item)
                                     <option value="{{ $item['id'] }}">{{ Str::ucfirst($item['code']) }}</option>
                                 @endforeach
@@ -211,18 +211,18 @@
                     </tr>
                 </tbody>
             </table>
-            <div style="padding: 10px 0; line-height: 1.5;">
+            <!-- <div style="padding: 10px 0; line-height: 1.5;">
                 If you want to see page properties choose "Page name" and "Language" and <b>click button "Load"</b>
-            </div>
+            </div> -->
             <div style="display: flex; gap:20px;">
-                <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="loadPageProperties();">
+                <!-- <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="loadPageProperties();">
                     <span>
                         Load
                     </span>
                     <svg width="20" height="20">
                         <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
                     </svg>
-                </button>
+                </button> -->
                 <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); savePageProperties();">
                     <span>
                         {{__('text.admin_main_properties_titles_and_tags_form_submit')}}
