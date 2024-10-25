@@ -1,4 +1,4 @@
-<div class="statistic__rows">
+<!-- <div class="statistic__rows">
     <h3 class="payment-details__caption">Gift Card</h3>
     <form name="new_currency_form" id="new_currency_form" method="POST">
         <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
@@ -36,7 +36,7 @@
             </tbody>
         </table>
     </form>
-</div>
+</div> -->
 <div class="statistic__top-row">
     <div class="payment-details__top-row">
         <div class="payment-details__currency">

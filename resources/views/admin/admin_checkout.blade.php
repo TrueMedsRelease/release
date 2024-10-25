@@ -11,13 +11,13 @@
         <form name="checkout_properties" id="checkout_properties" method="POST">
             <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
                 <tbody style="display: flex; gap: 15px; flex-direction: column;">
-                    <tr style="display:flex; justify-content: space-between; padding-top: 15px;">
-                        <td>
+                    <tr style="display:flex; justify-content: space-between; padding-top: 15px; gap: 15px;">
+                        <td style="width: 30%;">
                             <div>
                                 Default Shipping
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="default_shipping" id="ship_ems" value="ems" @if (env('APP_DEFAULT_SHIPPING') == 'ems') checked @endif />
                                 <label for="ship_ems">
@@ -25,7 +25,7 @@
                                 </label>
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="default_shipping" id="ship_regular" value="regular" @if (env('APP_DEFAULT_SHIPPING') == 'regular') checked @endif />
                                 <label for="ship_regular">
@@ -34,13 +34,13 @@
                             </div>
                         </td>
                     </tr>
-                    <tr style="display:flex; justify-content: space-between; padding: 15px 0;">
-                        <td>
+                    <!-- <tr style="display:flex; justify-content: space-between; padding: 15px 0; gap: 15px;">
+                        <td style="width: 30%;">
                             <div>
                                 Secret Packaging
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="default_secret" id="secret_on" value="1" @if (env('APP_SECRET_ON') == 1) checked @endif />
                                 <label for="secret_on">
@@ -48,7 +48,7 @@
                                 </label>
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="default_secret" id="secret_off" value="0" @if (env('APP_SECRET_ON') == 0) checked @endif />
                                 <label for="secret_off">
@@ -56,14 +56,14 @@
                                 </label>
                             </div>
                         </td>
-                    </tr>
-                    <tr style="display:flex; justify-content: space-between; padding-bottom: 15px;">
-                        <td>
+                    </tr> -->
+                    <!-- <tr style="display:flex; justify-content: space-between; padding-bottom: 15px; gap: 15px;">
+                        <td style="width: 30%;">
                             <div>
                                 Shipping Insurance
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="default_insur" id="insur_on" value="1" @if (env('APP_INSUR_ON') == 1) checked @endif />
                                 <label for="insur_on">
@@ -71,7 +71,7 @@
                                 </label>
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="default_insur" id="insur_off" value="0" @if (env('APP_INSUR_ON') == 0) checked @endif />
                                 <label for="insur_off">
@@ -79,14 +79,14 @@
                                 </label>
                             </div>
                         </td>
-                    </tr>
-                    <tr style="display:flex; justify-content: space-between; padding-bottom: 15px;">
-                        <td>
+                    </tr> -->
+                    <tr style="display:flex; justify-content: space-between; padding-bottom: 15px; gap: 15px;">
+                        <td style="width: 30%;">
                             <div>
                                 Paypal
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="paypal_setting" id="paypal_on" value="1" @if (env('APP_PAYPAL_ON') == 1) checked @endif />
                                 <label for="paypal_on">
@@ -94,7 +94,7 @@
                                 </label>
                             </div>
                         </td>
-                        <td>
+                        <td style="width: 35%;">
                             <div>
                                 <input type="radio" name="paypal_setting" id="paypal_off" value="0" @if (env('APP_PAYPAL_ON') == 0) checked @endif />
                                 <label for="paypal_off">
