@@ -574,7 +574,7 @@ class AdminController extends Controller
             'product_url' => []
         ])->render();
 
-        return response()->json(array('success' => true, 'html' => "$returnHTML"));
+        return response()->json(array('success' => true, 'html' => "$returnHTML"))->header('Content-Type', 'application/json; charset=utf-8');
     }
 
     public function save_page_properties(Request $request) {
