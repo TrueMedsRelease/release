@@ -538,7 +538,12 @@ class AdminController extends Controller
         $page = $request->page;
         $language_id = $request->language_id;
 
-        $page_properties = DB::select("SELECT * FROM page_properties WHERE page = '$page' AND language = $language_id");
+        // $page_properties = DB::select("SELECT * FROM page_properties WHERE page = '$page' AND language = $language_id");
+        $page_properties = DB::table('page_properties')
+            ->where('page', '=', $page)
+            ->where('language', '=', $language_id)
+            ->get(['title', 'description', 'keyword'])
+            ->toArray();
         $page_properties = $page_properties[0];
 
         $cur_design = env('APP_DESIGN');
@@ -584,7 +589,17 @@ class AdminController extends Controller
         $keyword = $request->keyword;
         $description = $request->description;
 
-        DB::update('UPDATE page_properties SET title = "' . $title . '", keyword = "' . $keyword . '", description = "' . $description . '" WHERE page = "' . $page . '" AND language = ' . $language_id);
+        DB::table('page_properties')
+            ->where('page', '=', $page)
+            ->where('language', '=', $language_id)
+            ->update([
+                'title' => $title,
+                'keyword' => $keyword,
+                'description' => $description
+            ]);
+
+
+        // DB::update('UPDATE page_properties SET title = "' . $title . '", keyword = "' . $keyword . '", description = "' . $description . '" WHERE page = "' . $page . '" AND language = ' . $language_id);
 
         return response()->json(['status' => 'success', 'url' => route('admin.admin_seo')]);
     }
