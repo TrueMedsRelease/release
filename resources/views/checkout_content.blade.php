@@ -3,7 +3,7 @@
     {{-- <div class="christmas">
         <img src="../style_checkout/images/pay_big.png">
     </div> --}}
-    <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON')}}">
+    <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
     <div class="header__phones-top top-phones-header">
         <div class="top-phones-header__container header__container">
             <div class="top-phones-header__items">
@@ -561,7 +561,7 @@
                                         data-pseudo-label="Type of Payment">
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
                                         <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>
-                                        @if(env('APP_PAYPAL_ON'))
+                                        @if(env('APP_PAYPAL_ON', 0))
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}

@@ -6,7 +6,7 @@
                 <tr>
                     <td>
                         <div>
-                            <input type="radio" name="subsc_popup_info" id="subsc_popup_on" value="1" @if (env('SUBSCRIBE_POPUP_STATUS') == 1) checked @endif />
+                            <input type="radio" name="subsc_popup_info" id="subsc_popup_on" value="1" @if (env('SUBSCRIBE_POPUP_STATUS', 1) == 1) checked @endif />
                             <label for="subsc_popup_on">
                                 On
                             </label>
@@ -14,7 +14,7 @@
                     </td>
                     <td>
                         <div>
-                            <input type="radio" name="subsc_popup_info" id="subsc_popup_off" value="0" @if (env('SUBSCRIBE_POPUP_STATUS') == 0) checked @endif />
+                            <input type="radio" name="subsc_popup_info" id="subsc_popup_off" value="0" @if (env('SUBSCRIBE_POPUP_STATUS', 1) == 0) checked @endif />
                             <label for="subsc_popup_off">
                                 Off
                             </label>

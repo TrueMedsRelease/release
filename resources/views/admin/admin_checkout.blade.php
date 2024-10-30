@@ -19,7 +19,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="default_shipping" id="ship_ems" value="ems" @if (env('APP_DEFAULT_SHIPPING') == 'ems') checked @endif />
+                                <input type="radio" name="default_shipping" id="ship_ems" value="ems" @if (env('APP_DEFAULT_SHIPPING', 'ems') == 'ems') checked @endif />
                                 <label for="ship_ems">
                                     Express Delivery
                                 </label>
@@ -27,7 +27,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="default_shipping" id="ship_regular" value="regular" @if (env('APP_DEFAULT_SHIPPING') == 'regular') checked @endif />
+                                <input type="radio" name="default_shipping" id="ship_regular" value="regular" @if (env('APP_DEFAULT_SHIPPING', 'ems') == 'regular') checked @endif />
                                 <label for="ship_regular">
                                     Regular Delivery
                                 </label>
@@ -42,7 +42,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="default_secret" id="secret_on" value="1" @if (env('APP_SECRET_ON') == 1) checked @endif />
+                                <input type="radio" name="default_secret" id="secret_on" value="1" @if (env('APP_SECRET_ON', 1) == 1) checked @endif />
                                 <label for="secret_on">
                                     Checked
                                 </label>
@@ -50,7 +50,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="default_secret" id="secret_off" value="0" @if (env('APP_SECRET_ON') == 0) checked @endif />
+                                <input type="radio" name="default_secret" id="secret_off" value="0" @if (env('APP_SECRET_ON', 1) == 0) checked @endif />
                                 <label for="secret_off">
                                     Unchecked
                                 </label>
@@ -65,7 +65,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="default_insur" id="insur_on" value="1" @if (env('APP_INSUR_ON') == 1) checked @endif />
+                                <input type="radio" name="default_insur" id="insur_on" value="1" @if (env('APP_INSUR_ON', 1) == 1) checked @endif />
                                 <label for="insur_on">
                                     Checked
                                 </label>
@@ -73,7 +73,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="default_insur" id="insur_off" value="0" @if (env('APP_INSUR_ON') == 0) checked @endif />
+                                <input type="radio" name="default_insur" id="insur_off" value="0" @if (env('APP_INSUR_ON', 1) == 0) checked @endif />
                                 <label for="insur_off">
                                     Unchecked
                                 </label>
@@ -88,7 +88,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="paypal_setting" id="paypal_on" value="1" @if (env('APP_PAYPAL_ON') == 1) checked @endif />
+                                <input type="radio" name="paypal_setting" id="paypal_on" value="1" @if (env('APP_PAYPAL_ON', 0) == 1) checked @endif />
                                 <label for="paypal_on">
                                     Available
                                 </label>
@@ -96,7 +96,7 @@
                         </td>
                         <td style="width: 35%;">
                             <div>
-                                <input type="radio" name="paypal_setting" id="paypal_off" value="0" @if (env('APP_PAYPAL_ON') == 0) checked @endif />
+                                <input type="radio" name="paypal_setting" id="paypal_off" value="0" @if (env('APP_PAYPAL_ON', 0) == 0) checked @endif />
                                 <label for="paypal_off">
                                     Unavailable
                                 </label>
