@@ -150,13 +150,13 @@ class CartController extends Controller
                 $shipping_price = $shipping['ems'] != 0 ? $shipping['ems'] : $shipping['regular'];
             }
 
-            $start_shipping = env('APP_DEFAULT_SHIPPING');
+            $start_shipping = env('APP_DEFAULT_SHIPPING', 'ems');
 
             $shipping_name = $start_shipping;
             $shipping_price = $shipping[$start_shipping];
 
-            $ins_start = intval(env('APP_INSUR_ON'));
-            $secret_start = intval(env('APP_SECRET_ON'));
+            $ins_start = intval(env('APP_INSUR_ON', 1));
+            $secret_start = intval(env('APP_SECRET_ON', 1));
 
             $option = [
                 "shipping" => $shipping_name,
