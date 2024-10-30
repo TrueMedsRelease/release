@@ -35,7 +35,6 @@ class CheckoutController extends Controller
         $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
         if (count($unsent_order) > 0) {
             foreach ($unsent_order as $order) {
-                dump($order->message);
                 $response = Http::post('http://true-services.net/checkout/order.php', json_decode($order->message));
                 $response = json_decode($response, true);
 
