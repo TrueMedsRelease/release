@@ -989,42 +989,32 @@ class HomeController extends Controller
             $pill = str_replace('&', '-', (str_replace(' ', '-', strtolower(trim($pill)))));
             $safari = false;
 
-            if (preg_match('/iPhone|iPad|iPod|Macintosh/i', $_SERVER['HTTP_USER_AGENT'])) {
+            if (str_contains($_SERVER['HTTP_USER_AGENT'], 'iPhone') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPad') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPod') || str_contains($_SERVER['HTTP_USER_AGENT'], 'Macintosh')){
                 if (file_exists(public_path() . "/images/" . $pill . ".png") && file_get_contents(public_path() . "/images/" . $pill . ".png") !== "error") {
-                    header('Content-type: image/png');
-                    // echo file_get_contents(public_path() . "/images/" . $pill . ".png");
-                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".png");
                     $safari = true;
-                    return response($temp)->header('Content-type', 'image/png');
+                    return response(file_get_contents(public_path() . "/images/" . $pill . ".png"))->header('Content-type', 'image/png');
                 } else {
                     $water_string = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=png&url=' . $water_string);
 
                     file_put_contents(public_path() . "/images/" . $pill . ".png", $server_answer);
-                    header('Content-type: image/png');
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".png");
                     if ($temp != "error") {
-                        // echo $temp;
                         $safari = true;
                         return response($temp)->header('Content-type', 'image/png');
                     }
                 }
                 if (!$safari) {
                     if (file_exists(public_path() . "/images/" . $pill . ".jpg") && file_get_contents(public_path() . "/images/" . $pill . ".jpg") !== "error") {
-                        header('Content-type: image/png');
-                        // echo file_get_contents(public_path() . "/images/" . $pill . ".jpg");
-                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpg");
                         $safari = true;
-                        return response($temp)->header('Content-type', 'image/png');
+                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpg"))->header('Content-type', 'image/png');
                     } else {
                         $water_string = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpg&url=' . $water_string);
 
                         file_put_contents(public_path() . "/images/" . $pill . ".jpg", $server_answer);
-                        header('Content-type: image/png');
                         $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpg");
                         if ($temp != "error") {
-                            // echo $temp;
                             $safari = true;
                             return response($temp)->header('Content-type', 'image/png');
                         }
@@ -1032,20 +1022,15 @@ class HomeController extends Controller
                 }
                 if (!$safari) {
                     if (file_exists(public_path() . "/images/" . $pill . ".jpeg") && file_get_contents(public_path() . "/images/" . $pill . ".jpeg") !== "error") {
-                        header('Content-type: image/png');
-                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
-                        // echo file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
                         $safari = true;
-                        return response($temp)->header('Content-type', 'image/png');
+                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpeg"))->header('Content-type', 'image/png');
                     } else {
                         $water_string = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpeg&url=' . $water_string);
 
                         file_put_contents(public_path() . "/images/" . $pill . ".jpeg", $server_answer);
-                        header('Content-type: image/png');
                         $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
                         if ($temp != "error") {
-                            // echo $temp;
                             $safari = true;
                             return response($temp)->header('Content-type', 'image/png');
                         }
@@ -1053,17 +1038,13 @@ class HomeController extends Controller
                 }
             } else {
                 if (file_exists(public_path() . "/images/" . $pill . ".webp") && file_get_contents(public_path() . "/images/" . $pill . ".webp") !== "error") {
-                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
-                    // echo $temp;
-                    $safari = true;
-                    return response($temp)->header('Content-type', 'image/png');
+                    return response(file_get_contents(public_path() . "/images/" . $pill . ".webp"))->header('Content-type', 'image/png');
                 } else {
                     $water_string = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=webp&url=' . $water_string);
                     file_put_contents(public_path() . "/images/" . $pill . ".webp", $server_answer);
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
                     if ($temp != "error") {
-                        // echo $temp;
                         $safari = true;
                         return response($temp)->header('Content-type', 'image/png');
                     }
@@ -1091,10 +1072,9 @@ class HomeController extends Controller
 
         $data = [
             'method' => 'send_request',
-            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
             'phone' => $phone,
             'shop' => $domain,
-            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
+            'aff' => session('aff', 0),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ];
@@ -1133,10 +1113,9 @@ class HomeController extends Controller
 
         $data = [
             'method' => 'subscribe',
-            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
             'email' => $email,
             'shop' => $domain,
-            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
+            'aff' => session('aff', 0),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
         ];
@@ -1202,7 +1181,7 @@ class HomeController extends Controller
             'subject' => $subject,
             'message' => $message,
             'url_from' => $domain,
-            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
+            'aff' => session('aff', 0),
             'customer_ip' => $request->ip(),
             'customer_user_agent' => $request->userAgent(),
         ];
@@ -1278,10 +1257,9 @@ class HomeController extends Controller
             'jabber' => $jabber,
             'message' => $message,
             'url_from' => $domain,
-            'aff' => session('aff') ? session('aff') : config('app.aff', 0),
+            'aff' => session('aff', 0),
             'customer_ip' => $request->ip(),
             'customer_user_agent' => $request->userAgent(),
-            // 'api_key' => '7c73d5ca242607050422af5a4304ef71',
         ];
 
         if (!$error) {
