@@ -21,52 +21,55 @@ class StatisticService
             session(['uniq' => 1]);
         }
 
-        $get = array(
-            "sessid" => session('_token'),
-            "dt" => date("Y-m-d H:i:s"),
-            "ip" => request()->ip(),
-            "is_uniq" => $is_uniq,
-            "country" => session('location.country'),
-            "aff" => session('aff', 0),
-            "saff" => session('saff', ''),
-            "domain_from" => request()->getHost(),
-            "ref" => session('referer', ''),
-            "keyword" => session('keyword', ''),
-            "user_agent" => request()->userAgent(),
-            "store_skin" => $design,
-            "theme" => "",
-            "duration" => 0,
-            "checkout" => "",
-            "route" => "",
-            "page" => $page
-        );
-        // $client = new Client();
-        // $promise = $client->getAsync('http://true-services.net/statistics/statistics.php?' . http_build_query($get));
-        // $promise->then(
-        //     function ($response) {
-        //         session(['response' => $response]);
-        //     },
-        //     function ($exception) {
-        //         session(['exception' => $exception]);
-        //     }
-        // );
+        $bots = [
+            'googlebot', 'bingbot', 'yandex', 'slurp', 'duckduckbot', 'baiduspider',
+            'sogou', 'exabot', 'facebot', 'ia_archiver', 'ahrefsbot', 'semrushbot',
+            'mj12bot', 'dotbot', 'rogerbot', 'megaindex', 'blexbot', 'yoozbot', 'bot', 'spider'
+        ];
 
-        // $promise = Http::async()->get('http://true-services.net/statistics/statistics.php?' . http_build_query($get))->then(function($response) {
-        //     dump($response->body());
-        // });
+        $userAgent = strtolower(request()->userAgent());
+        $bot = false;
 
-        $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 3);
-        if (!$fp) {
-            // echo "$errstr ($errno)\n";
-        } else {
-            $out = "GET /statistics/statistics.php?" . http_build_query($get) . " HTTP/1.1\r\n";
-            $out .= "Host: true-services.net\r\n";
-            $out .= "User-Agent: " . request()->userAgent() . "\r\n";
-            $out .= "Connection: Close\r\n\r\n";
-            fwrite($fp, $out);
-            fclose($fp);
+        foreach ($bots as $bot) {
+            if (strpos($userAgent, $bot) !== false) {
+                $bot = true;
+            }
         }
 
+        if(!$bot)
+        {
+            $get = array(
+                "sessid" => session('_token'),
+                "dt" => date("Y-m-d H:i:s"),
+                "ip" => request()->ip(),
+                "is_uniq" => $is_uniq,
+                "country" => session('location.country'),
+                "aff" => session('aff', 0),
+                "saff" => session('saff', ''),
+                "domain_from" => request()->getHost(),
+                "ref" => session('referer', ''),
+                "keyword" => session('keyword', ''),
+                "user_agent" => request()->userAgent(),
+                "store_skin" => $design,
+                "theme" => "",
+                "duration" => 0,
+                "checkout" => "",
+                "route" => "",
+                "page" => $page
+            );
+
+            $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 3);
+            if (!$fp) {
+
+            } else {
+                $out = "GET /statistics/statistics.php?" . http_build_query($get) . " HTTP/1.1\r\n";
+                $out .= "Host: true-services.net\r\n";
+                $out .= "User-Agent: " . request()->userAgent() . "\r\n";
+                $out .= "Connection: Close\r\n\r\n";
+                fwrite($fp, $out);
+                fclose($fp);
+            }
+        }
     }
 
     public static function SendCheckout()
