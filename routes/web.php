@@ -206,10 +206,8 @@ if (isset($_GET['curr']) && $_GET['curr']) {
     request()->route('home.currency_with_url', ['any_url' => request()->server('REQUEST_URI'), 'currency' => $curr]);
 }
 
-// dump($_GET);
-
 Route::controller(SearchController::class)->group(function() {
-    Route::post('/search', 'search_product')->name('search.search_product');
+    Route::post('/search', 'search_product')->name('search.search_product')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/search_autocomplete', 'search_autocomplete')->name('search.search_autocomplete');
     Route::get('/search/{search_text}', 'search_result')->name('search.search_result');
     Route::get('/app/search.php', 'search_for_aff')->name('search.searh_for_aff');
