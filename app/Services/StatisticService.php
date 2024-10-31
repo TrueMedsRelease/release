@@ -33,6 +33,7 @@ class StatisticService
         foreach ($bots as $bo) {
             if (strpos($userAgent, $bo) !== false) {
                 $bot = true;
+                break;
             }
         }
 
