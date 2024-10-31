@@ -30,9 +30,10 @@ class StatisticService
         $userAgent = strtolower(request()->userAgent());
         $bot = false;
 
-        foreach ($bots as $bot) {
-            if (strpos($userAgent, $bot) !== false) {
+        foreach ($bots as $bo) {
+            if (strpos($userAgent, $bo) !== false) {
                 $bot = true;
+                break;
             }
         }
 
