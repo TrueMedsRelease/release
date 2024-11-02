@@ -35,7 +35,7 @@ class CheckoutController extends Controller
         $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
         if (count($unsent_order) > 0) {
             foreach ($unsent_order as $order) {
-                $response = Http::post('http://true-services.net/checkout/order.php', json_decode($order->message));
+                $response = Http::post('http://true-services.net/checkout/order.php', json_decode($order->message, true));
                 $response = json_decode($response, true);
 
                 if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
@@ -475,14 +475,16 @@ class CheckoutController extends Controller
             $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
             if(count($check_order_cache) == 0)
             {
+                $data_for_cache = $data;
+                $data_for_cache['products'] = addslashes($data_for_cache['products']);
                 $order_cache_id = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data),
+                    'message' => json_encode($data_for_cache),
                     'is_send' => 0
                 ]);
             }
             else
             {
-                $order_cache_id = $check_order_cache[0]['id'];
+                $order_cache_id = $check_order_cache[0]->id;
             }
 
 
@@ -610,14 +612,16 @@ class CheckoutController extends Controller
             $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
             if(count($check_order_cache) == 0)
             {
+                $data_for_cache = $data;
+                $data_for_cache['products'] = addslashes($data_for_cache['products']);
                 $order_cache_id = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data),
+                    'message' => json_encode($data_for_cache),
                     'is_send' => 0
                 ]);
             }
             else
             {
-                $order_cache_id = $check_order_cache[0]['id'];
+                $order_cache_id = $check_order_cache[0]->id;
             }
 
             $response = Http::post('http://true-services.net/checkout/order.php', $data);
@@ -842,14 +846,16 @@ class CheckoutController extends Controller
                 $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
                 if(count($check_order_cache) == 0)
                 {
+                    $data_for_cache = $data;
+                    $data_for_cache['products'] = addslashes($data_for_cache['products']);
                     $order_cache_id = DB::table('order_cache')->insertGetId([
-                        'message' => json_encode($data),
+                        'message' => json_encode($data_for_cache),
                         'is_send' => 0
                     ]);
                 }
                 else
                 {
-                    $order_cache_id = $check_order_cache[0]['id'];
+                    $order_cache_id = $check_order_cache[0]->id;
                 }
 
                 $response = Http::post('http://true-services.net/checkout/order.php', $data);
