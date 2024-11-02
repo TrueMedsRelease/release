@@ -471,7 +471,8 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%{e($request->email)}%'");
+            $email = e($request->email);
+            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
             if(count($check_order_cache) == 0)
             {
                 $order_cache_id = DB::table('order_cache')->insertGetId([
@@ -605,7 +606,8 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%{e($request->email)}%'");
+            $email = e($request->email);
+            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
             if(count($check_order_cache) == 0)
             {
                 $order_cache_id = DB::table('order_cache')->insertGetId([
@@ -836,7 +838,8 @@ class CheckoutController extends Controller
 
                 session(['data' => $data]);
 
-                $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%{e($request->email)}%'");
+                $email = e($request->email);
+                $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
                 if(count($check_order_cache) == 0)
                 {
                     $order_cache_id = DB::table('order_cache')->insertGetId([
