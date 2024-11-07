@@ -1862,6 +1862,7 @@
             const sepaBlock = document.querySelector(".enter-info__sepa-content");
             const paypalBlock = document.querySelector(".enter-info__paypal-content");
             const giftCardBlock = document.querySelector('.enter-info__gift-card-content');
+            const googleBlock = document.querySelector(".enter-info__google-content");
             document.addEventListener("selectCallback", (function (e) {
                 const currentSelect = e.detail.select;
                 if (currentSelect.value === "crypto") {
@@ -1876,24 +1877,34 @@
                     _slideUp(cryptoBlock);
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
+                    _slideUp(googleBlock);
                 } else if (currentSelect.value === "sepa") {
                     // _slideDown(sepaBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
+                    _slideUp(googleBlock);
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
                     // _slideUp(sepaBlock);
                     // _slideUp(giftCardBlock);
+                    _slideUp(googleBlock);
                 } else if (currentSelect.value === 'gift_card') {
                     // _slideDown(giftCardBlock);
                     _slideUp(paypalBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
                     // _slideUp(sepaBlock);
+                    _slideUp(googleBlock);
+                }else if (currentSelect.value === "google") {
+                    _slideDown(googleBlock);
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    _slideUp(sepaBlock);
+                    _slideUp(paypalBlock);
                 }
             }));
             const copyBtns = document.querySelectorAll(".details-payment__copy-button");
@@ -2051,6 +2062,7 @@ $(".card_type .select__option").click(function (e) {
     const cardBlock = document.querySelector(".enter-info__card-content");
     const cryptoBlock = document.querySelector(".enter-info__crypto-content");
     const paypalBlock = document.querySelector(".enter-info__paypal-content");
+    const googleBlock = document.querySelector(".enter-info__google-content");
     flag = false;
     if (type == 'crypto') {
         $.ajax({
@@ -2064,6 +2076,41 @@ $(".card_type .select__option").click(function (e) {
                 _slideDown(cryptoBlock);
                 _slideUp(cardBlock);
                 _slideUp(paypalBlock);
+                _slideUp(googleBlock);
+            },
+            error: function (data) {
+                flag = true;
+                var errors = JSON.parse(data.responseText);
+                errors.errors.forEach(function (error, i) {
+                    console.log(i + '.' + error.message + ' (' + error.field + ')');
+                    var popup = document.getElementById("error_" + error.field);
+                    popup.classList.add("show");
+                    if (i == 0) {
+                        popup.scrollIntoView();
+                    }
+                });
+            }
+        });
+        if (flag) {
+            previousIndex = this.selectedIndex;
+            e.target.selectedIndex = previousIndex;
+            return false;
+        }
+    }
+    else if(type == 'google')
+    {
+        $.ajax({
+            url: '/validate_for_google',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+                _slideDown(googleBlock);
+                _slideUp(cardBlock);
+                _slideUp(paypalBlock);
+                _slideUp(cryptoBlock);
             },
             error: function (data) {
                 flag = true;
@@ -2085,6 +2132,44 @@ $(".card_type .select__option").click(function (e) {
         }
     }
 });
+
+window.addEventListener('message', (event) => {
+    if (event.origin !== 'https://r.express') {
+        return;
+    }
+    var info = JSON.parse(event.data);
+    var form = $('form').serialize();
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+    form += '&trans_id=' + info.payment.id;
+    form += '&google_sum=' + info.payment.paymentOutput.amountOfMoney.amount;
+    form += '&full_response=' + event.data;
+    if(info.payment.status == 'PENDING_CAPTURE')
+    {
+        $.ajax({
+            url: '/send_google',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+                data = JSON.parse(JSON.parse(data));
+                if(data.status == 'ok')
+                {
+                    window.location.replace("/complete");
+                }
+            },
+        });
+    }
+})
 
 $('input[name="crypt_currency"]').click(function () {
     document.getElementById("paid").disabled = false;

@@ -1,26 +1,32 @@
-
 <header class="header">
     {{-- <div class="christmas">
         <img src="../style_checkout/images/pay_big.png">
     </div> --}}
-    <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
+    <input type="hidden" id="app_insur_on" value="{{ env('APP_INSUR_ON', 1) }}">
     <div class="header__phones-top top-phones-header">
         <div class="top-phones-header__container header__container">
             <div class="top-phones-header__items">
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}
-                    {{__('text.phones_title_phone_1')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}
-                    {{__('text.phones_title_phone_2')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}
-                    {{__('text.phones_title_phone_3')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}
-                    {{__('text.phones_title_phone_4')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}
-                    {{__('text.phones_title_phone_5')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}
-                    {{__('text.phones_title_phone_6')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}
-                    {{__('text.phones_title_phone_7')}}</a>
+                <a class="top-phones-header__item"
+                    href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }}
+                    {{ __('text.phones_title_phone_1') }}</a>
+                <a class="top-phones-header__item"
+                    href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }}
+                    {{ __('text.phones_title_phone_2') }}</a>
+                <a class="top-phones-header__item"
+                    href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }}
+                    {{ __('text.phones_title_phone_3') }}</a>
+                <a class="top-phones-header__item"
+                    href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }}
+                    {{ __('text.phones_title_phone_4') }}</a>
+                <a class="top-phones-header__item"
+                    href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }}
+                    {{ __('text.phones_title_phone_5') }}</a>
+                <a class="top-phones-header__item"
+                    href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }}
+                    {{ __('text.phones_title_phone_6') }}</a>
+                <a class="top-phones-header__item"
+                    href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }}
+                    {{ __('text.phones_title_phone_7') }}</a>
             </div>
         </div>
     </div>
@@ -30,7 +36,7 @@
                 <a class="header__logo"><img src="{{ asset('style_checkout/images/logo.svg') }}" alt=""></a>
                 <div class="header__selects">
                     <div class="header__select currency">
-                        <h2 class="header__caption">{{__('text.checkout_currency')}}</h2>
+                        <h2 class="header__caption">{{ __('text.checkout_currency') }}</h2>
                         <select name="form[]" id="currency_select" class="form"
                             onclick="location.href=this.options[this.selectedIndex].value" data-scroll>
                             @foreach ($Currency::GetAllCurrency() as $item)
@@ -41,7 +47,7 @@
                         </select>
                     </div>
                     <div class="header__select header__select--language language">
-                        <h2 class="header__caption">{{__('text.checkout_language')}}</h2>
+                        <h2 class="header__caption">{{ __('text.checkout_language') }}</h2>
                         <select name="form[]" id="language_select" class="form"
                             onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
                             @foreach ($Language::GetAllLanuages() as $item)
@@ -58,7 +64,7 @@
                         <svg width="18" height="18">
                             <use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-right"></use>
                         </svg>
-                        <span>{{__('text.checkout_back')}}</span>
+                        <span>{{ __('text.checkout_back') }}</span>
                     </a>
                     <div class="header__partners">
                         <div class="header__partner">
@@ -91,16 +97,16 @@
                 <p class="timer1" style="font-weight: 800; font-size: 1.2rem; margin-bottom:10px;">
                     <span style="display: inline-block; width: 63px;" id="t1">
                     </span>
-                    {{__('text.checkout_timer')}}
+                    {{ __('text.checkout_timer') }}
                 </p>
                 <div class="your-order">
-                    <h2 class="your-order__title title">{{__('text.checkout_order')}}</h2>
+                    <h2 class="your-order__title title">{{ __('text.checkout_order') }}</h2>
                     <div class="your-order__table">
                         <div class="your-order__table-row your-order__table-row--top">
-                            <div class="your-order__package">{{__('text.checkout_package')}}</div>
-                            <div class="your-order__qty">{{__('text.checkout_qty')}}</div>
-                            <div class="your-order__per-pack">{{__('text.checkout_per_pack')}}</div>
-                            <div class="your-order__price">{{__('text.checkout_price')}}</div>
+                            <div class="your-order__package">{{ __('text.checkout_package') }}</div>
+                            <div class="your-order__qty">{{ __('text.checkout_qty') }}</div>
+                            <div class="your-order__per-pack">{{ __('text.checkout_per_pack') }}</div>
+                            <div class="your-order__price">{{ __('text.checkout_price') }}</div>
                         </div>
                         @foreach ($products as $product)
                             <div class="your-order__table-row">
@@ -119,7 +125,8 @@
                         @endforeach
                         @if ($bonus != '')
                             <div class="your-order__table-row">
-                                <div class="your-order__package">{{__('text.checkout_bonus')}}: {{ $bonus->name }} </div>
+                                <div class="your-order__package">{{ __('text.checkout_bonus') }}: {{ $bonus->name }}
+                                </div>
                                 <div class="your-order__qty"></div>
                                 <div class="your-order__per-pack"></div>
                                 <div class="your-order__price" style="font-weight: 500;">
@@ -135,7 +142,7 @@
                                         class="checkbox__input" type="checkbox" value="1" name="insurance"
                                         pop_show="true">
                                     <label for="c_82" class="checkbox__label"><span class="checkbox__text"><b
-                                                style="font-weight: 500;">{{__('text.checkout_insurance')}}</b></span></label>
+                                                style="font-weight: 500;">{{ __('text.checkout_insurance') }}</b></span></label>
                                 </div>
                                 <div class="your-order__price" style="font-weight: 500;">
                                     {{ $Currency::convert(session('cart_option.insurance_price'), false, true) }}
@@ -147,7 +154,7 @@
                                         class="checkbox__input" type="checkbox" value="1" name="secret"
                                         onclick="secretPackage()">
                                     <label for="c_83" class="checkbox__label"><span class="checkbox__text"><b
-                                                style="font-weight: 500;">{{__('text.checkout_secret')}}</b></span></label>
+                                                style="font-weight: 500;">{{ __('text.checkout_secret') }}</b></span></label>
                                 </div>
                                 <div class="your-order__price" style="font-weight: 500;">
                                     {{ $Currency::convert(session('cart_option.secret_price'), false, true) }}
@@ -160,14 +167,14 @@
                                             class="checkbox__input" type="radio" value="ems" name="delivery"
                                             onclick="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
                                         <label for="c_86" class="checkbox__label"><span class="checkbox__text">
-                                                <b style="font-weight: 500;">{{__('text.checkout_express')}}</b>
+                                                <b style="font-weight: 500;">{{ __('text.checkout_express') }}</b>
 
                                                 <span class="checkbox__add-text">
                                                     @if ($product_total_check >= 300)
                                                     @else
-                                                        <p>{{__('text.shipping_ems_discount')}}</p>
+                                                        <p>{{ __('text.shipping_ems_discount') }}</p>
                                                     @endif
-                                                    {{__('text.checkout_express_text')}}
+                                                    {{ __('text.checkout_express_text') }}
                                                 </span>
                                             </span></label>
                                     </div>
@@ -175,7 +182,7 @@
                                         class="your-order__price @if ($product_total_check >= 300) totals-order__old-price @endif">
                                         <span>{{ $Currency::convert($shipping['ems']) }}</span>
                                         @if ($product_total_check >= 300)
-                                            <p style="color: var(--green);">{{__('text.checkout_free')}}</p>
+                                            <p style="color: var(--green);">{{ __('text.checkout_free') }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -187,14 +194,14 @@
                                             class="checkbox__input" type="radio" value="regular" name="delivery"
                                             onclick="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                                         <label for="c_85" class="checkbox__label"><span class="checkbox__text">
-                                                <b style="font-weight: 500;">{{__('text.checkout_regular')}}</b>
+                                                <b style="font-weight: 500;">{{ __('text.checkout_regular') }}</b>
 
                                                 <span class="checkbox__add-text">
                                                     @if ($product_total_check >= 200)
                                                     @else
-                                                        <p>{{__('text.shipping_regular_discount')}}</p>
+                                                        <p>{{ __('text.shipping_regular_discount') }}</p>
                                                     @endif
-                                                    {{__('text.checkout_regular_text')}}
+                                                    {{ __('text.checkout_regular_text') }}
                                                 </span>
                                             </span></label>
                                     </div>
@@ -202,7 +209,7 @@
                                         class="your-order__price @if ($product_total_check >= 200) totals-order__old-price @endif">
                                         <span>{{ $Currency::convert($shipping['regular']) }}</span>
                                         @if ($product_total_check >= 200)
-                                            <p style="color: var(--green);">{{__('text.checkout_free')}}</p>
+                                            <p style="color: var(--green);">{{ __('text.checkout_free') }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -214,7 +221,7 @@
                                 <div class="your-order__checkbox checkbox">
                                     <label style="color: var(--red);">
                                         <span class="checkbox__text">
-                                            {{__('text.checkout_discount2')}}(-{{ round(session('coupon.percent')) }}%)
+                                            {{ __('text.checkout_discount2') }}(-{{ round(session('coupon.percent')) }}%)
                                         </span>
                                     </label>
                                 </div>
@@ -251,10 +258,10 @@
                         <div class="your-order__row">
                             <div class="your-order__input enter-info__input"
                                 style="margin-bottom: 0; margin-right:0;">
-                                <label for="coupon" class="enter-info__label">{{__('text.checkout_coupon_card')}}</label>
+                                <label for="coupon"
+                                    class="enter-info__label">{{ __('text.checkout_coupon_card') }}</label>
                                 <input id="coupon" autocomplete="off" type="text" name="coupon"
-                                    placeholder="" class="input"
-                                    value="{{ session('coupon.coupon','') }}">
+                                    placeholder="" class="input" value="{{ session('coupon.coupon', '') }}">
                             </div>
                             <button type="button" id="coupon_submit" class="your-order__coupon-button"
                                 style="right: 7px;" onclick="Coupon()">
@@ -276,7 +283,8 @@
                                 <span>{#edit#}</span>
                             </a> --}}
                             <div class="your-order__total totals-order" style="width: 100%;">
-                                <h3 class="totals-order__title" style="width: 100%;">{{__('text.checkout_total')}}</h3>
+                                <h3 class="totals-order__title" style="width: 100%;">{{ __('text.checkout_total') }}
+                                </h3>
                                 <div
                                     style="display:flex; align-items: center; width: 100%; justify-content:space-between;">
                                     {{-- {if $data.info.gift_card_balance > $data.info.total_check && $data.info.gift_card}
@@ -287,7 +295,8 @@
                                         $total_discount = 0;
                                         foreach ($products as $product) {
                                             if ($product['dosage'] != '1card') {
-                                                $total_discount += $product['max_pill_price'] * $product['num'] * $product['q'];
+                                                $total_discount +=
+                                                    $product['max_pill_price'] * $product['num'] * $product['q'];
                                             } else {
                                                 $total_discount += $product['price'];
                                             }
@@ -300,7 +309,7 @@
                                         $total_discount += session('total.coupon_discount');
                                     @endphp
 
-                                    @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
+                                    @if ((int) $total_discount_product == (int) session('total.product_total') - (int) session('total.bonus_total'))
                                         <div class="totals-order__total" style="color: var(--green); font-size:18px;">
                                             {{ session('total.checkout_total_in_currency') }}
                                         </div>
@@ -313,7 +322,8 @@
                                                 style="text-decoration: none;">-{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%</span>
                                         </p>
                                         <div class="totals-order__savings"
-                                            style="color: rgb(148, 148, 148);font-size: 13px;">{{__('text.checkout_savings')}} <span
+                                            style="color: rgb(148, 148, 148);font-size: 13px;">
+                                            {{ __('text.checkout_savings') }} <span
                                                 id="saving">{{ $Currency::convert($total_discount - session('total.checkout_total')) }}</span>
                                         </div>
                                         <div class="totals-order__total" style="color: var(--green); font-size:18px;">
@@ -330,24 +340,23 @@
                 <p class="timer2" style="font-weight: 800; font-size: 1.2rem; margin-bottom: 20px;">
                     <span id="t2" style="display: inline-block; width: 63px;">
                     </span>
-                    {{__('text.checkout_timer')}}
+                    {{ __('text.checkout_timer') }}
                 </p>
                 <section class="enter-info__block">
-                    <h2 class="enter-info__title title">{{__('text.checkout_info')}}</h2>
+                    <h2 class="enter-info__title title">{{ __('text.checkout_info') }}</h2>
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
                             <div class="enter-info__line poopup">
-                                <span class="poopuptext" id="error_phone">{{__('text.checkout_wrong_phone')}}</span>
+                                <span class="poopuptext"
+                                    id="error_phone">{{ __('text.checkout_wrong_phone') }}</span>
                                 <div class="enter-info__country phone_code">
                                     <select name="phone_code" class="form" id="phone_code_select"
-                                        data-pseudo-label="{{__('text.checkout_phone')}}" data-scroll>
+                                        data-pseudo-label="{{ __('text.checkout_phone') }}" data-scroll>
                                         @foreach ($phone_codes as $item)
                                             <option id=""
-                                            @if (empty(session('form')))
-                                                 @selected($item['iso'] == session('location.country', ''))
+                                                @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
                                             @else
-                                                @selected($item['iso'] == session('form.phone_code', ''))
-                                            @endif
+                                                @selected($item['iso'] == session('form.phone_code', '')) @endif
                                                 data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
                                                 value="{{ $item['iso'] }}">
                                                 +{{ $item['phonecode'] }}
@@ -357,24 +366,23 @@
                                 </div>
                                 <div class="enter-info__input enter-info__input--country" style="margin-bottom: 0;">
                                     <input required autocomplete="off" type="number" id="phone" name="phone"
-                                        value="{{ session('form.phone', '') }}"
-                                        placeholder="000 000 00 00" class="input"
+                                        value="{{ session('form.phone', '') }}" placeholder="000 000 00 00"
+                                        class="input"
                                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                         type = "number" maxlength = "14">
                                 </div>
                             </div>
                             <div class="enter-info__line poopup">
-                                <span class="poopuptext" id="error_alt_phone">{{__('text.checkout_wrong_phone')}}</span>
+                                <span class="poopuptext"
+                                    id="error_alt_phone">{{ __('text.checkout_wrong_phone') }}</span>
                                 <div class="enter-info__country alt_phone_code">
                                     <select name="alt_phone_code" class="form" id="phone_code_select"
-                                        data-pseudo-label="{{__('text.checkout_alt_phone')}}" data-scroll>
+                                        data-pseudo-label="{{ __('text.checkout_alt_phone') }}" data-scroll>
                                         @foreach ($phone_codes as $item)
                                             <option id=""
-                                            @if (empty(session('form')))
-                                                @selected($item['iso'] == session('location.country', ''))
+                                                @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
                                             @else
-                                                @selected($item['iso'] == session('form.alt_phone_code', ''))
-                                            @endif
+                                                @selected($item['iso'] == session('form.alt_phone_code', '')) @endif
                                                 data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
                                                 value="{{ $item['iso'] }}">
                                                 +{{ $item['phonecode'] }}
@@ -384,8 +392,8 @@
                                 </div>
                                 <div class="enter-info__input enter-info__input--country" style="margin-bottom: 0;">
                                     <input autocomplete="off" type="number" id="alt_phone" name="alt_phone"
-                                        value="{{ session('form.alt_phone', '') }}"
-                                        placeholder="000 000 00 00" class="input"
+                                        value="{{ session('form.alt_phone', '') }}" placeholder="000 000 00 00"
+                                        class="input"
                                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                         type = "number" maxlength = "14">
                                 </div>
@@ -393,39 +401,43 @@
                         </div>
                         <div class="enter-info__row">
                             <div class="enter-info__input poopup">
-                                <label for="email" class="enter-info__label">{{__('text.checkout_email')}}</label>
-                                <span class="poopuptext" id="error_email">{{__('text.checkout_wrong_email')}}</span>
+                                <label for="email"
+                                    class="enter-info__label">{{ __('text.checkout_email') }}</label>
+                                <span class="poopuptext"
+                                    id="error_email">{{ __('text.checkout_wrong_email') }}</span>
                                 <input id="email" required autocomplete="off" type="email" name="email"
-                                    class="input"
-                                    value="{{ session('form.email', '') }}">
+                                    class="input" value="{{ session('form.email', '') }}">
                             </div>
                             <div class="enter-info__input poopup">
-                                <span class="poopuptext" id="error_alt_email">{{__('text.checkout_wrong_email')}}</span>
-                                <label for="alt_email" class="enter-info__label">{{__('text.checkout_email2')}}</label>
+                                <span class="poopuptext"
+                                    id="error_alt_email">{{ __('text.checkout_wrong_email') }}</span>
+                                <label for="alt_email"
+                                    class="enter-info__label">{{ __('text.checkout_email2') }}</label>
                                 <input id="alt_email" autocomplete="off" type="email" name="alt_email"
-                                    class="input"
-                                    value="{{ session('form.alt_email', '') }}">
+                                    class="input" value="{{ session('form.alt_email', '') }}">
                             </div>
                         </div>
                     </div>
                 </section>
                 <section class="enter-info__block">
-                    <h2 class="enter-info__title title">{{__('text.checkout_billing_address')}}</h2>
+                    <h2 class="enter-info__title title">{{ __('text.checkout_billing_address') }}</h2>
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
                             <div class="enter-info__input poopup">
-                                <span class="poopuptext" id="error_firstname">{{__('text.checkout_required')}}</span>
-                                <label for="firstname" class="enter-info__label">{{__('text.checkout_name')}}</label>
+                                <span class="poopuptext"
+                                    id="error_firstname">{{ __('text.checkout_required') }}</span>
+                                <label for="firstname"
+                                    class="enter-info__label">{{ __('text.checkout_name') }}</label>
                                 <input required id="firstname" autocomplete="off" type="text" name="firstname"
-                                    class="input"
-                                    value="{{ session('form.firstname') }}">
+                                    class="input" value="{{ session('form.firstname') }}">
                             </div>
                             <div class="enter-info__input poopup">
-                                <span class="poopuptext" id="error_lastname">{{__('text.checkout_required')}}</span>
-                                <label for="lastname" class="enter-info__label">{{__('text.checkout_surname')}}</label>
+                                <span class="poopuptext"
+                                    id="error_lastname">{{ __('text.checkout_required') }}</span>
+                                <label for="lastname"
+                                    class="enter-info__label">{{ __('text.checkout_surname') }}</label>
                                 <input required id="lastname" autocomplete="off" type="text" name="lastname"
-                                    class="input"
-                                    value="{{ session('form.lastname', '') }}">
+                                    class="input" value="{{ session('form.lastname', '') }}">
                             </div>
                         </div>
                         <div class="enter-info__row">
@@ -439,20 +451,22 @@
                                 </select>
                             </div>
                             @if (in_array(session('form.billing_country', session('location.country', 'US')), array_keys($states)))
-                            <div class="enter-info__select select_billing_state">
-                                <select required id="billing_state" name="billing_state" class="form"
-                                    data-pseudo-label="State" data-scroll>
-                                    @foreach ($states[session('form.billing_country', session('location.country', 'US'))] as $key => $state)
-                                    <option value="{{ $key }}" @selected($key == session('form.billing_state', session('location.state', '')))>
-                                        {{ $state }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                                <div class="enter-info__select select_billing_state">
+                                    <select required id="billing_state" name="billing_state" class="form"
+                                        data-pseudo-label="State" data-scroll>
+                                        @foreach ($states[session('form.billing_country', session('location.country', 'US'))] as $key => $state)
+                                            <option value="{{ $key }}" @selected($key == session('form.billing_state', session('location.state', '')))>
+                                                {{ $state }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             @endif
                             <div class="enter-info__input poopup">
-                                <span class="poopuptext" id="error_billing_city">{{__('text.checkout_required')}}</span>
-                                <label for="billing_city" class="enter-info__label">{{__('text.checkout_city')}}</label>
+                                <span class="poopuptext"
+                                    id="error_billing_city">{{ __('text.checkout_required') }}</span>
+                                <label for="billing_city"
+                                    class="enter-info__label">{{ __('text.checkout_city') }}</label>
                                 <input required id="billing_city" autocomplete="off" type="text"
                                     name="billing_city" class="input"
                                     value="{{ session('form.billing_city', session('location.city', '')) }}">
@@ -460,15 +474,19 @@
                         </div>
                         <div class="enter-info__row">
                             <div class="enter-info__input poopup">
-                                <span class="poopuptext" id="error_billing_address">{{__('text.checkout_required')}}</span>
-                                <label for="billing_address" class="enter-info__label">{{__('text.checkout_address')}}</label>
+                                <span class="poopuptext"
+                                    id="error_billing_address">{{ __('text.checkout_required') }}</span>
+                                <label for="billing_address"
+                                    class="enter-info__label">{{ __('text.checkout_address') }}</label>
                                 <input required id="billing_address" autocomplete="off" type="text"
                                     name="billing_address" class="input"
                                     value="{{ session('form.billing_address', '') }}">
                             </div>
                             <div class="enter-info__input poopup">
-                                <span class="poopuptext" id="error_billing_zip">{{__('text.checkout_required')}}</span>
-                                <label for="billing_zip" class="enter-info__label">{{__('text.checkout_zip')}}</label>
+                                <span class="poopuptext"
+                                    id="error_billing_zip">{{ __('text.checkout_required') }}</span>
+                                <label for="billing_zip"
+                                    class="enter-info__label">{{ __('text.checkout_zip') }}</label>
                                 <input required id="billing_zip" autocomplete="off" type="text"
                                     name="billing_zip" class="input"
                                     value="{{ session('form.billing_zip', session('location.postal', '')) }}">
@@ -478,53 +496,50 @@
                 </section>
                 <section class="enter-info__block">
                     <div class="enter-info__shiping">
-                        <h2 class="enter-info__title title">{{__('text.checkout_shipping_address')}}</h2>
+                        <h2 class="enter-info__title title">{{ __('text.checkout_shipping_address') }}</h2>
                         <div class="enter-info__checkbox checkbox">
                             <input id="c_1" class="checkbox__input"
-                            @if (!filter_var(session('form.address_match', true), FILTER_VALIDATE_BOOLEAN))
-                                checked
-                            @endif
-                            type="checkbox" value="false"
+                                @if (!filter_var(session('form.address_match', true), FILTER_VALIDATE_BOOLEAN)) checked @endif type="checkbox" value="false"
                                 name="address_match">
                             <label for="c_1" class="checkbox__label">
                                 <span class="checkbox__text">
-                                    {{__('text.checkout_shipping_info')}}
+                                    {{ __('text.checkout_shipping_info') }}
                                 </span>
                             </label>
                         </div>
                     </div>
                     <div class="enter-info__rows">
-                        <div
-                        @if (filter_var(session('form.address_match', true), FILTER_VALIDATE_BOOLEAN))
-                            hidden
-                        @endif
-                        class="enter-info__add-inputs add-info info-form__add-inputs">
+                        <div @if (filter_var(session('form.address_match', true), FILTER_VALIDATE_BOOLEAN)) hidden @endif
+                            class="enter-info__add-inputs add-info info-form__add-inputs">
                             <div class="enter-info__row">
                                 <div class="enter-info__select select_shipping_country">
                                     <select required id="shipping_country" name="shipping_country" class="form"
-                                        data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
+                                        data-pseudo-label="{{ __('text.checkout_country') }}" data-scroll>
                                         @foreach ($countries as $country)
                                             <option @selected($country['country_iso2'] == session('form.shipping_country', session('location.country')))
-                                                value="{{ $country['country_iso2'] }}">{{ $country['country_name'] }}
+                                                value="{{ $country['country_iso2'] }}">
+                                                {{ $country['country_name'] }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 @if (in_array(session('form.shipping_country', session('location.country', 'US')), array_keys($states)))
-                                <div class="enter-info__select select_shipping_state">
-                                    <select required id="shipping_state" name="shipping_state" class="form"
-                                        data-pseudo-label="{{__('text.checkout_state')}}" data-scroll>
-                                        @foreach ($states[session('form.shipping_country', session('location.country', 'US'))] as $key => $state)
-                                        <option value="{{ $key }}" @selected($key == session('form.shipping_state', session('location.state', '')))>
-                                            {{ $state }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    <div class="enter-info__select select_shipping_state">
+                                        <select required id="shipping_state" name="shipping_state" class="form"
+                                            data-pseudo-label="{{ __('text.checkout_state') }}" data-scroll>
+                                            @foreach ($states[session('form.shipping_country', session('location.country', 'US'))] as $key => $state)
+                                                <option value="{{ $key }}" @selected($key == session('form.shipping_state', session('location.state', '')))>
+                                                    {{ $state }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 @endif
                                 <div class="enter-info__input poopup">
-                                    <label for="shipping_city" class="enter-info__label">{{__('text.checkout_city')}}</label>
-                                    <span class="poopuptext" id="error_shipping_city">{{__('text.checkout_required')}}</span>
+                                    <label for="shipping_city"
+                                        class="enter-info__label">{{ __('text.checkout_city') }}</label>
+                                    <span class="poopuptext"
+                                        id="error_shipping_city">{{ __('text.checkout_required') }}</span>
                                     <input id="shipping_city" autocomplete="off" type="text" name="shipping_city"
                                         class="input"
                                         value="{{ session('form.shipping_city', session('location.city', '')) }}">
@@ -532,15 +547,19 @@
                             </div>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
-                                    <label for="shipping_address" class="enter-info__label">{{__('text.checkout_address')}}</label>
-                                    <span class="poopuptext" id="error_shipping_address">{{__('text.checkout_required')}}</span>
+                                    <label for="shipping_address"
+                                        class="enter-info__label">{{ __('text.checkout_address') }}</label>
+                                    <span class="poopuptext"
+                                        id="error_shipping_address">{{ __('text.checkout_required') }}</span>
                                     <input id="shipping_address" autocomplete="off" type="text"
                                         name="shipping_address" class="input"
                                         value="{{ session('form.shipping_address', '') }}">
                                 </div>
                                 <div class="enter-info__input poopup">
-                                    <label for="shipping_zip" class="enter-info__label">{{__('text.checkout_zip')}}</label>
-                                    <span class="poopuptext" id="error_shipping_zip">{{__('text.checkout_required')}}</span>
+                                    <label for="shipping_zip"
+                                        class="enter-info__label">{{ __('text.checkout_zip') }}</label>
+                                    <span class="poopuptext"
+                                        id="error_shipping_zip">{{ __('text.checkout_required') }}</span>
                                     <input id="shipping_zip" autocomplete="off" type="text" name="shipping_zip"
                                         class="input"
                                         value="{{ session('form.shipping_zip', session('location.postal', '')) }}">
@@ -550,7 +569,7 @@
                     </div>
                 </section>
                 <section class="enter-info__block">
-                    <h2 class="enter-info__title title">{{__('text.checkout_payment')}}</h2>
+                    <h2 class="enter-info__title title">{{ __('text.checkout_payment') }}</h2>
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
                             <div class="enter-info__line">
@@ -559,44 +578,57 @@
                                         value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
                                     <select name="payment_type" class="form" id="payment_type_select"
                                         data-pseudo-label="Type of Payment">
-                                        <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
-                                        <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>
-                                        @if(env('APP_PAYPAL_ON', 0))
+                                        <option value="card" @selected(session('form.payment_type', 'card') == 'card')>
+                                            {{ __('text.checkout_bank_card') }}</option>
+                                        <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>
+                                            {{ __('text.checkout_crypto') }} -15% extra off</option>
+                                        @if (env('APP_GOOGLE_ON', 0))
+                                            <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
+                                        @endif
+                                        @if (env('APP_PAYPAL_ON', 0))
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}
                                     </select>
-                                    <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
+                                    <span class="poopuptext"
+                                        id="myPopup9">{{ __('text.checkout_not_selected') }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="enter-info__card-content" @if (session('form.payment_type', 'card') != 'card') hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
-                                    <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>
-                                    <span class="poopuptext" id="error_card_numb">{{__('text.checkout_wrong_card')}}</span>
+                                    <label for="card_numb"
+                                        class="enter-info__label">{{ __('text.checkout_card_number') }}</label>
+                                    <span class="poopuptext"
+                                        id="error_card_numb">{{ __('text.checkout_wrong_card') }}</span>
                                     <input id="card_numb" data-card autocomplete="off" type="text"
-                                        name="card_numb" class="input" value="{{ session('form.card_numb', '') }}">
+                                        name="card_numb" class="input"
+                                        value="{{ session('form.card_numb', '') }}">
                                     <img class="enter-info__pay-systems hide"
                                         src="{{ asset('style_checkout/images/pay-systems/amex.svg') }}"
                                         width="33" height="20" alt="Awesome image">
                                 </div>
                                 <div class="enter-info__input poopup">
-                                    <span class="poopuptext" id="error_bank_name">{{__('text.checkout_required')}}</span>
-                                    <label for="bank_name" class="enter-info__label">{{__('text.checkout_bank_name')}}</label>
+                                    <span class="poopuptext"
+                                        id="error_bank_name">{{ __('text.checkout_required') }}</span>
+                                    <label for="bank_name"
+                                        class="enter-info__label">{{ __('text.checkout_bank_name') }}</label>
                                     <input id="bank_name" autocomplete="off" type="text" name="bank_name"
-                                    class="input" value="{{ session('form.bank_name', '') }}">
+                                        class="input" value="{{ session('form.bank_name', '') }}">
                                 </div>
                             </div>
                             <div class="enter-info__row enter-info__row--no-wrap">
                                 <div class="enter-info__card-date poopup">
-                                    <span class="poopuptext" id="error_expire_date">{{__('text.checkout_wrong_exp_date')}}</span>
+                                    <span class="poopuptext"
+                                        id="error_expire_date">{{ __('text.checkout_wrong_exp_date') }}</span>
                                     <div class="enter-info__select card_month">
                                         <select name="card_month" id = "card_month" name="card_month" class="form"
-                                            data-pseudo-label="{{__('text.checkout_exp_date')}}" data-scroll>
+                                            data-pseudo-label="{{ __('text.checkout_exp_date') }}" data-scroll>
                                             <option value="">MM</option>
                                             @foreach (range(1, 12) as $l)
-                                                <option @selected($l == session('form.card_month', '')) value="{{ $l < 10 ? '0' . $l : $l }}">
+                                                <option @selected($l == session('form.card_month', ''))
+                                                    value="{{ $l < 10 ? '0' . $l : $l }}">
                                                     {{ $l < 10 ? '0' . $l : $l }}</option>
                                             @endforeach
                                         </select>
@@ -606,23 +638,26 @@
                                             data-scroll>
                                             <option value="" selected>YY</option>
                                             @foreach (range(now()->year, now()->year + 15) as $l)
-                                                <option @selected($l == session('form.card_year', '')) value="{{ $l }}">{{ $l }}</option>
+                                                <option @selected($l == session('form.card_year', '')) value="{{ $l }}">
+                                                    {{ $l }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="enter-info__input enter-info__input--has-icon poopup">
-                                    <span class="poopuptext" id="error_cvc_2">{{__('text.checkout_wrong_cvc')}}</span>
-                                    <label for="cvc_2" class="enter-info__label">{{__('text.checkout_cvv')}}</label>
+                                    <span class="poopuptext"
+                                        id="error_cvc_2">{{ __('text.checkout_wrong_cvc') }}</span>
+                                    <label for="cvc_2"
+                                        class="enter-info__label">{{ __('text.checkout_cvv') }}</label>
                                     <input id="cvc_2" autocomplete="off" type="number" name="cvc_2"
                                         class="input" data-card-cvc value="{{ session('form.cvc_2', '') }}">
                                     <img class="enter-info__icon-input"
-                                        src="{{ asset('style_checkout/images/icons/cvc-other.svg') }}" width="60"
-                                        height="28" alt="Awesome image">
+                                        src="{{ asset('style_checkout/images/icons/cvc-other.svg') }}"
+                                        width="60" height="28" alt="Awesome image">
                                 </div>
                             </div>
                             <button id="proccess" name="proccess" class="enter-info__button button">
-                                <span>{{__('text.checkout_place')}}</span>
+                                <span>{{ __('text.checkout_place') }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -630,27 +665,27 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'card') != 'crypto') hidden @endif>
+                        <div class="enter-info__crypto-content" @if (session('form.payment_type', 'card') != 'crypto') hidden @endif>
                             <input type="hidden" id="pay_yes" value="0">
                             <input type="hidden" id="invoiceId" value="">
                             <div class="info_text_crypto" style="line-height: 24px">
-                                <div>{{__('text.checkout_crypto_text_1')}}</div>
-                                <div>{{__('text.checkout_crypto_text_2')}}</div>
+                                <div>{{ __('text.checkout_crypto_text_1') }}</div>
+                                <div>{{ __('text.checkout_crypto_text_2') }}</div>
                                 <ul style="padding-left: 40px; line-height: 24px">
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_0')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_1')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_2')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_3')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_4')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_5')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_6')}}</li>
+                                    <li style="list-style: disc">{{ __('text.checkout_crypto_li_0') }}</li>
+                                    <li style="list-style: disc">{{ __('text.checkout_crypto_li_1') }}</li>
+                                    <li style="list-style: disc">{{ __('text.checkout_crypto_li_2') }}</li>
+                                    <li style="list-style: disc">{{ __('text.checkout_crypto_li_3') }}</li>
+                                    <li style="list-style: disc">{{ __('text.checkout_crypto_li_4') }}</li>
+                                    <li style="list-style: disc">{{ __('text.checkout_crypto_li_5') }}</li>
+                                    <li style="list-style: disc">{{ __('text.checkout_crypto_li_6') }}</li>
                                 </ul>
                             </div>
                             <div class="content-crypto">
                                 <div class="content-crypto__items">
                                     <div class="content-crypto__item">
-                                        <input id="cr_01" @checked(session('crypto.currency', '') == 'ETH_ETHEREUM') value="ETH_ETHEREUM" type="radio"
-                                            name="crypt_currency">
+                                        <input id="cr_01" @checked(session('crypto.currency', '') == 'ETH_ETHEREUM') value="ETH_ETHEREUM"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_01">
                                             <svg width="40" height="40">
                                                 <use
@@ -661,8 +696,8 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_02" @checked(session('crypto.currency', '') == 'BTC_BITCOIN') value="BTC_BITCOIN" type="radio"
-                                            name="crypt_currency">
+                                        <input id="cr_02" @checked(session('crypto.currency', '') == 'BTC_BITCOIN') value="BTC_BITCOIN"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_02">
                                             <svg width="40" height="40">
                                                 <use
@@ -673,8 +708,8 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_03" @checked(session('crypto.currency', '') == 'USDT_TRON') value="USDT_TRON" type="radio"
-                                            name="crypt_currency">
+                                        <input id="cr_03" @checked(session('crypto.currency', '') == 'USDT_TRON') value="USDT_TRON"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_03">
                                             <svg width="40" height="40">
                                                 <use
@@ -685,8 +720,8 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_04" @checked(session('crypto.currency', '') == 'USDT_ETHEREUM') value="USDT_ETHEREUM" type="radio"
-                                            name="crypt_currency">
+                                        <input id="cr_04" @checked(session('crypto.currency', '') == 'USDT_ETHEREUM') value="USDT_ETHEREUM"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_04">
                                             <svg width="40" height="40">
                                                 <use
@@ -697,8 +732,8 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_05" @checked(session('crypto.currency', '') == 'LTC_LITECOIN') value="LTC_LITECOIN" type="radio"
-                                            name="crypt_currency">
+                                        <input id="cr_05" @checked(session('crypto.currency', '') == 'LTC_LITECOIN') value="LTC_LITECOIN"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_05">
                                             <svg width="40" height="40">
                                                 <use
@@ -709,7 +744,8 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_06" @checked(session('crypto.currency', '') == 'TRX_TRON') value="TRX_TRON" type="radio" name="crypt_currency">
+                                        <input id="cr_06" @checked(session('crypto.currency', '') == 'TRX_TRON') value="TRX_TRON"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_06">
                                             <svg width="40" height="40">
                                                 <use
@@ -720,7 +756,8 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_07" @checked(session('crypto.currency', '') == 'BNB_BSC') value="BNB_BSC" type="radio" name="crypt_currency">
+                                        <input id="cr_07" @checked(session('crypto.currency', '') == 'BNB_BSC') value="BNB_BSC"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_07">
                                             <svg width="40" height="40">
                                                 <use
@@ -731,7 +768,8 @@
                                         </label>
                                     </div>
                                     <div class="content-crypto__item">
-                                        <input id="cr_08" @checked(session('crypto.currency', '') == 'TON_TON') value="TON_TON" type="radio" name="crypt_currency">
+                                        <input id="cr_08" @checked(session('crypto.currency', '') == 'TON_TON') value="TON_TON"
+                                            type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_08">
                                             <picture style="margin-bottom: 3px;">
                                                 <source srcset="{{ asset('style_checkout/images/icons/ton.png') }}"
@@ -765,22 +803,24 @@
                                                 xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-time">
                                             </use>
                                         </svg>
-                                        <p>{{__('text.checkout_invoice')}} <b id="timer">30:00</b></p>
+                                        <p>{{ __('text.checkout_invoice') }} <b id="timer">30:00</b></p>
                                     </div>
                                     <div class="content-crypto__details details-payment">
                                         <div class="details-payment__qr-code">
-                                            <picture><img id="qr_code" src="{{ session('crypto.qr') }}" width="140"
-                                                    height="140" alt="Awesome image"></picture>
+                                            <picture><img id="qr_code" src="{{ session('crypto.qr') }}"
+                                                    width="140" height="140" alt="Awesome image"></picture>
                                         </div>
                                         <div class="details-payment__rows">
                                             <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">{{__('text.checkout_amount')}}</h3>
+                                                    <h3 class="details-payment__title">
+                                                        {{ __('text.checkout_amount') }}</h3>
                                                     <div class="details-payment__cells">
                                                         <span class="details-payment__amount"
                                                             id="crypto_total">{{ session('crypto.amount') }}</span>
-                                                        <span class="details-payment__old-price"
-                                                            id="crypto_price"> {{ $Currency::Convert(session('total.checkout_total', 0)) }} </span>
+                                                        <span class="details-payment__old-price" id="crypto_price">
+                                                            {{ $Currency::Convert(session('total.checkout_total', 0)) }}
+                                                        </span>
                                                         <span class="details-payment__price"
                                                             id="crypto_discount_price">{{ session('crypto.crypto_total') }}</span>
                                                     </div>
@@ -798,12 +838,13 @@
                                                             xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
                                                         </use>
                                                     </svg>
-                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                    <span>{{ __('text.checkout_copy') }}</span>
                                                 </div>
                                             </div>
                                             <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">{{__('text.checkout_funds')}}</h3>
+                                                    <h3 class="details-payment__title">
+                                                        {{ __('text.checkout_funds') }}</h3>
                                                     <div class="details-payment__cells">
                                                         <span id="purse"
                                                             class="details-payment__amount">{{ session('crypto.purse') }}</span>
@@ -822,47 +863,66 @@
                                                             xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
                                                         </use>
                                                     </svg>
-                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                    <span>{{ __('text.checkout_copy') }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="enter-info__note enter-info__note--has-offset">
-                                        <p>{{__('text.checkout_payment_id')}} <span id="invoce_p">{{ session('crypto.invoiceId') }}</span></p>
+                                        <p>{{ __('text.checkout_payment_id') }} <span
+                                                id="invoce_p">{{ session('crypto.invoiceId') }}</span></p>
                                     </div>
                                 </div>
                             </div>
                             <button type="button" class="enter-info__button button" id="paid">
-                                <span>{{__('text.checkout_paid')}}</span>
+                                <span>{{ __('text.checkout_paid') }}</span>
                             </button>
                             <button style="display: none;" type="submit" class="enter-info__button button"
                                 id="waiting">
-                                {{__('text.checkout_approving')}} <img src="{{ asset('style_checkout/images/131.gif') }}"
-                                    width="30px" height="30px">
+                                {{ __('text.checkout_approving') }} <img
+                                    src="{{ asset('style_checkout/images/131.gif') }}" width="30px"
+                                    height="30px">
                             </button>
                         </div>
                         <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal') hidden @endif>
                             <div class="details-payment__row">
                                 <div class="details-payment__data" style="text-align: center;">
-                                    {{__('text.checkout_sepa_text')}}
+                                    {{ __('text.checkout_sepa_text') }}
                                 </div>
                             </div>
-                            <button type="button" id="proccess_paypal" name="proccess" class="enter-info__button button">
-                                <span>{{__('text.checkout_sepa_button')}}</span>
+                            <button type="button" id="proccess_paypal" name="proccess"
+                                class="enter-info__button button">
+                                <span>{{ __('text.checkout_sepa_button') }}</span>
                             </button>
                         </div>
+
+                        @if (env('APP_GOOGLE_ON', 0))
+                            <div class="enter-info__google-content" @if (session('form.payment_type', 'card') != 'google') hidden @endif>
+                                <div class="details-payment__row">
+                                    <div class="details-payment__data" style="text-align: center;">
+                                        {{ __('text.checkout_sepa_text') }}
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: center;">
+                                    <iframe
+                                        src="https://r.express/m-pay/l2Bm75tKjX?amount={{ session('total.checkout_total_eur') }}&currency=EUR&country={{ session('location.country', 'US') }}&width=200&height=50&buttonColor=white&buttonRadius=20px&buttonLocale=en"
+                                        style="border: 0" width="255" height="67"></iframe>
+                                </div>
+                            </div>
+                        @endif
 
                         <div class="enter-info__sepa-content" hidden>
                             <div class="details-payment__row">
                                 <div class="details-payment__data" style="text-align: center;">
-                                    {{__('text.checkout_sepa_sum_text')}} <span id="sepa_sum">{$data.info.sepasum}</span>
+                                    {{ __('text.checkout_sepa_sum_text') }} <span
+                                        id="sepa_sum">{$data.info.sepasum}</span>
                                 </div>
                                 <div class="details-payment__data" style="text-align: center;">
-                                    {{__('text.checkout_sepa_text')}}
+                                    {{ __('text.checkout_sepa_text') }}
                                 </div>
                             </div>
                             <button id="proccess_sepa" name="proccess" class="enter-info__button button">
-                                <span>{{__('text.checkout_sepa_button')}}</span>
+                                <span>{{ __('text.checkout_sepa_button') }}</span>
                             </button>
                         </div>
 
@@ -887,7 +947,7 @@
                         </svg>
                     </div>
                     <div class="popup_text">
-                        {{__('text.checkout_card_warning')}}
+                        {{ __('text.checkout_card_warning') }}
                     </div>
                 </div>
             </div>
@@ -897,7 +957,7 @@
 </main>
 <footer class="footer">
     <div class="footer__container">
-        <p class="footer__text">{{__('text.checkout_copyright')}} <br> {{__('text.checkout_ltd')}}</p>
+        <p class="footer__text">{{ __('text.checkout_copyright') }} <br> {{ __('text.checkout_ltd') }}</p>
     </div>
 </footer>
 
