@@ -871,4 +871,154 @@ class CheckoutController extends Controller
             return response()->json(json_encode($response_payment));
         }
     }
+
+    public function validate_for_google(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => ['required', 'min:5', 'max:16'],
+            'email' => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email' => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone' => ['nullable', 'min:5', 'max:16'],
+            'firstname' => ['required', 'max:255'],
+            'lastname' => ['required', 'max:255'],
+            'billing_country' => ['required', 'max:2'],
+            'billing_city' => ['required', 'max:255'],
+            'billing_address' => ['required', 'max:255'],
+            'billing_zip' => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        }
+        else
+        {
+            session(['form.payment_type' => 'google']);
+
+            $form = json_encode(session('form'));
+
+            $data = [
+                'method' => 'save_order_data',
+                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'form' => $form,
+             ];
+
+            $response = Http::post('http://true-services.net/checkout/order.php', $data);
+        }
+    }
+
+    public function send_google(Request $request)
+    {
+        $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+        $phone_code = $phone_code->phonecode;
+
+        $products = [];
+        $sessid = '';
+
+        foreach(session('cart') as $product)
+        {
+            $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
+        }
+
+        if(session('cart_option.bonus_id') != 0)
+        {
+            $products[session('cart_option.bonus_id')] = ['qty' => 1, 'price' => session('cart_option.bonus_price'), 'is_ed_category' => false];
+        }
+
+        $products_str = json_encode($products);
+
+        $data = [
+            'method' => 'order',
+            'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'phone' => e('+' . $phone_code . $request->phone),
+            'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+            'email' => e($request->email),
+            'alter_email' => !empty($request->alt_email) ? e($request->alt_email) : '',
+            'firstname' => e($request->firstname),
+            'lastname' => e($request->lastname),
+            'billing_country' => e($request->billing_country),
+            'billing_state' => e($request->billing_state),
+            'billing_city' => e($request->billing_city),
+            'billing_address' => e($request->billing_address),
+            'billing_zip' => e($request->billing_zip),
+            'shipping_country' => !empty($request->address_match) ? e($request->shipping_country) : e($request->billing_country),
+            'shipping_state' => !empty($request->address_match) ? e($request->shipping_state) : e($request->billing_state),
+            'shipping_city' => !empty($request->address_match) ? e($request->shipping_city) : e($request->billing_city),
+            'shipping_address' => !empty($request->address_match) ? e($request->shipping_address) : e($request->billing_address),
+            'shipping_zip' => !empty($request->address_match) ? e($request->shipping_zip) : e($request->billing_zip),
+            'payment_type' => e($request->payment_type),
+            'trans_id' => e($request->trans_id),
+            'google_sum' => e($request->google_sum),
+            'full_response' => e($request->full_response),
+            'ip' => request()->ip(),
+            'aff' => session('aff', 0),
+            'ref' => session('referer', ''),
+            'refc' => session('refc', ''),
+            'keyword' => session('keyword', ''),
+            'domain_from' => request()->getHost(),
+            'total' => session('total.checkout_total'),
+            'shipping' => session('cart_option.shipping'),
+            'products' => $products_str,
+            'saff' => session('saff', ''),
+            'language' => App::currentLocale(),
+            'currency' => session('currency'),
+            'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $request->screen_resolution,
+            'fingerprint' => '',
+            'product_total' => session('total.product_total'),
+            'customer_id' => '',
+            'reorder' => 0,
+            'reorder_discount' => 0,
+            'shipping_price' => session('total.shipping_total'),
+            'insurance' => session('total.insurance'),
+            'secret_package' => session('total.secret_package'),
+            'store_skin' => config('app.design'),
+            'recurring_period' => 0,
+            'coupon' => session('coupon.coupon', ''),
+            'bonus' => '',
+            'gift_card_code' => '',
+            'gift_card_discount' => 0,
+            'theme' => 13,
+            'coupon_discount' => session('total.coupon_discount'),
+            'sessid' => $sessid
+        ];
+
+        session(['data' => $data]);
+
+        $email = e($request->email);
+        $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+        if(count($check_order_cache) == 0)
+        {
+            $data_for_cache = $data;
+            $data_for_cache['products'] = addslashes($data_for_cache['products']);
+            $order_cache_id = DB::table('order_cache')->insertGetId([
+                'message' => json_encode($data_for_cache),
+                'is_send' => 0
+            ]);
+        }
+        else
+        {
+            $order_cache_id = $check_order_cache[0]->id;
+        }
+
+        $response = Http::post('http://true-services.net/checkout/order.php', $data);
+
+        $response = json_decode($response, true);
+
+        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
+            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+            session(['order' => $response]);
+        }
+
+        return response()->json(json_encode(['status' => 'ok']));
+    }
 }

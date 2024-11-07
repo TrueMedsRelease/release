@@ -292,6 +292,9 @@ class Cart extends Model
             ]);
         }
 
+        $checkout_total = $all + $insurance + $secret_package - $coupon_discount;
+        $eur = Currency::GetCoef('eur');
+
         $cart_total = [
             "product_total" => $product_total,
             "shipping_total" => $shipping_total,
@@ -299,7 +302,8 @@ class Cart extends Model
             "insurance" => $insurance,
             "secret_package" => $secret_package,
             'coupon_discount' => $coupon_discount,
-            'checkout_total' => $all + $insurance + $secret_package - $coupon_discount,
+            'checkout_total' => $checkout_total,
+            'checkout_total_eur' => round($checkout_total * $eur,2),
             'checkout_total_in_currency' => Currency::SumInCurrency([
                 Currency::Convert($all, true),
                 Currency::Convert($insurance),
