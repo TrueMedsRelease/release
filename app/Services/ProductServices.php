@@ -534,6 +534,21 @@ class ProductServices
         $product['rec_name'] = $rec_name;
         $product['rec_url'] = $rec_url;
 
+        $product_description = $product['full_desc'];
+        $product_description = str_replace("#TOP_TAG#", '<div class="full_text" style="margin-top: 16px;">', $product_description);
+        $product_description = str_replace("#TITLE_OPEN_TAG#", '<h3><img src="/images/elements/more_info.png" alt="" style="position: relative; top: 5px;"/>', $product_description);
+        $product_description = str_replace("#TITLE_CLOSE_TAG#", '</h3>', $product_description);
+        $product_description = str_replace("#BLOCK_OPEN_TAG#", '<p>', $product_description);
+        $product_description = str_replace("#BLOCK_CLOSE_TAG#", '</p>', $product_description);
+        $product_description = str_replace("#LIST_OPEN_TAG#", '<ul>', $product_description);
+        $product_description = str_replace("#LIST_ELEMENT_OPEN_TAG#", '<li>', $product_description);
+        $product_description = str_replace("#LIST_ELEMENT_CLOSE_TAG#", '</li>', $product_description);
+        $product_description = str_replace("#LIST_CLOSE_TAG#", '</ul>', $product_description);
+        $product_description = str_replace("#BOTTOM_TAG#", '</div>', $product_description);
+        $product_description = str_replace("#NEXT_LINE_TAG#", '<br />', $product_description);
+
+        $product['full_desc'] = $product_description;
+
         return $product;
     }
 
