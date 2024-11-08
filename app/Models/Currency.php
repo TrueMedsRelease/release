@@ -81,5 +81,29 @@ class Currency extends Model
         return Currency::$prefix[$current_currency] . $sum;
     }
 
+    public static function GetCurrencyByCountry($country)
+    {
+        $currency = Currency::query()->where('show_in_menu', '=', 1)->where('country_iso2', 'LIKE', '%' . $country . '%')->first('code');
+        if(empty($currency))
+        {
+            $currencies = Currency::GetAllCurrency();
+
+            if (count($currencies) > 1) {
+                return config('app.currency');
+            } else {
+                if (count($currencies) == 1) {
+                    return $currencies[0]['code'];
+                } else {
+                    return config('app.currency');
+                }
+            }
+        }
+        else
+        {
+            $currency = $currency->toArray();
+            return $currency['code'];
+        }
+    }
+
     protected $table = 'currency';
 }

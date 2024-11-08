@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\App;
 
 class Language extends Model
 {
@@ -65,6 +66,36 @@ class Language extends Model
     {
         $language = Language::query()->where('show', '=', 1)->orderBy('ord','asc')->get()->toArray();
         return $language;
+    }
+
+    public static function GetLanguageByCountry($country)
+    {
+        $language = Language::query()->where('show', '=', 1)->where('country_iso2', 'LIKE', '%' . $country . '%')->first('code');
+        if(empty($language))
+        {
+            $languages = Language::GetAllLanuages();
+
+            if (count($languages) > 1) {
+                return App::currentLocale();
+            } else {
+                if (count($languages) == 1) {
+                    $landuage_code = $languages[0]['code'];
+
+                    if ($landuage_code == App::currentLocale()) {
+                        return App::currentLocale();
+                    } else {
+                        return config('app.language');
+                    }
+                } else {
+                    return config('app.language');
+                }
+            }
+        }
+        else
+        {
+            $language = $language->toArray();
+            return $language['code'];
+        }
     }
 
     protected $table = 'language';
