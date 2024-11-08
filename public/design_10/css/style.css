@@ -5340,7 +5340,7 @@ strong {
 }
 
 .pay-index__item img, .ship-index__item img {
-  width: 100%;
+    width: 100%;
 }
 
 @media (max-width: 1200px) {
@@ -5354,4 +5354,8 @@ strong {
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
+}
+
+.raw-content.raw-content--small li {
+    list-style: none;
 }
