@@ -40,8 +40,9 @@ class ProductServices
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
 
-            array_unshift($products, $card[0]);
-
+            if ($card) {
+                array_unshift($products, $card[0]);
+            }
         } else {
             $products = Product::query()
                 ->where('is_showed_on_main', '=', 1)
