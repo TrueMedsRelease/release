@@ -964,7 +964,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1,2,3,4,5,6,7,8,9,10])) {
+        if (in_array($design, [1,2,3,4,5,7,8,9,10])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -973,7 +973,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1,2,3,4,5,6,7,8,9,10])) {
+        if (in_array($design, [1,2,3,4,5,7,8,9,10])) {
             session(['design' => 'design_' . $design]);
         }
 

@@ -9,20 +9,20 @@
 	<div class="holder-info">
 		<div class="img">
             @if ($product['image'] == 'gift-card')
-                <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
             @else
                 <picture>
                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                 </picture>
             @endif
 			{{-- @if ($product['image'] != 'gift-card')
                 <picture>
                     <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
-                    <img src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
+                    <img loading="lazy" src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
                 </picture>
             @else
-                <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
             @endif --}}
 		</div>
 		<div class="product">
@@ -136,7 +136,7 @@
                         <form method="POST" action="{{ route('cart.add', $item['id']) }}">
                             @csrf
                             <button type="submit" class="btn btn-primary">
-                                <img src="{{ asset("$design/images/icon/ico-basket.svg") }}" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icon/ico-basket.svg") }}" alt="">
                                 <span>{{__('text.product_add_to_cart_text_d2')}}</span>
                             </button>
                         </form>

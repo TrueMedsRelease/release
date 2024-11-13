@@ -138,7 +138,7 @@
                                     <span class="delivery-item__top">
                                         <span class="delivery-item__label">
                                             {{__('text.checkout_express')}}
-                                            <img style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                            <img loading="lazy" style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                                         </span>
                                         <span class="delivery-item__price">
                                             @if ($is_only_card)
@@ -174,7 +174,7 @@
                                     <span class="delivery-item__top">
                                         <span class="delivery-item__label">
                                             {{__('text.checkout_regular')}}
-                                            <img style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                            <img loading="lazy" style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                                         </span>
                                         <span class="delivery-item__price">
                                             @if ($is_only_card)
@@ -268,7 +268,7 @@
                                         <div class="select_header_gift">
                                             <span class="select_current_gift" curr_packaging_id = "{{ $cards[0]->pack_id }}">{{ $Currency::convert($cards[0]->price) }}</span>
                                             <div class="select_icon">
-                                                <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                                <img loading="lazy" src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
                                             </div>
                                         </div>
                                         <div class="select_body_gifts">

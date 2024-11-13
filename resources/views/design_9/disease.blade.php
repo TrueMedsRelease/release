@@ -46,14 +46,14 @@
                                 <a href="{{ route('home.product', $product['url']) }}">
                                     <div class="product_img">
                                         @if ($product['image'] == 'gift-card')
-                                            <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                                            <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                                         @else
                                             <picture>
                                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                                             </picture>
                                         @endif
-                                        {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
+                                        {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
                                     </div>
                                 </a>
                                 <a href="{{ route('home.product', $product['url']) }}" class="product_center">
@@ -96,7 +96,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_1')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_1')}}</div>
@@ -105,7 +105,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_7')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_7')}}</div>
@@ -114,7 +114,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_13')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_13')}}</div>
@@ -123,7 +123,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_17')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_17')}}</div>

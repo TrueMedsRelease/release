@@ -8,7 +8,7 @@
     <meta name="robots" content="index, follow" />
     <link rel="stylesheet" href="{{ asset('style_checkout/style.css') }}?v=24042024">
     <link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
-    <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
+    <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
@@ -46,7 +46,7 @@
             <div class="header__content">
                 <div class="header__container">
                     <div class="header__top">
-                        <a class="header__logo"><img src="{{ asset('style_checkout/images/logo.svg') }}"
+                        <a class="header__logo"><img loading="lazy" src="{{ asset('style_checkout/images/logo.svg') }}"
                                 alt=""></a>
                         <div class="header__selects">
                             <div class="currency header__select">
@@ -86,19 +86,19 @@
                             </a>
                             <div class="header__partners">
                                 <div class="header__partner">
-                                    <img src="{{ asset('style_checkout/images/partners/geotrust.svg') }}"
+                                    <img loading="lazy" src="{{ asset('style_checkout/images/partners/geotrust.svg') }}"
                                         width="90" height="30" alt="Awesome image">
                                 </div>
                                 <div class="header__partner">
-                                    <img src="{{ asset('style_checkout/images/partners/norton.svg') }}" width="70"
+                                    <img loading="lazy" src="{{ asset('style_checkout/images/partners/norton.svg') }}" width="70"
                                         height="40" alt="Awesome image">
                                 </div>
                                 <div class="header__partner">
-                                    <img src="{{ asset('style_checkout/images/partners/comodo.svg') }}" width="90"
+                                    <img loading="lazy" src="{{ asset('style_checkout/images/partners/comodo.svg') }}" width="90"
                                         height="30" alt="Awesome image">
                                 </div>
                                 <div class="header__partner">
-                                    <img src="{{ asset('style_checkout/images/partners/mcafee.svg') }}" width="80"
+                                    <img loading="lazy" src="{{ asset('style_checkout/images/partners/mcafee.svg') }}" width="80"
                                         height="25" alt="Awesome image">
                                 </div>
                             </div>
@@ -125,10 +125,10 @@
 						@foreach (session('order.gift_card') as $card)
 							<div class="gift">
 								<div class="gift_text">{{ __('text.common_gift_card') }} {{ $Currency::convert($card['price']) }}</div>
-								<img src="/style_checkout/images/gift_card_img.svg" class="gift_img">
+								<img loading="lazy" src="/style_checkout/images/gift_card_img.svg" class="gift_img">
 								<div class="gift_code">
 									<div class="code_text" id="code_text">{{ $card['code'] }}</div>
-									<img src="/style_checkout/images/icons/copy.png" id="copy_img">
+									<img loading="lazy" src="/style_checkout/images/icons/copy.png" id="copy_img">
 								</div>
 							</div>
 						@endforeach
@@ -202,7 +202,7 @@
   </div>
  </div>
 </div> -->
-    <script src="{{ asset('style_checkout/js/app_success.js') }}"></script>
+    <script defer src="{{ asset('style_checkout/js/app_success.js') }}"></script>
 
     <script>
         $(".succes__button").click(function() {

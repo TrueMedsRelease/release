@@ -41,17 +41,17 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
     @endif
 
-    {{-- <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
+    {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
 
-    <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
-    <script src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
-    <script src="{{ asset("vendor/jquery/init.js") }}"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
+    <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
+    <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
+    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 <body>
@@ -112,7 +112,7 @@
                                     @else
                                         @selected($item['iso'] == session('form.phone_code', ''))
                                     @endif
-                                        data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                        data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
                                         value="+{{ $item['phonecode'] }}">
                                         +{{ $item['phonecode'] }}
                                     </option>
@@ -156,7 +156,7 @@
                 <a class="header__logo logo" href="{{ route('home.index') }}">
                     <picture>
                         <source srcset="{{ asset("$design/images/logo.webp") }}" type="image/webp">
-                        <img class="logo__img" src="{{ asset("$design/images/logo.png") }}" alt="Logo" width="216" height="53">
+                        <img loading="lazy" class="logo__img" src="{{ asset("$design/images/logo.png") }}" alt="Logo" width="216" height="53">
                     </picture>
                 </a>
                 @if (count($Language::GetAllLanuages()) > 1)
@@ -183,7 +183,7 @@
                     <a href='{{ route('home.login') }}' target="_blank">
                         <picture>
                             <source srcset="{{ asset("$design/images/user.png") }}" type="image/png">
-                            <img src="{{ asset("$design/images/user.png") }}" alt="profile" width="25" height="25" loading="lazy">
+                            <img loading="lazy" src="{{ asset("$design/images/user.png") }}" alt="profile" width="25" height="25" loading="lazy">
                         </picture>
                         <span class="header__label">{{__('text.common_profile')}}</span>
 
@@ -251,7 +251,7 @@
                     @endphp
 
                     <div class="advantages__image">
-                        <picture><source srcset="{{ asset("$design/images/advantages/doctor3.webp") }}" type="image/webp"><img class="advantages__img" src="{{ asset("$design/images/advantages/doctor3.png") }}" alt="Doctor" width="400" height="320" loading="lazy"></picture>
+                        <picture><source srcset="{{ asset("$design/images/advantages/doctor3.webp") }}" type="image/webp"><img loading="lazy" class="advantages__img" src="{{ asset("$design/images/advantages/doctor3.png") }}" alt="Doctor" width="400" height="320" loading="lazy"></picture>
                         <div class="cart">
                             @if ($cart_count != 0)
                                 <span class="cart__price">{{ $Currency::Convert($cart_total, true) }} </span>
@@ -277,28 +277,28 @@
                     </h2>
                     <ul class="logos__items">
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/1.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/1.png") }}" alt="fda" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/1.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/1.png") }}" alt="fda" width="75" height="45" loading="lazy"></picture>
                         </li>
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/2.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/2.png") }}" alt="fda" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/2.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/2.png") }}" alt="fda" width="75" height="45" loading="lazy"></picture>
                         </li>
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/3.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/3.png") }}" alt="pgeu gpue" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/3.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/3.png") }}" alt="pgeu gpue" width="75" height="45" loading="lazy"></picture>
                         </li>
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/4.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/4.png") }}" alt="mipa" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/4.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/4.png") }}" alt="mipa" width="75" height="45" loading="lazy"></picture>
                         </li>
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/5.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/5.png") }}" alt="cipar" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/5.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/5.png") }}" alt="cipar" width="75" height="45" loading="lazy"></picture>
                         </li>
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/6.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/6.png") }}" alt="mastercard" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/6.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/6.png") }}" alt="mastercard" width="75" height="45" loading="lazy"></picture>
                         </li>
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/7.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/7.png") }}" alt="visa" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/7.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/7.png") }}" alt="visa" width="75" height="45" loading="lazy"></picture>
                         </li>
                         <li class="logos__item">
-                            <picture><source srcset="{{ asset("$design/images/logos/8.webp") }}" type="image/webp"><img class="logos__img" src="{{ asset("$design/images/logos/8.png") }}" alt="mcafee" width="75" height="45" loading="lazy"></picture>
+                            <picture><source srcset="{{ asset("$design/images/logos/8.webp") }}" type="image/webp"><img loading="lazy" class="logos__img" src="{{ asset("$design/images/logos/8.png") }}" alt="mcafee" width="75" height="45" loading="lazy"></picture>
                         </li>
                     </ul>
                 </div>
@@ -335,82 +335,134 @@
             <div class="pay-index__container">
                 <ul class="pay-index__list">
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/visa.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/mastercard.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/maestro.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/discover.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/amex.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/jsb.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/unionpay.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/dinners-club.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/apple-pay.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/google-pay.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/amazon-pay.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/stripe.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/paypal.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/sepa.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/cashapp.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/adyen.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/skrill.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/worldpay.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/payline.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/bitcoin.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/binance-coin.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/ethereum.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/litecoin.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/tron.svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/usdt(erc20).svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
+                        </svg>
                     </li>
                     <li class="pay-index__item">
-                        <img src="/pub_images/pay_icons/usdt(trc20).svg" alt="">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
+                        </svg>
                     </li>
                 </ul>
             </div>
@@ -460,12 +512,12 @@
                         <ul class="banners__items">
                             <li class="banners__item">
                                 <a class="banners__link">
-                                    <picture><source srcset="{{ asset("$design/images/banners/3.webp") }}" type="image/webp"><img class="banners__img" src="{{ asset("$design/images/banners/3.png") }}" alt="Big Discounts Only Today" width="390" height="135" loading="lazy"></picture>
+                                    <picture><source srcset="{{ asset("$design/images/banners/3.webp") }}" type="image/webp"><img loading="lazy" class="banners__img" src="{{ asset("$design/images/banners/3.png") }}" alt="Big Discounts Only Today" width="390" height="135" loading="lazy"></picture>
                                 </a>
                             </li>
                             <li class="banners__item">
                                 <a class="banners__link">
-                                    <picture><source srcset="{{ asset("$design/images/banners/4.webp") }}" type="image/webp"><img class="banners__img" src="{{ asset("$design/images/banners/4.png") }}" alt="Special offer" width="390" height="135" loading="lazy"></picture>
+                                    <picture><source srcset="{{ asset("$design/images/banners/4.webp") }}" type="image/webp"><img loading="lazy" class="banners__img" src="{{ asset("$design/images/banners/4.png") }}" alt="Special offer" width="390" height="135" loading="lazy"></picture>
                                 </a>
                             </li>
                         </ul>
@@ -480,7 +532,7 @@
     <div class="block_subscribe bottom">
         <div class="left_block">
             <div class="subscribe_img">
-                <img src="{{ asset("$design/images/icons/subscribe.svg") }}">
+                <img loading="lazy" src="{{ asset("$design/images/icons/subscribe.svg") }}">
             </div>
             <div class="text_subscribe">
                 <span class="top_text">{{__('text.common_subscribe')}}</span>
@@ -490,7 +542,7 @@
         <div class="right_block">
             <input type="email" placeholder="Email" class="form__input input" id="email_sub">
             <div class="button_sub">
-                <img src="{{ asset("$design/images/icons/subscribe_mini.svg") }}" class="sub_mini">
+                <img loading="lazy" src="{{ asset("$design/images/icons/subscribe_mini.svg") }}" class="sub_mini">
                 <span class="button_text">{{__('text.common_subscribe')}}</span>
             </div>
         </div>
@@ -500,43 +552,69 @@
         <div class="ship-index__container">
             <ul class="ship-index__list">
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/usps.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#usps" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/ems.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ems" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/dhl.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dhl" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/ups.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ups" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/fedex.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#fedex" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/tnt.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#tnt" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/postnl.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#postnl" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/deutsche_post.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#deutsche_post" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/dpd.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dpd" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/gls.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#gls" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/australia_post.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" width="100%" href="/pub_images/shipping/sprite.svg#australia_post" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/colissimo.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#colissimo" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/correos.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#correos" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
             </ul>
         </div>
@@ -622,8 +700,8 @@
 		</div>
 	</div>
 
-<script src="{{ asset("$design/js/app.js") }}"></script>
-<script src="{{ asset("/js/all_js.js") }}"></script>
+<script defer src="{{ asset("$design/js/app.js") }}"></script>
+<script defer src="{{ asset("/js/all_js.js") }}"></script>
 @if ($web_statistic)
     <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
 @endif

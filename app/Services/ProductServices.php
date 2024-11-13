@@ -72,7 +72,18 @@ class ProductServices
                     'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
                 ];
             }
-            $products[$i]['price'] = $product_price[$products[$i]['id']];
+
+            foreach ($product_price as $key=>$pp) {
+                if ($product['id'] == $key) {
+                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                }
+            }
+        }
+
+        foreach ($products as $i => $product) {
+            if (!isset($product['price'])) {
+                $products[$i]['price'] = 0;
+            }
         }
 
         return $products;
@@ -137,7 +148,12 @@ class ProductServices
 
             foreach($products as &$product)
             {
-                $product['price'] = $product_price[$product['id']];
+                foreach ($product_price as $key=>$pp) {
+                    if ($product['id'] == $key) {
+                        $product['price'] = $product_price[$product['id']];
+                    }
+                }
+
                 $product['name'] = $products_desc[$product['id']]['name'];
                 $product['desc'] = $products_desc[$product['id']]['desc'];
                 $product['url'] = $products_desc[$product['id']]['url'];
@@ -150,6 +166,13 @@ class ProductServices
                     ];
                 }
             }
+
+            foreach ($products as $i => $product) {
+                if (!isset($product['price'])) {
+                    $products[$i]['price'] = 0;
+                }
+            }
+
             unset($product);
 
             $categories[$category->id]['url'] = $category->url;
@@ -239,7 +262,6 @@ class ProductServices
             $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 GROUP BY product_id');
         // }
 
-
         $product_price = [];
         foreach ($product as $p) {
             $product_price[$p->product_id] = round($p->min, 2);
@@ -271,7 +293,17 @@ class ProductServices
                     'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
                 ];
             }
-            $products[$i]['price'] = $product_price[$products[$i]['id']];
+            foreach ($product_price as $key=>$pp) {
+                if ($products[$i]['id'] == $key) {
+                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                }
+            }
+        }
+
+        foreach ($products as $i => $product) {
+            if (!isset($product['price'])) {
+                $products[$i]['price'] = 0;
+            }
         }
 
         return $products;
@@ -308,7 +340,17 @@ class ProductServices
                     'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
                 ];
             }
-            $products[$i]['price'] = $product_price[$products[$i]['id']];
+            foreach ($product_price as $key=>$pp) {
+                if ($products[$i]['id'] == $key) {
+                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                }
+            }
+        }
+
+        foreach ($products as $i => $product) {
+            if (!isset($product['price'])) {
+                $products[$i]['price'] = 0;
+            }
         }
 
         return $products;
@@ -339,7 +381,17 @@ class ProductServices
                     'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
                 ];
             }
-            $products[$i]['price'] = $product_price[$products[$i]['id']];
+            foreach ($product_price as $key=>$pp) {
+                if ($products[$i]['id'] == $key) {
+                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                }
+            }
+        }
+
+        foreach ($products as $i => $product) {
+            if (!isset($product['price'])) {
+                $products[$i]['price'] = 0;
+            }
         }
 
         return $products;
@@ -674,7 +726,17 @@ class ProductServices
                     'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
                 ];
             }
-            $products[$i]['price'] = $product_price[$products[$i]['id']];
+            foreach ($product_price as $key=>$pp) {
+                if ($products[$i]['id'] == $key) {
+                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                }
+            }
+        }
+
+        foreach ($products as $i => $product) {
+            if (!isset($product['price'])) {
+                $products[$i]['price'] = 0;
+            }
         }
 
         return $products;

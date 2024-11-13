@@ -8,10 +8,10 @@
 	<link rel="stylesheet" href="style_login/style_.css">
 	<link rel="shortcut icon" href="style_login/favicon.ico">
 
-    <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
-    <script src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
-    <script src="{{ asset("vendor/jquery/init.js") }}"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
+    <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
+    <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
+    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -26,7 +26,7 @@
 			<div class="login__body">
 				<div class="login__inner">
 					<header class="login-header">
-						<a href="" class="login-header__logo"><img src="style_login/icons/logo-white.svg" alt=""></a>
+						<a href="" class="login-header__logo"><img loading="lazy" src="style_login/icons/logo-white.svg" alt=""></a>
 					</header>
 					<main class="login-content">
 						<h1 class="login-content__title">{{__('text.login_login')}}</h1>
@@ -46,7 +46,7 @@
 									<div class="form__input form__input--has-image">
 										<input id="code" autocomplete="off" type="text" name="form[code]" id="code" data-error="Not correct" class="input">
 										<picture>
-											<img id="captcha_image_log" src="{{ captcha_src() }}">
+											<img loading="lazy" id="captcha_image_log" src="{{ captcha_src() }}">
 										</picture>
 									</div>
 								</div>
@@ -78,7 +78,7 @@
 			<div class="login__image">
 				<picture>
 					<source srcset="style_login/icons/hero.webp" type="image/webp">
-					<img src="style_login/icons/hero.png" width="1388" height="1080" alt="Awesome image">
+					<img loading="lazy" src="style_login/icons/hero.png" width="1388" height="1080" alt="Awesome image">
 				</picture>
 			</div>
 		</div>
@@ -98,7 +98,7 @@
 		</div>
 	</div> --}}
 </div>
-<script>
+<script defer>
 
     const email_invalid_text = "{{__('text.login_email_invalid')}}";
     const code_invalid_text = "{{__('text.login_code_invalid')}}";
@@ -108,7 +108,7 @@
         preloader.style.display = 'none';
     });
 </script>
-<script src="js/all_js.js"></script>
+<script defer src="js/all_js.js"></script>
 </body>
 
 </html>

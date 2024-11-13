@@ -6,6 +6,142 @@
 
 @section('content')
 <main class="product">
+    <section class="pay-index">
+        <div class="pay-index__container">
+            <ul class="pay-index__list">
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
+                    </svg>
+                </li>
+                <li class="pay-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
+                    </svg>
+                </li>
+            </ul>
+        </div>
+    </section>
     <div class="product__container">
         <div class="product__body">
             <aside class="product__aside">
@@ -13,11 +149,11 @@
                     <div class="product__image">
                         <div class="product__image-wrapper">
                             @if ($product['image'] == 'gift-card')
-                                <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <picture>
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                                 </picture>
                             @endif
                         </div>
@@ -118,10 +254,10 @@
                 </div>
                 <div class="product__offers" data-da=".product__content, 650, last">
                     <a class="product__item-offer">
-                        <picture><source srcset="{{ asset("$design/images/offers/01.webp") }}" type="image/webp"><img src="{{ asset("$design/images/offers/01.jpg") }}" alt=""></picture>
+                        <picture><source srcset="{{ asset("$design/images/offers/01.webp") }}" type="image/webp"><img loading="lazy" src="{{ asset("$design/images/offers/01.jpg") }}" alt=""></picture>
                     </a>
                     <a class="product__item-offer">
-                        <picture><source srcset="{{ asset("$design/images/offers/02.webp") }}" type="image/webp"><img src="{{ asset("$design/images/offers/02.jpg") }}" alt=""></picture>
+                        <picture><source srcset="{{ asset("$design/images/offers/02.webp") }}" type="image/webp"><img loading="lazy" src="{{ asset("$design/images/offers/02.jpg") }}" alt=""></picture>
                     </a>
                 </div>
             </aside>
@@ -244,7 +380,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_1')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_1')}}</div>
@@ -253,7 +389,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_2')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_2')}}</div>
@@ -262,7 +398,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_3')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_3')}}</div>
@@ -271,7 +407,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_4')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_4')}}</div>
@@ -280,7 +416,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_5')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_5')}}</div>
@@ -289,7 +425,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_6')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_6')}}</div>
@@ -298,7 +434,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_7')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_7')}}</div>
@@ -307,7 +443,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_8')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_8')}}</div>
@@ -316,7 +452,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_9')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_9')}}</div>
@@ -325,7 +461,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_10')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_10')}}</div>
@@ -334,7 +470,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_11')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_11')}}</div>
@@ -343,7 +479,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_12')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_12')}}</div>

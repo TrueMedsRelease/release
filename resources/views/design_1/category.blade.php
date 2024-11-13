@@ -27,18 +27,18 @@
                         </div>
                         <div class="product-card__image">
                             @if ($product['image'] == 'gift-card')
-                                <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <picture>
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                                 </picture>
                             @endif
-                            {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
+                            {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                         </div>
                     </div>
                     <button type="button" class="product-card__button button button--primary">
-                        <picture><source srcset="{{ asset("$design/images/icons/cart.webp") }}" type="image/webp"><img src="{{ asset("$design/images/icons/cart.png") }}" width="23" height="23" alt=""></picture>
+                        <picture><source srcset="{{ asset("$design/images/icons/cart.webp") }}" type="image/webp"><img loading="lazy" src="{{ asset("$design/images/icons/cart.png") }}" width="23" height="23" alt=""></picture>
                     </button>
                 </a>
             @endforeach

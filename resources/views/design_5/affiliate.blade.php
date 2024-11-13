@@ -51,7 +51,7 @@
 							<input type="text" autocomplete="off" placeholder="{{__('text.affiliate_code')}}" name="captcha" id="captcha" onkeyup="undisabled('affiliate')">
 							<div class="img">
 								<picture>
-									<img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 10px;">
+									<img loading="lazy" id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 10px;">
 								</picture>
 							</div>
 						</div>
@@ -69,7 +69,7 @@
 <div class="sale-banners">
     <div class="happy-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner1_text1')}} <br>{{__('text.common_banner1_text2')}}</span>
@@ -78,7 +78,7 @@
     </div>
     <div class="wow-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner2_text1')}} <br> {!!__('text.common_banner2_text2')!!}</span>

@@ -39,17 +39,17 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
     @endif
 
-    {{-- <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
+    {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
 
-    <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
-    <script src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
-    <script src="{{ asset('vendor/jquery/init.js') }}"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
+    <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
+    <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
+    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
@@ -92,7 +92,7 @@
                                         @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
                                     @else
                                         @selected($item['iso'] == session('form.phone_code', '')) @endif
-                                        data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                        data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
                                         value="+{{ $item['phonecode'] }}">
                                         +{{ $item['phonecode'] }}
                                     </option>
@@ -163,7 +163,7 @@
                             <div class="header__inner">
                                 <div class="header__top-row">
                                     <a href="{{ route('home.index') }}" class="header__logo logo">
-                                        <img src="{{ asset("$design/images/logo.svg") }}" alt="">
+                                        <img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" alt="">
                                     </a>
                                 </div>
                                 <div class="header__info-row">
@@ -171,7 +171,7 @@
                                         @if (count($Language::GetAllLanuages()) > 1)
                                             <div class="actions__item">
                                                 <div class="actions__icon">
-                                                    <img src="{{ asset("$design/images/icons/lang.svg") }}"
+                                                    <img loading="lazy" src="{{ asset("$design/images/icons/lang.svg") }}"
                                                         width="24" height="20" alt="">
                                                 </div>
                                                 <div class="actions__select">
@@ -190,7 +190,7 @@
                                         @if (count($Currency::GetAllCurrency()) > 1)
                                             <div class="actions__item">
                                                 <div class="actions__icon">
-                                                    <img src="{{ asset("$design/images/icons/wallet.svg") }}"
+                                                    <img loading="lazy" src="{{ asset("$design/images/icons/wallet.svg") }}"
                                                         width="24" height="20" alt="">
                                                 </div>
                                                 <div class="actions__select">
@@ -220,7 +220,7 @@
                                     <button type="button" class="header__cart cart"
                                         @if ($cart_count != 0) onclick="location.href='{{ route('cart.index') }}'" @endif>
                                         <span class="cart__icon">
-                                            <img src="{{ asset("$design/images/icons/cart_blue.svg") }}"
+                                            <img loading="lazy" src="{{ asset("$design/images/icons/cart_blue.svg") }}"
                                                 width="24" height="24">
                                             @if ($cart_count != 0)
                                                 <span class="cart__quantity">{{ $cart_count }}</span>
@@ -271,9 +271,9 @@
                 {{ __('text.license_text_license2_d7') }}
             </p>
 
-            <script src="{{ asset("$design/js/app.js") }}"></script>
-            <script src="{{ asset("$design/js/main.js") }}"></script>
-            <script src="{{ asset('/js/all_js.js') }}"></script>
+            <script defer src="{{ asset("$design/js/app.js") }}"></script>
+            <script defer src="{{ asset("$design/js/main.js") }}"></script>
+            <script defer src="{{ asset('/js/all_js.js') }}"></script>
 
         </footer>
 
