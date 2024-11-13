@@ -24,7 +24,7 @@
                         <div class="payment-details__top-row">
                             <div class="payment-details__currency">
                                 <div class="payment-details__icon">
-                                    <img src="/admin_style/images/icons/lock.svg" width="25" height="25" alt="">
+                                    <img loading="lazy" src="/admin_style/images/icons/lock.svg" width="25" height="25" alt="">
                                 </div>
                                 <h3 class="payment-details__caption">{{__('text.admin_main_properties_new_password_form')}}</h3>
                             </div>
@@ -40,7 +40,7 @@
                         <div class="payment-details__top-row">
                             <div class="payment-details__currency">
                                 <div class="payment-details__icon">
-                                    <img src="/admin_style/images/icons/lock.svg" width="25" height="25" alt="">
+                                    <img loading="lazy" src="/admin_style/images/icons/lock.svg" width="25" height="25" alt="">
                                 </div>
                                 <h3 class="payment-details__caption">{{__('text.admin_main_properties_repeat_new_password_form')}}</h3>
                             </div>

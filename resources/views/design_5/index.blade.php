@@ -25,28 +25,28 @@
         <div class="information">
             <div class="item">
                 <strong class="name">
-                    <img src="{{ asset("$design/images/icon/ico-info-01.svg") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icon/ico-info-01.svg") }}" alt="">
                     <span>{{__('text.common_save')}}</span>
                 </strong>
                 <p>{{__('text.common_discount')}}</p>
             </div>
             <div class="item">
                 <strong class="name">
-                    <img src="{{ asset("$design/images/icon/ico-info-02.svg") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icon/ico-info-02.svg") }}" alt="">
                     <span>{{__('text.common_delivery')}}</span>
                 </strong>
                 <p>{{__('text.common_receive')}}</p>
             </div>
             <div class="item">
                 <strong class="name">
-                    <img src="{{ asset("$design/images/icon/ico-info-03.svg") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icon/ico-info-03.svg") }}" alt="">
                     <span>{{__('text.common_prescription')}}</span>
                 </strong>
                 <p>{{__('text.common_restrictions')}}</p>
             </div>
             <div class="item">
                 <strong class="name">
-                    <img src="{{ asset("$design/images/icon/ico-info-04.svg") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icon/ico-info-04.svg") }}" alt="">
                     <span>{{__('text.common_moneyback')}}</span>
                 </strong>
                 <p>{{__('text.common_refund')}}</p>
@@ -58,14 +58,14 @@
             <a href="{{ config('app.url') }}/trial-ed-pack" class="item">
                   <span class="img">
                     <span class="price">$4</span>
-                    <img src="{{ asset("$design/images/product/img-01.png") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/product/img-01.png") }}" alt="">
                   </span>
                 <strong class="name">Trial ED Pack</strong>
             </a>
             <a href="{{ config('app.url') }}/super-ed-pack" class="item">
                   <span class="img">
                     <span class="price">$3</span>
-                    <img src="{{ asset("$design/images/product/img-01.png") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/product/img-01.png") }}" alt="">
                   </span>
                 <strong class="name">Super ED Pack</strong>
             </a>
@@ -74,89 +74,141 @@
 </div>
 
 <section class="pay-index">
-    <div class="pay-index__container">
-        <ul class="pay-index__list">
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/visa.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/mastercard.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/maestro.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/discover.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/amex.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/jsb.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/unionpay.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/dinners-club.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/apple-pay.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/google-pay.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/amazon-pay.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/stripe.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/paypal.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/sepa.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/cashapp.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/adyen.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/skrill.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/worldpay.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/payline.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/bitcoin.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/binance-coin.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/ethereum.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/litecoin.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/tron.svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/usdt(erc20).svg" alt="">
-            </li>
-            <li class="pay-index__item">
-                <img src="/pub_images/pay_icons/usdt(trc20).svg" alt="">
-            </li>
-        </ul>
-    </div>
-</section>
+            <div class="pay-index__container">
+                <ul class="pay-index__list">
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
+                        </svg>
+                    </li>
+                </ul>
+            </div>
+        </section>
 
 <div class="hero-header__search">
     <div class="search-bar" data-dev>
@@ -164,7 +216,7 @@
             @csrf
             <button type="submit" class="search-bar__icon">
                 <svg width="15" height="15">
-                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-search") }}"></use>
+                    <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-search") }}"></use>
                 </svg>
                 <span class="sr-only" style="display: none;">search</span>
             </button>
@@ -190,7 +242,7 @@
 <div class="sale-banners">
     <div class="happy-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner1_text1')}} <br>{{__('text.common_banner1_text2')}}</span>
@@ -199,7 +251,7 @@
     </div>
     <div class="wow-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner2_text1')}} <br> {!!__('text.common_banner2_text2')!!}</span>
@@ -246,14 +298,14 @@
                 <div class="item">
                     <a href="{{ route('home.product', $product['url']) }}" class="img">
                         @if ($product['image'] == 'gift-card')
-                            <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                            <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                         @else
                             <picture>
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                             </picture>
                         @endif
-                        {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
+                        {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                     </a>
                     <div class="info">
                         <div class="box">
@@ -267,7 +319,7 @@
                         <div class="box">
                             <span class="price">{{ $Currency::convert($product['price'], false, true) }}</span>
                             <a href="{{ route('home.product', $product['url']) }}" class="btn btn-primary main">
-                                <img src="{{ asset("$design/images/icon/ico-basket.svg") }}" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icon/ico-basket.svg") }}" alt="">
                                 <span>{{__('text.common_add_to_cart_text_d2')}}</span>
                             </a>
                         </div>

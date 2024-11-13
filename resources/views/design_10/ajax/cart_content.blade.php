@@ -116,7 +116,7 @@
                                         class="form-radio" for="delivery-2">
                                         <div class="form-radio__title" style="display: flex; align-items: center;">
                                             {{__('text.shipping_ems')}}
-                                            <img style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                            <img loading="lazy" style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                                         </div>
                                         <div class="form-radio__text">
                                             @if ($product_total_check >= 300)
@@ -148,7 +148,7 @@
                                     <label class="form-radio" for="delivery-1">
                                         <div class="form-radio__title" style="display: flex; align-items: center;">
                                             {{__('text.shipping_regular')}}
-                                            <img style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                            <img loading="lazy" style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                                         </div>
                                         <div class="form-radio__text">
                                             @if ($product_total_check >= 200)
@@ -233,7 +233,7 @@
                                                     <span class="select_current_gift"
                                                         curr_packaging_id = "{{ $cards[0]->pack_id }}">{{ $Currency::convert($cards[0]->price) }}</span>
                                                     <div class="select_icon">
-                                                        <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                                        <img loading="lazy" src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
                                                     </div>
                                                 </div>
                                                 <div class="select_body_gifts">

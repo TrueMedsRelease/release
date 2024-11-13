@@ -349,7 +349,7 @@
             if (bodyLockStatus && e.target.closest(".icon-menu") || bodyLockStatus && e.target.closest("[data-bestsellers]")) {
                 bodyLockToggle();
                 document.documentElement.classList.toggle("menu-open");
-                $('.bestsellers__navigation').css({'display':'none'});
+                // $('.bestsellers__navigation').css({'display':'none'});
             } else if (document.documentElement.classList.contains("menu-open") && !e.target.closest(".top-header__bestsellers")) {
                 bodyLockToggle();
                 document.documentElement.classList.toggle("menu-open");
@@ -4102,54 +4102,56 @@
         constructor(type) {
             this.type = type;
         }
-        // init() {
-        //     this.оbjects = [];
-        //     this.daClassname = "_dynamic_adapt_";
-        //     this.nodes = [ ...document.querySelectorAll("[data-da]") ];
-        //     this.nodes.forEach((node => {
-        //         const data = node.dataset.da.trim();
-        //         const dataArray = data.split(",");
-        //         const оbject = {};
-        //         оbject.element = node;
-        //         оbject.parent = node.parentNode;
-        //         оbject.destination = document.querySelector(`${dataArray[0].trim()}`);
-        //         оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : "767";
-        //         оbject.place = dataArray[2] ? dataArray[2].trim() : "last";
-        //         оbject.index = this.indexInParent(оbject.parent, оbject.element);
-        //         this.оbjects.push(оbject);
-        //     }));
-        //     this.arraySort(this.оbjects);
-        //     this.mediaQueries = this.оbjects.map((({breakpoint}) => `(${this.type}-width: ${breakpoint}px),${breakpoint}`)).filter(((item, index, self) => self.indexOf(item) === index));
-        //     this.mediaQueries.forEach((media => {
-        //         const mediaSplit = media.split(",");
-        //         const matchMedia = window.matchMedia(mediaSplit[0]);
-        //         const mediaBreakpoint = mediaSplit[1];
-        //         const оbjectsFilter = this.оbjects.filter((({breakpoint}) => breakpoint === mediaBreakpoint));
-        //         matchMedia.addEventListener("change", (() => {
-        //             this.mediaHandler(matchMedia, оbjectsFilter);
-        //         }));
-        //         this.mediaHandler(matchMedia, оbjectsFilter);
-        //     }));
-        // }
-        // mediaHandler(matchMedia, оbjects) {
-        //     if (matchMedia.matches) оbjects.forEach((оbject => {
-        //         this.moveTo(оbject.place, оbject.element, оbject.destination);
-        //     })); else оbjects.forEach((({parent, element, index}) => {
-        //         if (element.classList.contains(this.daClassname)) this.moveBack(parent, element, index);
-        //     }));
-        // }
-        // moveTo(place, element, destination) {
-        //     element.classList.add(this.daClassname);
-        //     if ("last" === place || place >= destination.children.length) {
-        //         destination.append(element);
-        //         return;
-        //     }
-        //     if ("first" === place) {
-        //         destination.prepend(element);
-        //         return;
-        //     }
-        //     destination.children[place].before(element);
-        // }
+        init() {
+            this.оbjects = [];
+            this.daClassname = "_dynamic_adapt_";
+            this.nodes = [ ...document.querySelectorAll("[data-da]") ];
+            this.nodes.forEach((node => {
+                const data = node.dataset.da.trim();
+                const dataArray = data.split(",");
+                const оbject = {};
+                оbject.element = node;
+                оbject.parent = node.parentNode;
+                оbject.destination = document.querySelector(`${dataArray[0].trim()}`);
+                оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : "767";
+                оbject.place = dataArray[2] ? dataArray[2].trim() : "last";
+                оbject.index = this.indexInParent(оbject.parent, оbject.element);
+                this.оbjects.push(оbject);
+            }));
+            this.arraySort(this.оbjects);
+            this.mediaQueries = this.оbjects.map((({breakpoint}) => `(${this.type}-width: ${breakpoint}px),${breakpoint}`)).filter(((item, index, self) => self.indexOf(item) === index));
+            this.mediaQueries.forEach((media => {
+                const mediaSplit = media.split(",");
+                const matchMedia = window.matchMedia(mediaSplit[0]);
+                const mediaBreakpoint = mediaSplit[1];
+                const оbjectsFilter = this.оbjects.filter((({breakpoint}) => breakpoint === mediaBreakpoint));
+                matchMedia.addEventListener("change", (() => {
+                    this.mediaHandler(matchMedia, оbjectsFilter);
+                }));
+                this.mediaHandler(matchMedia, оbjectsFilter);
+            }));
+        }
+        mediaHandler(matchMedia, оbjects) {
+            if (matchMedia.matches) оbjects.forEach((оbject => {
+                this.moveTo(оbject.place, оbject.element, оbject.destination);
+            })); else оbjects.forEach((({parent, element, index}) => {
+                if (element.classList.contains(this.daClassname)) this.moveBack(parent, element, index);
+            }));
+        }
+        moveTo(place, element, destination) {
+            element.classList.add(this.daClassname);
+            if (destination != null) {
+                if ("last" === place || place >= destination.children.length) {
+                    destination.append(element);
+                    return;
+                }
+                if ("first" === place) {
+                    destination.prepend(element);
+                    return;
+                }
+                destination.children[place].before(element);
+            }
+        }
         moveBack(parent, element, index) {
             element.classList.remove(this.daClassname);
             if (void 0 !== parent.children[index]) parent.children[index].before(element); else parent.append(element);
@@ -4181,7 +4183,7 @@
         }
     }
     const da = new DynamicAdapt("max");
-    // da.init();
+    da.init();
     const announces = document.querySelectorAll(".announce__item");
     const showAnnounce = function(announce) {
         announce.classList.add("active");
@@ -4250,14 +4252,14 @@ $(document).on('click', '.close_popup', function () {
 $(document).on('click', '.button_request_call', function () {
     let phone_code = $('[name="phone_code"]').val();
     let number = $('#phone').val();
-    console.log(phone_code+number);
+    console.log(phone_code + number);
 
     if (number) {
         $.ajax({
             url: '/request_call',
             type: "POST",
             cache: false,
-            data: {phone: phone_code+number},
+            data: { phone: phone_code + number },
             dataType: "json",
             success: function (res) {
                 if (res['status'] == 'success') {
@@ -4294,7 +4296,7 @@ function getCookie(name) {
 
 if (getCookie('christmas')) {
     $('.christmas').hide();
-    $('.header__top').css({'top': '31px'});
+    // $('.header__top').css({'top': '31px'});
 } else {
     $('.christmas').show();
 }
@@ -4314,7 +4316,7 @@ $(document).on('click', '.button_sub', function () {
             url: '/request_subscribe',
             type: "POST",
             cache: false,
-            data: {email: email},
+            data: { email: email },
             dataType: "json",
             success: function (res) {
                 if (res['status'] == 'error') {
@@ -4327,9 +4329,9 @@ $(document).on('click', '.button_sub', function () {
                     mesa.classList.remove('hidden');
                     mesa.classList.add('active');
 
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $('.popup_gray').hide();
-                        $('body').css({'overflow':'auto'});
+                        $('body').css({ 'overflow': 'auto' });
                     }, 5000);
                 }
             }
@@ -4431,7 +4433,7 @@ window.addEventListener('scroll', () => {
     if (window.pageYOffset > 31) {
         $('.header__top').css({'top': 0});
     } else {
-        $('.header__top').css({'top': '31px'});
+        // $('.header__top').css({'top': '31px'});
     }
 });
 
@@ -4808,14 +4810,16 @@ function sendAjaxContact() {
             url: '/request_contact_us',
             type: "POST",
             cache: false,
-            data: { 'name' : name,
-            'email' : email,
-            'subject' : subject,
-            'message' : message,
-            'captcha' : captcha,
-            'submit' : submit },
+            data: {
+                'name': name,
+                'email': email,
+                'subject': subject,
+                'message': message,
+                'captcha': captcha,
+                'submit': submit
+            },
             dataType: "json",
-            success: function(data) { //Данные отправлены успешно
+            success: function (data) { //Данные отправлены успешно
                 if (data['status'] == 'error') {
                     alert(data['text']);
                     $('#captcha_image').attr('src', data['new_captcha']);
@@ -4852,23 +4856,24 @@ function sendAjaxAffiliate() {
         document.getElementById("email").style.backgroundColor = "#f1f5f9";
     }
     const jabber = document.getElementById("jabber").value;
-    const message = document.getElementById("message").value;
-    const captcha = document.getElementById("captcha").value;
-    const submit = true;
-
+  const message = document.getElementById("message").value;
+  const captcha = document.getElementById("captcha").value;
+  const submit = true;
     if (!error) {
         $.ajax({
-            url:     '/request_affiliate',
-            type:     "POST",
+            url: '/request_affiliate',
+            type: "POST",
             cache: false,
-            data: { 'name' : name,
-            'email' : email,
-            'jabber' : jabber,
-            'message' : message,
-            'captcha' : captcha,
-            'submit' : submit },
+            data: {
+                'name': name,
+                'email': email,
+                'jabber': jabber,
+                'message': message,
+                'captcha': captcha,
+                'submit': submit
+            },
             dataType: "json",
-            success: function(data) { //Данные отправлены успешно
+            success: function (data) { //Данные отправлены успешно
                 if (data['status'] == 'error') {
                     alert(data['text']);
                     $('#captcha_image').attr('src', data['new_captcha']);

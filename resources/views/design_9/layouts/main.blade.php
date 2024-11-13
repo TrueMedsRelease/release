@@ -39,17 +39,17 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
     @endif
 
-    {{-- <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
+    {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
 
-    <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
-    <script src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
-    <script src="{{ asset('vendor/jquery/init.js') }}"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
+    <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
+    <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
+    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
@@ -87,7 +87,7 @@
                                         @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
                                 @else
                                     @selected($item['iso'] == session('form.phone_code', '')) @endif
-                                        data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                        data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
                                         value="+{{ $item['phonecode'] }}">
                                         +{{ $item['phonecode'] }}
                                     </option>
@@ -487,138 +487,216 @@
             </div>
 
             <section class="pay-index">
-                <div class="pay-index__container">
-                    <ul class="pay-index__list">
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/visa.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/mastercard.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/maestro.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/discover.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/amex.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/jsb.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/unionpay.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/dinners-club.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/apple-pay.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/google-pay.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/amazon-pay.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/stripe.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/paypal.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/sepa.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/cashapp.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/adyen.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/skrill.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/worldpay.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/payline.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/bitcoin.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/binance-coin.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/ethereum.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/litecoin.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/tron.svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/usdt(erc20).svg" alt="">
-                        </li>
-                        <li class="pay-index__item">
-                            <img src="/pub_images/pay_icons/usdt(trc20).svg" alt="">
-                        </li>
-                    </ul>
-                </div>
-            </section>
+            <div class="pay-index__container">
+                <ul class="pay-index__list">
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
+                        </svg>
+                    </li>
+                    <li class="pay-index__item">
+                        <svg>
+                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
+                        </svg>
+                    </li>
+                </ul>
+            </div>
+        </section>
         </header>
 
         @yield('content')
 
         <section class="ship-index">
-            <div class="ship-index__container">
-                <ul class="ship-index__list">
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/usps.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/ems.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/dhl.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/ups.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/fedex.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/tnt.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/postnl.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/deutsche_post.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/dpd.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/gls.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/australia_post.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/colissimo.svg" alt="">
-                    </li>
-                    <li class="ship-index__item">
-                        <img src="/pub_images/shipping/correos.svg" alt="">
-                    </li>
-                </ul>
-            </div>
-        </section>
+        <div class="ship-index__container">
+            <ul class="ship-index__list">
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#usps" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ems" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dhl" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ups" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#fedex" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#tnt" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#postnl" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#deutsche_post" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dpd" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#gls" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" width="100%" href="/pub_images/shipping/sprite.svg#australia_post" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#colissimo" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+                <li class="ship-index__item">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#correos" preserveAspectRatio="xMinYMin">
+                    </svg>
+                </li>
+            </ul>
+        </div>
+    </section>
 
         <div class="subscribe_body">
             <div class="left_block">
@@ -713,8 +791,8 @@
         </footer>
     </div>
 
-    <script src="{{ asset("$design/js/app.js") }}"></script>
-    <script src="{{ asset('/js/all_js.js') }}"></script>
+    <script defer src="{{ asset("$design/js/app.js") }}"></script>
+    <script defer src="{{ asset('/js/all_js.js') }}"></script>
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
     @endif

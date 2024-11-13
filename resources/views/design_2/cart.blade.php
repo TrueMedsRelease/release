@@ -21,7 +21,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_1')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_1')}}</div>
@@ -30,7 +30,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_2')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_2')}}</div>
@@ -39,7 +39,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_3')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_3')}}</div>
@@ -48,7 +48,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_4')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_4')}}</div>
@@ -57,7 +57,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_5')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_5')}}</div>
@@ -66,7 +66,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_6')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_6')}}</div>
@@ -75,7 +75,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_7')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_7')}}</div>
@@ -84,7 +84,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_8')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_8')}}</div>
@@ -93,7 +93,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_9')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_9')}}</div>
@@ -102,7 +102,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_10')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_10')}}</div>
@@ -111,7 +111,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_11')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_11')}}</div>
@@ -120,7 +120,7 @@
                         <div class="reviews__top">
                             <div class="reviews__name">{!!__('text.testimonials_author_t_12')!!}</div>
                             <div class="reviews__stars">
-                                <img src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
+                                <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" width="108" height="20" alt="">
                             </div>
                         </div>
                         <div class="reviews__text">{{__('text.testimonials_t_12')}}</div>

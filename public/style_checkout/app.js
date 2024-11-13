@@ -630,7 +630,8 @@
             getSelectElementContent(selectOption) {
                 const selectOptionData = selectOption.dataset.asset ? `${selectOption.dataset.asset}` : "";
                 const selectOptionContryCode = selectOption.dataset.country ? `${selectOption.dataset.country}` : "";
-                const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<img src="${selectOptionData}" alt="">` : selectOptionData;
+                // const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<img loading="lazy" src="${selectOptionData}" alt="">` : selectOptionData;
+                const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<svg width="18px" height="18px"><use href="${selectOptionData}"></svg>` : selectOptionData;
                 let selectOptionContentHTML = ``;
                 selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectRow}">` : "";
                 selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectData}">` : "";
@@ -1899,7 +1900,7 @@
                         _slideUp(cardBlock);
                         _slideUp(sepaBlock);
                     }
-                    
+
                 }));
                 const copyBtns = document.querySelectorAll(".details-payment__copy-button");
                 const unsecuredCopyToClipboard = text => {
@@ -1934,7 +1935,7 @@
                         }
                     }));
                 }));
-                
+
 
         }));
         window["FLS"] = true;
@@ -1951,74 +1952,74 @@ function validateEmail(email) {
 };
 
 function checkCreditCard (cardnumber, cardname) {
-         
+
     // Array to hold the permitted card characteristics
     var cards = new Array();
-  
+
     // Define the cards we support. You may add addtional card types as follows.
-  
+
     //  Name:         As in the selection box of the form - must be same as user's
     //  Length:       List of possible valid lengths of the card number for the card
     //  prefixes:     List of possible prefixes for the card
     //  checkdigit:   Boolean to say whether there is a check digit
-  
-    cards [0] = {name: "other", 
-                 length: "12,13,14,15,16,18,19", 
+
+    cards [0] = {name: "other",
+                 length: "12,13,14,15,16,18,19",
                  prefixes: "4,34,37,6011,622,64,65,35,5018,5020,5038,6304,6759,6761,6762,6763",
                  checkdigit: true};
-    cards [1] = {name: "master", 
-                 length: "16", 
+    cards [1] = {name: "master",
+                 length: "16",
                  prefixes: "51,52,53,54,55",
                  checkdigit: true};
-    // cards [2] = {name: "DinersClub", 
-    //              length: "14,16", 
+    // cards [2] = {name: "DinersClub",
+    //              length: "14,16",
     //              prefixes: "36,38,54,55",
     //              checkdigit: true};
-    // cards [3] = {name: "CarteBlanche", 
-    //              length: "14", 
+    // cards [3] = {name: "CarteBlanche",
+    //              length: "14",
     //              prefixes: "300,301,302,303,304,305",
     //              checkdigit: true};
-    // cards [2] = {name: "amex", 
-    //              length: "15", 
+    // cards [2] = {name: "amex",
+    //              length: "15",
     //              prefixes: "34,37",
     //              checkdigit: true};
-    // cards [3] = {name: "discover", 
-    //              length: "16", 
+    // cards [3] = {name: "discover",
+    //              length: "16",
     //              prefixes: "6011,622,64,65",
     //              checkdigit: true};
-    // cards [4] = {name: "jcb", 
-    //              length: "16", 
+    // cards [4] = {name: "jcb",
+    //              length: "16",
     //              prefixes: "35",
     //              checkdigit: true};
-    // cards [7] = {name: "enRoute", 
-    //              length: "15", 
+    // cards [7] = {name: "enRoute",
+    //              length: "15",
     //              prefixes: "2014,2149",
     //              checkdigit: true};
-    // cards [8] = {name: "Solo", 
-    //              length: "16,18,19", 
+    // cards [8] = {name: "Solo",
+    //              length: "16,18,19",
     //              prefixes: "6334,6767",
     //              checkdigit: true};
-    // cards [9] = {name: "Switch", 
-    //              length: "16,18,19", 
+    // cards [9] = {name: "Switch",
+    //              length: "16,18,19",
     //              prefixes: "4903,4905,4911,4936,564182,633110,6333,6759",
     //              checkdigit: true};
-    // cards [5] = {name: "maestro", 
-    //              length: "12,13,14,15,16,18,19", 
+    // cards [5] = {name: "maestro",
+    //              length: "12,13,14,15,16,18,19",
     //              prefixes: "5018,5020,5038,6304,6759,6761,6762,6763",
     //              checkdigit: true};
-    // cards [11] = {name: "VisaElectron", 
-    //              length: "16", 
+    // cards [11] = {name: "VisaElectron",
+    //              length: "16",
     //              prefixes: "4026,417500,4508,4844,4913,4917",
     //              checkdigit: true};
-    // cards [12] = {name: "LaserCard", 
-    //              length: "16,17,18,19", 
+    // cards [12] = {name: "LaserCard",
+    //              length: "16,17,18,19",
     //              prefixes: "6304,6706,6771,6709",
     //              checkdigit: true};
-                 
+
     // Establish card type
     var cardType = -1;
     for (var i=0; i<cards.length; i++) {
-  
+
       // See if it is this card (ignoring the case of the string)
     //   console.log(cardname.toLowerCase());
     //   console.log(cards[i].name.toLowerCase());
@@ -2027,109 +2028,109 @@ function checkCreditCard (cardnumber, cardname) {
             break;
         }
     }
-    
+
     // If card type not found, report an error
     if (cardType == -1) {
        ccErrorNo = 0;
-       return false; 
+       return false;
     }
 
     // Ensure that the user has provided a credit card number
     if (cardnumber.length == 0)  {
        ccErrorNo = 1;
-       return false; 
+       return false;
     }
-      
+
     // Now remove any spaces from the credit card number
     cardnumber = cardnumber.replace (/\s/g, "");
-    
+
     // Check that the number is numeric
     var cardNo = cardnumber
     var cardexp = /^[0-9]{13,19}$/;
     if (!cardexp.exec(cardNo))  {
         ccErrorNo = 2;
-        return false; 
+        return false;
     }
-         
+
     // Now check the modulus 10 check digit - if required
     if (cards[cardType].checkdigit) {
         var checksum = 0;                                  // running checksum total
         var mychar = "";                                   // next char to process
         var j = 1;                                         // takes value of 1 or 2
-        
+
         // Process each digit one by one starting at the right
         var calc;
         for (i = cardNo.length - 1; i >= 0; i--) {
-            
+
             // Extract the next digit and multiply by 1 or 2 on alternative digits.
             calc = Number(cardNo.charAt(i)) * j;
-            
+
             // If the result is in two digits add 1 to the checksum total
             if (calc > 9) {
                 checksum = checksum + 1;
                 calc = calc - 10;
             }
-            
+
             // Add the units element to the checksum total
             checksum = checksum + calc;
-            
+
             // Switch the value of j
             if (j ==1) {j = 2} else {j = 1};
-        } 
-      
+        }
+
         // All done - if checksum is divisible by 10, it is a valid modulus 10.
         // If not, report an error.
         if (checksum % 10 != 0)  {
             ccErrorNo = 3;
-            return false; 
+            return false;
         }
-    }  
-    
+    }
+
     // Check it's not a spam number
-    if (cardNo == '5490997771092064') { 
+    if (cardNo == '5490997771092064') {
       ccErrorNo = 5;
-      return false; 
+      return false;
     }
 
     // The following are the card-specific checks we undertake.
     var LengthValid = false;
-    var PrefixValid = false; 
-    // var undefined; 
+    var PrefixValid = false;
+    // var undefined;
 
     // We use these for holding the valid lengths and prefixes of a card type
     var prefix = new Array ();
     var lengths = new Array ();
-      
+
     // Load an array with the valid prefixes for this card
     prefix = cards[cardType].prefixes.split(",");
-        
+
     // Now see if any of them match what we have in the card number
     for (i=0; i<prefix.length; i++) {
         var exp = new RegExp ("^" + prefix[i]);
-        if (exp.test (cardNo)) 
+        if (exp.test (cardNo))
             PrefixValid = true;
     }
-        
+
     // If it isn't a valid prefix there's no point at looking at the length
     if (!PrefixValid) {
        ccErrorNo = 3;
-       return false; 
+       return false;
     }
-      
+
     // See if the length is valid for this card
     lengths = cards[cardType].length.split(",");
     for (j=0; j<lengths.length; j++) {
-        if (cardNo.length == lengths[j]) 
+        if (cardNo.length == lengths[j])
             LengthValid = true;
     }
-    
-    // See if all is OK by seeing if the length was valid. We only check the length if all else was 
+
+    // See if all is OK by seeing if the length was valid. We only check the length if all else was
     // hunky dory.
     if (!LengthValid) {
        ccErrorNo = 4;
-       return false; 
-    };   
-    
+       return false;
+    };
+
     // The credit card is in the required format.
     return true;
 }
@@ -2146,7 +2147,7 @@ function validate_form() {
     var shipping_city = document.getElementById('shipping_city');
     var shipping_address = document.getElementById('shipping_address');
     var shipping_zip = document.getElementById('shipping_zip');
-    
+
     if(phone.value.length < 4 || phone.value.length > 16) {
         phone.setCustomValidity('Incorrect phone');
         phone.reportValidity();
@@ -2211,7 +2212,7 @@ function validatePhone(phone) {
 };
 
 function validateCVC(cvc) {
-    if (cvc.length < 3 || cvc.length > 4) 
+    if (cvc.length < 3 || cvc.length > 4)
         return false;
     else
         return true;
@@ -2273,9 +2274,9 @@ $('#shipping_zip').bind('input', function() {
     shipping_zip.setCustomValidity('');
 });
 
-$('#card_numb').bind('change', function(e) {     
+$('#card_numb').bind('change', function(e) {
     //5548 1100 0186 7725 - master
-    //6011 0063 8623 2111 - discover 
+    //6011 0063 8623 2111 - discover
     var popup = document.getElementById("myPopup");
     var payment_type = $(".card_type option:selected").val();
     var card_number = $("#card_numb").val();
@@ -2314,7 +2315,7 @@ $('#card_numb').bind('change', function(e) {
         }
     }
 
-    
+
     //var valid = false;
 
     // var ccErrorNo = 0;
@@ -2326,12 +2327,12 @@ $('#card_numb').bind('change', function(e) {
     // ccErrors [3] = "Credit card number is invalid";
     // ccErrors [4] = "Credit card number has an inappropriate number of digits";
     // ccErrors [5] = "Warning! This credit card number is associated with a scam attempt";
-    
 
 
 
 
-    
+
+
     let country = ['US','GB','AU','CA'];
     let card_first_numb = $(this).val().slice(0,1);
 
@@ -2369,11 +2370,11 @@ $('#cvc_2').bind('input', function() {
 function valid_credit_card(value) {
     // accept only digits, dashes or spaces
     if (/[^0-9-\s]+/.test(value)) return false;
-    
+
     // The Luhn Algorithm. It's so pretty.
     var nCheck = 0, nDigit = 0, bEven = false;
     value = value.replace(/\D/g, "");
-    
+
     for (var n = value.length - 1; n >= 0; n--) {
         var cDigit = value.charAt(n),
         nDigit = parseInt(cDigit, 10);
@@ -2383,7 +2384,7 @@ function valid_credit_card(value) {
         nCheck += nDigit;
         bEven = !bEven;
     }
-    
+
     return (nCheck % 10) == 0;
 }
 
@@ -2391,7 +2392,7 @@ function valid_credit_card(value) {
 //         var year = $(".card_year .select__content").text();
 //         if(year != '') {
 //             var today = new Date();
-//             var mm = today.getMonth() + 1; 
+//             var mm = today.getMonth() + 1;
 //             var popup = document.getElementById("myPopup1");
 //             var month = parseInt($(this).attr('data-value'));
 //             if(parseInt(year) == today.getFullYear()) {
@@ -2400,12 +2401,12 @@ function valid_credit_card(value) {
 //                     $("#check_expire").val(0);
 //                 } else{
 //                     popup.classList.remove("show");
-//                     $("#check_expire").val(1);  
+//                     $("#check_expire").val(1);
 //                 }
 //             }
 //             else {
 //                 popup.classList.remove("show");
-//                 $("#check_expire").val(1); 
+//                 $("#check_expire").val(1);
 //             }
 //         }
 //     });
@@ -2415,12 +2416,12 @@ function valid_credit_card(value) {
     //     var today = new Date();
     //     var popup = document.getElementById("myPopup1");
     //     if(parseInt(year) < today.getFullYear()) {
-    //         popup.classList.add("show"); 
+    //         popup.classList.add("show");
     //         $("#check_expire").val(0);
     //     }
     //     else if(parseInt(year) == today.getFullYear()) {
     //         if(month < mm) {
-    //             var mm = today.getMonth() + 1; 
+    //             var mm = today.getMonth() + 1;
     //             var month = parseInt($(".card_month .select__content").text());
     //             var popup = document.getElementById("myPopup1");
     //             popup.classList.add("show");
@@ -2428,12 +2429,12 @@ function valid_credit_card(value) {
     //         }
     //         else{
     //             popup.classList.remove("show");
-    //             $("#check_expire").val(1);  
+    //             $("#check_expire").val(1);
     //         }
     //     }
     //     else {
     //         popup.classList.remove("show");
-    //         $("#check_expire").val(1); 
+    //         $("#check_expire").val(1);
     //     }
     // });
 
@@ -2519,17 +2520,17 @@ $('#phone').bind('change', function(e) {
         popup6.classList.remove("show");
 
         // $.ajax({
-        //     url:'/app/ajax_checkout.php',    
+        //     url:'/app/ajax_checkout.php',
         //     type: 'POST',
         //     cache: false,
         //     dataType: 'html',
         //     data: {
         //         'phone':phone,
-        //         'phone_code':phone_code, 
+        //         'phone_code':phone_code,
         //     },
         //     success:function(data){
         //         if(data.includes("/status/")) {
-        //             window.location.replace(data); 
+        //             window.location.replace(data);
         //             document.body.classList.remove('loaded');
         //         }
         //     }
@@ -2548,17 +2549,17 @@ $('#cvc_2').bind('change', function(e) {
         popup8.classList.remove("show");
 
         // $.ajax({
-        //     url:'/app/ajax_checkout.php',    
+        //     url:'/app/ajax_checkout.php',
         //     type: 'POST',
         //     cache: false,
         //     dataType: 'html',
         //     data: {
         //         'phone':phone,
-        //         'phone_code':phone_code, 
+        //         'phone_code':phone_code,
         //     },
         //     success:function(data){
         //         if(data.includes("/status/")) {
-        //             window.location.replace(data); 
+        //             window.location.replace(data);
         //             document.body.classList.remove('loaded');
         //         }
         //     }
@@ -2568,11 +2569,11 @@ $('#cvc_2').bind('change', function(e) {
 
 function secretPackage() {
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     let delivery = $("input[name='delivery']:checked").val();
     let ins = $("input[name='insurance']:checked").val();
-    if (ins != 1) 
+    if (ins != 1)
         ins = 0;
     var phone_code = $(".phone_code option:selected").attr('id');
     var phone = $("#phone").val();
@@ -2611,33 +2612,33 @@ function secretPackage() {
             'delivery': delivery,
             'insurance': ins,
             'phone':phone,
-            'phone_code':phone_code, 
+            'phone_code':phone_code,
             'email':email,
             'billing_country':billing_country,
             'billing_state':billing_state,
             'alter_email':alter_email,
             'alter_email':alter_email,
-            'firstname':firstname, 
-            'lastname':lastname, 
-            'billing_city':billing_city, 
-            'billing_address':billing_address, 
+            'firstname':firstname,
+            'lastname':lastname,
+            'billing_city':billing_city,
+            'billing_address':billing_address,
             'billing_zip':billing_zip,
             'shipping_country':shipping_country,
             'shipping_state':shipping_state,
-            'shipping_city':shipping_city, 
+            'shipping_city':shipping_city,
             'shipping_address':shipping_address,
-            'shipping_zip':shipping_zip, 
+            'shipping_zip':shipping_zip,
             'shipping_open':shipping_open,
-            'theme':theme, 
+            'theme':theme,
             'recurring':recurring,
             'recurring_period':recurring_period,
             'payment_type':payment_type,
-            'card_month':card_month, 
-            'card_year':card_year, 
-            'card_holder':card_holder, 
-            'card_number':card_number, 
+            'card_month':card_month,
+            'card_year':card_year,
+            'card_holder':card_holder,
+            'card_number':card_number,
             'card_cvv':card_cvv
-        }, 
+        },
         dataType: 'html',
         success : function(data) {
             $(".wrapper").html(data);
@@ -2648,7 +2649,7 @@ function secretPackage() {
 function insurance_shipping(val) {
 
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     var phone_code = $(".phone_code option:selected").attr('id');
     var phone = $("#phone").val();
@@ -2687,32 +2688,32 @@ else
             'delivery': delivery,
             'insurance': val,
             'phone':phone,
-            'phone_code':phone_code, 
+            'phone_code':phone_code,
             'email':email,
             'billing_country':billing_country,
             'billing_state':billing_state,
             'alter_email':alter_email,
             'alter_email':alter_email,
-            'firstname':firstname, 
-            'lastname':lastname, 
-            'billing_city':billing_city, 
-            'billing_address':billing_address, 
+            'firstname':firstname,
+            'lastname':lastname,
+            'billing_city':billing_city,
+            'billing_address':billing_address,
             'billing_zip':billing_zip,
             'shipping_country':shipping_country,
             'shipping_state':shipping_state,
-            'shipping_city':shipping_city, 
+            'shipping_city':shipping_city,
             'shipping_address':shipping_address,
-            'shipping_zip':shipping_zip, 
+            'shipping_zip':shipping_zip,
             'shipping_open':shipping_open,
             'recurring':recurring,
             'recurring_period':recurring_period,
             'payment_type':payment_type,
-            'card_month':card_month, 
-            'card_year':card_year, 
-            'card_holder':card_holder, 
-            'card_number':card_number, 
+            'card_month':card_month,
+            'card_year':card_year,
+            'card_holder':card_holder,
+            'card_number':card_number,
             'card_cvv':card_cvv
-        }, 
+        },
         dataType: 'html',
         success : function(data) {
             $(".wrapper").html(data);
@@ -2722,11 +2723,11 @@ else
 
 function delivery_shipping() {
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     let delivery = $("input[name='delivery']:checked").val();
     let ins = $("input[name='insurance']:checked").val();
-    if (ins != 1) 
+    if (ins != 1)
         ins = 0;
     var phone_code = $(".phone_code option:selected").attr('id');
     var phone = $("#phone").val();
@@ -2766,33 +2767,33 @@ else
             'delivery': delivery,
             'insurance': ins,
             'phone':phone,
-            'phone_code':phone_code, 
+            'phone_code':phone_code,
             'email':email,
             'billing_country':billing_country,
             'billing_state':billing_state,
             'alter_email':alter_email,
             'alter_email':alter_email,
-            'firstname':firstname, 
-            'lastname':lastname, 
-            'billing_city':billing_city, 
-            'billing_address':billing_address, 
+            'firstname':firstname,
+            'lastname':lastname,
+            'billing_city':billing_city,
+            'billing_address':billing_address,
             'billing_zip':billing_zip,
             'shipping_country':shipping_country,
             'shipping_state':shipping_state,
-            'shipping_city':shipping_city, 
+            'shipping_city':shipping_city,
             'shipping_address':shipping_address,
-            'shipping_zip':shipping_zip, 
+            'shipping_zip':shipping_zip,
             'shipping_open':shipping_open,
-            'theme':theme, 
+            'theme':theme,
             'recurring':recurring,
             'recurring_period':recurring_period,
             'payment_type':payment_type,
-            'card_month':card_month, 
-            'card_year':card_year, 
-            'card_holder':card_holder, 
-            'card_number':card_number, 
+            'card_month':card_month,
+            'card_year':card_year,
+            'card_holder':card_holder,
+            'card_number':card_number,
             'card_cvv':card_cvv
-        }, 
+        },
         dataType: 'html',
         success : function(data) {
             $(".wrapper").html(data);
@@ -2803,11 +2804,11 @@ else
 $(".your-order__coupon-button").click(function(e) {
     e.preventDefault();
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     let delivery = $("input[name='delivery']:checked").val();
     let ins = $("input[name='insurance']:checked").val();
-    if (ins != 1) 
+    if (ins != 1)
         ins = 0;
     var coupon = document.getElementById("coupon").value;//$("#coupon").val();
     var phone_code = $(".phone_code option:selected").attr('id');
@@ -2841,40 +2842,40 @@ else
     var recurring_period = 0;
 
     $.ajax({
-        url:'/app/ajax_checkout.php',   
+        url:'/app/ajax_checkout.php',
         type: 'POST',
         dataType: 'html',
         data: {
             'secret': secret,
             'delivery': delivery,
             'insurance': ins,
-            'coupon':coupon, 
+            'coupon':coupon,
             'phone':phone,
-            'phone_code':phone_code, 
+            'phone_code':phone_code,
             'email':email,
             'billing_country':billing_country,
             'billing_state':billing_state,
             'alter_email':alter_email,
             'alter_email':alter_email,
-            'firstname':firstname, 
-            'lastname':lastname, 
-            'billing_city':billing_city, 
-            'billing_address':billing_address, 
+            'firstname':firstname,
+            'lastname':lastname,
+            'billing_city':billing_city,
+            'billing_address':billing_address,
             'billing_zip':billing_zip,
             'shipping_country':shipping_country,
             'shipping_state':shipping_state,
-            'shipping_city':shipping_city, 
+            'shipping_city':shipping_city,
             'shipping_address':shipping_address,
-            'shipping_zip':shipping_zip, 
+            'shipping_zip':shipping_zip,
             'shipping_open':shipping_open,
-            'theme':theme, 
+            'theme':theme,
             'recurring':recurring,
             'recurring_period':recurring_period,
             'payment_type':payment_type,
-            'card_month':card_month, 
-            'card_year':card_year, 
-            'card_holder':card_holder, 
-            'card_number':card_number, 
+            'card_month':card_month,
+            'card_year':card_year,
+            'card_holder':card_holder,
+            'card_number':card_number,
             'card_cvv':card_cvv
         },
         success:function(data){
@@ -2886,11 +2887,11 @@ else
 //auth
 $('#email').bind('change', function(e) {
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     let delivery = $("input[name='delivery']:checked").val();
     let ins = $("input[name='insurance']:checked").val();
-    if (ins != 1) 
+    if (ins != 1)
         ins = 0;
     var phone_code = $(".phone_code option:selected").attr('id');
     var phone = $("#phone").val();
@@ -2932,7 +2933,7 @@ $('#email').bind('change', function(e) {
         popup5.classList.remove("show");
 
         $.ajax({
-            url:'/app/ajax_checkout.php',    
+            url:'/app/ajax_checkout.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2941,36 +2942,36 @@ $('#email').bind('change', function(e) {
                 'delivery': delivery,
                 'insurance': ins,
                 'phone':phone,
-                'phone_code':phone_code, 
+                'phone_code':phone_code,
                 'email':email,
                 'auth':auth,
                 // 'billing_country':billing_country,
                 // 'billing_state':billing_state,
                 'alter_email':alter_email,
-                // 'firstname':firstname, 
-                // 'lastname':lastname, 
-                // 'billing_city':billing_city, 
-                // 'billing_address':billing_address, 
+                // 'firstname':firstname,
+                // 'lastname':lastname,
+                // 'billing_city':billing_city,
+                // 'billing_address':billing_address,
                 // 'billing_zip':billing_zip,
                 // 'shipping_country':shipping_country,
                 // 'shipping_state':shipping_state,
-                // 'shipping_city':shipping_city, 
+                // 'shipping_city':shipping_city,
                 // 'shipping_address':shipping_address,
-                // 'shipping_zip':shipping_zip, 
+                // 'shipping_zip':shipping_zip,
                 // 'shipping_open':shipping_open,
-                'theme':theme, 
+                'theme':theme,
                 'recurring':recurring,
                 'recurring_period':recurring_period,
                 'payment_type':payment_type,
-                'card_month':card_month, 
-                'card_year':card_year, 
-                'card_holder':card_holder, 
-                'card_number':card_number, 
+                'card_month':card_month,
+                'card_year':card_year,
+                'card_holder':card_holder,
+                'card_number':card_number,
                 'card_cvv':card_cvv
             },
             success:function(data){
                 if(data.includes("/status/")) {
-                    window.location.replace(data); 
+                    window.location.replace(data);
                     document.body.classList.remove('loaded');
                 } else if(data == "no") {
 
@@ -2983,11 +2984,11 @@ $('#email').bind('change', function(e) {
 
 $( ".select_billing_country .select__option" ).click(function() {
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     let delivery = $("input[name='delivery']:checked").val();
     let ins = $("input[name='insurance']:checked").val();
-    if (ins != 1) 
+    if (ins != 1)
         ins = 0;
     var phone_code = $(".phone_code option:selected").attr('id');
     var phone = $("#phone").val();
@@ -3014,38 +3015,38 @@ $( ".select_billing_country .select__option" ).click(function() {
     var card_number = $("#card_numb").val();
     var card_cvv = $("#cvc_2").val();
   $.ajax({
-    url:'/app/ajax_checkout.php',    
+    url:'/app/ajax_checkout.php',
              type: 'POST',
              cache: false,
              dataType: 'html',
-             data: { 
+             data: {
                 'secret': secret,
                 'delivery': delivery,
                 'insurance': ins,
                 'phone':phone,
-                'phone_code':phone_code, 
+                'phone_code':phone_code,
                 'email':email,
                 'billing_country':billing_country,
                 'billing_state':billing_state,
                 'alter_email':alter_email,
                 'alter_email':alter_email,
-                'firstname':firstname, 
-                'lastname':lastname, 
-                'billing_city':billing_city, 
-                'billing_address':billing_address, 
+                'firstname':firstname,
+                'lastname':lastname,
+                'billing_city':billing_city,
+                'billing_address':billing_address,
                 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,
                 'shipping_state':shipping_state,
-                'shipping_city':shipping_city, 
+                'shipping_city':shipping_city,
                 'shipping_address':shipping_address,
-                'shipping_zip':shipping_zip, 
+                'shipping_zip':shipping_zip,
                 'shipping_open':shipping_open,
-                'theme':theme, 
+                'theme':theme,
                 'payment_type':payment_type,
-                'card_month':card_month, 
-                'card_year':card_year, 
-                'card_holder':card_holder, 
-                'card_number':card_number, 
+                'card_month':card_month,
+                'card_year':card_year,
+                'card_holder':card_holder,
+                'card_number':card_number,
                 'card_cvv':card_cvv
             },
 
@@ -3060,11 +3061,11 @@ $( ".select_billing_country .select__option" ).click(function() {
 
 // $( ".select_billing_state .select__option" ).click(function() {
 //     let secret = $("input[name='secret']:checked").val();
-//     if (secret != 1) 
+//     if (secret != 1)
 //         secret = 0;
 //     let delivery = $("input[name='delivery']:checked").val();
 //     let ins = $("input[name='insurance']:checked").val();
-//     if (ins != 1) 
+//     if (ins != 1)
 //         ins = 0;
 //     var coupon = document.getElementById("coupon").value;//$("#coupon").val();
 //     var phone_code = $(".phone_code option:selected").attr('id');
@@ -3096,7 +3097,7 @@ $( ".select_billing_country .select__option" ).click(function() {
 // else
 //     var recurring_period = 0;
 //     $.ajax({
-//         url:'/app/ajax_checkout.php',   
+//         url:'/app/ajax_checkout.php',
 //                type: 'POST',
 //                cache: false,
 //                dataType: 'html',
@@ -3104,52 +3105,52 @@ $( ".select_billing_country .select__option" ).click(function() {
 //                 'secret': secret,
 //                 'delivery': delivery,
 //                 'insurance': ins,
-//                 'coupon':coupon, 
+//                 'coupon':coupon,
 //                 'phone':phone,
-//                 'phone_code':phone_code, 
+//                 'phone_code':phone_code,
 //                 'email':email,
 //                 'billing_country':billing_country,
 //                 'billing_state':billing_state,
 //                 'alter_email':alter_email,
 //                 'alter_email':alter_email,
-//                 'firstname':firstname, 
-//                 'lastname':lastname, 
-//                 'billing_city':billing_city, 
-//                 'billing_address':billing_address, 
+//                 'firstname':firstname,
+//                 'lastname':lastname,
+//                 'billing_city':billing_city,
+//                 'billing_address':billing_address,
 //                 'billing_zip':billing_zip,
 //                 'shipping_country':shipping_country,
 //                 'shipping_state':shipping_state,
-//                 'shipping_city':shipping_city, 
+//                 'shipping_city':shipping_city,
 //                 'shipping_address':shipping_address,
-//                 'shipping_zip':shipping_zip, 
+//                 'shipping_zip':shipping_zip,
 //                 'shipping_open':shipping_open,
-//                 'theme':theme, 
+//                 'theme':theme,
 //                 'recurring':recurring,
 //                 'recurring_period':recurring_period,
-    
-//                 'card_month':card_month, 
-//                 'card_year':card_year, 
-//                 'card_holder':card_holder, 
-//                 'card_number':card_number, 
+
+//                 'card_month':card_month,
+//                 'card_year':card_year,
+//                 'card_holder':card_holder,
+//                 'card_number':card_number,
 //                 'card_cvv':card_cvv
 //                },
-  
+
 //            //        async: false,
-  
+
 //                success:function(data){
 //                   $('.wrapper').html(data);
 //               }
-  
+
 //            });
 //   });
 
   $( ".select_shipping_country .select__option" ).click(function() {
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     let delivery = $("input[name='delivery']:checked").val();
     let ins = $("input[name='insurance']:checked").val();
-    if (ins != 1) 
+    if (ins != 1)
         ins = 0;
     var phone_code = $(".phone_code option:selected").attr('id');
     var phone = $("#phone").val();
@@ -3182,7 +3183,7 @@ $( ".select_billing_country .select__option" ).click(function() {
 else
     var recurring_period = 0;
     $.ajax({
-        url:'/app/ajax_checkout.php',   
+        url:'/app/ajax_checkout.php',
                type: 'POST',
                cache: false,
                dataType: 'html',
@@ -3191,50 +3192,50 @@ else
                 'delivery': delivery,
                 'insurance': ins,
                 'phone':phone,
-                'phone_code':phone_code, 
+                'phone_code':phone_code,
                 'email':email,
                 'billing_country':billing_country,
                 'billing_state':billing_state,
                 'alter_email':alter_email,
                 'alter_email':alter_email,
-                'firstname':firstname, 
-                'lastname':lastname, 
-                'billing_city':billing_city, 
-                'billing_address':billing_address, 
+                'firstname':firstname,
+                'lastname':lastname,
+                'billing_city':billing_city,
+                'billing_address':billing_address,
                 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,
                 'shipping_state':shipping_state,
-                'shipping_city':shipping_city, 
+                'shipping_city':shipping_city,
                 'shipping_address':shipping_address,
-                'shipping_zip':shipping_zip, 
+                'shipping_zip':shipping_zip,
                 'shipping_open':shipping_open,
-                'theme':theme, 
+                'theme':theme,
                 'recurring':recurring,
                 'recurring_period':recurring_period,
                 'payment_type':payment_type,
-                'card_month':card_month, 
-                'card_year':card_year, 
-                'card_holder':card_holder, 
-                'card_number':card_number, 
+                'card_month':card_month,
+                'card_year':card_year,
+                'card_holder':card_holder,
+                'card_number':card_number,
                 'card_cvv':card_cvv
                },
-  
+
            //        async: false,
-  
+
                success:function(data){
                   $('.wrapper').html(data);
               }
-  
+
            });
   });
 
 //   $( ".select_shipping_state .select__option" ).click(function() {
 //     let secret = $("input[name='secret']:checked").val();
-//     if (secret != 1) 
+//     if (secret != 1)
 //         secret = 0;
 //     let delivery = $("input[name='delivery']:checked").val();
 //     let ins = $("input[name='insurance']:checked").val();
-//     if (ins != 1) 
+//     if (ins != 1)
 //         ins = 0;
 //     var coupon = document.getElementById("coupon").value;//$("#coupon").val();
 //     var phone_code = $(".phone_code option:selected").attr('id');
@@ -3266,7 +3267,7 @@ else
 //     else
 //         var recurring_period = 0;
 //     $.ajax({
-//         url:'/app/ajax_checkout.php',   
+//         url:'/app/ajax_checkout.php',
 //             type: 'POST',
 //             cache: false,
 //             dataType: 'html',
@@ -3274,43 +3275,43 @@ else
 //                 'secret': secret,
 //                 'delivery': delivery,
 //                 'insurance': ins,
-//                 'coupon':coupon, 
+//                 'coupon':coupon,
 //                 'phone':phone,
-//                 'phone_code':phone_code, 
+//                 'phone_code':phone_code,
 //                 'email':email,
 //                 'billing_country':billing_country,
 //                 'billing_state':billing_state,
 //                 'alter_email':alter_email,
 //                 'alter_email':alter_email,
-//                 'firstname':firstname, 
-//                 'lastname':lastname, 
-//                 'billing_city':billing_city, 
-//                 'billing_address':billing_address, 
+//                 'firstname':firstname,
+//                 'lastname':lastname,
+//                 'billing_city':billing_city,
+//                 'billing_address':billing_address,
 //                 'billing_zip':billing_zip,
 //                 'shipping_country':shipping_country,
 //                 'shipping_state':shipping_state,
-//                 'shipping_city':shipping_city, 
+//                 'shipping_city':shipping_city,
 //                 'shipping_address':shipping_address,
-//                 'shipping_zip':shipping_zip, 
+//                 'shipping_zip':shipping_zip,
 //                 'shipping_open':shipping_open,
-//                 'theme':theme, 
+//                 'theme':theme,
 //                 'recurring':recurring,
 //                 'recurring_period':recurring_period,
-                
-                
-//                 'card_month':card_month, 
-//                 'card_year':card_year, 
-//                 'card_holder':card_holder, 
-//                 'card_number':card_number, 
+
+
+//                 'card_month':card_month,
+//                 'card_year':card_year,
+//                 'card_holder':card_holder,
+//                 'card_number':card_number,
 //                 'card_cvv':card_cvv
 //             },
-  
+
 //            //        async: false,
-  
+
 //             success:function(data){
 //                 $('.wrapper').html(data);
 //             }
-  
+
 //     });
 // });
 
@@ -3356,7 +3357,7 @@ if(parseInt(card_year) == today.getFullYear()){
     if(card_month < mm || card_month > 12)
         $("#check_expire").val(0);
     else
-        $("#check_expire").val(1);  
+        $("#check_expire").val(1);
 } else if(parseInt(card_year) > today.getFullYear() && card_month < 12)
     $("#check_expire").val(1);
 else
@@ -3454,7 +3455,7 @@ if($(".card_type option:selected").val() !== "temp" && $('#check_number').val() 
         var recurring_period = $("input[name='recurring_period']:checked").val();
     else
         var recurring_period = 0;
-    
+
     //alert(recurring_period);
     var billing_country = $("#billing_country option:selected").val();
     var billing_state = $("#billing_state option:selected").val();
@@ -3464,7 +3465,7 @@ if($(".card_type option:selected").val() !== "temp" && $('#check_number').val() 
     var alter_email = $("#alter_email").val();
     var firstname = $("#firstname").val();
     var lastname = $("#lastname").val();
-    
+
     var billing_city = $("#billing_city").val();
     var billing_address = $("#billing_address").val();
     var billing_zip = $("#billing_zip").val();
@@ -3495,13 +3496,13 @@ if($(".card_type option:selected").val() !== "temp" && $('#check_number').val() 
     var ref = $("#ref").val();
     var fingerprint = $(".fingerprint").val();
     var coupon = $("#coupon").val();
-    
+
     let secret = $("input[name='secret']:checked").val();
-    if (secret != 1) 
+    if (secret != 1)
         secret = 0;
     let delivery = $("input[name='delivery']:checked").val();
     let ins = $("input[name='insurance']:checked").val();
-    if (ins != 1) 
+    if (ins != 1)
         ins = 0;
 
     var resolution = window.screen.width + 'x' + window.screen.height;
@@ -3521,50 +3522,50 @@ if($(".card_type option:selected").val() !== "temp" && $('#check_number').val() 
             'secret': secret,
             'delivery': delivery,
             'insurance': ins,
-            'screen_resolution':resolution, 
-            'customer_date':date, 
-            'coupon':coupon, 
-            
+            'screen_resolution':resolution,
+            'customer_date':date,
+            'coupon':coupon,
+
             'bonus':bonus,
             'billing_country':billing_country,
             'billing_state':billing_state,
             'phone':phone,
             'email':email,
-            'alter_email':alter_email, 
-            'firstname':firstname, 
-            'lastname':lastname, 
-            'billing_city':billing_city, 
-            'billing_address':billing_address, 
+            'alter_email':alter_email,
+            'firstname':firstname,
+            'lastname':lastname,
+            'billing_city':billing_city,
+            'billing_address':billing_address,
             'billing_zip':billing_zip,
             'shipping_country':shipping_country,
             'shipping_state':shipping_state,
-            'shipping_city':shipping_city, 
+            'shipping_city':shipping_city,
             'shipping_address':shipping_address,
-            'shipping_zip':shipping_zip, 
+            'shipping_zip':shipping_zip,
             'shipping_open':different,
             'proccess':1,
             'card_month':card_month,
             'payment_type':payment_type,
             'card_year':card_year,
-            'card_holder':card_holder, 
+            'card_holder':card_holder,
             'card_number':card_number,
             'card_cvv':card_cvv,
             'total':total,
-            'product_total':product_total, 
-            'reorder_discount':reorder_discount, 
+            'product_total':product_total,
+            'reorder_discount':reorder_discount,
             'shipping_price':shipping_price,
             'aff':aff,
             'saff':saff,
             'curr':curr,
             'store_skin':store_skin,
             'domain_from':domain_from,
-            'language':language, 
-            'currency':currency, 
-            'ref':ref, 
-            'fingerprint':fingerprint, 
-            'coupon_discount':coupon_discount, 
-            'theme':theme, 
-            'phone_code': phone_code, 
+            'language':language,
+            'currency':currency,
+            'ref':ref,
+            'fingerprint':fingerprint,
+            'coupon_discount':coupon_discount,
+            'theme':theme,
+            'phone_code': phone_code,
             'recurring_period':recurring_period
         },
 
@@ -3596,7 +3597,7 @@ if($(".card_type option:selected").val() !== "temp" && $('#check_number').val() 
             else {
                 if(data.includes('/success')) {
                     window.location.replace(data);
-                } else 
+                } else
                 // document.body.classList.add('loaded_hiding');
                 // window.setTimeout(function () {
                 //     document.body.classList.add('loaded');
@@ -3604,7 +3605,7 @@ if($(".card_type option:selected").val() !== "temp" && $('#check_number').val() 
                 // }, 500);
                 // alert("AAAAA");
                 $('.wrapper').html(data);
-                
+
             }
         }
     });
@@ -3686,7 +3687,7 @@ $( ".card_type .select__option" ).click(function() {
         var tmp = $('.totals-order__total').text();
         var numEl = parseFloat(tmp.match(/[0-9]*[.,]?[0-9]+$/))
         tmp = tmp.replace(numEl, '');
-        $('.totals-order__total').text(tmp + num);        
+        $('.totals-order__total').text(tmp + num);
         document.getElementById("master_discount").style.display = 'none';s
 
 
@@ -3735,9 +3736,9 @@ $( ".card_type .select__option" ).click(function() {
         // tmp = tmp.replace(numEl, '');
         // num *= 0.95;
         // num = num.toFixed(2);
-        // $('.totals-order__total').text(tmp + num);        
+        // $('.totals-order__total').text(tmp + num);
         // document.getElementById("master_discount").style.display = '';
-        
+
 
         document.getElementById("phone").disabled = false;
         document.getElementById("c_82").disabled = false;
@@ -3767,13 +3768,13 @@ $( ".card_type .select__option" ).click(function() {
         if(!validate_form()) {
             $(this).val($.data(this, 'current'));
             return false;
-        }  
+        }
         // console.log($('#total_clear').val());
         var num = $('#total_clear').val();
         var tmp = $('.totals-order__total').text();
         var numEl = parseFloat(tmp.match(/[0-9]*[.,]?[0-9]+$/))
         tmp = tmp.replace(numEl, '');
-        num *= 1.15; 
+        num *= 1.15;
         num = num.toFixed(2);
         $('.totals-order__total').text(tmp + num);
         document.getElementById("master_discount").style.display = 'none';
@@ -3805,12 +3806,12 @@ $( ".card_type .select__option" ).click(function() {
         if(!validate_form()) {
             $(this).val($.data(this, 'current'));
             return false;
-        }  
+        }
         // var num = $('#total_clear').val();
         // var tmp = $('.totals-order__total').text();
         // var numEl = parseFloat(tmp.match(/[0-9]*[.,]?[0-9]+$/))
         // tmp = tmp.replace(numEl, '');
-        // num *= 0.9; 
+        // num *= 0.9;
         // num = num.toFixed(2);
         // $('.totals-order__total').text(tmp + num);
         document.getElementById("master_discount").style.display = 'none';
@@ -3836,20 +3837,20 @@ $( ".card_type .select__option" ).click(function() {
         document.getElementById("shipping_city").disabled = false;
         document.getElementById("shipping_address").disabled = false;
         document.getElementById("shipping_zip").disabled = false;
-        
+
     }
     //alert(type);
     if(type == 'crypto') {
         if(!validate_form()) {
             $(this).val($.data(this, 'current'));
             return false;
-        }  
-        
+        }
+
         var num = $('#total_clear').val();
         var tmp = $('.totals-order__total').text();
         var numEl = parseFloat(tmp.match(/[0-9]*[.,]?[0-9]+$/))
         tmp = tmp.replace(numEl, '');
-        num *= 0.9; 
+        num *= 0.9;
         num = num.toFixed(2);
         $('.totals-order__total').text(tmp + num);
         document.getElementById("master_discount").style.display = 'none';
@@ -3863,7 +3864,7 @@ $( ".card_type .select__option" ).click(function() {
             var recurring_period = $("input[name='recurring_period']:checked").val();
         else
             var recurring_period = 0;
-        
+
         //alert(recurring_period);
         var billing_country = $("#billing_country option:selected").val();
         var billing_state = $("#billing_state option:selected").val();
@@ -3896,53 +3897,53 @@ $( ".card_type .select__option" ).click(function() {
         var ref = $("#ref").val();
         var fingerprint = $(".fingerprint").val();
         var coupon = $("#coupon").val();
-        
+
         let secret = $("input[name='secret']:checked").val();
-        if (secret != 1) 
+        if (secret != 1)
             secret = 0;
         let delivery = $("input[name='delivery']:checked").val();
         let ins = $("input[name='insurance']:checked").val();
-        if (ins != 1) 
+        if (ins != 1)
             ins = 0;
 
         var resolution = window.screen.width + 'x' + window.screen.height;
-                
+
         const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-    
+
         const d = new Date();
         var day = weekday[d.getDay()];
         var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-        
+
         $.ajax({
-            url:'/app/ajax_checkout.php',   
+            url:'/app/ajax_checkout.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
             data: {
                 'secret': secret,
                 'delivery': delivery,
-                'insurance': ins, 
-                'coupon':coupon, 
+                'insurance': ins,
+                'coupon':coupon,
                 'bonus':bonus,
                 'billing_country':billing_country,
                 'billing_state':billing_state,
                 'phone':phone,
                 'email':email,
-                'alter_email':alter_email, 
-                'firstname':firstname, 
-                'lastname':lastname, 
-                'billing_city':billing_city, 
-                'billing_address':billing_address, 
+                'alter_email':alter_email,
+                'firstname':firstname,
+                'lastname':lastname,
+                'billing_city':billing_city,
+                'billing_address':billing_address,
                 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,
                 'shipping_state':shipping_state,
-                'shipping_city':shipping_city, 
+                'shipping_city':shipping_city,
                 'shipping_address':shipping_address,
-                'shipping_zip':shipping_zip, 
+                'shipping_zip':shipping_zip,
                 'shipping_open':different,
                 'total':total,
-                'product_total':product_total, 
-                'reorder_discount':reorder_discount, 
+                'product_total':product_total,
+                'reorder_discount':reorder_discount,
                 'shipping':shipping,
                 'shipping_price':shipping_price,
                 'aff':aff,
@@ -3950,17 +3951,17 @@ $( ".card_type .select__option" ).click(function() {
                 'curr':curr,
                 'store_skin':store_skin,
                 'domain_from':domain_from,
-                'language':language, 
-                'currency':currency, 
-                'ref':ref, 
-                'fingerprint':fingerprint, 
-                'coupon_discount':coupon_discount, 
-                'theme':theme, 
-                'phone_code': phone_code, 
+                'language':language,
+                'currency':currency,
+                'ref':ref,
+                'fingerprint':fingerprint,
+                'coupon_discount':coupon_discount,
+                'theme':theme,
+                'phone_code': phone_code,
                 'recurring_period':recurring_period,
 
                 'payment_type':type,
-                'screen_resolution':resolution, 
+                'screen_resolution':resolution,
                 'customer_date':date
             },
             success:function(response){
@@ -3995,13 +3996,13 @@ $( ".card_type .select__option" ).click(function() {
         document.getElementById("shipping_city").disabled = true;
         document.getElementById("shipping_address").disabled = true;
         document.getElementById("shipping_zip").disabled = true;
-    } 
+    }
     if(type == 'card') {
         var num = $('#total_clear').val();
         var tmp = $('.totals-order__total').text();
         var numEl = parseFloat(tmp.match(/[0-9]*[.,]?[0-9]+$/))
         tmp = tmp.replace(numEl, '');
-        $('.totals-order__total').text(tmp + num);   
+        $('.totals-order__total').text(tmp + num);
         document.getElementById("master_discount").style.display = 'none';
         document.getElementById("phone").disabled = false;
         document.getElementById("c_82").disabled = false;
@@ -4036,15 +4037,15 @@ $('input[name="crypt_currency"]').click(function() {
     var total = document.getElementById('total');
 
     if(currency != '')
-    {   
+    {
         //document.body.classList.remove('loaded');
 
         document.getElementById("requisites_load").hidden = false;
         document.getElementById("requisites").hidden = true;
         // console.log(currency, email.value, total.value);
-        
+
         $.ajax({
-            url:'/app/crypto_info.php',   
+            url:'/app/crypto_info.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -4079,7 +4080,7 @@ $('input[name="crypt_currency"]').click(function() {
 
         var countDownDate = new Date().getTime() + 1800000;
         clearInterval(window.countdownfunction);
-        
+
         // Update the count down every 1 second
         window.countdownfunction = setInterval(function() {
             //alert('aaaa');
@@ -4101,13 +4102,13 @@ $('input[name="crypt_currency"]').click(function() {
         }
         document.getElementById("timer").innerHTML = minutes + ":" + seconds;
 
-        // If the count down is over, write some text 
+        // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(countdownfunction);
             document.getElementById("timer").innerHTML = "EXPIRED";
         }
         }, 1000);
-        
+
     }
     else
     {
@@ -4133,7 +4134,7 @@ function CheckPayment() {
     //alert($("#crypto_currency option:selected").val());
     if (invoiceId.value) {
         $.ajax({
-            url:'/app/crypto_status.php', 
+            url:'/app/crypto_status.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -4144,8 +4145,8 @@ function CheckPayment() {
             success:function(data){
                 var result = JSON.parse(data);
                 // console.log(result);
-               if(result.status == 3 && $("#pay_yes").val() == 0){         
-                    $("#pay_yes").val(1);           
+               if(result.status == 3 && $("#pay_yes").val() == 0){
+                    $("#pay_yes").val(1);
                     document.body.classList.remove('loaded');
                     //alert('aaaaa');
                     var language = $(".language option:selected").val();
@@ -4158,7 +4159,7 @@ function CheckPayment() {
                         var recurring_period = $("input[name='recurring_period1']:checked").val();
                     else
                         var recurring_period = 0;
-                    
+
                     //alert(recurring_period);
                     var billing_country = $("#billing_country option:selected").val();
                     var billing_state = $("#billing_state option:selected").val();
@@ -4168,7 +4169,7 @@ function CheckPayment() {
                     var alter_email = $("#alter_email").val();
                     var firstname = $("#firstname").val();
                     var lastname = $("#lastname").val();
-                    
+
                     var billing_city = $("#billing_city").val();
                     var billing_address = $("#billing_address").val();
                     var billing_zip = $("#billing_zip").val();
@@ -4199,25 +4200,25 @@ function CheckPayment() {
                     var ref = $("#ref").val();
                     var fingerprint = $(".fingerprint").val();
                     var coupon = $("#coupon").val();
-                    
+
                     let secret = $("input[name='secret']:checked").val();
-                    if (secret != 1) 
+                    if (secret != 1)
                         secret = 0;
                     let delivery = $("input[name='delivery']:checked").val();
                     let ins = $("input[name='insurance']:checked").val();
-                    if (ins != 1) 
+                    if (ins != 1)
                         ins = 0;
                     var invoiceId = $("#invoiceId").val();
                     var crypto_currency = $('input[name="crypt_currency"]:checked').val();
-                
+
                     var resolution = window.screen.width + 'x' + window.screen.height;
-                
+
                     const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-                
+
                     const d = new Date();
                     var day = weekday[d.getDay()];
                     var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-                
+
                     $.ajax({
                         url:'/app/ajax_checkout.php',
                         type: 'POST',
@@ -4227,9 +4228,9 @@ function CheckPayment() {
                             'secret': secret,
                             'delivery': delivery,
                             'insurance': ins,
-                            'screen_resolution':resolution, 
-                            'customer_date':date, 
-                            'coupon':coupon, 
+                            'screen_resolution':resolution,
+                            'customer_date':date,
+                            'coupon':coupon,
                             'crypto_status':result.status,
 
                             'bonus':bonus,
@@ -4237,43 +4238,43 @@ function CheckPayment() {
                             'billing_state':billing_state,
                             'phone':phone,
                             'email':email,
-                            'alter_email':alter_email, 
-                            'firstname':firstname, 
-                            'lastname':lastname, 
-                            'billing_city':billing_city, 
-                            'billing_address':billing_address, 
+                            'alter_email':alter_email,
+                            'firstname':firstname,
+                            'lastname':lastname,
+                            'billing_city':billing_city,
+                            'billing_address':billing_address,
                             'billing_zip':billing_zip,
                             'shipping_country':shipping_country,
                             'shipping_state':shipping_state,
-                            'shipping_city':shipping_city, 
+                            'shipping_city':shipping_city,
                             'shipping_address':shipping_address,
-                            'shipping_zip':shipping_zip, 
+                            'shipping_zip':shipping_zip,
                             'shipping_open':different,
                             'proccess':1,
                             'card_month':card_month,
                             'payment_type':payment_type,
                             'card_year':card_year,
-                            'card_holder':card_holder, 
+                            'card_holder':card_holder,
                             'card_number':card_number,
                             'card_cvv':card_cvv,
                             'total':total,
-                            'product_total':product_total, 
-                            'reorder_discount':reorder_discount, 
+                            'product_total':product_total,
+                            'reorder_discount':reorder_discount,
                             'shipping_price':shipping_price,
                             'aff':aff,
                             'saff':saff,
                             'curr':curr,
                             'store_skin':store_skin,
                             'domain_from':domain_from,
-                            'language':language, 
-                            'currency':currency, 
-                            'ref':ref, 
-                            'fingerprint':fingerprint, 
-                            'coupon_discount':coupon_discount, 
-                            'theme':theme, 
-                            'phone_code': phone_code, 
+                            'language':language,
+                            'currency':currency,
+                            'ref':ref,
+                            'fingerprint':fingerprint,
+                            'coupon_discount':coupon_discount,
+                            'theme':theme,
+                            'phone_code': phone_code,
                             'recurring_period':recurring_period,
-                            'crypto_currency':crypto_currency, 
+                            'crypto_currency':crypto_currency,
                             'invoiceId': invoiceId,
                             'merchant_id':result.merchantId,
                             'purse':result.purse,
@@ -4281,7 +4282,7 @@ function CheckPayment() {
                             'amountInPayCurrency':result.amountInPayCurrency,
                             'commission':result.complexCommission
                         },
-        
+
                         success:function(data){
                             quit_flag = 1;
                             // alert(data);
@@ -4290,7 +4291,7 @@ function CheckPayment() {
                             throw new Error("ok");
                             //$('.wrapper').html(data);
                         }
-        
+
                         });
 
                }
@@ -4358,13 +4359,13 @@ function CheckPayment() {
                     var ref = $("#ref").val();
                     var fingerprint = $(".fingerprint").val();
                     var coupon = $("#coupon").val();
-                    
+
                     let secret = $("input[name='secret']:checked").val();
-                    if (secret != 1) 
+                    if (secret != 1)
                         secret = 0;
                     let delivery = $("input[name='delivery']:checked").val();
                     let ins = $("input[name='insurance']:checked").val();
-                    if (ins != 1) 
+                    if (ins != 1)
                         ins = 0;
                     var invoiceId = $("#invoiceId").val();
                     var crypto_currency = $('input[name="crypt_currency"]:checked').val();
@@ -4386,62 +4387,62 @@ function CheckPayment() {
                             'secret': secret,
                             'delivery': delivery,
                             'insurance': ins,
-                            'screen_resolution':resolution, 
-                            'customer_date':date, 
-                            'coupon':coupon, 
+                            'screen_resolution':resolution,
+                            'customer_date':date,
+                            'coupon':coupon,
                             'crypto_status':result.status,
-                            
+
                             'bonus':bonus,
                             'billing_country':billing_country,
                             'billing_state':billing_state,
                             'phone':phone,
                             'email':email,
-                            'alter_email':alter_email, 
-                            'firstname':firstname, 
-                            'lastname':lastname, 
-                            'billing_city':billing_city, 
-                            'billing_address':billing_address, 
+                            'alter_email':alter_email,
+                            'firstname':firstname,
+                            'lastname':lastname,
+                            'billing_city':billing_city,
+                            'billing_address':billing_address,
                             'billing_zip':billing_zip,
                             'shipping_country':shipping_country,
                             'shipping_state':shipping_state,
-                            'shipping_city':shipping_city, 
+                            'shipping_city':shipping_city,
                             'shipping_address':shipping_address,
-                            'shipping_zip':shipping_zip, 
+                            'shipping_zip':shipping_zip,
                             'shipping_open':different,
                             'proccess':1,
                             'card_month':card_month,
                             'payment_type':payment_type,
                             'card_year':card_year,
-                            'card_holder':card_holder, 
+                            'card_holder':card_holder,
                             'card_number':card_number,
                             'card_cvv':card_cvv,
                             'total':total,
-                            'product_total':product_total, 
-                            'reorder_discount':reorder_discount, 
+                            'product_total':product_total,
+                            'reorder_discount':reorder_discount,
                             'shipping_price':shipping_price,
                             'aff':aff,
                             'saff':saff,
                             'curr':curr,
                             'store_skin':store_skin,
                             'domain_from':domain_from,
-                            'language':language, 
-                            'currency':currency, 
-                            'ref':ref, 
-                            'fingerprint':fingerprint, 
-                            'coupon_discount':coupon_discount, 
-                            'theme':theme, 
-                            'phone_code': phone_code, 
+                            'language':language,
+                            'currency':currency,
+                            'ref':ref,
+                            'fingerprint':fingerprint,
+                            'coupon_discount':coupon_discount,
+                            'theme':theme,
+                            'phone_code': phone_code,
                             'recurring_period':recurring_period,
-                            'crypto_currency':crypto_currency, 
+                            'crypto_currency':crypto_currency,
                             'invoiceId': invoiceId,
                             'merchant_id':result.merchantId,
                             'purse':result.purse,
                             'amount':result.amount,
                             'amountInPayCurrency':result.amountInPayCurrency,
                             'commission':result.complexCommission
-                            
+
                         },
-        
+
                         success:function(data){
                             quit_flag = 1;
                             window.location.replace(data);
@@ -4450,7 +4451,7 @@ function CheckPayment() {
                     });
                 }
             }
-        });         
+        });
     }
 }
 
@@ -4590,7 +4591,7 @@ $('#proccess_paypal').click(function(e) {
             var recurring_period = $("input[name='recurring_period']:checked").val();
         else
             var recurring_period = 0;
-        
+
         //alert(recurring_period);
         var billing_country = $("#billing_country option:selected").val();
         var billing_state = $("#billing_state option:selected").val();
@@ -4600,7 +4601,7 @@ $('#proccess_paypal').click(function(e) {
         var alter_email = $("#alter_email").val();
         var firstname = $("#firstname").val();
         var lastname = $("#lastname").val();
-        
+
         var billing_city = $("#billing_city").val();
         var billing_address = $("#billing_address").val();
         var billing_zip = $("#billing_zip").val();
@@ -4625,13 +4626,13 @@ $('#proccess_paypal').click(function(e) {
         var ref = $("#ref").val();
         var fingerprint = $(".fingerprint").val();
         var coupon = $("#coupon").val();
-        
+
         let secret = $("input[name='secret']:checked").val();
-        if (secret != 1) 
+        if (secret != 1)
             secret = 0;
         let delivery = $("input[name='delivery']:checked").val();
         let ins = $("input[name='insurance']:checked").val();
-        if (ins != 1) 
+        if (ins != 1)
             ins = 0;
 
         var resolution = window.screen.width + 'x' + window.screen.height;
@@ -4651,45 +4652,45 @@ $('#proccess_paypal').click(function(e) {
                 'secret': secret,
                 'delivery': delivery,
                 'insurance': ins,
-                'screen_resolution':resolution, 
-                'customer_date':date, 
-                'coupon':coupon, 
-                
+                'screen_resolution':resolution,
+                'customer_date':date,
+                'coupon':coupon,
+
                 'bonus':bonus,
                 'billing_country':billing_country,
                 'billing_state':billing_state,
                 'phone':phone,
                 'email':email,
-                'alter_email':alter_email, 
-                'firstname':firstname, 
-                'lastname':lastname, 
-                'billing_city':billing_city, 
-                'billing_address':billing_address, 
+                'alter_email':alter_email,
+                'firstname':firstname,
+                'lastname':lastname,
+                'billing_city':billing_city,
+                'billing_address':billing_address,
                 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,
                 'shipping_state':shipping_state,
-                'shipping_city':shipping_city, 
+                'shipping_city':shipping_city,
                 'shipping_address':shipping_address,
-                'shipping_zip':shipping_zip, 
+                'shipping_zip':shipping_zip,
                 'shipping_open':different,
                 'proccess':1,
                 'payment_type':payment_type,
                 'total':total,
-                'product_total':product_total, 
-                'reorder_discount':reorder_discount, 
+                'product_total':product_total,
+                'reorder_discount':reorder_discount,
                 'shipping_price':shipping_price,
                 'aff':aff,
                 'saff':saff,
                 'curr':curr,
                 'store_skin':store_skin,
                 'domain_from':domain_from,
-                'language':language, 
-                'currency':currency, 
-                'ref':ref, 
-                'fingerprint':fingerprint, 
-                'coupon_discount':coupon_discount, 
-                'theme':theme, 
-                'phone_code': phone_code, 
+                'language':language,
+                'currency':currency,
+                'ref':ref,
+                'fingerprint':fingerprint,
+                'coupon_discount':coupon_discount,
+                'theme':theme,
+                'phone_code': phone_code,
                 'recurring_period':recurring_period
             },
 
@@ -4702,10 +4703,10 @@ $('#proccess_paypal').click(function(e) {
                     alert(error[1]);
                     window.location.replace(error[2]);
                 }
-                else 
+                else
                     if(data.includes('/success'))
                         window.location.replace(data);
-                    else 
+                    else
                         $('.wrapper').html(data);
             }
         });
@@ -4775,7 +4776,7 @@ $('#proccess_sepa').click(function(e) {
             var recurring_period = $("input[name='recurring_period']:checked").val();
         else
             var recurring_period = 0;
-        
+
         //alert(recurring_period);
         var billing_country = $("#billing_country option:selected").val();
         var billing_state = $("#billing_state option:selected").val();
@@ -4785,7 +4786,7 @@ $('#proccess_sepa').click(function(e) {
         var alter_email = $("#alter_email").val();
         var firstname = $("#firstname").val();
         var lastname = $("#lastname").val();
-        
+
         var billing_city = $("#billing_city").val();
         var billing_address = $("#billing_address").val();
         var billing_zip = $("#billing_zip").val();
@@ -4810,13 +4811,13 @@ $('#proccess_sepa').click(function(e) {
         var ref = $("#ref").val();
         var fingerprint = $(".fingerprint").val();
         var coupon = $("#coupon").val();
-        
+
         let secret = $("input[name='secret']:checked").val();
-        if (secret != 1) 
+        if (secret != 1)
             secret = 0;
         let delivery = $("input[name='delivery']:checked").val();
         let ins = $("input[name='insurance']:checked").val();
-        if (ins != 1) 
+        if (ins != 1)
             ins = 0;
 
         var resolution = window.screen.width + 'x' + window.screen.height;
@@ -4836,45 +4837,45 @@ $('#proccess_sepa').click(function(e) {
                 'secret': secret,
                 'delivery': delivery,
                 'insurance': ins,
-                'screen_resolution':resolution, 
-                'customer_date':date, 
-                'coupon':coupon, 
-                
+                'screen_resolution':resolution,
+                'customer_date':date,
+                'coupon':coupon,
+
                 'bonus':bonus,
                 'billing_country':billing_country,
                 'billing_state':billing_state,
                 'phone':phone,
                 'email':email,
-                'alter_email':alter_email, 
-                'firstname':firstname, 
-                'lastname':lastname, 
-                'billing_city':billing_city, 
-                'billing_address':billing_address, 
+                'alter_email':alter_email,
+                'firstname':firstname,
+                'lastname':lastname,
+                'billing_city':billing_city,
+                'billing_address':billing_address,
                 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,
                 'shipping_state':shipping_state,
-                'shipping_city':shipping_city, 
+                'shipping_city':shipping_city,
                 'shipping_address':shipping_address,
-                'shipping_zip':shipping_zip, 
+                'shipping_zip':shipping_zip,
                 'shipping_open':different,
                 'proccess':1,
                 'payment_type':payment_type,
                 'total':total,
-                'product_total':product_total, 
-                'reorder_discount':reorder_discount, 
+                'product_total':product_total,
+                'reorder_discount':reorder_discount,
                 'shipping_price':shipping_price,
                 'aff':aff,
                 'saff':saff,
                 'curr':curr,
                 'store_skin':store_skin,
                 'domain_from':domain_from,
-                'language':language, 
-                'currency':currency, 
-                'ref':ref, 
-                'fingerprint':fingerprint, 
-                'coupon_discount':coupon_discount, 
-                'theme':theme, 
-                'phone_code': phone_code, 
+                'language':language,
+                'currency':currency,
+                'ref':ref,
+                'fingerprint':fingerprint,
+                'coupon_discount':coupon_discount,
+                'theme':theme,
+                'phone_code': phone_code,
                 'recurring_period':recurring_period
             },
 
@@ -4887,10 +4888,10 @@ $('#proccess_sepa').click(function(e) {
                     alert(error[1]);
                     window.location.replace(error[2]);
                 }
-                else 
+                else
                     if(data.includes('/success'))
                         window.location.replace(data);
-                    else 
+                    else
                         $('.wrapper').html(data);
             }
         });

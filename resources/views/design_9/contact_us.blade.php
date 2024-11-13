@@ -42,7 +42,7 @@
                                 <label for="name" class="form__label">{{__('text.contact_us_code')}}</label>
                                 <div class="form__input">
                                     <picture>
-                                        <img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 14px;">
+                                        <img loading="lazy" id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 14px;">
                                     </picture>
                                     <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" data-error="" placeholder="{{__('text.contact_us_code')}}" class="form__input input" style="width: auto">
                                 </div>
@@ -73,7 +73,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_1')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_1')}}</div>
@@ -82,7 +82,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_7')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_7')}}</div>
@@ -91,7 +91,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_13')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_13')}}</div>
@@ -100,7 +100,7 @@
             <div class="review_top">
                 <div class="person_name">{!!__('text.testimonials_author_t_17')!!}</div>
                 <div class="stars">
-                    <img src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/icons/stars.svg") }}" height="20" alt="">
                 </div>
             </div>
             <div class="review_text">{{__('text.testimonials_t_17')}}</div>

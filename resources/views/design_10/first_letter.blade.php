@@ -13,14 +13,14 @@
                 <article class="card product-card">
                     <a class="product-card__img" href="{{ route('home.product', $product['url']) }}">
                         @if ($product['image'] == 'gift-card')
-                            <img src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
+                            <img loading="lazy" src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
                         @else
                             <picture>
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                             </picture>
                         @endif
-                        {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift-card.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
+                        {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift-card.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                     </a>
                     <h2 class="product-card__heading">
                         <a class="product-card__brand link-primary" href="{{ route('home.product', $product['url']) }}">{{ $product['name'] }}</a>

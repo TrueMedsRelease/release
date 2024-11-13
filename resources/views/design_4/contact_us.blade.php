@@ -45,7 +45,7 @@
 				<label for="captcha" class="contact-form__label">{{__('text.contact_us_code')}}</label>
 				<div class="contact-form__captcha">
 					<picture>
-						<img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 15px;">
+						<img loading="lazy" id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 15px;">
 					</picture>
 				</div>
 				<div class="contact-form__input">

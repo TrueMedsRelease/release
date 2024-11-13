@@ -12,13 +12,13 @@
 	<h3>{{__('text.shipping_title1')}}</h3>
 	<div class="shipping-info">
 		<div class="item">
-			<img src="{{ asset("$design/images/icon/ico-info-05.svg") }}" alt="">
+			<img loading="lazy" src="{{ asset("$design/images/icon/ico-info-05.svg") }}" alt="">
 			<div class="text">
 				<p>{!!__('text.shipping_text_2')!!}</p>
 			</div>
 		</div>
 		<div class="item">
-			<img src="{{ asset("$design/images/icon/ico-info-02.svg") }}" alt="">
+			<img loading="lazy" src="{{ asset("$design/images/icon/ico-info-02.svg") }}" alt="">
 			<div class="text">
 				<p>{!!__('text.shipping_text_1')!!}</p>
 			</div>
@@ -41,7 +41,7 @@
 <div class="sale-banners">
     <div class="happy-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner1_text1')}} <br>{{__('text.common_banner1_text2')}}</span>
@@ -50,7 +50,7 @@
     </div>
     <div class="wow-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner2_text1')}} <br> {!!__('text.common_banner2_text2')!!}</span>
