@@ -348,8 +348,7 @@
                                             @else
                                                 @selected($item['iso'] == session('form.phone_code', ''))
                                             @endif
-                                                data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
-                                                value="{{ $item['iso'] }}">
+                                                data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}" value="{{ $item['iso'] }}">
                                                 +{{ $item['phonecode'] }}
                                             </option>
                                         @endforeach
@@ -375,7 +374,7 @@
                                             @else
                                                 @selected($item['iso'] == session('form.alt_phone_code', ''))
                                             @endif
-                                                data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                                data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
                                                 value="{{ $item['iso'] }}">
                                                 +{{ $item['phonecode'] }}
                                             </option>
