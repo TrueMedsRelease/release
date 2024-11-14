@@ -582,7 +582,7 @@
                                             {{ __('text.checkout_bank_card') }}</option>
                                         <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>
                                             {{ __('text.checkout_crypto') }} -15% extra off</option>
-                                        @if (env('APP_GOOGLE_ON', 0))
+                                        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US')
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif
                                         @if (env('APP_PAYPAL_ON', 0))
@@ -896,7 +896,7 @@
                             </button>
                         </div>
 
-                        @if (env('APP_GOOGLE_ON', 0))
+                        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US')
                             <div class="enter-info__google-content" @if (session('form.payment_type', 'card') != 'google') hidden @endif>
                                 <div class="details-payment__row">
                                     <div class="details-payment__data" style="text-align: center;">
