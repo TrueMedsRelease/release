@@ -563,6 +563,9 @@
                                         @if(env('APP_PAYPAL_ON', 0))
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
+                                        @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US')
+                                            <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
+                                        @endif
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
@@ -850,6 +853,21 @@
                                 <span>{{__('text.checkout_sepa_button')}}</span>
                             </button>
                         </div>
+
+                        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US')
+                        <div class="enter-info__google-content" @if (session('form.payment_type', 'card') != 'google') hidden @endif>
+                            <div class="details-payment__row">
+                                <div class="details-payment__data" style="text-align: center;">
+                                    {{ __('text.checkout_sepa_text') }}
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: center;">
+                                <iframe
+                                    src="https://r.express/m-pay/l2Bm75tKjX?amount={{ session('total.checkout_total_eur') }}&currency=EUR&country={{ session('location.country', 'US') }}&width=200&height=50&buttonColor=white&buttonRadius=20px&buttonLocale=en"
+                                    style="border: 0" width="255" height="67"></iframe>
+                            </div>
+                        </div>
+                        @endif
 
                         <div class="enter-info__sepa-content" hidden>
                             <div class="details-payment__row">
