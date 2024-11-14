@@ -565,7 +565,8 @@
                 </ul>
             </div>
         </section>
-
+    </div>
+    
     @yield('content')
 
     <div class="container sup-footer">
