@@ -882,7 +882,8 @@
 
             const selectOptionData = selectOption.dataset.asset ? `${selectOption.dataset.asset}` : "";
             const selectOptionContryCode = selectOption.dataset.country ? `${selectOption.dataset.country}` : "";
-            const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<img src="${selectOptionData}" alt="">` : selectOptionData;
+            // const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<img loading="lazy" src="${selectOptionData}" alt="">` : selectOptionData;
+            const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<svg width="18px" height="18px"><use href="${selectOptionData}"></svg>` : selectOptionData;
             let selectOptionContentHTML = ``;
             selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectRow}">` : "";
             selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectData}">` : "";

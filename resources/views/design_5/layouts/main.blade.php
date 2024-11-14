@@ -39,20 +39,20 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
     @endif
 
-    {{-- <script type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
+    {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset($design . '/css/all.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset($design . '/css/intlTelInput.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/css/slick.css') }}" rel="stylesheet">
 
-    <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
-    <script src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
-    <script src="{{ asset('vendor/jquery/init.js') }}"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
+    <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
+    <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
+    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
@@ -105,7 +105,7 @@
                 <span class="close"></span>
                 <div class="menu_top">
                     <ul>
-                        <li class="categories_button"><img src="{{ asset("$design/images/icon/ico-menu.svg") }}"
+                        <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
                                 alt=""><a class="categories_a">{{ __('text.common_categories_menu') }}</a>
                         </li>
                         <li><a
@@ -168,7 +168,7 @@
             <div class="header-container">
                 <div class="panel-box">
                     <a href="{{ route('home.index') }}" class="logo">
-                        <img src="{{ asset("$design/images/logo.svg") }}" width="145" height="40"
+                        <img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" width="145" height="40"
                             alt="">
                     </a>
                     <div class="drop-info">
@@ -199,7 +199,7 @@
                         <div class="profile_top_block">
                             <a href="{{ route('home.login') }}" class="item profile_top" target="_blank">
                                 <span class="ico">
-                                    <img src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt=""
+                                    <img loading="lazy" src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt=""
                                         width="20" height="20">
                                 </span>
                                 <span class="name">{{ __('text.common_profile') }}</span>
@@ -259,7 +259,7 @@
                         <strong>{{ __('text.common_verified_d4') }}</strong>
                         <span>{{ __('text.common_approved_d4') }}</span>
                     </div>
-                    <img src="{{ asset("$design/images/img-certificates.png") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/img-certificates.png") }}" alt="">
                 </div>
             </div>
         </div>
@@ -268,7 +268,7 @@
             <div class="popup_call">
                 <div class="button_close">
                     <svg class="close_popup" width="15" height="15">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                        <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-close") }}"></use>
                     </svg>
                 </div>
                 <div class="popup_bottom">
@@ -281,7 +281,7 @@
                                         @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
                                 @else
                                     @selected($item['iso'] == session('form.phone_code', '')) @endif
-                                        data-asset="{{ asset('style_checkout/images/countrys/' . $item['nicename'] . '.svg') }}"
+                                        data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
                                         value="+{{ $item['phonecode'] }}">
                                         +{{ $item['phonecode'] }}
                                     </option>
@@ -308,7 +308,7 @@
             <div class="popup_push">
                 <div class="button_close">
                     <svg class="close_popup" width="15" height="15">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                        <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-close") }}"></use>
                     </svg>
                 </div>
                 <div class="popup_block">
@@ -334,7 +334,7 @@
         <div class="block_subscribe">
             <div class="left_block">
                 <div class="subscribe_img">
-                    <img src="{{ asset("$design/images/icons/subscribe.svg") }}">
+                    <img loading="lazy" src="{{ asset("$design/images/icon/subscribe.svg") }}">
                 </div>
                 <div class="text_subscribe">
                     <span class="top_text">{{ __('text.common_subscribe') }}</span>
@@ -344,7 +344,7 @@
             <div class="right_block">
                 <input type="text" placeholder="Email" class="form__input input" id="email_sub">
                 <div class="button_sub">
-                    <img src="{{ asset("$design/images/icons/subscribe_mini.svg") }}" class="sub_mini">
+                    <img loading="lazy" src="{{ asset("$design/images/icon/subscribe_mini.svg") }}" class="sub_mini">
                     <span class="button_text">{{ __('text.common_subscribe') }}</span>
                 </div>
             </div>
@@ -352,47 +352,73 @@
     </section>
 
 
-    <section class="ship-index">
+   <section class="ship-index">
         <div class="ship-index__container">
             <ul class="ship-index__list">
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/usps.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#usps" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/ems.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ems" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/dhl.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dhl" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/ups.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ups" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/fedex.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#fedex" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/tnt.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#tnt" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/postnl.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#postnl" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/deutsche_post.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#deutsche_post" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/dpd.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dpd" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/gls.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#gls" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/australia_post.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" width="100%" href="/pub_images/shipping/sprite.svg#australia_post" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/colissimo.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#colissimo" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
                 <li class="ship-index__item">
-                    <img src="/pub_images/shipping/correos.svg" alt="">
+                    <svg>
+                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#correos" preserveAspectRatio="xMinYMin">
+                    </svg>
                 </li>
             </ul>
         </div>
@@ -545,25 +571,25 @@
     <div class="mob-nav">
         <a href="#" class="item js-menu">
             <span class="ico">
-                <img src="{{ asset("$design/images/icon/ico-menu.svg") }}" alt="">
+                <img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}" alt="">
             </span>
             <span class="name">{{ __('text.common_categories_menu') }}</span>
         </a>
         <a href="{{ route('home.index') }}" class="item">
             <span class="ico">
-                <img src="{{ asset("$design/images/icon/ico-home.svg") }}" alt="">
+                <img loading="lazy" src="{{ asset("$design/images/icon/ico-home.svg") }}" alt="">
             </span>
             <span class="name">{{ __('text.common_home_main_menu_item') }}</span>
         </a>
         <a href="{{ route('home.login') }}" class="item" target="_blank">
             <span class="ico">
-                <img src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt="">
+                <img loading="lazy" src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt="">
             </span>
             <span class="name">{{ __('text.common_profile') }}</span>
         </a>
         <a @if ($cart_count != 0) href="{{ route('cart.index') }}" @endif class="item cart">
             <span class="ico">
-                <img src="{{ asset("$design/images/icon/ico-cart.svg") }}" alt="">
+                <img loading="lazy" src="{{ asset("$design/images/icon/ico-cart.svg") }}" alt="">
                 <span class="number">{{ $cart_count }}</span>
             </span>
             <span class="name">{{ $Currency::convert($cart_total) }}</span>
@@ -573,7 +599,7 @@
         <div class="announce__item @yield('announce_color', 'announce__item--blue')">
             <div class="announce__icon">
                 <svg width="24" height="24">
-                    <use xlink:href="@yield('announce_img', asset($design . '/images/icons/icons.svg#svg-checkmark'))"></use>
+                    <use xlink:href="@yield('announce_img', asset($design . '/images/icon/icons.svg#svg-checkmark'))"></use>
                 </svg>
             </div>
             <div class="announce__text">
@@ -586,10 +612,10 @@
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
     @endif
 
-    <script src="{{ asset("$design/js/app.js") }}"></script>
-    <script src="{{ asset("$design/js/slick.js") }}"></script>
-    <script src="{{ asset("$design/js/main.js") }}"></script>
-    <script src="{{ asset('/js/all_js.js') }}"></script>
+    <script defer src="{{ asset("$design/js/app.js") }}"></script>
+    <script defer src="{{ asset("$design/js/slick.js") }}"></script>
+    <script defer src="{{ asset("$design/js/main.js") }}"></script>
+    <script defer src="{{ asset('/js/all_js.js') }}"></script>
 
 </body>
 

@@ -8134,8 +8134,14 @@ footer .top-phones-header {
   list-style-type: none;
 }
 
-.pay-index__item img, .ship-index__item img {
-  width: 100%;
+.pay-index__item svg {
+    width: 100%;
+    height: 30px;
+}
+
+.ship-index__item svg {
+    width: 100%;
+    height: 90px;
 }
 
 @media (max-width: 1200px) {

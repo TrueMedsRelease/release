@@ -22,17 +22,17 @@
                     <div class="info-panel__image">
                         <picture>
                             @if ($product['image'] == 'gift-card')
-                                <img src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                             @endif
                         </picture>
                         {{-- <picture>
                             @if ($product['image'] != 'gift-card')
                                 <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                             @endif
-                            <img src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift-card.svg') }}"
+                            <img loading="lazy" src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift-card.svg') }}"
                                 alt="{{ $product['image'] }}">
                         </picture> --}}
                     </div>

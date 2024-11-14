@@ -5,7 +5,7 @@
 
 @section('style_title', 'text-align: center;')
 @section('page_name')
-    <img src="/admin_style/images/logo_truemeds.png">
+    <img loading="lazy" src="/admin_style/images/logo_truemeds.png">
 @endsection
 
 @section('content')
@@ -24,7 +24,7 @@
                 </div>
                 <div class="popup__row">
 					<picture>
-					    <img id="captcha_image" name="captcha" src="{{ captcha_src() }}" alt="">
+					    <img loading="lazy" id="captcha_image" name="captcha" src="{{ captcha_src() }}" alt="">
 					</picture>
                     <div class="popup__input" style="width: 100%">
                         <input type="text" id="captcha_field" name="captcha_field" placeholder="Captcha" size="6" maxlength="20" class="input" autocomplete="off"/>

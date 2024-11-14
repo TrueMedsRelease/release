@@ -15,7 +15,7 @@
 <div class="sale-banners">
     <div class="happy-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-01.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner1_text1')}} <br>{{__('text.common_banner1_text2')}}</span>
@@ -24,7 +24,7 @@
     </div>
     <div class="wow-sale item">
         <span class="img">
-            <img src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
+            <img loading="lazy" src="{{ asset("$design/images/icon/ico-banner-02.svg") }}" alt="">
         </span>
         <span class="info">
             <span class="title">{{__('text.common_banner2_text1')}} <br> {!!__('text.common_banner2_text2')!!}</span>

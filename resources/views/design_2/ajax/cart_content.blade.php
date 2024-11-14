@@ -117,7 +117,7 @@
                                         <span class="delivery-item__top">
                                             <span class="delivery-item__label">
                                                 {{__('text.checkout_express')}}
-                                                <img style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                                <img loading="lazy" style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                                             </span>
                                             <span class="delivery-item__price">
                                                 @if ($is_only_card)
@@ -153,7 +153,7 @@
                                         <span class="delivery-item__top">
                                             <span class="delivery-item__label">
                                                 {{__('text.checkout_regular')}}
-                                                <img style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                                <img loading="lazy" style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
                                             </span>
                                             <span class="delivery-item__price">
                                                 @if ($is_only_card)
@@ -247,7 +247,7 @@
                                             <div class="select_header_gift">
                                                 <span class="select_current_gift" curr_packaging_id = "{{ $cards[0]->pack_id }}">{{ $Currency::convert($cards[0]->price) }}</span>
                                                 <div class="select_icon">
-                                                    <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                                    <img loading="lazy" src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
                                                 </div>
                                             </div>
                                             <div class="select_body_gifts">
@@ -326,7 +326,7 @@
 				<div class="preference-page-cart__item">
 					<div class="preference-page-cart__top">
 						<div class="preference-page-cart__icon">
-							<img src="{{ asset("$design/images/icons/f-01.svg") }}" alt="">
+							<img loading="lazy" src="{{ asset("$design/images/icons/f-01.svg") }}" alt="">
 						</div>
 						<h2 class="preference-page-cart__label">{{__('text.cart_free_regular')}}</h2>
 					</div>
@@ -335,7 +335,7 @@
 				<div class="preference-page-cart__item">
 					<div class="preference-page-cart__top">
 						<div class="preference-page-cart__icon">
-							<img src="{{ asset("$design/images/icons/f-02.svg") }}" alt="">
+							<img loading="lazy" src="{{ asset("$design/images/icons/f-02.svg") }}" alt="">
 						</div>
 						<h2 class="preference-page-cart__label">{{__('text.cart_free_express')}}</h2>
 					</div>
@@ -344,7 +344,7 @@
 				<div class="preference-page-cart__item">
 					<div class="preference-page-cart__top">
 						<div class="preference-page-cart__icon">
-							<img src="{{ asset("$design/images/icons/f-03.svg") }}" alt="">
+							<img loading="lazy" src="{{ asset("$design/images/icons/f-03.svg") }}" alt="">
 						</div>
 						<h2 class="preference-page-cart__label">{{__('text.cart_secret1')}} {{__('text.cart_secret2')}}</h2>
 					</div>
@@ -353,7 +353,7 @@
 				<div class="preference-page-cart__item">
 					<div class="preference-page-cart__top">
 						<div class="preference-page-cart__icon">
-							<img src="{{ asset("$design/images/icons/f-04.svg") }}" alt="">
+							<img loading="lazy" src="{{ asset("$design/images/icons/f-04.svg") }}" alt="">
 						</div>
 						<h2 class="preference-page-cart__label">{{__('text.cart_moneyback1')}} {{__('text.cart_moneyback2')}}</h2>
 					</div>
@@ -362,10 +362,10 @@
 			</div>
 			<div class="page-cart__offers">
 				<a href="#" class="page-cart__offer">
-					<picture><source srcset="{{ asset("$design/images/offers/01.webp") }}" type="image/webp"><img src="{{ asset("$design/images/offers/01.jpg") }}" alt=""></picture>
+					<picture><source srcset="{{ asset("$design/images/offers/01.webp") }}" type="image/webp"><img loading="lazy" src="{{ asset("$design/images/offers/01.jpg") }}" alt=""></picture>
 				</a>
 				<a href="#" class="page-cart__offer">
-					<picture><source srcset="{{ asset("$design/images/offers/02.webp") }}" type="image/webp"><img src="{{ asset("$design/images/offers/02.jpg") }}" alt=""></picture>
+					<picture><source srcset="{{ asset("$design/images/offers/02.webp") }}" type="image/webp"><img loading="lazy" src="{{ asset("$design/images/offers/02.jpg") }}" alt=""></picture>
 				</a>
 			</div>
 		</aside>

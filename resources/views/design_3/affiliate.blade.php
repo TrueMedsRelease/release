@@ -34,7 +34,7 @@
             </div>
             <div class="form__row captcha">
                 <picture>
-                    <img id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 10px;">
+                    <img loading="lazy" id="captcha_image" src="{{ captcha_src() }}" style="border-radius: 10px;">
                 </picture>
                 <div class="form__input">
                     <input autocomplete="off" type="text" id = "captcha" name="form[captcha]" data-error="Error" placeholder="{{__('text.affiliate_code')}}" class="input">

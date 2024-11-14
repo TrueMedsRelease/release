@@ -7,7 +7,7 @@
     <meta name="robots" content="index, follow" />
     <link rel="stylesheet" type="text/css" href="{{ asset('style_checkout/style.css') }}">
 	<link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
-    <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
+    <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <title>{{__('text.checkout_title')}}</title>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
