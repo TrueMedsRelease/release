@@ -167,9 +167,9 @@ class ProductServices
                 }
             }
 
-            foreach ($products as $i => $product) {
+            foreach ($products as &$product) {
                 if (!isset($product['price'])) {
-                    $products[$i]['price'] = 0;
+                    $product['price'] = 0;
                 }
             }
 
