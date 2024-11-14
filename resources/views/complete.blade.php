@@ -8,7 +8,7 @@
     <meta name="robots" content="index, follow" />
     <link rel="stylesheet" href="{{ asset('style_checkout/style.css') }}?v=24042024">
     <link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
-    <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
@@ -202,7 +202,7 @@
   </div>
  </div>
 </div> -->
-    <script defer src="{{ asset('style_checkout/js/app_success.js') }}"></script>
+    <script src="{{ asset('style_checkout/js/app_success.js') }}"></script>
 
     <script>
         $(".succes__button").click(function() {

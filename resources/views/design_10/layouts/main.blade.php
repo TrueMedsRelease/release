@@ -151,7 +151,7 @@
                             </span>
                         </div>
                     @endif
-                    <a class="header__auth" href="{{ route('home.login') }}">
+                    <a class="header__auth" href="{{ route('home.login') }}" target="_blank">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
                                 <use href="{{ asset("$design/svg/icons/sprite.svg#profile") }}"></use>
