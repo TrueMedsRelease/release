@@ -298,7 +298,16 @@ if (workbox) {
 //   ]);
 
 // top-level routes we want to precache
-workbox.precaching.precacheAndRoute(['/', '/contact_us', '/about_us', '/faq', '/testimonials', '/shipping', '/moneyback', '/affiliate']);
+workbox.precaching.precacheAndRoute([
+    { url: '/', revision: '1' },
+    { url: '/contact_us', revision: '1' },
+    { url: '/about_us', revision: '1' },
+    { url: '/faq', revision: '1' },
+    { url: '/testimonials', revision: '1' },
+    { url: '/shipping', revision: '1' },
+    { url: '/moneyback', revision: '1' },
+    { url: '/affiliate', revision: '1' }
+]);
 
 // js/css files
 workbox.routing.registerRoute(

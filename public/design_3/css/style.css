@@ -533,13 +533,17 @@ textarea.input {
 }
 
 [class*=-ibg] img {
-  position: absolute;
+  /* position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100%; */
   top: 0;
   left: 0;
   -o-object-fit: cover;
      object-fit: cover;
+    width: auto;
+    height: auto;
+    max-width: 175px;
+    max-height: 175px;
 }
 
 [class*=-ibg_contain] img {
@@ -600,7 +604,12 @@ padding-bottom:50px;
 }
 
 .item-product__image-ibg {
-  padding-bottom: 100%;
+  /* padding-bottom: 100%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 175px;
+    height: 175px;
 }
 
 .item-product__button {
@@ -5924,4 +5933,3 @@ body::after {
     }
   }
 
-  

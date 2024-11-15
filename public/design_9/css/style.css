@@ -7539,11 +7539,14 @@ body {
   max-width: 100px;
   min-width: 100px;
   width: 100%;
+  text-align: center;
 }
 
 .product_img img {
-  width: 100%;
-  /* height: 100%; */
+    width: auto;
+    height: auto;
+    max-width: 100px;
+    max-height: 100px;
 }
 
 .product_center {
