@@ -492,7 +492,7 @@ class CheckoutController extends Controller
 
             $response = json_decode($response, true);
 
-            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
+            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                 session(['order' => $response]);
             }
@@ -628,7 +628,7 @@ class CheckoutController extends Controller
 
             $response = json_decode($response, true);
 
-            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
+            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                 session(['order' => $response]);
             }
@@ -862,7 +862,7 @@ class CheckoutController extends Controller
 
                 $response = json_decode($response, true);
 
-                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
+                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
                     DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                     session(['order' => $response]);
                 }
@@ -1020,7 +1020,7 @@ class CheckoutController extends Controller
 
         $response = json_decode($response, true);
 
-        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
+        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
             DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
             session(['order' => $response]);
         }
