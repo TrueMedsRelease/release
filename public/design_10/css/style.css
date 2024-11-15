@@ -235,7 +235,7 @@ svg{
 img{
   box-sizing:content-box;
   width:100%;
-  height:auto;
+  height:100%;
 }
 
 .picture-svg img{
@@ -1452,8 +1452,10 @@ iframe{
   color:var(--color-accent);
 }
 .product-card__img img{
-  width:14rem;
-  height:14rem;
+    width: auto;
+    height: auto;
+    max-width:14rem;
+    max-height:14rem;
 }
 
 .product-card__heading{
@@ -1588,6 +1590,7 @@ iframe{
 .info-panel__image{
   width:20rem;
   height:20rem;
+  text-align: -webkit-center;
 }
 
 .info-panel--gift .info-panel__image{

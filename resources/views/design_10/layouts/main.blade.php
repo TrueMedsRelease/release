@@ -566,7 +566,7 @@
             </div>
         </section>
     </div>
-    
+
     @yield('content')
 
     <div class="container sup-footer">
@@ -665,7 +665,7 @@
 
     <footer class="footer">
         <div class="container">
-            <div class="footer__wrapper"><!-- Footer logo--><a class="logo logo--footer" href="index.html">
+            <div class="footer__wrapper"><!-- Footer logo--><a class="logo logo--footer" href="{{ route('home.index') }}">
                     <div class="logo__image"><img loading="lazy" src="{{ asset("$design/svg/logo-footer.svg") }}" width="40"
                             height="40" alt="Site logo"></div>
                     <div class="logo__title">TrueMeds</div>

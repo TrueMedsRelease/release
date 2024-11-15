@@ -25,7 +25,7 @@
                                 <img loading="lazy" src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="width: auto; height: auto; max-width: 20rem; max-height: 20rem;">
                             @endif
                         </picture>
                         {{-- <picture>
