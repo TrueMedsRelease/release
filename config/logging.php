@@ -126,6 +126,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'api_log' => [
+            'driver' => 'single', // Запись в один файл
+            'path' => storage_path('logs/api.log'), // Укажите путь к новому лог-файлу
+            'level' => 'info', // Уровень логирования (info, error и т.д.)
+        ],
     ],
 
 ];

@@ -38,7 +38,7 @@ class CheckoutController extends Controller
                 $response = Http::post('http://true-services.net/checkout/order.php', json_decode($order->message, true));
                 $response = json_decode($response, true);
 
-                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
+                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
                     DB::delete("DELETE FROM order_cache WHERE `id` = {$order->id}");
                 }
             }
@@ -492,7 +492,7 @@ class CheckoutController extends Controller
 
             $response = json_decode($response, true);
 
-            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
+            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                 session(['order' => $response]);
             }
@@ -628,7 +628,7 @@ class CheckoutController extends Controller
 
             $response = json_decode($response, true);
 
-            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
+            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                 session(['order' => $response]);
             }
@@ -862,7 +862,7 @@ class CheckoutController extends Controller
 
                 $response = json_decode($response, true);
 
-                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
+                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
                     DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                     session(['order' => $response]);
                 }
@@ -914,6 +914,12 @@ class CheckoutController extends Controller
 
             $response = Http::post('http://true-services.net/checkout/order.php', $data);
         }
+    }
+
+    public function log_google(Request $request)
+    {
+        $info = $request->info;
+        Log::channel('api_log')->info("Api result: $info", ['endpoint' => '/Controller/CheckoutController', 'status' => 200]);
     }
 
     public function send_google(Request $request)
@@ -1014,7 +1020,7 @@ class CheckoutController extends Controller
 
         $response = json_decode($response, true);
 
-        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && $response['message'] === 'repeat_order')) {
+        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
             DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
             session(['order' => $response]);
         }

@@ -2152,6 +2152,19 @@ window.addEventListener('message', (event) => {
     form += '&trans_id=' + info.payment.id;
     form += '&google_sum=' + info.payment.paymentOutput.amountOfMoney.amount;
     form += '&full_response=' + event.data;
+
+    $.ajax({
+        url: '/log_google',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {'info': event.data},
+        async: false,
+        success: function (data) {
+
+        },
+    });
+
     if(info.payment.status == 'PENDING_CAPTURE')
     {
         $.ajax({
