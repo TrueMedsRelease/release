@@ -38,7 +38,7 @@ class CheckoutController extends Controller
                 $response = Http::post('http://true-services.net/checkout/order.php', json_decode($order->message, true));
                 $response = json_decode($response, true);
 
-                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($response['message'], 'repeat_order'))) {
+                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
                     DB::delete("DELETE FROM order_cache WHERE `id` = {$order->id}");
                 }
             }
