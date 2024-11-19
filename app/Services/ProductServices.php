@@ -853,7 +853,8 @@ class ProductServices
                 {
                     if(stripos($s, $search_text) !== false)
                     {
-                        $result[] = preg_replace('/[^A-Za-z0-9\-]/', '', $s);;
+                        $s = trim($s);
+                        $result[] = preg_replace('/[^A-Za-z0-9\s\-]/', '', $s);
                     }
                 }
             }
@@ -862,7 +863,7 @@ class ProductServices
 
             foreach($result as $item)
             {
-                $tips .= $item . "||" . Str::lower($item) . ".html\n";
+                $tips .= $item . "||" . Str::lower(str_replace(' ', '-', $item)) . ".html\n";
             }
 
         }
