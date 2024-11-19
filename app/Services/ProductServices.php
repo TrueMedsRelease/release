@@ -1050,21 +1050,33 @@ class ProductServices
             }
         } else {
             $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%' AND is_showed = 1");
-            $product_id = $product_id[0]->id;
-            $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `product_id` = $product_id AND `language_id` = $language_id");
-            $product_properties_new = $product_properties_new[0];
 
-            if ($product_properties_new->title != '') {
-                $page_properties->title = $product_properties_new->title;
+            if (empty($product_id)) {
+                $product = str_replace('-', ' ', $product);
+                $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%' AND is_showed = 1");
             }
 
-            if ($product_properties_new->keywords != '') {
-                $page_properties->keyword = $product_properties_new->keywords;
-            }
+            if (!empty($product_id)) {
+                $product_id = $product_id[0]->id;
+                $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `product_id` = $product_id AND `language_id` = $language_id");
+                $product_properties_new = $product_properties_new[0];
 
-            if ($product_properties_new->description != '') {
-                $page_properties->description = $product_properties_new->description;
-            }
+                if ($product_properties_new->title != '') {
+                    $page_properties->title = $product_properties_new->title;
+                }
+
+                if ($product_properties_new->keywords != '') {
+                    $page_properties->keyword = $product_properties_new->keywords;
+                }
+
+                if ($product_properties_new->description != '') {
+                    $page_properties->description = $product_properties_new->description;
+                }
+            } else {
+                $page_properties->title = str_replace('(product_name)', $product_name, $page_properties->title);
+                $page_properties->keyword = str_replace('(product_name)', $product_name, $page_properties->keyword);
+                $page_properties->description = str_replace('(product_name)', $product_name, $page_properties->description);
+            }   
         }
 
         return $page_properties;
