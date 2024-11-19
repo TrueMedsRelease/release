@@ -197,6 +197,12 @@ class ProductServices
 
                 if (!$products_desc_raw || empty($products_desc_raw)) {
                     $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+
+                    if(empty($product_id)) {
+                        $url = str_replace('-', ' ', $url);
+                        $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+                    }
+
                     if(!empty($product_id))
                     {
                         $products_desc_raw = ProductDesc::query()->where('language_id', '=', $language_id)->where('product_id', '=', $product_id[0]->id)->get(['product_id', 'name', 'desc', 'url'])->groupBy('product_id')->toArray();
@@ -1076,7 +1082,7 @@ class ProductServices
                 $page_properties->title = str_replace('(product_name)', $product_name, $page_properties->title);
                 $page_properties->keyword = str_replace('(product_name)', $product_name, $page_properties->keyword);
                 $page_properties->description = str_replace('(product_name)', $product_name, $page_properties->description);
-            }   
+            }
         }
 
         return $page_properties;
