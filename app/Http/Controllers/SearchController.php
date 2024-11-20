@@ -100,7 +100,7 @@ class SearchController extends Controller
     {
         $search_text = $request->query('q');
         $design = session('design') ? session('design') : config('app.design');
-        $products = ProductServices::SearchProduct($search_text, true, $design);
+        $products = ProductServices::SearchProductAutocomplete($search_text, $design);
         $sinonim = ProductServices::SearchSinonim($search_text);
         $page = ProductServices::SearchPageTitle($search_text);
         $category = ProductServices::SearchCategory($search_text);
@@ -108,9 +108,14 @@ class SearchController extends Controller
         $active = ProductServices::SearchActive($search_text);
 
         $tips = '';
-        foreach($products as $product)
+        // foreach($products as $product)
+        // {
+        //     $tips .= $product['name'] . '||' . $product['url'] . "\n";
+        // }
+
+        if(!empty($products))
         {
-            $tips .= $product['name'] . '||' . $product['url'] . "\n";
+            $tips .=  $products;
         }
 
         if(!empty($page))
