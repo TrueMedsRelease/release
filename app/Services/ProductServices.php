@@ -669,7 +669,8 @@ class ProductServices
             ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
             ->where('product.is_showed', '=', '1')
             ->whereIn('product_category.category_id', [14, 21])
-            ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url'])
+            ->orderBy('product.menu_order', 'asc')
+            ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url', 'product.menu_order'])
             ->toArray();
         }
         else
@@ -680,7 +681,8 @@ class ProductServices
             ->distinct()
             ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
             ->where('product.is_showed', '=', '1')
-            ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url'])
+            ->orderBy('product.menu_order', 'asc')
+            ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url', 'product.menu_order'])
             ->toArray();
         }
 
