@@ -657,6 +657,43 @@ class ProductServices
         }
     }
 
+    public static function SearchProductAutocomplete($search_text, $design)
+    {
+        $language_id = Language::$languages[App::currentLocale()];
+        if ($design == "design_5")
+        {
+            $products = DB::table('product_desc')
+            ->join('product_category', 'product_desc.product_id', '=', 'product_desc.product_id')
+            ->join('product', 'product.id', '=', 'product_desc.product_id')
+            ->distinct()
+            ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
+            ->where('product.is_showed', '=', '1')
+            ->whereIn('product_category.category_id', [14, 21])
+            ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url'])
+            ->toArray();
+        }
+        else
+        {
+            $products = DB::table('product_desc')
+            ->join('product_category', 'product_desc.product_id', '=', 'product_desc.product_id')
+            ->join('product', 'product.id', '=', 'product_desc.product_id')
+            ->distinct()
+            ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
+            ->where('product.is_showed', '=', '1')
+            ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url'])
+            ->toArray();
+        }
+
+        $tips = "";
+        foreach($products as $product)
+        {
+            $tips .= $product->name . "||" . $product->url . ".html\n";
+        }
+
+        return $tips;
+
+    }
+
     public static function SearchProduct($search_text, $is_autocomplete, $design)
     {
         if (str_contains($search_text, ' ')) {
