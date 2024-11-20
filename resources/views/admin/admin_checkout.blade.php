@@ -80,7 +80,7 @@
                             </div>
                         </td>
                     </tr> -->
-                    <tr style="display:flex; justify-content: space-between; padding-bottom: 15px; gap: 15px;">
+                    {{-- <tr style="display:flex; justify-content: space-between; padding-bottom: 15px; gap: 15px;">
                         <td style="width: 30%;">
                             <div>
                                 Paypal
@@ -102,7 +102,7 @@
                                 </label>
                             </div>
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>
                             <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="saveCheckoutInfo();">

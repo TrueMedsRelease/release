@@ -8,12 +8,12 @@
     <link rel="icon" href="{{ asset('/admin_style/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('/admin_style/images/favicon/apple-touch-icon-180x180.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin_style/css/style.css') }}" />
-    <script defer src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
-    <script defer src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
-    <script defer src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
-	<script defer src="{{ asset("vendor/jquery/dialog/dialog.js") }}"></script>
-	<script defer src="{{ asset("vendor/jquery/jqtransformplugin/jquery.jqtransform.js") }}"></script>
- 	<script defer language="javascript">
+    <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
+    <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
+    <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
+	<script src="{{ asset("vendor/jquery/dialog/dialog.js") }}"></script>
+	<script src="{{ asset("vendor/jquery/jqtransformplugin/jquery.jqtransform.js") }}"></script>
+ 	<script language="javascript">
 		// $(document).ready(function(){
 		// 		$('form').jqTransform({imgPath:''});
 
@@ -186,6 +186,6 @@
     </footer>
 
     </div>
-    <script defer src="{{ asset("/admin_style/js/style.js") }}"></script>
+    <script src="{{ asset("/admin_style/js/style.js") }}"></script>
 </body>
 </html>
