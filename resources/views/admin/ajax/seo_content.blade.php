@@ -13,7 +13,7 @@
                     <table>
                         <tr>
                             <td width="40%;">
-                                <script defer type="text/javascript">
+                                <script type="text/javascript">
                                     var selected_template_image_id = "";
                                     var prev_template_image_id = "";
                                     var cur_template_image_id = "";
@@ -37,7 +37,7 @@
                                 </script>
                                 @foreach ($templates as $cur_template_ar)
                                     @if ($cur_template_ar['name'] == $cur_template)
-                                        <script defer type="text/javascript">
+                                        <script type="text/javascript">
                                             selectImage('{{$cur_template_ar['name']}}_image');
                                         </script>
                                     @endif

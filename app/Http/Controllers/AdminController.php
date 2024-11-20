@@ -1300,14 +1300,14 @@ class AdminController extends Controller
 
     public function save_checkout_info(Request $request) {
         $default_shipping = $request->default_shipping;
-        $default_insur = $request->default_insur;
-        $default_secret = $request->default_secret;
-        $paypal_setting = $request->paypal_setting;
+        // $default_insur = $request->default_insur;
+        // $default_secret = $request->default_secret;
+        // $paypal_setting = $request->paypal_setting;
 
         $this->envUpdate('APP_DEFAULT_SHIPPING', $default_shipping);
-        $this->envUpdate('APP_INSUR_ON', $default_insur);
-        $this->envUpdate('APP_SECRET_ON', $default_secret);
-        $this->envUpdate('APP_PAYPAL_ON', $paypal_setting);
+        // $this->envUpdate('APP_INSUR_ON', $default_insur);
+        // $this->envUpdate('APP_SECRET_ON', $default_secret);
+        // $this->envUpdate('APP_PAYPAL_ON', $paypal_setting);
 
         return response()->json(array('status' => 'success', 'url' => route('admin.admin_checkout')));
     }
