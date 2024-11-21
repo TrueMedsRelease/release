@@ -173,7 +173,7 @@ class Cart extends Model
                     $insurance += round(($product['price'] * 0.1) * $product['q'],2);
                 }
             }
-            $insurance += session('cart_option')['bonus_price'] * 0.1;
+            $insurance += session('cart_option.bonus_price', 0) * 0.1;
         }
 
         $insurance = $insurance < 9.99 ? 9.99 : $insurance;
@@ -270,7 +270,7 @@ class Cart extends Model
             }
         }
 
-        if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+        if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
             $is_only_card = 1;
         }
 
