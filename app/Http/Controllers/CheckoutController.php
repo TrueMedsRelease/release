@@ -694,6 +694,10 @@ class CheckoutController extends Controller
 
             $form = json_encode(session('form'));
 
+            $form .= ' ' . json_encode(session('cart'));
+
+            $form .= ' ' . json_encode(session('cart_option'));
+
             $data = [
                 'method' => 'save_order_data',
                 'api_key' => '7c73d5ca242607050422af5a4304ef71',
@@ -905,6 +909,10 @@ class CheckoutController extends Controller
             session(['form.payment_type' => 'google']);
 
             $form = json_encode(session('form'));
+
+            $form .= ' ' . json_encode(session('cart'));
+
+            $form .= ' ' . json_encode(session('cart_option'));
 
             $data = [
                 'method' => 'save_order_data',
