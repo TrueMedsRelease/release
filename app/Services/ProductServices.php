@@ -75,7 +75,11 @@ class ProductServices
 
             foreach ($product_price as $key=>$pp) {
                 if ($product['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+
+                    if (isset($product_price[$products[$i]['id']]['discount'])) {
+                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                    }
                 }
             }
         }
@@ -83,6 +87,9 @@ class ProductServices
         foreach ($products as $i => $product) {
             if (!isset($product['price'])) {
                 $products[$i]['price'] = 0;
+            }
+            if (!isset($product['discount'])) {
+                $products[$i]['discount'] = 0;
             }
         }
 
@@ -150,7 +157,11 @@ class ProductServices
             {
                 foreach ($product_price as $key=>$pp) {
                     if ($product['id'] == $key) {
-                        $product['price'] = $product_price[$product['id']];
+                        $product['price'] = $product_price[$product['id']]['price'];
+
+                        if (isset($product_price[$product['id']]['discount'])) {
+                            $product['discount'] = $product_price[$product['id']]['discount'];
+                        }
                     }
                 }
 
@@ -171,13 +182,18 @@ class ProductServices
                 if (!isset($product['price'])) {
                     $product['price'] = 0;
                 }
+                if (!isset($product['discount'])) {
+                    $product['discount'] = 0;
+                }
             }
 
             unset($product);
 
-            $categories[$category->id]['url'] = $category->url;
-            $categories[$category->id]['name'] = $category_desc[$category->id];
-            $categories[$category->id]['products'] = $products;
+            if (isset($category_desc[$category->id])) {
+                $categories[$category->id]['url'] = $category->url;
+                $categories[$category->id]['name'] = $category_desc[$category->id];
+                $categories[$category->id]['products'] = $products;
+            }
         }
 
         return $categories;
@@ -262,15 +278,48 @@ class ProductServices
 
     public static function GetAllProductPillPrice($design)
     {
-        // if ($design == 'design_5') {
-        //     $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 AND category_id = 14 GROUP BY product_id');
-        // } else {
-            $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 GROUP BY product_id');
-        // }
+        $product = DB::select('SELECT product_id, MIN(`price` / `num`) as min FROM product_packaging WHERE is_showed = 1 AND price != 0 GROUP BY product_id');
+        $product_info = DB::select('SELECT pp.product_id, pd.dosage, MAX(pp.num) AS max_num, MIN(pp.num) AS min_num, MIN(pp.price) as min_price, MAX(pp.price) as max_price
+            FROM product_dosage pd
+            JOIN product_packaging pp ON pd.product_id = pp.product_id AND pd.dosage = pp.dosage
+            WHERE pp.is_showed = 1 AND pp.price != 0
+            GROUP BY pp.product_id, pd.dosage
+            ORDER BY pp.product_id;'
+        );
 
         $product_price = [];
         foreach ($product as $p) {
-            $product_price[$p->product_id] = round($p->min, 2);
+            $product_price[$p->product_id] = [
+                'price' => round($p->min, 2)
+            ];
+        }
+
+        $product_info_arr = [];
+        foreach ($product_info as $key => $info) {
+            $product_info_arr[] = [
+                'product_id' => $info->product_id,
+                'dosage' => $info->dosage,
+                'discount' => ceil(100 - ($info->max_price / (($info->min_price / $info->min_num) * $info->max_num)) * 100)
+            ];
+        }
+
+        foreach ($product_price as $id => $price) {
+            foreach ($product_info_arr as $key => $info) {
+                if ($info['product_id'] == $id) {
+                    $discount = $info['discount'];
+
+                    if (isset($product_price[$id]['discount']) && $product_price[$id]['discount'] > $discount) {
+                        $discount_new = $product_price[$id]['discount'];
+                    } else {
+                        $discount_new = $discount;
+                    }
+
+                    $product_price[$id] = [
+                        'price'=> $price['price'],
+                        'discount' => $discount_new
+                    ];
+                }
+            }
         }
 
         return $product_price;
@@ -301,7 +350,11 @@ class ProductServices
             }
             foreach ($product_price as $key=>$pp) {
                 if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+
+                    if (isset($product_price[$products[$i]['id']]['discount'])) {
+                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                    }
                 }
             }
         }
@@ -309,6 +362,9 @@ class ProductServices
         foreach ($products as $i => $product) {
             if (!isset($product['price'])) {
                 $products[$i]['price'] = 0;
+            }
+            if (!isset($product['discount'])) {
+                $products[$i]['discount'] = 0;
             }
         }
 
@@ -348,7 +404,11 @@ class ProductServices
             }
             foreach ($product_price as $key=>$pp) {
                 if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+
+                    if (isset($product_price[$products[$i]['id']]['discount'])) {
+                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                    }
                 }
             }
         }
@@ -356,6 +416,9 @@ class ProductServices
         foreach ($products as $i => $product) {
             if (!isset($product['price'])) {
                 $products[$i]['price'] = 0;
+            }
+            if (!isset($product['discount'])) {
+                $products[$i]['discount'] = 0;
             }
         }
 
@@ -389,7 +452,11 @@ class ProductServices
             }
             foreach ($product_price as $key=>$pp) {
                 if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+
+                    if (isset($product_price[$products[$i]['id']]['discount'])) {
+                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                    }
                 }
             }
         }
@@ -397,6 +464,9 @@ class ProductServices
         foreach ($products as $i => $product) {
             if (!isset($product['price'])) {
                 $products[$i]['price'] = 0;
+            }
+            if (!isset($product['discount'])) {
+                $products[$i]['discount'] = 0;
             }
         }
 
@@ -424,9 +494,14 @@ class ProductServices
         foreach ($product[0]->category as $category) {
             $names = $category->category_desc->where('language_id', '=', $language_id);
             foreach ($names as $n) {
-                $name = $n['name'];
+                if ($n['name']) {
+                    $name = $n['name'];
+                }
             }
-            $categories[] = ['name' => $name, 'url' => $category->url];
+
+            if (isset($name)) {
+                $categories[] = ['name' => $name, 'url' => $category->url];
+            }
         }
         #endregion
 
@@ -595,7 +670,7 @@ class ProductServices
 
         $product_description = $product['full_desc'];
         $product_description = str_replace("#TOP_TAG#", '<div class="full_text" style="margin-top: 16px;">', $product_description);
-        $product_description = str_replace("#TITLE_OPEN_TAG#", '<h3><img src="/images/elements/more_info.png" alt="" style="position: relative; top: 5px;"/>', $product_description);
+        $product_description = str_replace("#TITLE_OPEN_TAG#", '<h3>', $product_description);
         $product_description = str_replace("#TITLE_CLOSE_TAG#", '</h3>', $product_description);
         $product_description = str_replace("#BLOCK_OPEN_TAG#", '<p>', $product_description);
         $product_description = str_replace("#BLOCK_CLOSE_TAG#", '</p>', $product_description);
@@ -773,7 +848,11 @@ class ProductServices
             }
             foreach ($product_price as $key=>$pp) {
                 if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']];
+                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+
+                    if (isset($product_price[$products[$i]['id']]['discount'])) {
+                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                    }
                 }
             }
         }
@@ -781,6 +860,9 @@ class ProductServices
         foreach ($products as $i => $product) {
             if (!isset($product['price'])) {
                 $products[$i]['price'] = 0;
+            }
+            if (!isset($product['discount'])) {
+                $products[$i]['discount'] = 0;
             }
         }
 

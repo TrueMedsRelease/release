@@ -391,6 +391,7 @@ return [
     "license_text_license2_d8" => "Licencia od farmaceutickej asociácie IPS Licencia #25309",
     "license_text_license2_d9" => "Licencia od farmaceutickej asociácie IPS Licencia #25310",
     "license_text_license2_d10" => "Licencia od farmaceutickej asociácie IPS Licencia #25311",
+    "license_text_license2_d11" => "Licencia od farmaceutickej asociácie IPS Licencia #25312",
     "search_result_title" => "Výsledky vyhľadávania",
     "search_result_title_page" => "Výsledky vyhľadávania pre",
     "search_result_nothing_found1" => "Žiadne produkty v košíku.",

@@ -396,6 +396,7 @@ return [
     "license_text_license2_d8" => "مرخصة من قبل جمعية الأدوية رخصة آي بي إس IPS#25309",
     "license_text_license2_d9" => "مرخصة من قبل جمعية الأدوية رخصة آي بي إس IPS#25310",
     "license_text_license2_d10" => "مرخصة من قبل جمعية الأدوية رخصة آي بي إس IPS#25311",
+    "license_text_license2_d11" => "مرخصة من قبل جمعية الأدوية رخصة آي بي إس IPS#25312",
     "search_result_title" => "نتائج البحث",
     "search_result_title_page" => "نتائج البحث عن",
     "search_result_nothing_found1" => "لم يتم العثور على منتجات ل",

@@ -387,6 +387,7 @@ return [
     "license_text_license2_d8" => "Licențiați de către Asociația Farmaciilor IPS Licență #25309",
     "license_text_license2_d9" => "Licențiați de către Asociația Farmaciilor IPS Licență #25310",
     "license_text_license2_d10" => "Licențiați de către Asociația Farmaciilor IPS Licență #25311",
+    "license_text_license2_d11" => "Licențiați de către Asociația Farmaciilor IPS Licență #25312",
     "search_result_title" => "Rezultatele căutării",
     "search_result_title_page" => "Rezultatele cautarii pentru ",
     "search_result_nothing_found1" => "Nu au fost găsite produse pentru ",

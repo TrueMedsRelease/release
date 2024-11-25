@@ -51,6 +51,12 @@ class CartController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = HomeController::getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -77,7 +83,8 @@ class CartController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 

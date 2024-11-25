@@ -477,6 +477,7 @@ return [
     "license_text_license2_d8" => "společností povolen na základě IPS licence Pharmaceutical Association #25309",
     "license_text_license2_d9" => "společností povolen na základě IPS licence Pharmaceutical Association #25310",
     "license_text_license2_d10" => "společností povolen na základě IPS licence Pharmaceutical Association #25311",
+    "license_text_license2_d11" => "společností povolen na základě IPS licence Pharmaceutical Association #25312",
     "search_result_title" => "Výsledek",
     "search_result_title_page" => "Výsledky hledání pro ",
     "search_result_nothing_found1" => "Nebyly nalezeny žádné produkty ",
