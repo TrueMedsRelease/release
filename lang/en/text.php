@@ -444,6 +444,7 @@ return [
     "license_text_license2_d8" => "Licensed by the Pharmaceutical Association IPS License #25309",
     "license_text_license2_d9" => "Licensed by the Pharmaceutical Association IPS License #25310",
     "license_text_license2_d10" => "Licensed by the Pharmaceutical Association IPS License #25311",
+    "license_text_license2_d11" => "Licensed by the Pharmaceutical Association IPS License #25312",
     "search_result_title" => "Search results",
     "search_result_title_page" => "Search results for ",
     "search_result_nothing_found1" => "No products were found for the ",

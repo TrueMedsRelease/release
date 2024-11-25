@@ -37,8 +37,7 @@
                 <label class="form__label form__label--text" for="captcha">{{__('text.contact_us_code')}}</label>
                 <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
                     <picture>
-                        <source srcset="{{ captcha_src() }}" type="image/webp">
-                        <img loading="lazy" src="{{ captcha_src() }}" style="border-radius: 1rem;">
+                        <img loading="lazy" src="{{ captcha_src() }}" id="captcha_image" style="border-radius: 1rem;">
                     </picture>
                     <div class="mt-2"></div>
                     <input class="form__text-input input-text form-control" type="text" id="captcha" name="captcha" >

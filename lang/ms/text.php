@@ -393,6 +393,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "license_text_license2_d8" => "yang berlesen oleh Persatuan Farmaseutikal Lesen IPS #25309",
     "license_text_license2_d9" => "yang berlesen oleh Persatuan Farmaseutikal Lesen IPS #25310",
     "license_text_license2_d10" => "yang berlesen oleh Persatuan Farmaseutikal Lesen IPS #25311",
+    "license_text_license2_d11" => "yang berlesen oleh Persatuan Farmaseutikal Lesen IPS #25312",
     "search_result_title" => "Hasil carian",
     "search_result_title_page" => "Hasil carian untuk ",
     "search_result_nothing_found1" => "Tiada produk ditemui untuk ",

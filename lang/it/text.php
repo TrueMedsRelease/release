@@ -526,6 +526,7 @@ return [
     "license_text_license2_d8" => "dall'Associazione Farmaceutica IPS, Licenza #25309",
     "license_text_license2_d9" => "dall'Associazione Farmaceutica IPS, Licenza #25310",
     "license_text_license2_d10" => "dall'Associazione Farmaceutica IPS, Licenza #25311",
+    "license_text_license2_d11" => "dall'Associazione Farmaceutica IPS, Licenza #25312",
     "search_result_title" => "Risultati ricerca",
     "search_result_title_page" => "Risultati della ricerca per",
     "search_result_nothing_found1" => "Nessun prodotto trovato per il",

@@ -398,6 +398,7 @@ return [
     "license_text_license2_d8" => "lisensoitu Pharmaceutical Association IPS License #25309",
     "license_text_license2_d9" => "lisensoitu Pharmaceutical Association IPS License #25310",
     "license_text_license2_d10" => "lisensoitu Pharmaceutical Association IPS License #25311",
+    "license_text_license2_d11" => "lisensoitu Pharmaceutical Association IPS License #25312",
     "search_result_title" => "Hakutulos",
     "search_result_title_page" => "Hakutulokset: ",
     "search_result_nothing_found1" => "Tuotteita ei löytynyt ",

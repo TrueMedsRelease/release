@@ -392,6 +392,7 @@ return [
     "license_text_license2_d8" => "Licencjonowane przez Licencja IPS Stowarzyszenia Farmaceutycznego #25309",
     "license_text_license2_d9" => "Licencjonowane przez Licencja IPS Stowarzyszenia Farmaceutycznego #25310",
     "license_text_license2_d10" => "Licencjonowane przez Licencja IPS Stowarzyszenia Farmaceutycznego #25311",
+    "license_text_license2_d11" => "Licencjonowane przez Licencja IPS Stowarzyszenia Farmaceutycznego #25312",
     "search_result_title" => "Wyniki wyszukiwania",
     "search_result_title_page" => "Wyniki wyszukiwania dla",
     "search_result_nothing_found1" => "Nie znaleziono produktów dla ",

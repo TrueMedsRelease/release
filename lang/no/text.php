@@ -391,6 +391,7 @@ return [
     "license_text_license2_d8" => "er lisensiert av Pharmaceutical Association IPS License #25309",
     "license_text_license2_d9" => "er lisensiert av Pharmaceutical Association IPS License #25310",
     "license_text_license2_d10" => "er lisensiert av Pharmaceutical Association IPS License #25311",
+    "license_text_license2_d11" => "er lisensiert av Pharmaceutical Association IPS License #25312",
     "search_result_title" => "Søkeresultat",
     "search_result_title_page" => "Søkeresultater for ",
     "search_result_nothing_found1" => "Ingen produkter ble funnet for ",

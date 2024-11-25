@@ -542,6 +542,7 @@ return [
     "license_text_license2_d8" => "Colegio de Farmacéuticos IPS, número 25309",
     "license_text_license2_d9" => "Colegio de Farmacéuticos IPS, número 25310",
     "license_text_license2_d10" => "Colegio de Farmacéuticos IPS, número 25311",
+    "license_text_license2_d11" => "Colegio de Farmacéuticos IPS, número 25312",
     "search_result_title" => "Resultados de la búsqueda",
     "search_result_title_page" => "Resultados de la búsqueda para ",
     "search_result_nothing_found1" => "No se han encontrado productos para el ",

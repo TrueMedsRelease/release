@@ -26,6 +26,12 @@ class HomeController extends Controller
         $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $device = ProductServices::getDevice($agent);
 
         $web_statistic["params_string"] =
@@ -72,7 +78,8 @@ class HomeController extends Controller
                 'pixel' => $pixel,
                 'first_letters' => $first_letters,
                 'domain' => $domain,
-                'web_statistic' => $web_statistic
+                'web_statistic' => $web_statistic,
+                'codes' => json_encode($codes),
             ]);
 
         } elseif ($design == 'design_7') {
@@ -91,7 +98,8 @@ class HomeController extends Controller
                 'pixel' => $pixel,
                 'first_letters' => $first_letters,
                 'domain' => $domain,
-                'web_statistic' => $web_statistic
+                'web_statistic' => $web_statistic,
+                'codes' => json_encode($codes),
             ]);
         } elseif ($design == 'design_8') {
             $products_urls = ['viagra', 'cialis', 'levitra'];
@@ -114,7 +122,8 @@ class HomeController extends Controller
                 'pixel' => $pixel,
                 'first_letters' => $first_letters,
                 'domain' => $domain,
-                'web_statistic' => $web_statistic
+                'web_statistic' => $web_statistic,
+                'codes' => json_encode($codes),
             ]);
         }
     }
@@ -147,6 +156,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -174,7 +189,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -210,6 +226,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -237,7 +259,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -273,6 +296,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -299,7 +328,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -331,6 +361,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -358,7 +394,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -427,6 +464,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -453,7 +496,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -543,6 +587,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -568,7 +618,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -598,6 +649,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -623,7 +680,8 @@ class HomeController extends Controller
            'pixel' => $pixel,
            'first_letters' => $first_letters,
            'domain' => $domain,
-           'web_statistic' => $web_statistic
+           'web_statistic' => $web_statistic,
+           'codes' => json_encode($codes),
         ]);
     }
 
@@ -653,6 +711,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -678,7 +742,8 @@ class HomeController extends Controller
            'pixel' => $pixel,
            'first_letters' => $first_letters,
            'domain' => $domain,
-           'web_statistic' => $web_statistic
+           'web_statistic' => $web_statistic,
+           'codes' => json_encode($codes),
         ]);
     }
 
@@ -708,6 +773,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -733,7 +804,8 @@ class HomeController extends Controller
            'pixel' => $pixel,
            'first_letters' => $first_letters,
            'domain' => $domain,
-           'web_statistic' => $web_statistic
+           'web_statistic' => $web_statistic,
+           'codes' => json_encode($codes),
         ]);
     }
 
@@ -763,6 +835,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -788,7 +866,8 @@ class HomeController extends Controller
            'pixel' => $pixel,
            'first_letters' => $first_letters,
            'domain' => $domain,
-           'web_statistic' => $web_statistic
+           'web_statistic' => $web_statistic,
+           'codes' => json_encode($codes),
         ]);
     }
 
@@ -818,6 +897,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -843,7 +928,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -873,6 +959,12 @@ class HomeController extends Controller
 
         $device = ProductServices::getDevice($agent);
 
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -898,7 +990,8 @@ class HomeController extends Controller
             'pixel' => $pixel,
             'first_letters' => $first_letters,
             'domain' => $domain,
-            'web_statistic' => $web_statistic
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
         ]);
     }
 
@@ -964,7 +1057,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1,2,3,4,5,7,8,9,10])) {
+        if (in_array($design, [1,2,3,4,5,7,8,9,10,11])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -973,7 +1066,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1,2,3,4,5,7,8,9,10])) {
+        if (in_array($design, [1,2,3,4,5,7,8,9,10,11])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -1478,5 +1571,11 @@ class HomeController extends Controller
         return view('check_landing',[
 
         ]);
+    }
+
+    public static function getAllCountryISO() {
+        $codes = DB::table('phone_codes_cache')->get(['iso'])->toArray();
+
+        return $codes;
     }
 }
