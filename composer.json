@@ -13,7 +13,12 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "mews/captcha": "^3.4",
-        "phattarachai/laravel-mobile-detect": "^1.0"
+        "phattarachai/laravel-mobile-detect": "^1.0",
+        "symfony/css-selector": "6.4",
+        "symfony/event-dispatcher": "6.4",
+        "symfony/string": "6.4",
+        "symfony/yaml": "6.4",
+        "web-token/jwt-library": "3.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
