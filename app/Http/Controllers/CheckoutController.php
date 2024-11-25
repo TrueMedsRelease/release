@@ -916,6 +916,8 @@ class CheckoutController extends Controller
 
             $form .= ' ' . json_encode(session('cart_option'));
 
+            $form .= ' shop=' . request()->getHost();
+
             $data = [
                 'method' => 'save_order_data',
                 'api_key' => '7c73d5ca242607050422af5a4304ef71',
