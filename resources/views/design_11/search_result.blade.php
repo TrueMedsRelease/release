@@ -41,7 +41,7 @@
                                 @endforeach
                             </span>
                             <span class="card__price">{{ $Currency::convert($product['price'], false, true) }}</span>
-                            <button class="card__button button">
+                            <button class="card__button button" onclick="location.href = '{{ route('home.product', $product['url']) }}'">
                                 <span class="icon">
                                     <img src="{{ asset($design . '/images/icons/cart.svg') }}" class="inline-svg">
                                 </span>
@@ -84,7 +84,7 @@
                                 @endforeach
                             </span>
                             <span class="card__price">{{ $Currency::convert($product['price'], false, true) }}</span>
-                            <button class="card__button button">
+                            <button class="card__button button" onclick="location.href = '{{ route('home.product', $product['url']) }}'">
                                 <span class="icon">
                                     <img src="{{ asset($design . '/images/icons/cart.svg') }}" class="inline-svg">
                                 </span>
