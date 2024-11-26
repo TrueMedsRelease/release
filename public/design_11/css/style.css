@@ -3219,6 +3219,9 @@ body.has-scroll{
   aspect-ratio:1;
   width:15rem;
   margin-top:-0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card__content{

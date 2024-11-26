@@ -23,9 +23,9 @@
                                     <img loading="lazy" src="{{ asset($design . '/images/products/gift-175w.jpg') }}" srcset="{{ asset($design . '/images/products/gift-175w.jpg 1x, ' . $design . '/images/products/gift-350w.jpg 2x') }}" width="175" height="175" alt="{{ $product['image'] }}">
                                 </picture>
                             @else
-                                <picture>
+                                <picture style="max-height: 175px; max-width: 175px;">
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                                 </picture>
                             @endif
                         </div>
@@ -66,9 +66,9 @@
                                     <img loading="lazy" src="{{ asset($design . '/images/products/gift-175w.jpg') }}" srcset="{{ asset($design . '/images/products/gift-175w.jpg 1x, ' . $design . '/images/products/gift-350w.jpg 2x') }}" width="175" height="175" alt="{{ $product['image'] }}">
                                 </picture>
                             @else
-                                <picture>
+                                <picture style="max-height: 175px; max-width: 175px;">
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                                 </picture>
                             @endif
                         </div>
