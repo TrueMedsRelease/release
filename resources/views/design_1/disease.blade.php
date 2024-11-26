@@ -14,16 +14,19 @@
                 <a href="{{ route('home.product', $product['url']) }}" class="product-card">
                     <div class="product-card__body">
                         <div class="product-card__top">
-                        <div class="product-card__info">
-                            <h3 class="product-card__name">{{ $product['name'] }}</h3>
-                            <h4 class="product-card__company">
-                                @foreach ($product['aktiv'] as $aktiv)
-                                    {{ $aktiv['name'] }}
-                                @endforeach
-                            </h4>
+                            <div class="product-card__info">
+                                <h3 class="product-card__name">{{ $product['name'] }}</h3>
+                                <h4 class="product-card__company">
+                                    @foreach ($product['aktiv'] as $aktiv)
+                                        {{ $aktiv['name'] }}
+                                    @endforeach
+                                </h4>
+                            </div>
+                            <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
-                        <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
-                        </div>
+                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                            <span class="card__label">-{{ $product['discount'] }}%</span>
+                        @endif
                         <div class="product-card__image">
                             @if ($product['image'] == 'gift-card')
                                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">

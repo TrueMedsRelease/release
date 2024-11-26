@@ -28,12 +28,14 @@ var flag    = false;
                 removeCache('workbox-precache-' + url + '/-temp');
                 removeCache('workbox-precache');
                 removeCache('images_cache');
+                removeCache('image_cache');
                 removeCache('descriptions_cache');
                 removeCache('design_cache');
                 removeCache('app_cache');
                 removeCache('assets');
                 removeCache('main');
                 removeCache('other');
+                removeCache('static-resources');
 
             } else {
                 DEBUG && console.log("[SW] Активный service worker последней версии найден, повторно не регистрируем");

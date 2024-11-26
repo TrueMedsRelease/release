@@ -90,6 +90,11 @@
     <input type="hidden" id="country_iso" value="{{ $codes }}">
     <input type="hidden" id="initial_country" value="{{ strtolower(session('location.country')) }}">
 
+    <div class="christmas" style="display: none">
+        {{-- <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}"> --}}
+        <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
+    </div>
+
     <div class="topbar">
         <div class="container">
             <div class="header-phones drag-nav">

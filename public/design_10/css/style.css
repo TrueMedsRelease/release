@@ -1443,6 +1443,7 @@ iframe{
   display:flex;
   flex-direction:column;
   padding:0 1rem 1rem;
+  position: relative;
 }
 
 .product-card__img:hover + .product-card__heading .product-card__brand, .product-card__img:focus-visible + .product-card__heading .product-card__brand{
@@ -5397,4 +5398,28 @@ strong {
   .nav__sublist::-webkit-scrollbar-thumb{
     border-radius:1rem;
     background-color:#d7d7d7;
+  }
+  .christmas{
+    width: 100%;
+  }
+
+  .christmas img {
+    width: 100%;
+  }
+
+  .card__label{
+    position:absolute;
+    top:1.8rem;
+    right:1.8rem;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    min-height:1.8rem;
+    padding:0.2rem 0.5rem 0;
+    border-radius:0.5rem;
+    font-size:1.2rem;
+    line-height:1;
+    font-weight:700;
+    background-color: #e14c5c;
+    color:white;
   }
