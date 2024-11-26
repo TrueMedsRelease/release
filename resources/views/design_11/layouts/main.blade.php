@@ -55,7 +55,7 @@
 
     <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
-    <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset($design . '/css/style.css?v=261124') }}" rel="stylesheet">
     <link href="{{ asset($design . '/css/pages.css') }}" rel="stylesheet">
 
     <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
