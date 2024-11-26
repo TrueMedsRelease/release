@@ -43,7 +43,12 @@
                             <span class="icon">
                                 <img src="{{ asset($design . '/images/icons/cart.svg') }}" class="inline-svg">
                             </span>
-                            <span class="button__text">{{__('text.product_add_to_cart_text')}}</span>
+                            @php
+                                dump(Str::lower(App::currentLocale()));
+                            @endphp
+                            @if (App::currentLocale())
+                                <span class="button__text">{{__('text.product_add_to_cart_text')}}</span>
+                            @endif
                         </button>
                     </div>
                 </article>

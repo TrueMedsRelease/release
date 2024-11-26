@@ -21,6 +21,9 @@
                             </div>
                             <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
+                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                            <span class="card__label">-{{ $product['discount'] }}%</span>
+                        @endif
                         <div class="item-product__image-ibg">
                             @if ($product['image'] == 'gift-card')
                                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">

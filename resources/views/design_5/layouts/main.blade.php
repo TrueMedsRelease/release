@@ -81,6 +81,12 @@
     <input type="hidden" id="subsc_popup" value="{{ env('SUBSCRIBE_POPUP_STATUS', 1) }}">
 
     <header class="header">
+
+        <div class="christmas" style="display: none">
+            {{-- <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}"> --}}
+            <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
+        </div>
+
         <div class="phone-box">
             <div class="container">
                 <div class="holder-phone">

@@ -21,6 +21,9 @@
         <div class="products__items">
             @foreach ($bestsellers as $product)
                 <div class="products__item item-product">
+                    @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        <span class="card__label">-{{ $product['discount'] }}%</span>
+                    @endif
                     <a href="{{ route('home.product', $product['url']) }}">
                         <div class="item-product__info">
                             <div class="item-product__image">
@@ -59,6 +62,9 @@
         <div class="products__items">
             @foreach ($products as $product)
                 <div class="products__item item-product">
+                    @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        <span class="card__label">-{{ $product['discount'] }}%</span>
+                    @endif
                     <a href="{{ route('home.product', $product['url']) }}">
                         <div class="item-product__info">
                             <div class="item-product__image">

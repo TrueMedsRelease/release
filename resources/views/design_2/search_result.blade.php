@@ -180,6 +180,9 @@
                 <div class="bestsellers__body">
                     @foreach ($bestsellers as $product)
                         <div class="product-card">
+                            @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                                <span class="card__label">-{{ $product['discount'] }}%</span>
+                            @endif
                             <a href="{{ route('home.product', $product['url']) }}" class="product-card__image">
                                 @if ($product['image'] == 'gift-card')
                                     <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
@@ -221,6 +224,9 @@
             <div class="bestsellers__body">
                 @foreach ($products as $product)
                     <div class="product-card">
+                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                            <span class="card__label">-{{ $product['discount'] }}%</span>
+                        @endif
                         <a href="{{ route('home.product', $product['url']) }}" class="product-card__image">
                             @if ($product['image'] == 'gift-card')
                                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">

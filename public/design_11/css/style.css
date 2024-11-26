@@ -4672,3 +4672,11 @@ body.has-scroll{
   .info-panel__row .text-box .text.active a {
     margin-right: 5px;
   }
+
+  .christmas{
+    width: 100%;
+  }
+
+  .christmas img {
+    width: 100%;
+  }
