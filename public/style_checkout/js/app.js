@@ -2135,9 +2135,23 @@ $(".card_type .select__option").click(function (e) {
 });
 
 window.addEventListener('message', (event) => {
+
     if (event.origin !== 'https://r.express') {
         return;
     }
+
+    $.ajax({
+        url: '/log_google',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {'info': event.data},
+        async: false,
+        success: function (data) {
+
+        },
+    });
+
     var info = JSON.parse(event.data);
     var form = $('form').serialize();
 
@@ -2152,18 +2166,6 @@ window.addEventListener('message', (event) => {
     form += '&trans_id=' + info.payment.id;
     form += '&google_sum=' + info.payment.paymentOutput.amountOfMoney.amount;
     form += '&full_response=' + event.data;
-
-    $.ajax({
-        url: '/log_google',
-        type: 'POST',
-        cache: false,
-        dataType: 'html',
-        data: {'info': event.data},
-        async: false,
-        success: function (data) {
-
-        },
-    });
 
     if(info.payment.status == 'PENDING_CAPTURE')
     {
