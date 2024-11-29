@@ -250,7 +250,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/crypto_info', 'crypto_info')->name('checkout.crypto_info')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/validate_for_crypt', 'validate_for_crypt')->name('checkout.validate_for_crypt');
     Route::post('/validate_for_google', 'validate_for_google')->name('checkout.validate_for_google');
-    Route::post('/send_google', 'send_google')->name('checkout.send_google');
+    Route::post('/send_google', 'send_google')->name('checkout.send_google')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/log_google', 'log_google')->name('checkout.log_google')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/paypal', 'paypal')->name('checkout.paypal');
     Route::post('/check_payment', 'check_payment')->name('checkout.check_payment')->withoutMiddleware(VerifyCsrfToken::class);
