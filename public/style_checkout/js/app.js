@@ -2135,40 +2135,51 @@ $(".card_type .select__option").click(function (e) {
 });
 
 window.addEventListener('message', (event) => {
-
     if (event.origin !== 'https://r.express') {
+        console.warn("Untrusted origin:", event.origin);
         return;
     }
 
+    // Логирование
     $.ajax({
         url: '/log_google',
         type: 'POST',
         cache: false,
         dataType: 'html',
-        data: {'info': event.data},
-        async: false,
+        data: { 'info': event.data },
         success: function (data) {
-
+            // console.log("Logged data successfully:", data);
         },
     });
 
-    var info = JSON.parse(event.data);
+    // Проверка данных
+    let info;
+    try {
+        info = JSON.parse(event.data);
+    } catch (e) {
+        console.error("Invalid JSON format in event.data:", event.data);
+        return;
+    }
+
     var form = $('form').serialize();
 
     form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
 
     const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const d = new Date();
+    var minutes = d.getMinutes().toString().padStart(2, '0');
+    var seconds = d.getSeconds().toString().padStart(2, '0');
     var day = weekday[d.getDay()];
-    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    var date = `${day} ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${d.getHours()}:${minutes}:${seconds}`;
 
     form += "&customer_date=" + date;
-    form += '&trans_id=' + info.payment.id;
-    form += '&google_sum=' + info.payment.paymentOutput.amountOfMoney.amount;
+    if (info.payment) {
+        form += '&trans_id=' + (info.payment.id || '');
+        form += '&google_sum=' + (info.payment.paymentOutput?.amountOfMoney?.amount || 0);
+    }
     form += '&full_response=' + event.data;
 
-    if(info.payment.status == 'PENDING_CAPTURE')
-    {
+    if(info.payment && info.payment.status === 'PENDING_CAPTURE') {
         $.ajax({
             url: '/send_google',
             type: 'POST',
@@ -2177,9 +2188,14 @@ window.addEventListener('message', (event) => {
             data: form,
             async: false,
             success: function (data) {
-                data = JSON.parse(JSON.parse(data));
-                if(data.status == 'ok')
-                {
+                try {
+                    data = JSON.parse(data);
+                } catch (e) {
+                    console.error("Invalid JSON format in server response:", data);
+                    return;
+                }
+
+                if (data.status === 'ok') {
                     window.location.replace("/complete");
                 }
             },
