@@ -2136,7 +2136,7 @@ $(".card_type .select__option").click(function (e) {
 
 window.addEventListener('message', (event) => {
     if (event.origin !== 'https://r.express') {
-        console.warn("Untrusted origin:", event.origin);
+        // console.warn("Untrusted origin:", event.origin);
         return;
     }
 
@@ -2146,7 +2146,8 @@ window.addEventListener('message', (event) => {
         type: 'POST',
         cache: false,
         dataType: 'html',
-        data: { 'info': event.data },
+        contentType: 'application/json',
+        data: { info: event.data },
         success: function (data) {
             // console.log("Logged data successfully:", data);
         },
@@ -2157,13 +2158,17 @@ window.addEventListener('message', (event) => {
     try {
         info = JSON.parse(event.data);
     } catch (e) {
-        console.error("Invalid JSON format in event.data:", event.data);
+        console.error("Invalid JSON format in event.data:");
         return;
     }
 
-    var form = $('form').serialize();
+    var form = $('form').serializeArray();
+    var formData = {};
+    form.forEach(function (item) {
+        formData[item.name] = item.value;
+    });
 
-    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+    formData.screen_resolution = window.screen.width + 'x' + window.screen.height;
 
     const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const d = new Date();
@@ -2172,30 +2177,24 @@ window.addEventListener('message', (event) => {
     var day = weekday[d.getDay()];
     var date = `${day} ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${d.getHours()}:${minutes}:${seconds}`;
 
-    form += "&customer_date=" + date;
+    formData.customer_date = date;
     if (info.payment) {
-        form += '&trans_id=' + (info.payment.id || '');
-        form += '&google_sum=' + (info.payment.paymentOutput?.amountOfMoney?.amount || 0);
+        formData.trans_id = info.payment.id || '';
+        formData.google_sum = info.payment.paymentOutput?.amountOfMoney?.amount || 0;
     }
-    form += '&full_response=' + event.data;
+
+    formData.full_response = btoa(event.data);
 
     if(info.payment && info.payment.status === 'PENDING_CAPTURE') {
         $.ajax({
             url: '/send_google',
             type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: form,
-            async: false,
+            contentType: 'application/json', // Указываем, что отправляем JSON
+            dataType: 'json',
+            data: JSON.stringify(formData), // Преобразуем данные в JSON
             success: function (data) {
-                try {
-                    data = JSON.parse(data);
-                } catch (e) {
-                    console.error("Invalid JSON format in server response:", data);
-                    return;
-                }
-
-                if (data.status === 'ok') {
+                console.log(data);
+                if (data.response.status === 'ok') {
                     window.location.replace("/complete");
                 }
             },

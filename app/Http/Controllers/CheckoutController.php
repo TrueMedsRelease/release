@@ -35,11 +35,32 @@ class CheckoutController extends Controller
         $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
         if (count($unsent_order) > 0) {
             foreach ($unsent_order as $order) {
-                $response = Http::post('http://true-services.net/checkout/order.php', json_decode($order->message, true));
-                $response = json_decode($response, true);
+                if(checkdnsrr('true-services.net', 'A'))
+                {
+                    try {
+                        $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', json_decode($order->message, true));
 
-                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
-                    DB::delete("DELETE FROM order_cache WHERE `id` = {$order->id}");
+                        if ($response->successful()) {
+                            // Обработка успешного ответа
+
+                            $response = json_decode($response, true);
+
+                            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
+                                DB::delete("DELETE FROM order_cache WHERE `id` = {$order->id}");
+                            }
+
+                        } else {
+                            // Обработка ответа с ошибкой (4xx или 5xx)
+                            Log::error("Сервис вернул ошибку: " . $response->status());
+                            $responseData = ['error' => 'Service returned an error'];
+                        }
+                    } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                        Log::error("Ошибка подключения: " . $e->getMessage());
+                    } catch (\Illuminate\Http\Client\RequestException $e) {
+                        // Обработка ошибок запроса, таких как таймаут или недоступность
+                        Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                        $responseData = ['error' => 'Service unavailable'];
+                    }
                 }
             }
         }
@@ -153,6 +174,13 @@ class CheckoutController extends Controller
             }
         }
 
+        $service_enable = true;
+        if(!checkdnsrr('true-services.net', 'A'))
+        {
+            $service_enable = false;
+        }
+
+
         $states = State::$states;
 
         $returnHTML = view('checkout_content')->with([
@@ -168,6 +196,7 @@ class CheckoutController extends Controller
             'phone_codes' => $phone_codes,
             'countries' => $countries,
             'states' => $states,
+            'service_enable' => $service_enable,
 
         ])->render();
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
@@ -234,20 +263,40 @@ class CheckoutController extends Controller
             'coupon' => $coupon,
         ];
 
-        $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+        if(checkdnsrr('true-services.net', 'A'))
+        {
+            try {
+                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
 
-        $response = json_decode($response, true);
+                if ($response->successful()) {
+                    // Обработка успешного ответа
 
-        if ($response['status'] == 'success') {
-            if ($response['coupon']['type'] == 'coupon') {
-                $result['coupon'] = $coupon;
-                $result['percent'] = $response['coupon']['percent'];
-                $result['type'] = $response['coupon']['type'];
+                    $response = json_decode($response, true);
 
-                session(['coupon' => $result]);
+                    if ($response['status'] == 'success') {
+                        if ($response['coupon']['type'] == 'coupon') {
+                            $result['coupon'] = $coupon;
+                            $result['percent'] = $response['coupon']['percent'];
+                            $result['type'] = $response['coupon']['type'];
+
+                            session(['coupon' => $result]);
+                        }
+                    } else {
+                        session()->forget('coupon');
+                    }
+
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
             }
-        } else {
-            session()->forget('coupon');
         }
 
         return $this->checkout();
@@ -263,22 +312,41 @@ class CheckoutController extends Controller
             'email' => $email
         ];
 
-        $response = Http::post('http://true-services.net/checkout/order.php', $data);
-
-        $response = json_decode($response, true);
-        $response['email'] = $email;
-
-
-        if($response['status'] == 'success')
+        if(checkdnsrr('true-services.net', 'A'))
         {
-            session(['form' => $response]);
-                return $this->checkout();
-        }
-        else
-        {
-            Session::put('form.email',$email);
-        }
+            try {
+                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
 
+                if ($response->successful()) {
+                    // Обработка успешного ответа
+
+                    $response = json_decode($response, true);
+                    $response['email'] = $email;
+
+
+                    if($response['status'] == 'success')
+                    {
+                        session(['form' => $response]);
+                            return $this->checkout();
+                    }
+                    else
+                    {
+                        Session::put('form.email',$email);
+                    }
+
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
     }
 
     public function order(Request $request)
@@ -488,18 +556,41 @@ class CheckoutController extends Controller
             }
 
 
-            $response = Http::post('http://true-services.net/checkout/order.php', $data);
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
 
-            $response = json_decode($response, true);
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
 
-            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
-                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
-                session(['order' => $response]);
+                        $response = json_decode($response, true);
+
+                        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
+                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                            session(['order' => $response]);
+                        }
+
+                        return response()->json(['response' => $response], 200);
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
             }
-
-            // session(['order' => $response]);
-
-            return response()->json(['response' => $response], 200);
+            else
+            {
+                session(['order' => 'error']);
+                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+            }
         }
     }
 
@@ -624,18 +715,37 @@ class CheckoutController extends Controller
                 $order_cache_id = $check_order_cache[0]->id;
             }
 
-            $response = Http::post('http://true-services.net/checkout/order.php', $data);
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
 
-            $response = json_decode($response, true);
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
 
-            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
-                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
-                session(['order' => $response]);
+                        $response = json_decode($response, true);
+
+                        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
+                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                            session(['order' => $response]);
+                        }
+
+                        return response()->json(['response' => $response], 200);
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
             }
-
-            return response()->json(['response' => $response], 200);
         }
-
     }
 
     public function crypto_info(Request $request)
@@ -648,16 +758,36 @@ class CheckoutController extends Controller
             'currency' => $request->currency,
          ];
 
-        $response = Http::post('http://true-services.net/checkout/order.php', $data);
+        if(checkdnsrr('true-services.net', 'A'))
+        {
+            try {
+                $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
 
-        $response = json_decode($response, true);
-        $response['crypto_total'] = Currency::Convert(session('total.checkout_total') * 0.85);
-        $response['qr'] = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
-        $response['currency'] = $request->currency;
+                if ($response->successful()) {
+                    // Обработка успешного ответа
 
-        session(['crypto' => $response]);
+                    $response = json_decode($response, true);
+                    $response['crypto_total'] = Currency::Convert(session('total.checkout_total') * 0.85);
+                    $response['qr'] = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
+                    $response['currency'] = $request->currency;
 
-        return response()->json(json_encode($response));
+                    session(['crypto' => $response]);
+
+                    return response()->json(json_encode($response));
+
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
     }
 
     public function validate_for_crypt(Request $request)
@@ -704,9 +834,29 @@ class CheckoutController extends Controller
                 'method' => 'save_order_data',
                 'api_key' => '7c73d5ca242607050422af5a4304ef71',
                 'form' => $form,
-             ];
+            ];
 
-            $response = Http::post('http://true-services.net/checkout/order.php', $data);
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
         }
     }
 
@@ -730,14 +880,28 @@ class CheckoutController extends Controller
                 'method' => 'hold',
                 'id' => $id,
                 'order_id' => session('order.order_id'),
-             ];
+            ];
 
-            try{
-                $response = Http::timeout(1)->post('http://true-services.net/checkout/order.php', $data);
-            }
-            catch(\Exception $e)
+            if(checkdnsrr('true-services.net', 'A'))
             {
-                Log::error('Ошибка запроса: ' . $e->getMessage());
+                try {
+                    $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
             }
         }
 
@@ -757,124 +921,144 @@ class CheckoutController extends Controller
                 'method' => 'check_payment',
                 'api_key' => '7c73d5ca242607050422af5a4304ef71',
                 'invoiceId' => session('crypto.invoiceId'),
-             ];
+            ];
 
-            $response_payment = Http::post('http://true-services.net/checkout/order.php', $data);
-
-            $response_payment = json_decode($response_payment, true);
-
-            session(['check_payment' => $response_payment]);
-
-            if($response_payment['status'] == 3 || $response_payment == 5)
+            if(checkdnsrr('true-services.net', 'A'))
             {
-                $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-                $phone_code = $phone_code->phonecode;
+                try {
+                    $response_payment = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
 
-                $products = [];
-                $sessid = '';
+                    if ($response_payment->successful()) {
+                        // Обработка успешного ответа
 
-                foreach(session('cart') as $product)
-                {
-                    $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
-                    $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
-                }
+                        $response_payment = json_decode($response_payment, true);
 
-                if(session('cart_option.bonus_id') != 0)
-                {
-                    $products[session('cart_option.bonus_id')] = ['qty' => 1, 'price' => session('cart_option.bonus_price'), 'is_ed_category' => false];
-                }
+                        session(['check_payment' => $response_payment]);
 
-                $products_str = json_encode($products);
+                        if($response_payment['status'] == 3 || $response_payment == 5)
+                        {
+                            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+                            $phone_code = $phone_code->phonecode;
 
-                $data = [
-                    'method' => 'order',
-                    'api_key' => '7c73d5ca242607050422af5a4304ef71',
-                    'phone' => e('+' . $phone_code . $request->phone),
-                    'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
-                    'email' => e($request->email),
-                    'alter_email' => !empty($request->alt_email) ? e($request->alt_email) : '',
-                    'firstname' => e($request->firstname),
-                    'lastname' => e($request->lastname),
-                    'billing_country' => e($request->billing_country),
-                    'billing_state' => e($request->billing_state),
-                    'billing_city' => e($request->billing_city),
-                    'billing_address' => e($request->billing_address),
-                    'billing_zip' => e($request->billing_zip),
-                    'shipping_country' => !empty($request->address_match) ? e($request->shipping_country) : e($request->billing_country),
-                    'shipping_state' => !empty($request->address_match) ? e($request->shipping_state) : e($request->billing_state),
-                    'shipping_city' => !empty($request->address_match) ? e($request->shipping_city) : e($request->billing_city),
-                    'shipping_address' => !empty($request->address_match) ? e($request->shipping_address) : e($request->billing_address),
-                    'shipping_zip' => !empty($request->address_match) ? e($request->shipping_zip) : e($request->billing_zip),
-                    'payment_type' => e($request->payment_type),
-                    'crypto_currency' => e($response_payment['payCurrency']),
-                    'invoiceId' => e($response_payment['invoiceId']),
-                    'merchant_id' => e($response_payment['merchantId']),
-                    'purse' => e($response_payment['purse']),
-                    'amount' => e($response_payment['amount']),
-                    'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
-                    'commission' => e($response_payment['merchantCommission']),
-                    'crypto_status' => e($response_payment['status']),
-                    'ip' => request()->ip(),
-                    'aff' => session('aff', 0),
-                    'ref' => session('referer', ''),
-                    'refc' => session('refc', ''),
-                    'keyword' => session('keyword', ''),
-                    'domain_from' => request()->getHost(),
-                    'total' => session('total.checkout_total'),
-                    'shipping' => session('cart_option.shipping'),
-                    'products' => $products_str,
-                    'saff' => session('saff', ''),
-                    'language' => App::currentLocale(),
-                    'currency' => session('currency'),
-                    'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $request->screen_resolution,
-                    'fingerprint' => '',
-                    'product_total' => session('total.product_total'),
-                    'customer_id' => '',
-                    'reorder' => 0,
-                    'reorder_discount' => 0,
-                    'shipping_price' => session('total.shipping_total'),
-                    'insurance' => session('total.insurance'),
-                    'secret_package' => session('total.secret_package'),
-                    'store_skin' => config('app.design'),
-                    'recurring_period' => 0,
-                    'coupon' => session('coupon.coupon', ''),
-                    'bonus' => '',
-                    'gift_card_code' => '',
-                    'gift_card_discount' => 0,
-                    'theme' => 13,
-                    'coupon_discount' => session('total.coupon_discount'),
-                    'sessid' => $sessid
-                ];
+                            $products = [];
+                            $sessid = '';
 
-                session(['data' => $data]);
+                            foreach(session('cart') as $product)
+                            {
+                                $products[$product['pack_id']] = ['qty' => $product['q'], 'price' => $product['price'], 'is_ed_category' => false];
+                                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
+                            }
 
-                $email = e($request->email);
-                $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-                if(count($check_order_cache) == 0)
-                {
-                    $data_for_cache = $data;
-                    $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                    $order_cache_id = DB::table('order_cache')->insertGetId([
-                        'message' => json_encode($data_for_cache),
-                        'is_send' => 0
-                    ]);
-                }
-                else
-                {
-                    $order_cache_id = $check_order_cache[0]->id;
-                }
+                            if(session('cart_option.bonus_id') != 0)
+                            {
+                                $products[session('cart_option.bonus_id')] = ['qty' => 1, 'price' => session('cart_option.bonus_price'), 'is_ed_category' => false];
+                            }
 
-                $response = Http::post('http://true-services.net/checkout/order.php', $data);
+                            $products_str = json_encode($products);
 
-                $response = json_decode($response, true);
+                            $data = [
+                                'method' => 'order',
+                                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                                'phone' => e('+' . $phone_code . $request->phone),
+                                'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+                                'email' => e($request->email),
+                                'alter_email' => !empty($request->alt_email) ? e($request->alt_email) : '',
+                                'firstname' => e($request->firstname),
+                                'lastname' => e($request->lastname),
+                                'billing_country' => e($request->billing_country),
+                                'billing_state' => e($request->billing_state),
+                                'billing_city' => e($request->billing_city),
+                                'billing_address' => e($request->billing_address),
+                                'billing_zip' => e($request->billing_zip),
+                                'shipping_country' => !empty($request->address_match) ? e($request->shipping_country) : e($request->billing_country),
+                                'shipping_state' => !empty($request->address_match) ? e($request->shipping_state) : e($request->billing_state),
+                                'shipping_city' => !empty($request->address_match) ? e($request->shipping_city) : e($request->billing_city),
+                                'shipping_address' => !empty($request->address_match) ? e($request->shipping_address) : e($request->billing_address),
+                                'shipping_zip' => !empty($request->address_match) ? e($request->shipping_zip) : e($request->billing_zip),
+                                'payment_type' => e($request->payment_type),
+                                'crypto_currency' => e($response_payment['payCurrency']),
+                                'invoiceId' => e($response_payment['invoiceId']),
+                                'merchant_id' => e($response_payment['merchantId']),
+                                'purse' => e($response_payment['purse']),
+                                'amount' => e($response_payment['amount']),
+                                'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
+                                'commission' => e($response_payment['merchantCommission']),
+                                'crypto_status' => e($response_payment['status']),
+                                'ip' => request()->ip(),
+                                'aff' => session('aff', 0),
+                                'ref' => session('referer', ''),
+                                'refc' => session('refc', ''),
+                                'keyword' => session('keyword', ''),
+                                'domain_from' => request()->getHost(),
+                                'total' => session('total.checkout_total'),
+                                'shipping' => session('cart_option.shipping'),
+                                'products' => $products_str,
+                                'saff' => session('saff', ''),
+                                'language' => App::currentLocale(),
+                                'currency' => session('currency'),
+                                'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $request->screen_resolution,
+                                'fingerprint' => '',
+                                'product_total' => session('total.product_total'),
+                                'customer_id' => '',
+                                'reorder' => 0,
+                                'reorder_discount' => 0,
+                                'shipping_price' => session('total.shipping_total'),
+                                'insurance' => session('total.insurance'),
+                                'secret_package' => session('total.secret_package'),
+                                'store_skin' => config('app.design'),
+                                'recurring_period' => 0,
+                                'coupon' => session('coupon.coupon', ''),
+                                'bonus' => '',
+                                'gift_card_code' => '',
+                                'gift_card_discount' => 0,
+                                'theme' => 13,
+                                'coupon_discount' => session('total.coupon_discount'),
+                                'sessid' => $sessid
+                            ];
 
-                if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
-                    DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
-                    session(['order' => $response]);
+                            session(['data' => $data]);
+
+                            $email = e($request->email);
+                            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+                            if(count($check_order_cache) == 0)
+                            {
+                                $data_for_cache = $data;
+                                $data_for_cache['products'] = addslashes($data_for_cache['products']);
+                                $order_cache_id = DB::table('order_cache')->insertGetId([
+                                    'message' => json_encode($data_for_cache),
+                                    'is_send' => 0
+                                ]);
+                            }
+                            else
+                            {
+                                $order_cache_id = $check_order_cache[0]->id;
+                            }
+
+                            $response = Http::post('http://true-services.net/checkout/order.php', $data);
+
+                            $response = json_decode($response, true);
+
+                            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
+                                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                                session(['order' => $response]);
+                            }
+                        }
+
+                        return response()->json(json_encode($response_payment));
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response_payment->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
                 }
             }
-
-            return response()->json(json_encode($response_payment));
         }
     }
 
@@ -922,21 +1106,44 @@ class CheckoutController extends Controller
                 'method' => 'save_order_data',
                 'api_key' => '7c73d5ca242607050422af5a4304ef71',
                 'form' => $form,
-             ];
+            ];
 
-            $response = Http::post('http://true-services.net/checkout/order.php', $data);
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
         }
     }
 
     public function log_google(Request $request)
     {
-        $info = $request->info;
+        $info = urldecode($request->getContent());
         Log::channel('api_log')->info("Api result: $info", ['endpoint' => '/Controller/CheckoutController', 'status' => 200]);
+        return 'ok';
     }
 
     public function send_google(Request $request)
     {
-        $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+        $form = $request->json()->all();
+
+        $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
         $phone_code = $phone_code->phonecode;
 
         $products = [];
@@ -958,26 +1165,26 @@ class CheckoutController extends Controller
         $data = [
             'method' => 'order',
             'api_key' => '7c73d5ca242607050422af5a4304ef71',
-            'phone' => e('+' . $phone_code . $request->phone),
-            'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
-            'email' => e($request->email),
-            'alter_email' => !empty($request->alt_email) ? e($request->alt_email) : '',
-            'firstname' => e($request->firstname),
-            'lastname' => e($request->lastname),
-            'billing_country' => e($request->billing_country),
-            'billing_state' => e($request->billing_state),
-            'billing_city' => e($request->billing_city),
-            'billing_address' => e($request->billing_address),
-            'billing_zip' => e($request->billing_zip),
-            'shipping_country' => !empty($request->address_match) ? e($request->shipping_country) : e($request->billing_country),
-            'shipping_state' => !empty($request->address_match) ? e($request->shipping_state) : e($request->billing_state),
-            'shipping_city' => !empty($request->address_match) ? e($request->shipping_city) : e($request->billing_city),
-            'shipping_address' => !empty($request->address_match) ? e($request->shipping_address) : e($request->billing_address),
-            'shipping_zip' => !empty($request->address_match) ? e($request->shipping_zip) : e($request->billing_zip),
-            'payment_type' => e($request->payment_type),
-            'trans_id' => e($request->trans_id),
-            'google_sum' => e($request->google_sum),
-            'full_response' => e($request->full_response),
+            'phone' => e('+' . $phone_code . $form['phone']),
+            'alternative_phone' => !empty($form['alt_phone']) ? e('+' . $phone_code . $form['alt_phone']) : '',
+            'email' => e($form['email']),
+            'alter_email' => !empty($form['alt_email']) ? e($form['alt_email']) : '',
+            'firstname' => e($form['firstname']),
+            'lastname' => e($form['lastname']),
+            'billing_country' => e($form['billing_country']),
+            'billing_state' => e($form['billing_state']),
+            'billing_city' => e($form['billing_city']),
+            'billing_address' => e($form['billing_address']),
+            'billing_zip' => e($form['billing_zip']),
+            'shipping_country' => !empty($form['address_match']) ? e($form['shipping_country']) : e($form['billing_country']),
+            'shipping_state' => !empty($form['address_match']) ? e($form['shipping_state']) : e($form['billing_state']),
+            'shipping_city' => !empty($form['address_match']) ? e($form['shipping_city']) : e($form['billing_city']),
+            'shipping_address' => !empty($form['address_match']) ? e($form['shipping_address']) : e($form['billing_address']),
+            'shipping_zip' => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
+            'payment_type' => 'google',
+            'trans_id' => e($form['trans_id']),
+            'google_sum' => e($form['google_sum']),
+            'full_response' => base64_decode($form['full_response']),
             'ip' => request()->ip(),
             'aff' => session('aff', 0),
             'ref' => session('referer', ''),
@@ -990,7 +1197,7 @@ class CheckoutController extends Controller
             'saff' => session('saff', ''),
             'language' => App::currentLocale(),
             'currency' => session('currency'),
-            'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $request->screen_resolution,
+            'user_agent' => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header('Accept-Language') . '&screen_resolution=' . $form['screen_resolution'],
             'fingerprint' => '',
             'product_total' => session('total.product_total'),
             'customer_id' => '',
@@ -1012,7 +1219,7 @@ class CheckoutController extends Controller
 
         session(['data' => $data]);
 
-        $email = e($request->email);
+        $email = e($form['email']);
         $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
         if(count($check_order_cache) == 0)
         {
@@ -1028,15 +1235,39 @@ class CheckoutController extends Controller
             $order_cache_id = $check_order_cache[0]->id;
         }
 
-        $response = Http::post('http://true-services.net/checkout/order.php', $data);
+        if(checkdnsrr('true-services.net', 'A'))
+        {
+            try {
+                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
 
-        $response = json_decode($response, true);
+                if ($response->successful()) {
+                    // Обработка успешного ответа
+                    $response = json_decode($response, true);
 
-        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
-            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
-            session(['order' => $response]);
+                    if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'repeat_order'))) {
+                        DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                        session(['order' => $response]);
+                    }
+
+                    return response()->json(['response' => ['status' => 'ok']], 200);
+
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
         }
-
-        return response()->json(json_encode(['status' => 'ok']));
+        else
+        {
+            session(['order' => 'error']);
+            return response()->json(['response' => ['status' => 'ok']], 200);
+        }
     }
 }
