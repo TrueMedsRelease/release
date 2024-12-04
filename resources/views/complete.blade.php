@@ -113,9 +113,11 @@
                 <h2 class="succes__subtitle">{{ __('text.success_congrat') }}
                     {{ session('form.firstname') . ' ' . session('form.lastname') }}{{ __('text.success_choice') }}
                 </h2>
+                @if(session('order') != 'error')
                 <div class="succes__block">
                     <b>{{ __('text.success_order_number') }}<span> {{ session('order.order_id') }}</span></b>
                 </div>
+                @endif
                 <div class="succes__block succes__block--transparent">
                     {{ __('text.success_charge') }}{{ $Currency::convert(session('total.checkout_total')) }}, <br>
                     {{ __('text.success_amount') }}

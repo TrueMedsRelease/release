@@ -560,11 +560,11 @@
                                     <select name="payment_type" class="form" id="payment_type_select"
                                         data-pseudo-label="Type of Payment">
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
-                                        <option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>
-                                        @if(env('APP_PAYPAL_ON', 0))
+                                        @if($service_enable)<option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>@endif
+                                        @if(env('APP_PAYPAL_ON', 0) && $service_enable)
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
-                                        @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US')
+                                        @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}

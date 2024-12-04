@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class StatisticService
 {
@@ -103,8 +104,27 @@ class StatisticService
             'aff' => session('aff', 0),
             'saff' => session('saff', ''),
         ];
+        if(checkdnsrr('true-services.net', 'A'))
+        {
+            try {
+                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
 
-        $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                if ($response->successful()) {
+                    // Обработка успешного ответа
+                    $responseData = $response->json(); // Если ожидается JSON-ответ
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
     }
 
 }

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\App;
 use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
@@ -1173,8 +1174,28 @@ class HomeController extends Controller
         ];
 
         if (!$error) {
-            $response = Http::timeout(3)->post('http://true-services.net/support/messages/phone_request.php', $data);
-            $response = json_decode($response, true);
+            $response = [];
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/phone_request.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+                        $response = json_decode($response, true);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
         } else {
             $response = [
                 'status' => 'error',
@@ -1214,8 +1235,28 @@ class HomeController extends Controller
         ];
 
         if (!$error) {
-            $response = Http::timeout(3)->post('http://true-services.net/support/messages/subscribe.php', $data);
-            $response = json_decode($response, true);
+            $response = [];
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/subscribe.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+                        $response = json_decode($response, true);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
         } else {
             if ($error == 1) {
                 $response = [
@@ -1280,8 +1321,28 @@ class HomeController extends Controller
         ];
 
         if (!$error) {
-            $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
-            $response = json_decode($response, true);
+            $response = [];
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+                        $response = json_decode($response, true);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
         } else {
             if ($error == 1) {
                 $response = [
@@ -1356,8 +1417,28 @@ class HomeController extends Controller
         ];
 
         if (!$error) {
-            $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
-            $response = json_decode($response, true);
+            $response = [];
+            if(checkdnsrr('true-services.net', 'A'))
+            {
+                try {
+                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+                        $response = json_decode($response, true);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
         } else {
             if ($error == 1) {
                 $response = [
