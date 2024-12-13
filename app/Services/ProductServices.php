@@ -165,16 +165,20 @@ class ProductServices
                     }
                 }
 
-                $product['name'] = $products_desc[$product['id']]['name'];
-                $product['desc'] = $products_desc[$product['id']]['desc'];
-                $product['url'] = $products_desc[$product['id']]['url'];
-                $product['aktiv'] = explode(',', ucwords(trim(str_replace("\r\n", '', trim($product['aktiv'])))));
+                if (isset($products_desc[$product['id']])) {
+                    $product['name'] = $products_desc[$product['id']]['name'];
+                    $product['desc'] = $products_desc[$product['id']]['desc'];
+                    $product['url'] = $products_desc[$product['id']]['url'];
+                    $product['aktiv'] = explode(',', ucwords(trim(str_replace("\r\n", '', trim($product['aktiv'])))));
 
-                foreach ($product['aktiv'] as $key => $value) {
-                    $product['aktiv'][$key] = [
-                        'name' => trim($value),
-                        'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
-                    ];
+                    foreach ($product['aktiv'] as $key => $value) {
+                        $product['aktiv'][$key] = [
+                            'name' => trim($value),
+                            'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                        ];
+                    }
+                } else {
+                    $product['unset'] = true;
                 }
             }
 
@@ -188,6 +192,12 @@ class ProductServices
             }
 
             unset($product);
+
+            foreach($products as $key=>$val) {
+                if (isset($val['unset']) && $val['unset'] == 'true'){
+                    unset($products[$key]);
+                }
+            }
 
             if (isset($category_desc[$category->id])) {
                 $categories[$category->id]['url'] = $category->url;
@@ -338,24 +348,34 @@ class ProductServices
             ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
-            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
-            foreach ($products[$i]['aktiv'] as $key => $value) {
-                $products[$i]['aktiv'][$key] = [
-                    'name' => trim($value),
-                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
-                ];
-            }
-            foreach ($product_price as $key=>$pp) {
-                if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+            if (isset($products_desc[$products[$i]['id']])) {
+                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+                $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+                foreach ($products[$i]['aktiv'] as $key => $value) {
+                    $products[$i]['aktiv'][$key] = [
+                        'name' => trim($value),
+                        'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                    ];
+                }
+                foreach ($product_price as $key=>$pp) {
+                    if ($products[$i]['id'] == $key) {
+                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
 
-                    if (isset($product_price[$products[$i]['id']]['discount'])) {
-                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        if (isset($product_price[$products[$i]['id']]['discount'])) {
+                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        }
                     }
                 }
+            } else {
+                $products[$i]['unset'] = true;
+            }
+        }
+
+        foreach ($products as $key => $val) {
+            if (isset($val['unset']) && $val['unset'] == 'true'){
+                unset($products[$key]);
             }
         }
 
@@ -392,24 +412,34 @@ class ProductServices
             ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
-            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
-            foreach ($products[$i]['aktiv'] as $key => $value) {
-                $products[$i]['aktiv'][$key] = [
-                    'name' => trim($value),
-                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
-                ];
-            }
-            foreach ($product_price as $key=>$pp) {
-                if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+            if (isset($products_desc[$products[$i]['id']])) {
+                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+                $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+                foreach ($products[$i]['aktiv'] as $key => $value) {
+                    $products[$i]['aktiv'][$key] = [
+                        'name' => trim($value),
+                        'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                    ];
+                }
+                foreach ($product_price as $key=>$pp) {
+                    if ($products[$i]['id'] == $key) {
+                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
 
-                    if (isset($product_price[$products[$i]['id']]['discount'])) {
-                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        if (isset($product_price[$products[$i]['id']]['discount'])) {
+                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        }
                     }
                 }
+            } else {
+                $products[$i]['unset'] = true;
+            }
+        }
+
+        foreach ($products as $key => $val) {
+            if (isset($val['unset']) && $val['unset'] == 'true'){
+                unset($products[$key]);
             }
         }
 
@@ -440,24 +470,34 @@ class ProductServices
             ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
-            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-            $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
-            foreach ($products[$i]['aktiv'] as $key => $value) {
-                $products[$i]['aktiv'][$key] = [
-                    'name' => trim($value),
-                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
-                ];
-            }
-            foreach ($product_price as $key=>$pp) {
-                if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+            if (isset($products_desc[$products[$i]['id']])) {
+                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+                $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+                foreach ($products[$i]['aktiv'] as $key => $value) {
+                    $products[$i]['aktiv'][$key] = [
+                        'name' => trim($value),
+                        'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                    ];
+                }
+                foreach ($product_price as $key=>$pp) {
+                    if ($products[$i]['id'] == $key) {
+                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
 
-                    if (isset($product_price[$products[$i]['id']]['discount'])) {
-                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        if (isset($product_price[$products[$i]['id']]['discount'])) {
+                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        }
                     }
                 }
+            } else {
+                $products[$i]['unset'] = true;
+            }
+        }
+
+        foreach ($products as $key => $val) {
+            if (isset($val['unset']) && $val['unset'] == 'true'){
+                unset($products[$key]);
             }
         }
 
@@ -836,24 +876,34 @@ class ProductServices
             ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
-            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-            $products[$i]['url'] = $is_autocomplete ? $products_desc[$products[$i]['id']]['url'] . '.html' : $products_desc[$products[$i]['id']]['url'];
-            $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
-            foreach ($products[$i]['aktiv'] as $key => $value) {
-                $products[$i]['aktiv'][$key] = [
-                    'name' => trim($value),
-                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
-                ];
-            }
-            foreach ($product_price as $key=>$pp) {
-                if ($products[$i]['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+            if (isset($products_desc[$products[$i]['id']])) {
+                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+                $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
+                foreach ($products[$i]['aktiv'] as $key => $value) {
+                    $products[$i]['aktiv'][$key] = [
+                        'name' => trim($value),
+                        'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))))
+                    ];
+                }
+                foreach ($product_price as $key=>$pp) {
+                    if ($products[$i]['id'] == $key) {
+                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
 
-                    if (isset($product_price[$products[$i]['id']]['discount'])) {
-                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        if (isset($product_price[$products[$i]['id']]['discount'])) {
+                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        }
                     }
                 }
+            } else {
+                $products[$i]['unset'] = true;
+            }
+        }
+
+        foreach ($products as $key => $val) {
+            if (isset($val['unset']) && $val['unset'] == 'true'){
+                unset($products[$key]);
             }
         }
 
@@ -1141,8 +1191,11 @@ class ProductServices
     public static function getProductProperties($product) {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
-            $domain = substr($domain, 0, -1);
+
+        if (!empty($domain)) {
+            if ($domain[$last_char] == '/') {
+                $domain = substr($domain, 0, -1);
+            }
         }
 
         $language_id = Language::$languages[App::currentLocale()];

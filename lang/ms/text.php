@@ -560,4 +560,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "success_thank" => "Terima kasih kerana memilih kami!",
     "search_nothing" => "Tiada apa yang dijumpai",
     "information" => "maklumat",
+
+    "complete_bottom_text_1" => "Sekiranya tidak mendapat e-mel pengesahan kerana penapis spam, anda akan dapat mencari status pesanan anda dan menerima ID trek penghantaran anda di tapak ini.",
+    "complete_bottom_text_2" => "Jika pesanan anda tidak diluluskan dalam masa 24 jam kad kredit anda mungkin disekat untuk transaksi internet. Sila hubungi bank anda dan minta untuk mengalih keluar sekatan itu.",
 ];

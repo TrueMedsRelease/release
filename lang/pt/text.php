@@ -678,4 +678,7 @@ return [
     "success_thank" => "Obrigado por nos escolher!",
     "search_nothing" => "Aqui não há nada",
     "information" => "informação",
+
+    "complete_bottom_text_1" => "Caso não receba um e-mail de confirmação por causa de filtros de spam, poderá consultar o estado da sua encomenda e receber o ID de seguimento de envio neste site.",
+    "complete_bottom_text_2" => "Se o seu pedido não for aprovado no prazo de 24 horas, o seu cartão de crédito poderá ser bloqueado para transações na Internet. Contacte o seu banco e peça para remover o bloqueio.",
 ];

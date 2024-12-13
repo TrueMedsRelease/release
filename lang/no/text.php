@@ -561,4 +561,7 @@ return [
     "success_thank" => "Takk for at du valgte oss!",
     "search_nothing" => "Ingenting funnet",
     "information" => "informasjon",
+
+    "complete_bottom_text_1" => "I tilfelle du ikke får en bekreftelses-e-post på grunn av spam-filtre, vil du kunne slå opp bestillingsstatusen din og motta din fraktspor-ID på denne siden.",
+    "complete_bottom_text_2" => "Hvis bestillingen ikke blir godkjent innen 24 timer, kan kredittkortet ditt bli blokkert for internetttransaksjoner. Ta kontakt med banken din og be om å fjerne blokkeringen.",
 ];

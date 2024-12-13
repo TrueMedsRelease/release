@@ -827,4 +827,7 @@ return [
     "admin_products_form_invalid_url" => "Url must be in the format any_text.html",
     "admin_products_form_tabs_text" => "tabs",
     "information" => "information",
+    
+    "complete_bottom_text_1" => "In case of not getting a confirmation e-mail because of spam-filters, you will be able to look up your order status and receive your shipping track ID on this site.",
+    "complete_bottom_text_2" => "If you order is not approved within 24 hours your credit card might be blocked for internet transactions. Please get in touch with your bank and ask to remove the block.",
 ];

@@ -35,7 +35,15 @@
                         </div>
                         <div class="item-product__bottom-row">
                             <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
-                            <a type="button" href="{{ route('home.product', $product['url']) }}" class="item-product__button button button--filled button--narrow">{{__('text.common_buy_button')}}</a>
+                            <a type="button" href="{{ route('home.product', $product['url']) }}" class="item-product__button button button--filled button--narrow">
+                                @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt', 'es']))
+                                    {{__('text.common_buy_button')}}
+                                @else
+                                    <svg width="18.5" height="21.5">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                                    </svg>
+                                @endif
+                            </a>
                         </div>
                     </div>
                 </div>

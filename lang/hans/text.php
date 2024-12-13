@@ -563,4 +563,7 @@ return [
     "success_thank" => "感谢您选择我们！",
     "search_nothing" => "未找到任何内容",
     "information" => "信息",
+
+    "complete_bottom_text_1" => "如果由于垃圾邮件过滤器而未收到确认电子邮件，您将能够在此网站上查看订单状态并收到您的运输跟踪 ID。",
+    "complete_bottom_text_2" => "如果您的订单在 24 小时内未获批准，您的信用卡可能会被阻止进行互联网交易。请联系您的银行并要求解除阻止。",
 ];

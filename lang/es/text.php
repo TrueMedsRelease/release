@@ -710,4 +710,7 @@ return [
     "success_thank" => "¡Gracias por elegirnos!",
     "search_nothing" => "No se ha encontrado nada",
     "information" => "información",
+
+    "complete_bottom_text_1" => "En caso de no recibir un correo electrónico de confirmación debido a los filtros de spam, podrá consultar el estado de su pedido y recibir el número de seguimiento del envío en este sitio.",
+    "complete_bottom_text_2" => "Si su pedido no se aprueba en 24 horas, su tarjeta de crédito podría quedar bloqueada para transacciones por Internet. Póngase en contacto con su banco y solicite que eliminen el bloqueo.",
 ];

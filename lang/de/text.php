@@ -684,4 +684,7 @@ return [
     "success_thank" => "Danke, dass Sie sich für uns entschieden haben!",
     "search_nothing" => "Nichts gefunden",
     "information" => "information",
+
+    "complete_bottom_text_1" => "Falls Sie aufgrund von Spamfiltern keine Bestätigungs-E-Mail erhalten, können Sie auf dieser Website Ihren Bestellstatus nachsehen und Ihre Sendungsverfolgungsnummer abrufen.",
+    "complete_bottom_text_2" => "Wenn Ihre Bestellung nicht innerhalb von 24 Stunden genehmigt wird, ist Ihre Kreditkarte möglicherweise für Internettransaktionen gesperrt. Bitte wenden Sie sich an Ihre Bank und bitten Sie um Aufhebung der Sperre.",
 ];

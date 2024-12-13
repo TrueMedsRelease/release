@@ -564,4 +564,7 @@ return [
     "success_thank" => "Köszönjük, hogy minket választott!",
     "search_nothing" => "Semmi nem található",
     "information" => "információ",
+
+    "complete_bottom_text_1" => "Abban az esetben, ha nem kap visszaigazoló e-mailt a spamszűrők miatt, ezen az oldalon megtekintheti a rendelés állapotát, és megkaphatja a szállítási nyomvonal azonosítóját.",
+    "complete_bottom_text_2" => "Ha megrendelését 24 órán belül nem hagyják jóvá, előfordulhat, hogy hitelkártyáját letiltják az internetes tranzakciókhoz. Kérjük, lépjen kapcsolatba bankjával, és kérje a blokk eltávolítását.",
 ];

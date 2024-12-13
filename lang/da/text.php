@@ -607,4 +607,7 @@ return [
     "success_thank" => "Tak fordi du valgte os!",
     "search_nothing" => "Intet fundet",
     "information" => "information",
+
+    "complete_bottom_text_1" => "I tilfælde af ikke at modtage en bekræftelses-e-mail på grund af spam-filtre, vil du være i stand til at slå din ordrestatus op og modtage dit forsendelsesspor-id på denne side.",
+    "complete_bottom_text_2" => "Hvis din ordre ikke er godkendt inden for 24 timer, kan dit kreditkort blive spærret for internettransaktioner. Kontakt venligst din bank og bed om at fjerne spærringen.",
 ];

@@ -82,7 +82,9 @@
                                                 <span class="icon">
                                                     <img src="{{ asset($design . '/images/icons/cart.svg') }}" class="inline-svg">
                                                 </span>
-                                                <span class="button__text">{{__('text.product_add_to_cart_text_d2')}}</span>
+                                                @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt']))
+                                                    <span class="button__text">{{__('text.product_add_to_cart_text_d2')}}</span>
+                                                @endif
                                             </button>
                                         </form>
                                     </td>

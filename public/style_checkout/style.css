@@ -2350,9 +2350,9 @@ textarea.input {
     font-size: 16px;
   }
 
-  .succes__last-words {
+  /* .succes__last-words {
     font-size: 14px;
-  }
+  } */
 }
 
 @media (min-width: 61.99875em) {
@@ -2667,9 +2667,9 @@ textarea.input {
     margin-bottom: 10px;
   }
 
-  .succes__last-words {
+  /* .succes__last-words {
     font-size: 12px;
-  }
+  } */
 }
 
 @media (max-width: 40.62375em) {
