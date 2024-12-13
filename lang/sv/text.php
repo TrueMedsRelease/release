@@ -558,4 +558,7 @@ return [
     "success_thank" => "Tack för att du valde oss!",
     "search_nothing" => "Inget hittades",
     "information" => "information",
+
+    "complete_bottom_text_1" => "Om du inte får en bekräftelse via e-post på grund av spam-filter, kommer du att kunna slå upp din beställningsstatus och få ditt fraktspår-ID på denna sida.",
+    "complete_bottom_text_2" => "Om din beställning inte godkänns inom 24 timmar kan ditt kreditkort spärras för internettransaktioner. Vänligen kontakta din bank och be att få bort spärren.",
 ];

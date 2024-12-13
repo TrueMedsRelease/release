@@ -554,4 +554,7 @@ return [
     "success_thank" => "Vă mulțumim că ne-ați ales!",
     "search_nothing" => "Nimic găsit",
     "information" => "informação",
+
+    "complete_bottom_text_1" => "În cazul în care nu primiți un e-mail de confirmare din cauza filtrelor de spam, veți putea să căutați starea comenzii și să primiți ID-ul pistei de expediere pe acest site.",
+    "complete_bottom_text_2" => "Dacă comanda nu este aprobată în 24 de ore, cardul dvs. de credit poate fi blocat pentru tranzacții pe internet. Vă rugăm să luați legătura cu banca dvs. și să solicitați eliminarea blocării.",
 ];

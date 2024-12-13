@@ -689,4 +689,7 @@ return [
     "success_thank" => "Merci de nous avoir choisi !",
     "search_nothing" => "Aucun résultat trouvé",
     "information" => "information",
+
+    "complete_bottom_text_1" => "Si vous ne recevez pas d'e-mail de confirmation en raison de filtres anti-spam, vous pourrez consulter le statut de votre commande et recevoir votre numéro de suivi d'expédition sur ce site.",
+    "complete_bottom_text_2" => "Si votre commande n'est pas approuvée dans les 24 heures, votre carte de crédit peut être bloquée pour les transactions sur Internet. Veuillez contacter votre banque et demander la suppression du blocage.",
 ];

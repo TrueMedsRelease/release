@@ -213,13 +213,13 @@
                                     @csrf
                                     <button type="submit" class="item-product-info__add-to-cart button button--filled">
                                         <span>
-                                            {{-- {if !in_array($data.language.code, ['de', 'fr', 'it', 'es'])}
-                                                {#add_to_cart_text_d2#}
-                                            {else} --}}
+                                            @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt', 'es']))
+                                                {{__('text.product_add_to_cart_text_d2')}}
+                                            @else
                                                 <svg width="18.5" height="21.5">
                                                     <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
                                                 </svg>
-                                            {{-- {/if} --}}
+                                            @endif
                                         </span>
                                     </button>
                                 </form>

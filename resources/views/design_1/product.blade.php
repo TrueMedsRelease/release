@@ -194,7 +194,12 @@
                                                         <span class="sr-only">{{__('text.product_add_to_cart_text')}}</span>
                                                     </button>
                                                     <button class="product-table__cart" type="submit">
-                                                        {{__('text.product_add_to_cart_text')}}
+                                                        <div>
+                                                            <img src="{{ asset($design . '/images/icons/cart-white.webp') }}">
+                                                        </div>
+                                                        <div>
+                                                            {{__('text.product_add_to_cart_text')}}
+                                                        </div>
                                                     </button>
                                                 </form>
                                             </th>

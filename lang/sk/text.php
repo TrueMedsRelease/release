@@ -558,4 +558,7 @@ return [
     "success_thank" => "Ďakujeme, že ste si vybrali nás!",
     "search_nothing" => "Nič sa nenašlo",
     "information" => "informácie",
+
+    "complete_bottom_text_1" => "V prípade, že nedostanete potvrdzujúci e-mail z dôvodu spamových filtrov, budete si môcť na tejto stránke vyhľadať stav svojej objednávky a získať ID zásielky.",
+    "complete_bottom_text_2" => "Ak vaša objednávka nebude schválená do 24 hodín, vaša kreditná karta môže byť zablokovaná pre internetové transakcie. Obráťte sa na svoju banku a požiadajte o odstránenie blokovania.",
 ];

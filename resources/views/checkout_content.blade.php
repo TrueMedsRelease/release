@@ -238,27 +238,30 @@
                             </div>
                             <div id="master_discount_sum" style="color: var(--red); font-weight: 500;"></div>
                         </div> --}}
-                        {{-- Gift card discount --}}
-                        {{-- <div class="your-order__row">
-                            <div class="your-order__checkbox checkbox">
-                                <label style="color: var(--red); font-weight: 500;"><span
-                                        class="checkbox__text">{#gift_card#} {$data.info.gift_card}</span></label>
-                            </div>
-                            <div id="gift_card_minus" style="color: var(--red); font-weight: 500;">-
-                                {$data.info.gift_card_discount_text}</div>
-                        </div> --}}
 
-                        {{-- if !$is_only_card --}}
+                        {{-- Gift card discount --}}
+                        @if (!empty(session('gift_card')) && session('gift_card'))
+                            <div class="your-order__row">
+                                <div class="your-order__checkbox checkbox">
+                                    <label style="color: var(--red); font-weight: 500;">
+                                        <span class="checkbox__text">{{__('text.common_gift_card')}} {{ session('gift_card.gift_card_code') }}</span>
+                                    </label>
+                                </div>
+                                @if (!empty(session('gift_card')) && session('gift_card') && session('gift_card.gift_card_balance') > session('total.checkout_total'))
+                                    <div id="gift_card_minus" style="color: var(--red); font-weight: 500;">-{{ $Currency::convert(session('total.checkout_total'), true) }}</div>
+                                @else
+                                    <div id="gift_card_minus" style="color: var(--red); font-weight: 500;">-{{ $Currency::convert(session('gift_card.gift_card_balance'), true) }}</div>
+                                @endif
+                            </div>
+                        @endif
+
                         <div class="your-order__row">
                             <div class="your-order__input enter-info__input"
                                 style="margin-bottom: 0; margin-right:0;">
                                 <label for="coupon" class="enter-info__label">{{__('text.checkout_coupon_card')}}</label>
-                                <input id="coupon" autocomplete="off" type="text" name="coupon"
-                                    placeholder="" class="input"
-                                    value="{{ session('coupon.coupon','') }}">
+                                <input id="coupon" autocomplete="off" type="text" name="coupon" placeholder="" class="input" value="{{ session('coupon.coupon','') }}">
                             </div>
-                            <button type="button" id="coupon_submit" class="your-order__coupon-button"
-                                style="right: 7px;" onclick="Coupon()">
+                            <button type="button" id="coupon_submit" class="your-order__coupon-button" style="right: 7px;" onclick="Coupon()">
                                 <svg width="24" height="24">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -278,8 +281,7 @@
                             </a> --}}
                             <div class="your-order__total totals-order" style="width: 100%;">
                                 <h3 class="totals-order__title" style="width: 100%;">{{__('text.checkout_total')}}</h3>
-                                <div
-                                    style="display:flex; align-items: center; width: 100%; justify-content:space-between;">
+                                <div style="display:flex; align-items: center; width: 100%; justify-content:space-between;">
                                     {{-- {if $data.info.gift_card_balance > $data.info.total_check && $data.info.gift_card}
                                     <div class="totals-order__total" style="color: var(--green); font-size:18px;">
                                     </div>
@@ -299,27 +301,40 @@
                                         $total_discount += session('cart_option.bonus_price');
                                         $total_discount += $shipping[session('cart_option.shipping')];
                                         $total_discount += session('total.coupon_discount');
+
+                                        if (!empty(session('gift_card')) && session('gift_card')) {
+                                            $gift_card_balance = session('gift_card.gift_card_balance', 0);
+                                        } else {
+                                            $gift_card_balance = 0;
+                                        }
+
+                                        $saving = $total_discount - session('total.checkout_total') + $gift_card_balance;
                                     @endphp
 
-                                    @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
-                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">
-                                            {{ session('total.checkout_total_in_currency') }}
-                                        </div>
+                                    @if (!empty(session('gift_card')) && session('gift_card') && session('gift_card.gift_card_balance') > session('total.checkout_total'))
+                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div>
                                     @else
-                                        <p class="totals-order__old-price">
-                                            <span id="total_old">
-                                                {{ $Currency::convert($total_discount) }}
-                                            </span>
-                                            <span id="discount_text"
-                                                style="text-decoration: none;">-{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%</span>
-                                        </p>
-                                        <div class="totals-order__savings"
-                                            style="color: rgb(148, 148, 148);font-size: 13px;">{{__('text.checkout_savings')}} <span
-                                                id="saving">{{ $Currency::convert($total_discount - session('total.checkout_total')) }}</span>
-                                        </div>
-                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">
-                                            {{ session('total.checkout_total_in_currency') }}
-                                        </div>
+                                        @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
+                                            <div class="totals-order__total" style="color: var(--green); font-size:18px;">
+                                                {{ session('total.checkout_total_in_currency') }}
+                                            </div>
+                                        @else
+                                            <p class="totals-order__old-price">
+                                                <span id="total_old">
+                                                    {{ $Currency::convert($total_discount) }}
+                                                </span>
+                                                <span id="discount_text" style="text-decoration: none;">
+                                                    -{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
+                                                </span>
+                                            </p>
+                                            <div class="totals-order__savings" style="color: rgb(148, 148, 148);font-size: 13px;">
+                                                {{__('text.checkout_savings')}}
+                                                <span id="saving">{{ $Currency::convert($saving) }}</span>
+                                            </div>
+                                            <div class="totals-order__total" style="color: var(--green); font-size:18px;">
+                                                {{ session('total.checkout_total_in_currency') }}
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>

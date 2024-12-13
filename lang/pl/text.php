@@ -559,4 +559,7 @@ return [
     "success_thank" => "Dziękujemy za wybranie nas!",
     "search_nothing" => "Nic nie znaleziono",
     "information" => "informacja",
+
+    "complete_bottom_text_1" => "W przypadku nieotrzymania e-maila z potwierdzeniem z powodu filtrów antyspamowych, będziesz mógł sprawdzić status swojego zamówienia i otrzymać identyfikator przesyłki na tej stronie.",
+    "complete_bottom_text_2" => "Jeśli zamówienie nie zostanie zatwierdzone w ciągu 24 godzin, Twoja karta kredytowa może zostać zablokowana dla transakcji internetowych. Skontaktuj się ze swoim bankiem i poproś o usunięcie blokady.",
 ];

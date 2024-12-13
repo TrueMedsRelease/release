@@ -109,9 +109,8 @@
         </header>
         <main class="succes">
             <div class="succes__container">
-                <h1 class="succes__title">{{ __('text.success_complete') }}</h1>
-                <h2 class="succes__subtitle">{{ __('text.success_congrat') }}
-                    {{ session('form.firstname') . ' ' . session('form.lastname') }}{{ __('text.success_choice') }}
+                {{-- <h1 class="succes__title"></h1> --}}
+                <h2 class="succes__subtitle">{{ __('text.success_complete') }} {{ __('text.success_congrat') }} {{ session('form.firstname') . ' ' . session('form.lastname') }}{{ __('text.success_choice') }}
                 </h2>
                 @if(session('order') != 'error')
                 <div class="succes__block">
@@ -119,8 +118,7 @@
                 </div>
                 @endif
                 <div class="succes__block succes__block--transparent">
-                    {{ __('text.success_charge') }}{{ $Currency::convert(session('total.checkout_total')) }}, <br>
-                    {{ __('text.success_amount') }}
+                    {{ __('text.success_charge') }}<b>{{ $Currency::convert(session('total.checkout_total')) }}</b>, {{ __('text.success_amount') }}
                 </div>
                 @if (session('order.gift_card'))
 					<div class="gift_block">
@@ -169,16 +167,20 @@
                     </div>
                 </div>
                 <div class="succes__block">
-                    <b>{{ __('text.success_support') }} </b> <a class="succes__link"
-                        href="https://true-client-support.com">true-client-support.com</a>
-                </div>
-                <div class="succes__block">
-                    <b>{{ __('text.success_email') }} </b> <a class="succes__link"
-                        href="mailto:support@true-client-support.com">support@true-client-support.com</a>
+                    <div style="margin-bottom: 15px">
+                        <b>{{ __('text.success_support') }}</b>
+                        <a class="succes__link" href="https://true-client-support.com">true-client-support.com</a>
+                    </div>
+                    <div>
+                        <b>{{ __('text.success_email') }}</b>
+                        <a class="succes__link" href="mailto:support@true-client-support.com">support@true-client-support.com</a>
+                    </div>
                 </div>
                 <div class="succes__last-words">
-                    <p>{{ __('text.common_receive') }}</p>
-                    <p>{{ __('text.success_sms') }}</p>
+                    {{-- <p>{{ __('text.common_receive') }}</p>
+                    <p>{{ __('text.success_sms') }}</p> --}}
+                    <p style="color: #e14c5c;">{{ __('text.complete_bottom_text_1') }}</p>
+                    <p style="color: #e14c5c;">{{ __('text.complete_bottom_text_2') }}</p>
                     <p>{{ __('text.success_help') }}</p>
                     <p>{{ __('text.success_thank') }}</p>
                 </div>
@@ -190,20 +192,7 @@
             </div>
         </footer>
     </div>
-    <!-- <div id="popup" aria-hidden="true" class="popup">
- <div class="popup__wrapper">
-  <div class="popup__content">
-   <button data-close type="button" class="popup__close">
-    <svg width="20" height="20">
-     <use xlink:href="../style_checkout/images/icons/icons.svg#svg-close"></use>
-    </svg>
-   </button>
-   <div class="popup__text">
-    Text
-   </div>
-  </div>
- </div>
-</div> -->
+
     <script src="{{ asset('style_checkout/js/app_success.js') }}"></script>
 
     <script>

@@ -564,4 +564,7 @@ return [
     "phone_request_mes_text" => "Pyyntösi on lähetetty.",
     "success_thank" => "Kiitos, että valitsit meidät!",
     "search_nothing" => "Mitään ei löytynyt",
+
+    "complete_bottom_text_1" => "Jos et saa vahvistussähköpostia roskapostisuodattimien takia, voit tarkistaa tilauksesi tilan ja saada toimitusreittitunnuksesi tältä sivustolta.",
+    "complete_bottom_text_2" => "Jos tilaustasi ei hyväksytä 24 tunnin kuluessa, luottokorttisi saatetaan estää Internet-tapahtumien varalta. Ota yhteyttä pankkiisi ja pyydä eston poistamista.",
 ];

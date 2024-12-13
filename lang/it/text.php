@@ -694,4 +694,7 @@ return [
     "success_thank" => "Grazie per averci scelto!",
     "search_nothing" => "Nessun risultato trovato",
     "information" => "informazioni",
+
+    "complete_bottom_text_1" => "In caso di mancata ricezione di un'e-mail di conferma a causa di filtri antispam, potrai cercare lo stato del tuo ordine e ricevere il tuo ID di tracciamento della spedizione su questo sito.",
+    "complete_bottom_text_2" => "Se il tuo ordine non viene approvato entro 24 ore, la tua carta di credito potrebbe essere bloccata per le transazioni su Internet. Contatta la tua banca e chiedi di rimuovere il blocco.",
 ];

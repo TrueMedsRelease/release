@@ -598,4 +598,7 @@ return [
     "success_thank" => "Bedankt dat u voor ons hebt gekozen!",
     "search_nothing" => "Niets gevonden",
     "information" => "informatie",
+
+    "complete_bottom_text_1" => "Als u geen bevestigingsmail ontvangt vanwege spamfilters, kunt u op deze site de status van uw bestelling bekijken en uw verzendtrack-ID ontvangen.",
+    "complete_bottom_text_2" => "Als uw bestelling niet binnen 24 uur wordt goedgekeurd, kan uw creditcard worden geblokkeerd voor internettransacties. Neem contact op met uw bank en vraag om de blokkering op te heffen.",
 ];

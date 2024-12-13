@@ -69,13 +69,17 @@ class Currency extends Model
 
     }
 
-    public static function SumInCurrency($numbers = [])
+    public static function SumInCurrency($numbers = [], $round = false)
     {
         $current_currency = session('currency', 'usd');
         $sum = 0;
         foreach($numbers as $num)
         {
             $sum += floatval(preg_replace("/[^-0-9\.]/","",$num));
+        }
+
+        if ($round) {
+            $sum = round($sum);
         }
 
         return Currency::$prefix[$current_currency] . $sum;

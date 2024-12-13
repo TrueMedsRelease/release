@@ -245,17 +245,42 @@ class Cart extends Model
                     if($result['type'] == 'coupon')
                     {
                         $coupon_discount = ceil($product_total * ($result['percent']) / 100);
+                        $gift_card_discount = 0;
+                        session()->forget('gift_card');
+                    }
+                } else {
+                    $result['gift_card_code'] = session('coupon_get');
+                    $result['gift_card_balance'] = $response['coupon']['balans'];
+                    $result['type'] = $response['coupon']['type'];
+
+                    session(['gift_card' => $result]);
+
+                    if($result['type'] == 'gift_card')
+                    {
+                        $coupon_discount = ceil($product_total * ($result['gift_card_balance']) / 100);
+                        $checkout_total = $product_total + $shipping_total + $insurance + $secret_package - $coupon_discount;
+
+                        if ($result['gift_card_balance'] > session('total.checkout_total')) {
+                            $gift_card_discount = session('total.checkout_total');
+                        } else {
+                            $gift_card_discount = $result['gift_card_balance'];
+                        }
+
+                        $coupon_discount = 0;
+                        session()->forget('coupon');
                     }
                 }
             } else {
                 session()->forget('coupon_get');
                 $coupon_discount = 0;
+                $gift_card_discount = 0;
             }
 
         }
         else
         {
             $coupon_discount = 0;
+            $gift_card_discount = 0;
         }
 
         $has_card = 0;
@@ -302,6 +327,7 @@ class Cart extends Model
             "insurance" => $insurance,
             "secret_package" => $secret_package,
             'coupon_discount' => $coupon_discount,
+            'gift_card_discount' => $gift_card_discount,
             'checkout_total' => $checkout_total,
             'checkout_total_eur' => round($checkout_total * $eur,2),
             'checkout_total_in_currency' => Currency::SumInCurrency([
@@ -309,9 +335,11 @@ class Cart extends Model
                 Currency::Convert($insurance),
                 Currency::Convert($secret_package),
                 Currency::Convert($coupon_discount * (-1)),
-            ]),
+                Currency::Convert($gift_card_discount * (-1)),
+            ], true),
             "all" => $all,
             "all_in_currency" => $all_in_currency,
+            'is_only_card'
         ];
 
         session(['total' => $cart_total]);
