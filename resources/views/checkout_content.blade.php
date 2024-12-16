@@ -107,7 +107,7 @@
                             <div class="your-order__table-row">
                                 <div class="your-order__package">{{ $product['pack_name'] }}</div>
                                 <div class="your-order__qty">{{ $product['q'] }}</div>
-                                <div class="your-order__per-pack">{{ $Currency::convert($product['price']) }}</div>
+                                <div class="your-order__per-pack">{{ $Currency::convert($product['price'], true) }}</div>
                                 <div class="your-order__price" style="font-weight: 500;">
                                     @if ($product['dosage'] != '1card' && $product['price'] / $product['num'] != $product['max_pill_price'])
                                         <span style="color: var(--red);text-decoration: line-through;font-weight: 500;">
