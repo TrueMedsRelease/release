@@ -4,7 +4,7 @@
 @section('keywords', $page_properties->keyword)
 @section('description', $page_properties->description)
 @section('announce_color', 'announce__item--yellow')
-@section('announce_img', asset($design . '/images/icon/icons.svg#svg-clock'))
+@section('announce_img', asset($design . '/images/icons/icons.svg#svg-clock'))
 @section('announce_text_1', __('text.common_cart1'))
 @section('announce_text_2', ucfirst(session('location.country_name')) . ' ' . __('text.common_cart2'))
 
