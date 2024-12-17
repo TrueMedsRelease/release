@@ -1714,13 +1714,13 @@ btnUp.addEventListener();
 
 if (flagc) {
   document.querySelector(".modal_cart").style.display = "none";
-  setTimeout(() => document.querySelector(".modal_cart").style.display = "", 6000); //
-  setTimeout(() => document.querySelector(".modal_cart").style.display = "none", 14000);
+  setTimeout(() => document.querySelector(".modal_cart").style.display = "", 5000); //
+  setTimeout(() => document.querySelector(".modal_cart").style.display = "none", 9000);
 }
 if (flagp) {
   document.querySelector(".cmcmodal").style.display = "none";
-  setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 8000); //
-  setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 16000);
+  setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 5000); //
+  setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 9000);
 }
 
 const sc = document.getElementById('scroll');

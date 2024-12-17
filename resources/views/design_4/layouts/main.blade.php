@@ -995,33 +995,20 @@
             </div>
         </div>
     </div>
+
     <div class="announce">
-        {{-- {if $data.is_product_page}
-        <div class="announce__item announce__item--blue">
+        <div class="announce__item @yield('announce_color', 'announce__item--blue')">
             <div class="announce__icon">
                 <svg width="24" height="24">
-                    <use xlink:href="{$path.image}/icons/icons.svg#svg-checkmark"></use>
+                    <use xlink:href="@yield('announce_img', asset($design . '/images/icon/icons.svg#svg-checkmark'))"></use>
                 </svg>
             </div>
             <div class="announce__text">
-                <b>{$data.rand}{#product1#}</b>{#product2#}
+                <b>@yield('announce_text_1', random_int(2, 30) .' ' .__('text.common_product1'))</b>@yield('announce_text_2', __('text.common_product2'))
             </div>
         </div>
-    {/if}
-    {if $data.is_cart_page}
-        <div class="announce__item announce__item--yellow">
-            <div class="announce__icon">
-                <svg width="24" height="24">
-                    <use xlink:href="{$path.image}/icons/icons.svg#svg-clock"></use>
-                </svg>
-            </div>
-            <div class="announce__text">
-                {#cart1#}<b>{$data.customer.country}{#cart2#}</b>
-            </div>
-        </div>
-    {/if} --}}
     </div>
-{{-- {/if} --}}
+    
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
     @endif

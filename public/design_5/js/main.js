@@ -7,12 +7,12 @@ $( function() {
             setTimeout((() => {
                 announce.classList.add("active");
                 announce.parentNode.style = 'z-index: 300;';
-            }), 8000);
+            }), 5000);
 
             setTimeout((() => {
                 announce.classList.remove("active");
                 announce.parentNode.style = 'z-index: 0;';
-            }), 12000);
+            }), 9000);
 
         }
     }

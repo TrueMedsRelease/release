@@ -1517,7 +1517,6 @@ body::after {
 }
 
 .item-product-info__row {
-  margin: 0 -2px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -5857,7 +5856,7 @@ body::after {
     .bestsellers {
         position: absolute;
         z-index: 1001;
-        bottom: -35px;
+        /* bottom: -35px; */
         left: 0;
         height: auto;
         max-height: 80vh;

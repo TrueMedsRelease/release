@@ -4663,11 +4663,11 @@
             if (!tempurl.includes('affiliate') && !tempurl.includes('contact_us')) {
                 setTimeout((() => {
                     announce.classList.add("active");
-                }), 8000);
+                }), 5000);
                 setTimeout((() => {
                     announce.classList.remove("active");
                     announce.parentNode.style = 'z-index: 0;';
-                }), 12000);
+                }), 9000);
             }
         }
         let showCustomShippingCheckbox = document.querySelector("[data-show-custom-shipping]");
@@ -5244,16 +5244,16 @@ if (document.getElementById("this_product_category")) {
 
 //     btnUp.addEventListener();
 
-//     if (flagc) {
-//         document.querySelector(".modal_cart").style.display = "none";
-//         setTimeout(() => document.querySelector(".modal_cart").style.display = "", 6000); //
-//         setTimeout(() => document.querySelector(".modal_cart").style.display = "none", 14000);
-//       }
-//       if (flagp) {
-//         document.querySelector(".cmcmodal").style.display = "none";
-//         setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 8000); //
-//         setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 16000);
-//       }
+    if (flagc) {
+        document.querySelector(".modal_cart").style.display = "none";
+        setTimeout(() => document.querySelector(".modal_cart").style.display = "", 5000); //
+        setTimeout(() => document.querySelector(".modal_cart").style.display = "none", 9000);
+      }
+      if (flagp) {
+        document.querySelector(".cmcmodal").style.display = "none";
+        setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 5000); //
+        setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 9000);
+      }
 
 // function Unloader() {
 //     var o = this;
