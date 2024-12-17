@@ -3011,7 +3011,7 @@ opacity:0;
 }
 
 .cmcmodal{
-  /* display: none; */
+  display: none;
   animation-name: modalFadeInOut;
   animation-timing-function: ease-in-out;
   animation-duration: 8s;
@@ -3029,7 +3029,7 @@ opacity:0;
 }
 
 .modal_cart {
-  /* display: none; */
+  display: none;
   animation-name: modalFadeInOut;
   animation-timing-function: ease-in-out;
   animation-duration: 8s;

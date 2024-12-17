@@ -25,7 +25,7 @@ class StatisticService
         $bots = [
             'googlebot', 'bingbot', 'yandex', 'slurp', 'duckduckbot', 'baiduspider',
             'sogou', 'exabot', 'facebot', 'ia_archiver', 'ahrefsbot', 'semrushbot',
-            'mj12bot', 'dotbot', 'rogerbot', 'megaindex', 'blexbot', 'yoozbot', 'bot', 'spider'
+            'mj12bot', 'dotbot', 'rogerbot', 'megaindex', 'blexbot', 'yoozbot', 'bot', 'spider', 'PetalBot'
         ];
 
         $userAgent = strtolower(request()->userAgent());
@@ -38,38 +38,44 @@ class StatisticService
             }
         }
 
-        if(!$bot)
-        {
-            $get = array(
-                "sessid" => session('_token'),
-                "dt" => date("Y-m-d H:i:s"),
-                "ip" => request()->ip(),
-                "is_uniq" => $is_uniq,
-                "country" => session('location.country'),
-                "aff" => session('aff', 0),
-                "saff" => session('saff', ''),
-                "domain_from" => request()->getHost(),
-                "ref" => session('referer', ''),
-                "keyword" => session('keyword', ''),
-                "user_agent" => request()->userAgent(),
-                "store_skin" => $design,
-                "theme" => "",
-                "duration" => 0,
-                "checkout" => "",
-                "route" => "",
-                "page" => $page
-            );
+        $server_ip = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
+        $user_ip = request()->ip();
+        $user_agent = request()->userAgent();
 
-            $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 3);
-            if (!$fp) {
+        if ($server_ip != $user_ip && !in_array($user_ip, ['80.79.4.17', '104.234.204.106', '20.105.137.134']) && (isset($user_agent) && ($user_agent != '' || $user_agent != ' ' || !empty($user_agent)))) {
+            if(!$bot)
+            {
+                $get = array(
+                    "sessid" => session('_token'),
+                    "dt" => date("Y-m-d H:i:s"),
+                    "ip" => $user_ip,
+                    "is_uniq" => $is_uniq,
+                    "country" => session('location.country'),
+                    "aff" => session('aff', 0),
+                    "saff" => session('saff', ''),
+                    "domain_from" => request()->getHost(),
+                    "ref" => session('referer', ''),
+                    "keyword" => session('keyword', ''),
+                    "user_agent" => $user_agent,
+                    "store_skin" => $design,
+                    "theme" => "",
+                    "duration" => 0,
+                    "checkout" => "",
+                    "route" => "",
+                    "page" => $page
+                );
 
-            } else {
-                $out = "GET /statistics/statistics.php?" . http_build_query($get) . " HTTP/1.1\r\n";
-                $out .= "Host: true-services.net\r\n";
-                $out .= "User-Agent: " . request()->userAgent() . "\r\n";
-                $out .= "Connection: Close\r\n\r\n";
-                fwrite($fp, $out);
-                fclose($fp);
+                $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 3);
+                if (!$fp) {
+
+                } else {
+                    $out = "GET /statistics/statistics.php?" . http_build_query($get) . " HTTP/1.1\r\n";
+                    $out .= "Host: true-services.net\r\n";
+                    $out .= "User-Agent: " . $user_agent . "\r\n";
+                    $out .= "Connection: Close\r\n\r\n";
+                    fwrite($fp, $out);
+                    fclose($fp);
+                }
             }
         }
     }

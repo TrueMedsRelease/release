@@ -5,11 +5,14 @@
 @section('description', $page_properties->description)
 
 @section('content')
-{{-- <div class="cmcmodal">
+<div class="modal_cart">
     <div class="bloktext">
-       <p><b>{{random_int(2, 30)}}{{__('text.common_product1')}}</b>{{__('text.common_product2')}}</p>
+       <p>{{ __('text.common_cart1') }}<b>{{ ucfirst(session('location.country_name')) }} {{ __('text.common_cart2') }}</b></p>
     </div>
-</div> --}}
+</div>
+<script>
+    flagc = true;
+</script>
     <div class="main" id="scroll">
     <!-- content -->
     <section class="basket"  id="shopping_cart">

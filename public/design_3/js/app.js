@@ -354,6 +354,10 @@
                 bodyLockToggle();
                 document.documentElement.classList.toggle("menu-open");
             }
+            
+            if (window.innerWidth > 480 && window.pageYOffset < 100) {
+                $('.header__top').css({'top': '0px'});
+            }
         }));
     }
     function functions_FLS(message) {
@@ -4300,10 +4304,12 @@ if (getCookie('christmas')) {
 } else {
     $('.christmas').show();
 
-    if (window.innerWidth < 391) {
-        $('.header__top').css({'top': '100px'});
-    } else {
-        $('.header__top').css({'top': '75px'});
+    if ($('.bestsellers').css('visibility') == 'hidden') {
+        if (window.innerWidth < 391) {
+            $('.header__top').css({'top': '100px'});
+        } else {
+            $('.header__top').css({'top': '75px'});
+        }
     }
 }
 
@@ -4393,20 +4399,25 @@ window.addEventListener('resize', () => {
     if (window.innerWidth < 480 && window.pageYOffset > 100) {
         $('.header__top').css({'top': 0});
     } else {
-        if (window.innerWidth < 391) {
-            $('.header__top').css({'top': '100px'});
-        } else {
-            $('.header__top').css({'top': '75px'});
+        if ($('.bestsellers').css('visibility') == 'hidden') {
+            if (window.innerWidth < 391) {
+                $('.header__top').css({'top': '100px'});
+            } else {
+                $('.header__top').css({'top': '75px'});
+            }
         }
+
         if (getCookie('christmas') == '1') {
             $('.header__top').css({'top': '31px'});
         }
     }
 
-    if (window.innerWidth < 391) {
-        $('.header__top').css({'top': '100px'});
-    } else {
-        $('.header__top').css({'top': '75px'});
+    if ($('.bestsellers').css('visibility') == 'hidden') {
+        if (window.innerWidth < 391) {
+            $('.header__top').css({'top': '100px'});
+        } else {
+            $('.header__top').css({'top': '75px'});
+        }
     }
 
     if (getCookie('christmas')) {
@@ -4418,14 +4429,17 @@ window.addEventListener('scroll', () => {
     if (window.innerWidth < 480 && window.pageYOffset > 100) {
         $('.header__top').css({'top': 0});
     } else {
-        if (window.pageYOffset < 90) {
-            if (window.innerWidth < 391) {
-                $('.header__top').css({'top': '100px'});
+
+        if ($('.bestsellers').css('visibility') == 'hidden') {
+            if (window.pageYOffset < 90) {
+                if (window.innerWidth < 391) {
+                    $('.header__top').css({'top': '100px'});
+                } else {
+                    $('.header__top').css({'top': '75px'});
+                }
             } else {
-                $('.header__top').css({'top': '75px'});
+                $('.header__top').css({'top': 0});
             }
-        } else {
-            $('.header__top').css({'top': 0});
         }
 
         if (getCookie('christmas') == '1') {
