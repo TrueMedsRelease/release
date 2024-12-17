@@ -1000,7 +1000,7 @@
         <div class="announce__item @yield('announce_color', 'announce__item--blue')">
             <div class="announce__icon">
                 <svg width="24" height="24">
-                    <use xlink:href="@yield('announce_img', asset($design . '/images/icon/icons.svg#svg-checkmark'))"></use>
+                    <use xlink:href="@yield('announce_img', asset($design . '/images/icons/icons.svg#svg-checkmark'))"></use>
                 </svg>
             </div>
             <div class="announce__text">
@@ -1008,7 +1008,7 @@
             </div>
         </div>
     </div>
-    
+
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
     @endif
