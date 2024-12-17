@@ -240,7 +240,7 @@
                         </div> --}}
 
                         {{-- Gift card discount --}}
-                        @if (!empty(session('gift_card')) && session('gift_card'))
+                        {{-- @if (!empty(session('gift_card')) && session('gift_card'))
                             <div class="your-order__row">
                                 <div class="your-order__checkbox checkbox">
                                     <label style="color: var(--red); font-weight: 500;">
@@ -253,7 +253,7 @@
                                     <div id="gift_card_minus" style="color: var(--red); font-weight: 500;">-{{ $Currency::convert(session('gift_card.gift_card_balance'), true) }}</div>
                                 @endif
                             </div>
-                        @endif
+                        @endif --}}
 
                         <div class="your-order__row">
                             <div class="your-order__input enter-info__input"
@@ -302,18 +302,18 @@
                                         $total_discount += $shipping[session('cart_option.shipping')];
                                         $total_discount += session('total.coupon_discount');
 
-                                        if (!empty(session('gift_card')) && session('gift_card')) {
-                                            $gift_card_balance = session('gift_card.gift_card_balance', 0);
-                                        } else {
-                                            $gift_card_balance = 0;
-                                        }
+                                        // if (!empty(session('gift_card')) && session('gift_card')) {
+                                        //     $gift_card_balance = session('gift_card.gift_card_balance', 0);
+                                        // } else {
+                                        //     $gift_card_balance = 0;
+                                        // }
 
-                                        $saving = $total_discount - session('total.checkout_total') + $gift_card_balance;
+                                        $saving = $total_discount - session('total.checkout_total'); // + $gift_card_balance;
                                     @endphp
 
-                                    @if (!empty(session('gift_card')) && session('gift_card') && session('gift_card.gift_card_balance') > session('total.checkout_total'))
+                                    {{-- @if (!empty(session('gift_card')) && session('gift_card') && session('gift_card.gift_card_balance') > session('total.checkout_total'))
                                         <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div>
-                                    @else
+                                    @else --}}
                                         @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
                                             <div class="totals-order__total" style="color: var(--green); font-size:18px;">
                                                 {{ session('total.checkout_total_in_currency') }}
@@ -335,7 +335,7 @@
                                                 {{ session('total.checkout_total_in_currency') }}
                                             </div>
                                         @endif
-                                    @endif
+                                    {{-- @endif --}}
                                 </div>
                             </div>
                         </div>
