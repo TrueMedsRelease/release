@@ -530,8 +530,8 @@ class CheckoutController extends Controller
                 'recurring_period' => 0,
                 'coupon' => session('coupon.coupon', ''),
                 'bonus' => '',
-                'gift_card_code' => session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => session('total.coupon_discount', 0),
+                'gift_card_code' => '', //session('gift_card.gift_card_code', ''),
+                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme' => 13,
                 'coupon_discount' => session('total.coupon_discount'),
                 'sessid' => $sessid
@@ -690,8 +690,8 @@ class CheckoutController extends Controller
                 'recurring_period' => 0,
                 'coupon' => session('coupon.coupon', ''),
                 'bonus' => '',
-                'gift_card_code' => session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => session('total.coupon_discount', 0),
+                'gift_card_code' => '', //session('gift_card.gift_card_code', ''),
+                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme' => 13,
                 'coupon_discount' => session('total.coupon_discount'),
                 'sessid' => $sessid
@@ -1009,8 +1009,8 @@ class CheckoutController extends Controller
                                 'recurring_period' => 0,
                                 'coupon' => session('coupon.coupon', ''),
                                 'bonus' => '',
-                                'gift_card_code' => session('gift_card.gift_card_code', ''),
-                                'gift_card_discount' => session('total.coupon_discount', 0),
+                                'gift_card_code' => '', //session('gift_card.gift_card_code', ''),
+                                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                                 'theme' => 13,
                                 'coupon_discount' => session('total.coupon_discount'),
                                 'sessid' => $sessid
@@ -1210,8 +1210,8 @@ class CheckoutController extends Controller
             'recurring_period' => 0,
             'coupon' => session('coupon.coupon', ''),
             'bonus' => '',
-            'gift_card_code' => session('gift_card.gift_card_code', ''),
-            'gift_card_discount' => session('total.coupon_discount', 0),
+            'gift_card_code' => '', //session('gift_card.gift_card_code', ''),
+            'gift_card_discount' => 0, //session('total.coupon_discount', 0),
             'theme' => 13,
             'coupon_discount' => session('total.coupon_discount'),
             'sessid' => $sessid
