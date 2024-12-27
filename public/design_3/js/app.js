@@ -354,7 +354,7 @@
                 bodyLockToggle();
                 document.documentElement.classList.toggle("menu-open");
             }
-            
+
             if (window.innerWidth > 480 && window.pageYOffset < 100) {
                 $('.header__top').css({'top': '0px'});
             }
@@ -4528,6 +4528,16 @@ $(document).on('click', '.visible.gift', function () {
     }
 });
 
+$(document).on('click', '.select_header_subject', function () {
+    $(this).parent().toggleClass('is-active');
+});
+
+$(document).on('click', '.select_item_subject', function () {
+    $('.select_current_subject').text($(this).text());
+    $('.select_current_subject').attr('curr_subject_id', $(this).attr('subject_id'));
+    $(this).parent().parent().removeClass('is-active');
+});
+
 // function addCard() {
 //     let value_card = $('.select_current_gift').attr('curr_packaging_id');
 //     $.ajax({
@@ -4807,6 +4817,7 @@ if (drugIndex) {
 function sendAjaxContact() {
     var error = false;
     var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
     const name = document.getElementById("name").value;
     if (name.length === 0) {
         document.getElementById("name").style.backgroundColor = "#FF8F8F";
@@ -4814,6 +4825,7 @@ function sendAjaxContact() {
     } else {
         document.getElementById("name").style.backgroundColor = "#f1f5f9";
     }
+
     const email = document.getElementById("email").value;
     if (!email.match(validRegex) || email.length === 0) {
         document.getElementById("email").style.backgroundColor = "#FF8F8F";
@@ -4821,10 +4833,17 @@ function sendAjaxContact() {
     } else {
         document.getElementById("email").style.backgroundColor = "#f1f5f9";
     }
-  const subject = document.getElementById("subject").value;
+
+    const subject = $('.select_current_subject').text();
+    const subject_id = $('.select_current_subject').attr('curr_subject_id');
   const message = document.getElementById("message").value;
   const captcha = document.getElementById("captcha").value;
   const submit = true;
+
+  if (subject_id == 0) {
+    alert($('#error_subject').val());
+    error = true;
+  }
 
     if (!error) {
         $.ajax({
@@ -4834,7 +4853,7 @@ function sendAjaxContact() {
             data: {
                 'name': name,
                 'email': email,
-                'subject': subject,
+                'subject': subject_id,
                 'message': message,
                 'captcha': captcha,
                 'submit': submit

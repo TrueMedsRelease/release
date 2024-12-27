@@ -8,7 +8,13 @@
 <div class="main">
     <!-- content -->
     @if (count($products) == 0)
-        <section class="page__best-sellers best-sellers" >
+        <h4 class="best-sellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+        <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
+        <div class="no_product_text" style="margin-bottom: 20px">{{ __("text.search_product_request") }}</div>
+        <div class="button" id="go_to_contact_us" style="width: 100%; max-width: 300px; min-width: 270px" onclick="location.href = '{{ route('home.contact_us') }}'">
+            {{ __("text.common_contact_us_main_menu_item") }}
+        </div>
+        {{-- <section class="page__best-sellers best-sellers" >
             <h4 class="best-sellers__title title" id = "scroll">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4>
             <h2 class="best-sellers__title title">{{__('text.search_result_best_for_search')}}</h2>
             <div class="best-sellers__items">
@@ -38,7 +44,6 @@
                                     <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                                 </picture>
                             @endif
-                            {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                         </div>
                     </div>
                     <button type="button" class="product-card__button button button--primary">
@@ -47,7 +52,7 @@
                 </a>
             @endforeach
             </div>
-        </section>
+        </section> --}}
     @else
         <section class="page__best-sellers best-sellers">
         <h2 class="best-sellers__title title" id = "scroll">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>

@@ -7820,3 +7820,120 @@ body {
     background-color: #e14c5c;
     color:white;
   }
+
+  .contact_subject{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
+  }
+
+  .contact_subject .select-wrapper{
+    max-width:30rem;
+    margin-left:auto;
+  }
+
+  #new_subject_block {
+    display: flex;
+    width: 100%;
+}
+
+.select_subject {
+    width: 100%;
+}
+
+.select_header_subject {
+    align-items: center;
+    background-color: white;
+    border: 1px solid var(--gray-light);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: inherit;
+    height: 55px;
+    overflow: hidden;
+    padding-left: 20px;
+    padding-right: 10px;
+    position: relative;
+    width: 100%;
+    z-index: 2;
+    gap: 10px;
+}
+
+.select_header_subject:hover {
+    cursor: pointer;
+}
+
+  .select_body_subjects {
+    --offset-y: 0.1rem;
+    --translate-x: 0%;
+    background-color: white;
+    border: 1px solid var(--gray-light);
+    border-radius: 10px;
+    box-shadow: 0 20px 20px -15px rgba(38, 45, 56, 0.1);
+    display: none;
+    padding: 1rem 0;
+    transform: translate3d(var(--translate-x), var(--offset-y), 0);
+    position: absolute;
+    width: max-content;
+}
+
+.select_subject.is-active .select_body_subjects {
+    display: block;
+    z-index: 100;
+    max-height: 24rem;
+    overflow-y: auto;
+    animation:select-panel-appear 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.select_item_subject {
+    font-size: inherit;
+    padding: 1rem;
+    position: relative;
+    transition: background-color 0.1s cubic-bezier(0.4, 0.8, 0.4, 1), color 0.1s cubic-bezier(0.4, 0.8, 0.4, 1);
+    cursor: pointer;
+}
+
+.select_item_subject:hover {
+    background-color: #f0f1fa;
+    color: black;
+}
+
+.select_body_subjects::-webkit-scrollbar{
+    width:0.6rem;
+}
+.select_body_subjects::-webkit-scrollbar-track{
+    border-radius:1rem;
+    margin-top:0.6rem;
+    margin-bottom:0.6rem;
+    background-color:var(--color-white);
+}
+.select_body_subjects::-webkit-scrollbar-thumb{
+    width:0.2rem;
+    border-radius:2rem;
+    background:#d7d7d7;
+}
+.select_body_subjects::-webkit-scrollbar-track{
+    margin-top:2rem;
+    margin-bottom:2rem;
+}
+
+#contact-subject {
+    width: 100%;
+}
+
+#go_to_contact_us {
+    height: 47px;
+    line-height: 47px;
+    border-radius: 10px;
+    padding: 0 30px;
+    color: var(--white);
+    background: var(--accent-color);
+    cursor: pointer;
+}
+
+#go_to_contact_us:hover{
+    background: #1aa760;
+}

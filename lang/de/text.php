@@ -480,6 +480,7 @@ return [
     "moneyback_text" => "<p>Sie haben 24 Stunden Zeit, um Ihre Bestellung zu stornieren, sobald sie aufgegeben wurde. Nach Ablauf dieser Frist wird das Paket versandt, und eine Stornierung ist nicht möglich. Sie können das Paket jedoch ablehnen, sobald es bei Ihnen eintrifft.</p><p>Wir bieten allen unseren Kunden eine 30-tägige Geld-zurück-Garantie an, die es Ihnen ermöglicht, sich innerhalb von 30 Tagen nach Ankunft Ihres Pakets mit dem Kundenservice in Verbindung zu setzen und den vollen Kaufpreis zurückzuerstatten.</p><p><b>Bitte beachten Sie,</b> dass wir die Rückgabe von Medikamenten nach dem Öffnen der Pakete aufgrund gesetzlicher Einschränkungen und Vorschriften nicht akzeptieren können.</p>",
     "affiliate_title" => "Affiliate",
     "affiliate_contact_message" => "Bitte senden Sie eine Nachricht mit Ihrem Kontakt und Sie erhalten mit Sicherheit eine Antwort.",
+    "affiliate_contact_message_2" => "Haben Sie Verkehr? Wir können Ihnen für jede Bestellung einen hohen Provisionsprozentsatz anbieten. Wir sind ein zuverlässiges Partnerprogramm mit den besten Preisen und Qualitätsprodukten. Füllen Sie das Formular aus und wir werden Sie in Kürze kontaktieren.",
     "affiliate_name" => "Name",
     "affiliate_email" => "E-Mail",
     "affiliate_jabber" => "Jabber/",
@@ -687,4 +688,22 @@ return [
 
     "complete_bottom_text_1" => "Falls Sie aufgrund von Spamfiltern keine Bestätigungs-E-Mail erhalten, können Sie auf dieser Website Ihren Bestellstatus nachsehen und Ihre Sendungsverfolgungsnummer abrufen.",
     "complete_bottom_text_2" => "Wenn Ihre Bestellung nicht innerhalb von 24 Stunden genehmigt wird, ist Ihre Kreditkarte möglicherweise für Internettransaktionen gesperrt. Bitte wenden Sie sich an Ihre Bank und bitten Sie um Aufhebung der Sperre.",
+
+    "contact_us_subject_0" => "Betreff auswählen",
+    "contact_us_subject_1" => "Lieferadresse ändern",
+    "contact_us_subject_2" => "Meine Kreditkarte erneut verarbeiten",
+    "contact_us_subject_3" => "Abonnement kündigen",
+    "contact_us_subject_4" => "Bestellung stornieren",
+    "contact_us_subject_5" => "Bestellstatus",
+    "contact_us_subject_6" => "Versandverzögerung",
+    "contact_us_subject_7" => "Neues Produkt hinzufügen",
+    "contact_us_subject_8" => "Werbung",
+    "contact_us_subject_9" => "Großhandel",
+    "contact_us_subject_10" => "Partnerprogramm",
+    "contact_us_subject_11" => "Sonstiges",
+
+    "search_not_found" => "nicht gefunden!",
+    "search_not_carry" => "Leider führen wir es nicht",
+    "search_this_time" => "zurzeit.",
+    "search_product_request" => "Bitte füllen Sie das Produktanforderungsformular aus und wir werden das angeforderte Medikament in Kürze hinzufügen.",
 ];

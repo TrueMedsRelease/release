@@ -143,6 +143,7 @@
             </ul>
         </div>
     </section>
+    <input type="hidden" id="error_subject" value="{{ $error_subject }}">
     <div class="default__container">
         <div class="default__body">
             <div class="default__content">
@@ -157,16 +158,36 @@
                         <div class="form__inner">
                             <div class="form__default-rows">
                                 <div class="form__row">
+                                    <label for="subject" class="form__label">{{__('text.contact_us_subject')}}</label>
+                                    <div class="form__field custom-field" id="contact-subject" name="contact-subject">
+                                        <div id="subject_block">
+                                            <div class="contact_subject">
+                                                <div id="new_subject_block">
+                                                    <div class="select_subject">
+                                                        <div class="select_header_subject">
+                                                            <span class="select_current_subject" curr_subject_id = "{{ $default_subject }}">{{ $subjects[$default_subject] }}</span>
+                                                            <div class="select_icon">
+                                                                <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="select_body_subjects">
+                                                            @foreach ($subjects as $id => $subject)
+                                                                <div class="select_item_subject" subject_id = "{{ $id }}">{{ $subject }}</div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form__row">
                                     <label for="name" class="form__label">{{__('text.contact_us_name')}}</label>
                                     <input data-required id = "name" autocomplete="off" type="text" name="form[name]" data-error="" placeholder="{{__('text.contact_us_name')}}" class="form__input input">
                                 </div>
                                 <div class="form__row">
                                     <label for="email_form" class="form__label">{{__('text.contact_us_email')}}</label>
                                     <input data-required id="email_form" autocomplete="off" type="text" name="form[email_form]" data-error="" placeholder="{{__('text.contact_us_email')}}" class="form__input input">
-                                </div>
-                                <div class="form__row">
-                                    <label for="subject" class="form__label">{{__('text.contact_us_subject')}}</label>
-                                    <input autocomplete="off" id = "subject" type="text" name="form[subject]" data-error="" placeholder="{{__('text.contact_us_subject')}}" class="form__input input">
                                 </div>
                                 <div class="form__row form__row--top-alignment">
                                     <label for="message" class="form__label">{{__('text.contact_us_message')}}</label>

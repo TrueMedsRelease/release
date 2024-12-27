@@ -6,7 +6,7 @@
 @section('description', $page_properties->description)
 
 @section('content')
-
+<input type="hidden" id="error_subject" value="{{ $error_subject }}">
 <div class="text-page mb50" id="scroll">
 	<h2 class="title-page">{{__('text.contact_us_title')}}</h2>
 
@@ -19,6 +19,30 @@
 		<form id="message_send_form" method="post">
 			<div class="line">
 				<div class="input-row" data-col="3">
+                    <div class="input-box">
+                        <label for="subject">{{__('text.contact_us_subject')}}</label>
+                        <div class="form__field custom-field" id="subject" name="subject">
+                            <div id="subject_block">
+                                <div class="contact_subject">
+                                    <div id="new_subject_block">
+                                        <div class="select_subject">
+                                            <div class="select_header_subject">
+                                                <span class="select_current_subject" curr_subject_id = "{{ $default_subject }}">{{ $subjects[$default_subject] }}</span>
+                                                <div class="select_icon">
+                                                    <img src="{{ asset("$design/images/icon/arrow_down_black.svg") }}">
+                                                </div>
+                                            </div>
+                                            <div class="select_body_subjects">
+                                                @foreach ($subjects as $id => $subject)
+                                                    <div class="select_item_subject" subject_id = "{{ $id }}">{{ $subject }}</div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 					<div class="input-box">
 						<label for="name">{{__('text.contact_us_name')}}</label>
 						<input type="text" autocomplete="off" placeholder="{{__('text.contact_us_name')}}" name="name" id="name" onkeyup="undisabled('contact_us')">
@@ -26,10 +50,6 @@
 					<div class="input-box">
 						<label for="email">{{__('text.contact_us_email')}}</label>
 						<input type="email" autocomplete="off" placeholder="{{__('text.contact_us_email')}}" name="email" id="email" onkeyup="undisabled('contact_us')">
-					</div>
-					<div class="input-box">
-						<label for="subject">{{__('text.contact_us_subject')}}</label>
-						<input type="text" autocomplete="off" placeholder="{{__('text.contact_us_subject')}}" name="subject" id="subject">
 					</div>
 				</div>
 			</div>

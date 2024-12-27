@@ -402,6 +402,7 @@ return [
 <p><b>Bemærk venligst</b> at vi ikke på grund af restriktioner og regulativer ikke kan acceptere retur af nogen medikamenter hvor pakningerne har været åbnet.</p>",
     "affiliate_title" => "Affilieringsprogram",
     "affiliate_contact_message" => "Send venligst besked med din kontaktperson, og du vil modtage et svar for sikker.",
+    "affiliate_contact_message_2" => "Har du trafik? Vi kan tilbyde en høj kommissionsprocent for hver ordre. Vi er et pålideligt affiliate program med de bedste priser og kvalitetsprodukter. Udfyld formularen, så kontakter vi dig snarest.",
     "affiliate_name" => "Navn",
     "affiliate_email" => "E-mail",
     "affiliate_jabber" => "Jabber/",
@@ -610,4 +611,22 @@ return [
 
     "complete_bottom_text_1" => "I tilfælde af ikke at modtage en bekræftelses-e-mail på grund af spam-filtre, vil du være i stand til at slå din ordrestatus op og modtage dit forsendelsesspor-id på denne side.",
     "complete_bottom_text_2" => "Hvis din ordre ikke er godkendt inden for 24 timer, kan dit kreditkort blive spærret for internettransaktioner. Kontakt venligst din bank og bed om at fjerne spærringen.",
+
+    "contact_us_subject_0" => "Vælg emne",
+    "contact_us_subject_1" => "Skift forsendelsesadresse",
+    "contact_us_subject_2" => "Genbehandle mit kreditkort",
+    "contact_us_subject_3" => "Afmeld",
+    "contact_us_subject_4" => "Annuller ordre",
+    "contact_us_subject_5" => "Ordrestatus",
+    "contact_us_subject_6" => "Forsinkelse af forsendelse",
+    "contact_us_subject_7" => "Tilføj nyt produkt",
+    "contact_us_subject_8" => "Annoncering",
+    "contact_us_subject_9" => "Engroshandel",
+    "contact_us_subject_10" => "Affiliate program",
+    "contact_us_subject_11" => "Andet",
+
+    "search_not_found" => "er ikke fundet!",
+    "search_not_carry" => "Beklager, vi bærer ikke",
+    "search_this_time" => "på dette tidspunkt.",
+    "search_product_request" => "Udfyld venligst produktanmodningsformularen, så tilføjer vi den anmodede medicin snart.",
 ];

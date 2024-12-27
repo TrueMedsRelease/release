@@ -185,7 +185,7 @@
                         </div>
                         <div class="form__desrc" style="flex-basis: 20.125rem;">
                             <div class="form__text-block">
-                                <p>{{__('text.affiliate_contact_message')}}</p>
+                                <p>{{__('text.affiliate_contact_message_2')}}</p>
                             </div>
                         </div>
                     </div>

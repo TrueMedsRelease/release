@@ -43,7 +43,7 @@
             <button onclick="sendAjaxAffiliate()" type="button" class="form__button" id = "message_send_button">{{__('text.affiliate_send')}}</button>
         </form>
         <div class="contact-us__descr">
-            <p>{{__('text.affiliate_contact_message')}}</p>
+            <p>{{__('text.affiliate_contact_message_2')}}</p>
         </div>
     </div>
 </div>

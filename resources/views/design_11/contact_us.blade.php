@@ -7,6 +7,7 @@
 @section('header_class', 'header--secondary')
 
 @section('content')
+<input type="hidden" id="error_subject" value="{{ $error_subject }}">
 <div class="page-wrapper container">
     <main class="main">
         <div class="main__content">
@@ -22,6 +23,32 @@
             </div>
             <form class="form contact-form contact-form form-panel">
                 <fieldset class="form__fieldset">
+                    <div class="form__field custom-field" id="contact-subject" name="contact-subject">
+                        <div id="subject_block">
+                            <div class="contact_subject">
+                                <div id="new_subject_block">
+                                    <div class="select_subject">
+                                        <div class="select_header_subject">
+                                            <span class="select_current_subject" curr_subject_id = "{{ $default_subject }}">{{ $subjects[$default_subject] }}</span>
+                                            <div class="select_icon">
+                                                <svg width="1em" height="1em" fill="currentColor">
+                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?1utcbwkl#fi-rr-angle-small-down') }}"></use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="select_body_subjects">
+                                            @foreach ($subjects as $id => $subject)
+                                                <div class="select_item_subject" subject_id = "{{ $id }}">{{ $subject }}</div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="form__label label-text" for="contact-subject">
+                            {{__('text.contact_us_subject')}}
+                        </label>
+                    </div>
                     <div class="form__field text-field">
                         <input class="form__text-input input-text undefined" type="text" id="contact-name" name="contact-name" required>
                         <label class="form__label label-text" for="contact-name">
@@ -32,12 +59,6 @@
                         <input class="form__text-input input-email undefined" type="email" id="contact-email" name="contact-email" required>
                         <label class="form__label label-email" for="contact-email">
                             {{__('text.contact_us_email')}}
-                        </label>
-                    </div>
-                    <div class="form__field text-field">
-                        <input class="form__text-input input-text undefined" type="text" id="contact-subject" name="contact-subject">
-                        <label class="form__label label-text" for="contact-subject">
-                            {{__('text.contact_us_subject')}}
                         </label>
                     </div>
                 </fieldset>

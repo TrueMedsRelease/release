@@ -31,7 +31,21 @@ class Currency extends Model
         'brl' => 'R$',
         'ars' => 'ARG$',
         'php' => '₱',
-        'mxn' => 'MXN$'
+        'mxn' => 'MXN$',
+        'nzd' => 'NZ$',
+        'sgd' => 'S$',
+        'zar' => 'R',
+        'dop' => 'RD$',
+        'krm' => '₩',
+        'bam' => 'KM',
+        'lkr' => 'Rs',
+        'vnd' => 'đ',
+        'myr' => 'RM',
+        'hrk' => 'kn',
+        'iqd' => 'د.ع',
+        'sar' => 'ر.س',
+        'qar' => 'ر.ق',
+        'bbd' => 'BB$',
     ];
 
     public static function GetAllCurrency()

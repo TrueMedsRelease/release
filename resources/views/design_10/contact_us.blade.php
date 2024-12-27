@@ -6,6 +6,7 @@
 @section('description', $page_properties->description)
 
 @section('content')
+<input type="hidden" id="error_subject" value="{{ $error_subject }}">
 <div class="container page-wrapper contact_us_block default">
     <main class="main">
         <h1 class="default__title">{{__('text.contact_us_title')}}</h1>
@@ -17,16 +18,36 @@
         <form class="form contact-form form-panel">
             <fieldset class="form__fieldset form__fieldset--flex">
                 <div class="form__field">
+                    <label for="contact-subject" class="form__label form__label--text">{{__('text.contact_us_subject')}}</label>
+                    <div class="form__field" id="contact-subject" name="contact-subject">
+                        <div id="subject_block">
+                            <div class="contact_subject">
+                                <div id="new_subject_block">
+                                    <div class="select_subject">
+                                        <div class="select_header_subject">
+                                            <span class="select_current_subject" curr_subject_id = "{{ $default_subject }}">{{ $subjects[$default_subject] }}</span>
+                                            <div class="select_icon">
+                                                <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                            </div>
+                                        </div>
+                                        <div class="select_body_subjects">
+                                            @foreach ($subjects as $id => $subject)
+                                                <div class="select_item_subject" subject_id = "{{ $id }}">{{ $subject }}</div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form__field">
                     <input class="form__text-input input-text" type="text" id="name" required>
                     <label class="form__label form__label--text" for="name">{{__('text.contact_us_name')}}</label>
                 </div>
                 <div class="form__field">
                     <input class="form__text-input input-email" type="email" id="email_form" required>
                     <label class="form__label form__label--email" for="email_form">{{__('text.contact_us_email')}}</label>
-                </div>
-                <div class="form__field">
-                    <input class="form__text-input input-text" type="text" id="subject">
-                    <label class="form__label form__label--text" for="subject">{{__('text.contact_us_subject')}}</label>
                 </div>
             </fieldset>
             <div class="form__field">

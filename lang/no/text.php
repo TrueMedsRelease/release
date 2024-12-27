@@ -353,6 +353,7 @@ return [
 <p><b>Vær oppmerksom</b> på at vi ikke kan akseptere retur av medisiner etter at pakkene er åpnet på grunn av lovbegrensninger og forskrifter.</p>",
     "affiliate_title" => "Tilknyttet program",
     "affiliate_contact_message" => "Send melding med din kontakt så får du sikkert svar.",
+    "affiliate_contact_message_2" => "Har du trafikk? Vi kan tilby en høy provisjonsprosent for hver bestilling. Vi er et pålitelig affiliateprogram med de beste prisene og kvalitetsproduktene. Fyll ut skjemaet så kontakter vi deg snart.",
     "affiliate_name" => "Navn",
     "affiliate_email" => "E-post",
     "affiliate_jabber" => "Jabber/",
@@ -564,4 +565,22 @@ return [
 
     "complete_bottom_text_1" => "I tilfelle du ikke får en bekreftelses-e-post på grunn av spam-filtre, vil du kunne slå opp bestillingsstatusen din og motta din fraktspor-ID på denne siden.",
     "complete_bottom_text_2" => "Hvis bestillingen ikke blir godkjent innen 24 timer, kan kredittkortet ditt bli blokkert for internetttransaksjoner. Ta kontakt med banken din og be om å fjerne blokkeringen.",
+
+    "contact_us_subject_0" => "Velg emne",
+    "contact_us_subject_1" => "Endre leveringsadresse",
+    "contact_us_subject_2" => "Behandle kredittkortet mitt på nytt",
+    "contact_us_subject_3" => "Avslutt abonnement",
+    "contact_us_subject_4" => "Avbryt bestilling",
+    "contact_us_subject_5" => "Bestillingsstatus",
+    "contact_us_subject_6" => "Forsinket levering",
+    "contact_us_subject_7" => "Legg til nytt produkt",
+    "contact_us_subject_8" => "Annonsering",
+    "contact_us_subject_9" => "Engroshandel",
+    "contact_us_subject_10" => "Affiliate program",
+    "contact_us_subject_11" => "Annet",
+
+    "search_not_found" => "finnes ikke!",
+    "search_not_carry" => "Beklager at vi ikke bærer",
+    "search_this_time" => "på dette tidspunktet.",
+    "search_product_request" => "Vennligst fyll ut produktforespørselsskjemaet, så legger vi til den forespurte medisinen snart.",
 ];

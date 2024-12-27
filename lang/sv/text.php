@@ -353,6 +353,7 @@ return [
 <p><b>Observera</b> att vi inte kan acceptera återlämning av läkemedel efter att förpackningen har brutits på grund av juridiska restriktioner och bestämmelser.</p>",
     "affiliate_title" => "Partnerprogram",
     "affiliate_contact_message" => "Vänligen skicka meddelande med din kontakt och du kommer att få ett svar säkert.",
+    "affiliate_contact_message_2" => "Har du trafik? Vi kan erbjuda en hög provisionsprocent för varje beställning. Vi är ett pålitligt affiliateprogram med de bästa priserna och kvalitetsprodukterna. Fyll i formuläret så kontaktar vi dig inom kort.",
     "affiliate_name" => "Namn",
     "affiliate_email" => "E-postadress",
     "affiliate_jabber" => "Jabber/",
@@ -561,4 +562,22 @@ return [
 
     "complete_bottom_text_1" => "Om du inte får en bekräftelse via e-post på grund av spam-filter, kommer du att kunna slå upp din beställningsstatus och få ditt fraktspår-ID på denna sida.",
     "complete_bottom_text_2" => "Om din beställning inte godkänns inom 24 timmar kan ditt kreditkort spärras för internettransaktioner. Vänligen kontakta din bank och be att få bort spärren.",
+
+    "contact_us_subject_0" => "Välj ämne",
+    "contact_us_subject_1" => "Ändra leveransadress",
+    "contact_us_subject_2" => "Behandla mitt kreditkort på nytt",
+    "contact_us_subject_3" => "Avsluta prenumeration",
+    "contact_us_subject_4" => "Avbryt beställning",
+    "contact_us_subject_5" => "Beställningsstatus",
+    "contact_us_subject_6" => "Sändningsförsening",
+    "contact_us_subject_7" => "Lägg till ny produkt",
+    "contact_us_subject_8" => "Reklam",
+    "contact_us_subject_9" => "Grosshandel",
+    "contact_us_subject_10" => "Affiliate-program",
+    "contact_us_subject_11" => "Annat",
+
+    "search_not_found" => "hittades inte!",
+    "search_not_carry" => "Tyvärr att vi inte bär",
+    "search_this_time" => "vid denna tidpunkt.",
+    "search_product_request" => "Fyll i formuläret för produktförfrågan så lägger vi till det begärda läkemedlet inom kort.",
 ];

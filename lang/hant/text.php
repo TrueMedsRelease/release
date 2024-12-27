@@ -354,6 +354,7 @@ return  [
 <p><b>請注意</b>，由於法律限制和規定，我們不接受打開包裝後的任何藥物退貨。</p>",
     "affiliate_title" => "會員計劃",
     "affiliate_contact_message" => "請與您的聯繫人發送消息，您肯定會收到回復。",
+    "affiliate_contact_message_2" => "您有流量嗎？我們可以為每個訂單提供高額佣金。我們是可靠的聯盟計劃，擁有最優惠的價格和優質的產品。填寫表格，我們會盡快與您聯繫。" ,
     "affiliate_name" => "姓名",
     "affiliate_email" => "電子郵件",
     "affiliate_jabber" => "Jabber/",
@@ -562,4 +563,22 @@ return  [
 
     "complete_bottom_text_1" => "如果由於垃圾郵件過濾器而沒有收到確認電子郵件，您將能夠在此網站上找到您的訂單狀態並接收您的運輸追蹤 ID。",
     "complete_bottom_text_2" => "如果您的訂單在 24 小時內未獲得批准，您的信用卡可能會被阻止進行網路交易。請與您的銀行聯繫並要求解除封鎖。",
+
+    "contact_us_subject_0" => "選擇主題",
+    "contact_us_subject_1" => "更改送貨地址",
+    "contact_us_subject_2" => "重新處理我的信用卡",
+    "contact_us_subject_3" => "取消訂閱",
+    "contact_us_subject_4" => "取消訂單",
+    "contact_us_subject_5" => "訂單狀態",
+    "contact_us_subject_6" => "運送延誤",
+    "contact_us_subject_7" => "新增產品",
+    "contact_us_subject_8" => "廣告",
+    "contact_us_subject_9" => "批發",
+    "contact_us_subject_10" => "聯盟計畫",
+    "contact_us_subject_11" => "其他",
+
+    "search_not_found" => "找不到！",
+    "search_not_carry" => "抱歉，我們不攜帶",
+    "search_this_time" => "此時。",
+    "search_product_request" => "請填寫產品申請表，我們將盡快新增所需的藥品。",
 ];

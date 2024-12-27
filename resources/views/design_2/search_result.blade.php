@@ -174,8 +174,18 @@
     </aside>
     @if (count($products) == 0)
         <section class="page__bestsellers bestsellers">
+            <div class="bestsellers__container" style="width: 100%">
+                <h2 class="bestsellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+                <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
+                <div class="no_product_text" style="margin-bottom: 20px">{{ __("text.search_product_request") }}</div>
+                <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us') }}'">
+                    {{ __("text.common_contact_us_main_menu_item") }}
+                </div>
+            </div>
+        </section>
+        {{-- <section class="page__bestsellers bestsellers">
             <div class="bestsellers__container">
-            <h4 class="bestsellers__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4>
+                <h4 class="bestsellers__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4>
                 <h2 class="bestsellers__title title">{{__('text.search_result_best_for_search')}}</h2>
                 <div class="bestsellers__body">
                     @foreach ($bestsellers as $product)
@@ -192,7 +202,6 @@
                                         <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                                     </picture>
                                 @endif
-                                {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
                             </a>
                             <a href="{{ route('home.product', $product['url']) }}" class="product-card__info">
                                 <h3 class="product-card__label">{{ $product['name'] }}</h3>
@@ -217,7 +226,7 @@
                     @endforeach
                 </div>
             </div>
-        </section>
+        </section> --}}
     @else
         <div class="bestsellers__container">
             <h2 class="bestsellers__title title">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>

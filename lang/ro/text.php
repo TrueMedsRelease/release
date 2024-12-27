@@ -349,6 +349,7 @@ return [
     "moneyback_text" => "<p>Ai 24 de ore pentru a anula o comandă după ce aceasta a fost plasată. Apoi, coletul va fi livrat, iar anulările nu vor mai fi valabile. Chiar și așa, poți refuza colectul de îndată ce acesta ajunge la tine.</p>",
     "affiliate_title" => "Program de Afiliere",
     "affiliate_contact_message" => "Vă rugăm să trimiteți un mesaj cu persoana de contact și veți primi un răspuns sigur.",
+    "affiliate_contact_message_2" => "Aveți trafic? Vă putem oferi un procent ridicat de comision pentru fiecare comandă. Suntem un program de afiliere de încredere, cu cele mai bune prețuri și produse de calitate. Completați formularul și vă vom contacta în cel mai scurt timp.",
     "affiliate_name" => "Nume",
     "affiliate_email" => "Email",
     "affiliate_jabber" => "Jabber/",
@@ -557,4 +558,22 @@ return [
 
     "complete_bottom_text_1" => "În cazul în care nu primiți un e-mail de confirmare din cauza filtrelor de spam, veți putea să căutați starea comenzii și să primiți ID-ul pistei de expediere pe acest site.",
     "complete_bottom_text_2" => "Dacă comanda nu este aprobată în 24 de ore, cardul dvs. de credit poate fi blocat pentru tranzacții pe internet. Vă rugăm să luați legătura cu banca dvs. și să solicitați eliminarea blocării.",
+
+    "contact_us_subject_0" => "Selectați subiectul",
+    "contact_us_subject_1" => "Schimbați adresa de livrare",
+    "contact_us_subject_2" => "Reprocesează cardul meu de credit",
+    "contact_us_subject_3" => "Dezabonare",
+    "contact_us_subject_4" => "Anulați comanda",
+    "contact_us_subject_5" => "Starea comenzii",
+    "contact_us_subject_6" => "Întârziere de livrare",
+    "contact_us_subject_7" => "Adăugați un produs nou",
+    "contact_us_subject_8" => "Reclama",
+    "contact_us_subject_9" => "Comerț cu ridicata",
+    "contact_us_subject_10" => "Program de afiliere",
+    "contact_us_subject_11" => "Altele",
+
+    "search_not_found" => "nu este găsit!",
+    "search_not_carry" => "Ne pare rău, nu transportăm",
+    "search_this_time" => "în acest moment.",
+    "search_product_request" => "Vă rugăm să completați formularul de solicitare a produsului și vom adăuga medicamentul solicitat în curând.",
 ];

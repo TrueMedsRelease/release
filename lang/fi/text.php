@@ -360,6 +360,7 @@ return [
 <p><b>Ole hyvä ja huomaa</b>, että me emme voi hyväksyä laillisten rajoitusten ja määräysten takia minkään lääkkeen palautusta, jos pakkaukset ovat avattuja.</p>",
     "affiliate_title" => "Yhteistyökumppanin ohjelma",
     "affiliate_contact_message" => "Lähetä viesti yhteystietosi kanssa ja saat vastauksen varmasti.",
+    "affiliate_contact_message_2" => "Onko sinulla liikennettä? Voimme tarjota korkean provisioprosentin jokaiselle tilaukselle. Olemme luotettava kumppaniohjelma, jolla on parhaat hinnat ja laadukkaat tuotteet. Täytä lomake, niin otamme sinuun yhteyttä pian.",
     "affiliate_name" => "Nimi",
     "affiliate_email" => "S-posti",
     "affiliate_jabber" => "Jabber/",
@@ -567,4 +568,22 @@ return [
 
     "complete_bottom_text_1" => "Jos et saa vahvistussähköpostia roskapostisuodattimien takia, voit tarkistaa tilauksesi tilan ja saada toimitusreittitunnuksesi tältä sivustolta.",
     "complete_bottom_text_2" => "Jos tilaustasi ei hyväksytä 24 tunnin kuluessa, luottokorttisi saatetaan estää Internet-tapahtumien varalta. Ota yhteyttä pankkiisi ja pyydä eston poistamista.",
+
+    "contact_us_subject_0" => "Valitse aihe",
+    "contact_us_subject_1" => "Vaihda toimitusosoite",
+    "contact_us_subject_2" => "Käsittele luottokorttini uudelleen",
+    "contact_us_subject_3" => "Peruuta tilaus",
+    "contact_us_subject_4" => "Peruuta tilaus",
+    "contact_us_subject_5" => "Tilauksen tila",
+    "contact_us_subject_6" => "Toimitusviive",
+    "contact_us_subject_7" => "Lisää uusi tuote",
+    "contact_us_subject_8" => "Mainonta",
+    "contact_us_subject_9" => "Tukkumyynti",
+    "contact_us_subject_10" => "Kumppanuusohjelma",
+    "contact_us_subject_11" => "Muu",
+
+    "search_not_found" => "ei löydy!",
+    "search_not_carry" => "Valitettavasti emme kanna",
+    "search_this_time" => "tällä hetkellä.",
+    "search_product_request" => "Täytä tuotepyyntölomake, niin lisäämme pyydetyn lääkkeen pian.",
 ];

@@ -62,7 +62,7 @@
 		</form>
 	</div>
 	<div class="text-bottom-desc">
-		<p>{{__('text.affiliate_contact_message')}}</p>
+		<p>{{__('text.affiliate_contact_message_2')}}</p>
 	</div>
 </div>
 

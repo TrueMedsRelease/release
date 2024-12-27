@@ -706,7 +706,7 @@
                         </span>
                         <span class="button__text">{{ __('text.common_categories_menu') }}</span>
                     </button>
-                    <a class="footer-button" href="#!">
+                    <a class="footer-button" href="{{ route('home.login') }}">
                         <span class="icon">
                             <img src="{{ asset($design . '/images/icons/profile.svg') }}" class="inline-svg">
                         </span>

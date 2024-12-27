@@ -17,7 +17,7 @@
         <h2 class="form-block__title title" id = "scroll">{{__('text.affiliate_title')}}</h2>
         <div class="form-block__body">
             <div class="form-block__descr">
-                <p>{{__('text.affiliate_contact_message')}}</p>
+                <p>{{__('text.affiliate_contact_message_2')}}</p>
             </div>
         <form id = "message_send_form" class="form-block__form form" method="post">
             <div class="form__default-rows">
