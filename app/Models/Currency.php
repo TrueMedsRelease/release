@@ -36,7 +36,7 @@ class Currency extends Model
         'sgd' => 'S$',
         'zar' => 'R',
         'dop' => 'RD$',
-        'krm' => '₩',
+        'krw' => '₩',
         'bam' => 'KM',
         'lkr' => 'Rs',
         'vnd' => 'đ',
