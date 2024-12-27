@@ -173,7 +173,7 @@
         </div>
     </aside>
     @if (count($products) == 0)
-        <section class="page__bestsellers bestsellers">
+        {{-- <section class="page__bestsellers bestsellers">
             <div class="bestsellers__container" style="width: 100%">
                 <h2 class="bestsellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
                 <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
@@ -182,10 +182,17 @@
                     {{ __("text.common_contact_us_main_menu_item") }}
                 </div>
             </div>
-        </section>
-        {{-- <section class="page__bestsellers bestsellers">
+        </section> --}}
+        <section class="page__bestsellers bestsellers">
             <div class="bestsellers__container">
-                <h4 class="bestsellers__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4>
+                <h2 class="bestsellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+                <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
+                <div class="no_product_text" style="margin-bottom: 20px">{{ __("text.search_product_request") }}</div>
+                <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us') }}'">
+                    {{ __("text.common_contact_us_main_menu_item") }}
+                </div>
+
+                {{-- <h4 class="bestsellers__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4> --}}
                 <h2 class="bestsellers__title title">{{__('text.search_result_best_for_search')}}</h2>
                 <div class="bestsellers__body">
                     @foreach ($bestsellers as $product)
@@ -226,7 +233,7 @@
                     @endforeach
                 </div>
             </div>
-        </section> --}}
+        </section>
     @else
         <div class="bestsellers__container">
             <h2 class="bestsellers__title title">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>
