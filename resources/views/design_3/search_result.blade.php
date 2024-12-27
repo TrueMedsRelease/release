@@ -15,13 +15,20 @@
 
 @section('content')
 @if (count($products) == 0)
-        <h2 class="page__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+        {{-- <h2 class="page__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
         <div class="no_product_text" style="margin-bottom: 10px; font-size: 16px;">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
         <div class="no_product_text" style="margin-bottom: 20px; font-size: 16px;">{{ __("text.search_product_request") }}</div>
         <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us') }}'">
             {{ __("text.common_contact_us_main_menu_item") }}
+        </div> --}}
+    <div class="page__products products">
+        <h2 class="page__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+        <div class="no_product_text" style="margin-bottom: 10px; font-size: 16px;">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
+        <div class="no_product_text" style="margin-bottom: 20px; font-size: 16px;">{{ __("text.search_product_request") }}</div>
+        <div class="button" id="go_to_contact_us" style="margin-bottom: 20px;" onclick="location.href = '{{ route('home.contact_us') }}'">
+            {{ __("text.common_contact_us_main_menu_item") }}
         </div>
-    {{-- <div class="page__products products">
+        <h2 class="page__title title">{{__('text.search_result_best_for_search')}}</h2>
         <div class="products__items">
             @foreach ($bestsellers as $product)
                 <a href="{{ route('home.product', $product['url']) }}" class="item-product">
@@ -60,7 +67,7 @@
                 </a>
             @endforeach
         </div>
-    </div> --}}
+    </div>
     </div>
 @else
     <div class="page__products products">

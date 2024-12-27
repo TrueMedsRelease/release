@@ -36,7 +36,7 @@
         </div>
     </aside>
     @if (count($products) == 0)
-        <section class="page__bestsellers bestsellers">
+        {{-- <section class="page__bestsellers bestsellers">
             <div class="bestsellers__container">
                 <div class="bonus_block">
                     <div class="bonus1">
@@ -54,8 +54,8 @@
                     {{ __("text.common_contact_us_main_menu_item") }}
                 </div>
             </div>
-        </section>
-        {{-- <section class="page__bestsellers bestsellers">
+        </section> --}}
+        <section class="page__bestsellers bestsellers">
             <div class="bestsellers__container">
                 <div class="bonus_block">
                     <div class="bonus1">
@@ -65,7 +65,15 @@
                         <img src="{{ asset("$design/images/bonus2_2.png") }}">
                     </div>
                 </div>
-                <h4 class="bestsellers__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4>
+
+                <h2 class="bestsellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+                <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
+                <div class="no_product_text" style="margin-bottom: 20px">{{ __("text.search_product_request") }}</div>
+                <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us') }}'">
+                    {{ __("text.common_contact_us_main_menu_item") }}
+                </div>
+
+                {{-- <h4 class="bestsellers__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4> --}}
                 <h2 class="bestsellers__title title">{{__('text.search_result_best_for_search')}}</h2>
                 <div class="bestsellers__body">
                     <div class="product_list">
@@ -118,7 +126,7 @@
                     </div>
                 </div>
             </div>
-        </section> --}}
+        </section>
     @else
         <div class="bestsellers__container">
             <div class="bonus_block">
