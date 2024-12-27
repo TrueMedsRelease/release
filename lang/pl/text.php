@@ -354,6 +354,7 @@ return [
 <p><b>Należy pamiętać,</b> że nie możemy przyjąć zwrotu żadnych leków po otwarciu paczek ze względu na ograniczenia prawne i przepisy.</p>",
     "affiliate_title" => "Program partnerski",
     "affiliate_contact_message" => "Wyślij wiadomość ze swoim kontaktem, a na pewno otrzymasz odpowiedź.",
+    "affiliate_contact_message_2" => "Czy masz ruch? Możemy zaoferować wysoki procent prowizji za każde zamówienie. Jesteśmy niezawodnym programem partnerskim z najlepszymi cenami i produktami wysokiej jakości. Wypełnij formularz, a wkrótce się z Tobą skontaktujemy.",
     "affiliate_name" => "Imię",
     "affiliate_email" => "Email",
     "affiliate_jabber" => "Jabber/",
@@ -562,4 +563,22 @@ return [
 
     "complete_bottom_text_1" => "W przypadku nieotrzymania e-maila z potwierdzeniem z powodu filtrów antyspamowych, będziesz mógł sprawdzić status swojego zamówienia i otrzymać identyfikator przesyłki na tej stronie.",
     "complete_bottom_text_2" => "Jeśli zamówienie nie zostanie zatwierdzone w ciągu 24 godzin, Twoja karta kredytowa może zostać zablokowana dla transakcji internetowych. Skontaktuj się ze swoim bankiem i poproś o usunięcie blokady.",
+
+    "contact_us_subject_0" => "Wybierz temat",
+    "contact_us_subject_1" => "Zmień adres wysyłki",
+    "contact_us_subject_2" => "Przetwórz ponownie moją kartę kredytową",
+    "contact_us_subject_3" => "Anuluj subskrypcję",
+    "contact_us_subject_4" => "Anuluj zamówienie",
+    "contact_us_subject_5" => "Status zamówienia",
+    "contact_us_subject_6" => "Opóźnienie wysyłki",
+    "contact_us_subject_7" => "Dodaj nowy produkt",
+    "contact_us_subject_8" => "Reklama",
+    "contact_us_subject_9" => "Hurt",
+    "contact_us_subject_10" => "Partnerstwo program",
+    "contact_us_subject_11" => "Inne",
+
+    "search_not_found" => "nie znaleziono!",
+    "search_not_carry" => "Przepraszamy, nie oferujemy",
+    "search_this_time" => "w tej chwili.",
+    "search_product_request" => "Wypełnij Formularz wniosku o produkt, a wkrótce dodamy żądany lek.",
 ];

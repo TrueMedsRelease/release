@@ -872,7 +872,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function contact_us() : View
+    public function contact_us($default_subject = 0) : View
     {
         StatisticService::SendStatistic('contact_us');
         $design = session('design') ? session('design') : config('app.design');
@@ -904,6 +904,27 @@ class HomeController extends Controller
             $codes[$i] = strtolower($code->iso);
         }
 
+        $subjects = [
+            0 => __('text.contact_us_subject_0'),
+            1 => __('text.contact_us_subject_1'),
+            2 => __('text.contact_us_subject_2'),
+            3 => __('text.contact_us_subject_3'),
+            4 => __('text.contact_us_subject_4'),
+            5 => __('text.contact_us_subject_5'),
+            6 => __('text.contact_us_subject_6'),
+            7 => __('text.contact_us_subject_7'),
+            8 => __('text.contact_us_subject_8'),
+            9 => __('text.contact_us_subject_9'),
+            10 => __('text.contact_us_subject_10'),
+            11 => __('text.contact_us_subject_11'),
+        ];
+
+        $default_subject = 0;
+
+        if (str_contains(request()->server('HTTP_REFERER'), 'search')) {
+            $default_subject = 7;
+        }
+
         $web_statistic["params_string"] =
             "aff=" . session('aff', 0) .
             "&saff=" . session('saff', '') .
@@ -931,6 +952,9 @@ class HomeController extends Controller
             'domain' => $domain,
             'web_statistic' => $web_statistic,
             'codes' => json_encode($codes),
+            'subjects' => $subjects,
+            'default_subject' => $default_subject,
+            'error_subject' => __('text.contact_us_subject_0'),
         ]);
     }
 
@@ -1284,7 +1308,7 @@ class HomeController extends Controller
 
         $name = $request->name;
         $email = $request->email;
-        $subject = $request->subject;
+        $subject_id = $request->subject;
         $message = $request->message;
         $captcha = $request->captcha;
 
@@ -1308,11 +1332,25 @@ class HomeController extends Controller
             $error = 3;
         }
 
+        $subject_text = [
+            1 => 'Change Shipping Address',
+            2 => 'Reprocess My Credit Card',
+            3 => 'Unsubscribe',
+            4 => 'Cancel Order',
+            5 => 'Order Status',
+            6 => 'Shipping Delay',
+            7 => 'Add New Product',
+            8 => 'Advertising',
+            9 => 'Wholesale',
+            10 => 'Affiliate program',
+            11 => 'Other',
+        ];
+
         $data = [
             'page' => 'contact',
             'name' => $name,
             'email' => $email,
-            'subject' => $subject,
+            'subject' => in_array($subject_id, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) ? $subject_text[$subject_id] : '',
             'message' => $message,
             'url_from' => $domain,
             'aff' => session('aff', 0),

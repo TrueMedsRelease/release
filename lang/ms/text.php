@@ -355,6 +355,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 <p><b>Sila ambil perhatian</b> bahawa kami tidak dapat menerima pemulangan sebarang ubat-ubatan setelah pakej dibuka kerana sekatan dan peraturan undang-undang.</p>",
     "affiliate_title" => "Program Rakan Kongsi",
     "affiliate_contact_message" => "Sila hantar mesej dengan kenalan anda dan anda akan menerima jawapan yang pasti.",
+    "affiliate_contact_message_2" => "Adakah anda mempunyai trafik? Kami boleh menawarkan peratusan komisen yang tinggi untuk setiap pesanan. Kami adalah program gabungan yang boleh dipercayai dengan harga terbaik dan produk berkualiti. Isi borang dan kami akan menghubungi anda sebentar lagi.",
     "affiliate_name" => "Nama",
     "affiliate_email" => "E-mel",
     "affiliate_jabber" => "Jabber/",
@@ -563,4 +564,22 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "complete_bottom_text_1" => "Sekiranya tidak mendapat e-mel pengesahan kerana penapis spam, anda akan dapat mencari status pesanan anda dan menerima ID trek penghantaran anda di tapak ini.",
     "complete_bottom_text_2" => "Jika pesanan anda tidak diluluskan dalam masa 24 jam kad kredit anda mungkin disekat untuk transaksi internet. Sila hubungi bank anda dan minta untuk mengalih keluar sekatan itu.",
+
+    "contact_us_subject_0" => "Pilih Subjek",
+    "contact_us_subject_1" => "Tukar Alamat Penghantaran",
+    "contact_us_subject_2" => "Proses Semula Kad Kredit Saya",
+    "contact_us_subject_3" => "Nyahlanggan",
+    "contact_us_subject_4" => "Batalkan Pesanan",
+    "contact_us_subject_5" => "Status Pesanan",
+    "contact_us_subject_6" => "Kelewatan Penghantaran",
+    "contact_us_subject_7" => "Tambah Produk Baharu",
+    "contact_us_subject_8" => "Pengiklanan",
+    "contact_us_subject_9" => "Borong",
+    "contact_us_subject_10" => "Program gabungan",
+    "contact_us_subject_11" => "Lain-lain",
+
+    "search_not_found" => "tidak ditemui!",
+    "search_not_carry" => "Maaf kami tidak membawa",
+    "search_this_time" => "pada masa ini.",
+    "search_product_request" => "Sila isi Borang Permintaan Produk dan kami akan menambah ubat yang diminta sebentar lagi.",
 ];

@@ -8,7 +8,13 @@
 <div class="page-wrapper container">
     <main class="main">
         @if (count($products) == 0)
-            <h1 class="h1">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h1>
+            <h2 class="no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+            <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
+            <div class="no_product_text" style="margin-bottom: 20px">{{ __("text.search_product_request") }}</div>
+            <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us') }}'">
+                {{ __("text.common_contact_us_main_menu_item") }}
+            </div>
+            {{-- <h1 class="h1">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h1>
             <h2 style="margin-bottom: 20px">{{__('text.search_result_best_for_search')}}</h2>
             <div class="product-cards">
                 @foreach ($bestsellers as $product)
@@ -52,7 +58,7 @@
                         </div>
                     </article>
                 @endforeach
-            </div>
+            </div> --}}
         @else
             <h1 class="h1">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h1>
             <div class="product-cards">

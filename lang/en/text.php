@@ -406,6 +406,7 @@ return [
 <p><b>Please note</b> that we cannot accept the return of any medications after the packages are opened due to legal restrictions and regulations.</p>",
     "affiliate_title" => "Affiliate program",
     "affiliate_contact_message" => "Please send message with your contact and you will receive a response for sure.",
+    "affiliate_contact_message_2" => "Do you have traffic? We can offer a high commission percentage for each order. We are a reliable affiliate program with the best prices and quality products. Fill out the form and we will contact you shortly.",
     "affiliate_name" => "Name",
     "affiliate_email" => "Email",
     "affiliate_jabber" => "Jabber/",
@@ -827,7 +828,25 @@ return [
     "admin_products_form_invalid_url" => "Url must be in the format any_text.html",
     "admin_products_form_tabs_text" => "tabs",
     "information" => "information",
-    
+
     "complete_bottom_text_1" => "In case of not getting a confirmation e-mail because of spam-filters, you will be able to look up your order status and receive your shipping track ID on this site.",
     "complete_bottom_text_2" => "If you order is not approved within 24 hours your credit card might be blocked for internet transactions. Please get in touch with your bank and ask to remove the block.",
+
+    "contact_us_subject_0" => "Select Subject",
+    "contact_us_subject_1" => "Change Shipping Address",
+    "contact_us_subject_2" => "Reprocess My Credit Card",
+    "contact_us_subject_3" => "Unsubscribe",
+    "contact_us_subject_4" => "Cancel Order",
+    "contact_us_subject_5" => "Order Status",
+    "contact_us_subject_6" => "Shipping Delay",
+    "contact_us_subject_7" => "Add New Product",
+    "contact_us_subject_8" => "Advertising",
+    "contact_us_subject_9" => "Wholesale",
+    "contact_us_subject_10" => "Affiliate program",
+    "contact_us_subject_11" => "Other",
+
+    "search_not_found" => "is not found!",
+    "search_not_carry" => "Sorry we do not carry",
+    "search_this_time" => "at this time.",
+    "search_product_request" => "Please fill in the Product Request Form and we will add the requested medicine shortly.",
 ];

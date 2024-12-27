@@ -4683,3 +4683,101 @@ body.has-scroll{
   .christmas img {
     width: 100%;
   }
+
+  .contact_subject{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+  }
+
+  .contact_subject .select-wrapper{
+    max-width:30rem;
+    margin-left:auto;
+  }
+
+  #new_subject_block {
+    display: flex;
+    width: 100%;
+}
+
+.select_subject {
+    width: 100%;
+}
+
+.select_header_subject {
+    align-items: center;
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    font-weight: 700;
+    height: 4.8rem;
+    overflow: hidden;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    position: relative;
+    width: 100%;
+    z-index: 2;
+    gap: 10px;
+}
+
+.select_header_subject:hover {
+    cursor: pointer;
+}
+
+  .select_body_subjects {
+    --offset-y: 0.1rem;
+    --translate-x: 0%;
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-dropdown);
+    display: none;
+    padding: 1rem 0;
+    transform: translate3d(var(--translate-x), var(--offset-y), 0);
+    position: absolute;
+    width: 100%;
+}
+
+.select_subject.is-active .select_body_subjects {
+    display: block;
+    z-index: 100;
+    max-height: 24rem;
+    overflow-y: auto;
+    animation:select-panel-appear 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.select_item_subject {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    position: relative;
+    transition: background-color var(--transition-short-cubic), color var(--transition-short-cubic);
+    cursor: pointer;
+}
+
+.select_item_subject:hover {
+    background-color: var(--color-grey-1);
+    color: var(--color-black);
+}
+
+.select_body_subjects::-webkit-scrollbar{
+    width:0.6rem;
+}
+.select_body_subjects::-webkit-scrollbar-track{
+    border-radius:1rem;
+    margin-top:0.6rem;
+    margin-bottom:0.6rem;
+    background-color:var(--color-white);
+}
+.select_body_subjects::-webkit-scrollbar-thumb{
+    width:0.2rem;
+    border-radius:2rem;
+    background:#d7d7d7;
+}
+.select_body_subjects::-webkit-scrollbar-track{
+    margin-top:2rem;
+    margin-bottom:2rem;
+}

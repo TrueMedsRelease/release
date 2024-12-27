@@ -439,6 +439,7 @@ return [
 <p><b>Vezměte prosím na vědomí,</b> že z důvodu zákonných omezení a dodržení předpisů nemůžeme akceptovat vrácení jakýchkoli léčebných přípravků po jejich rozbalení.</p>",
     "affiliate_title" => "Affiliate program",
     "affiliate_contact_message" => "Zašlete prosím zprávu se svým kontaktem a pro jistotu obdržíte odpověď.",
+    "affiliate_contact_message_2" => "Máte návštěvnost? Můžeme nabídnout vysoké procento provize za každou objednávku. Jsme spolehlivý affiliate program s nejlepšími cenami a kvalitními produkty. Vyplňte formulář a my se vám brzy ozveme.",
     "affiliate_name" => "Jméno",
     "affiliate_email" => "E-mail",
     "affiliate_jabber" => "Jabber/",
@@ -647,4 +648,22 @@ return [
 
     "complete_bottom_text_1" => "V případě, že neobdržíte potvrzovací e-mail kvůli spamovým filtrům, budete si moci na této stránce vyhledat stav své objednávky a obdržet ID zásilky.",
     "complete_bottom_text_2" => "Pokud vaše objednávka nebude schválena do 24 hodin, vaše kreditní karta může být zablokována pro internetové transakce. Kontaktujte prosím svou banku a požádejte o odstranění blokování.",
+
+    "contact_us_subject_0" => "Vyberte předmět",
+    "contact_us_subject_1" => "Změnit dodací adresu",
+    "contact_us_subject_2" => "Znovu zpracovat mou kreditní kartu",
+    "contact_us_subject_3" => "Odhlásit odběr",
+    "contact_us_subject_4" => "Zrušit objednávku",
+    "contact_us_subject_5" => "Stav objednávky",
+    "contact_us_subject_6" => "Zpoždění dodávky",
+    "contact_us_subject_7" => "Přidat nový produkt",
+    "contact_us_subject_8" => "Reklama",
+    "contact_us_subject_9" => "Velkoobchod",
+    "contact_us_subject_10" => "Affiliate program",
+    "contact_us_subject_11" => "Jiné",
+
+    "search_not_found" => "nenalezeno!",
+    "search_not_carry" => "Je nám líto, že nepřenášíme",
+    "search_this_time" => "v tuto chvíli.",
+    "search_product_request" => "Vyplňte prosím formulář žádosti o produkt a my požadovaný lék brzy přidáme.",
 ];

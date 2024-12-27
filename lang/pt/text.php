@@ -472,6 +472,7 @@ return [
 <p><b>Te rugăm reține că</b>, din cauza restricțiilor legale și a reglementărilor, nu putem accepta returnarea medicamentelor dacă acestea au fost desfăcute.</p>",
     "affiliate_title" => "Programa de afiliados",
     "affiliate_contact_message" => "Por favor, envie uma mensagem com o seu contacto e receberá uma resposta com certeza.",
+    "affiliate_contact_message_2" => "Tem tráfego? Podemos oferecer uma elevada percentagem de comissão por cada encomenda. Somos um programa de afiliados de confiança com os melhores preços e produtos de qualidade. Preencha o formulário e entraremos em contacto consigo em breve.",
     "affiliate_name" => "Nome",
     "affiliate_email" => "Email",
     "affiliate_jabber" => "Jabber/",
@@ -681,4 +682,22 @@ return [
 
     "complete_bottom_text_1" => "Caso não receba um e-mail de confirmação por causa de filtros de spam, poderá consultar o estado da sua encomenda e receber o ID de seguimento de envio neste site.",
     "complete_bottom_text_2" => "Se o seu pedido não for aprovado no prazo de 24 horas, o seu cartão de crédito poderá ser bloqueado para transações na Internet. Contacte o seu banco e peça para remover o bloqueio.",
+
+    "contact_us_subject_0" => "Selecionar Assunto",
+    "contact_us_subject_1" => "Alterar endereço de entrega",
+    "contact_us_subject_2" => "Reprocessar o meu cartão de crédito",
+    "contact_us_subject_3" => "Cancelar subscrição",
+    "contact_us_subject_4" => "Cancelar pedido",
+    "contact_us_subject_5" => "Estado do pedido",
+    "contact_us_subject_6" => "Atraso no envio",
+    "contact_us_subject_7" => "Adicionar novo produto",
+    "contact_us_subject_8" => "Publicidade",
+    "contact_us_subject_9" => "Atacado",
+    "contact_us_subject_10" => "Programa de afiliados",
+    "contact_us_subject_11" => "Outro",
+
+    "search_not_found" => "não encontrado!",
+    "search_not_carry" => "Desculpe, não carregamos",
+    "search_this_time" => "neste momento.",
+    "search_product_request" => "Por favor preencha o Formulário de Pedido de Produto e adicionaremos o medicamento solicitado em breve.",
 ];

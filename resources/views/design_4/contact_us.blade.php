@@ -6,7 +6,7 @@
 @section('description', $page_properties->description)
 
 @section('content')
-
+<input type="hidden" id="error_subject" value="{{ $error_subject }}">
 <h1 class="content__title title" id="scroll">{{__('text.contact_us_title')}}</h1>
 <div class="message_sended hidden">
 	<h2>{{__('text.contact_us_thanks')}}</h2>
@@ -16,10 +16,33 @@
 <div class="contact-form">
 	<form class="contact-form__body form" id = "message_send_form" method="post">
 		<div class="contact-form__lines">
+            <div class="contact-form__line">
+                <label for="subject" class="contact-form__label">{{__('text.contact_us_subject')}}</label>
+                <div class="form__field custom-field" id="contact-subject" name="contact-subject">
+                    <div id="subject_block">
+                        <div class="contact_subject">
+                            <div id="new_subject_block">
+                                <div class="select_subject">
+                                    <div class="select_header_subject">
+                                        <span class="select_current_subject" curr_subject_id = "{{ $default_subject }}">{{ $subjects[$default_subject] }}</span>
+                                        <div class="select_icon">
+                                            <img src="{{ asset("$design/images/icons/arrow_down_black.svg") }}">
+                                        </div>
+                                    </div>
+                                    <div class="select_body_subjects">
+                                        @foreach ($subjects as $id => $subject)
+                                            <div class="select_item_subject" subject_id = "{{ $id }}">{{ $subject }}</div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 			<div class="contact-form__line">
 				<label for="name" class="contact-form__label">{{__('text.contact_us_name')}}</label>
 				<div class="contact-form__input">
-					<!-- Для показа ошибки и изенения цвета текст для input на красный, необходимо добавить класс error -->
 					<input id = "name" autocomplete="off" type="text" name="form[name]" data-error="" placeholder="{{__('text.contact_us_name')}}" class="input">
 				</div>
 			</div>
@@ -27,12 +50,6 @@
 				<label for="email" class="contact-form__label">{{__('text.contact_us_email')}}</label>
 				<div class="contact-form__input">
 					<input id="email" autocomplete="off" type="text" name="form[email]" data-error="" placeholder="{{__('text.contact_us_email')}}" class="input">
-				</div>
-			</div>
-			<div class="contact-form__line">
-				<label for="subject" class="contact-form__label">{{__('text.contact_us_subject')}}</label>
-				<div class="contact-form__input">
-					<input id="subject" autocomplete="off" type="text" name="form[subject]" data-error="" placeholder="{{__('text.contact_us_subject')}}" class="input">
 				</div>
 			</div>
 			<div class="contact-form__line">

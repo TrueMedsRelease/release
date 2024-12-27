@@ -490,6 +490,7 @@ return [
     "moneyback_text" => "<p>Hai 24 ore per annullare l'ordine una volta effettuato. Trascorso tale tempo, il pacco verrà spedito e non sarà più possibile annullare l'ordine. Tuttavia, puoi rifiutare il pacco al momento della consegna.</p><p>Offriamo a tutti i nostri clienti una garanzia di rimborso di 30 giorni, che ti consente di contattare l'assistenza clienti entro 30 giorni dall'arrivo del pacco per un rimborso completo.</p><p><b>Si prega di notare</b> che, a causa di restrizioni governative e legali, non possiamo accettare resi se le confezioni dei farmaci sono state aperte.</p>",
     "affiliate_title" => "Affiliato",
     "affiliate_contact_message" => "Si prega di inviare un messaggio con il vostro contatto e si riceverà una risposta di sicuro.",
+    "affiliate_contact_message_2" => "Hai traffico? Possiamo offrire un'alta percentuale di commissione per ogni ordine. Siamo un programma di affiliazione affidabile con i migliori prezzi e prodotti di qualità. Compila il modulo e ti contatteremo a breve.",
     "affiliate_name" => "Nome",
     "affiliate_email" => "E-mail",
     "affiliate_jabber" => "Jabber/",
@@ -697,4 +698,22 @@ return [
 
     "complete_bottom_text_1" => "In caso di mancata ricezione di un'e-mail di conferma a causa di filtri antispam, potrai cercare lo stato del tuo ordine e ricevere il tuo ID di tracciamento della spedizione su questo sito.",
     "complete_bottom_text_2" => "Se il tuo ordine non viene approvato entro 24 ore, la tua carta di credito potrebbe essere bloccata per le transazioni su Internet. Contatta la tua banca e chiedi di rimuovere il blocco.",
+
+    "contact_us_subject_0" => "Seleziona oggetto",
+    "contact_us_subject_1" => "Modifica indirizzo di spedizione",
+    "contact_us_subject_2" => "Rielabora la mia carta di credito",
+    "contact_us_subject_3" => "Annulla iscrizione",
+    "contact_us_subject_4" => "Annulla ordine",
+    "contact_us_subject_5" => "Stato ordine",
+    "contact_us_subject_6" => "Ritardo spedizione",
+    "contact_us_subject_7" => "Aggiungi nuovo prodotto",
+    "contact_us_subject_8" => "Pubblicità",
+    "contact_us_subject_9" => "Vendita all'ingrosso",
+    "contact_us_subject_10" => "Programma di affiliazione",
+    "contact_us_subject_11" => "Altro",
+
+    "search_not_found" => "non è stato trovato!",
+    "search_not_carry" => "Spiacenti, non abbiamo",
+    "search_this_time" => "al momento.",
+    "search_product_request" => "Compila il modulo di richiesta del prodotto e aggiungeremo il medicinale richiesto a breve.",
 ];

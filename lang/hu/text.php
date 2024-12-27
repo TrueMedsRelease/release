@@ -359,6 +359,7 @@ return [
 <p><b>Kérjük, vegye figyelembe,</b> hogy a gyógyszerek visszatérítését nem fogadjuk el, miután a csomagokat felnyitották, jogi korlátozások és szabályozások miatt.</p>",
     "affiliate_title" => "Partnerprogram",
     "affiliate_contact_message" => "Kérjük, küldjön üzenetet a kapcsolattartójával, és biztosan választ fog kapni.",
+    "affiliate_contact_message_2" => "Van forgalom? Magas jutalék százalékot tudunk ajánlani minden egyes rendelésért. Megbízható partnerprogram vagyunk a legjobb árakkal és minőségi termékekkel. Töltse ki az űrlapot, és hamarosan felvesszük Önnel a kapcsolatot.",
     "affiliate_name" => "Név",
     "affiliate_email" => "E-mail",
     "affiliate_jabber" => "Jabber/",
@@ -567,4 +568,22 @@ return [
 
     "complete_bottom_text_1" => "Abban az esetben, ha nem kap visszaigazoló e-mailt a spamszűrők miatt, ezen az oldalon megtekintheti a rendelés állapotát, és megkaphatja a szállítási nyomvonal azonosítóját.",
     "complete_bottom_text_2" => "Ha megrendelését 24 órán belül nem hagyják jóvá, előfordulhat, hogy hitelkártyáját letiltják az internetes tranzakciókhoz. Kérjük, lépjen kapcsolatba bankjával, és kérje a blokk eltávolítását.",
+
+    "contact_us_subject_0" => "Tárgy kiválasztása",
+    "contact_us_subject_1" => "Szállítási cím módosítása",
+    "contact_us_subject_2" => "A hitelkártya újrafeldolgozása",
+    "contact_us_subject_3" => "Leiratkozás",
+    "contact_us_subject_4" => "Megrendelés törlése",
+    "contact_us_subject_5" => "Rendelési állapot",
+    "contact_us_subject_6" => "Szállítási késés",
+    "contact_us_subject_7" => "Új termék hozzáadása",
+    "contact_us_subject_8" => "Hirdetés",
+    "contact_us_subject_9" => "Nagykereskedelem",
+    "contact_us_subject_10" => "Társprogram",
+    "contact_us_subject_11" => "Egyéb",
+
+    "search_not_found" => "nem található!",
+    "search_not_carry" => "Sajnos nem szállítjuk",
+    "search_this_time" => "jelen időben.",
+    "search_product_request" => "Kérjük, töltse ki a Termékigénylő űrlapot, és hamarosan hozzáadjuk a kért gyógyszert.",
 ];

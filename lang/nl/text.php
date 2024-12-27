@@ -393,6 +393,7 @@ return [
 <p><b>Let op</b>: vanwege wettelijke beperkingen en voorschriften kunnen wij geen medicijnen terugnemen nadat de pakketten zijn geopend..</p>",
     "affiliate_title" => "Partnerprogramma",
     "affiliate_contact_message" => "Stuur een bericht met uw contactpersoon en u zult zeker een antwoord ontvangen.",
+    "affiliate_contact_message_2" => "Heb je verkeer? Wij kunnen een hoog commissiepercentage bieden voor elke bestelling. Wij zijn een betrouwbaar affiliate programma met de beste prijzen en kwaliteitsproducten. Vul het formulier in en wij nemen binnenkort contact met je op.",
     "affiliate_name" => "Naam",
     "affiliate_email" => "E-mail",
     "affiliate_jabber" => "Jabber/",
@@ -601,4 +602,22 @@ return [
 
     "complete_bottom_text_1" => "Als u geen bevestigingsmail ontvangt vanwege spamfilters, kunt u op deze site de status van uw bestelling bekijken en uw verzendtrack-ID ontvangen.",
     "complete_bottom_text_2" => "Als uw bestelling niet binnen 24 uur wordt goedgekeurd, kan uw creditcard worden geblokkeerd voor internettransacties. Neem contact op met uw bank en vraag om de blokkering op te heffen.",
+
+    "contact_us_subject_0" => "Selecteer onderwerp",
+    "contact_us_subject_1" => "Verzendadres wijzigen",
+    "contact_us_subject_2" => "Mijn creditcard opnieuw verwerken",
+    "contact_us_subject_3" => "Afmelden",
+    "contact_us_subject_4" => "Bestelling annuleren",
+    "contact_us_subject_5" => "Bestelstatus",
+    "contact_us_subject_6" => "Verzending vertraagd",
+    "contact_us_subject_7" => "Nieuw product toevoegen",
+    "contact_us_subject_8" => "Adverteren",
+    "contact_us_subject_9" => "Groothandel",
+    "contact_us_subject_10" => "Affiliateprogramma",
+    "contact_us_subject_11" => "Anders",
+
+    "search_not_found" => "is niet gevonden!",
+    "search_not_carry" => "Sorry, we hebben geen product in voorraad",
+    "search_this_time" => "op dit moment.",
+    "search_product_request" => "Vul het productaanvraagformulier in en we zullen het gevraagde medicijn binnenkort toevoegen.",
 ];

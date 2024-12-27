@@ -54,7 +54,7 @@
             </div>
             <div class="form__field">
                 <div class="form__caption">
-                    <p>{{__('text.affiliate_contact_message')}}</p>
+                    <p>{{__('text.affiliate_contact_message_2')}}</p>
                 </div>
             </div>
         </form>

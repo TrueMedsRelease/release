@@ -84,41 +84,50 @@ function undisabled(page) {
 }
 
 $(document).on('click', '#message_send_button', function () {
+    var error = false;
     const name = document.getElementById("name").value;
     const email = document.getElementById('email').value;
-    const subject = document.getElementById("subject").value;
+    const subject = $('.select_current_subject').text();
+    const subject_id = $('.select_current_subject').attr('curr_subject_id');
     const message = document.getElementById("message").value;
     const captcha = document.getElementById("captcha").value;
     const submit = true;
 
-    $.ajax({
-        url: '/request_contact_us',
-        type: "POST",
-        cache: false,
-        data: { 'name' : name,
-        'email' : email,
-        'subject' : subject,
-        'message' : message,
-        'captcha' : captcha,
-        'submit' : submit },
-        dataType: "json",
-        success: function(data) { //Данные отправлены успешно
-            if (data['status'] == 'error') {
-                alert(data['text']);
-                $('#captcha_image').attr('src', data['new_captcha']);
-            } else {
-                $(".title-page").hide();
-                $('#message_send_form').hide();
-                $('.text-bottom-desc').hide();
-                $('.message_sended').removeClass('hidden');
-                $('.message_sended').addClass('active');
+    if (subject_id == 0) {
+        alert($('#error_subject').val());
+        error = true;
+    }
 
-                setTimeout((() => {
-                    location.href = '/' + location.search;
-                }), 2000);
+    if (!error) {
+        $.ajax({
+            url: '/request_contact_us',
+            type: "POST",
+            cache: false,
+            data: { 'name' : name,
+            'email' : email,
+            'subject' : subject_id,
+            'message' : message,
+            'captcha' : captcha,
+            'submit' : submit },
+            dataType: "json",
+            success: function(data) { //Данные отправлены успешно
+                if (data['status'] == 'error') {
+                    alert(data['text']);
+                    $('#captcha_image').attr('src', data['new_captcha']);
+                } else {
+                    $(".title-page").hide();
+                    $('#message_send_form').hide();
+                    $('.text-bottom-desc').hide();
+                    $('.message_sended').removeClass('hidden');
+                    $('.message_sended').addClass('active');
+
+                    setTimeout((() => {
+                        location.href = '/' + location.search;
+                    }), 2000);
+                }
             }
-        }
-     });
+        });
+    }
 });
 
 $(document).on('click', '#affiliate_send_button', function () {
@@ -438,6 +447,16 @@ $(document).on('click', '.visible.gift', function () {
         $(this).addClass('get-gift');
         $('.gift_bottom_block').css('display', 'flex');
     }
+});
+
+$(document).on('click', '.select_header_subject', function () {
+    $(this).parent().toggleClass('is-active');
+});
+
+$(document).on('click', '.select_item_subject', function () {
+    $('.select_current_subject').text($(this).text());
+    $('.select_current_subject').attr('curr_subject_id', $(this).attr('subject_id'));
+    $(this).parent().parent().removeClass('is-active');
 });
 
 // function addCard() {

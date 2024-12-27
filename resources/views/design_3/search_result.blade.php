@@ -5,17 +5,23 @@
 @section('description', $page_properties->description)
 
 @if (count($products) == 0)
-    @section('title_3')
+    {{-- @section('title_3')
         <h4 class="page__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4>
         <h2 class="page__title title">{{__('text.search_result_best_for_search')}}</h2>
-    @endsection
+    @endsection --}}
 @else
     @section('title_2', __('text.search_result_title_page') . ' «' . $search_text . '»')
 @endif
 
 @section('content')
 @if (count($products) == 0)
-    <div class="page__products products">
+        <h2 class="page__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
+        <div class="no_product_text" style="margin-bottom: 10px; font-size: 16px;">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
+        <div class="no_product_text" style="margin-bottom: 20px; font-size: 16px;">{{ __("text.search_product_request") }}</div>
+        <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us') }}'">
+            {{ __("text.common_contact_us_main_menu_item") }}
+        </div>
+    {{-- <div class="page__products products">
         <div class="products__items">
             @foreach ($bestsellers as $product)
                 <a href="{{ route('home.product', $product['url']) }}" class="item-product">
@@ -43,7 +49,6 @@
                                     <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                                 </picture>
                             @endif
-                            {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
                         </div>
                     </div>
                     <button type="button" class="item-product__button" onclick="location.href='{{ route('home.product', $product['url']) }}'">
@@ -55,7 +60,7 @@
                 </a>
             @endforeach
         </div>
-    </div>
+    </div> --}}
     </div>
 @else
     <div class="page__products products">

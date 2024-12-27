@@ -353,6 +353,7 @@ return [
 <p><b>Upozorňujeme</b>, že z dôvodu zákonných obmedzení a predpisov nemôžeme prijímať vrátenie akýchkoľvek liekov po otvorení obalov. </p>",
     "affiliate_title" => "Partnerský program",
     "affiliate_contact_message" => "Pošlite správu so svojím kontaktom a určite dostanete odpoveď.",
+    "affiliate_contact_message_2" => "Máte návštevnosť? Môžeme ponúknuť vysoké percento provízie za každú objednávku. Sme spoľahlivý partnerský program s najlepšími cenami a kvalitnými produktmi. Vyplňte formulár a čoskoro vás budeme kontaktovať.",
     "affiliate_name" => "Meno",
     "affiliate_email" => "E-mail",
     "affiliate_jabber" => "Jabber/",
@@ -561,4 +562,22 @@ return [
 
     "complete_bottom_text_1" => "V prípade, že nedostanete potvrdzujúci e-mail z dôvodu spamových filtrov, budete si môcť na tejto stránke vyhľadať stav svojej objednávky a získať ID zásielky.",
     "complete_bottom_text_2" => "Ak vaša objednávka nebude schválená do 24 hodín, vaša kreditná karta môže byť zablokovaná pre internetové transakcie. Obráťte sa na svoju banku a požiadajte o odstránenie blokovania.",
+
+    "contact_us_subject_0" => "Vybrať predmet",
+    "contact_us_subject_1" => "Zmeniť dodaciu adresu",
+    "contact_us_subject_2" => "Znova spracovať moju kreditnú kartu",
+    "contact_us_subject_3" => "Zrušiť odber",
+    "contact_us_subject_4" => "Zrušiť objednávku",
+    "contact_us_subject_5" => "Stav objednávky",
+    "contact_us_subject_6" => "Meškanie dodávky",
+    "contact_us_subject_7" => "Pridať nový produkt",
+    "contact_us_subject_8" => "Reklama",
+    "contact_us_subject_9" => "Veľkoobchod",
+    "contact_us_subject_10" => "Pridružený program",
+    "contact_us_subject_11" => "Iné",
+
+    "search_not_found" => "nenájdené!",
+    "search_not_carry" => "Je nám ľúto, že neprenášame",
+    "search_this_time" => "v tomto čase.",
+    "search_product_request" => "Vyplňte formulár žiadosti o produkt a my čoskoro pridáme požadovaný liek.",
 ];

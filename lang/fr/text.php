@@ -484,6 +484,7 @@ return [
     "moneyback_text" => "<p>Vous avez 24 heures pour annuler votre commande une fois celle-ci passée. Ensuite, le colis sera expédié et l'annulation ne sera plus possible. Cependant, vous pouvez refuser le colis lors de sa livraison.</p><p>Nos clients bénéficient d'une garantie satisfait ou remboursé qui permet de contacter notre service client sous 30 jours après réception du colis pour recevoir un remboursement intégral.</p> <p>En raison de restrictions et réglementations légales, <b>veuillez noter</b> que nous n'acceptions pas les retours si les emballages des médicaments ont été ouverts.</p>",
     "affiliate_title" => "Affilié",
     "affiliate_contact_message" => "Veuillez envoyer un message avec votre contact et vous recevrez une réponse à coup sûr.",
+    "affiliate_contact_message_2" => "Avez-vous du trafic ? Nous pouvons offrir un pourcentage de commission élevé pour chaque commande. Nous sommes un programme d'affiliation fiable avec les meilleurs prix et des produits de qualité. Remplissez le formulaire et nous vous contacterons sous peu.",
     "affiliate_name" => "Nom",
     "affiliate_email" => "Courriel",
     "affiliate_jabber" => "Jabber/",
@@ -692,4 +693,22 @@ return [
 
     "complete_bottom_text_1" => "Si vous ne recevez pas d'e-mail de confirmation en raison de filtres anti-spam, vous pourrez consulter le statut de votre commande et recevoir votre numéro de suivi d'expédition sur ce site.",
     "complete_bottom_text_2" => "Si votre commande n'est pas approuvée dans les 24 heures, votre carte de crédit peut être bloquée pour les transactions sur Internet. Veuillez contacter votre banque et demander la suppression du blocage.",
+
+    "contact_us_subject_0" => "Sélectionner un sujet",
+    "contact_us_subject_1" => "Modifier l'adresse de livraison",
+    "contact_us_subject_2" => "Retraiter ma carte de crédit",
+    "contact_us_subject_3" => "Se désabonner",
+    "contact_us_subject_4" => "Annuler la commande",
+    "contact_us_subject_5" => "Statut de la commande",
+    "contact_us_subject_6" => "Retard d'expédition",
+    "contact_us_subject_7" => "Ajouter un nouveau produit",
+    "contact_us_subject_8" => "Publicité",
+    "contact_us_subject_9" => "Vente en gros",
+    "contact_us_subject_10" => "Programme d'affiliation",
+    "contact_us_subject_11" => "Autre",
+
+    "search_not_found" => "introuvable !",
+    "search_not_carry" => "Désolé, nous ne proposons pas de médicament",
+    "search_this_time" => "pour le moment.",
+    "search_product_request" => "Veuillez remplir le formulaire de demande de produit et nous ajouterons le médicament demandé sous peu.",
 ];

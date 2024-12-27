@@ -506,6 +506,7 @@ return [
     "moneyback_text" => "<p>Dispone de 24 horas para cancelar su pedido una vez realizado. Después de ese tiempo, el paquete se enviará y ya no podrá cancelarlo. Sin embargo, puede devolver el paquete una vez que lo haya recibido.</p><p>Ofrecemos a todos nuestros clientes una garantía de devolución del dinero de 30 días, que le permite ponerse en contacto con el servicio de atención al cliente en un plazo de 30 días desde la llegada de su paquete para obtener un reembolso completo.</p> <p><b>Tenga en cuenta</b> que, debido a las normativas y restricciones legales, no podemos aceptar la devolución de ningún medicamento una vez abierto el envase.</p>",
     "affiliate_title" => "Afiliado",
     "affiliate_contact_message" => "Por favor, envíe un mensaje con su contacto y recibirá una respuesta segura.",
+    "affiliate_contact_message_2" => "¿Tienes tráfico? Podemos ofrecer un alto porcentaje de comisión por cada pedido. Somos un programa de afiliados confiable con los mejores precios y productos de calidad. Completa el formulario y nos comunicaremos contigo en breve.",
     "affiliate_name" => "Nombre",
     "affiliate_email" => "Correo electrónico",
     "affiliate_jabber" => "Jabber/",
@@ -713,4 +714,22 @@ return [
 
     "complete_bottom_text_1" => "En caso de no recibir un correo electrónico de confirmación debido a los filtros de spam, podrá consultar el estado de su pedido y recibir el número de seguimiento del envío en este sitio.",
     "complete_bottom_text_2" => "Si su pedido no se aprueba en 24 horas, su tarjeta de crédito podría quedar bloqueada para transacciones por Internet. Póngase en contacto con su banco y solicite que eliminen el bloqueo.",
+
+    "contact_us_subject_0" => "Seleccionar asunto",
+    "contact_us_subject_1" => "Cambiar dirección de envío",
+    "contact_us_subject_2" => "Reprocesar mi tarjeta de crédito",
+    "contact_us_subject_3" => "Cancelar suscripción",
+    "contact_us_subject_4" => "Cancelar pedido",
+    "contact_us_subject_5" => "Estado del pedido",
+    "contact_us_subject_6" => "Retraso en el envío",
+    "contact_us_subject_7" => "Agregar nuevo producto",
+    "contact_us_subject_8" => "Publicidad",
+    "contact_us_subject_9" => "Mayorista",
+    "contact_us_subject_10" => "Programa de afiliados",
+    "contact_us_subject_11" => "Otro",
+
+    "search_not_found" => "no se encontró",
+    "search_not_carry" => "Lo sentimos, no tenemos stock",
+    "search_this_time" => "en este momento.",
+    "search_product_request" => "Complete el formulario de solicitud de producto y agregaremos el medicamento solicitado en breve.",
 ];

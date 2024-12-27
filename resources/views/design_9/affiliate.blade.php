@@ -62,7 +62,7 @@
                         </div>
                         <div class="form__desrc">
                             <div class="form__text-block">
-                                <p>{{__('text.affiliate_contact_message')}}</p>
+                                <p>{{__('text.affiliate_contact_message_2')}}</p>
                             </div>
                         </div>
                     </div>
