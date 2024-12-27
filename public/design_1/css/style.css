@@ -5027,7 +5027,7 @@ opacity:0;
     border-radius: 0.625rem;
     box-shadow: 0 20px 20px -15px rgba(38, 45, 56, 0.1);
     display: none;
-    padding: 1rem 0;
+    /* padding: 1rem 0; */
     transform: translate3d(var(--translate-x), var(--offset-y), 0);
     position: absolute;
     width: max-content;
@@ -5043,7 +5043,7 @@ opacity:0;
 
 .select_item_subject {
     font-size: inherit;
-    padding: 1rem;
+    padding: 0.8rem;
     position: relative;
     transition: background-color 0.1s cubic-bezier(0.4, 0.8, 0.4, 1), color 0.1s cubic-bezier(0.4, 0.8, 0.4, 1);
     cursor: pointer;
