@@ -46,7 +46,7 @@
 
     {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
-    <link href="{{ asset($design . '/css/style.css?v=261124') }}" rel="stylesheet">
+    <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset($design . '/css/all.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset($design . '/css/intlTelInput.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/css/slick.css') }}" rel="stylesheet">
