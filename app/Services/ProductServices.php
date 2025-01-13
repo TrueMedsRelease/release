@@ -222,11 +222,28 @@ class ProductServices
                 $products_desc_raw = ProductDesc::query()->join('product', 'product_desc.product_id', '=', 'product.id')->where('product.is_showed', '=', 1)->where('product_desc.language_id', '=', $language_id)->where('product_desc.url', '=', $url)->get(['product_desc.product_id', 'product_desc.name', 'product_desc.desc', 'product_desc.url'])->groupBy('product_desc.product_id')->toArray();
 
                 if (!$products_desc_raw || empty($products_desc_raw)) {
-                    $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+                    // $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+                    $product_id = DB::table('product')
+                        ->join('product_category', 'product_category.product_id', '=', 'product.id')
+                        ->join('category', 'category.id', '=', 'product_category.category_id')
+                        ->where('category.is_showed', '=', 1)
+                        ->where('product.sinonim', 'like', '%' . $url . '%')
+                        ->where('product.is_showed', '=', 1)
+                        ->get(['product.id'])
+                        ->toArray();
 
                     if(empty($product_id)) {
                         $url = str_replace('-', ' ', $url);
-                        $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+                        // $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+
+                        $product_id = DB::table('product')
+                            ->join('product_category', 'product_category.product_id', '=', 'product.id')
+                            ->join('category', 'category.id', '=', 'product_category.category_id')
+                            ->where('category.is_showed', '=', 1)
+                            ->where('product.sinonim', 'like', '%' . $url . '%')
+                            ->where('product.is_showed', '=', 1)
+                            ->get(['product.id'])
+                            ->toArray();
                     }
 
                     if(!empty($product_id))
@@ -1021,6 +1038,7 @@ class ProductServices
             ->where('is_showed', '=', 1)
             ->get()->toArray();
 
+
             $tips = "";
             $result = [];
             foreach($product as $item)
@@ -1031,7 +1049,13 @@ class ProductServices
                     if(stripos($s, $search_text) !== false)
                     {
                         $s = trim($s);
-                        $result[] = preg_replace('/[^A-Za-z0-9\s\-]/', '', $s);
+
+                        // $pos = strripos($s, "'");
+                        // if ($pos > 0) {
+                        //     $s = substr_replace($s, "\/", $pos - 1);
+                        // }
+                        // var_dump($s);
+                        $result[] = preg_replace('/[^A-Za-z0-9\s\-\']/', '', $s); // [^A-Za-z0-9\s\-]
                     }
                 }
             }
@@ -1212,7 +1236,12 @@ class ProductServices
         $page_properties->keyword = str_replace('(product_name)', $product_name, $page_properties->keyword);
         $page_properties->description = str_replace('(product_name)', $product_name, $page_properties->description);
 
-        $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `url` = '$product' AND `language_id` = $language_id");
+        // $product_properties_new = DB::select("SELECT `title`, `keywords`, `description` FROM product_desc WHERE `url` = '$product' AND `language_id` = $language_id");
+        $product_properties_new = DB::table('product_desc')
+            ->where('url', '=', $product)
+            ->where('language_id', '=', $language_id)
+            ->get(['title', 'keywords', 'description'])
+            ->toArray();
 
         if (count($product_properties_new) > 0) {
             $product_properties_new = $product_properties_new[0];
@@ -1229,11 +1258,21 @@ class ProductServices
                 $page_properties->description = $product_properties_new->description;
             }
         } else {
-            $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%' AND is_showed = 1");
+            // $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%' AND is_showed = 1");
+            $product_id = DB::table('product')
+                ->where('sinonim', 'like', '%' . $product . '%')
+                ->where('is_showed', '=', 1)
+                ->get(['id'])
+                ->toArray();
 
             if (empty($product_id)) {
                 $product = str_replace('-', ' ', $product);
-                $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%' AND is_showed = 1");
+                // $product_id = DB::select("SELECT id FROM product WHERE sinonim LIKE '%$product%' AND is_showed = 1");
+                $product_id = DB::table('product')
+                    ->where('sinonim', 'like', '%' . $product . '%')
+                    ->where('is_showed', '=', 1)
+                    ->get(['id'])
+                    ->toArray();
             }
 
             if (!empty($product_id)) {

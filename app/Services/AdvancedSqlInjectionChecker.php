@@ -13,6 +13,7 @@ class AdvancedSqlInjectionChecker
      */
     public static function hasSqlInjection(string $input): bool
     {
+        $flag = false;
         // Набор шаблонов для обнаружения SQL-инъекций
         $patterns = [
             '/(?:\b(select|union|insert|update|delete|drop|alter|create|truncate)\b)/i', // Ключевые слова SQL
@@ -24,7 +25,7 @@ class AdvancedSqlInjectionChecker
 
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $input)) {
-                return true;
+                $flag = true;
             }
         }
 
@@ -33,10 +34,10 @@ class AdvancedSqlInjectionChecker
 
         foreach ($specialChars as $char) {
            if (str_contains($input, $char)) {
-                return true;
-            }
+                $flag = true;
+           }
         }
 
-        return false;
+        return $flag;
     }
 }

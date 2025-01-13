@@ -4595,6 +4595,7 @@ body{
   background-color:transparent;
   color:var(--color-white);
   transition:color var(--transition-medium-cubic), border-color var(--transition-medium-cubic);
+  text-align: left;
 }
 
 .spollers__title:hover{

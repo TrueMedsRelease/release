@@ -1301,6 +1301,7 @@ ul, ol {
 .btn-primary.main {
     margin-top: 10px;
     width: max-content;
+    max-width: 120px;
 }
 .product-list .item .info .box .name {
     font-weight: 700;
@@ -3011,6 +3012,7 @@ input[type=number] {
     border-bottom: 1px solid #EBEBEB;
     padding: 10px 0;
     font-weight: 600;
+    text-align: left;
 }
 
 .spollers__title:after{
@@ -3073,6 +3075,12 @@ input[type=number] {
 
 .categories_button{
     display: flex;
+    align-items: center;
+}
+
+.categories_button img {
+    height: 21px;
+    width: 50px;
 }
 
 .categories_a{

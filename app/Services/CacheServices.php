@@ -6,14 +6,17 @@ namespace App\Services;
 use App\Models\CountryInfoCache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class CacheServices
 {
     public static function InsertCountryInfo()
     {
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
         $data = [
             'method' => 'get_countries',
-            'api_key' => '7c73d5ca242607050422af5a4304ef71'
+            'api_key' => $api_key->key_data
         ];
 
         $response = Http::post('http://true-services.net/checkout/order.php', $data);
@@ -39,9 +42,11 @@ class CacheServices
 
     public static function UpdateCountryInfo()
     {
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
         $data = [
             'method' => 'get_countries',
-            'api_key' => '7c73d5ca242607050422af5a4304ef71'
+            'api_key' => $api_key->key_data
         ];
 
         if(checkdnsrr('true-services.net', 'A'))

@@ -5081,3 +5081,7 @@ opacity:0;
 .button:hover {
     cursor: pointer;
 }
+
+.menu-open .christmas {
+    display: none;
+}

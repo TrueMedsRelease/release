@@ -45,7 +45,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=main&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -173,7 +173,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=first_letter&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.first_letter',[
             'design' => $design,
@@ -243,7 +243,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=active&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.active',[
             'design' => $design,
@@ -313,7 +313,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=category&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.category',[
             'design' => $design,
@@ -378,7 +378,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=disease&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.disease',[
             'design' => $design,
@@ -417,6 +417,10 @@ class HomeController extends Controller
             if (!$product) {
                 return redirect()->route('home.index');
             }
+        }
+
+        if ($product == 'a-ret-gel') {
+            $product = 'a-ret gel';
         }
 
         if(request('landing',0) == 1)
@@ -481,7 +485,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=product&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.product', [
             'design' => $design,
@@ -604,7 +608,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=about_us&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.about', [
             'design' => $design,
@@ -666,7 +670,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=faq&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.help', [
            'design' => $design,
@@ -728,7 +732,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=testimonials&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.testimonials', [
            'design' => $design,
@@ -790,7 +794,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=shipping&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.delivery', [
            'design' => $design,
@@ -852,7 +856,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=moneyback&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.moneyback', [
            'design' => $design,
@@ -935,7 +939,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=contact_us&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.contact_us', [
             'design' => $design,
@@ -1000,7 +1004,7 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=affiliate&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.affiliate', [
             'design' => $design,
@@ -1193,7 +1197,7 @@ class HomeController extends Controller
             'phone' => $phone,
             'shop' => $domain,
             'aff' => session('aff', 0),
-            'ip' => $request->ip(),
+            'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
             'user_agent' => $request->userAgent()
         ];
 
@@ -1254,7 +1258,7 @@ class HomeController extends Controller
             'email' => $email,
             'shop' => $domain,
             'aff' => session('aff', 0),
-            'ip' => $request->ip(),
+            'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
             'user_agent' => $request->userAgent()
         ];
 
@@ -1354,7 +1358,7 @@ class HomeController extends Controller
             'message' => $message,
             'url_from' => $domain,
             'aff' => session('aff', 0),
-            'customer_ip' => $request->ip(),
+            'customer_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
             'customer_user_agent' => $request->userAgent(),
         ];
 
@@ -1450,7 +1454,7 @@ class HomeController extends Controller
             'message' => $message,
             'url_from' => $domain,
             'aff' => session('aff', 0),
-            'customer_ip' => $request->ip(),
+            'customer_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
             'customer_user_agent' => $request->userAgent(),
         ];
 
@@ -1503,13 +1507,13 @@ class HomeController extends Controller
     public function request_login(Request $request) {
         $captcha = $request->captcha;
         $email = $request->email;
-        $api_key = 'fe179d54d30c306db93e191751cc7ae9';
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
         if ($captcha && $email) {
             $data = [
                 "email" => $email,
                 'method' => 'login',
-                'key' => $api_key
+                'key' => $api_key->key_data
             ];
 
             $response = Http::timeout(3)->post('https://true-services.net/api/customer_api.php', $data);
@@ -1583,7 +1587,7 @@ class HomeController extends Controller
     public function save_push_data(Request $request) {
         $agent = new Agent();
         $errors = [];
-        $ip = request()->ip();;
+        $ip = request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();;
         $country_code = strtoupper(session('location.country'));
         $aff = session('aff') ? session('aff') : config('app.aff', 0);
         $aff = intval($aff);
