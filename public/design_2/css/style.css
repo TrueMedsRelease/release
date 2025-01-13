@@ -7411,6 +7411,7 @@ body {
   border-bottom: 1px solid var(--blue-light);
   padding: 10px 0;
   font-weight: 600;
+  text-align: left;
 }
 
 .spollers__title:after{

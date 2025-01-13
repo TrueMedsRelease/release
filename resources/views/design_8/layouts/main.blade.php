@@ -11,28 +11,44 @@
     <meta name="theme-color" content="#087ED8" />
     <meta name="format-detection" content="telephone=no">
 
-    <link rel="alternate" href="{{ config('app.url') }}/lang=arb" hreflang="ar" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=cs" hreflang="cs" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=da" hreflang="da" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=de" hreflang="de" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=en" hreflang="en" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=es" hreflang="es" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=fi" hreflang="fi" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=fr" hreflang="fr" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=gr" hreflang="el" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=hans" hreflang="zh-Hans" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=hant" hreflang="zh-Hant" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=hu" hreflang="hu" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=it" hreflang="it" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=ja" hreflang="ja" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=ms" hreflang="ms" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=nl" hreflang="nl" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=no" hreflang="no" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=pl" hreflang="pl" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=pt" hreflang="pt" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=ro" hreflang="ro" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=sk" hreflang="sk" />
-    <link rel="alternate" href="{{ config('app.url') }}/lang=sv" hreflang="sv" />
+    {{-- <link rel="alternate" href="{{ route('home.language', 'arb') }}" hreflang="ar" />
+    <link rel="alternate" href="{{ route('home.language', 'cs') }}" hreflang="cs" />
+    <link rel="alternate" href="{{ route('home.language', 'da') }}" hreflang="da" />
+    <link rel="alternate" href="{{ route('home.language', 'de') }}" hreflang="de" />
+    <link rel="alternate" href="{{ route('home.language', 'en') }}" hreflang="en" />
+    <link rel="alternate" href="{{ route('home.language', 'es') }}" hreflang="es" />
+    <link rel="alternate" href="{{ route('home.language', 'fi') }}" hreflang="fi" />
+    <link rel="alternate" href="{{ route('home.language', 'fr') }}" hreflang="fr" />
+    <link rel="alternate" href="{{ route('home.language', 'gr') }}" hreflang="el" />
+    <link rel="alternate" href="{{ route('home.language', 'hans') }}" hreflang="zh-Hans" />
+    <link rel="alternate" href="{{ route('home.language', 'hant') }}" hreflang="zh-Hant" />
+    <link rel="alternate" href="{{ route('home.language', 'hu') }}" hreflang="hu" />
+    <link rel="alternate" href="{{ route('home.language', 'it') }}" hreflang="it" />
+    <link rel="alternate" href="{{ route('home.language', 'ja') }}" hreflang="ja" />
+    <link rel="alternate" href="{{ route('home.language', 'ms') }}" hreflang="ms" />
+    <link rel="alternate" href="{{ route('home.language', 'nl') }}" hreflang="nl" />
+    <link rel="alternate" href="{{ route('home.language', 'no') }}" hreflang="no" />
+    <link rel="alternate" href="{{ route('home.language', 'pl') }}" hreflang="pl" />
+    <link rel="alternate" href="{{ route('home.language', 'pt') }}" hreflang="pt" />
+    <link rel="alternate" href="{{ route('home.language', 'ro') }}" hreflang="ro" />
+    <link rel="alternate" href="{{ route('home.language', 'sk') }}" hreflang="sk" />
+    <link rel="alternate" href="{{ route('home.language', 'sv') }}" hreflang="sv" /> --}}
+
+    @foreach ($Language::GetAllLanuages() as $item)
+        <link rel="alternate" href="{{ route('home.language', $item['code']) }}"
+            @if ($item['code'] == 'arb')
+                hreflang="ar"
+            @elseif ($item['code'] == 'gr')
+                hreflang="el"
+            @elseif ($item['code'] == 'hans')
+                hreflang="zh-Hans"
+            @elseif ($item['code'] == 'hant')
+                hreflang="zh-Hant"
+            @else
+                hreflang={{ $item['code'] }}
+            @endif
+        />
+    @endforeach
 
     <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">

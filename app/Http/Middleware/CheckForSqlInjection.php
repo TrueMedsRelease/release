@@ -20,7 +20,8 @@ class CheckForSqlInjection
         $allInputs = $request->all();//array_merge($request->all(), $request->route()->parameters());
 
         foreach ($allInputs as $key => $value) {
-            if ($key == 'push_info') {
+            $count = substr_count($value, '\'');
+            if ($key == 'push_info' || ($key == 'search' && $count == 1)) {
                 continue;
             } else {
                 if (is_string($value) && AdvancedSqlInjectionChecker::hasSqlInjection($value)) {

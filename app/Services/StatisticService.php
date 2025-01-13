@@ -5,6 +5,7 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class StatisticService
 {
@@ -39,7 +40,7 @@ class StatisticService
         }
 
         $server_ip = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
-        $user_ip = request()->ip();
+        $user_ip = request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
         $user_agent = request()->userAgent();
 
         if ($server_ip != $user_ip && !in_array($user_ip, ['80.79.4.17', '104.234.204.106', '20.105.137.134']) && (isset($user_agent) && ($user_agent != '' || $user_agent != ' ' || !empty($user_agent)))) {
@@ -92,12 +93,13 @@ class StatisticService
         }
 
         $products_str = base64_encode(serialize($products));
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'checkout',
-            'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'api_key' => $api_key->key_data,
             'product' => $products_str,
-            'ip' => request()->ip(),
+            'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
             'sessid' => $sessid,
             'bonus' => session('cart_option.bonus_id', 0),
             'country' => session('location.country', 'US'),

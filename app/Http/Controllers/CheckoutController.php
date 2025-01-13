@@ -256,10 +256,12 @@ class CheckoutController extends Controller
 
     public function coupon(Request $request)
     {
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
         $coupon = $request->coupon;
         $data = [
             'method' => 'coupon',
-            'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'api_key' => $api_key->key_data,
             'coupon' => $coupon,
         ];
 
@@ -305,10 +307,11 @@ class CheckoutController extends Controller
     public function auth(Request $request)
     {
         $email = $request->email;
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'auth',
-            'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'api_key' => $api_key->key_data,
             'email' => $email
         ];
 
@@ -478,10 +481,11 @@ class CheckoutController extends Controller
 
             $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
             $phone_code = $phone_code->phonecode;
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'order',
-                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'api_key' => $api_key->key_data,
                 'phone' => e('+' . $phone_code . $request->phone),
                 'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
                 'email' => e($request->email),
@@ -505,7 +509,7 @@ class CheckoutController extends Controller
                 'card_month' => e($request->card_month),
                 'card_year' => e($request->card_year),
                 'card_cvv' => e($request->cvc_2),
-                'ip' => request()->ip(),
+                'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
                 'aff' => session('aff', 0),
                 'ref' => session('referer', ''),
                 'refc' => session('refc', ''),
@@ -644,10 +648,11 @@ class CheckoutController extends Controller
 
             $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
             $phone_code = $phone_code->phonecode;
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'order',
-                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'api_key' => $api_key->key_data,
                 'phone' => e('+' . $phone_code . $request->phone),
                 'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
                 'email' => e($request->email),
@@ -665,7 +670,7 @@ class CheckoutController extends Controller
                 'shipping_address' => !empty($request->address_match) ? e($request->shipping_address) : e($request->billing_address),
                 'shipping_zip' => !empty($request->address_match) ? e($request->shipping_zip) : e($request->billing_zip),
                 'payment_type' => e('paypal'),
-                'ip' => request()->ip(),
+                'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
                 'aff' => session('aff', 0),
                 'ref' => session('referer', ''),
                 'refc' => session('refc', ''),
@@ -750,9 +755,11 @@ class CheckoutController extends Controller
 
     public function crypto_info(Request $request)
     {
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
         $data = [
             'method' => 'get_crypt',
-            'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'api_key' => $api_key->key_data,
             'price' => session('total.checkout_total') * 0.85,
             'email' => $request->email,
             'currency' => $request->currency,
@@ -830,9 +837,11 @@ class CheckoutController extends Controller
 
             $form .= ' shop=' . request()->getHost();
 
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
             $data = [
                 'method' => 'save_order_data',
-                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'api_key' => $api_key->key_data,
                 'form' => $form,
             ];
 
@@ -917,9 +926,11 @@ class CheckoutController extends Controller
     {
         if(!empty(session('crypto')))
         {
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
             $data = [
                 'method' => 'check_payment',
-                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'api_key' => $api_key->key_data,
                 'invoiceId' => session('crypto.invoiceId'),
             ];
 
@@ -955,10 +966,11 @@ class CheckoutController extends Controller
                             }
 
                             $products_str = json_encode($products);
+                            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
                             $data = [
                                 'method' => 'order',
-                                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                                'api_key' => $api_key->key_data,
                                 'phone' => e('+' . $phone_code . $request->phone),
                                 'alternative_phone' => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
                                 'email' => e($request->email),
@@ -984,7 +996,7 @@ class CheckoutController extends Controller
                                 'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
                                 'commission' => e($response_payment['merchantCommission']),
                                 'crypto_status' => e($response_payment['status']),
-                                'ip' => request()->ip(),
+                                'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
                                 'aff' => session('aff', 0),
                                 'ref' => session('referer', ''),
                                 'refc' => session('refc', ''),
@@ -1102,9 +1114,11 @@ class CheckoutController extends Controller
 
             $form .= ' shop=' . request()->getHost();
 
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
             $data = [
                 'method' => 'save_order_data',
-                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'api_key' => $api_key->key_data,
                 'form' => $form,
             ];
 
@@ -1161,10 +1175,11 @@ class CheckoutController extends Controller
         }
 
         $products_str = json_encode($products);
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'order',
-            'api_key' => '7c73d5ca242607050422af5a4304ef71',
+            'api_key' => $api_key,
             'phone' => e('+' . $phone_code . $form['phone']),
             'alternative_phone' => !empty($form['alt_phone']) ? e('+' . $phone_code . $form['alt_phone']) : '',
             'email' => e($form['email']),
@@ -1185,7 +1200,7 @@ class CheckoutController extends Controller
             'trans_id' => e($form['trans_id']),
             'google_sum' => e($form['google_sum']),
             'full_response' => base64_decode($form['full_response']),
-            'ip' => request()->ip(),
+            'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
             'aff' => session('aff', 0),
             'ref' => session('referer', ''),
             'refc' => session('refc', ''),

@@ -6,6 +6,7 @@ use App\Services\ProductServices;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class Cart extends Model
 {
@@ -224,9 +225,11 @@ class Cart extends Model
         }
         elseif(session()->has('coupon_get'))
         {
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
             $data = [
                 'method' => 'coupon',
-                'api_key' => '7c73d5ca242607050422af5a4304ef71',
+                'api_key' => $api_key->key_data,
                 'coupon' => session('coupon_get'),
             ];
 

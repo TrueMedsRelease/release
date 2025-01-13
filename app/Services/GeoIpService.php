@@ -133,7 +133,7 @@ class GeoIpService
     public static function GetInfoByIp()
     {
         // $ip = '89.187.179.179';//request()->ip();
-        $ip = request()->ip();
+        $ip = request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
         // $reader = new Reader(public_path() . '/GeoIp/GeoLite2-City.mmdb');
 
         $pathToGeoFile = public_path() . '/GeoIp/GeoIP2-City.mmdb';

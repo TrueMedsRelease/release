@@ -69,7 +69,7 @@ class SearchController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=active&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.search_result', [
             'design' => $design,

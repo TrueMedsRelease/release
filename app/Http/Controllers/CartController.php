@@ -67,7 +67,7 @@ class CartController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=cart&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->ip();
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view($design . '.cart', [
             'design' => $design,
