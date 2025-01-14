@@ -93,7 +93,7 @@ class StatisticService
         }
 
         $products_str = base64_encode(serialize($products));
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'checkout',
