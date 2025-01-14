@@ -225,7 +225,7 @@ class Cart extends Model
         }
         elseif(session()->has('coupon_get'))
         {
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'coupon',

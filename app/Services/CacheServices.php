@@ -12,7 +12,7 @@ class CacheServices
 {
     public static function InsertCountryInfo()
     {
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'get_countries',
@@ -42,7 +42,7 @@ class CacheServices
 
     public static function UpdateCountryInfo()
     {
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'get_countries',

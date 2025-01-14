@@ -256,7 +256,7 @@ class CheckoutController extends Controller
 
     public function coupon(Request $request)
     {
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $coupon = $request->coupon;
         $data = [
@@ -307,7 +307,7 @@ class CheckoutController extends Controller
     public function auth(Request $request)
     {
         $email = $request->email;
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'auth',
@@ -481,7 +481,7 @@ class CheckoutController extends Controller
 
             $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
             $phone_code = $phone_code->phonecode;
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'order',
@@ -648,7 +648,7 @@ class CheckoutController extends Controller
 
             $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
             $phone_code = $phone_code->phonecode;
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'order',
@@ -755,7 +755,7 @@ class CheckoutController extends Controller
 
     public function crypto_info(Request $request)
     {
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'get_crypt',
@@ -837,7 +837,7 @@ class CheckoutController extends Controller
 
             $form .= ' shop=' . request()->getHost();
 
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'save_order_data',
@@ -926,7 +926,7 @@ class CheckoutController extends Controller
     {
         if(!empty(session('crypto')))
         {
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'check_payment',
@@ -966,7 +966,7 @@ class CheckoutController extends Controller
                             }
 
                             $products_str = json_encode($products);
-                            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+                            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
                             $data = [
                                 'method' => 'order',
@@ -1114,7 +1114,7 @@ class CheckoutController extends Controller
 
             $form .= ' shop=' . request()->getHost();
 
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
                 'method' => 'save_order_data',
@@ -1175,7 +1175,7 @@ class CheckoutController extends Controller
         }
 
         $products_str = json_encode($products);
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method' => 'order',
