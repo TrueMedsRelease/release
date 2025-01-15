@@ -4304,13 +4304,13 @@ if (getCookie('christmas')) {
 } else {
     $('.christmas').show();
 
-    if ($('.bestsellers').css('visibility') == 'hidden') {
-        if (window.innerWidth < 391) {
-            $('.header__top').css({'top': '100px'});
-        } else {
-            $('.header__top').css({'top': '75px'});
-        }
-    }
+    // if ($('.bestsellers').css('visibility') == 'hidden') {
+    //     if (window.innerWidth < 391) {
+    //         $('.header__top').css({'top': '100px'});
+    //     } else {
+    //         $('.header__top').css({'top': '75px'});
+    //     }
+    // }
 }
 
 $(document).on('click', '.christmas' , function (e) {
@@ -4395,68 +4395,67 @@ window.addEventListener('resize', function (e) {
     }
 });
 
-window.addEventListener('resize', () => {
-    if (window.innerWidth < 480 && window.pageYOffset > 100) {
+// window.addEventListener('resize', () => {
+//     if (window.innerWidth < 480 && window.pageYOffset > 100) {
+//         $('.header__top').css({'top': 0});
+//     } else {
+//         if ($('.bestsellers').css('visibility') == 'hidden') {
+//             if (window.innerWidth < 391) {
+//                 $('.header__top').css({'top': '100px'});
+//             } else {
+//                 $('.header__top').css({'top': '75px'});
+//             }
+//         }
+
+//         if (getCookie('christmas') == '1') {
+//             $('.header__top').css({'top': '31px'});
+//         }
+//     }
+
+//     if ($('.bestsellers').css('visibility') == 'hidden') {
+//         if (window.innerWidth < 391) {
+//             $('.header__top').css({'top': '100px'});
+//         } else {
+//             $('.header__top').css({'top': '75px'});
+//         }
+//     }
+
+//     if (getCookie('christmas')) {
+//         $('.header__top').css({'top': '31px'});
+//     }
+// });
+
+// window.addEventListener('scroll', () => {
+//     if (window.innerWidth < 480 && window.pageYOffset > 100) {
+//         $('.header__top').css({'top': 0});
+//     } else {
+
+//         if ($('.bestsellers').css('visibility') == 'hidden') {
+//             if (window.pageYOffset < 90) {
+//                 if (window.innerWidth < 391) {
+//                     $('.header__top').css({'top': '100px'});
+//                 } else {
+//                     $('.header__top').css({'top': '75px'});
+//                 }
+//             } else {
+//                 $('.header__top').css({'top': 0});
+//             }
+//         }
+
+//         if (getCookie('christmas') == '1') {
+//             $('.header__top').css({'top': '31px'});
+//         }
+//     }
+// });
+
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 31) {
         $('.header__top').css({'top': 0});
     } else {
-        if ($('.bestsellers').css('visibility') == 'hidden') {
-            if (window.innerWidth < 391) {
-                $('.header__top').css({'top': '100px'});
-            } else {
-                $('.header__top').css({'top': '75px'});
-            }
-        }
-
-        if (getCookie('christmas') == '1') {
-            $('.header__top').css({'top': '31px'});
-        }
-    }
-
-    if ($('.bestsellers').css('visibility') == 'hidden') {
-        if (window.innerWidth < 391) {
-            $('.header__top').css({'top': '100px'});
-        } else {
-            $('.header__top').css({'top': '75px'});
-        }
-    }
-
-    if (getCookie('christmas')) {
         $('.header__top').css({'top': '31px'});
     }
 });
-
-window.addEventListener('scroll', () => {
-    if (window.innerWidth < 480 && window.pageYOffset > 100) {
-        $('.header__top').css({'top': 0});
-    } else {
-
-        if ($('.bestsellers').css('visibility') == 'hidden') {
-            if (window.pageYOffset < 90) {
-                if (window.innerWidth < 391) {
-                    $('.header__top').css({'top': '100px'});
-                } else {
-                    $('.header__top').css({'top': '75px'});
-                }
-            } else {
-                $('.header__top').css({'top': 0});
-            }
-        }
-
-        if (getCookie('christmas') == '1') {
-            $('.header__top').css({'top': '31px'});
-        }
-    }
-});
-
-
-// window.addEventListener('scroll', () => {
-//     // console.log(window.pageYOffset);
-//     // if (window.pageYOffset > 31) {
-//     //     $('.header__top').css({'top': 0});
-//     // } else {
-//     //     $('.header__top').css({'top': '31px'});
-//     // }
-// });
 
 $(document).on('click', '.popup_white .close_popup', function () {
     $('.popup_white').hide();

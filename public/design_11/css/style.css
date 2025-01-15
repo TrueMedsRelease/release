@@ -3358,7 +3358,7 @@ body.has-scroll{
     padding:6rem;
   }
   .dialog-container[data-name=call] .dialog__title{
-    font-size:4rem;
+    font-size:2.5rem;
     line-height:2.8rem;
   }
   .form.callback-form .text-field,
@@ -4285,6 +4285,7 @@ body.has-scroll{
     padding:3rem 2rem;
   }
   .dialog-container[data-name=call] .dialog__title{
+    font-size: 2rem;
     line-height:2.6rem;
   }
   .header .container::after{
