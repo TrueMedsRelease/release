@@ -148,10 +148,10 @@
         </div>
         <header class="header">
 
-            <div class="christmas" style="display: none">
-                {{-- <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}"> --}}
+            {{-- <div class="christmas" style="display: none">
+                <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}">
                 <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
-            </div>
+            </div> --}}
 
             <div class="header__phones-top top-phones-header">
                 <div class="top-phones-header__container header__container">

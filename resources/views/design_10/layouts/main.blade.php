@@ -91,10 +91,10 @@
     <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
     <input type="hidden" id="subsc_popup" value="{{ env('SUBSCRIBE_POPUP_STATUS', 1) }}">
 
-    <div class="christmas" style="display: none">
-        {{-- <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}"> --}}
+    {{-- <div class="christmas" style="display: none">
+        <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}">
         <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
-    </div>
+    </div> --}}
 
     <header class="header">
         <div class="container">
