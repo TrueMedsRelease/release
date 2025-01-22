@@ -579,9 +579,9 @@
                                         @if(env('APP_PAYPAL_ON', 0) && $service_enable)
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
-                                        @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
+                                        {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
-                                        @endif
+                                        @endif --}}
                                         {{-- <option value="gift_card">{#gift_card#}</option> --}}
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
