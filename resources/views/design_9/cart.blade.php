@@ -5,6 +5,15 @@
 @section('description', $page_properties->description)
 
 @section('content')
+<div class="modal_cart hidden">
+    <div class="bloktext">
+       <p>{{ __('text.common_cart1') }}<b>{{ ucfirst(session('location.country_name')) }} {{ __('text.common_cart2') }}</b></p>
+    </div>
+</div>
+<script>
+    flagc = true;
+</script>
+
 <div class="bonus_block all_padding">
     <div class="bonus1">
         <img loading="lazy" src="{{ asset("$design/images/bonus1_1.png") }}">

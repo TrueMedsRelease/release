@@ -1739,14 +1739,32 @@ const btnUp = {
 btnUp.addEventListener();
 
 if (flagc) {
-  document.querySelector(".modal_cart").style.display = "none";
-  setTimeout(() => document.querySelector(".modal_cart").style.display = "", 5000); //
-  setTimeout(() => document.querySelector(".modal_cart").style.display = "none", 9000);
+    setTimeout(function() {
+        $('.modal_cart').removeClass('hidden').css('opacity', 1);
+        $('.modal_cart').css('z-index', 1);
+    }, 2000);
+
+    setTimeout(function() {
+        $('.modal_cart').css('opacity', 0);
+    }, 5000);
+
+    setTimeout(function() {
+        $('.modal_cart').css('z-index', 0);
+    }, 10000);
 }
 if (flagp) {
-  document.querySelector(".cmcmodal").style.display = "none";
-  setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 5000); //
-  setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 9000);
+    setTimeout(function() {
+        $('.cmcmodal').removeClass('hidden').css('opacity', 1);
+        $('.cmcmodal').css('z-index', 1);
+    }, 2000);
+
+    setTimeout(function() {
+        $('.cmcmodal').css('opacity', 0);
+    }, 5000);
+
+    setTimeout(function() {
+        $('.cmcmodal').css('z-index', 0);
+    }, 10000);
 }
 
 const sc = document.getElementById('scroll');

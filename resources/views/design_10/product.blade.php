@@ -5,6 +5,14 @@
 @section('description', $page_properties->description)
 
 @section('content')
+    <script>
+        flagp = true;
+    </script>
+    <div class="cmcmodal hidden">
+        <div class="bloktext">
+        <p style="margin-bottom: 0"><b>{{random_int(2, 30)}}{{__('text.common_product1')}}</b>{{__('text.common_product2')}}</p>
+        </div>
+    </div>
     <div class="container page-wrapper">
         <main class="main main--grid main--aside-xl main_product">
             <div class="product_head" style="grid-column: span 2">

@@ -6,6 +6,14 @@
 @section('header_class', 'header--secondary')
 
 @section('content')
+<script>
+    flagp = true;
+</script>
+<div class="cmcmodal hidden">
+    <div class="bloktext">
+       <p><b>{{random_int(2, 30)}}{{__('text.common_product1')}}</b>{{__('text.common_product2')}}</p>
+    </div>
+</div>
 <div class="page-wrapper container">
     <main class="main main--aside">
         <div class="main__content">

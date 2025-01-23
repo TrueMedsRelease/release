@@ -5,7 +5,7 @@
 @section('description', $page_properties->description)
 
 @section('content')
-<div class="cmcmodal">
+<div class="cmcmodal hidden">
     <div class="bloktext">
        <p><b>{{random_int(2, 30)}}{{__('text.common_product1')}}</b>{{__('text.common_product2')}}</p>
     </div>

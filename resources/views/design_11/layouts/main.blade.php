@@ -89,6 +89,8 @@
 
 <body class="webp @yield('page_name')">
     <script>
+        let flagc = false;
+        let flagp = false;
         const design = 11;
     </script>
 

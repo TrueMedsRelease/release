@@ -72,6 +72,8 @@
 </head>
 <body>
     <script>
+        let flagc = false;
+        let flagp = false;
         const design = 2;
     </script>
 @if (session('locale'))
