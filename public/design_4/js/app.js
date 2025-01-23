@@ -4663,11 +4663,14 @@
             if (!tempurl.includes('affiliate') && !tempurl.includes('contact_us')) {
                 setTimeout((() => {
                     announce.classList.add("active");
+                    announce.parentNode.style = 'z-index: 11;';
                 }), 2000);
                 setTimeout((() => {
                     announce.classList.remove("active");
-                    announce.parentNode.style = 'z-index: 0;';
                 }), 7000);
+                setTimeout((() => {
+                    announce.parentNode.style = 'z-index: 0;';
+                }), 8000);
             }
         }
         let showCustomShippingCheckbox = document.querySelector("[data-show-custom-shipping]");

@@ -4810,7 +4810,6 @@ body.has-scroll{
     animation-duration: 8s;
     animation-direction: alternate;
     /* width: 25%; */
-    max-width: 280px;
     position: fixed;
     bottom:50%;
     right: 1%;
@@ -4838,3 +4837,9 @@ body.has-scroll{
       bottom: 0%;
     }
   } */
+
+  @media only screen and (max-width: 410px) {
+    .modal_cart {
+        max-width: 280px;
+    }
+  }
