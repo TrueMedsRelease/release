@@ -1741,7 +1741,7 @@ btnUp.addEventListener();
 if (flagc) {
     setTimeout(function() {
         $('.modal_cart').removeClass('hidden').css('opacity', 1);
-        $('.modal_cart').css('z-index', 1);
+        $('.modal_cart').css('z-index', 1000001);
     }, 2000);
 
     setTimeout(function() {
@@ -1751,12 +1751,12 @@ if (flagc) {
     setTimeout(function() {
         $('.modal_cart').css('z-index', 0);
         $('.modal_cart').addClass('hidden');
-    }, 7000);
+    }, 10000);
 }
 if (flagp) {
     setTimeout(function() {
         $('.cmcmodal').removeClass('hidden').css('opacity', 1);
-        $('.cmcmodal').css('z-index', 1);
+        $('.cmcmodal').css('z-index', 1000001);
     }, 2000);
 
     setTimeout(function() {
@@ -1766,7 +1766,7 @@ if (flagp) {
     setTimeout(function() {
         $('.cmcmodal').css('z-index', 0);
         $('.cmcmodal').addClass('hidden');
-    }, 7000);
+    }, 10000);
 }
 
 const sc = document.getElementById('scroll');
