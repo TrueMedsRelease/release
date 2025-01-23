@@ -8,12 +8,12 @@ $( function() {
                 announce.classList.add("active");
                 announce.parentNode.style = 'z-index: 300;';
             }), 2000);
-
             setTimeout((() => {
                 announce.classList.remove("active");
-                announce.parentNode.style = 'z-index: 0;';
             }), 7000);
-
+            setTimeout((() => {
+                announce.parentNode.style = 'z-index: 0;';
+            }), 8000);
         }
     }
 
