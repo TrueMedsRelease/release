@@ -3011,12 +3011,10 @@ opacity:0;
 }
 
 .cmcmodal{
-  display: none;
   animation-name: modalFadeInOut;
   animation-timing-function: ease-in-out;
   animation-duration: 8s;
   animation-direction: alternate;
-  display: inline-block;
   /* width: 30%; */
   position: fixed;
   bottom:50%;
@@ -3025,16 +3023,19 @@ opacity:0;
   background: rgba(148, 245, 113, 0.7);
   box-sizing: border-box;
   border-radius: 15px;
-  z-index:9999;
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.cmcmodal.hidden {
+    display: none;
 }
 
 .modal_cart {
-  display: none;
   animation-name: modalFadeInOut;
   animation-timing-function: ease-in-out;
   animation-duration: 8s;
   animation-direction: alternate;
-  display: inline-block;
   /* width: 25%; */
   position: fixed;
   bottom:50%;
@@ -3043,7 +3044,12 @@ opacity:0;
   background: rgba(247, 238, 79, 0.726);
   box-sizing: border-box;
   border-radius: 15px;
-  z-index:9999;
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.modal_cart.hidden {
+    display: none;
 }
 
 .bloktext {

@@ -5,6 +5,14 @@
 @section('description', $page_properties->description)
 
 @section('content')
+<script>
+    flagp = true;
+</script>
+<div class="cmcmodal hidden">
+    <div class="bloktext">
+       <p><b>{{random_int(2, 30)}}{{__('text.common_product1')}}</b>{{__('text.common_product2')}}</p>
+    </div>
+</div>
 <div class="bonus_block all_padding">
     <div class="bonus1">
         <img loading="lazy" src="{{ asset("$design/images/bonus1_1.png") }}">

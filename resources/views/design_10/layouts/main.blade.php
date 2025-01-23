@@ -76,6 +76,8 @@
 
 <body class="no-js webp">
     <script>
+        let flagc = false;
+        let flagp = false;
         const design = 10;
     </script>
 

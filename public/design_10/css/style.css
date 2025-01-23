@@ -5528,3 +5528,59 @@ strong {
 #contact-subject {
     width: 100%;
 }
+
+.cmcmodal{
+    animation-name: modalFadeInOut;
+    animation-timing-function: ease-in-out;
+    animation-duration: 8s;
+    animation-direction: alternate;
+    /* width: 30%; */
+    position: fixed;
+    bottom:50%;
+    right: 1%;
+    padding: 20px;
+    background: rgba(148, 245, 113, 0.7);
+    box-sizing: border-box;
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 2s;
+  }
+
+  .cmcmodal.hidden {
+      display: none;
+  }
+
+  .modal_cart {
+    animation-name: modalFadeInOut;
+    animation-timing-function: ease-in-out;
+    animation-duration: 8s;
+    animation-direction: alternate;
+    /* width: 25%; */
+    max-width: 280px;
+    position: fixed;
+    bottom:50%;
+    right: 1%;
+    padding: 20px;
+    background: rgba(247, 238, 79, 0.726);
+    box-sizing: border-box;
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 2s;
+  }
+
+  .modal_cart.hidden {
+      display: none;
+  }
+
+  /* @media only screen and (max-width: 767px) {
+
+    .cmcmodal {
+      width: 100%;
+      bottom: 0%;
+    }
+
+    .modal_cart {
+      width: 100%;
+      bottom: 0%;
+    }
+  } */
