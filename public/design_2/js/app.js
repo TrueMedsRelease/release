@@ -4991,7 +4991,7 @@ if (flagc) {
     setTimeout(function() {
         $('.modal_cart').css('z-index', 0);
         $('.modal_cart').addClass('hidden');
-    }, 7000);
+    }, 10000);
 }
 if (flagp) {
     setTimeout(function() {
@@ -5006,5 +5006,5 @@ if (flagp) {
     setTimeout(function() {
         $('.cmcmodal').css('z-index', 0);
         $('.cmcmodal').addClass('hidden');
-    }, 7000);
+    }, 10000);
 }
