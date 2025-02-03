@@ -334,7 +334,7 @@
 </div>
 
 <h2 class="products__title title" style="margin-top: 20px;">{{__('text.recc_text')}}</h2>
-<div class="products__items" style="margin-bottom: 20px">
+<div class="products__items cart_rec" style="margin-bottom: 20px">
     @foreach ($recommendation as $product_data)
         @if ($loop->iteration == 7)
             @break
