@@ -1860,6 +1860,7 @@ body{
   gap:2rem;
   padding-top:2rem;
   padding-bottom:5rem;
+  flex-direction: column;
 }
 
 .main{
@@ -3587,6 +3588,9 @@ body{
   .product-cards{
     grid-template-columns:repeat(auto-fit, minmax(28rem, 1fr));
     gap:2rem;
+  }
+  .product-cards.product_rec{
+    grid-template-columns:repeat(auto-fit, minmax(29rem, 1fr));
   }
   .panel.product-panel{
     padding-bottom:1rem;
