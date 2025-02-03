@@ -224,8 +224,50 @@
     </div>
 </div>
 </div>
+
+<h2 class="page__title title" style="margin-top: 20px;">{{__('text.recc_text')}}</h2>
+<div class="products__items product_rec">
+    @foreach ($recommendation as $product_data)
+        @if ($loop->iteration == 7)
+            @break
+        @endif
+        <a href="{{ route('home.product', $product_data['url']) }}" class="item-product">
+            <div class="item-product__content">
+                <div class="item-product__top">
+                    <div class="item-product__left">
+                        <div class="item-product__name">{{ $product_data['name'] }}</div>
+                        <p class="item-product__company">
+                            @foreach ($product_data['aktiv'] as $aktiv)
+                                {{ $aktiv['name'] }}
+                            @endforeach
+                        </p>
+                    </div>
+                    <div class="item-product__price">{{ $Currency::convert($product_data['price'], false, true) }}</div>
+                </div>
+                @if ($product_data['discount'] != 0)
+                    <span class="card__label">-{{ $product_data['discount'] }}%</span>
+                @endif
+                <div class="item-product__image-ibg">
+                    <picture>
+                        <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
+                        <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                    </picture>
+                </div>
+            </div>
+            <button type="button" class="item-product__button" onclick="location.href='{{ route('home.product', $product_data['url']) }}'">
+                <svg width="24" height="20">
+                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                </svg>
+                <span>{{__('text.product_add_to_cart_text')}}</span>
+            </button>
+        </a>
+    @endforeach
+</div>
+
 </div>
 </div>
 </div>
+
+
 
 @endsection

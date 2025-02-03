@@ -849,4 +849,6 @@ return [
     "search_not_carry" => "Sorry we do not carry",
     "search_this_time" => "at this time.",
     "search_product_request" => "Please fill in the Product Request Form and we will add the requested medicine shortly.",
+
+    "recc_text" => "You May Also Like:",
 ];

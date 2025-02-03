@@ -4359,6 +4359,10 @@ textarea.input {
     gap: 1.875rem;
   }
 
+  .bestsellers__body.product_rec {
+    grid-template-columns: repeat(auto-fit, minmax(278px, 1fr));
+  }
+
   .product {
     padding-top: 1.875rem;
   }
@@ -4881,6 +4885,10 @@ textarea.input {
   .bestsellers__body {
     grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
     gap: 0.625rem;
+  }
+
+  .bestsellers__body.product_rec {
+    grid-template-columns: repeat(auto-fit, minmax(217px, 1fr));
   }
 
   .item-product-info__row--discount .item-product-info__package::before {
@@ -7991,6 +7999,12 @@ body {
     .modal_cart {
       width: 100%;
       bottom: 0%;
+    }
+  }
+
+  @media (max-width: 750px) {
+    .cart_rec {
+        margin-bottom: 20px;
     }
   }
 

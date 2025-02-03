@@ -583,4 +583,6 @@ return [
     "search_not_carry" => "Beklager at vi ikke bærer",
     "search_this_time" => "på dette tidspunktet.",
     "search_product_request" => "Vennligst fyll ut produktforespørselsskjemaet, så legger vi til den forespurte medisinen snart.",
+
+    "recc_text" => "Du kan også like:",
 ];

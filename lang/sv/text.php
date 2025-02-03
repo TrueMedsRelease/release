@@ -580,4 +580,6 @@ return [
     "search_not_carry" => "Tyvärr att vi inte bär",
     "search_this_time" => "vid denna tidpunkt.",
     "search_product_request" => "Fyll i formuläret för produktförfrågan så lägger vi till det begärda läkemedlet inom kort.",
+
+    "recc_text" => "Du kanske också gillar:",
 ];

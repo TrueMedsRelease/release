@@ -700,4 +700,6 @@ return [
     "search_not_carry" => "Desculpe, não carregamos",
     "search_this_time" => "neste momento.",
     "search_product_request" => "Por favor preencha o Formulário de Pedido de Produto e adicionaremos o medicamento solicitado em breve.",
+
+    "recc_text" => "Também pode gostar:",
 ];

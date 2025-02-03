@@ -666,4 +666,6 @@ return [
     "search_not_carry" => "Je nám líto, že nepřenášíme",
     "search_this_time" => "v tuto chvíli.",
     "search_product_request" => "Vyplňte prosím formulář žádosti o produkt a my požadovaný lék brzy přidáme.",
+
+    "recc_text" => "Také by se vám mohlo líbit:",
 ];

@@ -716,4 +716,6 @@ return [
     "search_not_carry" => "Spiacenti, non abbiamo",
     "search_this_time" => "al momento.",
     "search_product_request" => "Compila il modulo di richiesta del prodotto e aggiungeremo il medicinale richiesto a breve.",
+
+    "recc_text" => "Potrebbe anche interessarti:",
 ];

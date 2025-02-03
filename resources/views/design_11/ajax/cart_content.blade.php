@@ -325,6 +325,47 @@
                 </div>
             </fieldset>
         </form>
+
+        <h2 style="margin-bottom: 10px; margin-top: 10px">{{ __('text.recc_text') }}</h2>
+        <div class="product-cards cart">
+            @foreach ($recommendation as $product_data)
+                @if ($loop->iteration == 7)
+                    @break
+                @endif
+                <article class="card">
+                    @if ($product_data['discount'] != 0)
+                        <span class="card__label">-{{ $product_data['discount'] }}%</span>
+                    @endif
+                    <div class="card__img">
+                        <picture style="max-height: 175px; max-width: 175px;">
+                            <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
+                            <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                        </picture>
+                    </div>
+                    <div class="card__content">
+                        <h2 class="card__title">
+                            <a class="card__link" href="{{ route('home.product', $product_data['url']) }}">
+                                {{ $product_data['name'] }}
+                            </a>
+                        </h2>
+                        <span class="card__ingredient">
+                            @foreach ($product_data['aktiv'] as $aktiv)
+                                {{ $aktiv['name'] }}
+                            @endforeach
+                        </span>
+                        <span class="card__price">{{ $Currency::convert($product_data['price'], false, true) }}</span>
+                        <button class="card__button button" onclick="location.href = '{{ route('home.product', $product_data['url']) }}'">
+                            <span class="icon">
+                                <img src="{{ asset($design . '/images/icons/cart.svg') }}" class="inline-svg">
+                            </span>
+                            @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt']))
+                                <span class="button__text">{{__('text.product_add_to_cart_text')}}</span>
+                            @endif
+                        </button>
+                    </div>
+                </article>
+            @endforeach
+        </div>
     </div>
     <aside class="main__aside">
         <div class="cart-panel">
@@ -351,4 +392,3 @@
         </div>
     </aside>
 </main>
-

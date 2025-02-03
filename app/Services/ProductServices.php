@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class ProductServices
 {
@@ -1361,5 +1362,263 @@ class ProductServices
         }
 
         return $device;
+    }
+
+    public static function getProductRecommendation($product_id) {
+        $design = session('design') ? session('design') : config('app.design');
+
+        $result = DB::table('suggested')
+            ->where('product_id', '=', $product_id)
+            ->orderBy('ord', 'desc')
+            ->get(['product_id', 'sugg_id'])
+            ->toArray();
+
+        foreach ($result as $m) {
+            $result2[] = $m->sugg_id;
+        }
+
+        $bestsellers = ProductServices::GetBestsellers($design);
+        unset($bestsellers[0]);
+
+        if (empty($result)) {
+            $products = $bestsellers;
+        } else {
+            $products = ProductServices::getProductData( $result2, $design);
+
+            $count_rec = count($products);
+
+            if ($count_rec < 6) {
+                $need_add = 6 - $count_rec;
+                $count_add = 0;
+
+                foreach ($products as $id => $value) {
+                    foreach ($bestsellers as $key => $best) {
+                        if ($need_add == $count_add) {
+                            break;
+                        }
+                        if ($id == $best['id'] || $best['id'] == $product_id) {
+                            continue;
+                        } else {
+                            $products[] = $best;
+                            $count_add++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $products;
+    }
+
+    public static function getCartRecommendation() {
+        $design = session('design') ? session('design') : config('app.design');
+        $bestsellers = ProductServices::GetBestsellers($design);
+        unset($bestsellers[0]);
+
+        $bestsellers = array_slice($bestsellers, 0, 6);
+
+        if(empty(session('cart'))) {
+            $products = $bestsellers;
+        } else {
+            $cart_data = session('cart');
+            $products = [];
+
+            if (count($cart_data) === 1) {
+                $result = DB::table('suggested')
+                    ->where('product_id', '=', $cart_data[0]['product_id'])
+                    ->orderBy('ord', 'desc')
+                    ->get(['product_id', 'sugg_id'])
+                    ->toArray();
+
+                foreach ($result as $m) {
+                    $result2[] = $m->sugg_id;
+                }
+
+                $products = ProductServices::getProductData($result2, $design);
+
+            } elseif (count($cart_data) === 2) {
+                $result = DB::table('suggested')
+                    ->where('product_id', '=', $cart_data[0]['product_id'])
+                    ->orderBy('ord', 'desc')
+                    ->get(['product_id', 'sugg_id'])
+                    ->toArray();
+
+                foreach ($result as $m) {
+                    $result2[] = $m->sugg_id;
+                }
+
+                $result2 = array_slice($result2, 0, 3);
+
+                $result3 = DB::table('suggested')
+                    ->where('product_id', '=', $cart_data[1]['product_id'])
+                    ->orderBy('ord', 'desc')
+                    ->get(['product_id', 'sugg_id'])
+                    ->toArray();
+
+                foreach ($result3 as $m) {
+                    $result4[] = $m->sugg_id;
+                }
+
+                $result4 = array_slice($result4, 0, 3);
+
+                $products = array_unique( array_merge($result2, $result4));
+
+                foreach($products as $k => $v) {
+                    if ($v == $cart_data[0]['product_id'] || $v == $cart_data[1]['product_id']) {
+                        unset($products[$k]);
+                    }
+                }
+
+                $products = ProductServices::getProductData($products, $design);
+
+            } elseif (count($cart_data) === 3) {
+
+                    $result = DB::table('suggested')
+                    ->where('product_id', '=', $cart_data[0]['product_id'])
+                    ->orderBy('ord', 'desc')
+                    ->get(['product_id', 'sugg_id'])
+                    ->toArray();
+
+                foreach ($result as $m) {
+                    $result2[] = $m->sugg_id;
+                }
+
+                $result2 = array_slice($result2, 0, 3);
+
+                $result3 = DB::table('suggested')
+                    ->where('product_id', '=', $cart_data[1]['product_id'])
+                    ->orderBy('ord', 'desc')
+                    ->get(['product_id', 'sugg_id'])
+                    ->toArray();
+
+                foreach ($result3 as $m) {
+                    $result4[] = $m->sugg_id;
+                }
+
+                $result4 = array_slice($result4, 0, 3);
+
+                $result5 = DB::table('suggested')
+                    ->where('product_id', '=', $cart_data[2]['product_id'])
+                    ->orderBy('ord', 'desc')
+                    ->get(['product_id', 'sugg_id'])
+                    ->toArray();
+
+                foreach ($result5 as $m) {
+                    $result6[] = $m->sugg_id;
+                }
+
+                $result6 = array_slice($result6, 0, 3);
+
+                $products = array_unique( array_merge($result2, $result4, $result6));
+
+                foreach($products as $k => $v) {
+                    if ($v == $cart_data[0]['product_id'] || $v == $cart_data[1]['product_id'] || $v == $cart_data[2]['product_id']) {
+                        unset($products[$k]);
+                    }
+                }
+
+                $products = ProductServices::getProductData($products, $design);
+
+            } elseif (count($cart_data) > 3) {
+                $products = array_merge($products, $bestsellers);
+            }
+
+            // Проверяем, хватает ли предложек
+            $needed_count = 6 - count($products);
+
+            if ($needed_count > 0) {
+                // Можем взять дополнительные товары из бестселлеров, если это необходимо
+                foreach ($bestsellers as $best) {
+                    if ($needed_count <= 0) {
+                        break;
+                    }
+                    if (!in_array($best['id'], array_column($products, 'id')) && !in_array($best['id'], array_column($cart_data, 'product_id'))) {
+                        $products[] = $best;
+                        $needed_count--;
+                    }
+                }
+            }
+        }
+
+        return $products;
+    }
+
+    public static function getProductData($products_arr, $design) {
+        $product_price = self::GetAllProductPillPrice($design);
+        $products = [];
+
+        if ($design == 5) {
+            $product_data = DB::table('product')
+                ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product.id', $products_arr)
+                ->where('product.is_showed', '=', 1)
+                ->where('product_category.category_id', '=',14)
+                ->where('product_desc.language_id', '=', Language::$languages[App::currentLocale()])
+                ->get(['product.id', 'product_desc.name', 'product_desc.url', 'product_desc.desc', 'product.aktiv', 'product.image'])
+                ->keyBy('id')
+                ->toArray();
+        } else {
+            $product_data = DB::table('product')
+                ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
+                ->whereIn('product.id', $products_arr)
+                ->where('product.is_showed', '=', 1)
+                ->where('product_desc.language_id', '=', Language::$languages[App::currentLocale()])
+                ->get(['product.id', 'product_desc.name', 'product_desc.url', 'product_desc.desc', 'product.aktiv', 'product.image'])
+                ->keyBy('id')
+                ->toArray();
+        }
+
+        foreach ($products_arr as $product_id) {
+            if (isset($product_data[$product_id])) {
+                $products[$product_id] = [
+                    'id' => $product_id,
+                    'name' => $product_data[$product_id]->name,
+                    'url' => $product_data[$product_id]->url,
+                    'desc' => $product_data[$product_id]->desc,
+                    'aktiv' =>  explode(',', str_replace("\r\n", '', ucwords(trim($product_data[$product_id]->aktiv)))),
+                    'price' => isset($product_price[$product_id]['price']) ? $product_price[$product_id]['price'] : 0,
+                    'discount' => isset($product_price[$product_id]['discount']) ? $product_price[$product_id]['discount'] : 0,
+                    'image' => $product_data[$product_id]->image
+                ];
+            }
+        }
+
+        foreach ($products as $key => $value) {
+            foreach ($products[$key]['aktiv'] as $k => $val) {
+                $products[$key]['aktiv'][$k] = [
+                    'name' => trim($val),
+                    'url' => str_replace('&', '-', str_replace(' ', '-', strtolower(trim($val))))
+                ];
+            }
+        }
+
+        return $products;
+    }
+
+    public static function getDataRecommendation() {
+        $result = Http::timeout(3)->post('http://true-services.net/product_recommendation/product_rec.php');
+        $result = json_decode($result, true);
+
+        foreach ($result as $k => $value) {
+            $result[$k] = array_slice($value, 0, 6, true);
+        }
+
+        $current_ord = [];
+        foreach ($result as $product_id => $products) {
+
+            if (!isset($current_ord[$product_id])) {
+                $current_ord[$product_id] = count($products) * 10;
+            }
+
+            foreach ($products as $sugg_id => $val) {
+                DB::table('suggested')->insert([
+                    'product_id' => $product_id,
+                    'sugg_id' => $sugg_id,
+                    'ord' => $current_ord[$product_id]
+                ]);
+                $current_ord[$product_id] -= 10;
+            }
+        }
     }
 }

@@ -586,4 +586,6 @@ return [
     "search_not_carry" => "Valitettavasti emme kanna",
     "search_this_time" => "tällä hetkellä.",
     "search_product_request" => "Täytä tuotepyyntölomake, niin lisäämme pyydetyn lääkkeen pian.",
+
+    "recc_text" => "Saatat myös pitää:",
 ];

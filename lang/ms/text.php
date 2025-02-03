@@ -582,4 +582,6 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "search_not_carry" => "Maaf kami tidak membawa",
     "search_this_time" => "pada masa ini.",
     "search_product_request" => "Sila isi Borang Permintaan Produk dan kami akan menambah ubat yang diminta sebentar lagi.",
+
+    "recc_text" => "Anda Mungkin Juga Suka:",
 ];

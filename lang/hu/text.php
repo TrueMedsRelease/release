@@ -586,4 +586,6 @@ return [
     "search_not_carry" => "Sajnos nem szállítjuk",
     "search_this_time" => "jelen időben.",
     "search_product_request" => "Kérjük, töltse ki a Termékigénylő űrlapot, és hamarosan hozzáadjuk a kért gyógyszert.",
+
+    "recc_text" => "Tetszhet még:",
 ];

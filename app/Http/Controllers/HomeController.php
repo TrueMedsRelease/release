@@ -487,6 +487,8 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
+        $recommendation = ProductServices::getProductRecommendation($product['id']);
+
         return view($design . '.product', [
             'design' => $design,
             'bestsellers' => $bestsellers,
@@ -503,6 +505,7 @@ class HomeController extends Controller
             'domain' => $domain,
             'web_statistic' => $web_statistic,
             'codes' => json_encode($codes),
+            'recommendation' => $recommendation,
         ]);
     }
 

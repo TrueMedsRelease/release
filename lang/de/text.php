@@ -706,4 +706,6 @@ return [
     "search_not_carry" => "Leider führen wir es nicht",
     "search_this_time" => "zurzeit.",
     "search_product_request" => "Bitte füllen Sie das Produktanforderungsformular aus und wir werden das angeforderte Medikament in Kürze hinzufügen.",
+
+    "recc_text" => "Das könnte Ihnen auch gefallen:",
 ];

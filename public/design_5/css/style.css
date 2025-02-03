@@ -1231,7 +1231,18 @@ ul, ol {
       grid-template-columns: 1fr 1fr; } }
 @media only screen and (max-width: 767px) {
     .product-list {
-      grid-template-columns: 1fr; } }
+      grid-template-columns: 1fr;
+    }
+
+    .product-list.product_rec {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+      @media only screen and (max-width: 660px) {
+        .product-list.product_rec {
+          grid-template-columns: 1fr; } }
+
 .product-list .item {
     padding: 0 20px;
     display: flex;

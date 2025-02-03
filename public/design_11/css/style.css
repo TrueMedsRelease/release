@@ -3546,6 +3546,9 @@ body.has-scroll{
     grid-template-columns:repeat(auto-fit, minmax(20rem, 1fr));
     gap:1.6rem;
   }
+  .product-cards.cart {
+    grid-template-columns: repeat(auto-fit, minmax(23rem, 1fr));
+  }
 }
 
 @media (min-width: 830px){
