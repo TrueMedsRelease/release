@@ -369,10 +369,10 @@
     </div>
     <aside class="main__aside">
         <div class="cart-panel">
-            <div class="cart-panel-item">
+            {{-- <div class="cart-panel-item">
                 <div class="cart-panel-item__title">{{ __('text.cart_discount1') }}</div>
                 <div class="cart-panel-item__text">{{ __('text.cart_discount2') }}</div>
-            </div>
+            </div> --}}
             <div class="cart-panel-item cart-panel-item--2">
                 <div class="cart-panel-item__title">{{__('text.cart_free_regular')}}</div>
                 <div class="cart-panel-item__text">{{__('text.cart_sum_regular')}}</div>

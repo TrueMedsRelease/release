@@ -319,6 +319,43 @@
                 </div>
             </div>
         </div>
+
+        {{-- <h2 class="title-page">{{__('text.recc_text')}}</h2>
+        <div class="product-list product_rec">
+            @foreach ($recommendation as $product_data)
+                @if ($loop->iteration == 7)
+                    @break
+                @endif
+                <div class="item">
+                    @if ($product_data['discount'] != 0)
+                        <span class="card__label">-{{ $product_data['discount'] }}%</span>
+                    @endif
+                    <a href="{{ route('home.product', $product_data['url']) }}" class="img">
+                        <picture>
+                            <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
+                            <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                        </picture>
+                    </a>
+                    <div class="info">
+                        <div class="box">
+                            <a href="{{ route('home.product', $product_data['url']) }}" class="name">{{ $product_data['name'] }}</a>
+                            <a href="{{ route('home.product', $product_data['url']) }}" class="cat">
+                                @foreach ($product_data['aktiv'] as $aktiv)
+                                    {{ $aktiv['name'] }}
+                                @endforeach
+                            </a>
+                        </div>
+                        <div class="box">
+                            <span class="price">{{ $Currency::convert($product_data['price'], false, true) }}</span>
+                            <a href="{{ route('home.product', $product_data['url']) }}" class="btn btn-primary main">
+                                <img loading="lazy" src="{{ asset("$design/images/icon/ico-basket.svg") }}" alt="">
+                                <span>{{__('text.common_add_to_cart_text_d2')}}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div> --}}
 	</div>
 	<div class="sidebar">
 		<div class="information-banner">
