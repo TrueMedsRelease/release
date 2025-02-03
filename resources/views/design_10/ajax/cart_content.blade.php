@@ -47,16 +47,16 @@
                                                     </div>
                                                 </td>
                                                 <td class="cart-item__pack-price" width="18.5%" data-caption="Per Pack:">
-                                                    @if ($product['dosage'] != '1card' && $product['price'] / $product['num'] != $product['max_pill_price'])
+                                                    @if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0)
                                                         <span
                                                             class="discount-price"><s>{{ $Currency::convert($product['max_pill_price'] * $product['num'], true) }}</s>
                                                             -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
                                                         </span>
                                                     @endif
-                                                    <span class="price">@if ($product['dosage'] != '1card' && $product['price'] / $product['num'] != $product['max_pill_price']) {!!__('text.product_only')!!} @endif {{ $Currency::convert($product['price'],true) }} </span>
+                                                    <span class="price">@if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0) {!!__('text.product_only')!!} @endif {{ $Currency::convert($product['price'],true) }} </span>
                                                 </td>
                                                 <td class="cart-item__total-price" width="18.5%" data-caption="Price:">
-                                                    @if ($product['dosage'] != '1card' && $product['price'] / $product['num'] != $product['max_pill_price'])
+                                                    @if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0)
                                                         <span
                                                             class="discount-price"><s>{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}</s>
                                                             -{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%
