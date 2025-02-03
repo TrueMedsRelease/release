@@ -6612,6 +6612,21 @@ textarea.input {
     background: linear-gradient(180deg, #54a8c2 0%, #76c8e1 69.27%, #72bad0 100%);
 }
 
+.cart_rec .item-product__info {
+    display: block;
+}
+
+.cart_rec .item-product {
+    width: auto;
+}
+
+.cart_rec .item-product__desrc {
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 @media (max-width: 790px) {
     .product_rec {
         grid-template-columns: repeat(auto-fit, minmax(305px, 1fr));
