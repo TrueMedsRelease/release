@@ -1373,8 +1373,12 @@ class ProductServices
             ->get(['product_id', 'sugg_id'])
             ->toArray();
 
-        foreach ($result as $m) {
-            $result2[] = $m->sugg_id;
+        if (empty($result)) {
+            $result2 = [];
+        } else {
+            foreach ($result as $m) {
+                $result2[] = $m->sugg_id;
+            }
         }
 
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -1430,8 +1434,12 @@ class ProductServices
                     ->get(['product_id', 'sugg_id'])
                     ->toArray();
 
-                foreach ($result as $m) {
-                    $result2[] = $m->sugg_id;
+                if (empty($result)) {
+                    $result2 = [];
+                } else {
+                    foreach ($result as $m) {
+                        $result2[] = $m->sugg_id;
+                    }
                 }
 
                 $products = ProductServices::getProductData($result2, $design);
@@ -1443,8 +1451,12 @@ class ProductServices
                     ->get(['product_id', 'sugg_id'])
                     ->toArray();
 
-                foreach ($result as $m) {
-                    $result2[] = $m->sugg_id;
+                if (empty($result)) {
+                    $result2 = [];
+                } else {
+                    foreach ($result as $m) {
+                        $result2[] = $m->sugg_id;
+                    }
                 }
 
                 $result2 = array_slice($result2, 0, 3);
@@ -1455,8 +1467,12 @@ class ProductServices
                     ->get(['product_id', 'sugg_id'])
                     ->toArray();
 
-                foreach ($result3 as $m) {
-                    $result4[] = $m->sugg_id;
+                if (empty($result3)) {
+                    $result4 = [];
+                } else {
+                    foreach ($result3 as $m) {
+                        $result4[] = $m->sugg_id;
+                    }
                 }
 
                 $result4 = array_slice($result4, 0, 3);
@@ -1479,8 +1495,12 @@ class ProductServices
                     ->get(['product_id', 'sugg_id'])
                     ->toArray();
 
-                foreach ($result as $m) {
-                    $result2[] = $m->sugg_id;
+                if (empty($result)) {
+                    $result2 = [];
+                } else {
+                    foreach ($result as $m) {
+                        $result2[] = $m->sugg_id;
+                    }
                 }
 
                 $result2 = array_slice($result2, 0, 3);
@@ -1491,8 +1511,12 @@ class ProductServices
                     ->get(['product_id', 'sugg_id'])
                     ->toArray();
 
-                foreach ($result3 as $m) {
-                    $result4[] = $m->sugg_id;
+                if (empty($result3)) {
+                    $result4 = [];
+                } else {
+                    foreach ($result3 as $m) {
+                        $result4[] = $m->sugg_id;
+                    }
                 }
 
                 $result4 = array_slice($result4, 0, 3);
@@ -1503,11 +1527,15 @@ class ProductServices
                     ->get(['product_id', 'sugg_id'])
                     ->toArray();
 
-                foreach ($result5 as $m) {
-                    $result6[] = $m->sugg_id;
+                if (empty($result5)) {
+                    $result6 = [];
+                } else {
+                    foreach ($result5 as $m) {
+                        $result6[] = $m->sugg_id;
+                    }
                 }
 
-                $result6 = array_slice($result6, 0, 3);
+                $result4 = array_slice($result6, 0, 3);
 
                 $products = array_unique( array_merge($result2, $result4, $result6));
 
