@@ -1860,7 +1860,10 @@ body{
   gap:2rem;
   padding-top:2rem;
   padding-bottom:5rem;
-  flex-direction: column;
+}
+
+.page-wrapper.cart_block{
+    flex-direction: column;
 }
 
 .main{

@@ -1415,7 +1415,7 @@ class ProductServices
         $bestsellers = ProductServices::GetBestsellers($design);
         unset($bestsellers[0]);
 
-        $bestsellers = array_slice($bestsellers, 0, 6);
+        // $bestsellers = array_slice($bestsellers, 0, 6);
 
         if(empty(session('cart'))) {
             $products = $bestsellers;
@@ -1521,6 +1521,14 @@ class ProductServices
 
             } elseif (count($cart_data) > 3) {
                 $products = array_merge($products, $bestsellers);
+
+                foreach ($products as $key => $product_data) {
+                    foreach ($cart_data as $k => $data) {
+                        if ($data['product_id'] == $product_data['id']) {
+                            unset($products[$key]);
+                        }
+                    }
+                }
             }
 
             // Проверяем, хватает ли предложек
