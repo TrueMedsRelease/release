@@ -375,6 +375,47 @@
     </div>
 </main>
 
+<div style="max-width: 1200px; width: 100%; padding: 0 30px; margin: 0 auto;">
+    <h2 class="bestsellers__title title">{{__('text.recc_text')}}</h2>
+    <div class="bestsellers__body product_rec">
+        @foreach ($recommendation as $product_data)
+            @if ($loop->iteration == 7)
+                @break
+            @endif
+            <div class="product-card">
+                @if ($product_data['discount'] != 0)
+                    <span class="card__label">-{{ $product_data['discount'] }}%</span>
+                @endif
+                <a href="{{ route('home.product', $product_data['url']) }}" class="product-card__image">
+                    <picture>
+                        <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
+                        <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                    </picture>
+                </a>
+                <a href="{{ route('home.product', $product_data['url']) }}" class="product-card__info">
+                    <h3 class="product-card__label">{{ $product_data['name'] }}</h3>
+                    <h4 class="product-card__company">
+                        @foreach ($product_data['aktiv'] as $aktiv)
+                            {{ $aktiv['name'] }}
+                        @endforeach
+                    </h4>
+                </a>
+                <div class="product-card__bottom">
+                    <div class="product-card__left">
+                        <div class="product-card__price">{{ $Currency::convert($product_data['price'], false, true) }}</div>
+                    </div>
+                    <button type="button" class="product-card__button button button--accent" title="Add to cart" onclick="location.href='{{ route('home.product', $product_data['url']) }}'">
+                        <svg width="24" height="24">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                        </svg>
+                        <span>{{__('text.common_add_to_cart_text_d2')}}</span>
+                    </button>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
 @endsection
 
 @section('reviews')

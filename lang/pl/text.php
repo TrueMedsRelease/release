@@ -581,4 +581,6 @@ return [
     "search_not_carry" => "Przepraszamy, nie oferujemy",
     "search_this_time" => "w tej chwili.",
     "search_product_request" => "Wypełnij Formularz wniosku o produkt, a wkrótce dodamy żądany lek.",
+
+    "recc_text" => "Może Ci się również spodobać:",
 ];

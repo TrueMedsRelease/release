@@ -581,4 +581,6 @@ return  [
     "search_not_carry" => "抱歉，我們不攜帶",
     "search_this_time" => "此時。",
     "search_product_request" => "請填寫產品申請表，我們將盡快新增所需的藥品。",
+
+    "recc_text" => "你可能還喜歡:",
 ];

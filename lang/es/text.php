@@ -732,4 +732,6 @@ return [
     "search_not_carry" => "Lo sentimos, no tenemos stock",
     "search_this_time" => "en este momento.",
     "search_product_request" => "Complete el formulario de solicitud de producto y agregaremos el medicamento solicitado en breve.",
+
+    "recc_text" => "También te puede interesar:",
 ];

@@ -332,3 +332,48 @@
             <a href="{{ route('checkout.index') }}" class="actions-line__button button button--filled">{{__('text.cart_pay_button')}}</a>
         </div>
 </div>
+
+<h2 class="products__title title" style="margin-top: 20px;">{{__('text.recc_text')}}</h2>
+<div class="products__items" style="margin-bottom: 20px">
+    @foreach ($recommendation as $product_data)
+        @if ($loop->iteration == 7)
+            @break
+        @endif
+        <div class="products__item item-product">
+            @if ($product_data['discount'] != 0)
+                <span class="card__label">-{{ $product_data['discount'] }}%</span>
+            @endif
+            <a href="{{ route('home.product', $product_data['url']) }}">
+                <div class="item-product__info">
+                    <div class="item-product__image">
+                        <picture>
+                            <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
+                            <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                        </picture>
+                    </div>
+                    <div class="item-product__data">
+                        <div class="item-product__name">{{ $product_data['name'] }}</div>
+                        <div class="item-product__company">
+                            @foreach ($product_data['aktiv'] as $aktiv)
+                                {{ $aktiv['name'] }}
+                            @endforeach
+                        </div>
+                        <div class="item-product__bottom-row">
+                            <div class="item-product__price">{{ $Currency::convert($product_data['price'], false, true) }}</div>
+                            <a type="button" href="{{ route('home.product', $product_data['url']) }}" class="item-product__button button button--filled button--narrow">
+                                @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt', 'es']))
+                                    {{__('text.common_buy_button')}}
+                                @else
+                                    <svg width="18.5" height="21.5">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                                    </svg>
+                                @endif
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <p class="item-product__desrc">{{ $product_data['desc'] }}</p>
+            </a>
+        </div>
+    @endforeach
+</div>

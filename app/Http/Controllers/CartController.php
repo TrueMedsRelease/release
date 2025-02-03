@@ -250,6 +250,7 @@ class CartController extends Controller
             }
         }
 
+        $recommendation = ProductServices::getCartRecommendation();
 
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
@@ -266,7 +267,8 @@ class CartController extends Controller
             'is_only_card' => $is_only_card,
             'is_only_card_with_bonus' => $is_only_card_with_bonus,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'recommendation' => $recommendation,
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -396,6 +398,8 @@ class CartController extends Controller
             }
         }
 
+        $recommendation = ProductServices::getCartRecommendation();
+
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
             'products' => $products,
@@ -411,7 +415,8 @@ class CartController extends Controller
             'is_only_card' => $is_only_card,
             'is_only_card_with_bonus' => $is_only_card_with_bonus,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'recommendation' => $recommendation,
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -535,6 +540,8 @@ class CartController extends Controller
             }
         }
 
+        $recommendation = ProductServices::getCartRecommendation();
+
         $returnHTML = view($design . '.ajax.cart_content')->with([
             'design' => $design,
             'products' => $products,
@@ -550,7 +557,8 @@ class CartController extends Controller
             'is_only_card' => $is_only_card,
             'is_only_card_with_bonus' => $is_only_card_with_bonus,
             'first_letters' => $first_letters,
-            'domain' => $domain
+            'domain' => $domain,
+            'recommendation' => $recommendation,
         ])->render();
         return response()->json(array('success' => true, 'html'=>$returnHTML));
     }
@@ -679,6 +687,8 @@ class CartController extends Controller
                 }
             }
 
+            $recommendation = ProductServices::getCartRecommendation();
+
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
@@ -694,7 +704,8 @@ class CartController extends Controller
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
                 'first_letters' => $first_letters,
-                'domain' => $domain
+                'domain' => $domain,
+                'recommendation' => $recommendation,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -826,6 +837,8 @@ class CartController extends Controller
                 }
             }
 
+            $recommendation = ProductServices::getCartRecommendation();
+
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
@@ -841,7 +854,8 @@ class CartController extends Controller
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
                 'first_letters' => $first_letters,
-                'domain' => $domain
+                'domain' => $domain,
+                'recommendation' => $recommendation,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -982,6 +996,9 @@ class CartController extends Controller
             }
 
             $design = session('design') ? session('design') : config('app.design');
+
+            $recommendation = ProductServices::getCartRecommendation();
+
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
@@ -997,7 +1014,8 @@ class CartController extends Controller
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
                 'first_letters' => $first_letters,
-                'domain' => $domain
+                'domain' => $domain,
+                'recommendation' => $recommendation,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }
@@ -1137,6 +1155,9 @@ class CartController extends Controller
             }
 
             $design = session('design') ? session('design') : config('app.design');
+
+            $recommendation = ProductServices::getCartRecommendation();
+
             $returnHTML = view($design . '.ajax.cart_content')->with([
                 'design' => $design,
                 'products' => $products,
@@ -1152,7 +1173,8 @@ class CartController extends Controller
                 'is_only_card' => $is_only_card,
                 'is_only_card_with_bonus' => $is_only_card_with_bonus,
                 'first_letters' => $first_letters,
-                'domain' => $domain
+                'domain' => $domain,
+                'recommendation' => $recommendation,
             ])->render();
             return response()->json(array('success' => true, 'html'=>$returnHTML));
         }

@@ -580,4 +580,6 @@ return [
     "search_not_carry" => "Je nám ľúto, že neprenášame",
     "search_this_time" => "v tomto čase.",
     "search_product_request" => "Vyplňte formulár žiadosti o produkt a my čoskoro pridáme požadovaný liek.",
+
+    "recc_text" => "Tiež by sa vám mohlo páčiť:",
 ];

@@ -360,4 +360,57 @@
 			</div>
 		</aside>
 	</div>
+
+    <div style="margin-bottom: 20px;">
+        <h2 class="bestsellers__title title" style="font-size: 32px;">{{__('text.recc_text')}}</h2>
+        <div class="bestsellers__body">
+            <div class="product_list">
+                @foreach ($recommendation as $product_data)
+                    @if ($loop->iteration == 7)
+                        @break
+                    @endif
+                    <div class="product_info">
+                        @if ($product_data['discount'] != 0)
+                            <span class="card__label">-{{ $product_data['discount'] }}%</span>
+                        @endif
+                        <div class="product_info_top">
+                            <a href="{{ route('home.product', $product_data['url']) }}">
+                                <div class="product_img">
+                                    <picture>
+                                        <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
+                                        <img src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                                    </picture>
+                                </div>
+                            </a>
+                            <a href="{{ route('home.product', $product_data['url']) }}" class="product_center">
+                                <div class="product_main">
+                                    <div class="product_text">
+                                        <span class="product_name">{{ $product_data['name'] }}</span>
+                                        <span class="product_active">
+                                            @foreach ($product_data['aktiv'] as $aktiv)
+                                                {{ $aktiv['name'] }}
+                                            @endforeach
+                                        </span>
+                                    </div>
+                                    <div class="product_desc top">{{ $product_data['desc'] }}</div>
+                                </div>
+                            </a>
+                            <div class="product_right_block">
+                                <div class="product_price">{{ $Currency::convert($product_data['price'], false, true) }}</div>
+                                <button type="button" class="product-card__button button button--accent" title="{{__('text.product_add_to_cart_text')}}" onclick="location.href='{{ route('home.product', $product_data['url']) }}'">
+                                    <svg width="24" height="24">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart-white") }}"></use>
+                                    </svg>
+                                    <span>{{__('text.common_buy_button')}}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product_info_bottom">
+                            <div class="product_desc bottom">{{ $product_data['desc'] }}</div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
 </div>

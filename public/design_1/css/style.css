@@ -3223,6 +3223,10 @@ opacity:0;
     gap: 0.5625rem 0.4375rem;
   }
 
+  .best-sellers__items.product_rec {
+    grid-template-columns: repeat(auto-fit, minmax(226px, 1fr));
+  }
+
   .text-block__body p:not(:last-child) {
     margin: 0 0 1.5625rem 0;
   }

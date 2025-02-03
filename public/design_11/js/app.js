@@ -1386,7 +1386,7 @@ window.addEventListener('resize', function (e) {
 if (flagc) {
     setTimeout(function() {
         $('.modal_cart').removeClass('hidden').css('opacity', 1);
-        $('.modal_cart').css('z-index', 1);
+        $('.modal_cart').css('z-index', 10);
     }, 2000);
 
     setTimeout(function() {
@@ -1401,7 +1401,7 @@ if (flagc) {
 if (flagp) {
     setTimeout(function() {
         $('.cmcmodal').removeClass('hidden').css('opacity', 1);
-        $('.cmcmodal').css('z-index', 1);
+        $('.cmcmodal').css('z-index', 10);
     }, 2000);
 
     setTimeout(function() {

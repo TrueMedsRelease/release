@@ -576,4 +576,6 @@ return [
     "search_not_carry" => "Ne pare rău, nu transportăm",
     "search_this_time" => "în acest moment.",
     "search_product_request" => "Vă rugăm să completați formularul de solicitare a produsului și vom adăuga medicamentul solicitat în curând.",
+
+    "recc_text" => "Vă poate plăcea și:",
 ];

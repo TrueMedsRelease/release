@@ -620,4 +620,6 @@ return [
     "search_not_carry" => "Sorry, we hebben geen product in voorraad",
     "search_this_time" => "op dit moment.",
     "search_product_request" => "Vul het productaanvraagformulier in en we zullen het gevraagde medicijn binnenkort toevoegen.",
+
+    "recc_text" => "Misschien vind je dit ook leuk:",
 ];

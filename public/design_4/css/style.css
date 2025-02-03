@@ -1636,6 +1636,10 @@ textarea.input {
   gap: 10px;
 }
 
+.product_rec {
+    grid-template-columns: repeat(auto-fit, minmax(297px, 1fr));
+}
+
 .item-product {
   position: relative;
   border-radius: 25px;
@@ -4134,6 +4138,10 @@ textarea.input {
     width: 355px;
   }
 
+  .product_rec .item-product {
+    width: 100%;
+  }
+
   .item-product::after {
     content: "";
     position: absolute;
@@ -6602,4 +6610,22 @@ textarea.input {
 
 #go_to_contact_us:hover{
     background: linear-gradient(180deg, #54a8c2 0%, #76c8e1 69.27%, #72bad0 100%);
+}
+
+@media (max-width: 790px) {
+    .product_rec {
+        grid-template-columns: repeat(auto-fit, minmax(305px, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .product_rec {
+        grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .product_rec {
+        grid-template-columns: 1fr 1fr;
+    }
 }

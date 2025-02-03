@@ -585,4 +585,6 @@ return [
     "search_not_carry" => "抱歉，我们没有库存",
     "search_this_time" => "目前。",
     "search_product_request" => "请填写产品请求表，我们将尽快添加所需药品。",
+
+    "recc_text" => "你可能还喜欢:",
 ];

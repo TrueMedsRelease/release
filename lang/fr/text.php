@@ -711,4 +711,6 @@ return [
     "search_not_carry" => "Désolé, nous ne proposons pas de médicament",
     "search_this_time" => "pour le moment.",
     "search_product_request" => "Veuillez remplir le formulaire de demande de produit et nous ajouterons le médicament demandé sous peu.",
+
+    "recc_text" => "Vous aimerez peut-être aussi :",
 ];

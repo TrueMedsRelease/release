@@ -338,4 +338,46 @@
             </div>
         </div>
     </aside>
+
+    <h2 style="margin-top: 10px;">{{__('text.recc_text')}}</h2>
+    <div class="product-cards">
+        @foreach ($recommendation as $product_data)
+            @if ($loop->iteration == 7)
+                @break
+            @endif
+            <article class="card product-card">
+                @if ($product_data['discount'] != 0)
+                    <span class="card__label">-{{ $product_data['discount'] }}%</span>
+                @endif
+                <a class="product-card__img" href="{{ route('home.product', $product_data['url']) }}">
+                    <picture>
+                        <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
+                        <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                    </picture>
+                </a>
+                <h2 class="product-card__heading">
+                    <a class="product-card__brand link-primary" href="{{ route('home.product', $product_data['url']) }}">{{ $product_data['name'] }}</a>
+                </h2>
+                <div class="product-card__active">
+                    @foreach ($product_data['aktiv'] as $aktiv)
+                        <a class="product-card__ingredient" href="{{ route('home.active', $aktiv['url']) }}">{{ $aktiv['name'] }}</a>
+                    @endforeach
+                </div>
+                <a class="product-card__text link-primary" href="{{ route('home.product', $product_data['url']) }}">
+                    {{ str()->limit($product_data['desc'], 120, $end='...') }}
+                </a>
+                <div class="product-card__controls">
+                    <button class="button product-card__button" aria-label="{{__('text.common_buy_button')}}" onclick="location.href='{{ route('home.product', $product_data['url']) }}'">
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor">
+                                <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
+                            </svg>
+
+                        </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
+                    </button>
+                <div class="product-card__price">{{ $Currency::convert($product_data['price'], false, true) }}</div>
+                </div>
+            </article>
+        @endforeach
+    </div>
 </main>

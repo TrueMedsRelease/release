@@ -2922,6 +2922,10 @@ body::after {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
+  .products__items.product_rec {
+    grid-template-columns: repeat(auto-fit, minmax(218px, 1fr));
+  }
+
   .product__image {
     margin-bottom: 1.5625rem;
   }
@@ -6134,6 +6138,10 @@ body::after {
       width: 100%;
       bottom: 0%;
     }
+  }
+
+  .product_rec {
+    margin-bottom: 20px;
   }
 
   @keyframes modalFadeInOut {
