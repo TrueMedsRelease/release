@@ -109,7 +109,7 @@
                                 <div class="your-order__qty">{{ $product['q'] }}</div>
                                 <div class="your-order__per-pack">{{ $Currency::convert($product['price'], true) }}</div>
                                 <div class="your-order__price" style="font-weight: 500;">
-                                    @if ($product['dosage'] != '1card' && $product['price'] / $product['num'] != $product['max_pill_price'])
+                                    @if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0)
                                         <span style="color: var(--red);text-decoration: line-through;font-weight: 500;">
                                             {{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}
                                         </span></br>
@@ -296,7 +296,7 @@
                                             }
                                         }
 
-                                        $total_discount_product = $total_discount;
+                                        $total_discount_product = ceil($total_discount);
 
                                         $total_discount += session('cart_option.bonus_price');
                                         $total_discount += $shipping[session('cart_option.shipping')];
@@ -324,7 +324,11 @@
                                                     {{ $Currency::convert($total_discount) }}
                                                 </span>
                                                 <span id="discount_text" style="text-decoration: none;">
-                                                    -{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
+                                                    @if (ceil(100 - (session('total.checkout_total') / $total_discount) * 100) < 0)
+                                                        {{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
+                                                    @else
+                                                        -{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
+                                                    @endif
                                                 </span>
                                             </p>
                                             <div class="totals-order__savings" style="color: rgb(148, 148, 148);font-size: 13px;">

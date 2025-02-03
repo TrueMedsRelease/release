@@ -274,7 +274,7 @@
                             }
                         }
 
-                        $total_discount_product = $total_discount;
+                        $total_discount_product = ceil($total_discount);
 
                         $total_discount += session('cart_option')['bonus_price'];
                         if (!$is_only_card) {
