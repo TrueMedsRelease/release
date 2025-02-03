@@ -245,7 +245,7 @@
     </div>
 </main>
 
-<div style="padding: 0 15px; margin-bottom: 20px;">
+<div class="rec__container" style="padding: 0 15px; margin-bottom: 20px;">
     <h2 class="bestsellers__title title" style="font-size: 32px;">{{__('text.recc_text')}}</h2>
     <div class="bestsellers__body">
         <div class="product_list">
