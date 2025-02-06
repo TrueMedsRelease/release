@@ -419,9 +419,9 @@ class HomeController extends Controller
             }
         }
 
-        if ($product == 'a-ret-gel') {
-            $product = 'a-ret gel';
-        }
+        // if ($product == 'a-ret-gel') {
+        //     $product = 'a-ret gel';
+        // }
 
         if(request('landing',0) == 1)
         {
