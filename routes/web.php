@@ -170,7 +170,7 @@ if(!empty(request('curr')))
 
 if(!empty(request('design')))
 {
-    if (in_array(request('design'), [1,2,3,4,5,7,8,9,10,11])) {
+    if (in_array(request('design'), [1,2,3,4,5,7,8,9,10,11,12])) {
         session(['design' => 'design_' . request('design')]);
     }
 }
