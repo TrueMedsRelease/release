@@ -18,20 +18,6 @@
             {{-- <h2>{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h1> --}}
             <h2>{{__('text.search_result_best_for_search')}}</h1>
             <div class="product-cards">
-                {{-- <div class="promo-cards">
-                    <article class="promo-card promo-card">
-                        <div class="promo-card__title">
-                            <div class="card__link">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>
-                        </div>
-                        <div class="promo-card__text">{{__('text.common_banner1_text3')}} <br> {{__('text.common_banner1_text4')}}</div>
-                    </article>
-                    <article class="promo-card promo-card--sale">
-                        <div class="promo-card__title">
-                            <div class="card__link">{{__('text.common_banner2_text1')}} <br>{!!__('text.common_banner2_text2')!!}</div>
-                        </div>
-                        <div class="promo-card__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
-                    </article>
-                </div> --}}
                 @foreach ($bestsellers as $product)
                     <article class="card">
                         @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
@@ -78,20 +64,6 @@
         @else
             <h1 class="h1">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h1>
             <div class="product-cards">
-                {{-- <div class="promo-cards">
-                    <article class="promo-card promo-card">
-                        <div class="promo-card__title">
-                            <div class="card__link">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>
-                        </div>
-                        <div class="promo-card__text">{{__('text.common_banner1_text3')}} <br> {{__('text.common_banner1_text4')}}</div>
-                    </article>
-                    <article class="promo-card promo-card--sale">
-                        <div class="promo-card__title">
-                            <div class="card__link">{{__('text.common_banner2_text1')}} <br>{!!__('text.common_banner2_text2')!!}</div>
-                        </div>
-                        <div class="promo-card__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
-                    </article>
-                </div> --}}
                 @foreach ($products as $product)
                     <article class="card">
                         @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
@@ -188,6 +160,22 @@
                 </div>
             @endforeach
         </nav>
+        <div class="aside-promo">
+            <div class="promo-cards">
+                <article class="promo-card promo-card">
+                    <div class="promo-card__title">
+                        <div class="card__link">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>
+                    </div>
+                    <div class="promo-card__text">{{__('text.common_banner1_text3')}} <br> {{__('text.common_banner1_text4')}}</div>
+                </article>
+                <article class="promo-card promo-card--sale">
+                    <div class="promo-card__title">
+                        <div class="card__link">{{__('text.common_banner2_text1')}} <br>{!!__('text.common_banner2_text2')!!}</div>
+                    </div>
+                    <div class="promo-card__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
+                </article>
+            </div>
+        </div>
     </aside>
 </div>
 @endsection
