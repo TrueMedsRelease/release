@@ -229,6 +229,7 @@
   flex-direction:column;
   gap:0.2rem;
   padding-left:1.1rem;
+  justify-content: center;
 }
 .product__info--sale{
   padding-top:2.5rem;
