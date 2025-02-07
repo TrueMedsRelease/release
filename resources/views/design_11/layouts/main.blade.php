@@ -216,7 +216,7 @@
                             </span>
                         </div>
                     @endif
-                    <a class="header-auth header-nav-link" href="{{ route('home.login') }}">
+                    <a class="header-auth header-nav-link" href="{{ route('home.login') }}" target="_blank">
                         <span class="icon shadow-icon">
                             <img src="{{ asset($design . '/images/icons/profile.svg') }}" class="inline-svg">
                         </span>
@@ -726,7 +726,7 @@
                         </span>
                         <span class="button__text">{{ __('text.common_categories_menu') }}</span>
                     </button>
-                    <a class="footer-button" href="{{ route('home.login') }}">
+                    <a class="footer-button" href="{{ route('home.login') }}" target="_blank">
                         <span class="icon">
                             <img src="{{ asset($design . '/images/icons/profile.svg') }}" class="inline-svg">
                         </span>

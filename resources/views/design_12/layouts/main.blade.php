@@ -220,7 +220,7 @@
                                 </span>
                             </div>
                         @endif
-                        <a class="header-auth header-nav-link" href="{{ route('home.login') }}">
+                        <a class="header-auth header-nav-link" href="{{ route('home.login') }}" target="_blank">
                             <span class="icon icon--grad">
                                 <svg width="1em" height="1em" fill="currentColor">
                                     <use href="{{ asset($design . '/svg/icons/sprite.svg?t0q3xoa5#profile-circle-2') }}"></use>
@@ -663,7 +663,7 @@
                             </span>
                             <span class="button__text">{{ __('text.common_categories_menu') }}</span>
                         </button>
-                        <a class="footer-button" href="{{ route('home.login') }}">
+                        <a class="footer-button" href="{{ route('home.login') }}" target="_blank">
                             <span class="icon icon--grad">
                                 <svg width="1em" height="1em" fill="currentColor">
                                     <use href="{{ asset($design . '/svg/icons/sprite.svg?t0q3xoa5#profile-circle-2') }}"></use>
