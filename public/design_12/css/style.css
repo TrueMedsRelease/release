@@ -5077,14 +5077,12 @@ body.has-scroll{
     animation-timing-function: ease-in-out;
     animation-duration: 8s;
     animation-direction: alternate;
-    /* width: 30%; */
     position: fixed;
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: linear-gradient(90deg, #c9b09a 0%, rgba(201, 176, 154, 0.5) 100%);
     box-sizing: border-box;
-    border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
     color: white;
@@ -5099,14 +5097,12 @@ body.has-scroll{
     animation-timing-function: ease-in-out;
     animation-duration: 8s;
     animation-direction: alternate;
-    /* width: 25%; */
     position: fixed;
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: linear-gradient(90deg, #c9b09a 0%, rgba(201, 176, 154, 0.5) 100%);
     box-sizing: border-box;
-    border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
     color: white;

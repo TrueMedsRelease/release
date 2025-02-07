@@ -11,97 +11,97 @@
         <article class="content content--help">
             <h1>{{__('text.faq_faq_title')}}</h1>
             <h2>{{__('text.faq_q_1')}}</h2>
-            <p>{{__('text.faq_a_1')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_1')}}</p>
             <hr>
             <h2>{{__('text.faq_q_2')}}</h2>
-            <p>{{__('text.faq_a_2')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_2')}}</p>
             <hr>
             <h2>{{__('text.faq_q_3')}}</h2>
-            <p>{{__('text.faq_a_3')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_3')}}</p>
             <hr>
             <h2>{{__('text.faq_q_4')}}</h2>
-            <p>{{__('text.faq_a_4')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_4')}}</p>
             <hr>
             <h2>{{__('text.faq_q_5')}}</h2>
-            <p>{{__('text.faq_a_5_1')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_5_1')}}</p>
             <hr>
             <h2>{{__('text.faq_q_6')}}</h2>
-            <p>{{__('text.faq_a_6')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_6')}}</p>
             <hr>
             <h2>{{__('text.faq_q_7')}}</h2>
-            <p>{{__('text.faq_a_7')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_7')}}</p>
             <hr>
             <h2>{{__('text.faq_q_8')}}</h2>
-            <p>{{__('text.faq_a_8')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_8')}}</p>
             <hr>
             <h2>{{__('text.faq_q_9')}}</h2>
-            <p>{{__('text.faq_a_9')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_9')}}</p>
             <hr>
             <h2>{{__('text.faq_q_10')}}</h2>
-            <p>{{__('text.faq_a_10')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_10')}}</p>
             <hr>
             <h2>{{__('text.faq_q_11')}}</h2>
-            <p>{{__('text.faq_a_11_1')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_11_1')}}</p>
             <hr>
             <h2>{{__('text.faq_q_12')}}</h2>
-            <p>{{__('text.faq_a_12')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_12')}}</p>
             <hr>
             <h2>{{__('text.faq_q_13')}}</h2>
-            <p>{{__('text.faq_a_13')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_13')}}</p>
             <hr>
             <h2>{{__('text.faq_q_14')}}</h2>
-            <p>{{__('text.faq_a_14')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_14')}}</p>
             <hr>
             <h2>{{__('text.faq_q_15')}}</h2>
-            <p>{{__('text.faq_a_15_1')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_15_1')}}</p>
             <hr>
             <h2>{{__('text.faq_q_16')}}</h2>
-            <p>{{__('text.faq_a_16')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_16')}}</p>
             <hr>
             <h2>{{__('text.faq_q_17')}}</h2>
-            <p>{{__('text.faq_a_17_1')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_17_1')}}</p>
             <hr>
             <h2>{{__('text.faq_q_18')}}</h2>
-            <p>{{__('text.faq_a_18')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_18')}}</p>
             <hr>
             <h2>{{__('text.faq_q_19')}}</h2>
-            <p>{{__('text.faq_a_19')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_19')}}</p>
             <hr>
             <h2>{{__('text.faq_q_20')}}</h2>
-            <p>{{__('text.faq_a_20')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_20')}}</p>
             <hr>
             <h2>{{__('text.faq_q_21')}}</h2>
-            <p>{{__('text.faq_a_21')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_21')}}</p>
             <hr>
             <h2>{{__('text.faq_q_22')}}</h2>
-            <p>{{__('text.faq_a_22')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_22')}}</p>
             <hr>
             <h2>{{__('text.faq_q_23')}}</h2>
-            <p>{{__('text.faq_a_23')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_23')}}</p>
             <hr>
             <h2>{{__('text.faq_q_24')}}</h2>
-            <p>{{__('text.faq_a_24')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_24')}}</p>
             <hr>
             <h2>{{__('text.faq_q_25')}}</h2>
-            <p>{{__('text.faq_a_25')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_25')}}</p>
             <hr>
             <h2>{{__('text.faq_q_26')}}</h2>
-            <p>{{__('text.faq_a_26')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_26')}}</p>
             <hr>
             <h2>{{__('text.faq_q_27')}}</h2>
-            <p>{{__('text.faq_a_27')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_27')}}</p>
             <hr>
             <h2>{{__('text.faq_q_28')}}</h2>
-            <p>{{__('text.faq_a_28_1')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_28_1')}}</p>
             <hr>
             <h2>{{__('text.faq_q_29')}}</h2>
-            <p>{{__('text.faq_a_29')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_29')}}</p>
             <hr>
             <h2>{{__('text.faq_q_30')}}</h2>
-            <p>{{__('text.faq_a_30')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_30')}}</p>
             <hr>
             <h2>{{__('text.faq_q_31')}}</h2>
-            <p>{{__('text.faq_a_31')}}</p>
+            <p style="overflow-wrap: anywhere">{{__('text.faq_a_31')}}</p>
             <hr>
         </article>
     </main>
