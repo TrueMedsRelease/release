@@ -781,7 +781,7 @@ function toggleAccordion(e) {
   if (!accordionMultiExpand) {
     const accordionButtons = accordion.querySelectorAll('.accordion-button');
     for (let i = 0; i < accordionButtons.length; i++) {
-      accordionButtons[i].setAttribute('aria-expanded', 'false');
+    //   accordionButtons[i].setAttribute('aria-expanded', 'false');
     }
   }
 

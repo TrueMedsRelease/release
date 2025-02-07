@@ -450,7 +450,7 @@
                         <div class="enter-info__row">
                             <div class="enter-info__select select_billing_country">
                                 <select required id="billing_country" name="billing_country" class="form"
-                                    data-pseudo-label="Country:" data-scroll>
+                                    data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
                                     @foreach ($countries as $country)
                                         <option @selected($country['country_iso2'] == session('form.billing_country', session('location.country', 'US'))) value="{{ $country['country_iso2'] }}">
                                             {{ $country['country_name'] }}</option>
@@ -577,7 +577,7 @@
                                     <input required type="hidden"
                                         value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
                                     <select name="payment_type" class="form" id="payment_type_select"
-                                        data-pseudo-label="Type of Payment">
+                                        data-pseudo-label="{{__('text.checkout_type')}}">
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
                                         @if($service_enable)<option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>@endif
                                         @if(env('APP_PAYPAL_ON', 0) && $service_enable)
