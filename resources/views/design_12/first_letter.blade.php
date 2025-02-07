@@ -9,7 +9,7 @@
     <main class="main">
         <h1 class="h1">{{__('text.first_letter_first_letter_result_title')}} «{{ $letter }}»</h1>
         <div class="product-cards">
-            <div class="promo-cards">
+            {{-- <div class="promo-cards">
                 <article class="promo-card promo-card">
                     <div class="promo-card__title">
                         <div class="card__link">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>
@@ -22,7 +22,7 @@
                     </div>
                     <div class="promo-card__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
                 </article>
-            </div>
+            </div> --}}
             @foreach ($products as $product)
                 <article class="card">
                     @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
