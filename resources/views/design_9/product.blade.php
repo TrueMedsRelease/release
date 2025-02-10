@@ -116,6 +116,9 @@
                                         <input type="checkbox" class="read-more-checker" id="read-more-checker" />
                                         <div class="details-product__links limiter">
                                             @foreach ($product['sinonim'] as $sinonim)
+                                                @php
+                                                    $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                                                @endphp
                                                 <a href="{{ route('home.product', $sinonim['url']) }}">
                                                     {{ $sinonim['name'] }}
                                                 </a>
@@ -129,6 +132,9 @@
                                         <h2 class="details-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                         <div class="details-product__links">
                                             @foreach ($product['sinonim'] as $sinonim)
+                                                @php
+                                                    $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                                                @endphp
                                                 <a href = "{{ route('home.product', $sinonim['url']) }}">
                                                     {{ $sinonim['name'] }}
                                                 </a>

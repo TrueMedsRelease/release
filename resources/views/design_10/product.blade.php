@@ -101,6 +101,9 @@
                                 <div class="text-box">
                                     <span class="text">
                                         @foreach ($product['sinonim'] as $sinonim)
+                                            @php
+                                                $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                                            @endphp
                                            <a href = "{{ route('home.product', $sinonim['url']) }}">
                                                 {{ $sinonim['name'] }}
                                             </a>
@@ -110,6 +113,9 @@
                                 </div>
                             @else
                                 @foreach ($product['sinonim'] as $sinonim)
+                                    @php
+                                        $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                                    @endphp
                                     <a href = "{{ route('home.product', $sinonim['url']) }}">
                                         {{ $sinonim['name'] }}
                                     </a>

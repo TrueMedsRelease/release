@@ -245,6 +245,20 @@ class ProductServices
                             ->where('product.is_showed', '=', 1)
                             ->get(['product.id'])
                             ->toArray();
+
+                        if(empty($product_id)) {
+                            $url = str_replace(',', '.', $url);
+                            // $product_id = DB::select("SELECT p.id FROM product p INNER JOIN product_category pc ON pc.product_id = p.id INNER JOIN category ca ON ca.id = pc.category_id WHERE ca.is_showed = 1 AND p.sinonim LIKE '%{$url}%' AND p.is_showed = 1");
+
+                            $product_id = DB::table('product')
+                                ->join('product_category', 'product_category.product_id', '=', 'product.id')
+                                ->join('category', 'category.id', '=', 'product_category.category_id')
+                                ->where('category.is_showed', '=', 1)
+                                ->where('product.sinonim', 'like', '%' . $url . '%')
+                                ->where('product.is_showed', '=', 1)
+                                ->get(['product.id'])
+                                ->toArray();
+                        }
                     }
 
                     if(!empty($product_id))
