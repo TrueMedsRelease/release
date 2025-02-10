@@ -117,6 +117,9 @@
                                     <h2 class="details-page-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                     <div class="details-page-product__links">
                                         @foreach ($product['sinonim'] as $sinonim)
+                                            @php
+                                                $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                                            @endphp
                                             <a href = "{{ route('home.product', $sinonim['url']) }}">
                                                 {{ $sinonim['name'] }}
                                             </a>
@@ -128,6 +131,9 @@
                                     <h2 class="details-page-product__label">{{ $product['name'] }} {!!__('text.product_others')!!}</h2>
                                     <div class="details-page-product__links">
                                         @foreach ($product['sinonim'] as $sinonim)
+                                            @php
+                                                $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                                            @endphp
                                             <a href = "{{ route('home.product', $sinonim['url']) }}">
                                                 {{ $sinonim['name'] }}
                                             </a>

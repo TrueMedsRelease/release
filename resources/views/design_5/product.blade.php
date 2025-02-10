@@ -56,6 +56,9 @@
 				<div class="info">
 					<span>{{ $product['name'] }} {!!__('text.product_others')!!}</span>
 					@foreach ($product['sinonim'] as $sinonim)
+                        @php
+                            $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                        @endphp
 						<strong>
                             <a href = "{{ route('home.product', $sinonim['url']) }}">
                                 {{ $sinonim['name'] }}

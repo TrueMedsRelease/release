@@ -110,6 +110,9 @@
                                 <ul>
                                     <li>
                                         @foreach ($product['sinonim'] as $sinonim)
+                                            @php
+                                                $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
+                                            @endphp
                                             <a href = "{{ route('home.product', $sinonim['url']) }}" class="product-about__characteristic-meaning--link">
                                                 {{ $sinonim['name'] }}
                                             </a>
