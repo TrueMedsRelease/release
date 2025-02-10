@@ -31,8 +31,7 @@
                     <div class="card__img">
                         @if ($product['image'] == 'gift-card')
                             <picture style="max-height: 175px; max-width: 175px;">
-                                <source type="image/webp" srcset="{{ asset($design . '/images/products/gift-160w.webp 1x, ' . $design . '/images/products/gift-321w.webp 2x') }}">
-                                <img src="{{ asset($design . '/images/products/gift-160w.png') }}" srcset="{{ asset($design . '/images/products/gift-160w.png 1x, ' . $design . '/images/products/gift-321w.png 2x') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;" alt="{{ $product['image'] }}">
+                                <img src="{{ asset($design . '/images/products/gift.png') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;" alt="{{ $product['image'] }}">
                             </picture>
                         @else
                             <picture style="max-height: 175px; max-width: 175px;">
