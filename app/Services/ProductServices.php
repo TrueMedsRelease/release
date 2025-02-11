@@ -993,7 +993,7 @@ class ProductServices
         $disease = trans('text.common_disease_search');
         $language_id = Language::$languages[App::currentLocale()];
         // $result = ProductDisease::where("disease", "LIKE", "%$search_text%")->where('language_id', '=', $language_id)->distinct()->get('disease')->toArray();
-        $result = DB::select("SELECT pd.disease FROM product p
+        $result = DB::select("SELECT DISTINCT pd.disease FROM product p
                             JOIN product_disease pd ON pd.product_id = p.id
                             WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1",
                             ['%' . $search_text . '%', $language_id]);
