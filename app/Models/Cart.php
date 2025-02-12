@@ -253,6 +253,7 @@ class Cart extends Model
                     }
                 } else {
                     session()->forget('coupon_get');
+                    session()->forget('coupon');
                     $coupon_discount = 0;
                 }
                 // else {
@@ -279,6 +280,7 @@ class Cart extends Model
                 // }
             } else {
                 session()->forget('coupon_get');
+                session()->forget('coupon');
                 $coupon_discount = 0;
                 // $gift_card_discount = 0;
             }

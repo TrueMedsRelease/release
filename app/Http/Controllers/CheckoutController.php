@@ -285,6 +285,7 @@ class CheckoutController extends Controller
                         }
                     } else {
                         session()->forget('coupon');
+                        session()->forget('coupon_get');
                     }
 
                 } else {
