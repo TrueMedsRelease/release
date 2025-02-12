@@ -251,6 +251,9 @@ class Cart extends Model
                         // $gift_card_discount = 0;
                         // session()->forget('gift_card');
                     }
+                } else {
+                    session()->forget('coupon_get');
+                    $coupon_discount = 0;
                 }
                 // else {
                 //     $result['gift_card_code'] = session('coupon_get');
