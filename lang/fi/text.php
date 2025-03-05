@@ -588,4 +588,8 @@ return [
     "search_product_request" => "Täytä tuotepyyntölomake, niin lisäämme pyydetyn lääkkeen pian.",
 
     "recc_text" => "Saatat myös pitää:",
+
+    "gift_card_title" => "Miten se toimii?",
+    "gift_card_text1" => "Valitse haluamasi nimellisarvo ja maksa kortilla. Annamme + 10% bonuksena nimellisarvolle. Voit antaa ja siirtää kortin kenelle tahansa.",
+    "gift_card_text2" => "Valitse mikä tahansa tuote nimellisarvosi mukaiselle summalle (+ 10% bonus) ja syötä lahjakortin tiedot maksusivulle ja ostos tehdään.",
 ];

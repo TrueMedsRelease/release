@@ -150,6 +150,11 @@
             </ul>
         </div>
     </section>
+
+    <a class="christmas" style="display: none" href="{{ route('home.checkup') }}">
+        <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+    </a>
+
     <div class="product__container">
         <div class="product__body">
             <aside class="product__aside">
@@ -377,6 +382,17 @@
     <div class="product__info info-product">
         @if ($product['full_desc'])
             {!! $product['full_desc'] !!}
+        @endif
+        @if ($product['image'] == 'gift-card')
+            <p>
+                <strong>{{__('text.gift_card_title')}}</strong>
+                <br>
+                <br>
+                <ol style="padding-left: 20px; line-height: 20px;">
+                    <li style="margin-bottom: 15px;">{{__('text.gift_card_text1')}}</li>
+                    <li>{{__('text.gift_card_text2')}}</li>
+                </ol>
+            </p>
         @endif
     </div>
 </main>

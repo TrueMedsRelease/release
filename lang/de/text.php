@@ -708,4 +708,8 @@ return [
     "search_product_request" => "Bitte füllen Sie das Produktanforderungsformular aus und wir werden das angeforderte Medikament in Kürze hinzufügen.",
 
     "recc_text" => "Das könnte Ihnen auch gefallen:",
+
+    "gift_card_title" => "Wie funktioniert es?",
+    "gift_card_text1" => "Wählen Sie den gewünschten Nennwert und bezahlen Sie mit der Karte. Wir geben +10% als Bonus auf den Nennwert. Sie können die Karte an beliebige Personen verschenken und übertragen.",
+    "gift_card_text2" => "Wählen Sie ein beliebiges Produkt für den Betrag entsprechend Ihrem Nennwert (+10% Bonus) und geben Sie die Geschenkkartendetails auf der Zahlungsseite ein und der Kauf wird abgeschlossen.",
 ];

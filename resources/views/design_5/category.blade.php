@@ -171,6 +171,10 @@
         </div>
     </div>
 
+    <a class="christmas" style="display: none" href="{{ route('home.checkup') }}">
+        <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+    </a>
+
     <div class="sale-banners">
         <div class="happy-sale item">
             <span class="img">

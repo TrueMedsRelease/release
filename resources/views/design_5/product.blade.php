@@ -5,6 +5,11 @@
 @section('description', $page_properties->description)
 
 @section('content')
+
+<a class="christmas" style="display: none" style="margin: 15px 0 !impotant;" href="{{ route('home.checkup') }}">
+    <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+</a>
+
 <div class="product-box">
 	<div class="holder-info">
 		<div class="img">
@@ -156,6 +161,20 @@
 	<div class="description-box">
 		{!! $product['full_desc'] !!}
 	</div>
+@endif
+
+@if ($product['image'] == 'gift-card')
+    <div class="description-box">
+        <p style="margin: 0;">
+            <strong>{{__('text.gift_card_title')}}</strong>
+            <br>
+            <br>
+            <ol style="padding-left: 20px; line-height: 20px;">
+                <li style="margin-bottom: 15px; list-style-type: decimal;">{{__('text.gift_card_text1')}}</li>
+                <li style="list-style-type: decimal;">{{__('text.gift_card_text2')}}</li>
+            </ol>
+        </p>
+    </div>
 @endif
 
 <h2 class="title-page">{{__('text.recc_text')}}</h2>

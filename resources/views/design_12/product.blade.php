@@ -111,6 +111,20 @@
                 </div>
             @endif
 
+            @if ($product['image'] == 'gift-card')
+                <div class="content">
+                    <p style="margin: 0;">
+                        <strong>{{__('text.gift_card_title')}}</strong>
+                        <br>
+                        <br>
+                        <ol style="padding-left: 20px; line-height: 20px;">
+                            <li style="margin-bottom: 15px;">{{__('text.gift_card_text1')}}</li>
+                            <li>{{__('text.gift_card_text2')}}</li>
+                        </ol>
+                    </p>
+                </div>
+            @endif
+
             <h2>{{ __('text.recc_text') }}</h2>
             <div class="product-cards product_rec">
                 @foreach ($recommendation as $product_data)

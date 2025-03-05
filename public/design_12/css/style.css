@@ -5265,3 +5265,13 @@ body.has-scroll{
   opacity:0;
   }
   }
+
+  .christmas{
+    width: 100%;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .christmas img {
+    width: 100%;
+  }

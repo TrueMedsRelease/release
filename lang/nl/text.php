@@ -622,4 +622,8 @@ return [
     "search_product_request" => "Vul het productaanvraagformulier in en we zullen het gevraagde medicijn binnenkort toevoegen.",
 
     "recc_text" => "Misschien vind je dit ook leuk:",
+
+    "gift_card_title" => "Hoe werkt het?",
+    "gift_card_text1" => "Selecteer de gewenste waarde en betaal met de kaart. Wij geven + 10% als bonus op de waarde. U kunt de kaart aan iedereen geven en overdragen.",
+    "gift_card_text2" => "Selecteer een product voor het bedrag dat overeenkomt met uw waarde (+ 10% bonus) en voer de gegevens van de cadeaukaart in op de betaalpagina en de aankoop wordt gedaan.",
 ];

@@ -668,4 +668,8 @@ return [
     "search_product_request" => "Vyplňte prosím formulář žádosti o produkt a my požadovaný lék brzy přidáme.",
 
     "recc_text" => "Také by se vám mohlo líbit:",
+
+    "gift_card_title" => "Jak to funguje?",
+    "gift_card_text1" => "Vyberte požadovanou hodnotu a zaplaťte kartou. Dáváme + 10 % jako bonus k nominální hodnotě. Kartu můžete dát a převést komukoli.",
+    "gift_card_text2" => "Vyberte si libovolný produkt za částku podle své nominální hodnoty (+ 10% bonus) a na platební stránce zadejte údaje o dárkové kartě a nákup bude proveden.",
 ];

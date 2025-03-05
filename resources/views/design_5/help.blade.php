@@ -5,6 +5,11 @@
 @section('description', $page_properties->description)
 
 @section('content')
+
+<a class="christmas" style="display: none" style="margin: 15px 0 !impotant;" href="{{ route('home.checkup') }}">
+    <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+</a>
+
 <div class="column-box mb50">
 	<div class="content-box">
 		<div class="text-page">

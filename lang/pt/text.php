@@ -702,4 +702,8 @@ return [
     "search_product_request" => "Por favor preencha o Formulário de Pedido de Produto e adicionaremos o medicamento solicitado em breve.",
 
     "recc_text" => "Também pode gostar:",
+
+    "gift_card_title" => "Como funciona?",
+    "gift_card_text1" => "Selecione a denominação pretendida e pague com o cartão. Damos + 10% como bónus à denominação. Pode dar e transferir o cartão para qualquer pessoa.",
+    "gift_card_text2" => "Selecione qualquer produto pelo valor de acordo com a sua denominação (+ 10% de bónus) e insira os dados do cartão presente na página de pagamento e a compra será efetuada.",
 ];

@@ -2095,11 +2095,11 @@ textarea.input {
 }
 
 .announce__item--blue {
-  background: rgba(238, 187, 88, 0.9);
+  background: linear-gradient(180deg, #72bad0 0%, #76c8e1 28.13%, #54a8c2 100%);
 }
 
 .announce__item--yellow {
-  background: rgba(238, 187, 88, 0.9);
+  background: linear-gradient(180deg, #72bad0 0%, #76c8e1 28.13%, #54a8c2 100%);
 }
 
 .announce__item:not(:last-child) {
@@ -6159,6 +6159,9 @@ textarea.input {
   width: 100%;
   /*background: url("../images/pay_big.png") no-repeat center;*/
   /*height: 80px;*/
+  padding-top: 30px;
+  z-index: 3;
+  cursor: pointer;
 }
 
 .christmas img {

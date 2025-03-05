@@ -7547,6 +7547,7 @@ textarea.input {
   width: 100%;
   /*background: url("../images/pay_big.png") no-repeat center;*/
   /*height: 80px;*/
+  cursor: pointer;
 }
 
 .christmas img {

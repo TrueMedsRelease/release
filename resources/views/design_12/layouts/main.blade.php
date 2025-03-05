@@ -587,6 +587,10 @@
             </div>
         </div>
 
+        <a class="christmas" style="display: none" href="{{ route('home.checkup') }}">
+            <img loading="lazy" src="{{ asset("/pub_images/checkup_img/black/checkup_big.png") }}">
+        </a>
+
         @yield('content')
 
         <div class="sup-footer">

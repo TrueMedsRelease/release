@@ -26,13 +26,18 @@ class SearchController extends Controller
         return redirect(route('search.search_result', [$search_text]));
     }
 
-    public static function search_result($search_text) : View
+    public static function search_result($search_text)
     {
         StatisticService::SendStatistic('search');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu = ProductServices::GetCategoriesWithProducts($design);
         $products = ProductServices::SearchProduct($search_text, false, $design);
+
+        if (count($products) == 1) {
+            return redirect(route('home.product', $products[0]['url']));
+        }
+
         $phone_codes = PhoneCodes::all()->toArray();
         $page_properties = ProductServices::getPageProperties('search');
         $first_letters = ProductServices::getFirstLetters();
