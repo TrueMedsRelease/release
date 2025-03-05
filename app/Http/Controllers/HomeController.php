@@ -1704,4 +1704,66 @@ class HomeController extends Controller
 
         return $codes;
     }
+
+    public function checkup() : View
+    {
+        StatisticService::SendStatistic('checkup');
+        $design = session('design') ? session('design') : config('app.design');
+        $bestsellers = ProductServices::GetBestsellers($design);
+        $phone_codes = PhoneCodes::all()->toArray();
+        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $page_properties = ProductServices::getPageProperties('checkup');
+        $first_letters = ProductServices::getFirstLetters();
+        $agent = new Agent();
+
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if ($domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
+        $device = ProductServices::getDevice($agent);
+
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=affiliate&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+
+        return view('checkup', [
+            'design' => $design,
+            'bestsellers' => $bestsellers,
+            'menu' => $menu,
+            'phone_codes' => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category' => '',
+            'agent' => $agent,
+            'Language' => Language::class,
+            'Currency' => Currency::class,
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain,
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
+        ]);
+    }
 }

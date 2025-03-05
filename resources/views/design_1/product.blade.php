@@ -218,6 +218,19 @@
                         {!! $product['full_desc'] !!}
                     </div>
                 @endif
+                @if ($product['image'] == 'gift-card')
+                    <div class="product__info-content">
+                        <p>
+                            <strong>{{__('text.gift_card_title')}}</strong>
+                            <br>
+                            <br>
+                            <ol style="padding-left: 20px; line-height: 20px;">
+                                <li style="margin-bottom: 15px;">{{__('text.gift_card_text1')}}</li>
+                                <li>{{__('text.gift_card_text2')}}</li>
+                            </ol>
+                        </p>
+                    </div>
+                @endif
             </div>
         </div>
     </section>

@@ -578,4 +578,8 @@ return [
     "search_product_request" => "Vă rugăm să completați formularul de solicitare a produsului și vom adăuga medicamentul solicitat în curând.",
 
     "recc_text" => "Vă poate plăcea și:",
+
+    "gift_card_title" => "Cum funcționează?",
+    "gift_card_text1" => "Selectați valoarea nominală necesară și plătiți cu cardul. Oferim + 10% ca bonus la denumire. Puteți da și transfera cardul oricui.",
+    "gift_card_text2" => "Selectați orice produs pentru suma conform cu denominația dumneavoastră (+ 10% bonus) și introduceți detaliile cardului cadou pe pagina de plată și achiziția se va face.",
 ];

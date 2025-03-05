@@ -3295,6 +3295,15 @@ body::after {
         -ms-flex-order: -1;
             order: -1;
   }
+
+.christmas {
+    display: grid;
+    -ms-grid-columns: auto 17.3125rem;
+    grid-template-columns: auto 17.3125rem;
+    gap: 2.0625rem;
+    justify-content: space-evenly;
+}
+
 }
 
 @media (min-width: 74.99875em) {
@@ -5430,10 +5439,12 @@ body::after {
   width: 100%;
   /*background: url("../images/pay_big.png") no-repeat center;*/
   /*height: 80px;*/
+  margin-bottom: 10px;
 }
 
 .christmas img {
   width: 100%;
+  cursor: pointer;
 }
 
 @media (max-width: 390px) {
@@ -6095,7 +6106,7 @@ body::after {
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--yellow);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
@@ -6116,7 +6127,7 @@ body::after {
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--yellow);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
@@ -6181,4 +6192,8 @@ body::after {
   100% {
   opacity:0;
   }
+  }
+
+  .christmas.bottom{
+    display: none;
   }

@@ -5409,6 +5409,7 @@ strong {
   }
   .christmas{
     width: 100%;
+    cursor: pointer;
   }
 
   .christmas img {
@@ -5546,11 +5547,12 @@ strong {
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--color-secondary);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
+    color: white;
   }
 
   .cmcmodal.hidden {
@@ -5568,11 +5570,12 @@ strong {
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--color-secondary);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
+    color: white;
   }
 
   .modal_cart.hidden {

@@ -7,6 +7,10 @@
 
 @section('content')
 
+<a class="christmas" style="display: none" style="margin: 15px 0 !impotant;" href="{{ route('home.checkup') }}">
+    <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+</a>
+
 <div class="text-page">
 	<h2 class="title-page">{{__('text.about_us_title')}}</h2>
 	{!!__('text.about_us_text')!!}

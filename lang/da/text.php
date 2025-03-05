@@ -631,4 +631,8 @@ return [
     "search_product_request" => "Udfyld venligst produktanmodningsformularen, så tilføjer vi den anmodede medicin snart.",
 
     "recc_text" => "Du kan også lide:",
+
+    "gift_card_title" => "Hvordan virker det?",
+    "gift_card_text1" => "Vælg den ønskede værdi og betal med kortet. Vi giver + 10% som bonus til pålydende. Du kan give og overføre kortet til enhver.",
+    "gift_card_text2" => "Vælg ethvert produkt for beløbet i henhold til din pålydende værdi (+ 10% bonus) og indtast gavekortoplysningerne på betalingssiden, og købet vil blive gennemført.",
 ];

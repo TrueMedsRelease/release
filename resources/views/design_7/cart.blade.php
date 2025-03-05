@@ -9,141 +9,145 @@
     flagc = true;
 </script>
 <section class="pay-index">
-            <div class="pay-index__container">
-                <ul class="pay-index__list">
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
-                        </svg>
-                    </li>
-                    <li class="pay-index__item">
-                        <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
-                        </svg>
-                    </li>
-                </ul>
-            </div>
-        </section>
+    <div class="pay-index__container">
+        <ul class="pay-index__list">
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
+                </svg>
+            </li>
+            <li class="pay-index__item">
+                <svg>
+                    <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
+                </svg>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<a class="christmas" style="display: none" href="{{ route('home.checkup') }}">
+    <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+</a>
 
 <main class="page-cart">
 	<div class="page-cart__container">

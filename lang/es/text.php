@@ -734,4 +734,8 @@ return [
     "search_product_request" => "Complete el formulario de solicitud de producto y agregaremos el medicamento solicitado en breve.",
 
     "recc_text" => "También te puede interesar:",
+
+    "gift_card_title" => "¿Cómo funciona?",
+    "gift_card_text1" => "Selecciona la denominación que desees y paga con la tarjeta. Te regalamos un +10% de bonificación a la denominación. Puedes regalar y transferir la tarjeta a quien quieras.",
+    "gift_card_text2" => "Selecciona cualquier producto por el importe acorde a tu denominación (+10% de bonificación) e introduce los datos de la tarjeta regalo en la página de pago y se realizará la compra.",
 ];

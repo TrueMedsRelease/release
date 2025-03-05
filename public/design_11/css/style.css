@@ -4682,6 +4682,8 @@ body.has-scroll{
 
   .christmas{
     width: 100%;
+    cursor: pointer;
+    margin-top: 20px;
   }
 
   .christmas img {
@@ -4796,11 +4798,12 @@ body.has-scroll{
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--color-primary);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
+    color: white;
   }
 
   .cmcmodal.hidden {
@@ -4817,11 +4820,12 @@ body.has-scroll{
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--color-primary);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
+    color: white;
   }
 
   .modal_cart.hidden {

@@ -582,4 +582,8 @@ return [
     "search_product_request" => "Fyll i formuläret för produktförfrågan så lägger vi till det begärda läkemedlet inom kort.",
 
     "recc_text" => "Du kanske också gillar:",
+
+    "gift_card_title" => "Hur fungerar det?",
+    "gift_card_text1" => "Välj önskad valör och betala med kortet. Vi ger + 10% som bonus till valören. Du kan ge och överföra kortet till vem som helst.",
+    "gift_card_text2" => "Välj valfri produkt för beloppet enligt din valör (+ 10% bonus) och ange presentkortsinformationen på betalningssidan så kommer köpet att genomföras.",
 ];

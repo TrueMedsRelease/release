@@ -855,7 +855,7 @@ class ProductServices
         if ($design == 'design_5') {
             $product_ids = DB::table('product_search')
                 ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
-                ->whereFullText('product_search.keyword', $search_text . '*', ['mode' => 'boolean'])
+                ->where('keyword', 'like', '%' . $search_text . '%')
                 ->whereIn('product_category.category_id', [14, 21])
                 ->where('product_search.is_showed', '=', 1)
                 ->get(['product_search.product_id', 'product_category.category_id'])
@@ -863,14 +863,20 @@ class ProductServices
                 ->toArray();
         } else {
             if (env('APP_GIFT_CARD') == 0) {
-                $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                $product_ids = ProductSearch::where('keyword', 'like', '%' . $search_text . '%')
                     ->distinct()
                     ->where('is_showed', '=', 1)
                     ->where('product_id', '<>', 616)
                     ->get(['product_id'])
                     ->toArray();
             } else {
-                $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                // $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                //     ->distinct()
+                //     ->where('is_showed', '=', 1)
+                //     ->get(['product_id'])
+                //     ->toArray();
+
+                $product_ids = ProductSearch::where('keyword', 'like', '%' . $search_text . '%')
                     ->distinct()
                     ->where('is_showed', '=', 1)
                     ->get(['product_id'])
@@ -899,6 +905,8 @@ class ProductServices
                 }
             }
         }
+
+        // dump($product_id);
 
         $products = Product::query()
             ->where('is_showed', '=', 1)

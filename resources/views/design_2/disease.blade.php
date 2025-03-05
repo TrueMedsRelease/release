@@ -142,6 +142,11 @@
             </ul>
         </div>
     </section>
+
+    <a class="christmas" style="display: none" href="{{ route('home.checkup') }}">
+        <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+    </a>
+
     <section class="page__bestsellers bestsellers">
         <aside class="categories-sidebar">
             <div class="categories-sidebar__inner">

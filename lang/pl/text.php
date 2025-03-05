@@ -583,4 +583,8 @@ return [
     "search_product_request" => "Wypełnij Formularz wniosku o produkt, a wkrótce dodamy żądany lek.",
 
     "recc_text" => "Może Ci się również spodobać:",
+
+    "gift_card_title" => "Jak to działa?",
+    "gift_card_text1" => "Wybierz wymagany nominał i zapłać kartą. Dajemy + 10% jako bonus do nominału. Możesz podarować i przekazać kartę dowolnej osobie.",
+    "gift_card_text2" => "Wybierz dowolny produkt o wartości zgodnej z Twoim nominałem (+ 10% bonusu) i wprowadź dane karty podarunkowej na stronie płatności, a zakup zostanie zrealizowany.",
 ];

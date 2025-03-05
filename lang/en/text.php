@@ -851,4 +851,8 @@ return [
     "search_product_request" => "Please fill in the Product Request Form and we will add the requested medicine shortly.",
 
     "recc_text" => "You May Also Like:",
+
+    "gift_card_title" => "How does it work?",
+    "gift_card_text1" => "Select the required denomination and pay with the card. We give + 10% as a bonus to the denomination. You can give and transfer the card to anyone.",
+    "gift_card_text2" => "Select any product for the amount according to your denomination (+ 10% bonus) and enter the gift card details on the payment page and the purchase will be made.",
 ];

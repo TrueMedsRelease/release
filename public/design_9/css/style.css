@@ -7083,6 +7083,7 @@ body {
   width: 100%;
   /*background: url("../images/pay_big.png") no-repeat center;*/
   /*height: 80px;*/
+  cursor: pointer;
 }
 
 .christmas img {
@@ -8405,11 +8406,12 @@ strong {
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--accent-color);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
+    color: white;
   }
 
   .cmcmodal.hidden {
@@ -8427,11 +8429,12 @@ strong {
     bottom:50%;
     right: 1%;
     padding: 20px;
-    background: rgba(238, 187, 88, 0.9);
+    background: var(--accent-color);
     box-sizing: border-box;
     border-radius: 15px;
     opacity: 0;
     transition: opacity 2s;
+    color: white;
   }
 
   .modal_cart.hidden {

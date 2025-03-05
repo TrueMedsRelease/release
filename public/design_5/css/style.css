@@ -2507,7 +2507,7 @@ input[type=number] {
 .package-box {
     border: 1px solid #E3EBFA;
     border-radius: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     overflow: hidden; }
 .package-box h2 {
     font-weight: 700;
@@ -2697,11 +2697,11 @@ input[type=number] {
 }
 
 .announce__item--blue {
-    background: rgba(238, 187, 88, 0.9);
+    background: #4FAFCD;
 }
 
 .announce__item--yellow {
-    background: rgba(238, 187, 88, 0.9);
+    background: #4FAFCD;
 }
 
 .announce__item:not(:last-child) {
@@ -3331,6 +3331,8 @@ input[type=number] {
     width: 100%;
     /*background: url("../images/pay_big.png") no-repeat center;*/
     /*height: 80px;*/
+    cursor: pointer;
+    margin: 15px 0;
 }
 
 .christmas img {
@@ -3982,4 +3984,8 @@ ul.footer-nav li {
 
 #go_to_contact_us:hover{
     background: #3D94AF;
+}
+
+.description-box {
+    margin-bottom: 50px;
 }

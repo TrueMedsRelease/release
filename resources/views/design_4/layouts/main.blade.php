@@ -613,6 +613,9 @@
                 </div>
             </div>
         </header>
+        <a class="christmas" style="display: none" href="{{ route('home.checkup') }}">
+            <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+        </a>
         <main class="page">
             <section class="page__content content">
                 <div class="content__container">
