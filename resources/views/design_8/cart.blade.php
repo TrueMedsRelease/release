@@ -145,6 +145,9 @@
     </div>
 </section>
 
+<main class="christmas main" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
+    <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+</main>
 
 <main class="page-cart">
 	<div class="page-cart__container">
