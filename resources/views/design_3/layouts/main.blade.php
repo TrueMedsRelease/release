@@ -419,7 +419,7 @@
     </div>
     <main class="page">
         <div class="page__container page__container--home">
-            <div class="christmas top" style="display: none">
+            <div class="christmas top" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
                 <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_middle.png") }}">
                 <div></div>
             </div>
@@ -578,7 +578,7 @@
                 </aside>
             </div>
 
-            <div class="christmas bottom" style="display: none">
+            <div class="christmas bottom" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
                 <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
                 <div></div>
             </div>

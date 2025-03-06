@@ -7550,6 +7550,10 @@ textarea.input {
   cursor: pointer;
 }
 
+.christmas.main {
+    width: auto;
+}
+
 .christmas img {
   width: 100%;
 }

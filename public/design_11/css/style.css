@@ -4683,7 +4683,11 @@ body.has-scroll{
   .christmas{
     width: 100%;
     cursor: pointer;
-    margin-top: 20px;
+    margin: 20px auto 0 auto;
+    padding: 0 2rem;
+    min-width: 32rem;
+    width: 100%;
+    max-width: 128rem;
   }
 
   .christmas img {
