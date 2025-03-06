@@ -4550,11 +4550,16 @@ opacity:0;
 }
 
 .christmas{
-  width: 100%;
+  /* width: 100%; */
   /*background: url("../images/pay_big.png") no-repeat center;*/
   /*height: 80px;*/
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   cursor: pointer;
+  max-width: 62.5rem;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  margin: 0 auto 10px auto;
+  padding: 0 0.9375rem;
 }
 
 .christmas img {

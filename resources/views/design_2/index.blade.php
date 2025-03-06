@@ -144,9 +144,9 @@
         </div>
     </section>
 
-    <a class="christmas" style="display: none" href="{{ route('home.checkup') }}">
+    <div class="christmas img__container" style="display: none"  onclick="location.href='{{ route('home.checkup') }}'">
         <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
-    </a>
+    </div>
 
     <section class="page__hero hero">
         <h1 class="visually-hidden">Some title for seo</h1>

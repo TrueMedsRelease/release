@@ -4313,13 +4313,13 @@ if (getCookie('christmas')) {
     // }
 }
 
-$(document).on('click', '.christmas' , function (e) {
-    $(this).hide();
-    var date = new Date;
-    date.setDate(date.getDate() + 1);
-    date = date.toUTCString();
-    document.cookie = 'christmas=1; path=/; expires=' + date;
-});
+// $(document).on('click', '.christmas' , function (e) {
+//     $(this).hide();
+//     var date = new Date;
+//     date.setDate(date.getDate() + 1);
+//     date = date.toUTCString();
+//     document.cookie = 'christmas=1; path=/; expires=' + date;
+// });
 
 $(document).on('click', '.button_sub', function () {
     let email = $('#email_sub').val();
