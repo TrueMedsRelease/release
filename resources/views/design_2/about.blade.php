@@ -144,10 +144,6 @@
         </div>
     </section>
 
-    <div class="christmas img__container" style="display: none"  onclick="location.href='{{ route('home.checkup') }}'">
-        <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
-    </div>
-
     <div class="default__container">
         <div class="default__body">
             <div class="default__content">
