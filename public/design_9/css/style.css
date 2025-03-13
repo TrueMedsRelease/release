@@ -7085,6 +7085,9 @@ body {
   /*height: 80px;*/
   cursor: pointer;
   padding-top: 20px;
+  max-width: 75rem;
+  margin: 0 auto;
+
 }
 
 .christmas img {
