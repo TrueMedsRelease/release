@@ -143,6 +143,10 @@
         </div>
     </section>
 
+    <div class="christmas img__container" style="display: none"  onclick="location.href='{{ route('home.checkup') }}'">
+        <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+    </div>
+
     <section class="page__bestsellers bestsellers">
         <aside class="categories-sidebar">
             <div class="categories-sidebar__inner">

@@ -3301,7 +3301,6 @@ body::after {
     -ms-grid-columns: auto 17.3125rem;
     grid-template-columns: auto 17.3125rem;
     gap: 2.0625rem;
-    justify-content: space-evenly;
 }
 
 }

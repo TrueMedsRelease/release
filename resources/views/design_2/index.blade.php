@@ -144,7 +144,6 @@
         </div>
     </section>
 
-
     <section class="page__hero hero">
         <h1 class="visually-hidden">Some title for seo</h1>
         <div class="hero__container">
@@ -242,6 +241,10 @@
             </div>
         </div>
     </section>
+
+    <div class="christmas img__container" style="display: none"  onclick="location.href='{{ route('home.checkup') }}'">
+        <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+    </div>
 
     <section class="page__bestsellers bestsellers">
         <aside class="categories-sidebar">

@@ -7485,7 +7485,8 @@ body {
   /* width: 100%; */
   /*background: url("../images/pay_big.png") no-repeat center;*/
   /*height: 80px;*/
-  margin-bottom: 10px;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
   cursor: pointer;
 }
 
