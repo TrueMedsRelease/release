@@ -705,6 +705,14 @@
                     </div>
                 </form>
                 <button class="dialog__close-button close-button">Close</button>
+                <div class="message_sended hidden">
+                    {{-- <button class="dialog__close-button close-button-message">Close</button> --}}
+                    <div style="text-align: center">
+                        <h2>{{ __('text.contact_us_thanks') }}</h2>
+                        <br>
+                        <p>{{ __('text.phone_request_mes_text') }}</p>
+                    </div>
+                </div>
             </div>
         </dialog>
 

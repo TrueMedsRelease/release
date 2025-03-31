@@ -1088,28 +1088,30 @@ $(document).on('click', '.select_item_subject', function () {
 $(document).on('click', '.button_request_call', function () {
     let phone_code = $('.iti__selected-dial-code').text();
     let number = $('#callback-phone').val().replace(/[\s()\-]/g, '');
-    console.log(phone_code+number);
+    // console.log(phone_code+number);
 
-    if (number && containsOnlyDigits(number)) {
-        $.ajax({
-            url: '/request_call',
-            type: "POST",
-            cache: false,
-            data: {phone: phone_code+number},
-            dataType: "json",
-            success: function (res) {
-                if (res['status'] == 'success') {
-                    $('.popup_bottom').hide();
+    // if (number && containsOnlyDigits(number)) {
+    //     $.ajax({
+    //         url: '/request_call',
+    //         type: "POST",
+    //         cache: false,
+    //         data: {phone: phone_code+number},
+    //         dataType: "json",
+    //         success: function (res) {
+    //             if (res['status'] == 'success') {
+    //                 $('.popup_bottom').hide();
+    //                 $('[data-name="call"] .dialog__header').hide();
+    //                 $('[data-name="call"] .callback-form').hide();
 
-                    const mesa = document.querySelector('.message_sended');
-                    mesa.classList.remove('hidden');
-                    mesa.classList.add('active');
-                } else {
-                    alert(res['text']);
-                }
-            }
-        });
-    }
+    //                 const mesa = document.querySelector('.message_sended');
+    //                 mesa.classList.remove('hidden');
+    //                 mesa.classList.add('active');
+    //             } else {
+    //                 alert(res['text']);
+    //             }
+    //         }
+    //     });
+    // }
 });
 
 function getCookie(name) {
