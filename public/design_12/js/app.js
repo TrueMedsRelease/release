@@ -1144,7 +1144,9 @@ $(document).on('click', '.button_request_call', function () {
             success: function (res) {
                 if (res['status'] == 'success') {
                     $('.popup_bottom').hide();
-
+                    $('[data-name="call"] .dialog__header').hide();
+                    $('[data-name="call"] .callback-form').hide();
+                    
                     const mesa = document.querySelector('.message_sended');
                     mesa.classList.remove('hidden');
                     mesa.classList.add('active');
