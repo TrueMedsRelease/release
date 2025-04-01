@@ -845,9 +845,9 @@ class ProductServices
 
     public static function SearchProduct($search_text, $is_autocomplete, $design)
     {
-        // if (str_contains($search_text, ' ')) {
-        //     $search_text = '(' . $search_text . ')';
-        // }
+        if (str_contains($search_text, ' ')) {
+            $search_text = '(' . $search_text . ')';
+        }
 
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
@@ -863,24 +863,30 @@ class ProductServices
                 ->toArray();
         } else {
             if (env('APP_GIFT_CARD') == 0) {
-                $product_ids = ProductSearch::where('keyword', 'like', '%' . $search_text . '%')
+                $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
                     ->distinct()
                     ->where('is_showed', '=', 1)
                     ->where('product_id', '<>', 616)
                     ->get(['product_id'])
                     ->toArray();
-            } else {
-                // $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
+                // $product_ids = ProductSearch::where('keyword', 'like', '%' . $search_text . '%')
                 //     ->distinct()
                 //     ->where('is_showed', '=', 1)
+                //     ->where('product_id', '<>', 616)
                 //     ->get(['product_id'])
                 //     ->toArray();
-
-                $product_ids = ProductSearch::where('keyword', 'like', '%' . $search_text . '%')
+            } else {
+                $product_ids = ProductSearch::whereFullText('keyword', $search_text . '*', ['mode' => 'boolean'])
                     ->distinct()
                     ->where('is_showed', '=', 1)
                     ->get(['product_id'])
                     ->toArray();
+
+                // $product_ids = ProductSearch::where('keyword', 'like', '%' . $search_text . '%')
+                //     ->distinct()
+                //     ->where('is_showed', '=', 1)
+                //     ->get(['product_id'])
+                //     ->toArray();
             }
         }
 
@@ -1172,7 +1178,7 @@ class ProductServices
     public static function getPageProperties($page) {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -1240,7 +1246,7 @@ class ProductServices
         $last_char = strlen($domain) - 1;
 
         if (!empty($domain)) {
-            if ($domain[$last_char] == '/') {
+            if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
                 $domain = substr($domain, 0, -1);
             }
         }

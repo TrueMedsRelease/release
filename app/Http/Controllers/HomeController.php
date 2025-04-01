@@ -57,7 +57,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -151,7 +151,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -221,7 +221,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -291,7 +291,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -356,7 +356,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -463,7 +463,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -589,7 +589,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -651,7 +651,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -713,7 +713,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -775,7 +775,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -837,7 +837,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -899,7 +899,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -985,7 +985,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -1184,7 +1184,7 @@ class HomeController extends Controller
     {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -1241,7 +1241,7 @@ class HomeController extends Controller
     {
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -1309,7 +1309,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -1415,7 +1415,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
@@ -1725,7 +1725,7 @@ class HomeController extends Controller
 
         $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
-        if ($domain[$last_char] == '/') {
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
