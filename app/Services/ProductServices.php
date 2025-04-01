@@ -845,9 +845,9 @@ class ProductServices
 
     public static function SearchProduct($search_text, $is_autocomplete, $design)
     {
-        if (str_contains($search_text, ' ')) {
-            $search_text = '(' . $search_text . ')';
-        }
+        // if (str_contains($search_text, ' ')) {
+        //     $search_text = '(' . $search_text . ')';
+        // }
 
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
