@@ -733,8 +733,18 @@ class ProductServices
         $product['disease'] = $product_disease;
         $product['analog'] = json_decode(json_encode($analogs), true);
         $product['sinonim'] = $product['sinonim'];
-        $path = public_path() . '/languages/' . App::currentLocale() . '/tablets_descriptions/' . $product['product_info_file_path'];
-        $product['full_desc'] = File::exists($path) ? File::get($path) : '';
+
+        // $path = public_path() . '/languages/' . App::currentLocale() . '/tablets_descriptions/' . $product['product_info_file_path'];
+        $path = public_path() . '/language_codes/' . App::currentLocale() . '/' . $product['image'] . '.html';
+        $path_en = public_path() . '/language_codes/en/' . $product['image'] . '.html';
+        if (File::exists($path)) {
+            $product['full_desc'] = File::get($path);
+        } else if (File::exists($path_en)) {
+            $product['full_desc'] = File::get($path_en);
+        } else {
+            $product['full_desc'] = '';
+        }
+
         $product['packs'] = $packs;
         $product['type'] = $type;
         $product['rec_name'] = $rec_name;
