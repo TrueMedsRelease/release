@@ -53,7 +53,7 @@
                             @else
                                 <picture>
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                                 </picture>
                             @endif
                         </div>
@@ -95,7 +95,7 @@
                             @else
                                 <picture>
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                                 </picture>
                             @endif
                         </div>

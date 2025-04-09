@@ -32,7 +32,7 @@
                         <img loading="lazy" class="product-about__img" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                     @else
                         <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                        <img loading="lazy" class="product-about__img" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                        <img loading="lazy" class="product-about__img" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                     @endif
                 </picture>
                 <ul class="product-about__characteristics">
@@ -259,7 +259,7 @@
                     <div class="product-card__image">
                         <picture>
                             <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                            <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                            <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}">
                         </picture>
                     </div>
                 </div>

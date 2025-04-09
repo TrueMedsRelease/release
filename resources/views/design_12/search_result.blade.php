@@ -31,7 +31,7 @@
                             @else
                                 <picture style="max-height: 175px; max-width: 175px;">
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                                 </picture>
                             @endif
                         </div>
@@ -76,7 +76,7 @@
                             @else
                                 <picture style="max-height: 175px; max-width: 175px;">
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                                 </picture>
                             @endif
                         </div>

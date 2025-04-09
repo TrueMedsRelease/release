@@ -18,7 +18,7 @@
             @else
                 <picture>
                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                 </picture>
             @endif
 			{{-- @if ($product['image'] != 'gift-card')
@@ -27,7 +27,7 @@
                     <img loading="lazy" src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
                 </picture>
             @else
-                <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
+                <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['alt'] }}">
             @endif --}}
 		</div>
 		<div class="product">
@@ -190,7 +190,7 @@
             <a href="{{ route('home.product', $product_data['url']) }}" class="img">
                 <picture>
                     <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                    <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                    <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}">
                 </picture>
             </a>
             <div class="info">

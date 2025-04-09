@@ -336,7 +336,7 @@
                                         <div class="product_img">
                                             <picture>
                                                 <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                                                <img src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                                                <img src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}">
                                             </picture>
                                         </div>
                                     </a>

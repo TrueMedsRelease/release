@@ -129,27 +129,54 @@
                 <span class="close"></span>
                 <div class="menu_top">
                     <ul>
-                        <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
+                        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                            @php
+                                $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+                            @endphp
+                            <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
                                 alt=""><a class="categories_a">{{ __('text.common_categories_menu') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                        </li>
-                        <li><a href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                        </li>
-                        <li><a href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
-                        <li><a
-                                href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                        </li>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                            <li><a
+                                    href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                            </li>
+                        @else
+                            <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
+                                alt=""><a class="categories_a">{{ __('text.common_categories_menu') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                            <li><a
+                                    href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <aside class="categories-sidebar hide">
@@ -548,38 +575,73 @@
         <div class="item-box">
             <div class="footer-info">
                 <div class="info-column">
-                    <div class="item">
-                        <ul class="footer-nav">
-                            <li><a
-                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                            </li>
-                            <li><a href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul class="footer-nav">
-                            <li><a
-                                    href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <a href="{{ route('home.affiliate') }}"
-                            class="btn btn-primary">{{ __('text.common_affiliate_main_menu_button') }}</a>
-                    </div>
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                                </li>
+                                <li><a href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}"
+                                class="btn btn-primary">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        </div>
+                    @else
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                                </li>
+                                <li><a href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <a href="{{ route('home.affiliate', '') }}"
+                                class="btn btn-primary">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        </div>
+                    @endif
                 </div>
                 <div class="copyright">
                     <p>

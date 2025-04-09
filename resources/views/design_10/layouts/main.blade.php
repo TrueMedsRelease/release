@@ -335,27 +335,26 @@
             <nav class="nav header-nav">
                 <div class="nav-container">
                     <ul class="nav__list">
-                        <li class="nav__item"><a class="nav__link is-active"
-                                href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                        </li>
-                        <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                        </li>
-                        <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a>
-                        </li>
-                        <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                        </li>
-                        <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                        </li>
-                        <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                        </li>
-                        <li class="nav__item"><a class="nav__link"
-                                href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                        </li>
+                        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                            @php
+                                $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+                            @endphp
+                            <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                        @else
+                            <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                            <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                        @endif
                     </ul>
                 </div><button class="greedy-button" aria-label="Show dropdown"><span class="icon"><svg
                             width="1em" height="1em" fill="currentColor">
@@ -700,34 +699,38 @@
                     <div class="logo__title">TrueMeds</div>
                     <div class="logo__text">Discount Store. Since 1998</div>
                 </a>
-                <nav class="nav footer-nav">
-                    <div class="nav-container">
-                        <ul class="nav__list">
-                            <li class="nav__item"><a class="nav__link is-active"
-                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                            </li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                            </li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a>
-                            </li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                            </li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                            </li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                            </li>
-                            <li class="nav__item"><a class="nav__link"
-                                    href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav><a class="button"
-                    href="{{ route('home.affiliate') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+
+                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                    <nav class="nav footer-nav">
+                        <div class="nav-container">
+                            <ul class="nav__list">
+                                <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <a class="button" href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                @else
+                    <nav class="nav footer-nav">
+                        <div class="nav-container">
+                            <ul class="nav__list">
+                                <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <a class="button" href="{{ route('home.affiliate', '') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                @endif
             </div>
             <!-- Copyrights-->
             <div class="footer__copyrights">

@@ -14,7 +14,7 @@
 			@if ($product['image'] != 'gift-card')
                 <picture>
                     <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
-                    <img loading="lazy" src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
+                    <img loading="lazy" src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['alt'] }}">
                 </picture>
             @else
                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">

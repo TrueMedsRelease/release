@@ -118,13 +118,26 @@
                     <button type="button" class="menu__icon icon-menu"><span></span></button>
                     <nav class="menu__body">
                         <ul class="menu__list">
-                            <li class="menu__item best"><a class="menu__link" data-bestsellers>{{__('text.common_best_sellers_main_menu_item')}}</a></li>
-                            <li class="menu__item"><a href="{{ route('home.about') }}" class="menu__link">{{__('text.common_about_us_main_menu_item')}}</a></li>
-                            <li class="menu__item"><a href="{{ route('home.help') }}" class="menu__link">{{__('text.common_help_main_menu_item')}}</a></li>
-                            <li class="menu__item"><a href="{{ route('home.testimonials') }}" class="menu__link">{{__('text.common_testimonials_main_menu_item')}}</a></li>
-                            <li class="menu__item"><a href="{{ route('home.delivery') }}" class="menu__link">{{__('text.common_shipping_main_menu_item')}}</a></li>
-                            <li class="menu__item"><a href="{{ route('home.moneyback') }}" class="menu__link">{{__('text.common_moneyback_main_menu_item')}}</a></li>
-                            <li class="menu__item"><a href="{{ route('home.contact_us') }}" class="menu__link">{{__('text.common_contact_us_main_menu_item')}}</a></li>
+                            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                                @php
+                                    $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+                                @endphp
+                                <li class="menu__item best"><a class="menu__link" data-bestsellers>{{__('text.common_best_sellers_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.about', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_about_us_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.help', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_help_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_testimonials_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.delivery', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_shipping_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_contact_us_main_menu_item')}}</a></li>
+                            @else
+                                <li class="menu__item best"><a class="menu__link" data-bestsellers>{{__('text.common_best_sellers_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.about', '') }}" class="menu__link">{{__('text.common_about_us_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.help', '') }}" class="menu__link">{{__('text.common_help_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.testimonials', '') }}" class="menu__link">{{__('text.common_testimonials_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.delivery', '') }}" class="menu__link">{{__('text.common_shipping_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.moneyback', '') }}" class="menu__link">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                                <li class="menu__item"><a href="{{ route('home.contact_us', '') }}" class="menu__link">{{__('text.common_contact_us_main_menu_item')}}</a></li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
@@ -887,23 +900,43 @@
         <div class="footer__top">
             <div class="footer__container">
                 <div class="top-footer">
-                    <ul class="top-footer__menu menu-top-footer">
-                        <li class="menu-top-footer__item"><a href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a></li>
-                        <li class="menu-top-footer__item"><a href="{{ route('home.about') }}">{{__('text.common_about_us_main_menu_item')}}</a></li>
-                        <li class="menu-top-footer__item"><a href="{{ route('home.help') }}">{{__('text.common_help_main_menu_item')}}</a></li>
-                        <li class="menu-top-footer__item"><a href="{{ route('home.testimonials') }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
-                        <li class="menu-top-footer__item"><a href="{{ route('home.delivery') }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
-                        <li class="menu-top-footer__item"><a href="{{ route('home.moneyback') }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
-                        <li class="menu-top-footer__item"><a href="{{ route('home.contact_us') }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
-                    </ul>
-                    <a href="{{ route('home.affiliate') }}" class="top-footer__affiliate">
-                        <div class="top-footer__icon">
-                            <svg width="22" height="15">
-                                <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-affiliate") }}"></use>
-                            </svg>
-                        </div>
-                        <span>{{__('text.common_affiliate_main_menu_button')}}</span>
-                    </a>
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <ul class="top-footer__menu menu-top-footer">
+                            <li class="menu-top-footer__item"><a href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{__('text.common_about_us_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{__('text.common_help_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
+                        </ul>
+                        <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}" class="top-footer__affiliate">
+                            <div class="top-footer__icon">
+                                <svg width="22" height="15">
+                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-affiliate") }}"></use>
+                                </svg>
+                            </div>
+                            <span>{{__('text.common_affiliate_main_menu_button')}}</span>
+                        </a>
+                    @else
+                        <ul class="top-footer__menu menu-top-footer">
+                            <li class="menu-top-footer__item"><a href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.about', '') }}">{{__('text.common_about_us_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.help', '') }}">{{__('text.common_help_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.testimonials', '') }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.delivery', '') }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.moneyback', '') }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                            <li class="menu-top-footer__item"><a href="{{ route('home.contact_us', '') }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
+                        </ul>
+                        <a href="{{ route('home.affiliate', '') }}" class="top-footer__affiliate">
+                            <div class="top-footer__icon">
+                                <svg width="22" height="15">
+                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-affiliate") }}"></use>
+                                </svg>
+                            </div>
+                            <span>{{__('text.common_affiliate_main_menu_button')}}</span>
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

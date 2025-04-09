@@ -250,7 +250,7 @@
                     <div class="product_img_top">
                         <picture>
                             <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                            <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" width="60">
+                            <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}" width="60">
                         </picture>
                     </div>
                     <div class="product_text">
