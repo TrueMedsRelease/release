@@ -15,10 +15,11 @@ use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\File;
 
 class HomeController extends Controller
 {
-    public function index() : View
+    public function index()
     {
         StatisticService::SendStatistic('index');
         $design = session('design') ? session('design') : config('app.design');
@@ -430,6 +431,8 @@ class HomeController extends Controller
 
         StatisticService::SendStatistic($product);
         $product_name = $product;
+
+        $product = str_replace(['Buying_', '_online'], '', $product);
 
         $design = session('design') ? session('design') : config('app.design');
         $page_properties = ProductServices::getProductProperties($product);
@@ -1112,6 +1115,12 @@ class HomeController extends Controller
     public function set_images($pill) {
         if ($pill) {
             $pill = str_replace('&', '-', (str_replace(' ', '-', strtolower(trim($pill)))));
+
+            if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
+                $parts = explode('_', $pill, 2);
+                $pill = $parts[1];
+            }
+
             $safari = false;
 
             if (str_contains($_SERVER['HTTP_USER_AGENT'], 'iPhone') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPad') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPod') || str_contains($_SERVER['HTTP_USER_AGENT'], 'Macintosh')){

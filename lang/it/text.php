@@ -722,4 +722,7 @@ return [
     "gift_card_title" => "Come funziona?",
     "gift_card_text1" => "Seleziona il taglio desiderato e paga con la carta. Diamo + 10% come bonus sul taglio. Puoi dare e trasferire la carta a chiunque.",
     "gift_card_text2" => "Seleziona qualsiasi prodotto per l'importo in base al taglio (+ 10% di bonus) e inserisci i dettagli della carta regalo nella pagina di pagamento e l'acquisto verrà effettuato.",
+
+    "text_aff_domain_1" => "Acquistare",
+    "text_aff_domain_2" => "online",
 ];

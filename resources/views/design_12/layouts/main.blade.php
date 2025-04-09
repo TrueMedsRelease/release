@@ -313,13 +313,26 @@
                         </button>
                         <div class="header-nav greedy-nav">
                             <div class="greedy-items">
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a> </div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></div>
+                                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                                    @php
+                                        $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+                                    @endphp
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a> </div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></div>
+                                @else
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a> </div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></div>
+                                @endif
                             </div>
                             <div class="dropdown" data-fixed-dropdown>
                                 <button class="dropdown-toggler link greedy-button" aria-label="Show dropdown">
@@ -619,25 +632,47 @@
 
         <footer class="footer">
             <div class="container">
-                <div class="footer__wrapper">
-                    <a class="footer__logo" href="{{ route('home.index') }}">
-                        <img src="{{ asset($design . '/svg/logo.svg') }}" width="152" height="32" alt="Site logo">
-                    </a>
-                    <nav class="nav footer-nav">
-                        <div class="nav-container">
-                            <ul class="nav__list">
-                                <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
-                                <li class="nav__item"><a class="nav__link" href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
-                                <li class="nav__item"><a class="nav__link" href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
-                                <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
-                                <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
-                                <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
-                                <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <a class="footer__affiliate-button button" href="{{ route('home.affiliate') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
-                </div>
+                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                    <div class="footer__wrapper">
+                        <a class="footer__logo" href="{{ route('home.index') }}">
+                            <img src="{{ asset($design . '/svg/logo.svg') }}" width="152" height="32" alt="Site logo">
+                        </a>
+                        <nav class="nav footer-nav">
+                            <div class="nav-container">
+                                <ul class="nav__list">
+                                    <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                                </ul>
+                            </div>
+                        </nav>
+                        <a class="footer__affiliate-button button" href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                    </div>
+                @else
+                    <div class="footer__wrapper">
+                        <a class="footer__logo" href="{{ route('home.index') }}">
+                            <img src="{{ asset($design . '/svg/logo.svg') }}" width="152" height="32" alt="Site logo">
+                        </a>
+                        <nav class="nav footer-nav">
+                            <div class="nav-container">
+                                <ul class="nav__list">
+                                    <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                                    <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                                </ul>
+                            </div>
+                        </nav>
+                        <a class="footer__affiliate-button button" href="{{ route('home.affiliate', '') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                    </div>
+                @endif
                 <div class="footer__copyrights vw-container">
                     {{ __('text.license_text_license1_1') }}
                     {{ $domain }}

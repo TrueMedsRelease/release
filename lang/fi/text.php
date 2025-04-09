@@ -592,4 +592,7 @@ return [
     "gift_card_title" => "Miten se toimii?",
     "gift_card_text1" => "Valitse haluamasi nimellisarvo ja maksa kortilla. Annamme + 10% bonuksena nimellisarvolle. Voit antaa ja siirtää kortin kenelle tahansa.",
     "gift_card_text2" => "Valitse mikä tahansa tuote nimellisarvosi mukaiselle summalle (+ 10% bonus) ja syötä lahjakortin tiedot maksusivulle ja ostos tehdään.",
+
+    "text_aff_domain_1" => "Osto",
+    "text_aff_domain_2" => "verkossa",
 ];

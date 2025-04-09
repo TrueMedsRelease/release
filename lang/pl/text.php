@@ -587,4 +587,7 @@ return [
     "gift_card_title" => "Jak to działa?",
     "gift_card_text1" => "Wybierz wymagany nominał i zapłać kartą. Dajemy + 10% jako bonus do nominału. Możesz podarować i przekazać kartę dowolnej osobie.",
     "gift_card_text2" => "Wybierz dowolny produkt o wartości zgodnej z Twoim nominałem (+ 10% bonusu) i wprowadź dane karty podarunkowej na stronie płatności, a zakup zostanie zrealizowany.",
+
+    "text_aff_domain_1" => "Zakupy",
+    "text_aff_domain_2" => "online",
 ];
