@@ -821,9 +821,12 @@ class ProductServices
             $product['full_desc'] = '';
         }
 
+        $product['alt'] = $product['image'];
+
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
             $product['image'] = $domainWithoutZone.'_'.$product['image'];
+            $product['alt'] = __('text.text_aff_domain_1').'_'.$product['name'].'_'.__('text.text_aff_domain_2');
         }
 
         $product['packs'] = $packs;
