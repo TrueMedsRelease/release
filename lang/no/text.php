@@ -591,5 +591,5 @@ return [
     "gift_card_text2" => "Velg et hvilket som helst produkt for beløpet i henhold til valøren din (+ 10 % bonus) og skriv inn gavekortdetaljene på betalingssiden og kjøpet vil bli utført.",
 
     "text_aff_domain_1" => "Kjop",
-    "text_aff_domain_2" => "på_nettet",
+    "text_aff_domain_2" => "pa_nettet",
 ];
