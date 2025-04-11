@@ -262,7 +262,14 @@ class ProductServices
             }
 
             if (isset($category_desc[$category->id])) {
-                $categories[$category->id]['url'] = $category->url;
+                $category_url = $category->url;
+
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    $category_url = 'Buying_' . $category_url . "_online";
+                } else {
+                    $category_url = __('text.text_aff_domain_1') . '_' . $category_url . "_" . __('text.text_aff_domain_2');
+                }
+                $categories[$category->id]['url'] = $category_url;
                 $categories[$category->id]['name'] = $category_desc[$category->id];
                 $categories[$category->id]['products'] = $products;
             }
