@@ -583,6 +583,6 @@ return [
     "gift_card_text1" => "Selectați valoarea nominală necesară și plătiți cu cardul. Oferim + 10% ca bonus la denumire. Puteți da și transfera cardul oricui.",
     "gift_card_text2" => "Selectați orice produs pentru suma conform cu denominația dumneavoastră (+ 10% bonus) și introduceți detaliile cardului cadou pe pagina de plată și achiziția se va face.",
 
-    "text_aff_domain_1" => "Cumpărare",
+    "text_aff_domain_1" => "Cumparare",
     "text_aff_domain_2" => "online",
 ];

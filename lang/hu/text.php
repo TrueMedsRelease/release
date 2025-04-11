@@ -593,6 +593,6 @@ return [
     "gift_card_text1" => "Válassza ki a kívánt címletet és fizessen kártyával. A címletre + 10%-ot adunk bónuszként. A kártyát bárkinek átadhatja és átruházhatja.",
     "gift_card_text2" => "Válasszon tetszőleges terméket a címletének megfelelő összegért (+ 10% bónusz), és adja meg az ajándékkártya adatait a fizetési oldalon, és már megtörténik a vásárlás.",
 
-    "text_aff_domain_1" => "Vásárlás",
+    "text_aff_domain_1" => "Vasarlas",
     "text_aff_domain_2" => "online",
 ];
