@@ -69,7 +69,7 @@ class ProductServices
             $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
 
             if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $products[$i]['url'] = 'Buying_'.$products_desc[$products[$i]['id']]['url'].'_online';
                 } else {
                     $products[$i]['url'] = __('text.text_aff_domain_1') . '_' . $products_desc[$products[$i]['id']]['url'] . '_' . __('text.text_aff_domain_2');
@@ -84,7 +84,7 @@ class ProductServices
 
                 $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $aktive_url = 'Buying_' . $aktive_url . "_online";
                 } else {
                     $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
@@ -204,7 +204,7 @@ class ProductServices
                     $product['desc'] = $products_desc[$product['id']]['desc'];
 
                     if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                             $product['url'] = 'Buying_'.$products_desc[$product['id']]['url'].'_online';
                         } else {
                             $product['url'] = __('text.text_aff_domain_1') . '_' . $products_desc[$product['id']]['url'] . '_' . __('text.text_aff_domain_2');
@@ -228,7 +228,7 @@ class ProductServices
 
                         $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
-                        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                             $aktive_url = 'Buying_' . $aktive_url . "_online";
                         } else {
                             $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
@@ -264,7 +264,7 @@ class ProductServices
             if (isset($category_desc[$category->id])) {
                 $category_url = $category->url;
 
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $category_url = 'Buying_' . $category_url . "_online";
                 } else {
                     $category_url = __('text.text_aff_domain_1') . '_' . $category_url . "_" . __('text.text_aff_domain_2');
@@ -455,7 +455,7 @@ class ProductServices
                 $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
 
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $products[$i]['url'] = 'Buying_'.$products_desc[$products[$i]['id']]['url'].'_online';
                     } else {
                         $products[$i]['url'] = __('text.text_aff_domain_1') . '_' . $products_desc[$products[$i]['id']]['url'] . '_' . __('text.text_aff_domain_2');
@@ -478,7 +478,7 @@ class ProductServices
 
                     $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $aktive_url = 'Buying_' . $aktive_url . "_online";
                     } else {
                         $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
@@ -549,7 +549,7 @@ class ProductServices
                 $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
 
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $products[$i]['url'] = 'Buying_'.$products_desc[$products[$i]['id']]['url'].'_online';
                     } else {
                         $products[$i]['url'] = __('text.text_aff_domain_1') . '_' . $products_desc[$products[$i]['id']]['url'] . '_' . __('text.text_aff_domain_2');
@@ -570,7 +570,7 @@ class ProductServices
 
                     $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $aktive_url = 'Buying_' . $aktive_url . "_online";
                     } else {
                         $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
@@ -635,7 +635,7 @@ class ProductServices
                 $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
 
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $products[$i]['url'] = 'Buying_'.$products_desc[$products[$i]['id']]['url'].'_online';
                     } else {
                         $products[$i]['url'] = __('text.text_aff_domain_1') . '_' . $products_desc[$products[$i]['id']]['url'] . '_' . __('text.text_aff_domain_2');
@@ -656,7 +656,7 @@ class ProductServices
 
                     $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $aktive_url = 'Buying_' . $aktive_url . "_online";
                     } else {
                         $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
@@ -729,7 +729,7 @@ class ProductServices
 
                 $category_url = $category->url;
 
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $category_url = 'Buying_'.$category_url.'_online';
                 } else {
                     $category_url = __('text.text_aff_domain_1') . '_' . $category_url . '_' . __('text.text_aff_domain_2');
@@ -763,7 +763,7 @@ class ProductServices
 
             $disease_url = str_replace(' ', '-', $disease['disease']);
 
-            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                 $disease_url = 'Buying_'.$disease_url.'_online';
             } else {
                 $disease_url = __('text.text_aff_domain_1') . '_' . $disease_url . '_' . __('text.text_aff_domain_2');
@@ -832,7 +832,7 @@ class ProductServices
                 $sinonim_url = strtolower(htmlentities(trim(str_replace('&', '-', (str_replace(' ', '-', str_replace("\u{FEFF}", '', $ps)))))));
 
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $new_sinonim_url = 'Buying_'.$sinonim_url.'_online';
                     } else {
                         $new_sinonim_url = __('text.text_aff_domain_1') . '_' . $sinonim_url . '_' . __('text.text_aff_domain_2');
@@ -901,7 +901,7 @@ class ProductServices
             $rec_name = $rec_info->name;
 
             if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $rec_url = 'Buying_'.$rec_info->url.'_online';
                 } else {
                     $rec_url = __('text.text_aff_domain_1') . '_' . $rec_info->url . '_' . __('text.text_aff_domain_2');
@@ -921,7 +921,7 @@ class ProductServices
 
                 $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $aktive_url = 'Buying_' . $aktive_url . "_online";
                 } else {
                     $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
@@ -939,7 +939,7 @@ class ProductServices
 
         foreach ($product['analog'] as $i => $analog) {
             if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $product['analog'][$i]['url'] = 'Buying_'.$product['analog'][$i]['url'].'_online';
                 } else {
                     $product['analog'][$i]['url'] = __('text.text_aff_domain_1') . '_' . $product['analog'][$i]['url'] . '_' . __('text.text_aff_domain_2');
@@ -1069,7 +1069,7 @@ class ProductServices
         foreach($products as $product)
         {
             if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $tips .= $product->name . "||Buying_" . $product->url . "_online.html\n";
                 } else {
                     $tips .= $product->name . "||" . __('text.text_aff_domain_1') . '_' . $product->url . '_' . __('text.text_aff_domain_2') . ".html\n";
@@ -1242,7 +1242,7 @@ class ProductServices
                 $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
 
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $products[$i]['url'] = "Buying_".$products_desc[$products[$i]['id']]['url']."_online";
                     } else {
                         $products[$i]['url'] = __('text.text_aff_domain_1') . '_' . $products_desc[$products[$i]['id']]['url'] . '_' . __('text.text_aff_domain_2');
@@ -1263,7 +1263,7 @@ class ProductServices
 
                     $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $aktive_url = 'Buying_' . $aktive_url . "_online";
                     } else {
                         $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
@@ -1339,7 +1339,7 @@ class ProductServices
         {
             $url = $item->url;
 
-            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                 $url = 'Buying_' . $url . "_online";
             } else {
                 $url = __('text.text_aff_domain_1') . '_' . $url . "_" . __('text.text_aff_domain_2');
@@ -1366,7 +1366,7 @@ class ProductServices
         {
             $url = str_replace(' ', '-', strtolower($item->disease));
 
-            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                 $url = 'Buying_' . $url . "_online";
             } else {
                 $url = __('text.text_aff_domain_1') . '_' . $url . "_" . __('text.text_aff_domain_2');
@@ -1408,7 +1408,7 @@ class ProductServices
             {
                 $url = str_replace(' ', '-', (Str::lower($item)));
 
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $url = 'Buying_' . $url . "_online";
                 } else {
                     $url = __('text.text_aff_domain_1') . '_' . $url . "_" . __('text.text_aff_domain_2');
@@ -1459,7 +1459,7 @@ class ProductServices
             foreach($result as $item)
             {
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $tips .= $item . "||Buying_" . Str::lower(str_replace(' ', '-', $item)) . "_online.html\n";
                     } else {
                         $tips .= $item . "||" . __('text.text_aff_domain_1') . '_' . Str::lower(str_replace(' ', '-', $item)) . '_' . __('text.text_aff_domain_2') . ".html\n";
@@ -2018,7 +2018,7 @@ class ProductServices
             if (isset($product_data[$product_id])) {
 
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                         $new_rec_url = 'Buying_'.$product_data[$product_id]->url.'_online';
                     } else {
                         $new_rec_url = __('text.text_aff_domain_1') . '_' . $product_data[$product_id]->url . '_' . __('text.text_aff_domain_2');
@@ -2046,7 +2046,7 @@ class ProductServices
 
                 $aktive_url = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($val))));
 
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi'])) {
+                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'fi', 'ja'])) {
                     $aktive_url = 'Buying_' . $aktive_url . "_online";
                 } else {
                     $aktive_url = __('text.text_aff_domain_1') . '_' . $aktive_url . "_" . __('text.text_aff_domain_2');
