@@ -43,7 +43,7 @@
 				<div class="info">
 					<span>{{__('text.product_diseases')}}</span>
 					@foreach ($product['disease'] as $disease)
-						<strong><a href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">{{ ucfirst($disease) }}</a></strong>
+						<strong><a href="{{ route('home.disease', $disease['url']) }}">{{ ucfirst($disease['name']) }}</a></strong>
                     @endforeach
 				</div>
             @endif

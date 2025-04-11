@@ -75,8 +75,8 @@
                             <ul>
                                 <li>
                                     @foreach ($product['disease'] as $disease)
-                                        <a href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}" class="product-about__characteristic-meaning product-about__characteristic-meaning--link" >
-                                            {{ ucfirst($disease) }}
+                                        <a href="{{ route('home.disease', $disease['url']) }}" class="product-about__characteristic-meaning product-about__characteristic-meaning--link" >
+                                            {{ ucfirst($disease['name']) }}
                                         </a>
                                     @endforeach
                                 </li>
