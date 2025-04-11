@@ -719,5 +719,5 @@ return [
     "gift_card_text2" => "Sélectionnez n'importe quel produit pour le montant correspondant à votre valeur (+ 10 % de bonus) et saisissez les détails de la carte cadeau sur la page de paiement et l'achat sera effectué.",
 
     "text_aff_domain_1" => "Acheter",
-    "text_aff_domain_2" => "en ligne",
+    "text_aff_domain_2" => "en_ligne",
 ];
