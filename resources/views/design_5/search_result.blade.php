@@ -241,9 +241,19 @@
             <h2 class="title-page no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
             <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
             <div class="no_product_text" style="margin-bottom: 20px">{{ __("text.search_product_request") }}</div>
-            <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us') }}'">
-                {{ __("text.common_contact_us_main_menu_item") }}
-            </div>
+            
+            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                @php
+                    $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+                @endphp
+                <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us', '_' . $domainWithoutZone) }}'">
+                    {{ __("text.common_contact_us_main_menu_item") }}
+                </div>
+            @else
+                <div class="button" id="go_to_contact_us" onclick="location.href = '{{ route('home.contact_us', '') }}'">
+                    {{ __("text.common_contact_us_main_menu_item") }}
+                </div>
+            @endif
 
 
             {{-- <h2 class="title-page">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h2> --}}

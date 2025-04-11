@@ -25,9 +25,20 @@
         <h2 class="page__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
         <div class="no_product_text" style="margin-bottom: 10px; font-size: 16px;">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
         <div class="no_product_text" style="margin-bottom: 20px; font-size: 16px;">{{ __("text.search_product_request") }}</div>
-        <div class="button" id="go_to_contact_us" style="margin-bottom: 20px;" onclick="location.href = '{{ route('home.contact_us') }}'">
-            {{ __("text.common_contact_us_main_menu_item") }}
-        </div>
+
+        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+            @php
+                $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+            @endphp
+            <div class="button" id="go_to_contact_us" style="margin-bottom: 20px" onclick="location.href = '{{ route('home.contact_us', '_' . $domainWithoutZone) }}'">
+                {{ __("text.common_contact_us_main_menu_item") }}
+            </div>
+        @else
+            <div class="button" id="go_to_contact_us" style="margin-bottom: 20px" onclick="location.href = '{{ route('home.contact_us', '') }}'">
+                {{ __("text.common_contact_us_main_menu_item") }}
+            </div>
+        @endif
+        
         <h2 class="page__title title">{{__('text.search_result_best_for_search')}}</h2>
         <div class="products__items">
             @foreach ($bestsellers as $product)

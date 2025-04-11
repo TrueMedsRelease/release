@@ -1226,13 +1226,25 @@ class ProductServices
             }
         }
 
-        $products = Product::query()
-            ->where('is_showed', '=', 1)
-            ->whereIn('id', $product_id)
-            ->orderByRaw('FIELD(id, ' . implode(',', $product_id) . ')')
-            // ->orderBy('main_order', 'asc')
-            ->get(['id', 'image', 'aktiv'])
-            ->toArray();
+        if (!empty($product_id)) {
+            $products = Product::query()
+                ->where('is_showed', '=', 1)
+                ->whereIn('id', $product_id)
+                ->orderByRaw('FIELD(id, ' . implode(',', $product_id) . ')')
+                // ->orderBy('main_order', 'asc')
+                ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        } else {
+            $products = [];
+        }
+
+        // $products = Product::query()
+        //     ->where('is_showed', '=', 1)
+        //     ->whereIn('id', $product_id)
+        //     ->orderByRaw('FIELD(id, ' . implode(',', $product_id) . ')')
+        //     // ->orderBy('main_order', 'asc')
+        //     ->get(['id', 'image', 'aktiv'])
+        //     ->toArray();
 
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
