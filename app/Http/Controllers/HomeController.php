@@ -1068,12 +1068,17 @@ class HomeController extends Controller
 
         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
             $back_url = Redirect::back()->getTargetUrl();
-            $new_text_1 = __('text.text_aff_domain_1', [], $locale);
-            $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+
+            if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $new_text_1 = __('text.text_aff_domain_1', [], 'en');
+                $new_text_2 = __('text.text_aff_domain_2', [], 'en');
+            } else {
+                $new_text_1 = __('text.text_aff_domain_1', [], $locale);
+                $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+            }
 
             $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
             $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
-
 
             return Redirect::to($back_url);
         } else {
@@ -1092,12 +1097,16 @@ class HomeController extends Controller
                 $back_url = Redirect::back()->getTargetUrl();
             }
 
-            $new_text_1 = __('text.text_aff_domain_1', [], $locale);
-            $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+            if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $new_text_1 = __('text.text_aff_domain_1', [], 'en');
+                $new_text_2 = __('text.text_aff_domain_2', [], 'en');
+            } else {
+                $new_text_1 = __('text.text_aff_domain_1', [], $locale);
+                $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+            }
 
             $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
             $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
-
 
             return Redirect::to($back_url);
         } else {
