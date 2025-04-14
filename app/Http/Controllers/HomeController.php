@@ -1096,8 +1096,13 @@ class HomeController extends Controller
                 $new_text_2 = __('text.text_aff_domain_2', [], $locale);
             }
 
-            $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
-            $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $back_url = str_replace(__('text.text_aff_domain_1', [], 'en'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2', [], 'en'), $new_text_2, $back_url);
+            } else {
+                $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+            }
 
             return Redirect::to($back_url);
         } else {
@@ -1124,8 +1129,13 @@ class HomeController extends Controller
                 $new_text_2 = __('text.text_aff_domain_2', [], $locale);
             }
 
-            $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
-            $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $back_url = str_replace(__('text.text_aff_domain_1', [], 'en'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2', [], 'en'), $new_text_2, $back_url);
+            } else {
+                $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+            }
 
             return Redirect::to($back_url);
         } else {
