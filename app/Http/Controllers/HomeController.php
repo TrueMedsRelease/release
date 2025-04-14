@@ -199,8 +199,11 @@ class HomeController extends Controller
 
     public function active($active)
     {
-
-        $active = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $active);
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $active = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $active);
+        } else {
+            $active = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $active);
+        }
 
         StatisticService::SendStatistic('active');
         $design = session('design') ? session('design') : config('app.design');
@@ -272,7 +275,11 @@ class HomeController extends Controller
 
     public function category($category) : View
     {
-        $category = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $category);
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $category = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $category);
+        } else {
+            $category = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $category);
+        }
 
         StatisticService::SendStatistic('category');
         $design = session('design') ? session('design') : config('app.design');
@@ -343,7 +350,11 @@ class HomeController extends Controller
 
     public function disease($disease) : View
     {
-        $disease = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $disease);
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $disease = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $disease);
+        } else {
+            $disease = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $disease);
+        }
 
         StatisticService::SendStatistic('disease');
         $design = session('design') ? session('design') : config('app.design');
@@ -440,7 +451,11 @@ class HomeController extends Controller
         StatisticService::SendStatistic($product);
         $product_name = $product;
 
-        $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $product = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $product);
+        } else {
+            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
+        }
 
         $design = session('design') ? session('design') : config('app.design');
         $page_properties = ProductServices::getProductProperties($product);
@@ -532,7 +547,11 @@ class HomeController extends Controller
             return redirect()->route('home.product', $product);
         }
 
-        $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $product = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $product);
+        } else {
+            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
+        }
 
         $product = ProductServices::GetProductInfoByUrl($product, $design);
         $agent = new Agent();
