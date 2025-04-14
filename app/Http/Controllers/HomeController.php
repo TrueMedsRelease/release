@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 
 class HomeController extends Controller
 {
@@ -1064,17 +1065,47 @@ class HomeController extends Controller
     public function language($locale)
     {
         session(['locale' => $locale]);
-        return Redirect::back();
+
+        if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
+            $back_url = Redirect::back()->getTargetUrl();
+            $new_text_1 = __('text.text_aff_domain_1', [], $locale);
+            $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+
+            $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
+            $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+
+
+            return Redirect::to($back_url);
+        } else {
+            return Redirect::back();
+        }
     }
 
     public function language_with_url($url, $locale)
     {
         session(['locale' => $locale]);
 
-        if ($url) {
-            return redirect('/' . $url);
+        if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
+            if ($url) {
+                $back_url = $url;
+            } else {
+                $back_url = Redirect::back()->getTargetUrl();
+            }
+
+            $new_text_1 = __('text.text_aff_domain_1', [], $locale);
+            $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+
+            $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
+            $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+
+
+            return Redirect::to($back_url);
         } else {
-            return Redirect::back();
+            if ($url) {
+                return redirect('/' . $url);
+            } else {
+                return Redirect::back();
+            }
         }
     }
 
