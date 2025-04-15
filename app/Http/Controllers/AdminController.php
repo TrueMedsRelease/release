@@ -259,6 +259,14 @@ class AdminController extends Controller
             ];
         }
 
+        if (!preg_match('/<script\b[^>]*>.*?<\/script>/is', $pixel_text)) {
+            $has_error = true;
+            $error = [
+                'status' => 'error',
+                'text' => 'Wrong pixel. Add tag <script>'
+            ];
+        }
+
         $pixel = DB::select("SELECT * FROM `pixel` WHERE `page` = '$page'");
 
         if (!$has_error) {
