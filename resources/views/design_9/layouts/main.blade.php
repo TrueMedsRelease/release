@@ -342,9 +342,6 @@
                                     <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link"
                                             href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
                                     </li>
-                                    {{-- <li class="menu__item" data-da=".menu__subslist, 1100, first"><a class="menu__link"
-                                        href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a>
-                                    </li> --}}
                                 @else
                                     <li class="menu__item"><a class="menu__link"
                                             href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
@@ -796,60 +793,66 @@
                         </p>
                     </div>
                 </div>
-                <div class="footer_right">
+                <div class="footer_right" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) style="flex-direction: column; gap: 20px;" @endif>
                     @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
-                        <ul class="footer__menu">
-                            <li class="footer__item"><a
-                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a>
-                            </li>
-                        </ul>
-                        <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}" class="footer__button">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        <div style="display: flex; gap: 25px;">
+                            <ul class="footer__menu">
+                                <li class="footer__item"><a
+                                        href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                            <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}" class="footer__button">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        </div>
                     @else
-                        <ul class="footer__menu">
-                            <li class="footer__item"><a
-                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                            </li>
-                            <li class="footer__item"><a
-                                    href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                            </li>
-                        </ul>
-                        <a href="{{ route('home.affiliate', '') }}" class="footer__button">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        <div style="display: flex; gap: 25px;">
+                            <ul class="footer__menu">
+                                <li class="footer__item"><a
+                                        href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                            <a href="{{ route('home.affiliate', '') }}" class="footer__button">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        </div>
+                    @endif
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <div class="sitemap_menu">
+                            <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                        </div>
                     @endif
                 </div>
                 <div class="footer_copyright bottom_license">

@@ -129,7 +129,6 @@
                                 <li class="menu__item"><a href="{{ route('home.delivery', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_shipping_main_menu_item')}}</a></li>
                                 <li class="menu__item"><a href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_moneyback_main_menu_item')}}</a></li>
                                 <li class="menu__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.common_contact_us_main_menu_item')}}</a></li>
-                                <li class="menu__item"><a href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}" class="menu__link">{{__('text.menu_title_sitemap')}}</a></li>
                             @else
                                 <li class="menu__item best"><a class="menu__link" data-bestsellers>{{__('text.common_best_sellers_main_menu_item')}}</a></li>
                                 <li class="menu__item"><a href="{{ route('home.about', '') }}" class="menu__link">{{__('text.common_about_us_main_menu_item')}}</a></li>
@@ -910,7 +909,6 @@
                             <li class="menu-top-footer__item"><a href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
                             <li class="menu-top-footer__item"><a href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
                             <li class="menu-top-footer__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
-                            <li class="menu-top-footer__item"><a href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a></li>
                         </ul>
                         <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}" class="top-footer__affiliate">
                             <div class="top-footer__icon">
@@ -940,6 +938,11 @@
                         </a>
                     @endif
                 </div>
+                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                    <div class="sitemap_menu">
+                        <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="footer__bottom">

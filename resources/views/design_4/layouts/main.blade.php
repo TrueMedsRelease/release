@@ -237,9 +237,6 @@
                                             <li class="menu__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}"
                                                     class="menu__link">{{ __('text.common_contact_us_main_menu_item') }}</a>
                                             </li>
-                                            <li class="menu__item"><a href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}"
-                                                class="menu__link">{{ __('text.menu_title_sitemap') }}</a>
-                                            </li>
                                         @else
                                             <li class="menu__item"><a href="{{ route('home.about', '') }}"
                                                     class="menu__link">{{ __('text.common_about_us_main_menu_item') }}</a>
@@ -988,9 +985,6 @@
                         <li class="footer__item"><a class="footer__link"
                                 href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
                         </li>
-                        <li class="footer__item"><a class="footer__link"
-                            href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a>
-                        </li>
                     @else
                         <li class="footer__item"><a class="footer__link"
                             href="{{ route('home.affiliate', '') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
@@ -1017,6 +1011,11 @@
                         </li>
                     @endif
                 </ul>
+                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                    <div class="sitemap_menu">
+                        <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                    </div>
+                @endif
                 <div class="licen">
                     <p class="footer__copyright">
                         {{ __('text.license_text_license1_1') }}

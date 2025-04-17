@@ -6200,3 +6200,15 @@ body::after {
   .site_info_link:hover{
     color: var(--yellow);
   }
+
+  .sitemap_menu{
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.sitemap_menu:hover{
+    text-decoration: underline;
+}

@@ -166,7 +166,6 @@
                                     <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></div>
                                     <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a> </div>
                                     <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></div>
-                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a></div>
                                 @else
                                     <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></div>
                                     <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a></div>
@@ -714,7 +713,6 @@
                                 <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
                                 <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
                                 <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
-                                <li class="nav__item"><a class="nav__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -739,6 +737,12 @@
                         </div>
                     </nav>
                     <a class="footer__affiliate-button button" href="{{ route('home.affiliate', '') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                </div>
+            @endif
+
+            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                <div class="sitemap_menu">
+                    <a class="nav__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
                 </div>
             @endif
 

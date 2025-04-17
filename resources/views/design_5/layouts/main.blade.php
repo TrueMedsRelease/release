@@ -154,9 +154,6 @@
                             <li><a
                                     href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
                             </li>
-                            <li><a
-                                href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a>
-                            </li>
                         @else
                             <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
                                 alt=""><a class="categories_a">{{ __('text.common_categories_menu') }}</a>
@@ -638,9 +635,6 @@
                                 <li><a
                                         href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
                                 </li>
-                                <li><a
-                                    href="{{ route('home.sitemap', '') }}">{{ __('text.menu_title_sitemap') }}</a>
-                                </li>
                             </ul>
                         </div>
                         <div class="item">
@@ -649,6 +643,11 @@
                         </div>
                     @endif
                 </div>
+                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                    <div class="sitemap_menu">
+                        <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                    </div>
+                @endif
                 <div class="copyright">
                     <p>
                         {{ __('text.license_text_license1_1') }}

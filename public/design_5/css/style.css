@@ -3997,3 +3997,23 @@ ul.footer-nav li {
 .site_info_link:hover{
     color: #3D94AF;
 }
+
+.sitemap_menu{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 15px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    transition: all linear 0.3s;
+}
+
+.sitemap_menu a {
+    color: #FFFFFF;
+}
+
+.sitemap_menu a:hover{
+    color: #3D94AF;
+}

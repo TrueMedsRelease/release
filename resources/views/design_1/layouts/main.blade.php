@@ -724,9 +724,6 @@
                         <li class="navigation__item">
                             <a class="navigation__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{__('text.common_contact_us_main_menu_item')}}</a>
                         </li>
-                        <li class="navigation__item">
-                            <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
-                        </li>
                     @else
                         <li class="navigation__item">
                             <a class="navigation__link" href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a>
@@ -752,6 +749,11 @@
                     @endif
                 </ul>
             </nav>
+            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                <div class="sitemap_menu">
+                    <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                </div>
+            @endif
         </div>
     </footer>
     <div id="thanks" aria-hidden="true" class="popup thanks">

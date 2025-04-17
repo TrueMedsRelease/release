@@ -5109,3 +5109,15 @@ opacity:0;
 .site_info_link:hover{
     color: #5b7f2c;
 }
+
+.sitemap_menu{
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    font-size: 18px;
+    color: #5b7f2c;
+}
+
+.sitemap_menu:hover{
+    color: var(--black);
+}

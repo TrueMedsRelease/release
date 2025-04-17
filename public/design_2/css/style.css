@@ -8056,3 +8056,13 @@ body {
   .site_info_link:hover{
     color: var(--accent-color);
   }
+
+  .sitemap_menu{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.sitemap_menu:hover{
+    color: var(--accent-color);
+}

@@ -6651,3 +6651,16 @@ textarea.input {
 .site_info_link:hover{
     color: #72bad0;
 }
+
+.sitemap_menu{
+    display: flex;
+    margin: 20px 0;
+    justify-content: center;
+    font-size: 11px;
+    line-height: 1.2727272727;
+    text-transform: uppercase;
+}
+
+.sitemap_menu:hover{
+    color: #72bad0;
+}
