@@ -675,4 +675,6 @@ return [
 
     "text_aff_domain_1" => "Nakup",
     "text_aff_domain_2" => "online",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

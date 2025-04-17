@@ -590,4 +590,6 @@ return  [
 
     "text_aff_domain_1" => "購買",
     "text_aff_domain_2" => "在線",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

@@ -595,4 +595,6 @@ return [
 
     "text_aff_domain_1" => "Osto",
     "text_aff_domain_2" => "verkossa",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

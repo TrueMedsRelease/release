@@ -593,4 +593,6 @@ return [
 
     "text_aff_domain_1" => "شراء",
     "text_aff_domain_2" => "عبر الإنترنت",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

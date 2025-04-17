@@ -592,4 +592,6 @@ return [
 
     "text_aff_domain_1" => "Kjop",
     "text_aff_domain_2" => "pa_nettet",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

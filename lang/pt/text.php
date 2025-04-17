@@ -709,4 +709,6 @@ return [
 
     "text_aff_domain_1" => "Comprar",
     "text_aff_domain_2" => "online",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

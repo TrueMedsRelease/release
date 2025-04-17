@@ -588,4 +588,6 @@ return [
 
     "text_aff_domain_1" => "Αγοράζω",
     "text_aff_domain_2" => "σε απευθείας σύνδεση",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

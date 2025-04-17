@@ -275,6 +275,12 @@ class ProductServices
             }
         }
 
+        foreach ($categories as $key => $category) {
+            if (empty($category['products'])) {
+                unset($categories[$key]);
+            }
+        }
+
         return $categories;
     }
 
@@ -1572,11 +1578,20 @@ class ProductServices
         $language_id = Language::$languages[App::currentLocale()];
 
         $page_properties = DB::select("SELECT * FROM page_properties WHERE `page` = '$page' AND `language` = $language_id");
-        $page_properties = $page_properties[0];
 
-        $page_properties->title = str_replace('(host_name)', $domain, $page_properties->title);
-        $page_properties->keyword = str_replace('(host_name)', $domain, $page_properties->keyword);
-        $page_properties->description = str_replace('(host_name)', $domain, $page_properties->description);
+        if (isset($page_properties[0])) {
+            $page_properties = $page_properties[0];
+
+            $page_properties->title = str_replace('(host_name)', $domain, $page_properties->title);
+            $page_properties->keyword = str_replace('(host_name)', $domain, $page_properties->keyword);
+            $page_properties->description = str_replace('(host_name)', $domain, $page_properties->description);
+        } else {
+            $page_properties = (object)$page_properties;
+
+            $page_properties->title = '';
+            $page_properties->keyword = '';
+            $page_properties->description = '';
+        }
 
         switch($page){
             case 'main':
@@ -1623,6 +1638,11 @@ class ProductServices
                 $page_properties->description = str_replace('(category_name)', $category_name, $page_properties->description);
 
                 break;
+            case 'sitemap':
+
+                $page_properties->title = __('text.menu_title_sitemap') . ' - ' . request()->getHost();
+                $page_properties->keyword = 'Online pharmacy, certified pharmacy, online drugs, pharmacy meds, order medicines online, pharmacies mail order, verified online pharmacy, reputable pharmacy online, drugstore online, meds online, generic pharmacy, discount pharmacy, non prescription pharmacy, legitimate pharmacy online';
+                $page_properties->description = request()->getHost() . ' - Discount Pharmacy Store. Big Sales. High quality products. Fast worldwide shipping.';
         }
 
         return $page_properties;

@@ -594,4 +594,6 @@ return [
 
     "text_aff_domain_1" => "购买",
     "text_aff_domain_2" => "在线",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

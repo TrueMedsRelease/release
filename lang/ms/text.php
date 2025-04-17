@@ -591,4 +591,6 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "text_aff_domain_1" => "Membeli",
     "text_aff_domain_2" => "dalam_talian",
+
+    "menu_title_sitemap" => "Sitemap",
 ];

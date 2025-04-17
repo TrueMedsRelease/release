@@ -297,6 +297,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::post('/push/save_push', 'save_push_data')->name('home.save_push_data')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/check_landing', 'check_landing')->name('home.check_landing');
     Route::get('/checkup', 'checkup')->name('home.checkup');
+    Route::get('/sitemap{other_url}', 'sitemap')->name('home.sitemap');
 });
 
 Route::controller(AdminController::class)->group(function() {
