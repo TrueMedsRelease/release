@@ -676,5 +676,7 @@ return [
     "text_aff_domain_1" => "Nakup",
     "text_aff_domain_2" => "online",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Mapa stránek",
+    "sitemap_language_title" => "Jazyky",
+    "sitemap_site_info" => "Informace o webu",
 ];

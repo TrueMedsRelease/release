@@ -5278,9 +5278,9 @@ body.has-scroll{
 
   .site_info_url_block {
     margin-left: 20px;
-  }
+}
 
-  .site_info_link {
+.site_info_link {
     --color: var(--color-grey-1);
     --color-hover: var(--color-primary);
     --color-active: var(--color-primary-dim);
@@ -5291,4 +5291,4 @@ body.has-scroll{
     text-decoration-color: transparent;
     color: var(--color);
     text-decoration: none;
-  }
+}

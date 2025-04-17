@@ -595,5 +595,7 @@ return [
     "text_aff_domain_1" => "购买",
     "text_aff_domain_2" => "在线",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "网站地图",
+    "sitemap_language_title" => "语言",
+    "sitemap_site_info" => "网站信息",
 ];

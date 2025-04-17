@@ -8502,3 +8502,7 @@ strong {
   opacity:0;
   }
   }
+
+  .site_info_link:hover{
+    color: var(--accent-color-hover);
+  }

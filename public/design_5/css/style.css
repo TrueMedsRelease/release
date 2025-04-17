@@ -3989,3 +3989,11 @@ ul.footer-nav li {
 .description-box {
     margin-bottom: 50px;
 }
+
+.site_info_link{
+    color: #262D38;
+}
+
+.site_info_link:hover{
+    color: #3D94AF;
+}

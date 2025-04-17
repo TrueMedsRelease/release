@@ -724,6 +724,9 @@
                         <li class="navigation__item">
                             <a class="navigation__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{__('text.common_contact_us_main_menu_item')}}</a>
                         </li>
+                        <li class="navigation__item">
+                            <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                        </li>
                     @else
                         <li class="navigation__item">
                             <a class="navigation__link" href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a>

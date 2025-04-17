@@ -6647,3 +6647,7 @@ textarea.input {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+.site_info_link:hover{
+    color: #72bad0;
+}

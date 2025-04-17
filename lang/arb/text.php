@@ -594,5 +594,7 @@ return [
     "text_aff_domain_1" => "شراء",
     "text_aff_domain_2" => "عبر الإنترنت",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "خريطة الموقع",
+    "sitemap_language_title" => "لغات",
+    "sitemap_site_info" => "معلومات الموقع"
 ];

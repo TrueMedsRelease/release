@@ -342,6 +342,9 @@
                                     <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link"
                                             href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
                                     </li>
+                                    {{-- <li class="menu__item" data-da=".menu__subslist, 1100, first"><a class="menu__link"
+                                        href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a>
+                                    </li> --}}
                                 @else
                                     <li class="menu__item"><a class="menu__link"
                                             href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
@@ -816,6 +819,9 @@
                             </li>
                             <li class="footer__item"><a
                                     href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                            </li>
+                            <li class="footer__item"><a
+                                href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{ __('text.menu_title_sitemap') }}</a>
                             </li>
                         </ul>
                         <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}" class="footer__button">{{ __('text.common_affiliate_main_menu_button') }}</a>

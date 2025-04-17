@@ -593,5 +593,7 @@ return [
     "text_aff_domain_1" => "Kjop",
     "text_aff_domain_2" => "pa_nettet",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Nettsidekart",
+    "sitemap_language_title" => "Språk",
+    "sitemap_site_info" => "Nettsideinformasjon",
 ];

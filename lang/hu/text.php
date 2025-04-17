@@ -596,5 +596,7 @@ return [
     "text_aff_domain_1" => "Vasarlas",
     "text_aff_domain_2" => "online",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Oldaltérkép",
+    "sitemap_language_title" => "Nyelvek",
+    "sitemap_site_info" => "Oldalinformáció",
 ];

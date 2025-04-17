@@ -596,5 +596,7 @@ return [
     "text_aff_domain_1" => "Osto",
     "text_aff_domain_2" => "verkossa",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Sivukartta",
+    "sitemap_language_title" => "Kielet",
+    "sitemap_site_info" => "Sivuston tiedot",
 ];

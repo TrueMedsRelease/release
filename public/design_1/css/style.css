@@ -5105,3 +5105,7 @@ opacity:0;
 .menu-open .christmas {
     display: none;
 }
+
+.site_info_link:hover{
+    color: #5b7f2c;
+}

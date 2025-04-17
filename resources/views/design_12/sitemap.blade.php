@@ -11,7 +11,7 @@
         <article class="content content--page">
             <h1>{{__('text.menu_title_sitemap')}}</h1>
             <div style="margin-bottom: 20px">
-                <div style="font-size: 2.5rem; margin-bottom: 20px;">Site Info:</div>
+                <div style="font-size: 2.5rem; margin-bottom: 20px;">{{ __('text.sitemap_site_info') }}:</div>
                 <div class="site_info_url_block">
                     @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
                         @php
@@ -34,13 +34,13 @@
                 </div>
             </div>
             <div style="margin-bottom: 20px">
-                <div style="font-size: 2.5rem; margin-bottom: 20px;">Category:</div>
+                <div style="font-size: 2.5rem; margin-bottom: 20px;">{{ __('text.category_title') }}:</div>
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px;">
                     <div style="margin-left: 20px">
                         <div>
                             <div class="site_info_url_item" >
                                 <a class="site_info_link" href="{{ route('home.index') }}" style="font-size: 2rem">
-                                    Bestsellers
+                                    {{ __('text.common_best_selling_title') }}
                                 </a>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div style="margin-bottom: 20px">
-                <div style="font-size: 2.5rem; margin-bottom: 20px;">Languages:</div>
+                <div style="font-size: 2.5rem; margin-bottom: 20px;">{{ __('text.sitemap_language_title') }}:</div>
                 <div class="site_info_url_block">
                     @foreach ($Language::GetAllLanuages() as $item)
                         <div class="site_info_url_item">

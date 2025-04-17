@@ -5639,3 +5639,11 @@ strong {
   opacity:0;
   }
   }
+
+  .site_info_link {
+    text-decoration: none;
+  }
+
+  .site_info_link:hover {
+    color: var(--text-body-color);
+  }

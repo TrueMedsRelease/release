@@ -631,4 +631,6 @@ return [
     "text_aff_domain_2" => "online",
 
     "menu_title_sitemap" => "Sitemap",
+    "sitemap_language_title" => "Talen",
+    "sitemap_site_info" => "Site-informatie",
 ];

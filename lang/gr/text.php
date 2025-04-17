@@ -589,5 +589,7 @@ return [
     "text_aff_domain_1" => "Αγοράζω",
     "text_aff_domain_2" => "σε απευθείας σύνδεση",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Χάρτης της ιστοσελίδας",
+    "sitemap_language_title" => "Γλώσσες",
+    "sitemap_site_info" => "Πληροφορίες ιστότοπου",
 ];

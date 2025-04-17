@@ -860,4 +860,6 @@ return [
     "text_aff_domain_2" => "online",
 
     "menu_title_sitemap" => "Sitemap",
+    "sitemap_language_title" => "Languages",
+    "sitemap_site_info" => "Site Info"
 ];

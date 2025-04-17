@@ -709,5 +709,7 @@ return [
     "text_aff_domain_1" => "購入",
     "text_aff_domain_2" => "オンライン",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "サイトマップ",
+    "sitemap_language_title" => "言語",
+    "sitemap_site_info" => "サイト情報",
 ];

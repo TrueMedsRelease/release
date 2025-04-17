@@ -742,5 +742,7 @@ return [
     "text_aff_domain_1" => "Comprar",
     "text_aff_domain_2" => "en_linea",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Mapa del sitio",
+    "sitemap_language_title" => "Idiomas",
+    "sitemap_site_info" => "Información del sitio",
 ];

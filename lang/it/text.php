@@ -726,5 +726,7 @@ return [
     "text_aff_domain_1" => "Acquistare",
     "text_aff_domain_2" => "online",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Mappa del sito",
+    "sitemap_language_title" => "Lingue",
+    "sitemap_site_info" => "Informazioni sul sito",
 ];

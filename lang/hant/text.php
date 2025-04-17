@@ -591,5 +591,7 @@ return  [
     "text_aff_domain_1" => "購買",
     "text_aff_domain_2" => "在線",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "網站地圖",
+    "sitemap_language_title" => "語言",
+    "sitemap_site_info" => "網站資訊",
 ];

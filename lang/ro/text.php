@@ -586,5 +586,7 @@ return [
     "text_aff_domain_1" => "Cumparare",
     "text_aff_domain_2" => "online",
 
-    "menu_title_sitemap" => "Sitemap",
+    "menu_title_sitemap" => "Harta site-ului",
+    "sitemap_language_title" => "Limbi",
+    "sitemap_site_info" => "Informații despre site",
 ];
