@@ -846,9 +846,9 @@ class ProductServices
     public static function SearchProduct($search_text, $is_autocomplete, $design)
     {
         if (Str::contains($search_text, ' ')) {
-            $search_full_text = '"' . $search_text . '"';
+            $search_full_text = '(' . $search_text . ')';
         } else {
-            $search_full_text = $search_text . '*';
+            $search_full_text = $search_text;
         }
 
         $search_text_lower = strtolower($search_text);
@@ -985,20 +985,16 @@ class ProductServices
                 }
             }
         }
-        
+
         // dump($product_id);
 
-        if (!empty($product_id)) {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->whereIn('id', $product_id)
-                ->orderByRaw('FIELD(id, ' . implode(',', $product_id) . ')')
-                // ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
-                ->toArray();
-        } else {
-            $products = [];
-        }
+        $products = Product::query()
+            ->where('is_showed', '=', 1)
+            ->whereIn('id', $product_id)
+            ->orderByRaw('FIELD(id, ' . implode(',', $product_id) . ')')
+            // ->orderBy('main_order', 'asc')
+            ->get(['id', 'image', 'aktiv'])
+            ->toArray();
 
         for ($i = 0; $i < count($products); $i++) {
             if (isset($products_desc[$products[$i]['id']])) {
