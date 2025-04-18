@@ -586,4 +586,11 @@ return [
     "gift_card_title" => "Ako to funguje?",
     "gift_card_text1" => "Vyberte požadovanú hodnotu a zaplaťte kartou. K nominálnej hodnote dávame + 10 % ako bonus. Kartu môžete dať a previesť komukoľvek.",
     "gift_card_text2" => "Vyberte si ľubovoľný produkt za sumu podľa vašej nominálnej hodnoty (+ 10% bonus) a zadajte údaje o darčekovej karte na platobnej stránke a nákup sa uskutoční.",
+
+    "text_aff_domain_1" => "Nakup",
+    "text_aff_domain_2" => "online",
+
+    "menu_title_sitemap" => "Mapa stránky",
+    "sitemap_language_title" => "Jazyky",
+    "sitemap_site_info" => "Informácie o stránke",
 ];

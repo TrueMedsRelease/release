@@ -334,7 +334,7 @@
                             <a href="{{ route('home.product', $product_data['url']) }}" class="product-card__image">
                                 <picture>
                                     <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}">
                                 </picture>
                             </a>
                             <a href="{{ route('home.product', $product_data['url']) }}" class="product-card__info">

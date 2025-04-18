@@ -339,7 +339,7 @@
                     <div class="card__img">
                         <picture style="max-height: 175px; max-width: 175px;">
                             <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                            <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                            <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                         </picture>
                     </div>
                     <div class="card__content">

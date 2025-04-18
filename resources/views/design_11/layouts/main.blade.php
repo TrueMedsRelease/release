@@ -153,14 +153,28 @@
                             <span class="button__text">{{ __('text.common_categories_menu') }}</span>
                         </button>
                         <div class="header-nav greedy-nav">
+
                             <div class="greedy-items">
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a></div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a> </div>
-                                <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></div>
+                                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                                    @php
+                                        $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+                                    @endphp
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a> </div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></div>
+                                @else
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a></div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a> </div>
+                                    <div class="greedy-item"><a class="header-nav-link" href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></div>
+                                @endif
                             </div>
                             <div class="dropdown" data-fixed-dropdown>
                                 <button class="dropdown-toggler link greedy-button" aria-label="Show dropdown">
@@ -224,7 +238,7 @@
                     </a>
                 </div>
                 <a class="header__logo" href="{{ route('home.index') }}">
-                    <img src="{{ asset($design . '/svg/logo.svg') }}" width="214" height="52" alt="Site logo">
+                    <img src="{{ asset($design . '/svg/logo.svg') }}" width="214" height="52" alt="{{ $domainWithoutZone }}">
                 </a>
                 <form class="search-form" action="{{ route('search.search_product') }}" method="post">
                     @csrf
@@ -306,7 +320,7 @@
             <div class="header-bottom-row">
                 <div class="header-caption">
                     <span class="icon">
-                        <img src="{{ asset($design . '/images/icons/verified.svg') }}" class="inline-svg">
+                        <img src="{{ asset($design . '/images/icons/verified.svg') }}" class="inline-svg" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' verified pharmacy' }}" @endif>
                     </span>
                     <div class="header-caption__title">{{ __('text.common_verified') }}</div>
                     <div class="header-caption__text">{{ __('text.common_approved_d4') }}</div>
@@ -315,37 +329,37 @@
                     <div class="header-brand">
                         <picture>
                             <source type="image/webp" srcset="{{ asset($design . '/images/brands/white-brand-1-48w.webp 1x, ' . $design . '/images/brands/white-brand-1-97w.webp 2x') }}">
-                            <img src="{{ asset($design . '/images/brands/white-brand-1-48w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-1-48w.png 1x, ' . $design . '/images/brands/white-brand-1-97w.png 2x') }}" width="49" height="32" alt="Brand">
+                            <img src="{{ asset($design . '/images/brands/white-brand-1-48w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-1-48w.png 1x, ' . $design . '/images/brands/white-brand-1-97w.png 2x') }}" width="49" height="32" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' fda' }}" @else alt="Brand" @endif>
                         </picture>
                     </div>
                     <div class="header-brand">
                         <picture>
                             <source type="image/webp" srcset="{{ asset($design . '/images/brands/white-brand-2-46w.webp 1x, ' . $design . '/images/brands/white-brand-2-93w.webp 2x') }}">
-                            <img src="{{ asset($design . '/images/brands/white-brand-2-46w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-2-46w.png 1x, ' . $design . '/images/brands/white-brand-2-93w.png 2x') }}" width="47" height="36" alt="Brand">
+                            <img src="{{ asset($design . '/images/brands/white-brand-2-46w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-2-46w.png 1x, ' . $design . '/images/brands/white-brand-2-93w.png 2x') }}" width="47" height="36" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' pgue' }}" @else alt="Brand" @endif>
                         </picture>
                     </div>
                     <div class="header-brand">
                         <picture>
                             <source type="image/webp" srcset="{{ asset($design . '/images/brands/white-brand-3-56w.webp 1x, ' . $design . '/images/brands/white-brand-3-113w.webp 2x') }}">
-                            <img src="{{ asset($design . '/images/brands/white-brand-3-56w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-3-56w.png 1x, ' . $design . '/images/brands/white-brand-3-113w.png 2x') }}" width="57" height="32" alt="Brand">
+                            <img src="{{ asset($design . '/images/brands/white-brand-3-56w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-3-56w.png 1x, ' . $design . '/images/brands/white-brand-3-113w.png 2x') }}" width="57" height="32" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' mastercard' }}" @else alt="Brand" @endif>
                         </picture>
                     </div>
                     <div class="header-brand">
                         <picture>
                             <source type="image/webp" srcset="{{ asset($design . '/images/brands/white-brand-4-45w.webp 1x, ' . $design . '/images/brands/white-brand-4-91w.webp 2x') }}">
-                            <img src="{{ asset($design . '/images/brands/white-brand-4-45w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-4-45w.png 1x, ' . $design . '/images/brands/white-brand-4-91w.png 2x') }}" width="46" height="28" alt="Brand">
+                            <img src="{{ asset($design . '/images/brands/white-brand-4-45w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-4-45w.png 1x, ' . $design . '/images/brands/white-brand-4-91w.png 2x') }}" width="46" height="28" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' cipa' }}" @else alt="Brand" @endif>
                         </picture>
                     </div>
                     <div class="header-brand">
                         <picture>
                             <source type="image/webp" srcset="{{ asset($design . '/images/brands/white-brand-5-56w.webp 1x, ' . $design . '/images/brands/white-brand-5-113w.webp 2x') }}">
-                            <img src="{{ asset($design . '/images/brands/white-brand-5-56w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-5-56w.png 1x, ' . $design . '/images/brands/white-brand-5-113w.png 2x') }}" width="57" height="32" alt="Brand">
+                            <img src="{{ asset($design . '/images/brands/white-brand-5-56w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-5-56w.png 1x, ' . $design . '/images/brands/white-brand-5-113w.png 2x') }}" width="57" height="32" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' visa' }}" @else alt="Brand" @endif>
                         </picture>
                     </div>
                     <div class="header-brand">
                         <picture>
                             <source type="image/webp" srcset="{{ asset($design . '/images/brands/white-brand-6-72w.webp 1x, ' . $design . '/images/brands/white-brand-6-145w.webp 2x') }}">
-                            <img src="{{ asset($design . '/images/brands/white-brand-6-72w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-6-72w.png 1x, ' . $design . '/images/brands/white-brand-6-145w.png 2x') }}" width="73" height="30" alt="Brand">
+                            <img src="{{ asset($design . '/images/brands/white-brand-6-72w.png') }}" srcset="{{ asset($design . '/images/brands/white-brand-6-72w.png 1x, ' . $design . '/images/brands/white-brand-6-145w.png 2x') }}" width="73" height="30" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' mcafree' }}" @else alt="Brand" @endif>
                         </picture>
                     </div>
                 </div>
@@ -449,132 +463,132 @@
             <div class="promos-payment-methods drag-nav">
                 <div class="drag-nav-container">
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' visa' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' mastercard' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' maestro' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' discover' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' amex' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' jcb' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' union-pay' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dinners-club' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' apple-pay' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' google-pay' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' amazon-pay' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' stripe' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' paypal' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' sepa' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' cashapp' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' adyen' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' skrill' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' worldpay' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' payline' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' bitcoin' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' binance-coin' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ethereum' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' litecoin' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tron' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usdt(erc20)' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
                         </svg>
                     </div>
                     <div class="promos-payment-method">
-                        <svg>
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usdt(trc20)' }}" @endif>
                             <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
                         </svg>
                     </div>
@@ -615,67 +629,67 @@
         <div class="footer-delivery-methods drag-nav" style="@yield('delivery_style')">
             <div class="drag-nav-container" style="@yield('delivery_style_2')">
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usps' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#usps" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ems' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ems" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dhl' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dhl" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ups' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ups" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' fedex' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#fedex" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tnt' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#tnt" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' postnl' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#postnl" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' deutsche_post' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#deutsche_post" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dpd' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dpd" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' gls' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#gls" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' australia_post' }}" @endif>
                         <use width="100%" height="100%" width="100%" href="/pub_images/shipping/sprite.svg#australia_post" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' colissimo' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#colissimo" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
                 <div class="footer-delivery-method">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' correos' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#correos" preserveAspectRatio="xMinYMin">
                     </svg>
                 </div>
@@ -684,25 +698,54 @@
     </div>
     <footer class="footer">
         <div class="container">
-            <div class="footer__wrapper">
-                <a class="footer__logo" href="{{ route('home.index') }}">
-                    <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="Site logo">
-                </a>
-                <nav class="nav footer-nav">
-                    <div class="nav-container">
-                        <ul class="nav__list">
-                        <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
-                        <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
-                        </ul>
-                    </div>
-                </nav>
-                <a class="footer__affiliate-button button" href="{{ route('home.affiliate') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
-            </div>
+            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                <div class="footer__wrapper">
+                    <a class="footer__logo" href="{{ route('home.index') }}">
+                        <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="{{ $domainWithoutZone }}">
+                    </a>
+                    <nav class="nav footer-nav">
+                        <div class="nav-container">
+                            <ul class="nav__list">
+                                <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <a class="footer__affiliate-button button" href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                </div>
+            @else
+                <div class="footer__wrapper">
+                    <a class="footer__logo" href="{{ route('home.index') }}">
+                        <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="{{ $domainWithoutZone }}">
+                    </a>
+                    <nav class="nav footer-nav">
+                        <div class="nav-container">
+                            <ul class="nav__list">
+                                <li class="nav__item"><a class="nav__link is-active" href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a></li>
+                                <li class="nav__item"><a class="nav__link" href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <a class="footer__affiliate-button button" href="{{ route('home.affiliate', '') }}">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                </div>
+            @endif
+
+            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                <div class="sitemap_menu">
+                    <a class="nav__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                </div>
+            @endif
+
             <div class="footer__copyrights">
                 {{ __('text.license_text_license1_1') }}
                 {{ $domain }}

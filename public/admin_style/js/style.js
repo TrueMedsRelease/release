@@ -656,25 +656,35 @@ function SavePixelData() {
         return obj;
     }, {});
 
-    if (selected_page) {
-        $.ajax({
-            url: '/admin/seo/save_pixel',
-            type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: {
-                'selected_page': selected_page,
-                'pixel_text': pixel_text
-            },
-            success: function (data) {
-                data = JSON.parse(data);
-                if (data.status == 'error') {
-                    alert(data.text);
-                } else {
-                    location.href = data.url;
-                }
+    if (pixel_text['pixel_text']) {
+        if (pixel_text['pixel_text'].includes('<script>') && pixel_text['pixel_text'].includes('</script>')) {
+            if (selected_page) {
+                $.ajax({
+                    url: '/admin/seo/save_pixel',
+                    type: 'POST',
+                    cache: false,
+                    dataType: 'html',
+                    data: {
+                        'selected_page': selected_page,
+                        'pixel_text': pixel_text
+                    },
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (data.status == 'error') {
+                            document.getElementById('templates_messages').innerHTML = '';
+                            alert(data.text);
+                        } else {
+                            location.href = data.url;
+                        }
+                    }
+                });
             }
-        });
+        } else {
+            document.getElementById('templates_messages').innerHTML = '';
+            alert('Wrong pixel. Add tag <script>');
+        }
+    } else {
+        document.getElementById('templates_messages').innerHTML = '';
     }
 }
 

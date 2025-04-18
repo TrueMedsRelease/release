@@ -589,4 +589,11 @@ return [
     "gift_card_title" => "Hvordan fungerer det?",
     "gift_card_text1" => "Velg ønsket valør og betal med kortet. Vi gir + 10% som bonus til valøren. Du kan gi og overføre kortet til hvem som helst.",
     "gift_card_text2" => "Velg et hvilket som helst produkt for beløpet i henhold til valøren din (+ 10 % bonus) og skriv inn gavekortdetaljene på betalingssiden og kjøpet vil bli utført.",
+
+    "text_aff_domain_1" => "Kjop",
+    "text_aff_domain_2" => "pa_nettet",
+
+    "menu_title_sitemap" => "Nettsidekart",
+    "sitemap_language_title" => "Språk",
+    "sitemap_site_info" => "Nettsideinformasjon",
 ];

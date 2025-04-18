@@ -8502,3 +8502,19 @@ strong {
   opacity:0;
   }
   }
+
+  .site_info_link:hover{
+    color: var(--accent-color-hover);
+  }
+
+  .sitemap_menu{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: center;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.sitemap_menu:hover{
+    color: #3D94AF;
+}

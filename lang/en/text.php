@@ -855,4 +855,11 @@ return [
     "gift_card_title" => "How does it work?",
     "gift_card_text1" => "Select the required denomination and pay with the card. We give + 10% as a bonus to the denomination. You can give and transfer the card to anyone.",
     "gift_card_text2" => "Select any product for the amount according to your denomination (+ 10% bonus) and enter the gift card details on the payment page and the purchase will be made.",
+
+    "text_aff_domain_1" => "Buying",
+    "text_aff_domain_2" => "online",
+
+    "menu_title_sitemap" => "Sitemap",
+    "sitemap_language_title" => "Languages",
+    "sitemap_site_info" => "Site Info"
 ];

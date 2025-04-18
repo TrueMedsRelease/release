@@ -5316,7 +5316,7 @@ body::after {
   background-color: rgb(171 171 171 / 60%);
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 
 .popup_call{
@@ -6196,3 +6196,19 @@ body::after {
   .christmas.bottom{
     display: none;
   }
+
+  .site_info_link:hover{
+    color: var(--yellow);
+  }
+
+  .sitemap_menu{
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.sitemap_menu:hover{
+    text-decoration: underline;
+}

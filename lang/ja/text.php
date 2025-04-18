@@ -705,4 +705,11 @@ return [
     "gift_card_title" => "仕組みは？",
     "gift_card_text1" => "必要な額面を選択し、カードでお支払いください。額面に対して + 10% のボーナスを差し上げます。カードを誰にでも贈ったり譲渡したりできます。",
     "gift_card_text2" => "額面に応じた金額 (+ 10% ボーナス) の商品を選択し、支払いページでギフト カードの詳細を入力すると、購入が完了します。",
+
+    "text_aff_domain_1" => "購入",
+    "text_aff_domain_2" => "オンライン",
+
+    "menu_title_sitemap" => "サイトマップ",
+    "sitemap_language_title" => "言語",
+    "sitemap_site_info" => "サイト情報",
 ];

@@ -712,4 +712,11 @@ return [
     "gift_card_title" => "Wie funktioniert es?",
     "gift_card_text1" => "Wählen Sie den gewünschten Nennwert und bezahlen Sie mit der Karte. Wir geben +10% als Bonus auf den Nennwert. Sie können die Karte an beliebige Personen verschenken und übertragen.",
     "gift_card_text2" => "Wählen Sie ein beliebiges Produkt für den Betrag entsprechend Ihrem Nennwert (+10% Bonus) und geben Sie die Geschenkkartendetails auf der Zahlungsseite ein und der Kauf wird abgeschlossen.",
+
+    "text_aff_domain_1" => "Kaufen",
+    "text_aff_domain_2" => "online",
+
+    "menu_title_sitemap" => "Sitemap",
+    "sitemap_language_title" => "Sprachen",
+    "sitemap_site_info" => "Site-Informationen",
 ];

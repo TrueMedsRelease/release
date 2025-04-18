@@ -15,10 +15,12 @@ use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Lang;
 
 class HomeController extends Controller
 {
-    public function index() : View
+    public function index()
     {
         StatisticService::SendStatistic('index');
         $design = session('design') ? session('design') : config('app.design');
@@ -197,6 +199,12 @@ class HomeController extends Controller
 
     public function active($active)
     {
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $active = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $active);
+        } else {
+            $active = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $active);
+        }
+
         StatisticService::SendStatistic('active');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -267,6 +275,12 @@ class HomeController extends Controller
 
     public function category($category) : View
     {
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $category = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $category);
+        } else {
+            $category = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $category);
+        }
+
         StatisticService::SendStatistic('category');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -336,6 +350,12 @@ class HomeController extends Controller
 
     public function disease($disease) : View
     {
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $disease = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $disease);
+        } else {
+            $disease = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $disease);
+        }
+
         StatisticService::SendStatistic('disease');
         $design = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -431,6 +451,12 @@ class HomeController extends Controller
         StatisticService::SendStatistic($product);
         $product_name = $product;
 
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $product = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $product);
+        } else {
+            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
+        }
+
         $design = session('design') ? session('design') : config('app.design');
         $page_properties = ProductServices::getProductProperties($product);
 
@@ -519,6 +545,12 @@ class HomeController extends Controller
 
         if ($design == 7 || $design == 8) {
             return redirect()->route('home.product', $product);
+        }
+
+        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+            $product = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $product);
+        } else {
+            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
         }
 
         $product = ProductServices::GetProductInfoByUrl($product, $design);
@@ -1052,17 +1084,66 @@ class HomeController extends Controller
     public function language($locale)
     {
         session(['locale' => $locale]);
-        return Redirect::back();
+
+        if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
+            $back_url = Redirect::back()->getTargetUrl();
+
+            if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $new_text_1 = __('text.text_aff_domain_1', [], 'en');
+                $new_text_2 = __('text.text_aff_domain_2', [], 'en');
+            } else {
+                $new_text_1 = __('text.text_aff_domain_1', [], $locale);
+                $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+            }
+
+            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $back_url = str_replace(__('text.text_aff_domain_1', [], 'en'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2', [], 'en'), $new_text_2, $back_url);
+            } else {
+                $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+            }
+
+            return Redirect::to($back_url);
+        } else {
+            return Redirect::back();
+        }
     }
 
     public function language_with_url($url, $locale)
     {
         session(['locale' => $locale]);
 
-        if ($url) {
-            return redirect('/' . $url);
+        if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
+            if ($url) {
+                $back_url = $url;
+            } else {
+                $back_url = Redirect::back()->getTargetUrl();
+            }
+
+            if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $new_text_1 = __('text.text_aff_domain_1', [], 'en');
+                $new_text_2 = __('text.text_aff_domain_2', [], 'en');
+            } else {
+                $new_text_1 = __('text.text_aff_domain_1', [], $locale);
+                $new_text_2 = __('text.text_aff_domain_2', [], $locale);
+            }
+
+            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                $back_url = str_replace(__('text.text_aff_domain_1', [], 'en'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2', [], 'en'), $new_text_2, $back_url);
+            } else {
+                $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
+                $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
+            }
+
+            return Redirect::to($back_url);
         } else {
-            return Redirect::back();
+            if ($url) {
+                return redirect('/' . $url);
+            } else {
+                return Redirect::back();
+            }
         }
     }
 
@@ -1112,6 +1193,12 @@ class HomeController extends Controller
     public function set_images($pill) {
         if ($pill) {
             $pill = str_replace('&', '-', (str_replace(' ', '-', strtolower(trim($pill)))));
+
+            if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
+                $parts = explode('_', $pill, 2);
+                $pill = $parts[1];
+            }
+
             $safari = false;
 
             if (str_contains($_SERVER['HTTP_USER_AGENT'], 'iPhone') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPad') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPod') || str_contains($_SERVER['HTTP_USER_AGENT'], 'Macintosh')){
@@ -1750,6 +1837,69 @@ class HomeController extends Controller
             "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
 
         return view('checkup', [
+            'design' => $design,
+            'bestsellers' => $bestsellers,
+            'menu' => $menu,
+            'phone_codes' => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category' => '',
+            'agent' => $agent,
+            'Language' => Language::class,
+            'Currency' => Currency::class,
+            'pixel' => $pixel,
+            'first_letters' => $first_letters,
+            'domain' => $domain,
+            'web_statistic' => $web_statistic,
+            'codes' => json_encode($codes),
+        ]);
+    }
+
+    public function sitemap() : View
+    {
+        StatisticService::SendStatistic('sitemap');
+        $design = session('design') ? session('design') : config('app.design');
+        $bestsellers = ProductServices::GetBestsellers($design);
+        $phone_codes = PhoneCodes::all()->toArray();
+        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $page_properties = ProductServices::getPageProperties('sitemap');
+        $first_letters = ProductServices::getFirstLetters();
+        $agent = new Agent();
+
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel = "";
+        foreach($pixels as $item)
+        {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
+        $device = ProductServices::getDevice($agent);
+
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=affiliate&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+
+
+        return view($design . '.sitemap', [
             'design' => $design,
             'bestsellers' => $bestsellers,
             'menu' => $menu,

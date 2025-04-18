@@ -14,7 +14,7 @@
 			@if ($product['image'] != 'gift-card')
                 <picture>
                     <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
-                    <img loading="lazy" src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
+                    <img loading="lazy" src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['alt'] }}">
                 </picture>
             @else
                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
@@ -43,7 +43,7 @@
 				<div class="info">
 					<span>{{__('text.product_diseases')}}</span>
 					@foreach ($product['disease'] as $disease)
-						<strong><a href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">{{ ucfirst($disease) }}</a></strong>
+						<strong><a href="{{ route('home.disease', $disease['url']) }}">{{ ucfirst($disease['name']) }}</a></strong>
                     @endforeach
 				</div>
             @endif

@@ -588,4 +588,11 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "gift_card_title" => "Bagaimana ia berfungsi?",
     "gift_card_text1" => "Pilih denominasi yang diperlukan dan bayar dengan kad. Kami memberi + 10% sebagai bonus kepada denominasi. Anda boleh memberikan dan memindahkan kad kepada sesiapa sahaja.",
     "gift_card_text2" => "Pilih mana-mana produk untuk jumlah mengikut denominasi anda (+ 10% bonus) dan masukkan butiran kad hadiah pada halaman pembayaran dan pembelian akan dibuat.",
+
+    "text_aff_domain_1" => "Membeli",
+    "text_aff_domain_2" => "dalam_talian",
+
+    "menu_title_sitemap" => "Peta laman",
+    "sitemap_language_title" => "Bahasa",
+    "sitemap_site_info" => "Maklumat laman",
 ];

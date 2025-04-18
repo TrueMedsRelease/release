@@ -268,13 +268,13 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');
     Route::get('/{product_name}.html', 'product')->name('home.product')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/{product_name}.html/landing={landing}', 'product_landing')->name('home.product_landing')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::get('/about_us', 'about')->name('home.about');
-    Route::get('/contact_us', 'contact_us')->name('home.contact_us');
-    Route::get('/affiliate', 'affiliate')->name('home.affiliate');
-    Route::get('/faq', 'help')->name('home.help');
-    Route::get('/testimonials', 'testimonials')->name('home.testimonials');
-    Route::get('/shipping', 'delivery')->name('home.delivery');
-    Route::get('/moneyback', 'moneyback')->name('home.moneyback');
+    Route::get('/about_us{other_url}', 'about')->name('home.about');
+    Route::get('/contact_us{other_url}', 'contact_us')->name('home.contact_us');
+    Route::get('/affiliate{other_url}', 'affiliate')->name('home.affiliate');
+    Route::get('/faq{other_url}', 'help')->name('home.help');
+    Route::get('/testimonials{other_url}', 'testimonials')->name('home.testimonials');
+    Route::get('/shipping{other_url}', 'delivery')->name('home.delivery');
+    Route::get('/moneyback{other_url}', 'moneyback')->name('home.moneyback');
     Route::get('/login', 'login')->name('home.login');
     Route::get('/lang={locale}', 'language')->name('home.language');
     Route::get('/curr={currency}', 'currency')->name('home.currency');
@@ -297,6 +297,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::post('/push/save_push', 'save_push_data')->name('home.save_push_data')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/check_landing', 'check_landing')->name('home.check_landing');
     Route::get('/checkup', 'checkup')->name('home.checkup');
+    Route::get('/sitemap{other_url}', 'sitemap')->name('home.sitemap');
 });
 
 Route::controller(AdminController::class)->group(function() {

@@ -138,7 +138,7 @@
                         <div class="card__img">
                             <picture style="max-height: 175px; max-width: 175px;">
                                 <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                                <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                                <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                             </picture>
                         </div>
                         <div class="card__content">
@@ -158,7 +158,6 @@
                                     <span class="icon">
                                         <img src="{{ asset($design . '/images/icons/cart.svg') }}" class="inline-svg">
                                     </span>
-                                    {{-- <span class="button__text">{{__('text.product_add_to_cart_text')}}</span> --}}
                                 </button>
                                 <span class="card__price">{{ $Currency::convert($product_data['price'], false, true) }}</span>
                             </div>
@@ -186,7 +185,7 @@
                         @else
                             <picture>
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                             </picture>
                         @endif
                     </div>
@@ -215,8 +214,8 @@
                         <div class="info-panel__row">
                             {{__('text.product_diseases')}}
                             @foreach ($product['disease'] as $disease)
-                                <a href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">
-                                    {{ ucfirst($disease) }}
+                                <a href="{{ route('home.disease', $disease['url']) }}">
+                                    {{ ucfirst($disease['name']) }}
                                 </a>
                             @endforeach
                         </div>

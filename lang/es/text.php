@@ -738,4 +738,11 @@ return [
     "gift_card_title" => "¿Cómo funciona?",
     "gift_card_text1" => "Selecciona la denominación que desees y paga con la tarjeta. Te regalamos un +10% de bonificación a la denominación. Puedes regalar y transferir la tarjeta a quien quieras.",
     "gift_card_text2" => "Selecciona cualquier producto por el importe acorde a tu denominación (+10% de bonificación) e introduce los datos de la tarjeta regalo en la página de pago y se realizará la compra.",
+
+    "text_aff_domain_1" => "Comprar",
+    "text_aff_domain_2" => "en_linea",
+
+    "menu_title_sitemap" => "Mapa del sitio",
+    "sitemap_language_title" => "Idiomas",
+    "sitemap_site_info" => "Información del sitio",
 ];

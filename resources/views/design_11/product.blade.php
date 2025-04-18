@@ -136,7 +136,7 @@
                         <div class="card__img">
                             <picture style="max-height: 175px; max-width: 175px;">
                                 <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                                <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                                <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                             </picture>
                         </div>
                         <div class="card__content">
@@ -176,7 +176,7 @@
                         @else
                             <picture>
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                             </picture>
                         @endif
                     </div>
@@ -212,7 +212,7 @@
                             {{__('text.product_diseases')}}
                             @foreach ($product['disease'] as $disease)
                                 <a
-                                    href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">{{ ucfirst($disease) }}</a>
+                                    href="{{ route('home.disease', $disease['url']) }}">{{ ucfirst($disease['name']) }}</a>
                             @endforeach
                         </div>
                     @endif

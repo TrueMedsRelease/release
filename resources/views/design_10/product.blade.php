@@ -33,7 +33,7 @@
                                 <img loading="lazy" src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="width: auto; height: auto; max-width: 20rem; max-height: 20rem;">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}" style="width: auto; height: auto; max-width: 20rem; max-height: 20rem;">
                             @endif
                         </picture>
                         {{-- <picture>
@@ -66,7 +66,7 @@
                             {{__('text.product_diseases')}}
                             @foreach ($product['disease'] as $disease)
                                 <a
-                                    href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">{{ ucfirst($disease) }}</a>
+                                    href="{{ route('home.disease', $disease['url']) }}">{{ ucfirst($disease['name']) }}</a>
                             @endforeach
                         </div>
                     @endif
@@ -237,7 +237,7 @@
                             <a class="product-card__img" href="{{ route('home.product', $product_data['url']) }}">
                                 <picture>
                                     <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}">
                                 </picture>
                             </a>
                             <h2 class="product-card__heading">

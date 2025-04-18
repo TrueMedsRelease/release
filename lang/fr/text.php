@@ -717,4 +717,11 @@ return [
     "gift_card_title" => "Comment ça marche ?",
     "gift_card_text1" => "Sélectionnez la valeur souhaitée et payez avec la carte. Nous offrons + 10 % de bonus sur la valeur. Vous pouvez donner et transférer la carte à n'importe qui.",
     "gift_card_text2" => "Sélectionnez n'importe quel produit pour le montant correspondant à votre valeur (+ 10 % de bonus) et saisissez les détails de la carte cadeau sur la page de paiement et l'achat sera effectué.",
+
+    "text_aff_domain_1" => "Acheter",
+    "text_aff_domain_2" => "en_ligne",
+
+    "menu_title_sitemap" => "Plan du site",
+    "sitemap_language_title" => "Langues",
+    "sitemap_site_info" => "Informations sur le site",
 ];

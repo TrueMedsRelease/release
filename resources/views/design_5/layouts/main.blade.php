@@ -129,27 +129,54 @@
                 <span class="close"></span>
                 <div class="menu_top">
                     <ul>
-                        <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
+                        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                            @php
+                                $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
+                            @endphp
+                            <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
                                 alt=""><a class="categories_a">{{ __('text.common_categories_menu') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                        </li>
-                        <li><a href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                        </li>
-                        <li><a href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
-                        <li><a
-                                href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                        </li>
-                        <li><a
-                                href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                        </li>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                            <li><a
+                                    href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                            </li>
+                        @else
+                            <li class="categories_button"><img loading="lazy" src="{{ asset("$design/images/icon/ico-menu.svg") }}"
+                                alt=""><a class="categories_a">{{ __('text.common_categories_menu') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                            </li>
+                            <li><a href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a></li>
+                            <li><a
+                                    href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <aside class="categories-sidebar hide">
@@ -193,7 +220,7 @@
                 <div class="panel-box">
                     <a href="{{ route('home.index') }}" class="logo">
                         <img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" width="145" height="40"
-                            alt="">
+                            alt="{{ $domainWithoutZone }}">
                     </a>
                     <div class="drop-info">
                         @if (count($Language::GetAllLanuages()) > 1)
@@ -283,7 +310,7 @@
                         <strong>{{ __('text.common_verified_d4') }}</strong>
                         <span>{{ __('text.common_approved_d4') }}</span>
                     </div>
-                    <img loading="lazy" src="{{ asset("$design/images/img-certificates.png") }}" alt="">
+                    <img loading="lazy" src="{{ asset("$design/images/img-certificates.png") }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' partners' }}" @else alt="" @endif>
                 </div>
             </div>
         </div>
@@ -380,67 +407,67 @@
         <div class="ship-index__container">
             <ul class="ship-index__list">
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usps' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#usps" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ems' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ems" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dhl' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dhl" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ups' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ups" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' fedex' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#fedex" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tnt' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#tnt" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' postnl' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#postnl" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' deutsche_post' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#deutsche_post" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dpd' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dpd" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' gls' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#gls" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' australia_post' }}" @endif>
                         <use width="100%" height="100%" width="100%" href="/pub_images/shipping/sprite.svg#australia_post" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' colissimo' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#colissimo" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
-                    <svg>
+                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' correos' }}" @endif>
                         <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#correos" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
@@ -548,39 +575,79 @@
         <div class="item-box">
             <div class="footer-info">
                 <div class="info-column">
-                    <div class="item">
-                        <ul class="footer-nav">
-                            <li><a
-                                    href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.about') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
-                            </li>
-                            <li><a href="{{ route('home.help') }}">{{ __('text.common_help_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.testimonials') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <ul class="footer-nav">
-                            <li><a
-                                    href="{{ route('home.delivery') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.moneyback') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                            </li>
-                            <li><a
-                                    href="{{ route('home.contact_us') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="item">
-                        <a href="{{ route('home.affiliate') }}"
-                            class="btn btn-primary">{{ __('text.common_affiliate_main_menu_button') }}</a>
-                    </div>
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.about', '_' . $domainWithoutZone) }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                                </li>
+                                <li><a href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{ __('text.common_help_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}"
+                                class="btn btn-primary">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        </div>
+                    @else
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.about', '') }}">{{ __('text.common_about_us_main_menu_item') }}</a>
+                                </li>
+                                <li><a href="{{ route('home.help', '') }}">{{ __('text.common_help_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.testimonials', '') }}">{{ __('text.common_testimonials_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <ul class="footer-nav">
+                                <li><a
+                                        href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="item">
+                            <a href="{{ route('home.affiliate', '') }}"
+                                class="btn btn-primary">{{ __('text.common_affiliate_main_menu_button') }}</a>
+                        </div>
+                    @endif
                 </div>
+                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                    <div class="sitemap_menu">
+                        <a class="navigation__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                    </div>
+                @endif
                 <div class="copyright">
                     <p>
                         {{ __('text.license_text_license1_1') }}

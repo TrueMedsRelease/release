@@ -5639,3 +5639,27 @@ strong {
   opacity:0;
   }
   }
+
+  .site_info_link {
+    text-decoration: none;
+  }
+
+  .site_info_link:hover {
+    color: var(--text-body-color);
+  }
+
+  .sitemap_menu{
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.sitemap_menu a{
+    color: #ffffff;
+}
+
+.sitemap_menu a:hover{
+    color: var(--link-color);
+}

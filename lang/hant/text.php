@@ -587,4 +587,11 @@ return  [
     "gift_card_title" => "它是如何運作的？",
     "gift_card_text1" => "選擇所需面額並用卡片支付。我們給予+10%作為面額的獎金。您可以將卡片贈送或轉讓給任何人。",
     "gift_card_text2" => "根據您的面額（+ 10％獎金）選擇任意產品，並在付款頁面輸入禮品卡詳細信息，即可完成購買。",
+
+    "text_aff_domain_1" => "購買",
+    "text_aff_domain_2" => "在線",
+
+    "menu_title_sitemap" => "網站地圖",
+    "sitemap_language_title" => "語言",
+    "sitemap_site_info" => "網站資訊",
 ];

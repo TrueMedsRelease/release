@@ -18,12 +18,12 @@
                         <div class="card__img">
                             @if ($product['image'] == 'gift-card')
                                 <picture>
-                                    <img src="{{ asset($design . '/images/products/gift.png') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;" alt="{{ $product['image'] }}">
+                                    <img src="{{ asset($design . '/images/products/gift.png') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;" alt="{{ $product['alt'] }}">
                                 </picture>
                             @else
                                 <picture style="max-height: 175px; max-width: 175px;">
                                     <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                                    <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
                                 </picture>
                             @endif
                         </div>

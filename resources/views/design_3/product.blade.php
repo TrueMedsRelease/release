@@ -32,7 +32,7 @@
                         @else
                             <picture>
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
-                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}" style="width: auto; height: auto; max-width: 175px; max-height: 175px;">
+                                <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}" style="width: auto; height: auto; max-width: 175px; max-height: 175px;">
                             </picture>
                         @endif
                     </div>
@@ -62,8 +62,8 @@
                             <h2 class="details-product__label">{{__('text.product_diseases')}}</h2>
                             <div class="details-product__links">
                                 @foreach ($product['disease'] as $disease)
-                                    <a href="{{ route('home.disease', str_replace(' ', '-', $disease)) }}">
-                                        {{ ucfirst($disease) }}
+                                    <a href="{{ route('home.disease', $disease['url']) }}">
+                                        {{ ucfirst($disease['name']) }}
                                     </a>
                                 @endforeach
                             </div>
@@ -267,7 +267,7 @@
                 <div class="item-product__image-ibg">
                     <picture>
                         <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                        <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['image'] }}">
+                        <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}">
                     </picture>
                 </div>
             </div>

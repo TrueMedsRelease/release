@@ -706,4 +706,11 @@ return [
     "gift_card_title" => "Como funciona?",
     "gift_card_text1" => "Selecione a denominação pretendida e pague com o cartão. Damos + 10% como bónus à denominação. Pode dar e transferir o cartão para qualquer pessoa.",
     "gift_card_text2" => "Selecione qualquer produto pelo valor de acordo com a sua denominação (+ 10% de bónus) e insira os dados do cartão presente na página de pagamento e a compra será efetuada.",
+
+    "text_aff_domain_1" => "Comprar",
+    "text_aff_domain_2" => "online",
+
+    "menu_title_sitemap" => "Mapa do site",
+    "sitemap_language_title" => "Idiomas",
+    "sitemap_site_info" => "Informações do site",
 ];

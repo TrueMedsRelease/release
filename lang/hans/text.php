@@ -591,4 +591,11 @@ return [
     "gift_card_title" => "它是如何工作的？",
     "gift_card_text1" => "选择所需的面额并用卡付款。我们给予 + 10% 作为面额的奖励。您可以将卡赠送和转让给任何人。",
     "gift_card_text2" => "根据您的面额选择任何产品（+ 10% 奖励），然后在付款页面上输入礼品卡详细信息，即可完成购买。",
+
+    "text_aff_domain_1" => "购买",
+    "text_aff_domain_2" => "在线",
+
+    "menu_title_sitemap" => "网站地图",
+    "sitemap_language_title" => "语言",
+    "sitemap_site_info" => "网站信息",
 ];
