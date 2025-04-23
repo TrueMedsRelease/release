@@ -168,7 +168,11 @@
                 <div class="header__top">
                     <div class="header__inner">
                         <a href="{{ route('home.index') }}" class="header__logo logo">
-                            <img class="logo__icon" src="{{ asset("$design/images/logo.svg") }}" alt="{{ $domainWithoutZone }}">
+                            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                                <img class="logo__icon" src="{{ asset("$design/images/logo.svg") }}" alt="{{ $domainWithoutZone }}">
+                            @else
+                                <img class="logo__icon" src="{{ asset("$design/images/logo.svg") }}" alt="Logo">
+                            @endif
                         </a>
                         <form class="header__search" data-da=".header__top, 1024, last"
                             action="{{ route('search.search_product') }}" method = "POST" data-dev>
@@ -782,7 +786,11 @@
             <div class="footer_container">
                 <div class="footer_left">
                     <div>
-                        <img src="{{ asset("$design/images/logo_bottom.svg") }}" alt="{{ $domainWithoutZone }}">
+                        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                            <img src="{{ asset("$design/images/logo_bottom.svg") }}" alt="{{ $domainWithoutZone }}">
+                        @else
+                            <img src="{{ asset("$design/images/logo_bottom.svg") }}" alt="Logo">
+                        @endif
                     </div>
                     <div class="footer_copyright">
                         <p>

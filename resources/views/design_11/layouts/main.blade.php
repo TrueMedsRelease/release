@@ -238,7 +238,11 @@
                     </a>
                 </div>
                 <a class="header__logo" href="{{ route('home.index') }}">
-                    <img src="{{ asset($design . '/svg/logo.svg') }}" width="214" height="52" alt="{{ $domainWithoutZone }}">
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <img src="{{ asset($design . '/svg/logo.svg') }}" width="214" height="52" alt="{{ $domainWithoutZone }}">
+                    @else
+                        <img src="{{ asset($design . '/svg/logo.svg') }}" width="214" height="52" alt="Logo">
+                    @endif
                 </a>
                 <form class="search-form" action="{{ route('search.search_product') }}" method="post">
                     @csrf
@@ -701,7 +705,11 @@
             @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
                 <div class="footer__wrapper">
                     <a class="footer__logo" href="{{ route('home.index') }}">
-                        <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="{{ $domainWithoutZone }}">
+                        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                            <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="{{ $domainWithoutZone }}">
+                        @else
+                            <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="Logo">
+                        @endif
                     </a>
                     <nav class="nav footer-nav">
                         <div class="nav-container">
@@ -721,7 +729,11 @@
             @else
                 <div class="footer__wrapper">
                     <a class="footer__logo" href="{{ route('home.index') }}">
-                        <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="{{ $domainWithoutZone }}">
+                        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                            <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="{{ $domainWithoutZone }}">
+                        @else
+                            <img src="{{ asset($design . '/svg/logo-footer.svg') }}" width="206" height="44" alt="Logo">
+                        @endif
                     </a>
                     <nav class="nav footer-nav">
                         <div class="nav-container">
