@@ -177,8 +177,11 @@
         <div class="header__main">
             <div class="container header__container">
                 <div class="header__inner">
-                    <a href="{{ route('home.index') }}" class="header__logo"><img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" alt="{{ $domainWithoutZone }}"></a>
-
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <a href="{{ route('home.index') }}" class="header__logo"><img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" alt="{{ $domainWithoutZone }}"></a>
+                    @else
+                        <a href="{{ route('home.index') }}" class="header__logo"><img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" alt="Logo"></a>
+                    @endif
                     <div class="header__actions" data-one-select data-da=".top-header__container, 700, last">
                         @if (count($Language::GetAllLanuages()) > 1)
                             <div class="header__select">

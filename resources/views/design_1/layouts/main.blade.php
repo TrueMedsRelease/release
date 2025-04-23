@@ -182,10 +182,17 @@
         <div class="container header__container">
             <div class="header__wrapper">
                 <a class="header__logo logo" href="{{ route('home.index') }}">
-                    <picture>
-                        <source srcset="{{ asset("$design/images/logo.webp") }}" type="image/webp">
-                        <img loading="lazy" class="logo__img" src="{{ asset("$design/images/logo.png") }}" alt="{{ $domainWithoutZone }}" width="216" height="53">
-                    </picture>
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <picture>
+                            <source srcset="{{ asset("$design/images/logo.webp") }}" type="image/webp">
+                            <img loading="lazy" class="logo__img" src="{{ asset("$design/images/logo.png") }}" alt="{{ $domainWithoutZone }}" width="216" height="53">
+                        </picture>
+                    @else
+                        <picture>
+                            <source srcset="{{ asset("$design/images/logo.webp") }}" type="image/webp">
+                            <img loading="lazy" class="logo__img" src="{{ asset("$design/images/logo.png") }}" alt="Logo" width="216" height="53">
+                        </picture>
+                    @endif
                 </a>
                 @if (count($Language::GetAllLanuages()) > 1)
                     <div class="header__currency header__control" data-da=".controls, 768, first">

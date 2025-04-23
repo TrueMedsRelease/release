@@ -191,8 +191,11 @@
                 </div>
                 <!-- Logo-->
                 <a class="logo" href="{{ route('home.index') }}">
-                    <div class="logo__image"><img loading="lazy" src="{{ asset("$design/svg/logo.svg") }}" width="40"
-                            height="40" alt="{{ $domainWithoutZone }}"></div>
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <div class="logo__image"><img loading="lazy" src="{{ asset("$design/svg/logo.svg") }}" width="40" height="40" alt="{{ $domainWithoutZone }}"></div>
+                    @else
+                        <div class="logo__image"><img loading="lazy" src="{{ asset("$design/svg/logo.svg") }}" width="40" height="40" alt="Logo"></div>
+                    @endif
                     <div class="logo__title">TrueMeds</div>
                     <div class="logo__text">Discount Store. Since 1998</div>
                 </a>
@@ -695,8 +698,11 @@
     <footer class="footer">
         <div class="container">
             <div class="footer__wrapper"><!-- Footer logo--><a class="logo logo--footer" href="{{ route('home.index') }}">
-                    <div class="logo__image"><img loading="lazy" src="{{ asset("$design/svg/logo-footer.svg") }}" width="40"
-                            height="40" alt="{{ $domainWithoutZone }}"></div>
+                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                        <div class="logo__image"><img loading="lazy" src="{{ asset("$design/svg/logo-footer.svg") }}" width="40" height="40" alt="{{ $domainWithoutZone }}"></div>
+                    @else
+                        <div class="logo__image"><img loading="lazy" src="{{ asset("$design/svg/logo-footer.svg") }}" width="40" height="40" alt="Logo"></div>
+                    @endif
                     <div class="logo__title">TrueMeds</div>
                     <div class="logo__text">Discount Store. Since 1998</div>
                 </a>

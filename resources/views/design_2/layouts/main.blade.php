@@ -120,8 +120,13 @@
 				<div class="header__top" style="border-top: 1px solid var(--gray-light);">
 					<div class="header__inner">
 						<a href="{{ route('home.index') }}" class="header__logo logo">
-							<img loading="lazy" class="logo__icon" src="{{ asset("$design/images/logo.svg") }}" alt="{{ $domainWithoutZone }}">
-							<img loading="lazy" class="logo__text" src="{{ asset("$design/images/logo-text.svg") }}" alt="{{ $domainWithoutZone }}">
+                            @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                                <img loading="lazy" class="logo__icon" src="{{ asset("$design/images/logo.svg") }}" alt="{{ $domainWithoutZone }}">
+                                <img loading="lazy" class="logo__text" src="{{ asset("$design/images/logo-text.svg") }}" alt="{{ $domainWithoutZone }}">
+                            @else
+                                <img loading="lazy" class="logo__icon" src="{{ asset("$design/images/logo.svg") }}" alt="Logo">
+                                <img loading="lazy" class="logo__text" src="{{ asset("$design/images/logo-text.svg") }}" alt="Logo">
+                            @endif
 						</a>
 						<form class="header__search" data-da=".header__top, 1024, last" action="{{ route('search.search_product') }}" method = "POST">
                             @csrf

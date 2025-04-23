@@ -219,8 +219,11 @@
             <div class="header-container">
                 <div class="panel-box">
                     <a href="{{ route('home.index') }}" class="logo">
-                        <img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" width="145" height="40"
-                            alt="{{ $domainWithoutZone }}">
+                        @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                            <img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" width="145" height="40" alt="{{ $domainWithoutZone }}">
+                        @else
+                            <img loading="lazy" src="{{ asset("$design/images/logo.svg") }}" width="145" height="40" alt="Logo">
+                        @endif
                     </a>
                     <div class="drop-info">
                         @if (count($Language::GetAllLanuages()) > 1)
