@@ -216,6 +216,10 @@ class HomeController extends Controller
         $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
 
+        if (empty($products)) {
+            return redirect(route('home.index'));
+        }
+
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
         $pixel = "";
         foreach($pixels as $item)
@@ -348,7 +352,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function disease($disease) : View
+    public function disease($disease)
     {
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
             $disease = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $disease);
@@ -366,6 +370,10 @@ class HomeController extends Controller
         $page_properties = ProductServices::getPageProperties('disease');
         $first_letters = ProductServices::getFirstLetters();
         $agent = new Agent();
+
+        if (empty($products)) {
+            return redirect(route('home.index'));
+        }
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
         $pixel = "";
