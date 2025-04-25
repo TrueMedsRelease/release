@@ -255,6 +255,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/paypal', 'paypal')->name('checkout.paypal');
     Route::post('/check_payment', 'check_payment')->name('checkout.check_payment')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/complete', 'complete')->name('checkout.complete');
+    Route::post('/send_checkout_phone_email', 'send_checkout_phone_email')->name('checkout.send_checkout_phone_email')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::get('/redirect', function () {
