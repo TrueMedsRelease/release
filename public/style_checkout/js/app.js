@@ -2781,3 +2781,39 @@ $( document ).ready(function() {
 });
 
 
+$(document).ready(function () {
+    function sendData(field, value) {
+        $.ajax({
+            url: '/send_checkout_phone_email',
+            method: 'POST',
+            data: {
+                input_type: field,
+                input_value: value
+            },
+            success: function (response) {
+                // console.log(response);
+            },
+            dataType: 'json'
+        });
+    }
+
+    $('input[name="phone"]').on('blur', function () {
+        var phoneCode = $('select[name=phone_code] :selected').text().trim();
+        var phoneValue = $(this).val().trim();
+
+        if (phoneValue) {
+            // console.log(phoneCode + phoneValue);
+            sendData('phone', phoneCode + phoneValue);
+        }
+    });
+
+    $('input[name="email"]').on('blur', function () {
+        var emailValue = $(this).val().trim();
+        const emailRegex = /^([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})$/i;
+
+        if (emailValue && emailRegex.test(emailValue)) {
+            // console.log(emailValue);
+            sendData('email', emailValue);
+        }
+    });
+});

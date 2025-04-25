@@ -1180,7 +1180,7 @@ class CheckoutController extends Controller
 
         $data = [
             'method' => 'order',
-            'api_key' => $api_key,
+            'api_key' => $api_key->key_data,
             'phone' => e('+' . $phone_code . $form['phone']),
             'alternative_phone' => !empty($form['alt_phone']) ? e('+' . $phone_code . $form['alt_phone']) : '',
             'email' => e($form['email']),
@@ -1285,5 +1285,59 @@ class CheckoutController extends Controller
             session(['order' => 'error']);
             return response()->json(['response' => ['status' => 'ok']], 200);
         }
+    }
+
+    public function send_checkout_phone_email(Request $request)
+    {
+        $sessid = '';
+        $input_type = $request->input_type;
+        $input_value = $request->input_value;
+
+        foreach(session('cart') as $product)
+        {
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
+        }
+
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $data = [
+            'method' => 'checkout_data_collect',
+            'api_key' => $api_key->key_data,
+            'input_type' => $input_type,
+            'input_value' => $input_value,
+            'sessid' => $sessid,
+            'domain' => request()->getHost(),
+            'aff' => session('aff', 0),
+        ];
+
+        if(checkdnsrr('true-services.net', 'A'))
+        {
+            try {
+                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+
+                if ($response->successful()) {
+                    // Обработка успешного ответа
+                    $response = json_decode($response, true);
+                    // return response()->json(['response' => ['status' => 'ok']], 200);
+
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
+        else
+        {
+            $response = ['status' => 'error'];
+        }
+
+        return json_encode($response);
     }
 }

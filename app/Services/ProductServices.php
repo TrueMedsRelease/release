@@ -1180,8 +1180,8 @@ class ProductServices
             $search_full_text = $search_text . '*';
         }
 
-        $search_text_lower = strtolower($search_text);
-        $search_full_text_lower = strtolower($search_full_text);
+        $search_text_lower = strtolower(urldecode($search_text));
+        $search_full_text_lower = strtolower(urldecode($search_full_text));
 
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
         $product_price = self::GetAllProductPillPrice($design);
