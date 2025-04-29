@@ -321,8 +321,22 @@ class ProductServices
                         ->where('category.is_showed', '=', 1)
                         ->where('product.sinonim', 'like', '%' . $url . '%')
                         ->where('product.is_showed', '=', 1)
-                        ->get(['product.id'])
+                        ->get(['product.id', 'product.sinonim'])
                         ->toArray();
+
+                    $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                    $product_sinonims = explode("\r\n", $product_sinonims);
+
+                    $count = 0;
+                    foreach($product_sinonims as $sinonim) {
+                        if (strtolower($sinonim) == strtolower($url)) {
+                            $count++;
+                        }
+                    }
+
+                    if ($count == 0) {
+                        $product_id = [];
+                    }
 
                     if(empty($product_id)) {
                         $url = str_replace('-', ' ', $url);
@@ -334,8 +348,22 @@ class ProductServices
                             ->where('category.is_showed', '=', 1)
                             ->where('product.sinonim', 'like', '%' . $url . '%')
                             ->where('product.is_showed', '=', 1)
-                            ->get(['product.id'])
+                            ->get(['product.id', 'product.sinonim'])
                             ->toArray();
+
+                        $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                        $product_sinonims = explode("\r\n", $product_sinonims);
+
+                        $count = 0;
+                        foreach($product_sinonims as $sinonim) {
+                            if (strtolower($sinonim) == strtolower($url)) {
+                                $count++;
+                            }
+                        }
+
+                        if ($count == 0) {
+                            $product_id = [];
+                        }
 
                         if(empty($product_id)) {
                             $url = str_replace(',', '.', $url);
@@ -347,8 +375,22 @@ class ProductServices
                                 ->where('category.is_showed', '=', 1)
                                 ->where('product.sinonim', 'like', '%' . $url . '%')
                                 ->where('product.is_showed', '=', 1)
-                                ->get(['product.id'])
+                                ->get(['product.id', 'product.sinonim'])
                                 ->toArray();
+
+                            $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                            $product_sinonims = explode("\r\n", $product_sinonims);
+
+                            $count = 0;
+                            foreach($product_sinonims as $sinonim) {
+                                if (strtolower($sinonim) == strtolower($url)) {
+                                    $count++;
+                                }
+                            }
+
+                            if ($count == 0) {
+                                $product_id = [];
+                            }
                         }
                     }
 
@@ -359,6 +401,8 @@ class ProductServices
                             $products_desc_raw[$key][0]['name'] = ucfirst($url) . ' (' . __('text.product_other_name') . $product[0]['name'] . ')';
                         }
                     }
+
+
                 }
             }
         // } else {
