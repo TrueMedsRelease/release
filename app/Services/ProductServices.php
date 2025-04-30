@@ -326,7 +326,8 @@ class ProductServices
 
                     if (!empty($product_id)) {
                         $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                        $product_sinonims = explode("\r\n", $product_sinonims);
+                        $product_sinonims = str_replace("\r", '', $product_sinonims);
+                        $product_sinonims = explode("\n", $product_sinonims);
 
                         $count = 0;
                         foreach($product_sinonims as $sinonim) {
@@ -355,7 +356,8 @@ class ProductServices
 
                         if (!empty($product_id)) {
                             $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                            $product_sinonims = explode("\r\n", $product_sinonims);
+                            $product_sinonims = str_replace("\r", '', $product_sinonims);
+                            $product_sinonims = explode("\n", $product_sinonims);
 
                             $count = 0;
                             foreach($product_sinonims as $sinonim) {
@@ -384,7 +386,8 @@ class ProductServices
 
                             if (!empty($product_id)) {
                                 $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                                $product_sinonims = explode("\r\n", $product_sinonims);
+                                $product_sinonims = str_replace("\r", '', $product_sinonims);
+                                $product_sinonims = explode("\n", $product_sinonims);
 
                                 $count = 0;
                                 foreach($product_sinonims as $sinonim) {
