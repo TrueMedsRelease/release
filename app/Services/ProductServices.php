@@ -324,18 +324,20 @@ class ProductServices
                         ->get(['product.id', 'product.sinonim'])
                         ->toArray();
 
-                    $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                    $product_sinonims = explode("\r\n", $product_sinonims);
+                    if (!empty($product_id)) {
+                        $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                        $product_sinonims = explode("\r\n", $product_sinonims);
 
-                    $count = 0;
-                    foreach($product_sinonims as $sinonim) {
-                        if (strtolower($sinonim) == strtolower($url)) {
-                            $count++;
+                        $count = 0;
+                        foreach($product_sinonims as $sinonim) {
+                            if (strtolower($sinonim) == strtolower($url)) {
+                                $count++;
+                            }
                         }
-                    }
 
-                    if ($count == 0) {
-                        $product_id = [];
+                        if ($count == 0) {
+                            $product_id = [];
+                        }
                     }
 
                     if(empty($product_id)) {
@@ -351,18 +353,20 @@ class ProductServices
                             ->get(['product.id', 'product.sinonim'])
                             ->toArray();
 
-                        $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                        $product_sinonims = explode("\r\n", $product_sinonims);
+                        if (!empty($product_id)) {
+                            $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                            $product_sinonims = explode("\r\n", $product_sinonims);
 
-                        $count = 0;
-                        foreach($product_sinonims as $sinonim) {
-                            if (strtolower($sinonim) == strtolower($url)) {
-                                $count++;
+                            $count = 0;
+                            foreach($product_sinonims as $sinonim) {
+                                if (strtolower($sinonim) == strtolower($url)) {
+                                    $count++;
+                                }
                             }
-                        }
 
-                        if ($count == 0) {
-                            $product_id = [];
+                            if ($count == 0) {
+                                $product_id = [];
+                            }
                         }
 
                         if(empty($product_id)) {
@@ -378,18 +382,20 @@ class ProductServices
                                 ->get(['product.id', 'product.sinonim'])
                                 ->toArray();
 
-                            $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                            $product_sinonims = explode("\r\n", $product_sinonims);
+                            if (!empty($product_id)) {
+                                $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                                $product_sinonims = explode("\r\n", $product_sinonims);
 
-                            $count = 0;
-                            foreach($product_sinonims as $sinonim) {
-                                if (strtolower($sinonim) == strtolower($url)) {
-                                    $count++;
+                                $count = 0;
+                                foreach($product_sinonims as $sinonim) {
+                                    if (strtolower($sinonim) == strtolower($url)) {
+                                        $count++;
+                                    }
                                 }
-                            }
 
-                            if ($count == 0) {
-                                $product_id = [];
+                                if ($count == 0) {
+                                    $product_id = [];
+                                }
                             }
                         }
                     }
