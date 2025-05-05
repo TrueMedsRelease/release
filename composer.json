@@ -19,10 +19,10 @@
         "symfony/http-client": "6.4",
         "symfony/string": "6.4",
         "symfony/yaml": "6.4",
-        "web-token/jwt-library": "3.4"
+        "web-token/jwt-library": "3.4",
+        "barryvdh/laravel-debugbar": "^3.13"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
