@@ -9,7 +9,7 @@ class Currency extends Model
 {
     use HasFactory;
 
-    public static array $prefix = [
+    public static $prefix = [
         'usd' => '$',
         'eur' => '€',
         'aud' => 'A$',
@@ -48,9 +48,11 @@ class Currency extends Model
         'bbd' => 'BB$',
     ];
 
-    public static function GetAllCurrency(): array
+    public static function GetAllCurrency()
     {
-        return Currency::query()->where('show_in_menu', '=', 1)->get()->toArray();
+        $currency = Currency::query()->where('show_in_menu', '=', 1)->get()->toArray();
+
+        return $currency;
     }
 
     public static function GetCoef($currency)
@@ -59,12 +61,11 @@ class Currency extends Model
         return $currency[0]['coef'];
     }
 
-    public static function Convert($number, $round = false, $format = false): string
+    public static function Convert($number, $round = false, $format = false)
     {
         $current_currency = session('currency', 'usd');
-        $coef             = session('currency_c');
+        $coef             = session('currency_c', 1);
         $prefix           = Currency::$prefix[$current_currency];
-
         if ($round) {
             $total = ceil($number * $coef);
         } else {
@@ -78,7 +79,7 @@ class Currency extends Model
         }
     }
 
-    public static function SumInCurrency($numbers = [], $round = false): string
+    public static function SumInCurrency($numbers = [], $round = false)
     {
         $current_currency = session('currency', 'usd');
         $sum              = 0;
@@ -95,22 +96,23 @@ class Currency extends Model
 
     public static function GetCurrencyByCountry($country)
     {
-        $currency = Currency::query()->where('show_in_menu', '=', 1)
-            ->where('country_iso2', 'LIKE', "%$country%")
-            ->first('code');
-
+        $currency = Currency::query()->where('show_in_menu', '=', 1)->where(
+            'country_iso2',
+            'LIKE',
+            '%' . $country . '%'
+        )->first('code');
         if (empty($currency)) {
             $currencies = Currency::GetAllCurrency();
 
             if (count($currencies) > 1) {
                 return config('app.currency');
+            } else {
+                if (count($currencies) == 1) {
+                    return $currencies[0]['code'];
+                } else {
+                    return config('app.currency');
+                }
             }
-
-            if (count($currencies) == 1) {
-                return $currencies[0]['code'];
-            }
-
-            return config('app.currency');
         } else {
             $currency = $currency->toArray();
             return $currency['code'];

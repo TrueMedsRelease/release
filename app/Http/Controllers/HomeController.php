@@ -89,8 +89,8 @@ class HomeController extends Controller
                 ]
             );
         } elseif ($design == 'design_7') {
-            $product = ProductServices::GetProductInfoByUrl('rybelsus', $design);
-            // $page_properties->title = 'Rybelsus - ' . $domain;
+            $product = ProductServices::GetProductInfoByUrl('rybelsus');
+
             return view(
                 $design . '.index',
                 [

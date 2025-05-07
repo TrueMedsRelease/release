@@ -15,18 +15,17 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class ProductServices
 {
     public static function GetBestsellers($design): array
     {
-        $productsDesc = Cache::remember(App::currentLocale() . "_products_desc", 180, function () {
+        $products_desc = Cache::remember(App::currentLocale() . "_products_desc", 180, function () {
             return self::GetProductDesc(Language::$languages[App::currentLocale()]);
         });
 
-        $productPillPrices = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
+        $product_price = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
             return self::GetAllProductPillPrice();
         });
 
@@ -70,25 +69,26 @@ class ProductServices
 
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
-        foreach ($products as $i => $product) {
-            if (strtoupper(session('location.country')) != 'US' && ($product['id'] == 755 || $product['id'] == 491)) {
+        $countryCode = strtoupper(session('location.country') ?? '');
+        foreach ($products as $i => &$product) {
+            if ($countryCode != 'US' && ($product['id'] == 755 || $product['id'] == 491)) {
                 unset($products[$i]);
                 continue;
             }
 
-            $products[$i]['name'] = $productsDesc[$products[$i]['id']]['name'];
-            $products[$i]['desc'] = $productsDesc[$products[$i]['id']]['desc'];
+            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
 
             if (static::isAffIdInSpecialUrlList()) {
                 if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                    $products[$i]['url'] = 'Buying_' . $productsDesc[$products[$i]['id']]['url'] . '_online';
+                    $products[$i]['url'] = 'Buying_' . $products_desc[$products[$i]['id']]['url'] . '_online';
                 } else {
                     $products[$i]['url'] = __('text.text_aff_domain_1')
-                                           . '_' . $productsDesc[$products[$i]['id']]['url']
+                                           . '_' . $products_desc[$products[$i]['id']]['url']
                                            . '_' . __('text.text_aff_domain_2');
                 }
             } else {
-                $products[$i]['url'] = $productsDesc[$products[$i]['id']]['url'];
+                $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
             }
 
             $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', ucwords(trim($products[$i]['aktiv']))));
@@ -110,12 +110,12 @@ class ProductServices
                 ];
             }
 
-            foreach ($productPillPrices as $key => $pp) {
+            foreach ($product_price as $key => $pp) {
                 if ($product['id'] == $key) {
-                    $products[$i]['price'] = $productPillPrices[$products[$i]['id']]['price'];
+                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
 
-                    if (isset($productPillPrices[$products[$i]['id']]['discount'])) {
-                        $products[$i]['discount'] = $productPillPrices[$products[$i]['id']]['discount'];
+                    if (isset($product_price[$products[$i]['id']]['discount'])) {
+                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
                     }
                 }
             }
@@ -150,48 +150,29 @@ class ProductServices
             return self::GetProductDesc(Language::$languages[App::currentLocale()]);
         });
 
-        $productPillPrices = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
-            return self::GetAllProductPillPrice();
-        });
+        // $productPillPrices = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
+        //     return self::GetAllProductPillPrice();
+        // });
+        $productPillPrices = self::GetAllProductPillPrice();
 
         $categoryDesc = Cache::remember(App::currentLocale() . "_category_desc", 123, function () {
             return self::GetAllCategoryDesc(Language::$languages[App::currentLocale()]);
         });
 
+        $countryCode = Str::upper(session('location.country') ?? '');
 
-        if (empty($url)) {
-            if ($design == 'design_5') {
-                $categoriesRaw = Category::query()
-                    ->whereIn('id', [13, 14])
-                    ->where('is_showed', '=', 1)
-                    ->with(['product'])
-                    ->orderBy('ord')
-                    ->get();
-            } else {
-                $categoriesRaw = Category::query()
-                    ->with(['product'])
-                    ->where('is_showed', '=', 1)
-                    ->orderBy('ord')
-                    ->get();
-            }
-        } else {
-            if ($design == 'design_5') {
-                $categoriesRaw = Category::query()
-                    ->where('url', '=', $url)
-                    ->whereIn('id', [13, 14])
-                    ->where('is_showed', '=', 1)
-                    ->with(['product'])
-                    ->orderBy('ord')
-                    ->get();
-            } else {
-                $categoriesRaw = Category::query()
-                    ->where('url', '=', $url)
-                    ->where('is_showed', '=', 1)
-                    ->with(['product'])
-                    ->orderBy('ord')
-                    ->get();
-            }
+
+        $categoriesQuery = Category::query();
+        if ($design == 'design_5') {
+            $categoriesQuery->whereIn('id', [13, 14]);
         }
+        if (!empty($url)) {
+            $categoriesQuery->where('url', '=', $url);
+        }
+        $categoriesQuery->where('is_showed', '=', 1);
+        $categoriesQuery->with(['product']);
+        $categoriesQuery->orderBy('ord');
+        $categoriesRaw = $categoriesQuery->get();
 
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
@@ -219,9 +200,7 @@ class ProductServices
                     }
                 }
 
-                if (strtoupper(session('location.country')) != 'US'
-                    && ($product['id'] == 755 || $product['id'] == 491)
-                ) {
+                if ($countryCode != 'US' && ($product['id'] == 755 || $product['id'] == 491)) {
                     $product['unset'] = true;
                 }
 
@@ -958,7 +937,7 @@ class ProductServices
             ->groupBy('dosage')
             ->toArray();
 
-        $product_type = 1; //defualt pills
+        $product_type = 1; //default pills
         foreach ($packs as &$pack) {
             $max_pill_price = 0;
             foreach ($pack as $p) {
@@ -1198,28 +1177,28 @@ class ProductServices
         return $max_pill_price;
     }
 
-    public static function GetUpgradePack($pack_id)
+    public static function GetUpgradePack($pack_id): array
     {
-        $product_pack = ProductPackaging::query()->find($pack_id);
+        $productPack = ProductPackaging::query()->find($pack_id);
 
-        $upgrade_pack = ProductPackaging::query()
-            ->where('product_id', '=', $product_pack->product_id)
-            ->where('dosage', '=', $product_pack->dosage)
+        $upgradePack = ProductPackaging::query()
+            ->where('product_id', '=', $productPack->product_id)
+            ->where('dosage', '=', $productPack->dosage)
             ->where('price', '!=', 0)
             ->where('is_showed', '=', 1)
-            ->where('num', '>', $product_pack->num)
+            ->where('num', '>', $productPack->num)
             ->orderBy('num', 'asc')
             ->limit(1)
             ->get()
             ->toArray();
 
-        if (!empty($upgrade_pack)) {
-            $upgrade_pack = $upgrade_pack[0];
+        if (!empty($upgradePack)) {
+            $upgradePack = $upgradePack[0];
 
             return [
-                'pack_id' => $upgrade_pack['id'],
-                'price'   => $upgrade_pack['price'],
-                'num'     => $upgrade_pack['num']
+                'pack_id' => $upgradePack['id'],
+                'price'   => $upgradePack['price'],
+                'num'     => $upgradePack['num']
             ];
         } else {
             return [];
@@ -1281,7 +1260,7 @@ class ProductServices
         return $tips;
     }
 
-    public static function SearchProduct($search_text, $is_autocomplete, $design)
+    public static function SearchProduct($search_text, $is_autocomplete, $design): array
     {
         if (Str::contains($search_text, ' ')) {
             $search_full_text = '"' . $search_text . '"';
@@ -1341,16 +1320,6 @@ class ProductServices
 
                 $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
             }
-
-
-            // $product_ids = DB::table('product_search')
-            //     ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
-            //     ->where('product_search.keyword', 'like', '%' . $search_text . '%')
-            //     ->whereIn('product_category.category_id', [14, 21])
-            //     ->where('product_search.is_showed', '=', 1)
-            //     ->get(['product_search.product_id', 'product_category.category_id'])
-            //     ->groupBy('product_search.en_name')
-            //     ->toArray();
         } else {
             if (env('APP_GIFT_CARD') == 0) {
                 if (strtoupper(session('location.country')) != 'US') {
@@ -1706,11 +1675,6 @@ class ProductServices
                     if (stripos($s, $search_text) !== false) {
                         $s = trim($s);
 
-                        // $pos = strripos($s, "'");
-                        // if ($pos > 0) {
-                        //     $s = substr_replace($s, "\/", $pos - 1);
-                        // }
-                        // var_dump($s);
                         $result[] = preg_replace('/[^A-Za-z0-9\s\-\']/', '', $s); // [^A-Za-z0-9\s\-]
                     }
                 }
@@ -1723,9 +1687,9 @@ class ProductServices
                     if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
                         $tips .= $item . "||Buying_" . Str::lower(str_replace(' ', '-', $item)) . "_online.html\n";
                     } else {
-                        $tips .= $item . "||" . __('text.text_aff_domain_1') . '_' . Str::lower(
-                                str_replace(' ', '-', $item)
-                            ) . '_' . __('text.text_aff_domain_2') . ".html\n";
+                        $tips .= $item . "||" . __('text.text_aff_domain_1')
+                                 . '_' . Str::lower(str_replace(' ', '-', $item))
+                                 . '_' . __('text.text_aff_domain_2') . ".html\n";
                     }
                 } else {
                     $tips .= $item . "||" . Str::lower(str_replace(' ', '-', $item)) . ".html\n";
@@ -1786,7 +1750,8 @@ class ProductServices
     public static function GetGiftCard(): array
     {
         $language_id = Language::$languages[App::currentLocale()];
-        $cards       = DB::select(
+
+        $cards = DB::select(
             "SELECT pp.id as pack_id, pd.name, price
             FROM product_packaging pp
             JOIN product_desc pd ON pd.product_id = pp.product_id
@@ -1845,9 +1810,6 @@ class ProductServices
                 }
 
                 $page_properties->title = str_replace('(random_text)', $title, $page_properties->title);
-
-                $title = $page_properties->title;
-
                 break;
             case 'login':
                 $page_properties->title = __('text.login_title') . ' - ' . $domain;
@@ -1855,7 +1817,8 @@ class ProductServices
                 break;
             case 'cart':
 
-                $total                        = session('total.all_in_currency') ? session('total.all_in_currency') : 0;
+                $total = session('total.all_in_currency') ? session('total.all_in_currency') : 0;
+
                 $page_properties->keyword     = str_replace('(cart_total)', $total, $page_properties->keyword);
                 $page_properties->description = str_replace('(cart_total)', $total, $page_properties->description);
 
@@ -1889,10 +1852,8 @@ class ProductServices
         return $page_properties;
     }
 
-    public
-    static function getProductProperties(
-        $product
-    ) {
+    public static function getProductProperties($product)
+    {
         $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
 
@@ -1994,8 +1955,7 @@ class ProductServices
         return $pageProperties;
     }
 
-    public
-    static function getFirstLetters()
+    public static function getFirstLetters(): array
     {
         $design = session('design') ? session('design') : config('app.design');
         if ($design == 'design_5') {
@@ -2091,7 +2051,7 @@ class ProductServices
                 $count_add = 0;
 
                 foreach ($products as $id => $value) {
-                    foreach ($bestsellers as $key => $best) {
+                    foreach ($bestsellers as $best) {
                         if ($need_add == $count_add) {
                             break;
                         }
@@ -2249,7 +2209,7 @@ class ProductServices
                 }
             }
 
-            // Проверяем, хватает ли предложек
+            // Проверяем, хватает ли рекомендаций
             $needed_count = 6 - count($products);
 
             if ($needed_count > 0) {
@@ -2258,10 +2218,9 @@ class ProductServices
                     if ($needed_count <= 0) {
                         break;
                     }
-                    if (!in_array($best['id'], array_column($products, 'id')) && !in_array(
-                            $best['id'],
-                            array_column($cart_data, 'product_id')
-                        )) {
+                    if (!in_array($best['id'], array_column($products, 'id'))
+                        && !in_array($best['id'], array_column($cart_data, 'product_id'))
+                    ) {
                         $products[] = $best;
                         $needed_count--;
                     }
@@ -2272,9 +2231,9 @@ class ProductServices
         return $products;
     }
 
-    public static function getProductData($products_arr, $design)
+    public static function getProductData($products_arr, $design): array
     {
-        $product_price = self::GetAllProductPillPrice($design);
+        $product_price = self::GetAllProductPillPrice();
         $products      = [];
 
         if ($design == 5) {
@@ -2400,47 +2359,22 @@ class ProductServices
         return $products;
     }
 
-    public
-    static function getDataRecommendation()
+    protected static function getAffId(): string
     {
-        $result = Http::timeout(3)->post('http://true-services.net/product_recommendation/product_rec.php');
-        $result = json_decode($result, true);
-
-        foreach ($result as $k => $value) {
-            $result[$k] = array_slice($value, 0, 6, true);
+        static $affId = null;
+        if (is_null($affId)) {
+            $affId = session('aff') ?? env('APP_AFF');
         }
 
-        $current_ord = [];
-        foreach ($result as $product_id => $products) {
-            if (!isset($current_ord[$product_id])) {
-                $current_ord[$product_id] = count($products) * 10;
-            }
-
-            foreach ($products as $sugg_id => $val) {
-                DB::table('suggested')->insert([
-                    'product_id' => $product_id,
-                    'sugg_id'    => $sugg_id,
-                    'ord'        => $current_ord[$product_id]
-                ]);
-                $current_ord[$product_id] -= 10;
-            }
-        }
+        return $affId;
     }
 
-    protected
-    static function getAffId(): string
-    {
-        return session('aff') ?? env('APP_AFF');
-    }
-
-    protected
-    static function getSpecialUrlListAffIds(): array
+    protected static function getSpecialUrlListAffIds(): array
     {
         return [1799, 1947, 1952, 1957];
     }
 
-    protected
-    static function isAffIdInSpecialUrlList(): bool
+    protected static function isAffIdInSpecialUrlList(): bool
     {
         return in_array(static::getAffId(), static::getSpecialUrlListAffIds());
     }
