@@ -150,12 +150,11 @@ class ProductServices
             return self::GetProductDesc(Language::$languages[App::currentLocale()]);
         });
 
-        // $productPillPrices = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
-        //     return self::GetAllProductPillPrice();
-        // });
-        $productPillPrices = self::GetAllProductPillPrice();
+        $productPillPrices = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
+            return self::GetAllProductPillPrice();
+        });
 
-        $categoryDesc = Cache::remember(App::currentLocale() . "_category_desc", 123, function () {
+        $categoryDesc = Cache::remember(App::currentLocale() . "_category_desc", 180, function () {
             return self::GetAllCategoryDesc(Language::$languages[App::currentLocale()]);
         });
 

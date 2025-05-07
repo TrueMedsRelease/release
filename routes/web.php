@@ -230,7 +230,7 @@ Route::controller(CartController::class)->group(function(){
     Route::get('/cart_content', 'cart')->name('cart.content')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/add/{product}', 'add')->name('cart.add')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/up', 'up')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::post('/cart/down', 'down')->name('cart.up')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/cart/down', 'down')->name('cart.down')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/remove', 'remove')->name('cart.remove')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/upgrade', 'upgrade')->name('cart.upgrade')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/change-shipping', 'change_shipping')->name('cart.shipping')->withoutMiddleware(VerifyCsrfToken::class);
