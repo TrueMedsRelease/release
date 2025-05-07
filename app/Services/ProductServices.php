@@ -511,7 +511,7 @@ class ProductServices
         $products_desc = Cache::remember(App::currentLocale() . "_product_desc", 180, function () {
             return self::GetProductDesc(Language::$languages[App::currentLocale()]);
         });
-        $product_price = Cache::remember(App::currentLocale() . "_product_price", 180, function () {
+        $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
             return self::GetAllProductPillPrice();
         });
 
@@ -616,8 +616,11 @@ class ProductServices
     public static function GetProductByDisease($disease): array
     {
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
-        $disease       = str_replace('-', ' ', $disease);
+        $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
+            return self::GetAllProductPillPrice();
+        });
+
+        $disease = str_replace('-', ' ', $disease);
 
         if (strtoupper(session('location.country')) != 'US') {
             $diseases = DB::select(
@@ -734,7 +737,10 @@ class ProductServices
     public static function GetProductByActive($active): array
     {
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
+            return self::GetAllProductPillPrice();
+        });
+
 
         $active = str_replace('-', ' ', $active);
 
@@ -1271,7 +1277,10 @@ class ProductServices
         $search_full_text_lower = strtolower(urldecode($search_full_text));
 
         $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
-        $product_price = self::GetAllProductPillPrice();
+        $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
+            return self::GetAllProductPillPrice();
+        });
+
 
         if ($design == 'design_5') {
             if (env('APP_GIFT_CARD') == 0) {
@@ -2232,8 +2241,11 @@ class ProductServices
 
     public static function getProductData($products_arr, $design): array
     {
-        $product_price = self::GetAllProductPillPrice();
-        $products      = [];
+        $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
+            return self::GetAllProductPillPrice();
+        });
+
+        $products = [];
 
         if ($design == 5) {
             $product_data = DB::table('product')
