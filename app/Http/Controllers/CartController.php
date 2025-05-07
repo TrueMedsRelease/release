@@ -68,7 +68,9 @@ class CartController extends Controller
                 'cf-connecting-ip'
             ) : request()->ip();
 
-        $statisticPromise->wait();
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.cart', [
             'design'          => $design,
@@ -126,7 +128,7 @@ class CartController extends Controller
         unset($item);
 
         $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'])
+            ->where('country_iso2', '=', session('location')['country'] ?? 'US')
             ->get()
             ->toArray();
 
