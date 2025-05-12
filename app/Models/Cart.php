@@ -315,6 +315,10 @@ class Cart extends Model
                 Currency::Convert($product_total, true),
                 // Currency::Convert($bonus_total, true),
             ]);
+
+            $checkout_total_in_currency = Currency::SumInCurrency([
+                Currency::Convert($all, true)
+            ], true);
         } else {
 
             $all = $product_total + $shipping_total;//+ $bonus_total
@@ -324,9 +328,22 @@ class Cart extends Model
                 Currency::Convert($shipping_total),
                 // Currency::Convert($bonus_total, true),
             ]);
+
+            $checkout_total_in_currency = Currency::SumInCurrency([
+                Currency::Convert($all, true),
+                Currency::Convert($insurance),
+                Currency::Convert($secret_package),
+                Currency::Convert($coupon_discount * (-1)),
+                // Currency::Convert($gift_card_discount * (-1)),
+            ], true);
         }
 
-        $checkout_total = $all + $insurance + $secret_package - $coupon_discount;
+        if ($is_only_card) {
+            $checkout_total = $all;
+        } else {
+            $checkout_total = $all + $insurance + $secret_package - $coupon_discount;
+        }
+
         $eur = Currency::GetCoef('eur');
 
         $cart_total = [
@@ -339,13 +356,7 @@ class Cart extends Model
             // 'gift_card_discount' => $gift_card_discount,
             'checkout_total' => $checkout_total,
             'checkout_total_eur' => round($checkout_total * $eur,2),
-            'checkout_total_in_currency' => Currency::SumInCurrency([
-                Currency::Convert($all, true),
-                Currency::Convert($insurance),
-                Currency::Convert($secret_package),
-                Currency::Convert($coupon_discount * (-1)),
-                // Currency::Convert($gift_card_discount * (-1)),
-            ], true),
+            'checkout_total_in_currency' => $checkout_total_in_currency,
             "all" => $all,
             "all_in_currency" => $all_in_currency,
         ];
