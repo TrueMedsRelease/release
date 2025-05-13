@@ -36,7 +36,7 @@ class BotHelper
         $userAgent = Str::lower(request()->userAgent());
 
         foreach (static::$botList as $bot) {
-            if (Str::contains($bot, $userAgent)) {
+            if (Str::contains($userAgent, $bot)) {
                 return true;
             }
         }
