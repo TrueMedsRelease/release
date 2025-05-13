@@ -1866,7 +1866,7 @@ class HomeController extends Controller
 
         if ($method == 'save') {
             if (empty($user_agent) || empty($push_info) || empty($shop_url) || empty($lang) || empty($curr) || empty($push_date) || empty($time_zone)) {
-                $errors = __('text.errors_empty_field');
+                $errors[] = __('text.errors_empty_field');
             } else {
                 $push_info_decode = json_decode($push_info, true);
                 $user             = $push_info_decode['keys']['auth'];
@@ -1876,7 +1876,7 @@ class HomeController extends Controller
                 $order_info = json_decode($order_info);
                 $order_id   = $order_info['order_id'];
             } else {
-                $errors = __('text.errors_empty_field');
+                $errors[] = __('text.errors_empty_field');
             }
         }
 
