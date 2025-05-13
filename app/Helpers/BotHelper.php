@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class BotHelper
 {
-    public static $botList = [
+    public static array $botList = [
         'googlebot',
         'bingbot',
         'yandex',
@@ -35,7 +35,13 @@ class BotHelper
     {
         $userAgent = Str::lower(request()->userAgent());
 
-        return Arr::exists(static::$botList, $userAgent);
+        foreach (static::$botList as $bot) {
+            if (Str::contains($bot, $userAgent)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
