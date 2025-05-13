@@ -976,7 +976,7 @@ class ProductServices
         }
 
         $sinonims = DB::select("SELECT p.sinonim from product p WHERE p.id = ?", [$products_desc['product_id']]);
-        $sinonims = preg_replace('/\b(\w.+)\b/', '$0/', $sinonims[0]->sinonim);
+        $sinonims = preg_replace('/\b(\w.+)\b/', '$0/', $sinonims[0]->sinonim ?? '');
         $sinonims = str_replace("\u{FEFF}", '', $sinonims);
         $sinonims = explode('/', $sinonims);
         if ($sinonims[0] == "﻿" || $sinonims[0] == "") {
