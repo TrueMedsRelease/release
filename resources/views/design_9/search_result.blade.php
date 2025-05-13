@@ -69,7 +69,7 @@
                 <h2 class="bestsellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
                 <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
                 <div class="no_product_text" style="margin-bottom: 20px">{{ __("text.search_product_request") }}</div>
-                
+
                 @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
                     @php
                         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
@@ -89,13 +89,13 @@
                     <div class="product_list">
                         @foreach ($bestsellers as $product)
                             <div class="product_info">
-                                @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                                @if ($product['id'] != 616 && $product['discount'] != 0)
                                     <span class="card__label">-{{ $product['discount'] }}%</span>
                                 @endif
                                 <div class="product_info_top">
                                     <a href="{{ route('home.product', $product['url']) }}">
                                         <div class="product_img">
-                                            @if ($product['image'] == 'gift-card')
+                                            @if ($product['id'] == 616)
                                                 <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                                             @else
                                                 <picture>
@@ -152,13 +152,13 @@
                 <div class="product_list">
                     @foreach ($products as $product)
                         <div class="product_info">
-                            @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                            @if ($product['id'] != 616 && $product['discount'] != 0)
                                 <span class="card__label">-{{ $product['discount'] }}%</span>
                             @endif
                             <div class="product_info_top">
                                 <a href="{{ route('home.product', $product['url']) }}">
                                     <div class="product_img">
-                                        @if ($product['image'] == 'gift-card')
+                                        @if ($product['id'] == 616)
                                             <img src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                                         @else
                                             <picture>
@@ -166,7 +166,7 @@
                                                 <img src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                                             </picture>
                                         @endif
-                                        {{-- <img src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
+                                        {{-- <img src="{{ $product['id'] != 616 ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['name'] }}"> --}}
                                     </div>
                                 </a>
                                 <a href="{{ route('home.product', $product['url']) }}" class="product_center">

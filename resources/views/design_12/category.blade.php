@@ -12,11 +12,11 @@
             <div class="product-cards">
                 @foreach ($category['products'] as $product)
                     <article class="card">
-                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        @if ($product['id'] != 616 && $product['discount'] != 0)
                             <span class="card__label">-{{ $product['discount'] }}%</span>
                         @endif
                         <div class="card__img">
-                            @if ($product['image'] == 'gift-card')
+                            @if ($product['id'] == 616)
                                 <picture>
                                     <img src="{{ asset($design . '/images/products/gift.png') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;" alt="{{ $product['alt'] }}">
                                 </picture>

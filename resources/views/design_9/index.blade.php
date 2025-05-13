@@ -41,13 +41,13 @@
             <div class="product_list">
                 @foreach ($bestsellers as $product)
                     <div class="product_info">
-                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        @if ($product['id'] != 616 && $product['discount'] != 0)
                             <span class="card__label">-{{ $product['discount'] }}%</span>
                         @endif
                         <div class="product_info_top">
                             <a href="{{ route('home.product', $product['url']) }}">
                                 <div class="product_img">
-                                    @if ($product['image'] == 'gift-card')
+                                    @if ($product['id'] == 616)
                                         <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                                     @else
                                         <picture>
@@ -55,7 +55,7 @@
                                             <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['image'] }}">
                                         </picture>
                                     @endif
-                                    {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="100px" alt="{{ $product['name'] }}"> --}}
+                                    {{-- <img loading="lazy" src="{{ $product['id'] != 616 ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="100px" alt="{{ $product['name'] }}"> --}}
                                 </div>
                             </a>
                             <a href="{{ route('home.product', $product['url']) }}" class="product_center">

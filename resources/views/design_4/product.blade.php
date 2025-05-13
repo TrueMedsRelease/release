@@ -21,7 +21,7 @@
             <div class="page-product__descr">
                 <div class="page-product__image">
                     <div class="page-product__image-wrapper">
-                        @if ($product['image'] == 'gift-card')
+                        @if ($product['id'] == 616)
                             <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                         @else
                             <picture>
@@ -29,7 +29,7 @@
                                 <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                             </picture>
                         @endif
-                        {{-- @if ($product['image'] != 'gift-card')
+                        {{-- @if ($product['id'] != 616)
                             <picture>
                                 <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                                 <img loading="lazy" src="{{ asset('images/' . $product['image'] . '.webp') }}" alt="{{ $product['image'] }}">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="page-product__details details-page-product">
-                    @if ($product['image'] != 'gift-card')
+                    @if ($product['id'] != 616)
                         @if (count($product['aktiv']) > 0)
                             <p class="details-page-product__row">{!!__('text.product_active')!!}
                                 @foreach ($product['aktiv'] as $aktiv)
@@ -110,7 +110,7 @@
                             </div>
                         @endif
                     @endif
-                    @if ($product['image'] != 'gift-card')
+                    @if ($product['id'] != 616)
                         @if (!empty($product['sinonim']))
                             @if (count($product['sinonim']) > 10)
                                 <div class="details-page-product__block-links">
@@ -186,7 +186,7 @@
                             @endif
                         <tr class="item-product-info__row">
                             <th class="item-product-info__package">{{ "{$item['num']} {$product['type']}" }}
-                                @if ($product['image'] != 'gift-card')
+                                @if ($product['id'] != 616)
                                     @if ($item['price'] >= 300)
                                         <span class="item-product-info__delivery">{{__('text.cart_free_express')}}</span>
                                     @elseif($item['price'] < 300 && $item['price'] >= 200)
@@ -196,14 +196,14 @@
                             </th>
                             <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
                             <th class="item-product-info__price">
-                                @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
+                                @if ($loop->remaining != 1 && $product['id'] != 616)
                                     <span class="item-product-info__old-price">
                                         <span>{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }}</span>
                                         <span>-{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span>
                                     </span>
                                 @endif
                                 <span class="item-product-info__new-price">
-                                    @if ($product['image'] != 'gift-card')
+                                    @if ($product['id'] != 616)
                                         @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) == 0)
                                             {{ $Currency::convert($item['price']) }}
                                         @else
@@ -245,7 +245,7 @@
                 </div>
             @endif
 
-            @if ($product['image'] == 'gift-card')
+            @if ($product['id'] == 616)
                 <div class="page-product__info info-product" style="font-weight: 300; line-height: 1.6923076923;">
                     <p>
                         <strong>{{__('text.gift_card_title')}}</strong>

@@ -174,13 +174,46 @@ class CheckoutController extends Controller
             }
         }
 
+        $paypal_limit = 'none';
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $message = [
+            'method' => 'get_paypal_limit',
+            'api_key' => $api_key->key_data,
+        ];
+
+        if(checkdnsrr('true-services.net', 'A'))
+        {
+            try {
+                $response = Http::timeout(5)->post('http://true-services.net/checkout/order.php', $message);
+                $response = json_decode($response, true);
+
+                if ($response['status'] == 'success') {
+                    $paypal_limit = $response['limit'];
+                    session(['paypal_limit' => $paypal_limit]);
+                } else {
+                    session(['paypal_limit' => $paypal_limit]);
+                }
+
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
+
         $service_enable = true;
         if(!checkdnsrr('true-services.net', 'A'))
         {
             $service_enable = false;
         }
 
-
+        if ($product_total_check > $paypal_limit) {
+            session(['paypal_limit' => 'none']);
+        }
+        
         $states = State::$states;
 
         $returnHTML = view('checkout_content')->with([

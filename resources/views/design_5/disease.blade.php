@@ -234,11 +234,11 @@
         <div class="product-list">
             @foreach ($products as $product)
                 <div class="item">
-                    @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                    @if ($product['id'] != 616 && $product['discount'] != 0)
                         <span class="card__label">-{{ $product['discount'] }}%</span>
                     @endif
                     <a href="{{ route('home.product', $product['url']) }}" class="img">
-                        @if ($product['image'] == 'gift-card')
+                        @if ($product['id'] == 616)
                             <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                         @else
                             <picture>

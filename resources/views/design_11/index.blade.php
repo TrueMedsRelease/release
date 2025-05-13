@@ -11,11 +11,11 @@
         <div class="product-cards">
             @foreach ($bestsellers as $product)
                 <article class="card">
-                    @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                    @if ($product['id'] != 616 && $product['discount'] != 0)
                         <span class="card__label">-{{ $product['discount'] }}%</span>
                     @endif
                     <div class="card__img">
-                        @if ($product['image'] == 'gift-card')
+                        @if ($product['id'] == 616)
                             <picture>
                                 <source type="image/webp" srcset="{{ asset($design . '/images/products/gift-175w.webp 1x, ' . $design . '/images/products/gift-350w.webp 2x') }}">
                                 <img loading="lazy" src="{{ asset($design . '/images/products/gift-175w.jpg') }}" srcset="{{ asset($design . '/images/products/gift-175w.jpg 1x, ' . $design . '/images/products/gift-350w.jpg 2x') }}" width="175" height="175" alt="{{ $product['image'] }}">

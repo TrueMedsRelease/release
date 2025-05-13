@@ -116,7 +116,7 @@ class ProductServices
 
             $products[$i]['alt'] = $products[$i]['image'];
 
-            if ($products[$i]['image'] != 'gift-card') {
+            if ($products[$i]['id'] != 616) {
                 if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
                     $products[$i]['image'] = $domainWithoutZone.'_'.$products[$i]['image'];
                     $products[$i]['alt'] = __('text.text_aff_domain_1') . '_' . $products[$i]['name'] . '_' . __('text.text_aff_domain_2');
@@ -229,7 +229,7 @@ class ProductServices
 
                     $product['alt'] = $product['image'];
 
-                    if ($product['image'] != 'gift-card') {
+                    if ($product['id'] != 616) {
                         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
                             $product['image'] = $domainWithoutZone.'_'.$product['image'];
                             $product['alt'] = __('text.text_aff_domain_1') . '_' . $product['name'] . '_' . __('text.text_aff_domain_2');
@@ -552,7 +552,7 @@ class ProductServices
 
                 $products[$i]['alt'] = $products[$i]['image'];
 
-                if ($products[$i]['image'] != 'gift-card') {
+                if ($products[$i]['id'] != 616) {
                     if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
                         $products[$i]['image'] = $domainWithoutZone . '_' . $products[$i]['image'];
                         $products[$i]['alt'] = __('text.text_aff_domain_1') . '_' . $products[$i]['name'] . '_' . __('text.text_aff_domain_2');
