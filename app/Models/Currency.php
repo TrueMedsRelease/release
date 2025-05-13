@@ -64,14 +64,11 @@ class Currency extends Model
     public static function Convert($number, $round = false, $format = false)
     {
         $current_currency = session('currency', 'usd');
-        $coef = session('currency_c');
-        $prefix = Currency::$prefix[$current_currency];
-        if($round)
-        {
+        $coef             = session('currency_c', 1);
+        $prefix           = Currency::$prefix[$current_currency];
+        if ($round) {
             $total = ceil($number * $coef);
-        }
-        else
-        {
+        } else {
             $total = round($number * $coef, 2);
         }
 
@@ -80,16 +77,14 @@ class Currency extends Model
         } else {
             return $prefix . $total;
         }
-
     }
 
     public static function SumInCurrency($numbers = [], $round = false)
     {
         $current_currency = session('currency', 'usd');
-        $sum = 0;
-        foreach($numbers as $num)
-        {
-            $sum += floatval(preg_replace("/[^-0-9\.]/","",$num));
+        $sum              = 0;
+        foreach ($numbers as $num) {
+            $sum += floatval(preg_replace("/[^-0-9\.]/", "", $num));
         }
 
         if ($round) {
@@ -101,9 +96,12 @@ class Currency extends Model
 
     public static function GetCurrencyByCountry($country)
     {
-        $currency = Currency::query()->where('show_in_menu', '=', 1)->where('country_iso2', 'LIKE', '%' . $country . '%')->first('code');
-        if(empty($currency))
-        {
+        $currency = Currency::query()->where('show_in_menu', '=', 1)->where(
+            'country_iso2',
+            'LIKE',
+            '%' . $country . '%'
+        )->first('code');
+        if (empty($currency)) {
             $currencies = Currency::GetAllCurrency();
 
             if (count($currencies) > 1) {
@@ -115,9 +113,7 @@ class Currency extends Model
                     return config('app.currency');
                 }
             }
-        }
-        else
-        {
+        } else {
             $currency = $currency->toArray();
             return $currency['code'];
         }

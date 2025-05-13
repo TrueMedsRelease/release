@@ -145,7 +145,7 @@ class GeoIpService
                 }
                 unlink($lockFile);
             } else {
-                sleep(5);
+                // sleep(5);
             }
 
             if (!file_exists($pathToGeoFileInside)) {

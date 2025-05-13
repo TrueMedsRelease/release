@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RequestHelper;
 use App\Models\Currency;
 use App\Models\Language;
-use Illuminate\View\View;
-use App\Services\ProductServices;
 use App\Models\PhoneCodes;
+use App\Services\ProductServices;
 use App\Services\StatisticService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\App;
-use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\View\View;
+use Phattarachai\LaravelMobileDetect\Agent;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        StatisticService::SendStatistic('index');
-        $design = session('design') ? session('design') : config('app.design');
-        $phone_codes = PhoneCodes::all()->toArray();
+        $statisticPromise = StatisticService::SendStatistic('index');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $phone_codes     = PhoneCodes::all()->toArray();
         $page_properties = ProductServices::getPageProperties('main');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $codes = $this->getAllCountryISO();
 
@@ -47,111 +47,118 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=main&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
 
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
+
         if (!in_array($design, ['design_7', 'design_8'])) {
-
             $bestsellers = ProductServices::GetBestsellers($design);
-            $menu = ProductServices::GetCategoriesWithProducts($design);
-            return view($design . '.index',
-            [
-                'design' => $design,
-                'bestsellers' => $bestsellers,
-                'menu' => $menu,
-                'phone_codes' => $phone_codes,
-                'page_properties' => $page_properties,
-                'cur_category' => '',
-                'agent' => $agent,
-                'Language' => Language::class,
-                'Currency' => Currency::class,
-                'pixel' => $pixel,
-                'first_letters' => $first_letters,
-                'domain' => $domain,
-                'web_statistic' => $web_statistic,
-                'codes' => json_encode($codes),
-            ]);
-
+            $menu        = ProductServices::GetCategoriesWithProducts($design);
+            return view(
+                $design . '.index',
+                [
+                    'design'          => $design,
+                    'bestsellers'     => $bestsellers,
+                    'menu'            => $menu,
+                    'phone_codes'     => $phone_codes,
+                    'page_properties' => $page_properties,
+                    'cur_category'    => '',
+                    'agent'           => $agent,
+                    'Language'        => Language::class,
+                    'Currency'        => Currency::class,
+                    'pixel'           => $pixel,
+                    'first_letters'   => $first_letters,
+                    'domain'          => $domain,
+                    'web_statistic'   => $web_statistic,
+                    'codes'           => json_encode($codes),
+                ]
+            );
         } elseif ($design == 'design_7') {
-            $product = ProductServices::GetProductInfoByUrl('rybelsus', $design);
-            // $page_properties->title = 'Rybelsus - ' . $domain;
-            return view($design . '.index',
-            [
-                'design' => $design,
-                'product' => $product,
-                'phone_codes' => $phone_codes,
-                'page_properties' => $page_properties,
-                'cur_category' => '',
-                'agent' => $agent,
-                'Language' => Language::class,
-                'Currency' => Currency::class,
-                'pixel' => $pixel,
-                'first_letters' => $first_letters,
-                'domain' => $domain,
-                'web_statistic' => $web_statistic,
-                'codes' => json_encode($codes),
-            ]);
+            $product = ProductServices::GetProductInfoByUrl('rybelsus');
+
+            return view(
+                $design . '.index',
+                [
+                    'design'          => $design,
+                    'product'         => $product,
+                    'phone_codes'     => $phone_codes,
+                    'page_properties' => $page_properties,
+                    'cur_category'    => '',
+                    'agent'           => $agent,
+                    'Language'        => Language::class,
+                    'Currency'        => Currency::class,
+                    'pixel'           => $pixel,
+                    'first_letters'   => $first_letters,
+                    'domain'          => $domain,
+                    'web_statistic'   => $web_statistic,
+                    'codes'           => json_encode($codes),
+                ]
+            );
         } elseif ($design == 'design_8') {
             $products_urls = ['viagra', 'cialis', 'levitra'];
 
             foreach ($products_urls as $product_url) {
-                $products[$product_url] =  ProductServices::GetProductInfoByUrl($product_url, $design);
+                $products[$product_url] = ProductServices::GetProductInfoByUrl($product_url, $design);
             }
 
             // $page_properties->title = 'EdSale - ' . $domain;
-            return view($design . '.index',
-            [
-                'design' => $design,
-                'products' => $products,
-                'phone_codes' => $phone_codes,
-                'page_properties' => $page_properties,
-                'cur_category' => '',
-                'agent' => $agent,
-                'Language' => Language::class,
-                'Currency' => Currency::class,
-                'pixel' => $pixel,
-                'first_letters' => $first_letters,
-                'domain' => $domain,
-                'web_statistic' => $web_statistic,
-                'codes' => json_encode($codes),
-            ]);
+            return view(
+                $design . '.index',
+                [
+                    'design'          => $design,
+                    'products'        => $products,
+                    'phone_codes'     => $phone_codes,
+                    'page_properties' => $page_properties,
+                    'cur_category'    => '',
+                    'agent'           => $agent,
+                    'Language'        => Language::class,
+                    'Currency'        => Currency::class,
+                    'pixel'           => $pixel,
+                    'first_letters'   => $first_letters,
+                    'domain'          => $domain,
+                    'web_statistic'   => $web_statistic,
+                    'codes'           => json_encode($codes),
+                ]
+            );
         }
     }
 
-    public function first_letter($char) : View
+    public function first_letter($char): View
     {
-        StatisticService::SendStatistic('first_letter');
-        $design = session('design') ? session('design') : config('app.design');
-        $products = ProductServices::GetProductByFirstLetter($char, $design);
+        $statisticPromise = StatisticService::SendStatistic('first_letter');
+
+        $design      = session('design') ? session('design') : config('app.design');
+        $products    = ProductServices::GetProductByFirstLetter($char, $design);
         $phone_codes = PhoneCodes::all()->toArray();
         $bestsellers = ProductServices::GetBestsellers($design);
 
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('first_letter');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -175,55 +182,69 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=first_letter&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
 
-        return view($design . '.first_letter',[
-            'design' => $design,
-            'products' => $products,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'letter' => $char,
-            'phone_codes' => $phone_codes,
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
+
+        return view($design . '.first_letter', [
+            'design'          => $design,
+            'products'        => $products,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'letter'          => $char,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
     public function active($active)
     {
+        $statisticPromise = StatisticService::SendStatistic('active');
+
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-            $active = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $active);
+            $active = str_replace(
+                [__('text.text_aff_domain_1', [], 'en') . '_', '_' . __('text.text_aff_domain_2', [], 'en')],
+                '',
+                $active
+            );
         } else {
-            $active = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $active);
+            $active = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')],
+                '',
+                $active);
         }
 
-        StatisticService::SendStatistic('active');
-        $design = session('design') ? session('design') : config('app.design');
+        $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $menu        = ProductServices::GetCategoriesWithProducts($design);
 
-        $products = ProductServices::GetProductByActive($active, $design);
+        $products        = ProductServices::GetProductByActive($active, $design);
         $page_properties = ProductServices::getPageProperties('active');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         if (empty($products)) {
             return redirect(route('home.index'));
         }
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
@@ -231,7 +252,7 @@ class HomeController extends Controller
             return redirect(route('home.product', $products[0]['url']));
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -255,51 +276,57 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=active&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
 
-        return view($design . '.active',[
-            'design' => $design,
-            'products' => $products,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'active' => $active,
-            'phone_codes' => $phone_codes,
+        return view($design . '.active', [
+            'design'          => $design,
+            'products'        => $products,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'active'          => $active,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function category($category) : View
+    public function category($category): View
     {
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-            $category = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $category);
+            $category = str_replace(
+                [__('text.text_aff_domain_1', [], 'en') . '_', '_' . __('text.text_aff_domain_2', [], 'en')],
+                '',
+                $category
+            );
         } else {
-            $category = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $category);
+            $category = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')],
+                '',
+                $category);
         }
 
-        StatisticService::SendStatistic('category');
-        $design = session('design') ? session('design') : config('app.design');
+        $statisticPromise = StatisticService::SendStatistic('category');
+
+        $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $menu        = ProductServices::GetCategoriesWithProducts($design);
 
-        $products = ProductServices::GetCategoriesWithProducts($design, $category);
+        $products      = ProductServices::GetCategoriesWithProducts($design, $category);
         $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
-        $category = str_replace('-', ' ', $category);
+        $agent         = new Agent();
+        $category      = str_replace('-', ' ', $category);
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
@@ -307,7 +334,7 @@ class HomeController extends Controller
 
         $page_properties = ProductServices::getPageProperties('category');
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -331,58 +358,68 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=category&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
 
-        return view($design . '.category',[
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'products' => $products,
-            'phone_codes' => $phone_codes,
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
+
+        return view($design . '.category', [
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'products'        => $products,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => $category,
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => $category,
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
     public function disease($disease)
     {
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-            $disease = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $disease);
+            $disease = str_replace(
+                [__('text.text_aff_domain_1', [], 'en') . '_', '_' . __('text.text_aff_domain_2', [], 'en')],
+                '',
+                $disease
+            );
         } else {
-            $disease = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')], '', $disease);
+            $disease = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')],
+                '',
+                $disease);
         }
 
-        StatisticService::SendStatistic('disease');
-        $design = session('design') ? session('design') : config('app.design');
+        $statisticPromise = StatisticService::SendStatistic('disease');
+
+        $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $menu        = ProductServices::GetCategoriesWithProducts($design);
 
-        $products = ProductServices::GetProductByDisease($disease, $design);
+        $products        = ProductServices::GetProductByDisease($disease, $design);
         $page_properties = ProductServices::getPageProperties('disease');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         if (empty($products)) {
             return redirect(route('home.index'));
         }
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -406,25 +443,29 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=disease&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
 
-        return view($design . '.disease',[
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'products' => $products,
-            'disease' => $disease,
-            'phone_codes' => $phone_codes,
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
+
+        return view($design . '.disease', [
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'products'        => $products,
+            'disease'         => $disease,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
@@ -440,7 +481,7 @@ class HomeController extends Controller
                 ->where('language_id', '=', $language_id)
                 ->get(['url'])
                 ->toArray();
-            $product = $product_name_begin[0]->url;
+            $product            = $product_name_begin[0]->url;
 
             if (!$product) {
                 return redirect()->route('home.index');
@@ -451,39 +492,48 @@ class HomeController extends Controller
         //     $product = 'a-ret gel';
         // }
 
-        if(request('landing',0) == 1)
-        {
+        if (request('landing', 0) == 1) {
             return $this->product_landing($product, 1);
         }
 
-        StatisticService::SendStatistic($product);
+        $statisticPromise = StatisticService::SendStatistic($product);
+
         $product_name = $product;
 
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-            $product = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $product);
+            $product = str_replace(
+                [__('text.text_aff_domain_1', [], 'en') . '_', '_' . __('text.text_aff_domain_2', [], 'en')],
+                '',
+                $product
+            );
         } else {
-            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
+            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')],
+                '',
+                $product);
         }
 
-        $design = session('design') ? session('design') : config('app.design');
+        $design          = session('design') ? session('design') : config('app.design');
         $page_properties = ProductServices::getProductProperties($product);
 
         $bestsellers = ProductServices::GetBestsellers($design);
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $menu        = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
-        $product = ProductServices::GetProductInfoByUrl($product, $design);
+        $product     = ProductServices::GetProductInfoByUrl($product, $design);
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         if (!$product) {
             return redirect()->route('home.index');
         }
 
         $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $agent         = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
@@ -495,7 +545,7 @@ class HomeController extends Controller
 
         session(['product_name' => $product_name]);
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -519,27 +569,27 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=product&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
 
         $recommendation = ProductServices::getProductRecommendation($product['id']);
 
         return view($design . '.product', [
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'product' => $product,
-            'phone_codes' => $phone_codes,
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'product'         => $product,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => $product['categories'][0]['name'],
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
-            'recommendation' => $recommendation,
+            'cur_category'    => $product['categories'][0]['name'],
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
+            'recommendation'  => $recommendation,
         ]);
     }
 
@@ -556,18 +606,23 @@ class HomeController extends Controller
         }
 
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-            $product = str_replace([__('text.text_aff_domain_1', [], 'en') . '_', '_' .  __('text.text_aff_domain_2', [], 'en')], '', $product);
+            $product = str_replace(
+                [__('text.text_aff_domain_1', [], 'en') . '_', '_' . __('text.text_aff_domain_2', [], 'en')],
+                '',
+                $product
+            );
         } else {
-            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' .  __('text.text_aff_domain_2')], '', $product);
+            $product = str_replace([__('text.text_aff_domain_1') . '_', '_' . __('text.text_aff_domain_2')],
+                '',
+                $product);
         }
 
         $product = ProductServices::GetProductInfoByUrl($product, $design);
-        $agent = new Agent();
+        $agent   = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
@@ -595,39 +650,39 @@ class HomeController extends Controller
         // }
 
         return response()
-           ->view($design . '.landing', [
-                    'design' => $design,
-                    'product' => $product,
-                    'agent' => $agent,
-                    'Currency' => Currency::class,
-                    'pixel' => $pixel,
-                    'host' => $_SERVER['SERVER_NAME']
-                ])
+            ->view($design . '.landing', [
+                'design'   => $design,
+                'product'  => $product,
+                'agent'    => $agent,
+                'Currency' => Currency::class,
+                'pixel'    => $pixel,
+                'host'     => $_SERVER['SERVER_NAME']
+            ])
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
             ->header('Pragma', 'no-cache')
             ->header('Content-Type', 'application/javascript');
     }
 
-    public function about() : View
+    public function about(): View
     {
-        StatisticService::SendStatistic('about_us');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('about_us');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('about_us');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -651,45 +706,49 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=about_us&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.about', [
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'phone_codes' => $phone_codes,
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function help() : View
+    public function help(): View
     {
-        StatisticService::SendStatistic('faq');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('faq');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('faq');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -713,45 +772,49 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=faq&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.help', [
-           'design' => $design,
-           'bestsellers' => $bestsellers,
-           'menu' => $menu,
-           'phone_codes' => $phone_codes,
-           'page_properties' => $page_properties,
-           'cur_category' => '',
-           'agent' => $agent,
-           'Language' => Language::class,
-           'Currency' => Currency::class,
-           'pixel' => $pixel,
-           'first_letters' => $first_letters,
-           'domain' => $domain,
-           'web_statistic' => $web_statistic,
-           'codes' => json_encode($codes),
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function testimonials() : View
+    public function testimonials(): View
     {
-        StatisticService::SendStatistic('testimonials');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('testimonials');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('testimonials');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -775,45 +838,49 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=testimonials&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.testimonials', [
-           'design' => $design,
-           'bestsellers' => $bestsellers,
-           'menu' => $menu,
-           'phone_codes' => $phone_codes,
-           'page_properties' => $page_properties,
-           'cur_category' => '',
-           'agent' => $agent,
-           'Language' => Language::class,
-           'Currency' => Currency::class,
-           'pixel' => $pixel,
-           'first_letters' => $first_letters,
-           'domain' => $domain,
-           'web_statistic' => $web_statistic,
-           'codes' => json_encode($codes),
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function delivery() : View
+    public function delivery(): View
     {
-        StatisticService::SendStatistic('shipping');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('shipping');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('shipping');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -837,45 +904,49 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=shipping&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.delivery', [
-           'design' => $design,
-           'bestsellers' => $bestsellers,
-           'menu' => $menu,
-           'phone_codes' => $phone_codes,
-           'page_properties' => $page_properties,
-           'cur_category' => '',
-           'agent' => $agent,
-           'Language' => Language::class,
-           'Currency' => Currency::class,
-           'pixel' => $pixel,
-           'first_letters' => $first_letters,
-           'domain' => $domain,
-           'web_statistic' => $web_statistic,
-           'codes' => json_encode($codes),
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function moneyback() : View
+    public function moneyback(): View
     {
-        StatisticService::SendStatistic('moneyback');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('moneyback');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('moneyback');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -899,45 +970,49 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=moneyback&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.moneyback', [
-           'design' => $design,
-           'bestsellers' => $bestsellers,
-           'menu' => $menu,
-           'phone_codes' => $phone_codes,
-           'page_properties' => $page_properties,
-           'cur_category' => '',
-           'agent' => $agent,
-           'Language' => Language::class,
-           'Currency' => Currency::class,
-           'pixel' => $pixel,
-           'first_letters' => $first_letters,
-           'domain' => $domain,
-           'web_statistic' => $web_statistic,
-           'codes' => json_encode($codes),
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function contact_us($default_subject = 0) : View
+    public function contact_us($default_subject = 0): View
     {
-        StatisticService::SendStatistic('contact_us');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('contact_us');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('contact_us');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -952,16 +1027,16 @@ class HomeController extends Controller
         }
 
         $subjects = [
-            0 => __('text.contact_us_subject_0'),
-            1 => __('text.contact_us_subject_1'),
-            2 => __('text.contact_us_subject_2'),
-            3 => __('text.contact_us_subject_3'),
-            4 => __('text.contact_us_subject_4'),
-            5 => __('text.contact_us_subject_5'),
-            6 => __('text.contact_us_subject_6'),
-            7 => __('text.contact_us_subject_7'),
-            8 => __('text.contact_us_subject_8'),
-            9 => __('text.contact_us_subject_9'),
+            0  => __('text.contact_us_subject_0'),
+            1  => __('text.contact_us_subject_1'),
+            2  => __('text.contact_us_subject_2'),
+            3  => __('text.contact_us_subject_3'),
+            4  => __('text.contact_us_subject_4'),
+            5  => __('text.contact_us_subject_5'),
+            6  => __('text.contact_us_subject_6'),
+            7  => __('text.contact_us_subject_7'),
+            8  => __('text.contact_us_subject_8'),
+            9  => __('text.contact_us_subject_9'),
             10 => __('text.contact_us_subject_10'),
             11 => __('text.contact_us_subject_11'),
         ];
@@ -982,48 +1057,52 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=contact_us&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.contact_us', [
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'phone_codes' => $phone_codes,
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
-            'subjects' => $subjects,
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
+            'subjects'        => $subjects,
             'default_subject' => $default_subject,
-            'error_subject' => __('text.contact_us_subject_0'),
+            'error_subject'   => __('text.contact_us_subject_0'),
         ]);
     }
 
-    public function affiliate() : View
+    public function affiliate(): View
     {
-        StatisticService::SendStatistic('affiliate');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('affiliate');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('affiliate');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -1047,45 +1126,53 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=affiliate&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.affiliate', [
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'phone_codes' => $phone_codes,
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function login() : View
+    public function login(): View
     {
-        StatisticService::SendStatistic('login');
-        $design = session('design') ? session('design') : config('app.design');
+        $statisticPromise = StatisticService::SendStatistic('login');
+
+        $design      = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
+
         return view('login', [
-            'design' => $design,
+            'design'      => $design,
             'phone_codes' => $phone_codes,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel
+            'Language'    => Language::class,
+            'Currency'    => Currency::class,
+            'pixel'       => $pixel
         ]);
     }
 
@@ -1178,7 +1265,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1,2,3,4,5,7,8,9,10,11,12])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -1187,7 +1274,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1,2,3,4,5,7,8,9,10,11,12])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -1198,24 +1285,40 @@ class HomeController extends Controller
         }
     }
 
-    public function set_images($pill) {
+    public function set_images($pill)
+    {
         if ($pill) {
             $pill = str_replace('&', '-', (str_replace(' ', '-', strtolower(trim($pill)))));
 
-            if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
+            if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]
+                )) {
                 $parts = explode('_', $pill, 2);
-                $pill = $parts[1];
+                $pill  = $parts[1];
             }
 
             $safari = false;
 
-            if (str_contains($_SERVER['HTTP_USER_AGENT'], 'iPhone') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPad') || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPod') || str_contains($_SERVER['HTTP_USER_AGENT'], 'Macintosh')){
-                if (file_exists(public_path() . "/images/" . $pill . ".png") && file_get_contents(public_path() . "/images/" . $pill . ".png") !== "error") {
+            if (str_contains($_SERVER['HTTP_USER_AGENT'], 'iPhone') || str_contains(
+                    $_SERVER['HTTP_USER_AGENT'],
+                    'iPad'
+                ) || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPod') || str_contains(
+                    $_SERVER['HTTP_USER_AGENT'],
+                    'Macintosh'
+                )) {
+                if (file_exists(public_path() . "/images/" . $pill . ".png") && file_get_contents(
+                                                                                    public_path(
+                                                                                    ) . "/images/" . $pill . ".png"
+                                                                                ) !== "error") {
                     $safari = true;
-                    return response(file_get_contents(public_path() . "/images/" . $pill . ".png"))->header('Content-type', 'image/png');
+                    return response(file_get_contents(public_path() . "/images/" . $pill . ".png"))->header(
+                        'Content-type',
+                        'image/png'
+                    );
                 } else {
-                    $water_string = $_SERVER["HTTP_HOST"];
-                    $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=png&url=' . $water_string);
+                    $water_string  = $_SERVER["HTTP_HOST"];
+                    $server_answer = file_get_contents(
+                        'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=png&url=' . $water_string
+                    );
 
                     file_put_contents(public_path() . "/images/" . $pill . ".png", $server_answer);
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".png");
@@ -1225,12 +1328,20 @@ class HomeController extends Controller
                     }
                 }
                 if (!$safari) {
-                    if (file_exists(public_path() . "/images/" . $pill . ".jpg") && file_get_contents(public_path() . "/images/" . $pill . ".jpg") !== "error") {
+                    if (file_exists(public_path() . "/images/" . $pill . ".jpg") && file_get_contents(
+                                                                                        public_path(
+                                                                                        ) . "/images/" . $pill . ".jpg"
+                                                                                    ) !== "error") {
                         $safari = true;
-                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpg"))->header('Content-type', 'image/png');
+                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpg"))->header(
+                            'Content-type',
+                            'image/png'
+                        );
                     } else {
-                        $water_string = $_SERVER["HTTP_HOST"];
-                        $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpg&url=' . $water_string);
+                        $water_string  = $_SERVER["HTTP_HOST"];
+                        $server_answer = file_get_contents(
+                            'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpg&url=' . $water_string
+                        );
 
                         file_put_contents(public_path() . "/images/" . $pill . ".jpg", $server_answer);
                         $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpg");
@@ -1241,12 +1352,20 @@ class HomeController extends Controller
                     }
                 }
                 if (!$safari) {
-                    if (file_exists(public_path() . "/images/" . $pill . ".jpeg") && file_get_contents(public_path() . "/images/" . $pill . ".jpeg") !== "error") {
+                    if (file_exists(public_path() . "/images/" . $pill . ".jpeg") && file_get_contents(
+                                                                                         public_path(
+                                                                                         ) . "/images/" . $pill . ".jpeg"
+                                                                                     ) !== "error") {
                         $safari = true;
-                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpeg"))->header('Content-type', 'image/png');
+                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpeg"))->header(
+                            'Content-type',
+                            'image/png'
+                        );
                     } else {
-                        $water_string = $_SERVER["HTTP_HOST"];
-                        $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=jpeg&url=' . $water_string);
+                        $water_string  = $_SERVER["HTTP_HOST"];
+                        $server_answer = file_get_contents(
+                            'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpeg&url=' . $water_string
+                        );
 
                         file_put_contents(public_path() . "/images/" . $pill . ".jpeg", $server_answer);
                         $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
@@ -1257,11 +1376,19 @@ class HomeController extends Controller
                     }
                 }
             } else {
-                if (file_exists(public_path() . "/images/" . $pill . ".webp") && file_get_contents(public_path() . "/images/" . $pill . ".webp") !== "error") {
-                    return response(file_get_contents(public_path() . "/images/" . $pill . ".webp"))->header('Content-type', 'image/png');
+                if (file_exists(public_path() . "/images/" . $pill . ".webp") && file_get_contents(
+                                                                                     public_path(
+                                                                                     ) . "/images/" . $pill . ".webp"
+                                                                                 ) !== "error") {
+                    return response(file_get_contents(public_path() . "/images/" . $pill . ".webp"))->header(
+                        'Content-type',
+                        'image/png'
+                    );
                 } else {
-                    $water_string = $_SERVER["HTTP_HOST"];
-                    $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill .'&img=webp&url=' . $water_string);
+                    $water_string  = $_SERVER["HTTP_HOST"];
+                    $server_answer = file_get_contents(
+                        'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=webp&url=' . $water_string
+                    );
                     file_put_contents(public_path() . "/images/" . $pill . ".webp", $server_answer);
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
                     if ($temp != "error") {
@@ -1277,7 +1404,7 @@ class HomeController extends Controller
 
     public function request_call(Request $request)
     {
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -1291,20 +1418,24 @@ class HomeController extends Controller
         }
 
         $data = [
-            'method' => 'send_request',
-            'phone' => $phone,
-            'shop' => $domain,
-            'aff' => session('aff', 0),
-            'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
+            'method'     => 'send_request',
+            'phone'      => $phone,
+            'shop'       => $domain,
+            'aff'        => session('aff', 0),
+            'ip'         => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                'cf-connecting-ip'
+            ) : $request->ip(),
             'user_agent' => $request->userAgent()
         ];
 
         if (!$error) {
             $response = [];
-            if(checkdnsrr('true-services.net', 'A'))
-            {
+            if (checkdnsrr('true-services.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/phone_request.php', $data);
+                    $response = Http::timeout(3)->post(
+                        'http://true-services.net/support/messages/phone_request.php',
+                        $data
+                    );
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1325,7 +1456,7 @@ class HomeController extends Controller
         } else {
             $response = [
                 'status' => 'error',
-                'text' => __('text.errors_empty_field')
+                'text'   => __('text.errors_empty_field')
             ];
         }
 
@@ -1334,7 +1465,7 @@ class HomeController extends Controller
 
     public function request_subscribe(Request $request)
     {
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -1347,25 +1478,29 @@ class HomeController extends Controller
             $error = 1;
         }
 
-        if(!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {
+        if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {
             $error = 2;
         }
 
         $data = [
-            'method' => 'subscribe',
-            'email' => $email,
-            'shop' => $domain,
-            'aff' => session('aff', 0),
-            'ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
+            'method'     => 'subscribe',
+            'email'      => $email,
+            'shop'       => $domain,
+            'aff'        => session('aff', 0),
+            'ip'         => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                'cf-connecting-ip'
+            ) : $request->ip(),
             'user_agent' => $request->userAgent()
         ];
 
         if (!$error) {
             $response = [];
-            if(checkdnsrr('true-services.net', 'A'))
-            {
+            if (checkdnsrr('true-services.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/subscribe.php', $data);
+                    $response = Http::timeout(3)->post(
+                        'http://true-services.net/support/messages/subscribe.php',
+                        $data
+                    );
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1387,85 +1522,90 @@ class HomeController extends Controller
             if ($error == 1) {
                 $response = [
                     'status' => 'error',
-                    'text' => __('text.errors_empty_field')
+                    'text'   => __('text.errors_empty_field')
                 ];
-            } else if ($error == 2) {
-                $response = [
-                    'status' => 'error',
-                    'text' => __('text.errors_wrong_email')
-                ];
+            } else {
+                if ($error == 2) {
+                    $response = [
+                        'status' => 'error',
+                        'text'   => __('text.errors_wrong_email')
+                    ];
+                }
             }
         }
 
         return json_encode($response);
     }
 
-    public function request_contact_us(Request $request) {
-
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+    public function request_contact_us(Request $request)
+    {
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
-        $name = $request->name;
-        $email = $request->email;
+        $name       = $request->name;
+        $email      = $request->email;
         $subject_id = $request->subject;
-        $message = $request->message;
-        $captcha = $request->captcha;
+        $message    = $request->message;
+        $captcha    = $request->captcha;
 
         $error = 0;
 
-        if(empty($name)) {
+        if (empty($name)) {
             $error = 1;
         }
-        if(empty($email)) {
+        if (empty($email)) {
             $error = 1;
-        }
-        else {
-            if(!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {
+        } else {
+            if (!preg_match('|([a-z0-9_\.\-]{1,20})@([a-z0-9\.\-]{1,20})\.([a-z]{2,4})|is', $email)) {
                 $error = 2;
             }
         }
-        if(empty($captcha)) {
+        if (empty($captcha)) {
             $error = 1;
-        }
-        elseif(!captcha_check($captcha)) {
+        } elseif (!captcha_check($captcha)) {
             $error = 3;
         }
 
         $subject_text = [
-            1 => 'Change Shipping Address',
-            2 => 'Reprocess My Credit Card',
-            3 => 'Unsubscribe',
-            4 => 'Cancel Order',
-            5 => 'Order Status',
-            6 => 'Shipping Delay',
-            7 => 'Add New Product',
-            8 => 'Advertising',
-            9 => 'Wholesale',
+            1  => 'Change Shipping Address',
+            2  => 'Reprocess My Credit Card',
+            3  => 'Unsubscribe',
+            4  => 'Cancel Order',
+            5  => 'Order Status',
+            6  => 'Shipping Delay',
+            7  => 'Add New Product',
+            8  => 'Advertising',
+            9  => 'Wholesale',
             10 => 'Affiliate program',
             11 => 'Other',
         ];
 
         $data = [
-            'page' => 'contact',
-            'name' => $name,
-            'email' => $email,
-            'subject' => in_array($subject_id, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) ? $subject_text[$subject_id] : '',
-            'message' => $message,
-            'url_from' => $domain,
-            'aff' => session('aff', 0),
-            'customer_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
+            'page'                => 'contact',
+            'name'                => $name,
+            'email'               => $email,
+            'subject'             => in_array($subject_id, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            ) ? $subject_text[$subject_id] : '',
+            'message'             => $message,
+            'url_from'            => $domain,
+            'aff'                 => session('aff', 0),
+            'customer_ip'         => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                'cf-connecting-ip'
+            ) : $request->ip(),
             'customer_user_agent' => $request->userAgent(),
         ];
 
         if (!$error) {
             $response = [];
-            if(checkdnsrr('true-services.net', 'A'))
-            {
+            if (checkdnsrr('true-services.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
+                    $response = Http::timeout(3)->post(
+                        'http://true-services.net/support/messages/messages_new.php',
+                        $data
+                    );
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1487,18 +1627,22 @@ class HomeController extends Controller
             if ($error == 1) {
                 $response = [
                     'status' => 'error',
-                    'text' => __('text.errors_empty_field')
+                    'text'   => __('text.errors_empty_field')
                 ];
-            } else if ($error == 2) {
-                $response = [
-                    'status' => 'error',
-                    'text' => __('text.errors_wrong_email')
-                ];
-            } else if ($error == 3) {
-                $response = [
-                    'status' => 'error',
-                    'text' => __('text.errors_wrong_captcha_value')
-                ];
+            } else {
+                if ($error == 2) {
+                    $response = [
+                        'status' => 'error',
+                        'text'   => __('text.errors_wrong_email')
+                    ];
+                } else {
+                    if ($error == 3) {
+                        $response = [
+                            'status' => 'error',
+                            'text'   => __('text.errors_wrong_captcha_value')
+                        ];
+                    }
+                }
             }
             $response['new_captcha'] = captcha_src();
         }
@@ -1506,17 +1650,17 @@ class HomeController extends Controller
         return json_encode($response);
     }
 
-    public function request_affiliate(Request $request) {
-
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+    public function request_affiliate(Request $request)
+    {
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
         }
 
-        $name = $request->name;
-        $email = $request->email;
-        $jabber = $request->jabber;
+        $name    = $request->name;
+        $email   = $request->email;
+        $jabber  = $request->jabber;
         $message = $request->message;
         $captcha = $request->captcha;
 
@@ -1545,23 +1689,27 @@ class HomeController extends Controller
         }
 
         $data = [
-            'page' => 'affiliate',
-            'name' => $name,
-            'email' => $email,
-            'jabber' => $jabber,
-            'message' => $message,
-            'url_from' => $domain,
-            'aff' => session('aff', 0),
-            'customer_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : $request->ip(),
+            'page'                => 'affiliate',
+            'name'                => $name,
+            'email'               => $email,
+            'jabber'              => $jabber,
+            'message'             => $message,
+            'url_from'            => $domain,
+            'aff'                 => session('aff', 0),
+            'customer_ip'         => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                'cf-connecting-ip'
+            ) : $request->ip(),
             'customer_user_agent' => $request->userAgent(),
         ];
 
         if (!$error) {
             $response = [];
-            if(checkdnsrr('true-services.net', 'A'))
-            {
+            if (checkdnsrr('true-services.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-services.net/support/messages/messages_new.php', $data);
+                    $response = Http::timeout(3)->post(
+                        'http://true-services.net/support/messages/messages_new.php',
+                        $data
+                    );
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1583,18 +1731,22 @@ class HomeController extends Controller
             if ($error == 1) {
                 $response = [
                     'status' => 'error',
-                    'text' => __('text.errors_empty_field')
+                    'text'   => __('text.errors_empty_field')
                 ];
-            } else if ($error == 2) {
-                $response = [
-                    'status' => 'error',
-                    'text' => __('text.errors_wrong_email')
-                ];
-            } else if ($error == 3) {
-                $response = [
-                    'status' => 'error',
-                    'text' => __('text.errors_wrong_captcha_value')
-                ];
+            } else {
+                if ($error == 2) {
+                    $response = [
+                        'status' => 'error',
+                        'text'   => __('text.errors_wrong_email')
+                    ];
+                } else {
+                    if ($error == 3) {
+                        $response = [
+                            'status' => 'error',
+                            'text'   => __('text.errors_wrong_captcha_value')
+                        ];
+                    }
+                }
             }
             $response['new_captcha'] = captcha_src();
         }
@@ -1602,16 +1754,17 @@ class HomeController extends Controller
         return json_encode($response);
     }
 
-    public function request_login(Request $request) {
+    public function request_login(Request $request)
+    {
         $captcha = $request->captcha;
-        $email = $request->email;
+        $email   = $request->email;
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
 
         if ($captcha && $email) {
             $data = [
-                "email" => $email,
+                "email"  => $email,
                 'method' => 'login',
-                'key' => $api_key->key_data
+                'key'    => $api_key->key_data
             ];
 
             $response = Http::timeout(3)->post('https://true-services.net/api/customer_api.php', $data);
@@ -1621,35 +1774,40 @@ class HomeController extends Controller
                 if ($response['message'] == 'Unknown customer!') {
                     $result = [
                         'status' => 'error',
-                        'text' => __('text.login_email_unknow')
+                        'text'   => __('text.login_email_unknow')
                     ];
                 }
             } elseif ($response['status'] == 'OK') {
                 if ($response['message'] == 'Access is allowed!') {
                     $_SESSION['user'] = $response['uid'];
-                    $lang = App::currentLocale();
-                    if ($lang === 'gr')
+                    $lang             = App::currentLocale();
+                    if ($lang === 'gr') {
                         $lang === 'el';
-                    if ($lang === 'arb')
+                    }
+                    if ($lang === 'arb') {
                         $lang === 'ar';
+                    }
 
                     $result = [
                         'status' => 'success',
-                        'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
+                        'url'    => 'https://true-help.com/orders.php?eai=' . rawurlencode(
+                                $response['uid']
+                            ) . '&lang=' . $lang,
                     ];
                 }
             }
         } else {
             $result = [
                 'status' => 'error',
-                'text' => __('text.errors_empty_field')
+                'text'   => __('text.errors_empty_field')
             ];
         }
 
         return json_encode($result);
     }
 
-    public function check_code(Request $request) {
+    public function check_code(Request $request)
+    {
         $captcha = $request->captcha;
 
         $check = captcha_check($captcha);
@@ -1660,7 +1818,7 @@ class HomeController extends Controller
             ];
         } else {
             $result = [
-                'result' => $check,
+                'result'      => $check,
                 'new_captcha' => captcha_src()
             ];
         }
@@ -1668,7 +1826,8 @@ class HomeController extends Controller
         return json_encode($result);
     }
 
-    public function pwa_info(Request $request) {
+    public function pwa_info(Request $request)
+    {
         $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 30);
         if (!$fp) {
             // echo "$errstr ($errno)\n";
@@ -1682,68 +1841,69 @@ class HomeController extends Controller
         }
     }
 
-    public function save_push_data(Request $request) {
-        $agent = new Agent();
-        $errors = [];
-        $ip = request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();;
+    public function save_push_data(Request $request)
+    {
+        $agent        = new Agent();
+        $errors       = [];
+        $ip           = RequestHelper::GetUserIp();
         $country_code = strtoupper(session('location.country'));
-        $aff = session('aff') ? session('aff') : config('app.aff', 0);
-        $aff = intval($aff);
-        $saff = intval(session('saff', ''));
-        $user_agent = $agent->getUserAgent();
-        $push_info = $request->push_info;
-        $shop_url = $request->shop_url;
-        $lang = $request->lang;
-        $curr = $request->curr;
-        $push_date = $request->date;
-        $time_zone = $request->time_zone;
-        $fingerprint = 'x';
-        $customer_id = $request->customer_id;
+        $aff          = session('aff') ? session('aff') : config('app.aff', 0);
+        $aff          = intval($aff);
+        $saff         = intval(session('saff', ''));
+        $user_agent   = $agent->getUserAgent();
+        $push_info    = $request->push_info;
+        $shop_url     = $request->shop_url;
+        $lang         = $request->lang;
+        $curr         = $request->curr;
+        $push_date    = $request->date;
+        $time_zone    = $request->time_zone;
+        $fingerprint  = 'x';
+        $customer_id  = $request->customer_id;
 
-        $method = $request->method ? $request->method : 'save';
+        $method     = $request->method ? $request->method : 'save';
         $order_info = $request->order_info;
-        $user_push = $request->user_push;
+        $user_push  = $request->user_push;
 
         if ($method == 'save') {
-            if(empty($user_agent) || empty($push_info) || empty($shop_url) || empty($lang) || empty($curr) || empty($push_date) || empty($time_zone)) {
+            if (empty($user_agent) || empty($push_info) || empty($shop_url) || empty($lang) || empty($curr) || empty($push_date) || empty($time_zone)) {
                 $errors = __('text.errors_empty_field');
             } else {
                 $push_info_decode = json_decode($push_info, true);
-                $user = $push_info_decode['keys']['auth'];
+                $user             = $push_info_decode['keys']['auth'];
             }
         } else {
             if ($user_push) {
                 $order_info = json_decode($order_info);
-                $order_id = $order_info['order_id'];
+                $order_id   = $order_info['order_id'];
             } else {
                 $errors = __('text.errors_empty_field');
             }
         }
 
-        if(!count($errors)) {
+        if (!count($errors)) {
             if ($method == 'save') {
                 $msg = [
-                    'method' => $method,
-                    'user' => $user,
-                    'ip' => $ip,
+                    'method'       => $method,
+                    'user'         => $user,
+                    'ip'           => $ip,
                     'country_code' => $country_code,
-                    'user_agent' => $user_agent,
-                    'shop' => $shop_url,
-                    'aff' => $aff,
-                    'saff' => $saff,
-                    'customer_id' => $customer_id,
-                    'lang' => $lang,
-                    'curr' => $curr,
-                    'push_info' => $push_info,
-                    'push_date' => $push_date,
-                    'time_zone' => $time_zone,
-                    'fingerprint' => $fingerprint,
+                    'user_agent'   => $user_agent,
+                    'shop'         => $shop_url,
+                    'aff'          => $aff,
+                    'saff'         => $saff,
+                    'customer_id'  => $customer_id,
+                    'lang'         => $lang,
+                    'curr'         => $curr,
+                    'push_info'    => $push_info,
+                    'push_date'    => $push_date,
+                    'time_zone'    => $time_zone,
+                    'fingerprint'  => $fingerprint,
                 ];
             } else {
                 $msg = [
-                    'method' => $method,
+                    'method'    => $method,
                     'user_push' => $user_push,
-                    'order_id' => $order_id
+                    'order_id'  => $order_id
                 ];
             }
 
@@ -1788,37 +1948,39 @@ class HomeController extends Controller
     //     }
     // }
 
-    public function check_landing() {
-        return view('check_landing',[
+    public function check_landing()
+    {
+        return view('check_landing', [
 
         ]);
     }
 
-    public static function getAllCountryISO() {
+    public static function getAllCountryISO()
+    {
         $codes = DB::table('phone_codes_cache')->get(['iso'])->toArray();
 
         return $codes;
     }
 
-    public function checkup() : View
+    public function checkup(): View
     {
-        StatisticService::SendStatistic('checkup');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('checkup');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('checkup');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -1842,45 +2004,49 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=affiliate&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view('checkup', [
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'phone_codes' => $phone_codes,
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 
-    public function sitemap() : View
+    public function sitemap(): View
     {
-        StatisticService::SendStatistic('sitemap');
-        $design = session('design') ? session('design') : config('app.design');
-        $bestsellers = ProductServices::GetBestsellers($design);
-        $phone_codes = PhoneCodes::all()->toArray();
-        $menu = ProductServices::GetCategoriesWithProducts($design);
+        $statisticPromise = StatisticService::SendStatistic('sitemap');
+
+        $design          = session('design') ? session('design') : config('app.design');
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
         $page_properties = ProductServices::getPageProperties('sitemap');
-        $first_letters = ProductServices::getFirstLetters();
-        $agent = new Agent();
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
-        $pixel = "";
-        foreach($pixels as $item)
-        {
+        $pixel  = "";
+        foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        $domain = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
         $last_char = strlen($domain) - 1;
         if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
             $domain = substr($domain, 0, -1);
@@ -1889,7 +2055,6 @@ class HomeController extends Controller
         $device = ProductServices::getDevice($agent);
 
         $codes = $this->getAllCountryISO();
-
         foreach ($codes as $i => $code) {
             $codes[$i] = strtolower($code->iso);
         }
@@ -1904,24 +2069,27 @@ class HomeController extends Controller
             "&store_skin=" . str_replace('design_', '', $design) .
             "&page=affiliate&device=" . $device .
             "&timestamp=" . time() .
-            "&user_ip=" . request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip();
+            "&user_ip=" . RequestHelper::GetUserIp();
 
+        if (!is_null($statisticPromise)) {
+            $statisticPromise->wait();
+        }
 
         return view($design . '.sitemap', [
-            'design' => $design,
-            'bestsellers' => $bestsellers,
-            'menu' => $menu,
-            'phone_codes' => $phone_codes,
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category' => '',
-            'agent' => $agent,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-            'pixel' => $pixel,
-            'first_letters' => $first_letters,
-            'domain' => $domain,
-            'web_statistic' => $web_statistic,
-            'codes' => json_encode($codes),
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
         ]);
     }
 }
