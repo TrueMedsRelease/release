@@ -12,11 +12,11 @@
             <div class="product-cards">
                 @foreach ($category['products'] as $product)
                     <article class="card product-card">
-                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        @if ($product['id'] != 616 && $product['discount'] != 0)
                             <span class="card__label">-{{ $product['discount'] }}%</span>
                         @endif
                         <a class="product-card__img" href="{{ route('home.product', $product['url']) }}">
-                            @if ($product['image'] == 'gift-card')
+                            @if ($product['id'] == 616)
                                 <img loading="lazy" src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <picture>
@@ -24,7 +24,7 @@
                                     <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                                 </picture>
                             @endif
-                            {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift-card.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
+                            {{-- <img loading="lazy" src="{{ $product['id'] != 616 ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift-card.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                         </a>
                         <h2 class="product-card__heading">
                             <a class="product-card__brand link-primary" href="{{ route('home.product', $product['url']) }}">{{ $product['name'] }}</a>

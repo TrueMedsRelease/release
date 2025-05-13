@@ -38,7 +38,7 @@
                 {{ __("text.common_contact_us_main_menu_item") }}
             </div>
         @endif
-        
+
         <h2 class="page__title title">{{__('text.search_result_best_for_search')}}</h2>
         <div class="products__items">
             @foreach ($bestsellers as $product)
@@ -55,11 +55,11 @@
                             </div>
                             <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
-                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        @if ($product['id'] != 616 && $product['discount'] != 0)
                             <span class="card__label">-{{ $product['discount'] }}%</span>
                         @endif
                         <div class="item-product__image-ibg">
-                            @if ($product['image'] == 'gift-card')
+                            @if ($product['id'] == 616)
                                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <picture>
@@ -97,11 +97,11 @@
                             </div>
                             <div class="item-product__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
-                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        @if ($product['id'] != 616 && $product['discount'] != 0)
                             <span class="card__label">-{{ $product['discount'] }}%</span>
                         @endif
                         <div class="item-product__image-ibg">
-                            @if ($product['image'] == 'gift-card')
+                            @if ($product['id'] == 616)
                                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <picture>

@@ -29,7 +29,7 @@
                 <div class="info-panel panel">
                     <div class="info-panel__image">
                         <picture>
-                            @if ($product['image'] == 'gift-card')
+                            @if ($product['id'] == 616)
                                 <img loading="lazy" src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
@@ -37,15 +37,15 @@
                             @endif
                         </picture>
                         {{-- <picture>
-                            @if ($product['image'] != 'gift-card')
+                            @if ($product['id'] != 616)
                                 <source srcset="{{ asset('images/' . $product['image'] . '.webp') }}" type="image/webp">
                             @endif
-                            <img loading="lazy" src="{{ $product['image'] != 'gift-card' ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift-card.svg') }}"
+                            <img loading="lazy" src="{{ $product['id'] != 616 ? asset('images/' . $product['image'] . '.webp') : asset($design . '/images/gift-card.svg') }}"
                                 alt="{{ $product['image'] }}">
                         </picture> --}}
                     </div>
 
-                    @if ($product['image'] != 'gift-card')
+                    @if ($product['id'] != 616)
                         @if (count($product['aktiv']) > 0)
                             <div class="info-panel__row">
                                 {!!__('text.product_active')!!}
@@ -130,7 +130,7 @@
                 @foreach ($product['packs'] as $key => $dosage)
                     <div class="panel product-panel">
                         <h2 class="h2">
-                            @if ($product['image'] != 'gift-card')
+                            @if ($product['id'] != 616)
                                 @if (in_array($product['id'], [619, 620, 483, 484, 501, 615]))
                                     {{ $product['name'] }}
                                 @else
@@ -157,11 +157,11 @@
                                     <tr class="product">
                                         <td class="product__info-wrapper" data-caption="Package:">
                                             <div
-                                                class="product__info @if ($loop->iteration == 1 && $product['image'] != 'gift-card') product__info--sale @endif">
+                                                class="product__info @if ($loop->iteration == 1 && $product['id'] != 616) product__info--sale @endif">
                                                 <div class="product__quantity">
                                                     {{ "{$item['num']} {$product['type']}" }}
                                                 </div>
-                                                @if ($product['image'] != 'gift-card')
+                                                @if ($product['id'] != 616)
                                                     @if ($item['price'] >= 300)
                                                         <div class="product__delivery">{{__('text.cart_free_express')}}</div>
                                                     @elseif($item['price'] < 300 && $item['price'] >= 200)
@@ -173,14 +173,14 @@
                                         <td class="product__price-per-pill" data-caption="Per Pill:">
                                             {{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</td>
                                         <td class="product__price-wrapper" data-caption="Special Price:">
-                                            @if ($loop->remaining != 1 && $product['image'] != 'gift-card')
+                                            @if ($loop->remaining != 1 && $product['id'] != 616)
                                                 <div class="product__discount">
                                                     <s>{{ $Currency::convert($dosage['max_pill_price'] * $item['num'], true) }}</s>
                                                     -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
                                                 </div>
                                             @endif
                                             <div class="product__price">
-                                                @if ($product['image'] != 'gift-card')
+                                                @if ($product['id'] != 616)
                                                     {{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}
                                                 @else
                                                    {{ $Currency::convert($item['price'], true) }}
@@ -212,7 +212,7 @@
                     {!! $product['full_desc'] !!}
                 @endif
 
-                @if ($product['image'] == 'gift-card')
+                @if ($product['id'] == 616)
                     <p style="margin: 0;">
                         <strong>{{__('text.gift_card_title')}}</strong>
                         <br>
