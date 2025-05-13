@@ -30,11 +30,11 @@
         <div class="product-cards">
             @foreach ($bestsellers as $product)
                 <article class="card product-card">
-                    @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                    @if ($product['id'] != 616 && $product['discount'] != 0)
                         <span class="card__label">-{{ $product['discount'] }}%</span>
                     @endif
                     <a class="product-card__img" href="{{ route('home.product', $product['url']) }}">
-                        @if ($product['image'] == 'gift-card')
+                        @if ($product['id'] == 616)
                             <img loading="lazy" src="{{ asset($design . '/images/gift-card.svg') }}" alt="{{ $product['image'] }}">
                         @else
                             <picture>
@@ -89,11 +89,11 @@
         <div class="product-cards">
             @foreach ($products as $product)
                 <article class="card product-card">
-                    @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                    @if ($product['id'] != 616 && $product['discount'] != 0)
                         <span class="card__label">-{{ $product['discount'] }}%</span>
                     @endif
                     <a class="product-card__img" href="{{ route('home.product', $product['url']) }}">
-                        @if ($product['image'] == 'gift-card')
+                        @if ($product['id'] == 616)
                             <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                         @else
                             <picture>

@@ -24,11 +24,11 @@
                             </div>
                             <div class="product-card__price">{{ $Currency::convert($product['price'], false, true) }}</div>
                         </div>
-                        @if ($product['image'] != 'gift-card' && $product['discount'] != 0)
+                        @if ($product['id'] != 616 && $product['discount'] != 0)
                             <span class="card__label">-{{ $product['discount'] }}%</span>
                         @endif
                         <div class="product-card__image">
-                            @if ($product['image'] == 'gift-card')
+                            @if ($product['id'] == 616)
                                 <img loading="lazy" src="{{ asset($design . '/images/gift_card_img.svg') }}" alt="{{ $product['image'] }}">
                             @else
                                 <picture>
@@ -36,7 +36,7 @@
                                     <img loading="lazy" src="{{ route('home.set_images', $product['image']) }}" alt="{{ $product['alt'] }}">
                                 </picture>
                             @endif
-                            {{-- <img loading="lazy" src="{{ $product['image'] != "gift-card" ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
+                            {{-- <img loading="lazy" src="{{ $product['id'] != 616 ? asset("images/" . $product['image'] . ".webp") : asset($design . '/images/gift_card_img.svg') }}" width="140" height="140" alt="{{ $product['name'] }}"> --}}
                         </div>
                     </div>
                     <button type="button" class="product-card__button button button--primary">

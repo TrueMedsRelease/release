@@ -581,7 +581,7 @@
                                         data-pseudo-label="{{__('text.checkout_type')}}">
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
                                         @if($service_enable)<option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>@endif
-                                        @if(env('APP_PAYPAL_ON', 0) && $service_enable)
+                                        @if(env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
