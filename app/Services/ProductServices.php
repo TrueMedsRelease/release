@@ -223,7 +223,7 @@ class ProductServices
 
                     $product['alt'] = $product['image'];
 
-                    if ($product['image'] != 'gift-card') {
+                    if ($product['id'] != 616) {
                         if (static::isAffIdInSpecialUrlList()) {
                             $product['image'] = $domainWithoutZone . '_' . $product['image'];
                             $product['alt']   = __('text.text_aff_domain_1')
