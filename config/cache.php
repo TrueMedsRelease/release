@@ -15,8 +15,8 @@ return [
     |
     */
 
-    // 'default' => env('CACHE_DRIVER', 'array'),
-    'default' => 'array',
+    'default' => env('CACHE_DRIVER', 'array'),
+    // 'default' => 'array',
 
     /*
     |--------------------------------------------------------------------------
