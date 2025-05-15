@@ -93,6 +93,10 @@ class CartController extends Controller
 
     public function cart()
     {
+        if (empty(session('cart'))) {
+            return redirect(route('home.index'));
+        }
+
         $design      = session('design') ? session('design') : config('app.design');
         $desc        = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
         $products    = session('cart');
