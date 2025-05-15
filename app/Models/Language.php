@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 
 class Language extends Model
 {
@@ -62,18 +63,22 @@ class Language extends Model
 
     public static function GetAllLanuages()
     {
-        $language = Language::query()
-            ->where('show', '=', 1)
-            ->orderBy('ord', 'asc')
-            ->get()
-            ->toArray();
+        $languages = Cache::remember(App::currentLocale() . "_languages", 180, function () {
+            return Language::query()
+                ->where('show', '=', 1)
+                ->orderBy('ord')
+                ->get()
+                ->toArray();
+        });
 
-        return $language;
+        return $languages;
     }
 
     public static function GetLanguageByCountry($country)
     {
         $preferredLanguage = request()->getPreferredLanguage();
+
+
 
         $language = Language::query()
             ->where('show', '=', 1)
