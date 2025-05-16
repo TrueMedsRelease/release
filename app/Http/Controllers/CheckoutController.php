@@ -1384,6 +1384,246 @@ class CheckoutController extends Controller
         }
     }
 
+        public function validate_for_sepa(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone'            => ['required', 'min:5', 'max:16'],
+            'email'            => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
+            'firstname'        => ['required', 'max:255'],
+            'lastname'         => ['required', 'max:255'],
+            'billing_country'  => ['required', 'max:2'],
+            'billing_city'     => ['required', 'max:255'],
+            'billing_address'  => ['required', 'max:255'],
+            'billing_zip'      => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        } else {
+            session(['form.payment_type' => 'sepa']);
+
+            $form = json_encode(session('form'));
+
+            $form .= ' ' . json_encode(session('cart'));
+
+            $form .= ' ' . json_encode(session('cart_option'));
+
+            $form .= ' shop=' . request()->getHost();
+
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+            $data = [
+                'method'  => 'save_order_data',
+                'api_key' => $api_key->key_data,
+                'form'    => $form,
+            ];
+
+            if (checkdnsrr('true-services.net', 'A')) {
+                try {
+                    $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
+        }
+    }
+
+    public function sendSepa(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone'            => ['required', 'min:5', 'max:16'],
+            'email'            => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
+            'firstname'        => ['required', 'max:255'],
+            'lastname'         => ['required', 'max:255'],
+            'billing_country'  => ['required', 'max:2'],
+            'billing_city'     => ['required', 'max:255'],
+            'billing_address'  => ['required', 'max:255'],
+            'billing_zip'      => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        } else {
+            $products = [];
+            $sessid   = '';
+
+            foreach (session('cart') as $product) {
+                $products[$product['pack_id']] = [
+                    'qty'            => $product['q'],
+                    'price'          => $product['price'],
+                    'is_ed_category' => false
+                ];
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
+            }
+
+            if (session('cart_option.bonus_id') != 0) {
+                $products[session('cart_option.bonus_id')] = [
+                    'qty'            => 1,
+                    'price'          => session('cart_option.bonus_price'),
+                    'is_ed_category' => false
+                ];
+            }
+
+            $products_str = json_encode($products);
+
+            // $products = str_replace(['[',']'], '', $products);
+
+            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+            $phone_code = $phone_code->phonecode;
+            $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+            $data = [
+                'method'             => 'order',
+                'api_key'            => $api_key->key_data,
+                'phone'              => e('+' . $phone_code . $request->phone),
+                'alternative_phone'  => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+                'email'              => e($request->email),
+                'alter_email'        => !empty($request->alt_email) ? e($request->alt_email) : '',
+                'firstname'          => e($request->firstname),
+                'lastname'           => e($request->lastname),
+                'billing_country'    => e($request->billing_country),
+                'billing_state'      => e($request->billing_state),
+                'billing_city'       => e($request->billing_city),
+                'billing_address'    => e($request->billing_address),
+                'billing_zip'        => e($request->billing_zip),
+                'shipping_country'   => !empty($request->address_match) ? e($request->shipping_country) : e(
+                    $request->billing_country
+                ),
+                'shipping_state'     => !empty($request->address_match) ? e($request->shipping_state) : e(
+                    $request->billing_state
+                ),
+                'shipping_city'      => !empty($request->address_match) ? e($request->shipping_city) : e(
+                    $request->billing_city
+                ),
+                'shipping_address'   => !empty($request->address_match) ? e($request->shipping_address) : e(
+                    $request->billing_address
+                ),
+                'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
+                    $request->billing_zip
+                ),
+                'payment_type'       => e('sepa'),
+                'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                    'cf-connecting-ip'
+                ) : request()->ip(),
+                'aff'                => session('aff', 0),
+                'ref'                => session('referer', ''),
+                'refc'               => session('refc', ''),
+                'keyword'            => session('keyword', ''),
+                'domain_from'        => request()->getHost(),
+                'total'              => session('total.checkout_total'),
+                'shipping'           => session('cart_option.shipping'),
+                'products'           => $products_str,
+                'saff'               => session('saff', ''),
+                'language'           => App::currentLocale(),
+                'currency'           => session('currency'),
+                'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
+                        'Accept-Language'
+                    ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
+                'fingerprint'        => '',
+                'product_total'      => session('total.product_total'),
+                'customer_id'        => '',
+                'reorder'            => 0,
+                'reorder_discount'   => 0,
+                'shipping_price'     => session('total.shipping_total'),
+                'insurance'          => session('total.insurance'),
+                'secret_package'     => session('total.secret_package'),
+                'store_skin'         => config('app.design'),
+                'recurring_period'   => 0,
+                'coupon'             => session('coupon.coupon', ''),
+                'bonus'              => '',
+                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
+                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
+                'theme'              => 13,
+                'coupon_discount'    => session('total.coupon_discount'),
+                'sessid'             => $sessid
+            ];
+
+            session(['data' => $data]);
+
+            $email             = e($request->email);
+            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+            if (count($check_order_cache) == 0) {
+                $data_for_cache             = $data;
+                $data_for_cache['products'] = addslashes($data_for_cache['products']);
+                $order_cache_id             = DB::table('order_cache')->insertGetId([
+                    'message' => json_encode($data_for_cache),
+                    'is_send' => 0
+                ]);
+            } else {
+                $order_cache_id = $check_order_cache[0]->id;
+            }
+
+            if (checkdnsrr('true-services.net', 'A')) {
+                try {
+                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                        $response = json_decode($response, true);
+
+                        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
+                                    json_encode($response['message']),
+                                    'repeat_order'
+                                ))) {
+                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                            session(['order' => $response]);
+                        }
+
+                        return response()->json(['response' => $response], 200);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
+        }
+    }
+
     public function send_checkout_phone_email(Request $request)
     {
         $sessid      = '';
@@ -1432,51 +1672,5 @@ class CheckoutController extends Controller
         }
 
         return json_encode($response);
-    }
-}
-
-function test()
-{
-    if (isset($entityBody['method']) && $entityBody['method'] == 'get_paypal_limit') {
-        $usd_enable = file_get_contents('https://trfl.giving/checkbilling');
-        $eur_enable = file_get_contents('https://trueeufl.yachts/checkbilling');
-
-        if ($usd_enable == 1 && $eur_enable == 1) {
-            $limit_usd = file_get_contents('https://trfl.giving/checkbilling-extend');
-            $limit_eur = file_get_contents('https://trueeufl.yachts/checkbilling-extend');
-            if ($limit_usd > $limit_eur) {
-                $answer['limit']  = $limit_usd;
-                $answer['status'] = 'success';
-                $answer           = json_encode($answer);
-                echo $answer;
-                die;
-            } else {
-                $answer['limit']  = $limit_eur;
-                $answer['status'] = 'success';
-                $answer           = json_encode($answer);
-                echo $answer;
-                die;
-            }
-        } elseif ($usd_enable == 1 && $eur_enable == 0) {
-            $limit_usd        = file_get_contents('https://trfl.giving/checkbilling-extend');
-            $answer['limit']  = $limit_usd;
-            $answer['status'] = 'success';
-            $answer           = json_encode($answer);
-            echo $answer;
-            die;
-        } elseif ($usd_enable == 0 && $eur_enable == 1) {
-            $limit_eur        = file_get_contents('https://trueeufl.yachts/checkbilling-extend');
-            $answer['limit']  = $limit_eur;
-            $answer['status'] = 'success';
-            $answer           = json_encode($answer);
-            echo $answer;
-            die;
-        } else {
-            $answer['limit']  = 0;
-            $answer['status'] = 'success';
-            $answer           = json_encode($answer);
-            echo $answer;
-            die;
-        }
     }
 }

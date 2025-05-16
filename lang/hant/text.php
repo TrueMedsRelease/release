@@ -594,4 +594,8 @@ return  [
     "menu_title_sitemap" => "網站地圖",
     "sitemap_language_title" => "語言",
     "sitemap_site_info" => "網站資訊",
+
+    "chechout_sepa_bank" => "銀行:",
+    "checkout_sepa_account_number" => "帳號:",
+    "checkout_sepa_company" => "公司:",
 ];

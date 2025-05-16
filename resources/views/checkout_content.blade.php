@@ -584,6 +584,9 @@
                                         @if(env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
+                                        @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
+                                            <option value="sepa" @selected(session('form.payment_type', 'card') == 'sepa')>SEPA</option>
+                                        @endif
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif --}}
@@ -876,33 +879,157 @@
                         </div>
 
                         @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US')
-                        <div class="enter-info__google-content" @if (session('form.payment_type', 'card') != 'google') hidden @endif>
-                            <div class="details-payment__row">
-                                <div class="details-payment__data" style="text-align: center;">
-                                    {{ __('text.checkout_sepa_text') }}
+                            <div class="enter-info__google-content" @if (session('form.payment_type', 'card') != 'google') hidden @endif>
+                                <div class="details-payment__row">
+                                    <div class="details-payment__data" style="text-align: center;">
+                                        {{ __('text.checkout_sepa_text') }}
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: center;">
+                                    <iframe
+                                        src="https://r.express/m-pay/l2Bm75tKjX?amount={{ session('total.checkout_total_eur') }}&currency=EUR&country={{ session('location.country', 'US') }}&width=200&height=50&buttonColor=white&buttonRadius=20px&buttonLocale=en"
+                                        style="border: 0" width="255" height="67"></iframe>
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: center;">
-                                <iframe
-                                    src="https://r.express/m-pay/l2Bm75tKjX?amount={{ session('total.checkout_total_eur') }}&currency=EUR&country={{ session('location.country', 'US') }}&width=200&height=50&buttonColor=white&buttonRadius=20px&buttonLocale=en"
-                                    style="border: 0" width="255" height="67"></iframe>
-                            </div>
-                        </div>
                         @endif
 
-                        <div class="enter-info__sepa-content" hidden>
-                            <div class="details-payment__row">
-                                <div class="details-payment__data" style="text-align: center;">
-                                    {{__('text.checkout_sepa_sum_text')}} <span id="sepa_sum">{$data.info.sepasum}</span>
+                        @if (env('APP_SEPA_ON', 0) == 1 && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
+                            <div class="enter-info__sepa-content"  @if (session('form.payment_type', 'card') != 'sepa') hidden @endif>
+                                <div class="content-sepa">
+                                    <div id="sepa_requisites">
+                                        <div class="details-payment__rows" style="margin-bottom: 30px;">
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">{{__('text.checkout_amount')}}:</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span class="details-payment__amount" id="sepa_total">{{ $Currency::ConvertInEur(session('total.checkout_total', 0)) }}</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">Bank:</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="purse"
+                                                            class="details-payment__amount">ING Romania</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">Account number:</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="purse"
+                                                            class="details-payment__amount">RO30INGB0000999915318999</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">Company:</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="purse"
+                                                            class="details-payment__amount">REXPRESS S.R.L.</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">{{ __('text.checkout_address') }}</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="purse"
+                                                            class="details-payment__amount">Intrare GHEORGHE SIMIONESCU, Nr 19, Apt B 26, 014155 Bucuresti Sectorul 1, Bucharest, Romania</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="details-payment__data" style="text-align: center;">
-                                    {{__('text.checkout_sepa_text')}}
-                                </div>
+                                <button type="button" class="enter-info__button button" id="proccess_sepa">
+                                    <span>{{__('text.checkout_paid')}}</span>
+                                </button>
+                                <button style="display: none;" type="submit" class="enter-info__button button"
+                                    id="waiting">
+                                    {{__('text.checkout_approving')}} <img loading="lazy" src="{{ asset('style_checkout/images/131.gif') }}"
+                                        width="30px" height="30px">
+                                </button>
                             </div>
-                            <button id="proccess_sepa" name="proccess" class="enter-info__button button">
-                                <span>{{__('text.checkout_sepa_button')}}</span>
-                            </button>
-                        </div>
+                        @endif
 
                         {{-- <div class="enter-info__gift-card-content" {if $rest_total !==0}hidden{/if}>
                             <button id="proccess_gift_card" name="proccess" class="enter-info__button button">
