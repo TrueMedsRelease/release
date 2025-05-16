@@ -2619,11 +2619,7 @@ $("#proccess_sepa").click(function (e) {
         success: function (data) {
             var data = JSON.parse(data);
             // console.log(data);
-            if(typeof data.response.url !== 'undefined')
-            {
-                window.location.replace("/redirect");
-            }
-            else if (data.response.status == 'SUCCESS') {
+            if (data.response.status == 'SUCCESS') {
                 window.location.replace("/complete");
             }
             else {
