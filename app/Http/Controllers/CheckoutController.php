@@ -80,6 +80,34 @@ class CheckoutController extends Controller
             $statisticPromise->wait();
         }
 
+        $paypal_limit = 'none';
+        $api_key      = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $message = [
+            'method'  => 'get_paypal_limit',
+            'api_key' => $api_key->key_data,
+        ];
+
+        if (checkdnsrr('true-services.net', 'A')) {
+            try {
+                $response = Http::timeout(5)->post('http://true-services.net/checkout/order.php', $message);
+                $response = json_decode($response, true);
+
+                if ($response['status'] == 'success') {
+                    $paypal_limit = $response['limit'];
+                    session(['paypal_limit' => $paypal_limit]);
+                } else {
+                    session(['paypal_limit' => $paypal_limit]);
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
+
         return view('checkout', [
             'pixel'    => $pixel,
             'Language' => Language::class,
@@ -144,7 +172,7 @@ class CheckoutController extends Controller
 
         $cart_option = session('cart_option');
 
-        $cart_option['insurance_price'] = Cart::ClacInsurance();
+        $cart_option['insurance_price'] = Cart::CalcInsurance();
         $cart_option['secret_price']    = $shipping['secret_package'];
 
         if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
@@ -178,45 +206,16 @@ class CheckoutController extends Controller
             }
         }
 
-        $paypal_limit = 'none';
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
-
-        $message = [
-            'method' => 'get_paypal_limit',
-            'api_key' => $api_key->key_data,
-        ];
-
-        if(checkdnsrr('true-services.net', 'A'))
-        {
-            try {
-                $response = Http::timeout(5)->post('http://true-services.net/checkout/order.php', $message);
-                $response = json_decode($response, true);
-
-                if ($response['status'] == 'success') {
-                    $paypal_limit = $response['limit'];
-                    session(['paypal_limit' => $paypal_limit]);
-                } else {
-                    session(['paypal_limit' => $paypal_limit]);
-                }
-
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
-                Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
-                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                $responseData = ['error' => 'Service unavailable'];
-            }
-        }
-
         $service_enable = true;
         if (!checkdnsrr('true-services.net', 'A')) {
             $service_enable = false;
         }
 
-        if ($product_total_check > $paypal_limit) {
+        $paypal_limit = session('paypal_limit', 0);
+        if ($paypal_limit == 'none' || $product_total_check > $paypal_limit) {
             session(['paypal_limit' => 'none']);
         }
-        
+
         $states = State::$states;
 
         $returnHTML = view('checkout_content')->with([
@@ -1433,5 +1432,51 @@ class CheckoutController extends Controller
         }
 
         return json_encode($response);
+    }
+}
+
+function test()
+{
+    if (isset($entityBody['method']) && $entityBody['method'] == 'get_paypal_limit') {
+        $usd_enable = file_get_contents('https://trfl.giving/checkbilling');
+        $eur_enable = file_get_contents('https://trueeufl.yachts/checkbilling');
+
+        if ($usd_enable == 1 && $eur_enable == 1) {
+            $limit_usd = file_get_contents('https://trfl.giving/checkbilling-extend');
+            $limit_eur = file_get_contents('https://trueeufl.yachts/checkbilling-extend');
+            if ($limit_usd > $limit_eur) {
+                $answer['limit']  = $limit_usd;
+                $answer['status'] = 'success';
+                $answer           = json_encode($answer);
+                echo $answer;
+                die;
+            } else {
+                $answer['limit']  = $limit_eur;
+                $answer['status'] = 'success';
+                $answer           = json_encode($answer);
+                echo $answer;
+                die;
+            }
+        } elseif ($usd_enable == 1 && $eur_enable == 0) {
+            $limit_usd        = file_get_contents('https://trfl.giving/checkbilling-extend');
+            $answer['limit']  = $limit_usd;
+            $answer['status'] = 'success';
+            $answer           = json_encode($answer);
+            echo $answer;
+            die;
+        } elseif ($usd_enable == 0 && $eur_enable == 1) {
+            $limit_eur        = file_get_contents('https://trueeufl.yachts/checkbilling-extend');
+            $answer['limit']  = $limit_eur;
+            $answer['status'] = 'success';
+            $answer           = json_encode($answer);
+            echo $answer;
+            die;
+        } else {
+            $answer['limit']  = 0;
+            $answer['status'] = 'success';
+            $answer           = json_encode($answer);
+            echo $answer;
+            die;
+        }
     }
 }

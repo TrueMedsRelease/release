@@ -159,15 +159,15 @@ class GeoIpService
         {
             $location = $reader->city($ip);
 
-            $country_info = CountryInfoCache::query()
-                ->where('country_iso2', '=', $location->country->isoCode ?? null)
-                ->get();
+            // $country_info = CountryInfoCache::query()
+            //     ->where('country_iso2', '=', $location->country->isoCode ?? null)
+            //     ->get();
 
-            if($country_info->isEmpty())
-            {
-                $ip = '89.187.179.179';
-                $location = $reader->city($ip);
-            }
+            // if($country_info->isEmpty())
+            // {
+            //     $ip = '89.187.179.179';
+            //     $location = $reader->city($ip);
+            // }
 
             $info = [
                 'country' => $location->country->isoCode ?? 'US',
