@@ -171,7 +171,14 @@ class ProductServices
         $categoriesQuery->where('is_showed', '=', 1);
         $categoriesQuery->with(['product']);
         $categoriesQuery->orderBy('ord');
-        $categoriesRaw = $categoriesQuery->get();
+
+        $categoriesRaw = Cache::remember(
+            App::currentLocale() . "_categories_raw",
+            180,
+            function () use ($categoriesQuery) {
+                return $categoriesQuery->get();
+            }
+        );
 
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
