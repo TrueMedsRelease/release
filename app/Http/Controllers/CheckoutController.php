@@ -88,7 +88,7 @@ class CheckoutController extends Controller
             'api_key' => $api_key->key_data,
         ];
 
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-services.net', 'A')) {
             try {
                 $response = Http::timeout(5)->post('http://true-services.net/checkout/order.php', $message);
                 $response = json_decode($response, true);
