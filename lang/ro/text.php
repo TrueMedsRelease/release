@@ -589,4 +589,8 @@ return [
     "menu_title_sitemap" => "Harta site-ului",
     "sitemap_language_title" => "Limbi",
     "sitemap_site_info" => "Informații despre site",
+
+    "chechout_sepa_bank" => "Banc:",
+    "checkout_sepa_account_number" => "Numărul contului:",
+    "checkout_sepa_company" => "Companie:",
 ];

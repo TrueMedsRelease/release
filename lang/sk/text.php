@@ -593,4 +593,8 @@ return [
     "menu_title_sitemap" => "Mapa stránky",
     "sitemap_language_title" => "Jazyky",
     "sitemap_site_info" => "Informácie o stránke",
+
+    "chechout_sepa_bank" => "Banka:",
+    "checkout_sepa_account_number" => "Číslo účtu:",
+    "checkout_sepa_company" => "Spoločnosť:",
 ];

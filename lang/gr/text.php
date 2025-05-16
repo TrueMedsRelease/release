@@ -592,4 +592,8 @@ return [
     "menu_title_sitemap" => "Χάρτης της ιστοσελίδας",
     "sitemap_language_title" => "Γλώσσες",
     "sitemap_site_info" => "Πληροφορίες ιστότοπου",
+
+    "chechout_sepa_bank" => "Τράπεζα:",
+    "checkout_sepa_account_number" => "Αριθμός λογαριασμού:",
+    "checkout_sepa_company" => "Εταιρεία:",
 ];

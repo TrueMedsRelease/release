@@ -599,4 +599,8 @@ return [
     "menu_title_sitemap" => "Sivukartta",
     "sitemap_language_title" => "Kielet",
     "sitemap_site_info" => "Sivuston tiedot",
+
+    "chechout_sepa_bank" => "Pankki:",
+    "checkout_sepa_account_number" => "Tilinumero:",
+    "checkout_sepa_company" => "Yritys:",
 ];

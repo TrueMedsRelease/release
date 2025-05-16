@@ -861,5 +861,9 @@ return [
 
     "menu_title_sitemap" => "Sitemap",
     "sitemap_language_title" => "Languages",
-    "sitemap_site_info" => "Site Info"
+    "sitemap_site_info" => "Site Info",
+
+    "chechout_sepa_bank" => "Bank:",
+    "checkout_sepa_account_number" => "Account number:",
+    "checkout_sepa_company" => "Company:",
 ];

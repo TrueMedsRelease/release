@@ -633,4 +633,8 @@ return [
     "menu_title_sitemap" => "Sitemap",
     "sitemap_language_title" => "Talen",
     "sitemap_site_info" => "Site-informatie",
+
+    "chechout_sepa_bank" => "Bank:",
+    "checkout_sepa_account_number" => "Rekeningnummer:",
+    "checkout_sepa_company" => "Bedrijf:",
 ];
