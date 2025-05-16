@@ -76,39 +76,52 @@ class Language extends Model
 
     public static function GetLanguageByCountry($country)
     {
-        $preferredLanguage = request()->getPreferredLanguage();
-
-
-
+        $prefferd = request()->getPreferredLanguage();
         $language = Language::query()
             ->where('show', '=', 1)
-            ->where('code', '=', $preferredLanguage)
+            ->where('code', '=', $prefferd)
             ->first('code');
-        if (empty($language)) {
+
+        if(empty($language))
+        {
             $language = Language::query()
-                ->where('show', '=', 1)
-                ->where('country_iso2', 'LIKE', '%' . $country . '%')
-                ->first('code');
+            ->where('show', '=', 1)
+            ->where('country_iso2', 'LIKE', '%' . $country . '%')
+            ->first('code');
         }
-        if (empty($language)) {
+
+        if(empty($language))
+        {
             $languages = Language::GetAllLanuages();
 
             if (count($languages) > 1) {
-                return App::currentLocale();
+                return config('app.language');
             } else {
                 if (count($languages) == 1) {
-                    $languageCode = $languages[0]['code'];
-
-                    if ($languageCode == App::currentLocale()) {
-                        return App::currentLocale();
-                    } else {
-                        return config('app.language');
-                    }
+                    return $languages[0]['code'];
                 } else {
                     return config('app.language');
                 }
             }
-        } else {
+
+            // if (count($languages) > 1) {
+            //     return App::currentLocale();
+            // } else {
+            //     if (count($languages) == 1) {
+            //         $landuage_code = $languages[0]['code'];
+
+            //         if ($landuage_code == App::currentLocale()) {
+            //             return App::currentLocale();
+            //         } else {
+            //             return config('app.language');
+            //         }
+            //     } else {
+            //         return config('app.language');
+            //     }
+            // }
+        }
+        else
+        {
             $language = $language->toArray();
             return $language['code'];
         }
