@@ -595,4 +595,8 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "menu_title_sitemap" => "Peta laman",
     "sitemap_language_title" => "Bahasa",
     "sitemap_site_info" => "Maklumat laman",
+
+    "chechout_sepa_bank" => "Bank:",
+    "checkout_sepa_account_number" => "Nombor akaun:",
+    "checkout_sepa_company" => "Syarikat:",
 ];

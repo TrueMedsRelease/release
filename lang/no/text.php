@@ -596,4 +596,8 @@ return [
     "menu_title_sitemap" => "Nettsidekart",
     "sitemap_language_title" => "Språk",
     "sitemap_site_info" => "Nettsideinformasjon",
+
+    "chechout_sepa_bank" => "Bank:",
+    "checkout_sepa_account_number" => "Kontonummer:",
+    "checkout_sepa_company" => "Bedrift:",
 ];

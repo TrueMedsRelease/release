@@ -79,6 +79,24 @@ class Currency extends Model
         }
     }
 
+    public static function ConvertInEur($number, $round = false, $format = false)
+    {
+        $currency = 'eur';
+        $coef             = Currency::query()->where('code', '=', $currency)->get()->toArray()[0]['coef'];
+        $prefix           = Currency::$prefix[$currency];
+        if ($round) {
+            $total = ceil($number * $coef);
+        } else {
+            $total = round($number * $coef, 2);
+        }
+
+        if ($format) {
+            return $prefix . number_format($total, 2, '.', '');
+        } else {
+            return $prefix . $total;
+        }
+    }
+
     public static function SumInCurrency($numbers = [], $round = false)
     {
         $current_currency = session('currency', 'usd');

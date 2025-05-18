@@ -1973,7 +1973,7 @@ $(".select_billing_country .select__option").click(function () {
     });
 });
 
-if ($('#app_insur_on').val() == 0 && $('#c_82').is(':checked') == false) {
+if ($('#c_82').is(':checked') == false) {
     $('#c_82').attr('onclick', 'Insurance(1)');
 }
 
@@ -2064,8 +2064,10 @@ $(".card_type .select__option").click(function (e) {
     const cryptoBlock = document.querySelector(".enter-info__crypto-content");
     const paypalBlock = document.querySelector(".enter-info__paypal-content");
     const googleBlock = document.querySelector(".enter-info__google-content");
+    const sepaBlock = document.querySelector(".enter-info__sepa-content");
     flag = false;
     if (type == 'crypto') {
+        // console.log(111);
         $.ajax({
             url: '/validate_for_crypt',
             type: 'POST',
@@ -2076,6 +2078,7 @@ $(".card_type .select__option").click(function (e) {
             success: function (data) {
                 _slideDown(cryptoBlock);
                 _slideUp(cardBlock);
+                _slideUp(sepaBlock);
                 _slideUp(paypalBlock);
                 _slideUp(googleBlock);
             },
@@ -2110,6 +2113,7 @@ $(".card_type .select__option").click(function (e) {
             success: function (data) {
                 _slideDown(googleBlock);
                 _slideUp(cardBlock);
+                _slideUp(sepaBlock);
                 _slideUp(paypalBlock);
                 _slideUp(cryptoBlock);
             },
@@ -2131,6 +2135,55 @@ $(".card_type .select__option").click(function (e) {
             e.target.selectedIndex = previousIndex;
             return false;
         }
+    }
+    else if(type == 'sepa')
+    {
+        $.ajax({
+            url: '/validate_for_sepa',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+                _slideDown(sepaBlock);
+                _slideUp(cardBlock);
+                _slideUp(paypalBlock);
+                _slideUp(cryptoBlock);
+                _slideUp(googleBlock);
+            },
+            error: function (data) {
+                flag = true;
+                var errors = JSON.parse(data.responseText);
+                errors.errors.forEach(function (error, i) {
+                    console.log(i + '.' + error.message + ' (' + error.field + ')');
+                    var popup = document.getElementById("error_" + error.field);
+                    popup.classList.add("show");
+                    if (i == 0) {
+                        popup.scrollIntoView();
+                    }
+                });
+            }
+        });
+        if (flag) {
+            previousIndex = this.selectedIndex;
+            e.target.selectedIndex = previousIndex;
+            return false;
+        }
+    }
+    else if (type == 'card') {
+        _slideDown(cardBlock);
+        _slideUp(sepaBlock);
+        _slideUp(paypalBlock);
+        _slideUp(cryptoBlock);
+        _slideUp(googleBlock);
+    }
+    else if (type == 'paypal') {
+        _slideDown(paypalBlock);
+        _slideUp(sepaBlock);
+        _slideUp(cardBlock);
+        _slideUp(cryptoBlock);
+        _slideUp(googleBlock);
     }
 });
 
@@ -2514,6 +2567,60 @@ $("#proccess_paypal").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 window.location.replace(data.response.url);
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
+$("#proccess_sepa").click(function (e) {
+    var form = $('form').serialize();
+    console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    $.ajax({
+        url: '/sepa',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var data = JSON.parse(data);
+            // console.log(data);
+            if (data.response.status == 'SUCCESS') {
+                window.location.replace("/complete");
             }
             else {
                 var error = '';

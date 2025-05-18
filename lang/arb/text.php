@@ -596,5 +596,9 @@ return [
 
     "menu_title_sitemap" => "خريطة الموقع",
     "sitemap_language_title" => "لغات",
-    "sitemap_site_info" => "معلومات الموقع"
+    "sitemap_site_info" => "معلومات الموقع",
+
+    "chechout_sepa_bank" => "بنك:",
+    "checkout_sepa_account_number" => "رقم الحساب:",
+    "checkout_sepa_company" => "شركة:",
 ];

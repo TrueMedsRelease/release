@@ -599,4 +599,8 @@ return [
     "menu_title_sitemap" => "Oldaltérkép",
     "sitemap_language_title" => "Nyelvek",
     "sitemap_site_info" => "Oldalinformáció",
+
+    "chechout_sepa_bank" => "Bank:",
+    "checkout_sepa_account_number" => "Számlaszám:",
+    "checkout_sepa_company" => "Vállalat:",
 ];

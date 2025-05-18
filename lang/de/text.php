@@ -719,4 +719,8 @@ return [
     "menu_title_sitemap" => "Sitemap",
     "sitemap_language_title" => "Sprachen",
     "sitemap_site_info" => "Site-Informationen",
+
+    "chechout_sepa_bank" => "Bank:",
+    "checkout_sepa_account_number" => "Kontonummer:",
+    "checkout_sepa_company" => "Unternehmen:",
 ];
