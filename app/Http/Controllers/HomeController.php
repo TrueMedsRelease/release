@@ -69,6 +69,7 @@ class HomeController extends Controller
         if (!in_array($design, ['design_7', 'design_8'])) {
             $bestsellers = ProductServices::GetBestsellers($design);
             $menu        = ProductServices::GetCategoriesWithProducts($design);
+
             return view(
                 $design . '.index',
                 [
@@ -519,6 +520,10 @@ class HomeController extends Controller
         $menu        = ProductServices::GetCategoriesWithProducts($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $product     = ProductServices::GetProductInfoByUrl($product, $design);
+
+        if (empty($product['packs'])) {
+            return redirect()->route('home.index');
+        }
 
         if (!is_null($statisticPromise)) {
             $statisticPromise->wait();

@@ -76,68 +76,81 @@ class ProductServices
                 continue;
             }
 
-            $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-            $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
-
-            if (static::isAffIdInSpecialUrlList()) {
-                if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                    $products[$i]['url'] = 'Buying_' . $products_desc[$products[$i]['id']]['url'] . '_online';
-                } else {
-                    $products[$i]['url'] = __('text.text_aff_domain_1')
-                                           . '_' . $products_desc[$products[$i]['id']]['url']
-                                           . '_' . __('text.text_aff_domain_2');
-                }
-            } else {
-                $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
-            }
-
-            $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', ucwords(trim($products[$i]['aktiv']))));
-            foreach ($products[$i]['aktiv'] as $key => $value) {
-                $activeUrl = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
+            if (isset($products_desc[$product['id']])) {
+                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
+                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
 
                 if (static::isAffIdInSpecialUrlList()) {
                     if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                        $activeUrl = 'Buying_' . $activeUrl . "_online";
+                        $products[$i]['url'] = 'Buying_' . $products_desc[$products[$i]['id']]['url'] . '_online';
                     } else {
-                        $activeUrl = __('text.text_aff_domain_1')
-                                     . '_' . $activeUrl . "_" . __('text.text_aff_domain_2');
+                        $products[$i]['url'] = __('text.text_aff_domain_1')
+                                            . '_' . $products_desc[$products[$i]['id']]['url']
+                                            . '_' . __('text.text_aff_domain_2');
+                    }
+                } else {
+                    $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                }
+
+                $products[$i]['aktiv'] = explode(',', str_replace("\r\n", '', ucwords(trim($products[$i]['aktiv']))));
+                foreach ($products[$i]['aktiv'] as $key => $value) {
+                    $activeUrl = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
+
+                    if (static::isAffIdInSpecialUrlList()) {
+                        if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                            $activeUrl = 'Buying_' . $activeUrl . "_online";
+                        } else {
+                            $activeUrl = __('text.text_aff_domain_1')
+                                        . '_' . $activeUrl . "_" . __('text.text_aff_domain_2');
+                        }
+                    }
+
+                    $products[$i]['aktiv'][$key] = [
+                        'name' => trim($value),
+                        'url'  => $activeUrl
+                    ];
+                }
+
+                foreach ($product_price as $key => $pp) {
+                    if ($product['id'] == $key) {
+                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+
+                        if (isset($product_price[$products[$i]['id']]['discount'])) {
+                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        }
                     }
                 }
 
-                $products[$i]['aktiv'][$key] = [
-                    'name' => trim($value),
-                    'url'  => $activeUrl
-                ];
-            }
+                $products[$i]['alt'] = $products[$i]['image'];
 
-            foreach ($product_price as $key => $pp) {
-                if ($product['id'] == $key) {
-                    $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
-
-                    if (isset($product_price[$products[$i]['id']]['discount'])) {
-                        $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                if ($products[$i]['id'] != 616) {
+                    if (static::isAffIdInSpecialUrlList()) {
+                        $products[$i]['image'] = $domainWithoutZone . '_' . $products[$i]['image'];
+                        $products[$i]['alt']   = __('text.text_aff_domain_1')
+                                                . '_' . $products[$i]['name'] . '_'
+                                                . __('text.text_aff_domain_2');
                     }
                 }
-            }
-
-            $products[$i]['alt'] = $products[$i]['image'];
-
-            if ($products[$i]['id'] != 616) {
-                if (static::isAffIdInSpecialUrlList()) {
-                    $products[$i]['image'] = $domainWithoutZone . '_' . $products[$i]['image'];
-                    $products[$i]['alt']   = __('text.text_aff_domain_1')
-                                             . '_' . $products[$i]['name'] . '_'
-                                             . __('text.text_aff_domain_2');
-                }
+            } else {
+                $products[$i]['unset'] = true;
             }
         }
+
+        unset($product);
 
         foreach ($products as $i => $product) {
             if (!isset($product['price'])) {
                 $products[$i]['price'] = 0;
+                $products[$i]['unset'] = true;
             }
             if (!isset($product['discount'])) {
                 $products[$i]['discount'] = 0;
+            }
+        }
+
+        foreach ($products as $key => $val) {
+            if (isset($val['unset']) && $val['unset'] == 'true') {
+                unset($products[$key]);
             }
         }
 
@@ -258,6 +271,7 @@ class ProductServices
             foreach ($products as &$product) {
                 if (!isset($product['price'])) {
                     $product['price'] = 0;
+                    $product['unset'] = true;
                 }
                 if (!isset($product['discount'])) {
                     $product['discount'] = 0;
