@@ -220,6 +220,10 @@ class CheckoutController extends Controller
             session(['paypal_limit' => 'none']);
         }
 
+        if (session('crypto')) {
+            session(['crypto.crypto_total' => round(session('total.checkout_total') * 0.85, 2)]);
+        }
+
         $states = State::$states;
 
         $returnHTML = view('checkout_content')->with([
@@ -962,7 +966,7 @@ class CheckoutController extends Controller
             'refc'               => session('refc', ''),
             'keyword'            => session('keyword', ''),
             'domain_from'        => request()->getHost(),
-            'total'              => session('total.checkout_total'),
+            'total'              => round(session('total.checkout_total'), 2),
             'shipping'           => session('cart_option.shipping'),
             'products'           => $products_str,
             'saff'               => session('saff', ''),
