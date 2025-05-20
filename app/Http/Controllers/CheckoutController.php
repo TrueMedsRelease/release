@@ -28,6 +28,10 @@ class CheckoutController extends Controller
             return redirect(route('home.index'));
         }
 
+        if (session('crypto')) {
+            session(['crypto.crypto_total' => round(session('total.checkout_total') * 0.85, 2)]);
+        }
+
         $statisticPromise = StatisticService::SendStatistic('checkout');
         StatisticService::SendCheckout();
 
@@ -832,7 +836,7 @@ class CheckoutController extends Controller
                     // Обработка успешного ответа
 
                     $response                 = json_decode($response, true);
-                    $response['crypto_total'] = session('total.checkout_total') * 0.85;
+                    $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
                     $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
                     $response['currency']     = $request->currency;
 
@@ -949,8 +953,8 @@ class CheckoutController extends Controller
                 'cf-connecting-ip'
             ) : request()->ip(),
             'crypto_currency'    => $request->crypto_currency ?? '',
-            'crypto_total'       => $request->crypto_total ?? '',
-            'crypto_discount_price' => $request->crypto_discount_price ?? '',
+            'amount'             => $request->crypto_total,
+            'amountInPayCurrency'=> round(session('total.checkout_total') * 0.85, 2),
             'purse'              => $request->purse ?? '',
             'invoiceId'          => $request->invoiceId ?? '',
             'aff'                => session('aff', 0),
