@@ -249,6 +249,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/checkout/change_country', 'change_country')->name('checkout.country')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/crypto_info', 'crypto_info')->name('checkout.crypto_info')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/validate_for_crypt', 'validate_for_crypt')->name('checkout.validate_for_crypt');
+    Route::post('/data_for_crypt', 'data_for_crypt')->name('checkout.data_for_crypt')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/validate_for_google', 'validate_for_google')->name('checkout.validate_for_google');
     Route::post('/validate_for_sepa', 'validate_for_sepa')->name('checkout.validate_for_sepa');
     Route::post('/send_google', 'send_google')->name('checkout.send_google')->withoutMiddleware(VerifyCsrfToken::class);

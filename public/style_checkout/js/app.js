@@ -2289,12 +2289,17 @@ $('input[name="crypt_currency"]').click(function () {
                 document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
                 document.getElementById('invoiceId').value = result.invoiceId;
                 document.getElementById('invoce_p').innerHTML = result.invoiceId;
+
+                sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
+
                 // pollFunc(CheckPayment, 1800000, 5000);
                 document.getElementById("requisites_load").hidden = true;
                 document.getElementById("requisites").hidden = false;
                 pollFunc(CheckPayment, 1800000, 5000);
             }
         });
+
+
 
         var countDownDate = new Date().getTime() + 1800000;
         clearInterval(window.countdownfunction);
@@ -2353,6 +2358,26 @@ $("#paid").click(function (e) {
     // document.getElementById("phone_code_select").disabled = true;
     // document.getElementById("payment_type_select").disabled = true;
 });
+
+function sendCryptoData(crypto_currency, crypto_total, crypto_discount_price, purse, invoiceId) {
+    $.ajax({
+        url: '/data_for_crypt',
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'crypto_currency': crypto_currency,
+            'crypto_total': crypto_total,
+            'crypto_discount_price': crypto_discount_price,
+            'purse': purse,
+            'invoiceId': invoiceId
+        },
+        async: false,
+        success: function (data) {
+
+        },
+    });
+}
 
 function Insurance(val) {
     var form = $('form').serialize();
