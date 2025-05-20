@@ -832,7 +832,7 @@ class CheckoutController extends Controller
                     // Обработка успешного ответа
 
                     $response                 = json_decode($response, true);
-                    $response['crypto_total'] = Currency::Convert(session('total.checkout_total') * 0.85);
+                    $response['crypto_total'] = session('total.checkout_total') * 0.85;
                     $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
                     $response['currency']     = $request->currency;
 

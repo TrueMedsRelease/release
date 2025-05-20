@@ -808,7 +808,7 @@
                                                         <span class="details-payment__old-price"
                                                             id="crypto_price"> {{ $Currency::Convert(session('total.checkout_total', 0)) }} </span>
                                                         <span class="details-payment__price"
-                                                            id="crypto_discount_price">{{ session('crypto.crypto_total') }}</span>
+                                                            id="crypto_discount_price">{{ $Currency::Convert(session('crypto.crypto_total')) }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
