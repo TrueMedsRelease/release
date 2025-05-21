@@ -1867,39 +1867,12 @@
             document.addEventListener("selectCallback", (function (e) {
                 const currentSelect = e.detail.select;
                 if (currentSelect.value === "crypto") {
-                    $.ajax({
-                        url: '/validate_for_crypt',
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'html',
-                        data: form,
-                        async: false,
-                        success: function (data) {
-                            _slideDown(cryptoBlock);
-                            _slideUp(cardBlock);
-                            _slideUp(sepaBlock);
-                            _slideUp(paypalBlock);
-                            // _slideUp(giftCardBlock);
-                            _slideUp(googleBlock);
-                        },
-                        error: function (data) {
-                            flag = true;
-                            var errors = JSON.parse(data.responseText);
-                            errors.errors.forEach(function (error, i) {
-                                console.log(i + '.' + error.message + ' (' + error.field + ')');
-                                var popup = document.getElementById("error_" + error.field);
-                                popup.classList.add("show");
-                                if (i == 0) {
-                                    popup.scrollIntoView();
-                                }
-                            });
-                        }
-                    });
-                    if (flag) {
-                        previousIndex = this.selectedIndex;
-                        e.target.selectedIndex = previousIndex;
-                        return false;
-                    }
+                    _slideDown(cryptoBlock);
+                    _slideUp(cardBlock);
+                    _slideUp(sepaBlock);
+                    _slideUp(paypalBlock);
+                    // _slideUp(giftCardBlock);
+                    _slideUp(googleBlock);
 
                     if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
 
@@ -1951,41 +1924,12 @@
                     // _slideUp(giftCardBlock);
                     _slideUp(googleBlock);
                 } else if (currentSelect.value === "sepa") {
-
-                    $.ajax({
-                        url: '/validate_for_sepa',
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'html',
-                        data: form,
-                        async: false,
-                        success: function (data) {
-                            _slideDown(sepaBlock);
-                            _slideUp(cryptoBlock);
-                            _slideUp(cardBlock);
-                            _slideUp(paypalBlock);
-                            // _slideUp(giftCardBlock);
-                            _slideUp(googleBlock);
-                        },
-                        error: function (data) {
-                            flag = true;
-                            var errors = JSON.parse(data.responseText);
-                            errors.errors.forEach(function (error, i) {
-                                console.log(i + '.' + error.message + ' (' + error.field + ')');
-                                var popup = document.getElementById("error_" + error.field);
-                                popup.classList.add("show");
-                                if (i == 0) {
-                                    popup.scrollIntoView();
-                                }
-                            });
-                        }
-                    });
-                    if (flag) {
-                        previousIndex = this.selectedIndex;
-                        e.target.selectedIndex = previousIndex;
-                        return false;
-                    }
-
+                    _slideDown(sepaBlock);
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    _slideUp(paypalBlock);
+                    // _slideUp(giftCardBlock);
+                    _slideUp(googleBlock);
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
                     _slideUp(cryptoBlock);
@@ -2001,40 +1945,12 @@
                     _slideUp(sepaBlock);
                     _slideUp(googleBlock);
                 } else if (currentSelect.value === "google") {
-
-                    $.ajax({
-                        url: '/validate_for_google',
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'html',
-                        data: form,
-                        async: false,
-                        success: function (data) {
-                            _slideDown(googleBlock);
-                            _slideUp(cryptoBlock);
-                            _slideUp(cardBlock);
-                            _slideUp(sepaBlock);
-                            _slideUp(paypalBlock);
-                            // _slideUp(giftCardBlock);
-                        },
-                        error: function (data) {
-                            flag = true;
-                            var errors = JSON.parse(data.responseText);
-                            errors.errors.forEach(function (error, i) {
-                                console.log(i + '.' + error.message + ' (' + error.field + ')');
-                                var popup = document.getElementById("error_" + error.field);
-                                popup.classList.add("show");
-                                if (i == 0) {
-                                    popup.scrollIntoView();
-                                }
-                            });
-                        }
-                    });
-                    if (flag) {
-                        previousIndex = this.selectedIndex;
-                        e.target.selectedIndex = previousIndex;
-                        return false;
-                    }
+                    _slideDown(googleBlock);
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    _slideUp(sepaBlock);
+                    _slideUp(paypalBlock);
+                    // _slideUp(giftCardBlock);
                 }
 
                 if (currentSelect.value != "crypto") {
@@ -2128,202 +2044,104 @@ $('.close_popup').off('click').click(function () {
     $('#insur_popup').hide();
 });
 
-// $(".card_type .select__option").click(function (e) {
-//     var _slideDown = (target, duration = 500, showmore = 0) => {
-//         if (!target.classList.contains("_slide")) {
-//             target.classList.add("_slide");
-//             target.hidden = target.hidden ? false : null;
-//             showmore ? target.style.removeProperty("height") : null;
-//             let height = target.offsetHeight;
-//             target.style.overflow = "hidden";
-//             target.style.height = showmore ? `${showmore}px` : `0px`;
-//             target.style.paddingTop = 0;
-//             target.style.paddingBottom = 0;
-//             target.style.marginTop = 0;
-//             target.style.marginBottom = 0;
-//             target.offsetHeight;
-//             target.style.transitionProperty = "height, margin, padding";
-//             target.style.transitionDuration = duration + "ms";
-//             target.style.height = height + "px";
-//             target.style.removeProperty("padding-top");
-//             target.style.removeProperty("padding-bottom");
-//             target.style.removeProperty("margin-top");
-//             target.style.removeProperty("margin-bottom");
-//             window.setTimeout((() => {
-//                 target.style.removeProperty("height");
-//                 target.style.removeProperty("overflow");
-//                 target.style.removeProperty("transition-duration");
-//                 target.style.removeProperty("transition-property");
-//                 target.classList.remove("_slide");
-//                 document.dispatchEvent(new CustomEvent("slideDownDone", {
-//                     detail: {
-//                         target
-//                     }
-//                 }));
-//             }), duration);
-//         }
-//     };
-//     var _slideUp = (target, duration = 500, showmore = 0) => {
-//         if (!target.classList.contains("_slide")) {
-//             target.classList.add("_slide");
-//             target.style.transitionProperty = "height, margin, padding";
-//             target.style.transitionDuration = duration + "ms";
-//             target.style.height = `${target.offsetHeight}px`;
-//             target.offsetHeight;
-//             target.style.overflow = "hidden";
-//             target.style.height = showmore ? `${showmore}px` : `0px`;
-//             target.style.paddingTop = 0;
-//             target.style.paddingBottom = 0;
-//             target.style.marginTop = 0;
-//             target.style.marginBottom = 0;
-//             window.setTimeout((() => {
-//                 target.hidden = !showmore ? true : false;
-//                 !showmore ? target.style.removeProperty("height") : null;
-//                 target.style.removeProperty("padding-top");
-//                 target.style.removeProperty("padding-bottom");
-//                 target.style.removeProperty("margin-top");
-//                 target.style.removeProperty("margin-bottom");
-//                 !showmore ? target.style.removeProperty("overflow") : null;
-//                 target.style.removeProperty("transition-duration");
-//                 target.style.removeProperty("transition-property");
-//                 target.classList.remove("_slide");
-//                 document.dispatchEvent(new CustomEvent("slideUpDone", {
-//                     detail: {
-//                         target
-//                     }
-//                 }));
-//             }), duration);
-//         }
-//     };
+$(".card_type .select__option").click(function (e) {
+    var type = $(this).attr('data-value');
+    var form = $('form').serialize();
 
-//     var type = $(this).attr('data-value');
-//     var form = $('form').serialize();
-//     const cardBlock = document.querySelector(".enter-info__card-content");
-//     const cryptoBlock = document.querySelector(".enter-info__crypto-content");
-//     const paypalBlock = document.querySelector(".enter-info__paypal-content");
-//     const googleBlock = document.querySelector(".enter-info__google-content");
-//     const sepaBlock = document.querySelector(".enter-info__sepa-content");
-//     flag = false;
-//     if (type == 'crypto') {
-//         // console.log(111);
-//         $.ajax({
-//             url: '/validate_for_crypt',
-//             type: 'POST',
-//             cache: false,
-//             dataType: 'html',
-//             data: form,
-//             async: false,
-//             success: function (data) {
-//                 _slideDown(cryptoBlock);
-//                 _slideUp(cardBlock);
-//                 _slideUp(sepaBlock);
-//                 _slideUp(paypalBlock);
-//                 _slideUp(googleBlock);
-//             },
-//             error: function (data) {
-//                 flag = true;
-//                 var errors = JSON.parse(data.responseText);
-//                 errors.errors.forEach(function (error, i) {
-//                     console.log(i + '.' + error.message + ' (' + error.field + ')');
-//                     var popup = document.getElementById("error_" + error.field);
-//                     popup.classList.add("show");
-//                     if (i == 0) {
-//                         popup.scrollIntoView();
-//                     }
-//                 });
-//             }
-//         });
-//         if (flag) {
-//             previousIndex = this.selectedIndex;
-//             e.target.selectedIndex = previousIndex;
-//             return false;
-//         }
-//     }
-//     else if(type == 'google')
-//     {
-//         $.ajax({
-//             url: '/validate_for_google',
-//             type: 'POST',
-//             cache: false,
-//             dataType: 'html',
-//             data: form,
-//             async: false,
-//             success: function (data) {
-//                 _slideDown(googleBlock);
-//                 _slideUp(cardBlock);
-//                 _slideUp(sepaBlock);
-//                 _slideUp(paypalBlock);
-//                 _slideUp(cryptoBlock);
-//             },
-//             error: function (data) {
-//                 flag = true;
-//                 var errors = JSON.parse(data.responseText);
-//                 errors.errors.forEach(function (error, i) {
-//                     console.log(i + '.' + error.message + ' (' + error.field + ')');
-//                     var popup = document.getElementById("error_" + error.field);
-//                     popup.classList.add("show");
-//                     if (i == 0) {
-//                         popup.scrollIntoView();
-//                     }
-//                 });
-//             }
-//         });
-//         if (flag) {
-//             previousIndex = this.selectedIndex;
-//             e.target.selectedIndex = previousIndex;
-//             return false;
-//         }
-//     }
-//     else if(type == 'sepa')
-//     {
-//         $.ajax({
-//             url: '/validate_for_sepa',
-//             type: 'POST',
-//             cache: false,
-//             dataType: 'html',
-//             data: form,
-//             async: false,
-//             success: function (data) {
-//                 _slideDown(sepaBlock);
-//                 _slideUp(cardBlock);
-//                 _slideUp(paypalBlock);
-//                 _slideUp(cryptoBlock);
-//                 _slideUp(googleBlock);
-//             },
-//             error: function (data) {
-//                 flag = true;
-//                 var errors = JSON.parse(data.responseText);
-//                 errors.errors.forEach(function (error, i) {
-//                     console.log(i + '.' + error.message + ' (' + error.field + ')');
-//                     var popup = document.getElementById("error_" + error.field);
-//                     popup.classList.add("show");
-//                     if (i == 0) {
-//                         popup.scrollIntoView();
-//                     }
-//                 });
-//             }
-//         });
-//         if (flag) {
-//             previousIndex = this.selectedIndex;
-//             e.target.selectedIndex = previousIndex;
-//             return false;
-//         }
-//     }
-//     else if (type == 'card') {
-//         _slideDown(cardBlock);
-//         _slideUp(sepaBlock);
-//         _slideUp(paypalBlock);
-//         _slideUp(cryptoBlock);
-//         _slideUp(googleBlock);
-//     }
-//     else if (type == 'paypal') {
-//         _slideDown(paypalBlock);
-//         _slideUp(sepaBlock);
-//         _slideUp(cardBlock);
-//         _slideUp(cryptoBlock);
-//         _slideUp(googleBlock);
-//     }
-// });
+    flag = false;
+    if (type == 'crypto') {
+        $.ajax({
+            url: '/validate_for_crypt',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+
+            },
+            error: function (data) {
+                flag = true;
+                var errors = JSON.parse(data.responseText);
+                errors.errors.forEach(function (error, i) {
+                    console.log(i + '.' + error.message + ' (' + error.field + ')');
+                    var popup = document.getElementById("error_" + error.field);
+                    popup.classList.add("show");
+                    if (i == 0) {
+                        popup.scrollIntoView();
+                    }
+                });
+            }
+        });
+        if (flag) {
+            previousIndex = this.selectedIndex;
+            e.target.selectedIndex = previousIndex;
+            return false;
+        }
+    }
+    else if(type == 'google')
+    {
+        $.ajax({
+            url: '/validate_for_google',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+
+            },
+            error: function (data) {
+                flag = true;
+                var errors = JSON.parse(data.responseText);
+                errors.errors.forEach(function (error, i) {
+                    console.log(i + '.' + error.message + ' (' + error.field + ')');
+                    var popup = document.getElementById("error_" + error.field);
+                    popup.classList.add("show");
+                    if (i == 0) {
+                        popup.scrollIntoView();
+                    }
+                });
+            }
+        });
+        if (flag) {
+            previousIndex = this.selectedIndex;
+            e.target.selectedIndex = previousIndex;
+            return false;
+        }
+    }
+    else if(type == 'sepa')
+    {
+        $.ajax({
+            url: '/validate_for_sepa',
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+
+            },
+            error: function (data) {
+                flag = true;
+                var errors = JSON.parse(data.responseText);
+                errors.errors.forEach(function (error, i) {
+                    console.log(i + '.' + error.message + ' (' + error.field + ')');
+                    var popup = document.getElementById("error_" + error.field);
+                    popup.classList.add("show");
+                    if (i == 0) {
+                        popup.scrollIntoView();
+                    }
+                });
+            }
+        });
+        if (flag) {
+            previousIndex = this.selectedIndex;
+            e.target.selectedIndex = previousIndex;
+            return false;
+        }
+    }
+});
 
 window.addEventListener('message', (event) => {
     if (event.origin !== 'https://r.express') {
