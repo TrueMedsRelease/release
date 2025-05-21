@@ -263,10 +263,6 @@ class CheckoutController extends Controller
 
         Cart::update_cart_total();
 
-        if (session('crypto')) {
-            $this->updateCryptoData(session('form.email'), session('crypto.currency'));
-        }
-
         return $this->checkout();
     }
 
@@ -282,10 +278,6 @@ class CheckoutController extends Controller
         session(['cart_option' => $cart_option]);
         session(['form' => $request->all()]);
 
-        if (session('crypto')) {
-            $this->updateCryptoData(session('form.email'), session('crypto.currency'));
-        }
-
         return $this->checkout();
     }
 
@@ -300,10 +292,6 @@ class CheckoutController extends Controller
 
         session(['cart_option' => $option]);
         session(['form' => $request->all()]);
-
-        if (session('crypto')) {
-            $this->updateCryptoData(session('form.email'), session('crypto.currency'));
-        }
 
         return $this->checkout();
     }
@@ -1941,46 +1929,5 @@ class CheckoutController extends Controller
         }
 
         return json_encode($response);
-    }
-
-    public function updateCryptoData($email, $currency) {
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
-
-        $data = [
-            'method'   => 'get_crypt',
-            'api_key'  => $api_key->key_data,
-            'price'    => session('total.checkout_total') * 0.85,
-            'email'    => $email,
-            'currency' => $currency,
-        ];
-
-        if (checkdnsrr('true-services.net', 'A')) {
-            try {
-                $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
-
-                if ($response->successful()) {
-                    // Обработка успешного ответа
-
-                    $response                 = json_decode($response, true);
-                    $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
-                    $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
-                    $response['currency']     = $currency;
-
-                    session(['crypto' => $response]);
-
-                    return response()->json(json_encode($response));
-                } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
-                    Log::error("Сервис вернул ошибку: " . $response->status());
-                    $responseData = ['error' => 'Service returned an error'];
-                }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
-                Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
-                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                $responseData = ['error' => 'Service unavailable'];
-            }
-        }
     }
 }

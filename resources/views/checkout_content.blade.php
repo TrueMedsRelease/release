@@ -878,7 +878,7 @@
                             </button>
                         </div>
 
-                        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US')
+                        {{-- @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US') --}}
                             <div class="enter-info__google-content" @if (session('form.payment_type', 'card') != 'google') hidden @endif>
                                 <div class="details-payment__row">
                                     <div class="details-payment__data" style="text-align: center;">
@@ -891,9 +891,9 @@
                                         style="border: 0" width="255" height="67"></iframe>
                                 </div>
                             </div>
-                        @endif
+                        {{-- @endif --}}
 
-                        @if (env('APP_SEPA_ON', 0) == 1 && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
+                        {{-- @if (env('APP_SEPA_ON', 0) == 1) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"])) --}}
                             <div class="enter-info__sepa-content"  @if (session('form.payment_type', 'card') != 'sepa') hidden @endif>
                                 <div class="content-sepa">
                                     <div id="sepa_requisites">
@@ -1029,7 +1029,7 @@
                                         width="30px" height="30px">
                                 </button>
                             </div>
-                        @endif
+                        {{-- @endif --}}
 
                         {{-- <div class="enter-info__gift-card-content" {if $rest_total !==0}hidden{/if}>
                             <button id="proccess_gift_card" name="proccess" class="enter-info__button button">
