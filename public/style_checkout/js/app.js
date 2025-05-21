@@ -1873,49 +1873,6 @@
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
                     _slideUp(googleBlock);
-
-                    if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
-
-                        let currency = $('input[name="crypt_currency"]:checked').val();
-
-                        $.ajax({
-                            url: '/crypto_info',
-                            type: 'POST',
-                            cache: false,
-                            dataType: 'html',
-                            data: { 'currency': currency, 'email': $('#email').val() },
-                            success: function (data) {
-                                // alert(data);
-                                var result = JSON.parse(JSON.parse(data));
-                                var cur = currency.split('_');
-                                cur = cur[0];
-                                var total = result.amount;
-                                // //alert(total);
-                                document.getElementById('crypto_total').innerHTML = total;
-                                // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
-                                document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
-                                document.getElementById('purse').innerHTML = result.purse;
-                                document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
-                                document.getElementById('invoiceId').value = result.invoiceId;
-                                document.getElementById('invoce_p').innerHTML = result.invoiceId;
-
-                                // sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
-
-                                // pollFunc(CheckPayment, 1800000, 5000);
-                                document.getElementById("requisites_load").hidden = true;
-                                document.getElementById("requisites").hidden = false;
-                                pollFunc(CheckPayment, 1800000, 5000);
-
-                                document.getElementById("coupon").disabled = true;
-                                document.getElementById("coupon_submit").disabled = true;
-                                document.getElementById("c_82").disabled = true;
-                                document.getElementById("c_83").disabled = true;
-                                document.getElementById("c_85").disabled = true;
-                                document.getElementById("c_86").disabled = true;
-                            }
-                        });
-                    }
-
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
                     _slideDown(cardBlock);
                     _slideUp(sepaBlock);
@@ -2050,33 +2007,76 @@ $(".card_type .select__option").click(function (e) {
 
     flag = false;
     if (type == 'crypto') {
-        $.ajax({
-            url: '/validate_for_crypt',
-            type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: form,
-            async: false,
-            success: function (data) {
 
-            },
-            error: function (data) {
-                flag = true;
-                var errors = JSON.parse(data.responseText);
-                errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
-                    var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
-                });
+        if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
+
+            let currency = $('input[name="crypt_currency"]:checked').val();
+
+            $.ajax({
+                url: '/crypto_info',
+                type: 'POST',
+                cache: false,
+                dataType: 'html',
+                data: { 'currency': currency, 'email': $('#email').val() },
+                success: function (data) {
+                    // alert(data);
+                    var result = JSON.parse(JSON.parse(data));
+                    var cur = currency.split('_');
+                    cur = cur[0];
+                    var total = result.amount;
+                    // //alert(total);
+                    document.getElementById('crypto_total').innerHTML = total;
+                    // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
+                    document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
+                    document.getElementById('purse').innerHTML = result.purse;
+                    document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
+                    document.getElementById('invoiceId').value = result.invoiceId;
+                    document.getElementById('invoce_p').innerHTML = result.invoiceId;
+
+                    // sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
+
+                    // pollFunc(CheckPayment, 1800000, 5000);
+                    document.getElementById("requisites_load").hidden = true;
+                    document.getElementById("requisites").hidden = false;
+                    pollFunc(CheckPayment, 1800000, 5000);
+
+                    document.getElementById("coupon").disabled = true;
+                    document.getElementById("coupon_submit").disabled = true;
+                    document.getElementById("c_82").disabled = true;
+                    document.getElementById("c_83").disabled = true;
+                    document.getElementById("c_85").disabled = true;
+                    document.getElementById("c_86").disabled = true;
+                }
+            });
+        } else {
+            $.ajax({
+                url: '/validate_for_crypt',
+                type: 'POST',
+                cache: false,
+                dataType: 'html',
+                data: form,
+                async: false,
+                success: function (data) {
+
+                },
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    errors.errors.forEach(function (error, i) {
+                        console.log(i + '.' + error.message + ' (' + error.field + ')');
+                        var popup = document.getElementById("error_" + error.field);
+                        popup.classList.add("show");
+                        if (i == 0) {
+                            popup.scrollIntoView();
+                        }
+                    });
+                }
+            });
+            if (flag) {
+                previousIndex = this.selectedIndex;
+                e.target.selectedIndex = previousIndex;
+                return false;
             }
-        });
-        if (flag) {
-            previousIndex = this.selectedIndex;
-            e.target.selectedIndex = previousIndex;
-            return false;
         }
     }
     else if(type == 'google')
