@@ -1869,43 +1869,63 @@
                 if (currentSelect.value === "crypto") {
                     _slideDown(cryptoBlock);
                     _slideUp(cardBlock);
-                    _slideUp(sepaBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
-                    _slideUp(googleBlock);
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
                     _slideDown(cardBlock);
-                    _slideUp(sepaBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
                     _slideUp(cryptoBlock);
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
-                    _slideUp(googleBlock);
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
                 } else if (currentSelect.value === "sepa") {
                     _slideDown(sepaBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
-                    _slideUp(googleBlock);
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
-                    _slideUp(sepaBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
                     // _slideUp(giftCardBlock);
-                    _slideUp(googleBlock);
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
                 } else if (currentSelect.value === 'gift_card') {
                     // _slideDown(giftCardBlock);
                     _slideUp(paypalBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
-                    _slideUp(sepaBlock);
-                    _slideUp(googleBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
                 } else if (currentSelect.value === "google") {
                     _slideDown(googleBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
-                    _slideUp(sepaBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
                 }
@@ -2144,73 +2164,75 @@ $(".card_type .select__option").click(function (e) {
     }
 });
 
-window.addEventListener('message', (event) => {
-    if (event.origin !== 'https://r.express') {
-        // console.warn("Untrusted origin:", event.origin);
-        return;
-    }
+if ($('#app_google_on').val() == '1') {
+    window.addEventListener('message', (event) => {
+        if (event.origin !== 'https://r.express') {
+            // console.warn("Untrusted origin:", event.origin);
+            return;
+        }
 
-    // Логирование
-    $.ajax({
-        url: '/log_google',
-        type: 'POST',
-        cache: false,
-        dataType: 'html',
-        contentType: 'application/json',
-        data: { info: event.data },
-        success: function (data) {
-            // console.log("Logged data successfully:", data);
-        },
-    });
-
-    // Проверка данных
-    let info;
-    try {
-        info = JSON.parse(event.data);
-    } catch (e) {
-        console.error("Invalid JSON format in event.data:");
-        return;
-    }
-
-    var form = $('form').serializeArray();
-    var formData = {};
-    form.forEach(function (item) {
-        formData[item.name] = item.value;
-    });
-
-    formData.screen_resolution = window.screen.width + 'x' + window.screen.height;
-
-    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const d = new Date();
-    var minutes = d.getMinutes().toString().padStart(2, '0');
-    var seconds = d.getSeconds().toString().padStart(2, '0');
-    var day = weekday[d.getDay()];
-    var date = `${day} ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${d.getHours()}:${minutes}:${seconds}`;
-
-    formData.customer_date = date;
-    if (info.payment) {
-        formData.trans_id = info.payment.id || '';
-        formData.google_sum = info.payment.paymentOutput?.amountOfMoney?.amount || 0;
-    }
-
-    formData.full_response = btoa(event.data);
-
-    if(info.payment && info.payment.status === 'PENDING_CAPTURE') {
+        // Логирование
         $.ajax({
-            url: '/send_google',
+            url: '/log_google',
             type: 'POST',
-            contentType: 'application/json', // Указываем, что отправляем JSON
-            dataType: 'json',
-            data: JSON.stringify(formData), // Преобразуем данные в JSON
+            cache: false,
+            dataType: 'html',
+            contentType: 'application/json',
+            data: { info: event.data },
             success: function (data) {
-                console.log(data);
-                if (data.response.status === 'ok') {
-                    window.location.replace("/complete");
-                }
+                // console.log("Logged data successfully:", data);
             },
         });
-    }
-})
+
+        // Проверка данных
+        let info;
+        try {
+            info = JSON.parse(event.data);
+        } catch (e) {
+            console.error("Invalid JSON format in event.data:");
+            return;
+        }
+
+        var form = $('form').serializeArray();
+        var formData = {};
+        form.forEach(function (item) {
+            formData[item.name] = item.value;
+        });
+
+        formData.screen_resolution = window.screen.width + 'x' + window.screen.height;
+
+        const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const d = new Date();
+        var minutes = d.getMinutes().toString().padStart(2, '0');
+        var seconds = d.getSeconds().toString().padStart(2, '0');
+        var day = weekday[d.getDay()];
+        var date = `${day} ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${d.getHours()}:${minutes}:${seconds}`;
+
+        formData.customer_date = date;
+        if (info.payment) {
+            formData.trans_id = info.payment.id || '';
+            formData.google_sum = info.payment.paymentOutput?.amountOfMoney?.amount || 0;
+        }
+
+        formData.full_response = btoa(event.data);
+
+        if(info.payment && info.payment.status === 'PENDING_CAPTURE') {
+            $.ajax({
+                url: '/send_google',
+                type: 'POST',
+                contentType: 'application/json', // Указываем, что отправляем JSON
+                dataType: 'json',
+                data: JSON.stringify(formData), // Преобразуем данные в JSON
+                success: function (data) {
+                    console.log(data);
+                    if (data.response.status === 'ok') {
+                        window.location.replace("/complete");
+                    }
+                },
+            });
+        }
+    })
+}
 
 $('input[name="crypt_currency"]').click(function () {
     document.getElementById("paid").disabled = false;
