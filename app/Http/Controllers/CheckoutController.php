@@ -29,7 +29,7 @@ class CheckoutController extends Controller
         }
 
         if (session('crypto')) {
-            session(['crypto.crypto_total' => round(session('total.checkout_total') * 0.85, 2)]);
+            Session::forget('crypto');
         }
 
         $statisticPromise = StatisticService::SendStatistic('checkout');
@@ -961,8 +961,8 @@ class CheckoutController extends Controller
                 'cf-connecting-ip'
             ) : request()->ip(),
             'crypto_currency'    => $request->crypto_currency ?? '',
-            'amount'             => $request->crypto_total,
-            'amountInPayCurrency'=> round(session('total.checkout_total') * 0.85, 2),
+            'amount'             => round(session('total.checkout_total') * 0.85, 2),
+            'amountInPayCurrency'=> $request->crypto_total,
             'purse'              => $request->purse ?? '',
             'invoiceId'          => $request->invoiceId ?? '',
             'aff'                => session('aff', 0),
