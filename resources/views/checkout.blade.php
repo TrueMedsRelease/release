@@ -49,6 +49,46 @@
                 }
             });
         });
+
+        const PollingManager = (function () {
+            let currentTimer = null;
+            let currentPollId = 0;
+
+            function startPolling(fn, duration, interval) {
+                if (currentTimer) {
+                    clearTimeout(currentTimer);
+                    currentTimer = null;
+                }
+
+                const pollId = ++currentPollId;
+                const startTime = Date.now();
+
+                function poll() {
+                    if (pollId !== currentPollId) return;
+
+                    const elapsed = Date.now() - startTime;
+                    if (elapsed >= duration) return;
+
+                    fn();
+                    currentTimer = setTimeout(poll, interval);
+                }
+
+                poll();
+            }
+
+            function stopAll() {
+                currentPollId++; // Инвалидируем все текущие polling
+                if (currentTimer) {
+                    clearTimeout(currentTimer);
+                    currentTimer = null;
+                }
+            }
+
+            return {
+                startPolling,
+                stopAll
+            };
+        })();
     </script>
     <div id="insur_popup">
 		<div class="popup_block_insur">

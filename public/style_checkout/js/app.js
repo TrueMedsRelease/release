@@ -2033,12 +2033,9 @@ $(".card_type .select__option").click(function (e) {
                     document.getElementById('invoiceId').value = result.invoiceId;
                     document.getElementById('invoce_p').innerHTML = result.invoiceId;
 
-                    // sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
-
-                    // pollFunc(CheckPayment, 1800000, 5000);
                     document.getElementById("requisites_load").hidden = true;
                     document.getElementById("requisites").hidden = false;
-                    pollFunc(CheckPayment, 1800000, 5000);
+                    PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
                     document.getElementById("coupon").disabled = true;
                     document.getElementById("coupon_submit").disabled = true;
@@ -2140,6 +2137,10 @@ $(".card_type .select__option").click(function (e) {
             e.target.selectedIndex = previousIndex;
             return false;
         }
+    }
+
+    if (type != 'crypto') {
+        PollingManager.stopAll();
     }
 });
 
@@ -2248,10 +2249,9 @@ $('input[name="crypt_currency"]').click(function () {
 
                 sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
 
-                // pollFunc(CheckPayment, 1800000, 5000);
                 document.getElementById("requisites_load").hidden = true;
                 document.getElementById("requisites").hidden = false;
-                pollFunc(CheckPayment, 1800000, 5000);
+                PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
                 document.getElementById("coupon").disabled = true;
                 document.getElementById("coupon_submit").disabled = true;
@@ -2430,18 +2430,18 @@ function Coupon() {
     }
 }
 
-function pollFunc(fn, timeout, interval) {
-    var startTime = (new Date()).getTime();
-    interval = interval || 1000,
-        canPoll = true;
+// function pollFunc(fn, timeout, interval) {
+//     var startTime = (new Date()).getTime();
+//     interval = interval || 1000,
+//         canPoll = true;
 
-    (function p() {
-        canPoll = ((new Date).getTime() - startTime) <= timeout;
-        if (!fn() && canPoll) { // ensures the function exucutes
-            setTimeout(p, interval);
-        }
-    })();
-}
+//     (function p() {
+//         canPoll = ((new Date).getTime() - startTime) <= timeout;
+//         if (!fn() && canPoll) { // ensures the function exucutes
+//             setTimeout(p, interval);
+//         }
+//     })();
+// }
 
 function CheckPayment()
 {
@@ -2843,40 +2843,40 @@ $("#error_cvc_2").click(function () {
     popup.classList.toggle("show");
 });
 
-$( document ).ready(function() {
-    if (document.getElementById('requisites').getAttribute('hidden') == null) {
-        pollFunc(CheckPayment, 1800000, 5000);
-        var countDownDate = new Date().getTime() + 1800000;
-        clearInterval(window.countdownfunction);
+// $( document ).ready(function() {
+//     if (document.getElementById('requisites').getAttribute('hidden') == null) {
+//         PollingManager.startPolling(CheckPayment, 1800000, 5000);
+//         var countDownDate = new Date().getTime() + 1800000;
+//         clearInterval(window.countdownfunction);
 
-        // Update the count down every 1 second
-        window.countdownfunction = setInterval(function () {
-            //alert('aaaa');
+//         // Update the count down every 1 second
+//         window.countdownfunction = setInterval(function () {
+//             //alert('aaaa');
 
-            // Get todays date and time
-            var now = new Date().getTime();
+//             // Get todays date and time
+//             var now = new Date().getTime();
 
-            // Find the distance between now an the count down date
-            var distance = countDownDate - now;
+//             // Find the distance between now an the count down date
+//             var distance = countDownDate - now;
 
-            // Time calculations for days, hours, minutes and seconds
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//             // Time calculations for days, hours, minutes and seconds
+//             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Output the result in an element with id="demo"
-            if (seconds < 10) {
-                seconds = '0' + seconds;
-            }
-            document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+//             // Output the result in an element with id="demo"
+//             if (seconds < 10) {
+//                 seconds = '0' + seconds;
+//             }
+//             document.getElementById("timer").innerHTML = minutes + ":" + seconds;
 
-            // If the count down is over, write some text
-            if (distance < 0) {
-                clearInterval(countdownfunction);
-                document.getElementById("timer").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-      }
-});
+//             // If the count down is over, write some text
+//             if (distance < 0) {
+//                 clearInterval(countdownfunction);
+//                 document.getElementById("timer").innerHTML = "EXPIRED";
+//             }
+//         }, 1000);
+//       }
+// });
 
 
 $(document).ready(function () {
@@ -2915,3 +2915,4 @@ $(document).ready(function () {
         }
     });
 });
+

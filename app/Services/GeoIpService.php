@@ -159,23 +159,32 @@ class GeoIpService
         {
             $location = $reader->city($ip);
 
-            // $country_info = CountryInfoCache::query()
-            //     ->where('country_iso2', '=', $location->country->isoCode ?? null)
-            //     ->get();
+            $country_info = CountryInfoCache::query()
+                ->where('country_iso2', '=', $location->country->isoCode ?? null)
+                ->get();
 
-            // if($country_info->isEmpty())
-            // {
-            //     $ip = '89.187.179.179';
-            //     $location = $reader->city($ip);
-            // }
+            if($country_info->isEmpty())
+            {
+                // $ip = '89.187.179.179';
+                // $location = $reader->city($ip);
 
-            $info = [
-                'country' => $location->country->isoCode ?? 'US',
-                'country_name' => strtolower($location->country->names['en']) ?? 'united states',
-                'state' => $location->mostSpecificSubdivision->isoCode ?? '',
-                'city' => $location->city->name ?? '',
-                'postal' => $location->postal->code ?? '',
-            ];
+                $info = [
+                    'country' => 'US',
+                    'country_name' => 'united states',
+                    'state' => '',
+                    'city' => '',
+                    'postal' => '',
+                ];
+
+            } else {
+                $info = [
+                    'country' => $location->country->isoCode ?? 'US',
+                    'country_name' => strtolower($location->country->names['en']) ?? 'united states',
+                    'state' => $location->mostSpecificSubdivision->isoCode ?? '',
+                    'city' => $location->city->name ?? '',
+                    'postal' => $location->postal->code ?? '',
+                ];
+            }
         }
         catch(\Exception $e)
         {
