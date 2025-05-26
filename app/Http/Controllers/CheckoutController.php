@@ -843,14 +843,20 @@ class CheckoutController extends Controller
                 if ($response->successful()) {
                     // Обработка успешного ответа
 
-                    $response                 = json_decode($response, true);
-                    $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
-                    $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
-                    $response['currency']     = $request->currency;
+                    $response = json_decode($response, true);
 
-                    session(['crypto' => $response]);
+                    if ($response['status'] == 'error') {
+                        return response()->json(json_encode(['status' => 'error', 'text' => 'Service unavailable']));
+                    } else {
+                        $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
+                        $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
+                        $response['currency']     = $request->currency;
 
-                    return response()->json(json_encode($response));
+                        session(['crypto' => $response]);
+
+                        return response()->json(json_encode($response));
+                    }
+
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());

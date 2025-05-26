@@ -2257,30 +2257,36 @@ $('input[name="crypt_currency"]').click(function () {
             success: function (data) {
                 // alert(data);
                 var result = JSON.parse(JSON.parse(data));
-                var cur = currency.split('_');
-                cur = cur[0];
-                var total = result.amount;
-                // //alert(total);
-                document.getElementById('crypto_total').innerHTML = total;
-                // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
-                document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
-                document.getElementById('purse').innerHTML = result.purse;
-                document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
-                document.getElementById('invoiceId').value = result.invoiceId;
-                document.getElementById('invoce_p').innerHTML = result.invoiceId;
 
-                sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
+                if (result.status == 'error') {
+                    alert(result.text);
+                    document.getElementById("requisites_load").hidden = true;
+                } else {
+                    var cur = currency.split('_');
+                    cur = cur[0];
+                    var total = result.amount;
+                    // //alert(total);
+                    document.getElementById('crypto_total').innerHTML = total;
+                    // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
+                    document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
+                    document.getElementById('purse').innerHTML = result.purse;
+                    document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
+                    document.getElementById('invoiceId').value = result.invoiceId;
+                    document.getElementById('invoce_p').innerHTML = result.invoiceId;
 
-                document.getElementById("requisites_load").hidden = true;
-                document.getElementById("requisites").hidden = false;
-                PollingManager.startPolling(CheckPayment, 1800000, 5000);
+                    sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
 
-                document.getElementById("coupon").disabled = true;
-                document.getElementById("coupon_submit").disabled = true;
-                document.getElementById("c_82").disabled = true;
-                document.getElementById("c_83").disabled = true;
-                document.getElementById("c_85").disabled = true;
-                document.getElementById("c_86").disabled = true;
+                    document.getElementById("requisites_load").hidden = true;
+                    document.getElementById("requisites").hidden = false;
+                    PollingManager.startPolling(CheckPayment, 1800000, 5000);
+
+                    document.getElementById("coupon").disabled = true;
+                    document.getElementById("coupon_submit").disabled = true;
+                    document.getElementById("c_82").disabled = true;
+                    document.getElementById("c_83").disabled = true;
+                    document.getElementById("c_85").disabled = true;
+                    document.getElementById("c_86").disabled = true;
+                }
             }
         });
 
