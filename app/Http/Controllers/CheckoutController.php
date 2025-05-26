@@ -845,7 +845,7 @@ class CheckoutController extends Controller
 
                     $response = json_decode($response, true);
 
-                    if ($response['status'] == 'error') {
+                    if (isset($response['status']) && $response['status'] == 'error') {
                         return response()->json(json_encode(['status' => 'error', 'text' => 'Service unavailable']));
                     } else {
                         $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
