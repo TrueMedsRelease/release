@@ -6,6 +6,8 @@
         <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big_v2.png") }}">
     </div> --}}
     <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
+    <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
+    <input type="hidden" id="app_sepa_on" @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"])) value="1" @else value="0" @endif>
     <div class="header__phones-top top-phones-header">
         <div class="top-phones-header__container header__container">
             <div class="top-phones-header__items">
@@ -808,7 +810,7 @@
                                                         <span class="details-payment__old-price"
                                                             id="crypto_price"> {{ $Currency::Convert(session('total.checkout_total', 0)) }} </span>
                                                         <span class="details-payment__price"
-                                                            id="crypto_discount_price">{{ session('crypto.crypto_total') }}</span>
+                                                            id="crypto_discount_price">{{ $Currency::Convert(session('crypto.crypto_total')) }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -867,6 +869,7 @@
                                     width="30px" height="30px">
                             </button>
                         </div>
+
                         <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal') hidden @endif>
                             <div class="details-payment__row">
                                 <div class="details-payment__data" style="text-align: center;">
@@ -878,7 +881,7 @@
                             </button>
                         </div>
 
-                        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US')
+                        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US' && $service_enable)
                             <div class="enter-info__google-content" @if (session('form.payment_type', 'card') != 'google') hidden @endif>
                                 <div class="details-payment__row">
                                     <div class="details-payment__data" style="text-align: center;">

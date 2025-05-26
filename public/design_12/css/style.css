@@ -3529,7 +3529,7 @@ body.has-scroll{
   z-index:0;
   align-self:center;
   aspect-ratio:1;
-  width:12rem;
+  /* width:12rem; */
   margin:0 auto;
   display: flex;
   justify-content: center;
