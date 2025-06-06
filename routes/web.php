@@ -25,175 +25,96 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
-if(!session()->has('location'))
-{
-    session(['location' => GeoIpService::GetInfoByIp()]);
-
-    if(!empty(session('location.country')))
-    {
-        $curr = Currency::GetCurrencyByCountry(session('location.country'));
-
-        $coef = Currency::GetCoef($curr);
-        session(['currency' => $curr]);
-        session(['currency_c' => $coef]);
-
-        $lang = Language::GetLanguageByCountry(session('location.country'));
-        App::setLocale($lang);
-    }
-}
-
-// if(!session()->has('currency'))
+// if(!session()->has('location'))
 // {
-//     $currency = config('app.currency');
-//     $coef = Currency::GetCoef($currency);
-//     session(['currency' => $currency]);
-//     session(['currency_c' => $coef]);
-// }
+//     session(['location' => GeoIpService::GetInfoByIp()]);
 
-// $currencies = Currency::GetAllCurrency();
-
-// if (count($currencies) > 1) {
-//     $currency = config('app.currency');
-//     $coef = Currency::GetCoef($currency);
-
-//     session(['currency' => $currency]);
-//     session(['currency_c' => $coef]);
-// } else {
-//     if (count($currencies) == 1) {
-//         $currency_code = $currencies[0]['code'];
-//         $currenct_coef = Currency::GetCoef($currency_code);
-
-//         session(['currency' => $currency_code]);
-//         session(['currency_c' => $currenct_coef]);
-
-//     } else {
-//         $currency = config('app.currency');
-//         $coef = Currency::GetCoef($currency);
-
-//         session(['currency' => $currency]);
-//         session(['currency_c' => $coef]);
-//     }
-// }
-
-// $languages = Language::GetAllLanuages();
-
-// if (count($languages) > 1) {
-//     $cur_language_code = App::currentLocale();
-//     $cur_language_id = Language::$languages[App::currentLocale()];
-// } else {
-//     if (count($languages) == 1) {
-//         $landuage_code = $languages[0]['code'];
-//         $language_id = $languages[0]['id'];
-
-//         if ($landuage_code == App::currentLocale()) {
-//             $cur_language_code = App::currentLocale();
-//             $cur_language_id = Language::$languages[App::currentLocale()];
-//         } else {
-//             $cur_language_code = config('app.language');
-//             $cur_language_id = $language_id;
-//         }
-//     } else {
-//         $cur_language_id = 1;
-//         $cur_language_code = config('app.language');
-//     }
-// }
-
-// App::setLocale($cur_language_code);
-
-if(!session()->has('referer'))
-{
-    if(!empty($_SERVER['HTTP_REFERER']))
-    {
-        session(['referer' => $_SERVER['HTTP_REFERER']]);
-    }
-    else
-    {
-        session(['referer' => '']);
-    }
-}
-
-if(!session()->has('aff'))
-{
-    if(!empty(request('aff')))
-    {
-        session(['aff' => request('aff')]);
-    }
-    else
-    {
-        session(['aff' => config('app.aff')]);
-    }
-}
-
-if(!session()->has('saff'))
-{
-    if(!empty(request('saff')))
-    {
-        session(['saff' => request('saff')]);
-    }
-}
-
-if(!session()->has('keyword'))
-{
-    if(!empty(request('keyword')))
-    {
-        session(['keyword' => request('keyword')]);
-    }
-}
-
-if(!session()->has('refc'))
-{
-    if(!empty(request('refc')))
-    {
-        session(['refc' => request('refc')]);
-    }
-}
-
-if(!session()->has('coupon_get'))
-{
-    if(!empty(request('coupon')))
-    {
-        session(['coupon_get' => request('coupon')]);
-    }
-}
-
-if(!empty(request('lang')))
-{
-    session()->put('locale',request('lang'));
-}
-
-if(!empty(request('curr')))
-{
-    $coef = Currency::GetCoef(request('curr'));
-    session(['currency' => request('curr')]);
-    session(['currency_c' => $coef]);;
-}
-
-if(!empty(request('design')))
-{
-    if (in_array(request('design'), [1,2,3,4,5,7,8,9,10,11,12])) {
-        session(['design' => 'design_' . request('design')]);
-    }
-}
-
-
-
-// if (isset($_GET['design']) || isset($_GET['lang']) || isset($_GET['curr'])) {
-//     if ($_GET['design'] || $_GET['lang'] || $_GET['curr']) {
-//         $design = $_GET['design'] ? $_GET['design'] : config('app.design');
-//         $lang = $_GET['lang'] ? $_GET['lang'] : App::currentLocale();
-//         $curr = $_GET['curr'] ? $_GET['curr'] : config('app.currency');
-
-//         if (in_array($design, [1,2,3,4,5,6,7,8,9,10])) {
-//             session(['design' => 'design_' . $design]);
-//         }
-
-//         session(['locale' => $lang]);
+//     if(!empty(session('location.country')))
+//     {
+//         $curr = Currency::GetCurrencyByCountry(session('location.country'));
 
 //         $coef = Currency::GetCoef($curr);
 //         session(['currency' => $curr]);
 //         session(['currency_c' => $coef]);
 
-//         Redirect::refresh();
+//         $lang = Language::GetLanguageByCountry(session('location.country'));
+//         App::setLocale($lang);
+//     }
+// }
+
+// if(!session()->has('referer'))
+// {
+//     if(!empty($_SERVER['HTTP_REFERER']))
+//     {
+//         session(['referer' => $_SERVER['HTTP_REFERER']]);
+//     }
+//     else
+//     {
+//         session(['referer' => '']);
+//     }
+// }
+
+// if(!session()->has('aff'))
+// {
+//     if(!empty(request('aff')))
+//     {
+//         session(['aff' => request('aff')]);
+//     }
+//     else
+//     {
+//         session(['aff' => config('app.aff')]);
+//     }
+// }
+
+// if(!session()->has('saff'))
+// {
+//     if(!empty(request('saff')))
+//     {
+//         session(['saff' => request('saff')]);
+//     }
+// }
+
+// if(!session()->has('keyword'))
+// {
+//     if(!empty(request('keyword')))
+//     {
+//         session(['keyword' => request('keyword')]);
+//     }
+// }
+
+// if(!session()->has('refc'))
+// {
+//     if(!empty(request('refc')))
+//     {
+//         session(['refc' => request('refc')]);
+//     }
+// }
+
+// if(!session()->has('coupon_get'))
+// {
+//     if(!empty(request('coupon')))
+//     {
+//         session(['coupon_get' => request('coupon')]);
+//     }
+// }
+
+// if(!empty(request('lang')))
+// {
+//     session(['locale' => request('lang')]);
+// }
+
+// if(!empty(request('curr')))
+// {
+//     dump(request('curr'));
+//     $coef = Currency::GetCoef(request('curr'));
+//     session(['currency' => request('curr')]);
+//     session(['currency_c' => $coef]);;
+// }
+
+// if(!empty(request('design')))
+// {
+//     if (in_array(request('design'), [1,2,3,4,5,7,8,9,10,11,12])) {
+//         session(['design' => 'design_' . request('design')]);
 //     }
 // }
 
