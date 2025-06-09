@@ -126,7 +126,7 @@ class GeoIpService
         $pathToGeoFileOutside = '/var/www/GeoIP2-City.mmdb';
         $pathToGeoFileInside = public_path() . '/GeoIp/GeoIP2-City.mmdb';
 
-        if (@file_exists($pathToGeoFileOutside)) {
+        if (file_exists($pathToGeoFileOutside)) {
             $reader = new Reader($pathToGeoFileOutside);
         } elseif (file_exists($pathToGeoFileInside)) {
             $reader = new Reader($pathToGeoFileInside);
