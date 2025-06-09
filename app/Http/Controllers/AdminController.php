@@ -13,6 +13,7 @@ use App\Models\Language;
 use App\Models\Currency;
 use App\Models\Category;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -226,6 +227,8 @@ class AdminController extends Controller
         if (count($error) > 0) {
             return response()->json(array('status' => 'error', 'text' => $error['text']));
         } else {
+
+            Cache::flush();
             return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
         }
     }
@@ -292,6 +295,8 @@ class AdminController extends Controller
         if (count($error) > 0) {
             return response()->json(array('status' => 'error', 'text' => $error['text']));
         } else {
+
+            Cache::flush();
             return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
         }
     }
@@ -340,6 +345,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -370,6 +377,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -430,6 +439,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -490,6 +501,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -501,6 +514,8 @@ class AdminController extends Controller
 
         $md5_pw = md5($new_password);
         DB::update("UPDATE user SET md5_pw = '{$md5_pw}' WHERE `login` = '$user_login'");
+
+        Cache::flush();
 
         return response()->json(['status' => 'success', 'url' => route('admin.main_properties')]);
     }
@@ -542,6 +557,8 @@ class AdminController extends Controller
             'all_products_info' => $all_products_info,
             'product_url' => []
         ])->render();
+
+        Cache::flush();
 
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
     }
@@ -610,6 +627,7 @@ class AdminController extends Controller
                 'description' => $description
             ]);
 
+        Cache::flush();
 
         // DB::update('UPDATE page_properties SET title = "' . $title . '", keyword = "' . $keyword . '", description = "' . $description . '" WHERE page = "' . $page . '" AND language = ' . $language_id);
 
@@ -670,6 +688,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -702,6 +722,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -780,6 +802,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -815,6 +839,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -879,6 +905,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -942,6 +970,8 @@ class AdminController extends Controller
                 'status' => 'success',
                 'html' => "$returnHTML"
             ];
+
+            Cache::flush();
         }
 
         return response()->json($response);
@@ -1093,6 +1123,8 @@ class AdminController extends Controller
         if (count($error) > 0) {
             return response()->json(array('status' => 'error', 'text' => $error['text']));
         } else {
+
+            Cache::flush();
             return response()->json(array('status' => 'success', 'url' => route('admin.products')));
         }
     }
@@ -1173,6 +1205,8 @@ class AdminController extends Controller
         if (count($error) > 0) {
             return response()->json(array('status' => 'error', 'text' => $error['text']));
         } else {
+
+            Cache::flush();
             return response()->json(array('status' => 'success', 'url' => route('admin.admin_languages')));
         }
     }
@@ -1279,6 +1313,8 @@ class AdminController extends Controller
             session()->forget('currency');
             session()->forget('currency_c');
 
+            Cache::flush();
+
             return response()->json(array('status' => 'success', 'url' => route('admin.admin_currencies')));
         }
     }
@@ -1321,6 +1357,8 @@ class AdminController extends Controller
         // $this->envUpdate('APP_SECRET_ON', $default_secret);
         // $this->envUpdate('APP_PAYPAL_ON', $paypal_setting);
 
+        Cache::flush();
+
         return response()->json(array('status' => 'success', 'url' => route('admin.admin_checkout')));
     }
 
@@ -1328,6 +1366,8 @@ class AdminController extends Controller
         $popup_status = $request->popup_status;
 
         $this->envUpdate('SUBSCRIBE_POPUP_STATUS', $popup_status);
+
+        Cache::flush();
 
         return response()->json(array('status' => 'success', 'url' => route('admin.index')));
     }
