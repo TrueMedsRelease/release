@@ -2625,7 +2625,17 @@ input[type=number] {
 @media only screen and (max-width: 640px) {
     .package-box .package-table .body .item .col:nth-child(3) {
         width: calc(100% / 2 - 150px);
-        min-width: 95px; } }
+        min-width: 95px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .package-box .package-table .body .item .col:nth-child(3) span {
+        display: flex;
+        flex-direction: column;
+    }
+
+    }
       @media only screen and (max-width: 369px) {
         .package-box .package-table .body .item .col {
           width: calc((100% - 55px) / 3) !important;
