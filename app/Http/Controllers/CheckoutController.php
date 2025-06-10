@@ -935,6 +935,9 @@ class CheckoutController extends Controller
 
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
+        $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+        $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
+
         $data = [
             'method'             => 'save_order_data',
             'api_key'            => $api_key->key_data,
@@ -945,27 +948,17 @@ class CheckoutController extends Controller
             'firstname'          => e($form['firstname']),
             'lastname'           => e($form['lastname']),
             'billing_country'    => e($form['billing_country']),
-            'billing_state'      => e($form['billing_state']),
+            'billing_state'      => $billing_state,
             'billing_city'       => e($form['billing_city']),
             'billing_address'    => e($form['billing_address']),
             'billing_zip'        => e($form['billing_zip']),
-            'shipping_country'   => !empty($form['address_match']) ? e($form['shipping_country']) : e(
-                $form['billing_country']
-            ),
-            'shipping_state'     => !empty($form['address_match']) ? e($form['shipping_state']) : e(
-                $form['billing_state']
-            ),
-            'shipping_city'      => !empty($form['address_match']) ? e($form['shipping_city']) : e(
-                $form['billing_city']
-            ),
-            'shipping_address'   => !empty($form['address_match']) ? e($form['shipping_address']) : e(
-                $form['billing_address']
-            ),
+            'shipping_country'   => !empty($form['address_match']) ? e($form['shipping_country']) : e($form['billing_country']),
+            'shipping_state'     => !empty($form['address_match']) ? $shipping_state : $billing_state,
+            'shipping_city'      => !empty($form['address_match']) ? e($form['shipping_city']) : e($form['billing_city']),
+            'shipping_address'   => !empty($form['address_match']) ? e($form['shipping_address']) : e($form['billing_address']),
             'shipping_zip'       => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
             'payment_type'       => 'crypto',
-            'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
-                'cf-connecting-ip'
-            ) : request()->ip(),
+            'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
             'crypto_currency'    => $request->crypto_currency ?? '',
             'amount'             => round(session('total.checkout_total') * 0.85, 2),
             'amountInPayCurrency'=> $request->crypto_total,
@@ -981,7 +974,7 @@ class CheckoutController extends Controller
             'products'           => $products_str,
             'saff'               => session('saff', ''),
             'language'           => App::currentLocale(),
-            'currency'           => session('currency'),
+            'currency'           => session('currency', 'usd'),
             'user_agent'         => 'user_agent=' . $request->userAgent(),
             'fingerprint'        => '',
             'product_total'      => session('total.product_total'),
