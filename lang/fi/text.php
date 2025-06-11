@@ -444,7 +444,7 @@ return [
     "checkout_total" => "Kaikki yhteensä",
     "checkout_only" => "Vain",
     "checkout_savings" => "Säästöjä",
-    "checkout_timer" => "Tilauksesi on varattu. Maksa tilaus ennen ajan loppua.",
+    "checkout_timer" => "Tilauksesi on varattu. Suorita maksu määräajan kuluessa.",
     "checkout_info" => "Yhteystiedot",
     "checkout_phone" => "Kännykkä:",
     "checkout_alt_phone" => "Vaihtoehtoinen matkapuhelin:",

@@ -523,7 +523,7 @@ return [
     "checkout_total" => "Celkový",
     "checkout_only" => "Pouze",
     "checkout_savings" => "Úspory",
-    "checkout_timer" => "Vaše objednávka je rezervována. Zaplaťte za objednávku před koncem času.",
+    "checkout_timer" => "Vaše objednávka je rezervována. Dokončete platbu v časovém limitu.",
     "checkout_info" => "Kontaktní informace",
     "checkout_phone" => "Mobilní telefon:",
     "checkout_alt_phone" => "Alternativní mobilní telefon:",

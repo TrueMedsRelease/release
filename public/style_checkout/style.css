@@ -1329,15 +1329,15 @@ textarea.input {
 
 .your-order__package {
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 140px;
-          flex: 0 0 140px;
+      -ms-flex: 0 0 110px;
+          flex: 0 0 110px;
   margin-right: 5px;
 }
 
 .your-order__qty {
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 25px;
-          flex: 0 0 25px;
+      -ms-flex: 1 0 25px;
+          flex: 1 0 25px;
   margin-right: 10px;
   text-align: center;
 }
@@ -1352,8 +1352,8 @@ textarea.input {
 
 .your-order__price {
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 50px;
-          flex: 0 0 50px;
+      -ms-flex: 0 0 35px;
+          flex: 0 0 35px;
   font-weight: 700;
   color: var(--green);
   text-align: center;
@@ -2445,8 +2445,8 @@ textarea.input {
 
   .your-order__package {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 43.75%;
-            flex: 0 0 43.75%;
+        -ms-flex: 0 0 29.75%;
+            flex: 0 0 29.75%;
   }
 
   .your-order__qty {

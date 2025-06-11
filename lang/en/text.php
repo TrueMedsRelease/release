@@ -490,7 +490,7 @@ return [
     "checkout_total" => "Total",
     "checkout_only" => "Only",
     "checkout_savings" => "Savings",
-    "checkout_timer" => "Your order is reserved. Pay for order before the end of time.",
+    "checkout_timer" => "Your order is reserved. Complete payment within the time limit.",
     "checkout_info" => "Contact information",
     "checkout_phone" => "Mobile phone:",
     "checkout_alt_phone" => "Alternative mobile phone:",

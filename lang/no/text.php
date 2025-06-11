@@ -437,7 +437,7 @@ return [
     "checkout_total" => "Total",
     "checkout_only" => "Bare",
     "checkout_savings" => "Besparelser",
-    "checkout_timer" => "Din bestilling er reservert. Betal for bestillingen før tidens slutt.",
+    "checkout_timer" => "Bestillingen din er reservert. Fullfør betalingen innen tidsfristen.",
     "checkout_info" => "Kontaktinformasjon",
     "checkout_phone" => "Mobiltelefon:",
     "checkout_alt_phone" => "Alternativ mobiltelefon:",

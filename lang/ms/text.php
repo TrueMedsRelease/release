@@ -439,7 +439,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "checkout_total" => "Jumlah",
     "checkout_only" => "Sahaja",
     "checkout_savings" => "Simpanan",
-    "checkout_timer" => "Pesanan anda adalah terpelihara. Bayar pesanan sebelum tamat masa.",
+    "checkout_timer" => "Pesanan anda telah ditempah. Selesaikan pembayaran dalam had masa yang ditetapkan.",
     "checkout_info" => "Maklumat perhubungan",
     "checkout_phone" => "Telefon bimbit:",
     "checkout_alt_phone" => "Telefon bimbit alternatif:",

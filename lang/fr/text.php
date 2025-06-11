@@ -567,7 +567,7 @@ return [
     "checkout_total" => "Total",
     "checkout_only" => "Seulement",
     "checkout_savings" => "Des économies",
-    "checkout_timer" => "Votre commande est réservée. Payez la commande avant la fin des délais.",
+    "checkout_timer" => "Votre commande est réservée. Effectuez le paiement dans le délai imparti.",
     "checkout_info" => "Coordonnées",
     "checkout_phone" => "Téléphone mobile:",
     "checkout_alt_phone" => "Téléphone mobile alternatif:",

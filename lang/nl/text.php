@@ -477,7 +477,7 @@ return [
     "checkout_total" => "Totaal",
     "checkout_only" => "Alleen",
     "checkout_savings" => "Besparingen",
-    "checkout_timer" => "Uw bestelling is gereserveerd. Betaal uw bestelling vóór het einde van de tijd.",
+    "checkout_timer" => "Uw bestelling is gereserveerd. Voltooi de betaling binnen de gestelde termijn.",
     "checkout_info" => "Contactgegevens",
     "checkout_phone" => "Mobiele telefoon:",
     "checkout_alt_phone" => "Alternatieve mobiele telefoon:",

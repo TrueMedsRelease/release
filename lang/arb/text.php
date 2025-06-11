@@ -441,7 +441,7 @@ return [
     "checkout_total" => "المجموع",
     "checkout_only" => "فقط",
     "checkout_savings" => "مدخرات",
-    "checkout_timer" => "طلبك محجوز. دفع ثمن الطلب قبل نهاية الوقت.",
+    "checkout_timer" => "تم حجز طلبك. أكمل الدفع ضمن المهلة المحددة.",
     "checkout_info" => "معلومات الاتصال",
     "checkout_phone" => "تليفون محمول:",
     "checkout_alt_phone" => "الهاتف المحمول البديل:",

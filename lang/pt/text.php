@@ -557,7 +557,7 @@ return [
     "checkout_total" => "Total",
     "checkout_only" => "Apenas",
     "checkout_savings" => "Poupança",
-    "checkout_timer" => "Seu pedido está reservado. Pague pelo pedido antes do final dos tempos.",
+    "checkout_timer" => "O seu pedido está reservado. Conclua o pagamento dentro do prazo.",
     "checkout_info" => "Informações de contato",
     "checkout_phone" => "Celular:",
     "checkout_alt_phone" => "Celular alternativo:",

@@ -573,7 +573,7 @@ return [
     "checkout_total" => "Totale",
     "checkout_only" => "Soltanto",
     "checkout_savings" => "Risparmio",
-    "checkout_timer" => "Il tuo ordine è riservato. Paga l'ordine prima della fine dei tempi.",
+    "checkout_timer" => "Il tuo ordine è riservato. Completa il pagamento entro il termine.",
     "checkout_info" => "Informazioni sui contatti",
     "checkout_phone" => "Cellulare:",
     "checkout_alt_phone" => "Cellulare alternativo:",

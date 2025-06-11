@@ -438,7 +438,7 @@ return  [
     "checkout_total" => "全部的",
     "checkout_only" => "僅有的",
     "checkout_savings" => "儲蓄",
-    "checkout_timer" => "您的訂單已被保留。 在時間結束前支付訂單費用。",
+    "checkout_timer" => "您的訂單已預留。請在時限內完成付款。",
     "checkout_info" => "聯繫信息",
     "checkout_phone" => "手機：",
     "checkout_alt_phone" => "替代手機：",

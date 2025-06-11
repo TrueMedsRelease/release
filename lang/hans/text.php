@@ -442,7 +442,7 @@ return [
     "checkout_total" => "全部的",
     "checkout_only" => "仅有的",
     "checkout_savings" => "储蓄",
-    "checkout_timer" => "您的订单已被保留。 在时间结束前支付订单费用。",
+    "checkout_timer" => "您的订单已预留。请在时限内完成付款。",
     "checkout_info" => "联系信息",
     "checkout_phone" => "手机：",
     "checkout_alt_phone" => "替代手机：",
