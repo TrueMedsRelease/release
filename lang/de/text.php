@@ -563,7 +563,7 @@ return [
     "checkout_total" => "Gesamt",
     "checkout_only" => "Nur",
     "checkout_savings" => "Ersparnisse",
-    "checkout_timer" => "Ihre Bestellung ist reserviert. Bezahlen Sie die Bestellung vor Ablauf der Frist.",
+    "checkout_timer" => "Ihre Bestellung ist reserviert. Schließen Sie die Zahlung innerhalb der Frist ab.",
     "checkout_info" => "Kontaktinformationen",
     "checkout_phone" => "Mobiltelefon:",
     "checkout_alt_phone" => "Alternatives Mobiltelefon:",

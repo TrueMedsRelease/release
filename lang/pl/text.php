@@ -438,7 +438,7 @@ return [
     "checkout_total" => "Całkowity",
     "checkout_only" => "Tylko",
     "checkout_savings" => "Oszczędności",
-    "checkout_timer" => "Twoje zamówienie jest zarezerwowane. Zapłać za zamówienie przed upływem terminu.",
+    "checkout_timer" => "Twoje zamówienie jest zarezerwowane. Dokończ płatność w wyznaczonym czasie.",
     "checkout_info" => "Informacje kontaktowe",
     "checkout_phone" => "Telefon komórkowy:",
     "checkout_alt_phone" => "Alternatywny telefon komórkowy:",

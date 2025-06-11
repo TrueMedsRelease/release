@@ -1,9 +1,9 @@
 
 <header class="header">
     {{-- <div class="christmas" style="display: none">
-        <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}">
-        <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
-        <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big_v2.png") }}">
+        <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
+        <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
+        <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big_v2.png") }}">
     </div> --}}
     <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
     <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
@@ -38,7 +38,7 @@
                         <select name="form[]" id="currency_select" class="form"
                             onclick="location.href=this.options[this.selectedIndex].value" data-scroll>
                             @foreach ($Currency::GetAllCurrency() as $item)
-                                <option value="/curr={{ $item['code'] }}"
+                                <option value="{{ route('home.currency', $item['code']) }}"
                                     @if (session('currency') == $item['code']) selected @endif> {{ Str::upper($item['code']) }}
                                 </option>
                             @endforeach
@@ -49,7 +49,7 @@
                         <select name="form[]" id="language_select" class="form"
                             onchange="location.href=this.options[this.selectedIndex].value" data-scroll>
                             @foreach ($Language::GetAllLanuages() as $item)
-                                <option value="/lang={{ $item['code'] }}"
+                                <option value="{{ route('home.language', $item['code']) }}"
                                     @if (App::currentLocale() == $item['code']) selected @endif> {{ $item['name'] }} </option>
                             @endforeach
                         </select>

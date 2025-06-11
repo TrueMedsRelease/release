@@ -47,7 +47,7 @@ class Language extends Model
         'ja'   => '日本語',
         'cs'   => 'Čeština',
         'da'   => 'Dansk',
-        'nl'   => 'Nederlands',
+        'nl'   => 'Dutch',
         'hu'   => 'Magyar nyelv',
         'ms'   => 'Bahasa Melayu',
         'arb'  => 'اللغة العربية الفصحى الحديثة',

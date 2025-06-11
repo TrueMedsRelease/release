@@ -437,7 +437,7 @@ return [
     "checkout_total" => "Celkom",
     "checkout_only" => "Iba",
     "checkout_savings" => "Úspory",
-    "checkout_timer" => "Vaša objednávka je rezervovaná. Zaplaťte za objednávku pred koncom času.",
+    "checkout_timer" => "Vaša objednávka je rezervovaná. Dokončite platbu v stanovenom čase.",
     "checkout_info" => "Kontaktné informácie",
     "checkout_phone" => "Mobilný telefón:",
     "checkout_alt_phone" => "Alternatívny mobilný telefón:",

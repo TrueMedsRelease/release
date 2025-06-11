@@ -556,7 +556,7 @@ return [
     "checkout_total" => "合計",
     "checkout_only" => "のみ",
     "checkout_savings" => "貯蓄",
-    "checkout_timer" => "ご注文は予約済みです。 終了時間までに注文の支払いをしてください。",
+    "checkout_timer" => "ご注文は予約済みです。期限内にお支払いを完了してください。",
     "checkout_info" => "連絡先",
     "checkout_phone" => "携帯電話：",
     "checkout_alt_phone" => "代替携帯電話:",

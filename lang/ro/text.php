@@ -433,7 +433,7 @@ return [
     "checkout_total" => "Total",
     "checkout_only" => "Numai",
     "checkout_savings" => "Economii",
-    "checkout_timer" => "Comanda dvs. este rezervată. Plătiți comanda înainte de sfârșitul timpului.",
+    "checkout_timer" => "Comanda dvs. este rezervată. Finalizați plata în termenul limită.",
     "checkout_info" => "Informații de contact",
     "checkout_phone" => "Telefon mobil:",
     "checkout_alt_phone" => "Telefon mobil alternativ:",

@@ -443,7 +443,7 @@ return [
     "checkout_total" => "Teljes",
     "checkout_only" => "Csak",
     "checkout_savings" => "Megtakarítás",
-    "checkout_timer" => "Rendelése le van foglalva. Fizesse ki a rendelést az idő lejárta előtt.",
+    "checkout_timer" => "A rendelése lefoglalva. Fizesse ki a rendelést a határidőn belül.",
     "checkout_info" => "Elérhetőség",
     "checkout_phone" => "Mobiltelefon:",
     "checkout_alt_phone" => "Alternatív mobiltelefon:",

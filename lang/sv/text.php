@@ -437,7 +437,7 @@ return [
     "checkout_total" => "Total",
     "checkout_only" => "Endast",
     "checkout_savings" => "Besparingar",
-    "checkout_timer" => "Din beställning är reserverad. Betala för beställningen innan tidens slut.",
+    "checkout_timer" => "Din beställning är reserverad. Slutför betalningen inom tidsgränsen.",
     "checkout_info" => "Kontaktinformation",
     "checkout_phone" => "Mobiltelefon:",
     "checkout_alt_phone" => "Alternativ mobiltelefon:",

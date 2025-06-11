@@ -40,31 +40,29 @@ class SessionParameterHandler
         }
 
         // aff
-        if (!session()->has('aff')) {
-            if (!empty($request->query('aff'))) {
-                session(['aff' => $request->query('aff')]);
-            } else {
-                session(['aff' => config('app.aff')]);
-            }
+        if (!empty($request->query('aff'))) {
+            session(['aff' => $request->query('aff')]);
+        } else {
+            session(['aff' => config('app.aff')]);
         }
 
         // saff
-        if (!session()->has('saff') && !empty($request->query('saff'))) {
+        if (!empty($request->query('saff'))) {
             session(['saff' => $request->query('saff')]);
         }
 
         // keyword
-        if (!session()->has('keyword') && !empty($request->query('keyword'))) {
+        if (!empty($request->query('keyword'))) {
             session(['keyword' => $request->query('keyword')]);
         }
 
                 // refc
-        if (!session()->has('refc') && !empty($request->query('refc'))) {
+        if (!empty($request->query('refc'))) {
             session(['refc' => $request->query('refc')]);
         }
 
         // coupon_get
-        if (!session()->has('coupon_get') && !empty($request->query('coupon'))) {
+        if (!empty($request->query('coupon'))) {
             session(['coupon_get' => $request->query('coupon')]);
         }
 

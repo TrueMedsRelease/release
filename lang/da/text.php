@@ -486,7 +486,7 @@ return [
     "checkout_total" => "Total",
     "checkout_only" => "Kun",
     "checkout_savings" => "Opsparing",
-    "checkout_timer" => "Din ordre er reserveret. Betal for ordre inden udgangen af tiden.",
+    "checkout_timer" => "Din ordre er reserveret. Fuldfør betalingen inden for tidsfristen.",
     "checkout_info" => "Kontakt information",
     "checkout_phone" => "Mobiltelefon:",
     "checkout_alt_phone" => "Alternativ mobiltelefon:",
