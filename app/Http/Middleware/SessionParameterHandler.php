@@ -42,7 +42,7 @@ class SessionParameterHandler
         // aff
         if (!empty($request->query('aff'))) {
             session(['aff' => $request->query('aff')]);
-        } else {
+        } elseif (!session()->has('aff')) {
             session(['aff' => config('app.aff')]);
         }
 
