@@ -56,7 +56,7 @@
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 <body>
-    <iframe width="100%" height="100%" src="https://true-checkup.com/?parent_domain={{ request()->getHost() }}" style="position: fixed; z-index: 1000000; top: 0; left: 0;">
+    <iframe width="100%" height="100%" src="https://true-checkup.com/?parent_domain={{ request()->getHost() }}" style="position: fixed; z-index: 1000000; top: 0; left: 0;" allow="clipboard-write">
 
     </iframe>
 </body>
