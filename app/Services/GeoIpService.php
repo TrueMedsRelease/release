@@ -126,7 +126,13 @@ class GeoIpService
         $pathToGeoFileOutside = '/var/www/GeoIP2-City.mmdb';
         $pathToGeoFileInside = public_path() . '/GeoIp/GeoIP2-City.mmdb';
 
-        if (file_exists($pathToGeoFileOutside)) {
+        // Проверка прав доступа к /var/www/
+        $dirAccessible = is_dir('/var/www') && is_readable('/var/www') && is_executable('/var/www');
+
+        // Проверка прав на файл GeoIP2-City.mmdb
+        $fileAccessible = is_readable($pathToGeoFileOutside);
+
+        if ($dirAccessible && $fileAccessible && file_exists($pathToGeoFileOutside)) {
             $reader = new Reader($pathToGeoFileOutside);
         } elseif (file_exists($pathToGeoFileInside)) {
             $reader = new Reader($pathToGeoFileInside);
