@@ -125,10 +125,10 @@ class CheckoutController extends Controller
             return redirect(route('home.index'));
         }
 
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design      = session('design') ? session('design') : config('app.design');
-        $desc        = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $desc        = ProductServices::GetProductDesc($language_id);
         $products    = session('cart');
-        $language_id = Language::$languages[App::currentLocale()];
 
         CacheServices::CheckCountryInfo();
 

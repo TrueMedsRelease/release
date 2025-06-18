@@ -22,7 +22,8 @@ class ProductServices
     public static function GetBestsellers($design): array
     {
         $products_desc = Cache::remember(App::currentLocale() . "_products_desc", 180, function () {
-            return self::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+            return self::GetProductDesc($language_id);
         });
 
         $product_price = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
@@ -160,7 +161,8 @@ class ProductServices
     public static function GetCategoriesWithProducts($design, $url = ''): array
     {
         $productsDesc = Cache::remember(App::currentLocale() . "_products_desc", 180, function () {
-            return self::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+            return self::GetProductDesc($language_id);
         });
 
         $productPillPrices = Cache::remember(App::currentLocale() . "_product_pill_prices", 180, function () {
@@ -168,7 +170,8 @@ class ProductServices
         });
 
         $categoryDesc = Cache::remember(App::currentLocale() . "_category_desc", 180, function () {
-            return self::GetAllCategoryDesc(Language::$languages[App::currentLocale()]);
+            $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+            return self::GetAllCategoryDesc($language_id);
         });
 
         $countryCode = Str::upper(session('location.country') ?? '');
@@ -523,7 +526,8 @@ class ProductServices
     public static function GetProductByFirstLetter($letter): array
     {
         $products_desc = Cache::remember(App::currentLocale() . "_product_desc", 180, function () {
-            return self::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+            return self::GetProductDesc($language_id);
         });
         $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
             return self::GetAllProductPillPrice();
@@ -629,7 +633,8 @@ class ProductServices
 
     public static function GetProductByDisease($disease): array
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+        $products_desc = self::GetProductDesc($language_id);
         $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
             return self::GetAllProductPillPrice();
         });
@@ -639,12 +644,12 @@ class ProductServices
         if (strtoupper(session('location.country')) != 'US') {
             $diseases = DB::select(
                 'SELECT * FROM product_disease WHERE language_id = ? AND disease = ? AND product_id not in (755, 491)',
-                [Language::$languages[App::currentLocale()], $disease]
+                [$language_id, $disease]
             );
         } else {
             $diseases = DB::select(
                 'SELECT * FROM product_disease WHERE language_id = ? AND disease = ?',
-                [Language::$languages[App::currentLocale()], $disease]
+                [$language_id, $disease]
             );
         }
 
@@ -750,7 +755,8 @@ class ProductServices
 
     public static function GetProductByActive($active): array
     {
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+        $products_desc = self::GetProductDesc($language_id);
         $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
             return self::GetAllProductPillPrice();
         });
@@ -865,7 +871,7 @@ class ProductServices
 
     public static function GetProductInfoByUrl($url)
     {
-        $language_id   = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $products_desc = self::GetProductDesc($language_id, $url);
 
         if (empty($products_desc)) {
@@ -1290,7 +1296,8 @@ class ProductServices
         $search_text_lower      = strtolower(urldecode($search_text));
         $search_full_text_lower = strtolower(urldecode($search_full_text));
 
-        $products_desc = self::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+        $products_desc = self::GetProductDesc($language_id);
         $product_price = Cache::remember(App::currentLocale() . '_product_pill_prices', 180, function () {
             return self::GetAllProductPillPrice();
         });
@@ -1558,7 +1565,7 @@ class ProductServices
     public static function SearchCategory($search_text): string
     {
         $category    = trans('text.common_category_search');
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $result      = DB::select(
             "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND language_id = ? AND cd.name LIKE ?",
             [$language_id, '%' . $search_text . '%']
@@ -1585,7 +1592,7 @@ class ProductServices
     public static function SearchDisease($search_text): string
     {
         $disease     = trans('text.common_disease_search');
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         if (strtoupper(session('location.country')) != 'US') {
             $result = DB::select(
@@ -1726,7 +1733,7 @@ class ProductServices
 
     public static function GetBonuses($pack_id = null)
     {
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         if (empty($pack_id)) {
             $bonus = DB::select(
                 "SELECT pack_id, pd.name, price, ptd.name as type
@@ -1771,7 +1778,7 @@ class ProductServices
 
     public static function GetGiftCard(): array
     {
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         $cards = DB::select(
             "SELECT pp.id as pack_id, pd.name, price
@@ -1790,7 +1797,7 @@ class ProductServices
     {
         $domain = request()->getHost();
 
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         $page_properties = DB::select(
             "SELECT * FROM page_properties WHERE `page` = '$page' AND `language` = $language_id"
@@ -1885,7 +1892,7 @@ class ProductServices
             }
         }
 
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         $pageProperties = DB::select(
             "SELECT * FROM page_properties WHERE `page` = 'product' AND `language` = $language_id"
@@ -2259,6 +2266,8 @@ class ProductServices
             return self::GetAllProductPillPrice();
         });
 
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+
         $products = [];
 
         if ($design == 5) {
@@ -2268,7 +2277,7 @@ class ProductServices
                 ->whereIn('product.id', $products_arr)
                 ->where('product.is_showed', '=', 1)
                 ->where('product_category.category_id', '=', 14)
-                ->where('product_desc.language_id', '=', Language::$languages[App::currentLocale()])
+                ->where('product_desc.language_id', '=', $language_id)
                 ->get(
                     [
                         'product.id',
@@ -2288,7 +2297,7 @@ class ProductServices
                     ->whereIn('product.id', $products_arr)
                     ->where('product.is_showed', '=', 1)
                     ->whereNotIn('product.id', [755, 491])
-                    ->where('product_desc.language_id', '=', Language::$languages[App::currentLocale()])
+                    ->where('product_desc.language_id', '=', $language_id)
                     ->get(
                         [
                             'product.id',
@@ -2306,7 +2315,7 @@ class ProductServices
                     ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
                     ->whereIn('product.id', $products_arr)
                     ->where('product.is_showed', '=', 1)
-                    ->where('product_desc.language_id', '=', Language::$languages[App::currentLocale()])
+                    ->where('product_desc.language_id', '=', $language_id)
                     ->get(
                         [
                             'product.id',

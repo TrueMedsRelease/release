@@ -472,7 +472,7 @@ class HomeController extends Controller
 
     public function product($product)
     {
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         if (is_numeric($product)) {
             $product_id = $product;
