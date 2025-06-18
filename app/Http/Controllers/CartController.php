@@ -97,10 +97,11 @@ class CartController extends Controller
             return redirect(route('home.index'));
         }
 
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+
         $design      = session('design') ? session('design') : config('app.design');
-        $desc        = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $desc        = ProductServices::GetProductDesc($language_id);
         $products    = session('cart');
-        $language_id = Language::$languages[App::currentLocale()];
 
         $types = ProductTypeDesc::query()
             ->where('language_id', '=', $language_id)
@@ -270,11 +271,11 @@ class CartController extends Controller
 
     public function up(Request $request)
     {
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design = session('design') ? session('design') : config('app.design');
-        $desc   = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $desc   = ProductServices::GetProductDesc($language_id);
         Cart::add($request->pack_id);
         $products    = session('cart');
-        $language_id = Language::$languages[App::currentLocale()];
 
         $types = ProductTypeDesc::query()
             ->where('language_id', '=', $language_id)
@@ -403,11 +404,11 @@ class CartController extends Controller
 
     public function down(Request $request)
     {
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design = session('design') ? session('design') : config('app.design');
-        $desc   = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+        $desc   = ProductServices::GetProductDesc($language_id);
         Cart::decrease($request->pack_id);
         $products    = session('cart');
-        $language_id = Language::$languages[App::currentLocale()];
 
         $types = ProductTypeDesc::query()
             ->where('language_id', '=', $language_id)
@@ -538,11 +539,11 @@ class CartController extends Controller
     {
         Cart::remove($request->pack_id);
         $products    = !empty(session('cart')) ? session('cart') : '';
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design      = session('design') ? session('design') : config('app.design');
 
         if ($products != '') {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc($language_id);
 
             $types = ProductTypeDesc::query()
                 ->where('language_id', '=', $language_id)
@@ -677,12 +678,12 @@ class CartController extends Controller
     {
         Cart::upgrade($request->pack_id);
         $products    = !empty(session('cart')) ? session('cart') : '';
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design      = session('design') ? session('design') : config('app.design');
 
         if ($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc($language_id);
 
             $types = ProductTypeDesc::query()
                 ->where('language_id', '=', $language_id)
@@ -825,11 +826,11 @@ class CartController extends Controller
         $design = session('design') ? session('design') : config('app.design');
 
         $products    = !empty(session('cart')) ? session('cart') : '';
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         if ($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc($language_id);
 
             $types = ProductTypeDesc::query()
                 ->where('language_id', '=', $language_id)
@@ -974,11 +975,11 @@ class CartController extends Controller
         }
 
         $products    = !empty(session('cart')) ? session('cart') : '';
-        $language_id = Language::$languages[App::currentLocale()];
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         if ($products != '') //здесь эта проверка поидее не нужна, но пусть будет
         {
-            $desc = ProductServices::GetProductDesc(Language::$languages[App::currentLocale()]);
+            $desc = ProductServices::GetProductDesc($language_id);
 
             $types = ProductTypeDesc::query()
                 ->where('language_id', '=', $language_id)
