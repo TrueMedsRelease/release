@@ -2027,7 +2027,7 @@ $(".card_type .select__option").click(function (e) {
 
     flag = false;
     if (type == 'crypto') {
-        document.getElementById("paid").disabled = true;
+        document.getElementById('paid').style.display = "none";
 
         if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
 
@@ -2249,6 +2249,7 @@ $('input[name="crypt_currency"]').click(function () {
 
         document.getElementById("requisites_load").hidden = false;
         document.getElementById("requisites").hidden = true;
+        document.getElementById('paid').style.display = "none";
         document.getElementById("paid").disabled = true;
         // console.log(currency, email.value, total.value);
 
@@ -2282,6 +2283,7 @@ $('input[name="crypt_currency"]').click(function () {
 
                     document.getElementById("requisites_load").hidden = true;
                     document.getElementById("requisites").hidden = false;
+                    document.getElementById('paid').style.display = "flex";
                     document.getElementById("paid").disabled = false;
                     PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
