@@ -2337,6 +2337,7 @@ $("#paid").click(function (e) {
     e.preventDefault();
     document.getElementById('paid').style.display = "none";
     document.getElementById('waiting').style.display = "block";
+    document.getElementById('waiting').disabled = true;
 
     // document.getElementById("cr_01").disabled = true;
     // document.getElementById("cr_02").disabled = true;
