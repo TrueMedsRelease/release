@@ -860,7 +860,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="enter-info__button button" id="paid">
+                            <button type="button" class="enter-info__button button" id="paid" disabled>
                                 <span>{{__('text.checkout_paid')}}</span>
                             </button>
                             <button style="display: none;" type="submit" class="enter-info__button button"
