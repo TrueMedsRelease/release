@@ -2350,7 +2350,7 @@ $("#paid").click(function (e) {
     // document.getElementById("cr_07").disabled = true;
     // document.getElementById("c_2").disabled = true;
     // document.getElementById("c_3").disabled = true;
-    // document.getElementById("currency_select").disabled = true;
+    document.getElementById("currency_select").disabled = true;
     // document.getElementById("language_select").disabled = true;
     // document.getElementById("coupon").disabled = true;
     // document.getElementById("coupon_submit").disabled = true;

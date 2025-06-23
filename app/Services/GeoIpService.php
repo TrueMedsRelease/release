@@ -123,7 +123,7 @@ class GeoIpService
 
     public static function GetInfoByIp()
     {
-        // $ip = '89.187.179.179';//request()->ip();
+        // $ip = '5.187.2.250';//request()->ip();
         $ip = request()->headers->get('cf-connecting-ip') ?? request()->ip();
 
         if (strpos($ip, ',') !== false) {
@@ -165,7 +165,6 @@ class GeoIpService
         try
         {
             $location = $reader->city($ip);
-            $prefferd = request()->getPreferredLanguage();
 
             $country_info = CountryInfoCache::query()
                 ->where('country_iso2', '=', $location->country->isoCode ?? null)
@@ -176,55 +175,13 @@ class GeoIpService
                 // $ip = '89.187.179.179';
                 // $location = $reader->city($ip);
 
-                $country = 'us';
-
-                $language = Language::query()
-                    ->where('show', '=', 1)
-                    ->where('code', '=', $prefferd)
-                    ->first('code');
-
-                if(empty($language))
-                {
-                    $language = Language::query()
-                        ->where('show', '=', 1)
-                        ->where('country_iso2', 'LIKE', '%' . $country . '%')
-                        ->first('code');
-                }
-
-                if(empty($language))
-                {
-                    $languages = Language::GetAllLanuages();
-
-                    if (count($languages) > 1) {
-                        $country = config('app.language');
-                    } else {
-                        if (count($languages) == 1) {
-                            $country = $languages[0]['code'];
-                        } else {
-                            $country = config('app.language');
-                        }
-                    }
-                }
-                else
-                {
-                    $language = $language->toArray();
-                    $country = $language['code'];
-                }
-
                 $info = [
-                    'country' => $country,
+                    'country' => 'US',
                     'country_name' => 'united states',
                     'state' => '',
                     'city' => '',
                     'postal' => '',
                 ];
-
-                App::setLocale($country);
-
-                $curr = Currency::GetCurrencyByCountry($country);
-                $coef = Currency::GetCoef($curr);
-                session(['currency' => $curr]);
-                session(['currency_c' => $coef]);
 
             } else {
                 $info = [
@@ -234,46 +191,6 @@ class GeoIpService
                     'city' => $location->city->name ?? '',
                     'postal' => $location->postal->code ?? '',
                 ];
-
-                $language = Language::query()
-                        ->where('show', '=', 1)
-                        ->where('country_iso2', 'LIKE', '%' . $info['country'] . '%')
-                        ->first('code');
-
-                if(empty($language))
-                {
-                    $language = Language::query()
-                        ->where('show', '=', 1)
-                        ->where('code', '=', $prefferd)
-                        ->first('code');
-                }
-
-                if(empty($language))
-                {
-                    $languages = Language::GetAllLanuages();
-
-                    if (count($languages) > 1) {
-                        $info['country'] = config('app.language');
-                    } else {
-                        if (count($languages) == 1) {
-                            $info['country'] = $languages[0]['code'];
-                        } else {
-                            $info['country'] = config('app.language');
-                        }
-                    }
-                }
-                else
-                {
-                    $language = $language->toArray();
-                    $info['country'] = $language['code'];
-                }
-
-                App::setLocale($info['country']);
-
-                $curr = Currency::GetCurrencyByCountry($info['country']);
-                $coef = Currency::GetCoef($curr);
-                session(['currency' => $curr]);
-                session(['currency_c' => $coef]);
             }
         }
         catch(\Exception $e)
@@ -286,13 +203,6 @@ class GeoIpService
                 'city' => '',
                 'postal' => '',
             ];
-
-            App::setLocale($info['country']);
-
-            $curr = Currency::GetCurrencyByCountry($info['country']);
-            $coef = Currency::GetCoef($curr);
-            session(['currency' => $curr]);
-            session(['currency_c' => $coef]);
         }
 
         return $info;

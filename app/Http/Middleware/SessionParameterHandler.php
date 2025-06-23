@@ -22,15 +22,16 @@ class SessionParameterHandler
         if (!session()->has('location')) {
             session(['location' => GeoIpService::GetInfoByIp()]);
 
-            // if (!empty(session('location.country'))) {
-            //     $curr = Currency::GetCurrencyByCountry(session('location.country'));
-            //     $coef = Currency::GetCoef($curr);
-            //     session(['currency' => $curr]);
-            //     session(['currency_c' => $coef]);
+            if (!empty(session('location.country'))) {
+                $curr = Currency::GetCurrencyByCountry(session('location.country'));
+                $coef = Currency::GetCoef($curr);
+                session(['currency' => $curr]);
+                session(['currency_c' => $coef]);
 
-            //     $lang = Language::GetLanguageByCountry(session('location.country'));
-            //     App::setLocale($lang);
-            // }
+                $lang = Language::GetLanguageByCountry(session('location.country'));
+                App::setLocale($lang);
+                session(['locale' => $lang]);
+            }
         }
 
         // referer
