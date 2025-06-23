@@ -77,17 +77,18 @@ class Language extends Model
     public static function GetLanguageByCountry($country)
     {
         $prefferd = request()->getPreferredLanguage();
+
         $language = Language::query()
             ->where('show', '=', 1)
-            ->where('code', '=', $prefferd)
+            ->where('country_iso2', 'LIKE', '%' . $country . '%')
             ->first('code');
 
         if(empty($language))
         {
             $language = Language::query()
-            ->where('show', '=', 1)
-            ->where('country_iso2', 'LIKE', '%' . $country . '%')
-            ->first('code');
+                ->where('show', '=', 1)
+                ->where('code', '=', $prefferd)
+                ->first('code');
         }
 
         if(empty($language))

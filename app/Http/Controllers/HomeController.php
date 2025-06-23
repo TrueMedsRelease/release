@@ -21,7 +21,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        App::setLocale(session('locale', 'en'));
+        // App::setLocale(session('locale', 'en'));
         $statisticPromise = StatisticService::SendStatistic('index');
 
         $design          = session('design') ? session('design') : config('app.design');
