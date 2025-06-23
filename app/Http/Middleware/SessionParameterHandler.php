@@ -109,6 +109,16 @@ class SessionParameterHandler
             }
         }
 
+        if (!empty($request->query('product'))) {
+            if (in_array($request->query('product'), ['tretiva', 'cialis'])) {
+                if ($request->query('product') == 'tretiva') {
+                    return redirect(route('home.product', 'accutane'));
+                } else {
+                    return redirect(route('home.product', 'cialis'));
+                }
+            }
+        }
+
         return $next($request);
     }
 }
