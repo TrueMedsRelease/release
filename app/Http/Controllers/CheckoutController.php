@@ -1311,11 +1311,8 @@ class CheckoutController extends Controller
 
             $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
-            // $data = [
-            //     'method'  => 'save_order_data',
-            //     'api_key' => $api_key->key_data,
-            //     'form'    => $form,
-            // ];
+            $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+            $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
 
             $data = [
                 'method'             => 'save_order_data',
@@ -1327,16 +1324,14 @@ class CheckoutController extends Controller
                 'firstname'          => e($form['firstname']),
                 'lastname'           => e($form['lastname']),
                 'billing_country'    => e($form['billing_country']),
-                'billing_state'      => e($form['billing_state']),
+                'billing_state'      => $billing_state,
                 'billing_city'       => e($form['billing_city']),
                 'billing_address'    => e($form['billing_address']),
                 'billing_zip'        => e($form['billing_zip']),
                 'shipping_country'   => !empty($form['address_match']) ? e($form['shipping_country']) : e(
                     $form['billing_country']
                 ),
-                'shipping_state'     => !empty($form['address_match']) ? e($form['shipping_state']) : e(
-                    $form['billing_state']
-                ),
+                'shipping_state'     => !empty($form['address_match']) ? $shipping_state : $billing_state,
                 'shipping_city'      => !empty($form['address_match']) ? e($form['shipping_city']) : e(
                     $form['billing_city']
                 ),
@@ -1618,11 +1613,8 @@ class CheckoutController extends Controller
 
             $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
-            // $data = [
-            //     'method'  => 'save_order_data',
-            //     'api_key' => $api_key->key_data,
-            //     'form'    => $form,
-            // ];
+            $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+            $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
 
             $data = [
                 'method'             => 'save_order_data',
@@ -1634,16 +1626,14 @@ class CheckoutController extends Controller
                 'firstname'          => e($form['firstname']),
                 'lastname'           => e($form['lastname']),
                 'billing_country'    => e($form['billing_country']),
-                'billing_state'      => e($form['billing_state']),
+                'billing_state'      => $billing_state,
                 'billing_city'       => e($form['billing_city']),
                 'billing_address'    => e($form['billing_address']),
                 'billing_zip'        => e($form['billing_zip']),
                 'shipping_country'   => !empty($form['address_match']) ? e($form['shipping_country']) : e(
                     $form['billing_country']
                 ),
-                'shipping_state'     => !empty($form['address_match']) ? e($form['shipping_state']) : e(
-                    $form['billing_state']
-                ),
+                'shipping_state'     => !empty($form['address_match']) ? $shipping_state : $billing_state,
                 'shipping_city'      => !empty($form['address_match']) ? e($form['shipping_city']) : e(
                     $form['billing_city']
                 ),
