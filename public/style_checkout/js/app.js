@@ -2954,3 +2954,10 @@ $(document).ready(function () {
     });
 });
 
+document.querySelectorAll('input[type=number]').forEach(function(input) {
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            e.preventDefault();
+        }
+    });
+});
