@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Models\CountryInfoCache;
 use GeoIp2\Database\Reader;
 use Illuminate\Support\Facades\Log;
+use App\Models\Currency;
+use App\Models\Language;
+use Illuminate\Support\Facades\App;
 
 class GeoIpService
 {
@@ -120,7 +123,7 @@ class GeoIpService
 
     public static function GetInfoByIp()
     {
-        // $ip = '89.187.179.179';//request()->ip();
+        // $ip = '5.187.2.250';//request()->ip();
         $ip = request()->headers->get('cf-connecting-ip') ?? request()->ip();
 
         if (strpos($ip, ',') !== false) {

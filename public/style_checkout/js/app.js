@@ -2027,6 +2027,7 @@ $(".card_type .select__option").click(function (e) {
 
     flag = false;
     if (type == 'crypto') {
+        document.getElementById('paid').style.display = "none";
 
         if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
 
@@ -2055,6 +2056,7 @@ $(".card_type .select__option").click(function (e) {
 
                     document.getElementById("requisites_load").hidden = true;
                     document.getElementById("requisites").hidden = false;
+                    document.getElementById("paid").disabled = false;
                     PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
                     document.getElementById("coupon").disabled = true;
@@ -2161,6 +2163,7 @@ $(".card_type .select__option").click(function (e) {
 
     if (type != 'crypto') {
         PollingManager.stopAll();
+        document.getElementById("paid").disabled = true;
     }
 });
 
@@ -2235,7 +2238,7 @@ if ($('#app_google_on').val() == '1') {
 }
 
 $('input[name="crypt_currency"]').click(function () {
-    document.getElementById("paid").disabled = false;
+    // document.getElementById("paid").disabled = false;
     var currency = $(this).val();
     //alert(currency);
     var email = document.getElementById('email');
@@ -2246,6 +2249,8 @@ $('input[name="crypt_currency"]').click(function () {
 
         document.getElementById("requisites_load").hidden = false;
         document.getElementById("requisites").hidden = true;
+        document.getElementById('paid').style.display = "none";
+        document.getElementById("paid").disabled = true;
         // console.log(currency, email.value, total.value);
 
         $.ajax({
@@ -2278,6 +2283,8 @@ $('input[name="crypt_currency"]').click(function () {
 
                     document.getElementById("requisites_load").hidden = true;
                     document.getElementById("requisites").hidden = false;
+                    document.getElementById('paid').style.display = "flex";
+                    document.getElementById("paid").disabled = false;
                     PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
                     document.getElementById("coupon").disabled = true;
@@ -2332,6 +2339,7 @@ $("#paid").click(function (e) {
     e.preventDefault();
     document.getElementById('paid').style.display = "none";
     document.getElementById('waiting').style.display = "block";
+    document.getElementById('waiting').disabled = true;
 
     // document.getElementById("cr_01").disabled = true;
     // document.getElementById("cr_02").disabled = true;
@@ -2342,7 +2350,7 @@ $("#paid").click(function (e) {
     // document.getElementById("cr_07").disabled = true;
     // document.getElementById("c_2").disabled = true;
     // document.getElementById("c_3").disabled = true;
-    // document.getElementById("currency_select").disabled = true;
+    document.getElementById("currency_select").disabled = true;
     // document.getElementById("language_select").disabled = true;
     // document.getElementById("coupon").disabled = true;
     // document.getElementById("coupon_submit").disabled = true;
