@@ -200,6 +200,11 @@ class AdminController extends Controller
 
     public function save_product_url(Request $request) {
         $product_form = $request->product_form_data;
+
+        if (!isset($product_form['all_products_field'])) {
+            return response()->json(array('status' => 'error', 'text' => 'Choose Product'));
+        }
+
         $product_id = $product_form['all_products_field'];
         $error = [];
 
@@ -214,6 +219,13 @@ class AdminController extends Controller
                 $error = [
                     'status' => 'error',
                     'text' => 'Empty URL'
+                ];
+            } else if (is_numeric($product_url)) {
+                $has_errors = true;
+
+                $error = [
+                    'status' => 'error',
+                    'text' => 'Incorrect URL format'
                 ];
             }
 

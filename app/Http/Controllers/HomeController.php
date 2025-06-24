@@ -482,11 +482,12 @@ class HomeController extends Controller
                 ->where('language_id', '=', $language_id)
                 ->get(['url'])
                 ->toArray();
-            $product            = $product_name_begin[0]->url;
 
-            if (!$product) {
+            if (empty($product_name_begin) || !isset($product_name_begin[0])) {
                 return redirect()->route('home.index');
             }
+
+            $product = $product_name_begin[0]->url;
         }
 
         // if ($product == 'a-ret-gel') {
