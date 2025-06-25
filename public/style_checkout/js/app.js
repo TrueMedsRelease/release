@@ -2058,7 +2058,7 @@ $(".card_type .select__option").click(function (e) {
                     document.getElementById("requisites_load").hidden = true;
                     document.getElementById("requisites").hidden = false;
                     document.getElementById('paid').disabled = false;
-                    PollingManager.startPolling(CheckPayment, 1800000, 5000);
+                    // PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
                     document.getElementById("coupon").disabled = true;
                     document.getElementById("coupon_submit").disabled = true;
@@ -2287,7 +2287,7 @@ $('input[name="crypt_currency"]').click(function () {
                     document.getElementById("requisites").hidden = false;
                     document.getElementById('paid').style.display = "flex";
                     document.getElementById('paid').disabled = false;
-                    PollingManager.startPolling(CheckPayment, 1800000, 5000);
+                    // PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
                     document.getElementById("coupon").disabled = true;
                     document.getElementById("coupon_submit").disabled = true;
@@ -2339,9 +2339,10 @@ $('input[name="crypt_currency"]').click(function () {
 
 $("#paid").click(function (e) {
     e.preventDefault();
-    document.getElementById('paid').style.display = "none";
-    document.getElementById('waiting').style.display = "block";
+    // document.getElementById('paid').style.display = "none";
+    // document.getElementById('waiting').style.display = "block";
     document.getElementById('waiting').disabled = true;
+    document.getElementById('paid').disabled = true;
 
     // document.getElementById("cr_01").disabled = true;
     // document.getElementById("cr_02").disabled = true;
@@ -2358,6 +2359,8 @@ $("#paid").click(function (e) {
     // document.getElementById("coupon_submit").disabled = true;
     // document.getElementById("phone_code_select").disabled = true;
     // document.getElementById("payment_type_select").disabled = true;
+
+    CheckPayment();
 });
 
 function sendCryptoData(crypto_currency, crypto_total, crypto_discount_price, purse, invoiceId) {
@@ -2501,11 +2504,13 @@ function CheckPayment()
         dataType: 'html',
         data: form,
         success: function (data) {
-            data = JSON.parse(JSON.parse(data));
-            if(data.status == 3 || data.status == 5)
-            {
+            // data = JSON.parse(data);
+            // if(data.status == 'success')
+            // {
                 window.location.replace("/complete");
-            }
+            // } else {
+            //     alert(data.text);
+            // }
         }
     });
 }
