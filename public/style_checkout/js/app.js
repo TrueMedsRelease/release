@@ -2339,9 +2339,10 @@ $('input[name="crypt_currency"]').click(function () {
 
 $("#paid").click(function (e) {
     e.preventDefault();
-    document.getElementById('paid').style.display = "none";
-    document.getElementById('waiting').style.display = "block";
+    // document.getElementById('paid').style.display = "none";
+    // document.getElementById('waiting').style.display = "block";
     document.getElementById('waiting').disabled = true;
+    document.getElementById('paid').disabled = true;
 
     // document.getElementById("cr_01").disabled = true;
     // document.getElementById("cr_02").disabled = true;
@@ -2503,13 +2504,13 @@ function CheckPayment()
         dataType: 'html',
         data: form,
         success: function (data) {
-            data = JSON.parse(data);
-            if(data.status == 'success')
-            {
+            // data = JSON.parse(data);
+            // if(data.status == 'success')
+            // {
                 window.location.replace("/complete");
-            } else {
-                alert(data.text);
-            }
+            // } else {
+            //     alert(data.text);
+            // }
         }
     });
 }
