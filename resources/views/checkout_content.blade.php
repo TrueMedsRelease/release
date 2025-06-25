@@ -863,11 +863,11 @@
                             <button style="display: none;" type="button" class="enter-info__button button" id="paid" disabled>
                                 <span>{{__('text.checkout_paid')}}</span>
                             </button>
-                            <button style="display: none; cursor: not-allowed;" type="submit" class="enter-info__button button"
+                            {{-- <button style="display: none; cursor: not-allowed;" type="submit" class="enter-info__button button"
                                 id="waiting">
                                 {{__('text.checkout_approving')}} <img loading="lazy" src="{{ asset('style_checkout/images/131.gif') }}"
                                     width="30px" height="30px">
-                            </button>
+                            </button> --}}
                         </div>
 
                         <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal') hidden @endif>

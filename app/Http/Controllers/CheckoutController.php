@@ -1090,9 +1090,9 @@ class CheckoutController extends Controller
 
                         $response_payment = json_decode($response_payment, true);
 
-                        session(['check_payment' => $response_payment]);
+                        // session(['check_payment' => $response_payment]);
 
-                        if ($response_payment['status'] == 3 || $response_payment == 5) {
+                        // if ($response_payment['status'] == 3 || $response_payment == 5) {
                             $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
                             $phone_code = $phone_code->phonecode;
 
@@ -1120,10 +1120,10 @@ class CheckoutController extends Controller
                             }
 
                             $products_str = json_encode($products);
-                            $api_key      = DB::table('shop_keys')
-                                                ->where('name_key', '=', 'api_key')
-                                                ->get('key_data')
-                                                ->toArray()[0];
+                            // $api_key      = DB::table('shop_keys')
+                            //                     ->where('name_key', '=', 'api_key')
+                            //                     ->get('key_data')
+                            //                     ->toArray()[0];
 
                             $data = [
                                 'method'              => 'order',
@@ -1208,9 +1208,8 @@ class CheckoutController extends Controller
                             session(['data' => $data]);
 
                             $email             = e($request->email);
-                            $check_order_cache = DB::select(
-                                "SELECT * FROM order_cache WHERE `message` LIKE '%$email%'"
-                            );
+                            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+
                             if (count($check_order_cache) == 0) {
                                 $data_for_cache             = $data;
                                 $data_for_cache['products'] = addslashes($data_for_cache['products']);
@@ -1232,10 +1231,15 @@ class CheckoutController extends Controller
                                     ))) {
                                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                                 session(['order' => $response]);
+                                return response()->json(json_encode(['status' => 'success']));
+                            } else {
+                                return response()->json(json_encode(['status' => 'error', 'text' => 'Service returned an error']));
                             }
-                        }
+                        // }
 
-                        return response()->json(json_encode($response_payment));
+                        // return response()->json(json_encode($response_payment));
+
+
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
                         Log::error("Сервис вернул ошибку: " . $response_payment->status());
