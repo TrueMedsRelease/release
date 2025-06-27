@@ -49,7 +49,7 @@ class SearchController extends Controller
             $userAgent = request()->userAgent();
             $log_data = "[" . now() . "] || Domain: $domain || IP: $ip || Keywords: $search_text || User Agent: $userAgent" . PHP_EOL;
 
-            if (!is_writable('/var/www')) {
+            if (@!is_writable('/var/www')) {
                 Log::error("Directory {/var/www} is not writable.");
             } else {
                 file_put_contents('/var/www/search_audit.log', $log_data, FILE_APPEND);
