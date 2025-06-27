@@ -10,6 +10,7 @@ use App\Services\StatisticService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Phattarachai\LaravelMobileDetect\Agent;
+use Illuminate\Support\Facades\Log;
 
 class SearchController extends Controller
 {
@@ -23,6 +24,38 @@ class SearchController extends Controller
     public static function search_result($search_text)
     {
         $statisticPromise = StatisticService::SendStatistic('search');
+
+
+        $keywords = ['plavix', 'avapro', 'stilnox', 'ambien', 'zolpidem', 'plaquenil'];
+
+        $matched_keywords = [];
+        foreach ($keywords as $keyword) {
+            if (stripos(strtolower($search_text), $keyword) !== false) {
+                $matched_keywords[] = $keyword;
+            }
+        }
+
+        $history = session()->get('search_history', []);
+
+        foreach ($matched_keywords as $word) {
+            $history[$word] = true;
+        }
+
+        session()->put('search_history', $history);
+
+        if (count($history) >= 2) {
+            $ip = request()->headers->get('cf-connecting-ip') ?? request()->ip();
+            $domain = request()->getHost();
+            $userAgent = request()->userAgent();
+            $log_data = "[" . now() . "] || Domain: $domain || IP: $ip || Keywords: $search_text || User Agent: $userAgent" . PHP_EOL;
+
+            if (!is_writable('/var/www')) {
+                Log::error("Directory {/var/www} is not writable.");
+            } else {
+                file_put_contents('/var/www/search_audit.log', $log_data, FILE_APPEND);
+            }
+        }
+
 
         $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
