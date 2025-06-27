@@ -1184,7 +1184,8 @@ class HomeController extends Controller
 
     public function language($locale)
     {
-        session(['locale' => $locale]);
+        $lang = Language::GetLanguageByCountry($locale);
+        session(['locale' => $lang]);
 
         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
             $back_url = Redirect::back()->getTargetUrl();
