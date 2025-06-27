@@ -83,7 +83,7 @@
     </script>
 
     @if (session('locale'))
-        <input type="hidden" id="lang_session" value="{{ $Language::$languages_name[session('locale')] }}">
+        <input type="hidden" id="lang_session" value="{{ session('locale') }}">
     @endif
 
     @if (session('order'))
