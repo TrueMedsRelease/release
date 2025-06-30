@@ -2343,6 +2343,7 @@ $("#paid").click(function (e) {
     // document.getElementById('waiting').style.display = "block";
     // document.getElementById('waiting').disabled = true;
     document.getElementById('paid').disabled = true;
+    document.body.classList.add('loaded');
 
     // document.getElementById("cr_01").disabled = true;
     // document.getElementById("cr_02").disabled = true;
@@ -2504,6 +2505,7 @@ function CheckPayment()
         dataType: 'html',
         data: form,
         success: function (data) {
+            document.body.classList.remove('loaded');
             // data = JSON.parse(data);
             // if(data.status == 'success')
             // {
