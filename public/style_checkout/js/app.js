@@ -2028,7 +2028,7 @@ $(".card_type .select__option").click(function (e) {
     flag = false;
     if (type == 'crypto') {
         document.getElementById('paid').style.display = "none";
-        document.getElementById('waiting').style.display = "none";
+        // document.getElementById('waiting').style.display = "none";
 
         if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
 
@@ -2165,7 +2165,7 @@ $(".card_type .select__option").click(function (e) {
     if (type != 'crypto') {
         PollingManager.stopAll();
         document.getElementById('paid').disabled = true;
-        document.getElementById('waiting').style.display = "none";
+        // document.getElementById('waiting').style.display = "none";
     }
 });
 
@@ -2251,7 +2251,7 @@ $('input[name="crypt_currency"]').click(function () {
         document.getElementById("requisites_load").hidden = false;
         document.getElementById("requisites").hidden = true;
         document.getElementById('paid').style.display = "none";
-        document.getElementById('waiting').style.display = "none";
+        // document.getElementById('waiting').style.display = "none";
         document.getElementById('paid').disabled = true;
         // console.log(currency, email.value, total.value);
 
@@ -2341,7 +2341,7 @@ $("#paid").click(function (e) {
     e.preventDefault();
     // document.getElementById('paid').style.display = "none";
     // document.getElementById('waiting').style.display = "block";
-    document.getElementById('waiting').disabled = true;
+    // document.getElementById('waiting').disabled = true;
     document.getElementById('paid').disabled = true;
 
     // document.getElementById("cr_01").disabled = true;
