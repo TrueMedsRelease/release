@@ -24,10 +24,10 @@ class AdvancedSqlInjectionChecker
         // ];
 
         $patterns = [
-            '/\b(select|union|insert|update|delete|drop|alter|create|truncate)\s+(from|into|set|values|where|join|table)/i', // Ключевые слова SQL с контекстом
-            '/(?:--|#|;)\s*$/m', // Комментарии и точка с запятой в конце строки
-            '/\b(and|or|xor|not)\b\s+[\w\s]+\s*(=|like|>|<|in|is|between)\s+[\w\s]+/i', // Условные операторы
-            '/\b(exec|execute|sp_executesql|xp_cmdshell)\b/i', // Команды выполнения
+            '/\b(select|union|insert|update|delete|drop|alter|create|truncate)\b.*?\b(from|into|set|values|where|join|table)?\b/i',
+            '/\b(and|or|xor|not)\b\s+[^\n]*?\s*(=|like|>|<|in|is|between)\s+[^\n]*/i',
+            '/\b(exec|execute|sp_executesql|xp_cmdshell)\b/i',
+            '/(\b(select|update|delete|insert|drop|exec|union)\b.*(;|\-\-|\#))/i', // опасные завершения строк
         ];
 
         foreach ($patterns as $pattern) {
@@ -36,21 +36,31 @@ class AdvancedSqlInjectionChecker
             }
         }
 
-        // var_dump($flag);
-
         // Дополнительная проверка на символы, которые часто используются в инъекциях
-        $specialChars = ['\'', '"', ';', '\\', '--', '#'];
+        // $specialChars = ['\'', '"', ';', '\\', '--', '#'];
 
-        foreach ($specialChars as $char) {
+        // foreach ($specialChars as $char) {
+        //     if (str_contains($input, $char)) {
+        //         // Игнорируем символы внутри строковых литералов
+        //         if (!preg_match('/(["\']).*?' . preg_quote($char, '/') . '.*?\1/', $input)) {
+        //             return true; // Обнаружена SQL-инъекция
+        //         }
+        //     }
+        // }
+
+        // Проверка на специальные символы только в SQL-подобном контексте
+        // (например, символ `'`, если не в JavaScript или HTML теге)
+        $sqlChars = ["'", '"', ";", "--", "#"];
+        foreach ($sqlChars as $char) {
+            // Проверим, не в HTML/JS ли контексте это
             if (str_contains($input, $char)) {
-                // Игнорируем символы внутри строковых литералов
-                if (!preg_match('/(["\']).*?' . preg_quote($char, '/') . '.*?\1/', $input)) {
-                    return true; // Обнаружена SQL-инъекция
+                // Если символ внутри <script> или "<...>", то безопасно
+                if (!preg_match('/<script.*?>.*?' . preg_quote($char, '/') . '.*?<\/script>/is', $input) &&
+                    !preg_match('/<[^>]+' . preg_quote($char, '/') . '[^>]*>/i', $input)) {
+                    return true;
                 }
             }
         }
-        
-        // var_dump($flag);
 
         return $flag;
     }
