@@ -2498,6 +2498,26 @@ function CheckPayment()
 
     form += "&customer_date=" + date;
 
+    // $.ajax({
+    //     url: '/check_payment',
+    //     type: 'POST',
+    //     cache: false,
+    //     dataType: 'html',
+    //     data: form,
+    //     success: function (data) {
+    //         $(".ploader").hide();
+    //         data = JSON.parse(data);
+
+    //         console.log(data);
+
+    //         // if(data.status == 'success')
+    //         // {
+    //             // window.location.replace("/complete");
+    //         // } else {
+    //         //     alert(data.text);
+    //         // }
+    //     }
+    // });
     $.ajax({
         url: '/check_payment',
         type: 'POST',
@@ -2505,14 +2525,34 @@ function CheckPayment()
         dataType: 'html',
         data: form,
         success: function (data) {
-            $(".ploader").hide();
-            // data = JSON.parse(data);
-            // if(data.status == 'success')
-            // {
+            var data = JSON.parse(data);
+
+            console.log(data);
+
+            if (data.response.status == 'SUCCESS') {
                 window.location.replace("/complete");
-            // } else {
-            //     alert(data.text);
-            // }
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
         }
     });
 }

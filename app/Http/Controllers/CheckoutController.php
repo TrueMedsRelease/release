@@ -1231,7 +1231,7 @@ class CheckoutController extends Controller
                                     ))) {
                                 DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                                 session(['order' => $response]);
-                                return response()->json(json_encode(['status' => 'success']));
+                                return response()->json(json_encode(['status' => 'success', 'response' => $response]));
                             } else {
                                 return response()->json(json_encode(['status' => 'error', 'text' => 'Service returned an error']));
                             }
