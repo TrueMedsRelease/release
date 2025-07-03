@@ -2498,26 +2498,6 @@ function CheckPayment()
 
     form += "&customer_date=" + date;
 
-    // $.ajax({
-    //     url: '/check_payment',
-    //     type: 'POST',
-    //     cache: false,
-    //     dataType: 'html',
-    //     data: form,
-    //     success: function (data) {
-    //         $(".ploader").hide();
-    //         data = JSON.parse(data);
-
-    //         console.log(data);
-
-    //         // if(data.status == 'success')
-    //         // {
-    //             // window.location.replace("/complete");
-    //         // } else {
-    //         //     alert(data.text);
-    //         // }
-    //     }
-    // });
     $.ajax({
         url: '/check_payment',
         type: 'POST',
@@ -2526,8 +2506,6 @@ function CheckPayment()
         data: form,
         success: function (data) {
             var data = JSON.parse(data);
-
-            console.log(data);
 
             if (data.response.status == 'SUCCESS') {
                 window.location.replace("/complete");
