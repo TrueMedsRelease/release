@@ -2505,6 +2505,7 @@ function CheckPayment()
         dataType: 'html',
         data: form,
         success: function (data) {
+            $(".ploader").hide();
             var data = JSON.parse(data);
 
             if (data.response.status == 'SUCCESS') {
