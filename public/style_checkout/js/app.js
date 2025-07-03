@@ -2506,13 +2506,32 @@ function CheckPayment()
         data: form,
         success: function (data) {
             $(".ploader").hide();
-            // data = JSON.parse(data);
-            // if(data.status == 'success')
-            // {
+            var data = JSON.parse(data);
+
+            if (data.response.status == 'SUCCESS') {
                 window.location.replace("/complete");
-            // } else {
-            //     alert(data.text);
-            // }
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
         }
     });
 }

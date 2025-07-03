@@ -985,8 +985,15 @@ class ProductServices
         $type = ProductTypeDesc::query()
             ->where('type_id', '=', $product_type) //$product_type получен в регионе Packaging
             ->where('language_id', '=', $language_id)
-            ->first('name')->name;
+            ->first('name');
         #endregion
+
+        if (!$type) {
+            $type = ProductTypeDesc::query()
+                ->where('type_id', '=', $product_type) //$product_type получен в регионе Packaging
+                ->where('language_id', '=', 1)
+                ->first('name');
+        }
 
         $product = $product->toArray()[0];
         unset($product['category']);
@@ -1155,7 +1162,7 @@ class ProductServices
         }
 
         $product['packs']    = $packs;
-        $product['type']     = $type;
+        $product['type']     = $type->name;
         $product['rec_name'] = $rec_name;
         $product['rec_url']  = $rec_url;
 
