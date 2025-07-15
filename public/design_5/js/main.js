@@ -100,7 +100,7 @@ $(document).on('click', '#message_send_button', function () {
 
     if (!error) {
         $.ajax({
-            url: '/request_contact_us',
+            url: routeRequestContactUs,
             type: "POST",
             cache: false,
             data: { 'name' : name,
@@ -154,7 +154,7 @@ $(document).on('click', '#affiliate_send_button', function () {
 
     if (!error) {
         $.ajax({
-            url:     '/request_affiliate',
+            url:     routeRequestAffiliate,
             type:     "POST",
             cache: false,
             data: { 'name' : name,
@@ -262,7 +262,7 @@ $(document).on('click', '.button_request_call', function () {
 
     if (number) {
         $.ajax({
-            url: '/request_call',
+            url: routeRequestCall,
             type: "POST",
             cache: false,
             data: {phone: phone_code+number},
@@ -362,7 +362,7 @@ $(document).on('click', '.button_sub', function () {
     let email = $('#email_sub').val();
     if (email) {
         $.ajax({
-            url: '/request_subscribe',
+            url: routeRequestSubscribe,
             type: "POST",
             cache: false,
             data: {email: email},
@@ -423,7 +423,7 @@ $(document).on('click', '.push_allow', function () {
 
 if ($('#order_info_session').val()) {
     $.ajax({
-        url: '/push/save_push',
+        url: routeSavePush,
         type: "POST",
         data: {
             method: 'update_customer',

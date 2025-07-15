@@ -11,7 +11,7 @@
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
-    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>

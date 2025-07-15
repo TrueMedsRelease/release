@@ -1,6 +1,6 @@
 function up(pack_id) {
     $.ajax({
-        url: '/cart/up',
+        url: routeCartUp,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -14,7 +14,7 @@ function up(pack_id) {
 
 function down(pack_id) {
     $.ajax({
-        url: '/cart/down',
+        url: routeCartDown,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -28,7 +28,7 @@ function down(pack_id) {
 
 function remove(pack_id) {
     $.ajax({
-        url: '/cart/remove',
+        url: routeCartRemove,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -49,7 +49,7 @@ function remove(pack_id) {
 
 function upgrade(pack_id) {
     $.ajax({
-        url: '/cart/upgrade',
+        url: routeCartUpgrade,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -85,7 +85,7 @@ function maxLengthCheck(object)
 function change_shipping(shipping_name, shipping_price)
 {
     $.ajax({
-        url: '/cart/change-shipping',
+        url: routeCartShipping,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -100,7 +100,7 @@ function change_shipping(shipping_name, shipping_price)
 function change_bonus(bonus_id, bonus_price)
 {
     $.ajax({
-        url: '/cart/change-bonus',
+        url: routeCartBonus,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -135,7 +135,7 @@ function change_bonus(bonus_id, bonus_price)
 function addCard() {
     let value_card = $('.select_current_gift').attr('curr_packaging_id');
     $.ajax({
-        url: '/cart/up',
+        url: routeCartUp,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -165,7 +165,7 @@ function enterProfile() {
         $('#captcha_error').show();
     } else {
         $.ajax({
-            url: '/check_code',
+            url: routeCheckCode,
             type: 'POST',
             cache: false,
             dataType: 'json',
@@ -183,7 +183,7 @@ function enterProfile() {
 
                 if (!$('#captcha_error').is(':visible') && !$('#email_error').is(':visible')) {
                     $.ajax({
-                        url: '/request_login',
+                        url: routeRequestLogin,
                         type: 'POST',
                         cache: false,
                         dataType: 'json',

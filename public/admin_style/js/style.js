@@ -16,7 +16,7 @@ function logIn() {
         $('#captcha_error').hide();
 
         $.ajax({
-            url: '/check_code',
+            url: routeCheckCode,
             type: 'POST',
             cache: false,
             dataType: 'json',
@@ -35,7 +35,7 @@ function logIn() {
 
                 if (!$('#captcha_error').is(':visible') && !$('#password_error').is(':visible')) {
                     $.ajax({
-                        url: '/admin/request_login',
+                        url: routeAdminRequestLogin,
                         type: 'POST',
                         cache: false,
                         dataType: 'json',
@@ -60,7 +60,7 @@ function addToMain() {
     let selected_ids = $('#not_showed_on_main_page_products_field').val();
 
     $.ajax({
-        url: '/admin/main_page/add_to_main',
+        url: routeAdminAddToMain,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -82,7 +82,7 @@ function deleteFromMain() {
     let selected_ids = $('#products_on_main_field').val();
 
     $.ajax({
-        url: '/admin/main_page/delete_from_main',
+        url: routeAdminDeleteFromMain,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -104,7 +104,7 @@ function productUpInSort() {
     let selected_ids = $('#products_on_main_field').val();
 
     $.ajax({
-        url: '/admin/main_page/product_up_in_sort',
+        url: routeAdminProductUpInSort,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -126,7 +126,7 @@ function productDownInSort() {
     let selected_ids = $('#products_on_main_field').val();
 
     $.ajax({
-        url: '/admin/main_page/product_down_in_sort',
+        url: routeAdminProductDownInSort,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -171,7 +171,7 @@ function saveUserProperties() {
 
     if (!$('#new_password_error').is(':visible') && !$('#new_password_repeat_error').is(':visible')) {
         $.ajax({
-            url: '/admin/main_properties/save_user_properties',
+            url: routeAdminSaveUserProperties,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -195,7 +195,7 @@ function saveTemplate() {
     let selected_template = $('input[name="template_name_field"]:checked').val();
 
     $.ajax({
-        url: '/admin/main_properties/save_template',
+        url: routeAdminSaveTemplate,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -218,9 +218,13 @@ function loadPageProperties() {
     let page = $('#pages_field').val();
     let language_id = $('#language_field').val();
 
+    window.addEventListener('beforeunload', () => {
+        sessionStorage.setItem('scrollY', window.scrollY);
+    });
+
     if (page != null && language_id != null) {
         $.ajax({
-            url: '/admin/main_properties/load_page_properties',
+            url: routeAdminLoadPageProperties,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -236,6 +240,13 @@ function loadPageProperties() {
                     $('#properties_content').html(data.html);
                     $('#pages_field option[value="' + page + '"]').attr('selected', "selected");
                     $('#language_field option[value=' + language_id + ']').attr('selected', "selected");
+
+                    let el = document.getElementById("page_properties_form");
+                    let position = el.getBoundingClientRect().top + window.pageYOffset;
+
+                    window.scrollTo({
+                        top: position - 200
+                    });
                 }
             }
         });
@@ -255,7 +266,7 @@ function savePageProperties() {
     if (page != null && language_id != null) {
         if (title != '' && keyword != '' && description != '') {
             $.ajax({
-                url: '/admin/main_properties/save_page_properties',
+                url: routeAdminSavePageProperties,
                 type: 'POST',
                 cache: false,
                 dataType: 'html',
@@ -288,7 +299,7 @@ function addProductToShowed() {
     let selected_ids = $('#not_showed_products_field').val();
 
     $.ajax({
-        url: '/admin/available_products/add_to_showed',
+        url: routeAdminAddToShowed,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -310,7 +321,7 @@ function deleteProductFromShowed() {
     let selected_ids = $('#showed_products_field').val();
 
     $.ajax({
-        url: '/admin/available_products/delete_from_showed',
+        url: routeAdminDeleteFromShowed,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -331,7 +342,7 @@ function deleteProductFromShowed() {
 function loadProductPackaging(product_id) {
     if (product_id) {
         $.ajax({
-            url: '/admin/available_packagings/load_packaging_info',
+            url: routeAdminLoadPackagingInfo,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -360,7 +371,7 @@ function addPackagngInShowed() {
 
     if (product_id) {
         $.ajax({
-            url: '/admin/available_packagings/add_pack_to_showed',
+            url: routeAdminAddPackToShowed,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -390,7 +401,7 @@ function deletePackagngFromShowed() {
 
     if (product_id) {
         $.ajax({
-            url: '/admin/available_packagings/delete_pack_from_showed',
+            url: routeAdminDeletePackFromShowed,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -420,7 +431,7 @@ function packagingUpInSort() {
 
     if (product_id) {
         $.ajax({
-            url: '/admin/available_packagings/packaging_up_in_sort',
+            url: routeAdminPackagingUpInSort,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -450,7 +461,7 @@ function packagingDownInSort() {
 
     if (product_id) {
         $.ajax({
-            url: '/admin/available_packagings/packaging_down_in_sort',
+            url: routeAdminPackagingDownInSort,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -477,7 +488,7 @@ function packagingDownInSort() {
 function loadProductInfo(product_id) {
     if (product_id) {
         $.ajax({
-            url: '/admin/products/load_product_info',
+            url: routeAdminLoadProductInfo,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -507,7 +518,7 @@ function saveProductInfo() {
     }, {});
 
     $.ajax({
-        url: '/admin/products/save_product_info',
+        url: routeAdminSaveProductInfo,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -528,7 +539,7 @@ function saveProductInfo() {
 function loadProductURL(product_id) {
     if (product_id) {
         $.ajax({
-            url: '/admin/seo/load_product_url',
+            url: routeAdminLoadProductUrl,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -545,6 +556,13 @@ function loadProductURL(product_id) {
                     $('#all_products_field option[value=' + product_id + ']').attr('selected', "selected");
                     let position = $('#all_products_field option[value=' + product_id + ']').offset().top;
                     $('#all_products_field').scrollTop(position - 500);
+
+                    let el = document.getElementById("products_form");
+                    let position_block = el.getBoundingClientRect().top + window.pageYOffset;
+
+                    window.scrollTo({
+                        top: position_block - 200
+                    });
                 }
             }
         });
@@ -558,7 +576,7 @@ function saveProductURL() {
     }, {});
 
     $.ajax({
-        url: '/admin/seo/save_product_url',
+        url: routeAdminSaveProductUrl,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -583,7 +601,7 @@ function saveLanguagesInfo() {
     }, {});
 
     $.ajax({
-        url: '/admin/save_languages_info',
+        url: routeAdminSaveLanguagesInfo,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -608,7 +626,7 @@ function saveCurrenciesInfo() {
     }, {});
 
     $.ajax({
-        url: '/admin/save_currencies_info',
+        url: routeAdminSaveCurrenciesInfo,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -629,7 +647,7 @@ function saveCurrenciesInfo() {
 function loadPixelData(page) {
     if (page) {
         $.ajax({
-            url: '/admin/seo/load_pixel',
+            url: routeAdminLoadPixel,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -660,7 +678,7 @@ function SavePixelData() {
         if (pixel_text['pixel_text'].includes('<script>') && pixel_text['pixel_text'].includes('</script>')) {
             if (selected_page) {
                 $.ajax({
-                    url: '/admin/seo/save_pixel',
+                    url: routeAdminSavePixel,
                     type: 'POST',
                     cache: false,
                     dataType: 'html',
@@ -693,7 +711,7 @@ function saveGiftCardInfo() {
 
     if (card_info) {
         $.ajax({
-            url: '/admin/available_products/gift_card_info',
+            url: routeAdminGiftCardInfo,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -718,7 +736,7 @@ function saveCheckoutInfo() {
     // let default_secret = $('input[name="default_secret"]:checked').val();
     // let paypal_setting = $('input[name="paypal_setting"]:checked').val();
     $.ajax({
-        url: '/admin/checkout/save_checkout_info',
+        url: routeAdminSaveCheckoutInfo,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -743,7 +761,7 @@ function saveSubscribePopupInfo() {
     let popup_status = $('input[name="subsc_popup_info"]:checked').val();
 
     $.ajax({
-        url: '/admin/main_page/save_subscribe_info',
+        url: routeAdminSaveSubscribeInfo,
         type: 'POST',
         cache: false,
         dataType: 'html',

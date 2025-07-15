@@ -5,7 +5,7 @@
 
 @section('style_title', 'text-align: center;')
 @section('page_name')
-    <img loading="lazy" src="/admin_style/images/logo_truemeds.png">
+    <img loading="lazy" src="{{ asset("admin_style/images/logo_truemeds.png") }}">
 @endsection
 
 @section('content')
@@ -37,7 +37,7 @@
                 <button name="enter" type="button" onclick="show_loading_message('login_messages', '{{__('text.admin_common_loading_message')}}'); logIn();" class=" jqTransformButton jqTransformButton_hover popup__button popup__button--login button button--filled">
                     <span>{{__('text.admin_login_form_button')}}</span>
                     <svg width="15" height="15">
-                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-arr-top-right"></use>
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-arr-top-right") }}"></use>
                     </svg>
                 </button>
 			</form>

@@ -53,7 +53,7 @@
                             <td width="10%;">&nbsp;</td>
                             <td width="50%;" valign="center">
                                 @foreach ($templates as $cur_template_ar)
-                                    <img id="{{ $cur_template_ar['name'] }}_image" src="{{ $cur_template_ar['scrin'] }}" width="200" alt="" style="display: @if ($cur_template_ar['name'] == $cur_template) block @else none @endif">
+                                    <img id="{{ $cur_template_ar['name'] }}_image" src="{{ asset($cur_template_ar['scrin']) }}" width="200" alt="" style="display: @if ($cur_template_ar['name'] == $cur_template) block @else none @endif">
                                 @endforeach
                             </td>
                         </tr>
@@ -67,7 +67,7 @@
                         {{__('text.admin_main_properties_password_form_submit')}}
                     </span>
                     <svg width="20" height="20">
-                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                     </svg>
                 </button>
             </div>
@@ -123,7 +123,7 @@
                         {{__('text.admin_main_properties_password_form_submit')}}
                     </span>
                     <svg width="20" height="20">
-                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                     </svg>
                 </button>
             </div>
@@ -220,7 +220,7 @@
                         Load
                     </span>
                     <svg width="20" height="20">
-                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                     </svg>
                 </button> -->
                 <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); savePageProperties();">
@@ -228,7 +228,7 @@
                         {{__('text.admin_main_properties_titles_and_tags_form_submit')}}
                     </span>
                     <svg width="20" height="20">
-                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                     </svg>
                 </button>
             </div>
@@ -288,7 +288,7 @@
                                     {{__('text.admin_products_products_form_submit')}}
                                 </span>
                                 <svg width="20" height="20">
-                                    <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                                 </svg>
                             </button>
                         </td>
@@ -318,7 +318,7 @@
                                     {{__('text.admin_products_products_form_submit')}}
                                 </span>
                                 <svg width="20" height="20">
-                                    <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                                 </svg>
                             </button>
                         </td>

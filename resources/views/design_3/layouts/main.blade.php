@@ -55,10 +55,10 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script defer type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("js/sw-setup.js") }}"></script>
     @endif
 
-    <script type="text/javascript" src="{{ asset("/js/delete_cache.js") }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
 
     {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
@@ -67,7 +67,7 @@
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
-    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 <body>
@@ -91,8 +91,8 @@
 	<header class="header">
 
         {{-- <div class="christmas" style="display: none">
-            <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}">
-            <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
+            <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
+            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
         </div> --}}
 
 		<div class="header__phones-top top-phones-header">
@@ -246,132 +246,132 @@
                 <ul class="pay-index__list">
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#visa">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#visa') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#mastercard">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#mastercard') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#maestro">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#maestro') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#discover">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#discover') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amex">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#amex') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#jsb">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#jsb') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#unionpay">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#unionpay') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#dinners-club">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#dinners-club') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#apple-pay">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#apple-pay') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#google-pay">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#google-pay') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#amazon-pay">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#amazon-pay') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#stripe">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#stripe') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#paypal">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#paypal') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#sepa">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#sepa') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#cashapp">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#cashapp') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#adyen">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#adyen') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#skrill">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#skrill') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#worldpay">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#worldpay') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#payline">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#payline') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#bitcoin">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#bitcoin') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#binance-coin">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#binance-coin') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#ethereum">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#ethereum') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#litecoin">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#litecoin') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#tron">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#tron') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(erc20)">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#usdt(erc20)') }}">
                         </svg>
                     </li>
                     <li class="pay-index__item">
                         <svg>
-                            <use width="100%" height="100%" href="/pub_images/pay_icons/sprite.svg#usdt(trc20)">
+                            <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#usdt(trc20)') }}">
                         </svg>
                     </li>
                 </ul>
@@ -436,7 +436,7 @@
     <main class="page">
         <div class="page__container page__container--home">
             <div class="christmas top" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
-                <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_middle.png") }}">
+                <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_middle.png") }}">
                 <div></div>
             </div>
             @yield('title_3', '')
@@ -595,7 +595,7 @@
             </div>
 
             <div class="christmas bottom" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
-                <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+                <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
                 <div></div>
             </div>
         @yield('content')
@@ -665,67 +665,67 @@
             <ul class="ship-index__list">
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usps' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#usps" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#usps') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ems' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ems" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#ems') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dhl' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dhl" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#dhl') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ups' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#ups" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#ups') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' fedex' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#fedex" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#fedex') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tnt' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#tnt" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#tnt') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' postnl' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#postnl" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#postnl') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' deutsche_post' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#deutsche_post" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#deutsche_post') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dpd' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#dpd" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#dpd') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' gls' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#gls" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#gls') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' australia_post' }}" @endif>
-                        <use width="100%" height="100%" width="100%" href="/pub_images/shipping/sprite.svg#australia_post" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" width="100%" href="{{ asset('pub_images/shipping/sprite.svg#australia_post') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' colissimo' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#colissimo" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#colissimo') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
                 <li class="ship-index__item">
                     <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' correos' }}" @endif>
-                        <use width="100%" height="100%" href="/pub_images/shipping/sprite.svg#correos" preserveAspectRatio="xMinYMin">
+                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#correos') }}" preserveAspectRatio="xMinYMin">
                     </svg>
                 </li>
             </ul>
@@ -960,8 +960,29 @@
         </div>
     </footer>
 </div>
+
+<script>
+    const routeRequestCall = "{{ route('home.request_call') }}";
+    const routeRequestSubscribe = "{{ route('home.request_subscribe') }}";
+    const routeRequestContactUs = "{{ route('home.request_contact_us') }}";
+    const routeRequestAffiliate = "{{ route('home.request_affiliate') }}";
+
+    const routeCartUp = "{{ route('cart.up') }}";
+    const routeCartDown = "{{ route('cart.down') }}";
+    const routeCartRemove = "{{ route('cart.remove') }}";
+    const routeCartUpgrade = "{{ route('cart.upgrade') }}";
+    const routeCartShipping = "{{ route('cart.shipping') }}";
+    const routeCartBonus = "{{ route('cart.bonus') }}";
+
+    const routeCheckCode = "{{ route('home.check_code') }}";
+    const routeRequestLogin = "{{ route('home.request_login') }}";
+
+    const routeSavePush = "{{ route('home.save_push_data') }}";
+</script>
+
 <script defer src="{{ asset("$design/js/app.js") }}"></script>
-<script defer src="{{ asset("/js/all_js.js") }}"></script>
+<script defer src="{{ asset("js/all_js.js") }}"></script>
+
 @if ($web_statistic)
     <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
 @endif

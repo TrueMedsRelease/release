@@ -27,7 +27,7 @@
                                     {{__('text.admin_currencies_currencies_form_submit')}}
                                 </span>
                                 <svg width="20" height="20">
-                                    <use xlink:href="/admin_style/images/icons/icons.svg#svg-checkmark"></use>
+                                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                                 </svg>
                             </span>
                         </button>
@@ -59,9 +59,9 @@
                     </select>
                 </td>
                 <td valign="middle" width="10%" align="center">
-                    <span class="right_icon" id="add_button" title="{#add_to_list_of_showed_products_text#}" style="cursor: pointer"
+                    <span class="right_icon" id="add_button" title="{{ __('text.admin_products_show_add_to_list_of_showed_products_text') }}" style="cursor: pointer"
                     onclick="addProductToShowed()">&nbsp;</span><br />
-                    <span class="left_icon" id="delete_button" title="{#delete_from_list_of_showed_products_text#}" style="cursor: pointer"
+                    <span class="left_icon" id="delete_button" title="{{ __('text.admin_products_show_delete_from_list_of_showed_products_text') }}" style="cursor: pointer"
                     onclick="deleteProductFromShowed()">&nbsp;</span><br />
                 </td>
                 <td valign="top" width="35%">

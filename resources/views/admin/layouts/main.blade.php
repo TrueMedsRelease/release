@@ -79,7 +79,7 @@
                                 <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
                                         <svg width="20" height="20">
-                                            <use xlink:href="/admin_style/images/icons/icons.svg#svg-sign-out"></use>
+                                            <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-sign-out") }}"></use>
                                         </svg>
                                     </a>
 								</li>
@@ -92,7 +92,7 @@
 					<div class="header__profile profile-header" data-da=".header__row, 479.98, 1">
 						<div class="profile-header__icon">
 							<svg width="20" height="20">
-								<use xlink:href="/admin_style/images/icons/icons.svg#svg-user"></use>
+								<use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-user") }}"></use>
 							</svg>
 						</div>
 						<div class="profile-header__info">
@@ -102,7 +102,7 @@
 					</div>
 					<a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
 						<svg width="20" height="20">
-							<use xlink:href="/admin_style/images/icons/icons.svg#svg-sign-out"></use>
+							<use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-sign-out") }}"></use>
 						</svg>
 					</a>
 				</div> --}}
@@ -131,7 +131,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="20">
-                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-tg"></use>
+                                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-tg") }}"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -144,7 +144,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="20">
-                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-tg"></use>
+                                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-tg") }}"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -157,7 +157,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="19" height="28">
-                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-jabber"></use>
+                                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-jabber") }}"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -170,7 +170,7 @@
                             <a class="item-social">
                                 <div class="item-social__icon">
                                     <svg width="23" height="24">
-                                        <use xlink:href="/admin_style/images/icons/icons.svg#svg-jabber"></use>
+                                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-jabber") }}"></use>
                                     </svg>
                                 </div>
                                 <div class="item-social__info">
@@ -186,6 +186,39 @@
     </footer>
 
     </div>
-    <script src="{{ asset("/admin_style/js/style.js") }}"></script>
+
+    <script>
+        const routeCheckCode = "{{ route('home.check_code') }}";
+
+        const routeAdminRequestLogin = "{{ route('admin.request_login') }}";
+        const routeAdminAddToMain = "{{ route('admin.add_to_main') }}";
+        const routeAdminDeleteFromMain = "{{ route('admin.delete_from_main') }}";
+        const routeAdminProductUpInSort = "{{ route('admin.product_up_in_sort') }}";
+        const routeAdminProductDownInSort = "{{ route('admin.product_down_in_sort') }}";
+        const routeAdminSaveUserProperties = "{{ route('admin.save_user_properties') }}";
+        const routeAdminSaveTemplate = "{{ route('admin.save_template') }}";
+        const routeAdminLoadPageProperties = "{{ route('admin.load_page_properties') }}";
+        const routeAdminSavePageProperties = "{{ route('admin.save_page_properties') }}";
+        const routeAdminAddToShowed = "{{ route('admin.add_to_showed') }}";
+        const routeAdminDeleteFromShowed = "{{ route('admin.delete_from_showed') }}";
+        const routeAdminLoadPackagingInfo = "{{ route('admin.load_packaging_info') }}";
+        const routeAdminAddPackToShowed = "{{ route('admin.add_pack_to_showed') }}";
+        const routeAdminDeletePackFromShowed = "{{ route('admin.delete_pack_from_showed') }}";
+        const routeAdminPackagingUpInSort = "{{ route('admin.packaging_up_in_sort') }}";
+        const routeAdminPackagingDownInSort = "{{ route('admin.packaging_down_in_sort') }}";
+        const routeAdminLoadProductInfo = "{{ route('admin.load_product_info') }}";
+        const routeAdminSaveProductInfo = "{{ route('admin.save_product_info') }}";
+        const routeAdminLoadProductUrl = "{{ route('admin.load_product_url') }}";
+        const routeAdminSaveProductUrl = "{{ route('admin.save_product_url') }}";
+        const routeAdminSaveLanguagesInfo = "{{ route('admin.save_languages_info') }}";
+        const routeAdminSaveCurrenciesInfo = "{{ route('admin.save_currencies_info') }}";
+        const routeAdminLoadPixel = "{{ route('admin.load_pixel') }}";
+        const routeAdminSavePixel = "{{ route('admin.save_pixel') }}";
+        const routeAdminGiftCardInfo = "{{ route('admin.gift_card_info') }}";
+        const routeAdminSaveCheckoutInfo = "{{ route('admin.save_checkout_info') }}";
+        const routeAdminSaveSubscribeInfo = "{{ route('admin.save_subscribe_info') }}";
+    </script>
+
+    <script src="{{ asset("admin_style/js/style.js") }}"></script>
 </body>
 </html>

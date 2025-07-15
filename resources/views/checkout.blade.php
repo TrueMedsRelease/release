@@ -94,7 +94,7 @@
 		<div class="popup_block_insur">
 			<button type="button" class="close_popup">
 				<svg width="20" height="20">
-					<use xlink:href="/style_checkout/images/icons/icons.svg#svg-close"></use>
+					<use xlink:href="{{ asset('style_checkout/images/icons/icons.svg#svg-close') }}"></use>
 				</svg>
 			</button>
 			<h3 class="popup_head">{{__('text.checkout_notice')}}</h3>

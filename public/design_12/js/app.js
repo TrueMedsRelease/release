@@ -1130,13 +1130,29 @@ $(document).on('click', '.push_allow', function () {
     enableNotif();
 });
 
+if ($('#order_info_session').val()) {
+    $.ajax({
+        url: routeSavePush,
+        type: "POST",
+        data: {
+            method: 'update_customer',
+            user_push: getCookie('user_push') ? getCookie('user_push') : '',
+            order_info: $('#order_info_session').val(),
+        },
+        dataType: "json",
+        success: function (res) {
+            console.log('ok');
+        }
+    });
+}
+
 $(document).on('click', '.button_request_call', function () {
     let phone_code = $('.iti__selected-dial-code').text();
     let number = $('#callback-phone').val().replace(/[\s()\-]/g, '');
 
     if (number && containsOnlyDigits(number)) {
         $.ajax({
-            url: '/request_call',
+            url: routeRequestCall,
             type: "POST",
             cache: false,
             data: {phone: phone_code+number},
@@ -1146,7 +1162,7 @@ $(document).on('click', '.button_request_call', function () {
                     $('.popup_bottom').hide();
                     $('[data-name="call"] .dialog__header').hide();
                     $('[data-name="call"] .callback-form').hide();
-                    
+
                     const mesa = document.querySelector('.message_sended');
                     mesa.classList.remove('hidden');
                     mesa.classList.add('active');
@@ -1163,7 +1179,7 @@ $(document).on('click', '.button_sub', function () {
 
     if (email) {
         $.ajax({
-            url: '/request_subscribe',
+            url: routeRequestSubscribe,
             type: "POST",
             cache: false,
             data: {email: email},
@@ -1230,7 +1246,7 @@ function sendAjaxContact() {
 
     if (!error) {
         $.ajax({
-            url: '/request_contact_us',
+            url: routeRequestContactUs,
             type: "POST",
             cache: false,
             data: {
@@ -1295,7 +1311,7 @@ function sendAjaxAffiliate() {
 
     if (!error) {
         $.ajax({
-            url:     '/request_affiliate',
+            url:     routeRequestAffiliate,
             type:     "POST",
             cache: false,
             data: {

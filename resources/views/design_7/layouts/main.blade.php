@@ -55,10 +55,10 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script defer type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("js/sw-setup.js") }}"></script>
     @endif
 
-    <script type="text/javascript" src="{{ asset("/js/delete_cache.js") }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
 
     {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
@@ -67,7 +67,7 @@
     <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
     <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
-    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
@@ -152,8 +152,8 @@
         <header class="header">
 
             {{-- <div class="christmas" style="display: none">
-                <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}">
-                <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
+                <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
+                <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
             </div> --}}
 
             <div class="header__phones-top top-phones-header">
@@ -295,9 +295,28 @@
                 {{ __('text.license_text_license2_d7') }}
             </p>
 
+            <script>
+                const routeRequestCall = "{{ route('home.request_call') }}";
+                const routeRequestSubscribe = "{{ route('home.request_subscribe') }}";
+                const routeRequestContactUs = "{{ route('home.request_contact_us') }}";
+                const routeRequestAffiliate = "{{ route('home.request_affiliate') }}";
+
+                const routeCartUp = "{{ route('cart.up') }}";
+                const routeCartDown = "{{ route('cart.down') }}";
+                const routeCartRemove = "{{ route('cart.remove') }}";
+                const routeCartUpgrade = "{{ route('cart.upgrade') }}";
+                const routeCartShipping = "{{ route('cart.shipping') }}";
+                const routeCartBonus = "{{ route('cart.bonus') }}";
+
+                const routeCheckCode = "{{ route('home.check_code') }}";
+                const routeRequestLogin = "{{ route('home.request_login') }}";
+
+                const routeSavePush = "{{ route('home.save_push_data') }}";
+            </script>
+
             <script defer src="{{ asset("$design/js/app.js") }}"></script>
             <script defer src="{{ asset("$design/js/main.js") }}"></script>
-            <script defer src="{{ asset('/js/all_js.js') }}"></script>
+            <script defer src="{{ asset('js/all_js.js') }}"></script>
 
         </footer>
 

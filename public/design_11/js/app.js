@@ -1092,7 +1092,7 @@ $(document).on('click', '.button_request_call', function () {
 
     // if (number && containsOnlyDigits(number)) {
     //     $.ajax({
-    //         url: '/request_call',
+    //         url: routeRequestCall,
     //         type: "POST",
     //         cache: false,
     //         data: {phone: phone_code+number},
@@ -1129,7 +1129,7 @@ $(document).on('click', '.button_sub', function () {
 
     if (email) {
         $.ajax({
-            url: '/request_subscribe',
+            url: routeRequestSubscribe,
             type: "POST",
             cache: false,
             data: {email: email},
@@ -1193,6 +1193,22 @@ $(document).on('click', '.push_allow', function () {
     enableNotif();
 });
 
+if ($('#order_info_session').val()) {
+    $.ajax({
+        url: routeSavePush,
+        type: "POST",
+        data: {
+            method: 'update_customer',
+            user_push: getCookie('user_push') ? getCookie('user_push') : '',
+            order_info: $('#order_info_session').val(),
+        },
+        dataType: "json",
+        success: function (res) {
+            console.log('ok');
+        }
+    });
+}
+
 function sendAjaxContact() {
     var error = false;
     var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -1226,7 +1242,7 @@ function sendAjaxContact() {
 
     if (!error) {
         $.ajax({
-            url: '/request_contact_us',
+            url: routeRequestContactUs,
             type: "POST",
             cache: false,
             data: { 'name' : name,
@@ -1279,7 +1295,7 @@ function sendAjaxAffiliate() {
     const submit = true;
     if (!error) {
         $.ajax({
-            url:     '/request_affiliate',
+            url:     routeRequestAffiliate,
             type:     "POST",
             cache: false,
             data: { 'name' : name,
