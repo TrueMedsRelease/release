@@ -1,4 +1,34 @@
+@php
+    $phone_arr = [
+        1 => 'US',
+        2 => 'CA',
+        3 => 'AU',
+        4 => 'UK',
+        5 => 'FR',
+        6 => 'ES',
+        7 => 'NZ',
+        8 => 'DK',
+        9 => 'SE',
+        10 => 'CH',
+        11 => 'CZ',
+        12 => 'FI',
+        13 => 'GR',
+        14 => 'PT',
+        15 => 'DE',
+        16 => 'IT',
+        17 => 'NL'
+    ];
 
+    $country_code = session('location.country', 'US');
+
+    if ($country_code && in_array($country_code, $phone_arr)) {
+        $target_key = array_search($country_code, $phone_arr);
+        $target_value = $phone_arr[$target_key];
+        unset($phone_arr[$target_key]);
+
+        $phone_arr = [$target_key => $target_value] + $phone_arr;
+    }
+@endphp
 <header class="header">
     {{-- <div class="christmas" style="display: none">
         <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
@@ -8,23 +38,13 @@
     <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
     <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
     <input type="hidden" id="app_sepa_on" @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"])) value="1" @else value="0" @endif>
+    <input type="hidden" id="app_zelle_on" @if(env('APP_ZELLE_ON', 0) && in_array(session('location.country'), ["US"])) value="1" @else value="0" @endif>
     <div class="header__phones-top top-phones-header">
         <div class="top-phones-header__container header__container">
             <div class="top-phones-header__items">
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}
-                    {{__('text.phones_title_phone_1')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}
-                    {{__('text.phones_title_phone_2')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}
-                    {{__('text.phones_title_phone_3')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}
-                    {{__('text.phones_title_phone_4')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}
-                    {{__('text.phones_title_phone_5')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}
-                    {{__('text.phones_title_phone_6')}}</a>
-                <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}
-                    {{__('text.phones_title_phone_7')}}</a>
+                @foreach ($phone_arr as $id_phone => $phones)
+                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a>
+                @endforeach
             </div>
         </div>
     </div>
@@ -589,6 +609,9 @@
                                         @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
                                             <option value="sepa" @selected(session('form.payment_type', 'card') == 'sepa')>SEPA</option>
                                         @endif
+                                        @if(env('APP_ZELLE_ON', 0) && in_array(session('location.country'), ["US"]))
+                                            <option value="zelle" @selected(session('form.payment_type', 'card') == 'zelle')>ZELLE</option>
+                                        @endif
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif --}}
@@ -1034,6 +1057,116 @@
                             </div>
                         @endif
 
+                        @if (env('APP_ZELLE_ON', 0) == 1 && in_array(session('location.country'), ["US"]))
+                            <div class="enter-info__zelle-content"  @if (session('form.payment_type', 'card') != 'zelle') hidden @endif>
+                                <div class="content-zelle">
+                                    <div id="zelle_requisites" @if (empty(session('zelle'))) hidden @endif>
+                                        <div class="details-payment__rows" style="margin-bottom: 30px;">
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">Zelle {{ __('text.contact_us_name') }}:</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="zelle_name" class="details-payment__amount">{{ session('zelle.name', '') }}</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">Zelle {{ __('text.contact_us_email') }}:</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="zelle_email" class="details-payment__amount">{{ session('zelle.email', '') }}</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">{{ __('text.checkout_zelle_order') }}</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="zelle_orderId" class="details-payment__amount">{{ session('zelle.orderId', 0) }}</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
+                                                <div class="details-payment__data">
+                                                    <h3 class="details-payment__title">{{__('text.checkout_amount')}}:</h3>
+                                                    <div class="details-payment__cells">
+                                                        <span id="purse"
+                                                            class="details-payment__amount">{{ $Currency::Convert(session('total.checkout_total', 0)) }}</span>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="details-payment__copy-button">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                                <div class="details-payment__tip">
+                                                    <svg width="18" height="18">
+                                                        <use
+                                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                        </use>
+                                                    </svg>
+                                                    <span>{{__('text.checkout_copy')}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="enter-info__button button" id="proccess_zelle">
+                                            <span>{{__('text.checkout_paid')}}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="enter-info__button button" id="get_zelle_data" @if(session('zelle')) style="display: none" @endif>
+                                    <span>{{ __('text.checkout_zelle_continue') }}</span>
+                                </button>
+                            </div>
+                        @endif
+
                         {{-- <div class="enter-info__gift-card-content" {if $rest_total !==0}hidden{/if}>
                             <button id="proccess_gift_card" name="proccess" class="enter-info__button button">
                                 <span>{#place#}</span>
@@ -1061,7 +1194,7 @@
             </div>
         </form>
     </div>
-    <script src="{{ asset('style_checkout/js/app.js') }}"></script>
+    <script src="{{ asset('style_checkout/js/app.js?v=1257') }}"></script>
 </main>
 <footer class="footer">
     <div class="footer__container">

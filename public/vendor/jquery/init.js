@@ -19,7 +19,7 @@ $(document).ready(
         /*
          * Инициализация автокомплита (поиска по таблеткам)
          */
-        $("#autocomplete").autocomplete("/search_autocomplete", {
+        $("#autocomplete").autocomplete(routeSearchAutocomplete, {
             delay: 10,
             minChars: 3,
             matchSubset: 3,
@@ -43,7 +43,7 @@ $(document).ready(
 
         if (!!document.getElementById("shopping_cart")) {
             $.ajax({
-                url: '/cart_content',
+                url: routeCartContent,
                 type: 'GET',
                 cache: false,
                 dataType: 'html',

@@ -16,6 +16,37 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
+@php
+    $phone_arr = [
+        1 => 'US',
+        2 => 'CA',
+        3 => 'AU',
+        4 => 'UK',
+        5 => 'FR',
+        6 => 'ES',
+        7 => 'NZ',
+        8 => 'DK',
+        9 => 'SE',
+        10 => 'CH',
+        11 => 'CZ',
+        12 => 'FI',
+        13 => 'GR',
+        14 => 'PT',
+        15 => 'DE',
+        16 => 'IT',
+        17 => 'NL'
+    ];
+
+    $country_code = session('location.country', 'US');
+
+    if ($country_code && in_array($country_code, $phone_arr)) {
+        $target_key = array_search($country_code, $phone_arr);
+        $target_value = $phone_arr[$target_key];
+        unset($phone_arr[$target_key]);
+
+        $phone_arr = [$target_key => $target_value] + $phone_arr;
+    }
+@endphp
 
 <body>
     <div id="preloader">
@@ -64,13 +95,9 @@
 					</main>
 					<footer class="login-footer">
                         <ul class="login-footer__phones">
-                            <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_1')}}">{{__('text.phones_title_phone_1_code')}}{{__('text.phones_title_phone_1')}}</a></li>
-                            <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_2')}}">{{__('text.phones_title_phone_2_code')}}{{__('text.phones_title_phone_2')}}</a></li>
-                            <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_3')}}">{{__('text.phones_title_phone_3_code')}}{{__('text.phones_title_phone_3')}}</a></li>
-                            <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_4')}}">{{__('text.phones_title_phone_4_code')}}{{__('text.phones_title_phone_4')}}</a></li>
-                            <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_5')}}">{{__('text.phones_title_phone_5_code')}}{{__('text.phones_title_phone_5')}}</a></li>
-                            <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_6')}}">{{__('text.phones_title_phone_6_code')}}{{__('text.phones_title_phone_6')}}</a></li>
-                            <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_7')}}">{{__('text.phones_title_phone_7_code')}}{{__('text.phones_title_phone_7')}}</a></li>
+                            @foreach ($phone_arr as $id_phone => $phones)
+                                <li class="login-footer__phone"><a href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a></li>
+                            @endforeach
                         </ul>
 					</footer>
 				</div>

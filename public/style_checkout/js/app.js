@@ -624,7 +624,7 @@
                 this.getSelectedOptionsData(originalSelect).values.length ? selectItem.classList.add(this.selectClasses.classSelectActive) : selectItem.classList.remove(this.selectClasses.classSelectActive);
                 if (originalSelect.hasAttribute("data-search")) return `<div class="${this.selectClasses.classSelectTitle}"><span${pseudoAttribute} class="${this.selectClasses.classSelectValue}"><input autocomplete="off" type="text" placeholder="${selectTitleValue}" data-placeholder="${selectTitleValue}" class="${this.selectClasses.classSelectInput}"></span></div>`; else {
                     const customClass = this.getSelectedOptionsData(originalSelect).elements.length && this.getSelectedOptionsData(originalSelect).elements[0].dataset.class ? ` ${this.getSelectedOptionsData(originalSelect).elements[0].dataset.class}` : "";
-                    return `\n\t\t\t<button type="button" class="${this.selectClasses.classSelectTitle}">\n\t\t\t\t${pseudoAttribute}\n\t\t\t\t<span class="${this.selectClasses.classSelectValue}">\n\t\t\t\t\t<span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span>\n\t\t\t\t\t<span class="select__icon"> \n\t\t\t\t\t\t<svg width="12" height="6">\n\t\t\t\t\t\t\t<use xlink:href="/style_checkout/images/icons/icons.svg#svg-arr-down"></use>\n\t\t\t\t\t\t</svg>\n\t\t\t\t\t</span>\n\t\t\t\t</span>\n\t\t\t</button>`;
+                    return `\n\t\t\t<button type="button" class="${this.selectClasses.classSelectTitle}">\n\t\t\t\t${pseudoAttribute}\n\t\t\t\t<span class="${this.selectClasses.classSelectValue}">\n\t\t\t\t\t<span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span>\n\t\t\t\t\t<span class="select__icon"> \n\t\t\t\t\t\t<svg width="12" height="6">\n\t\t\t\t\t\t\t<use xlink:href="style_checkout/images/icons/icons.svg#svg-arr-down"></use>\n\t\t\t\t\t\t</svg>\n\t\t\t\t\t</span>\n\t\t\t\t</span>\n\t\t\t</button>`;
                 }
             }
             getSelectElementContent(selectOption) {
@@ -1761,7 +1761,7 @@
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-other.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
 
                         break;
 
@@ -1772,7 +1772,7 @@
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-other.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                         break;
 
                     case "3":
@@ -1783,7 +1783,7 @@
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-amex.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
 
                         break;
 
@@ -1794,7 +1794,7 @@
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-other.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                         break;
 
                     case "6":
@@ -1804,7 +1804,7 @@
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-other.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                         break;
 
                     case "35":
@@ -1814,7 +1814,7 @@
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-other.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                         break;
 
                     case "62": case "60":
@@ -1824,18 +1824,18 @@
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-other.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                         break;
 
                     default:
                         cvcInput = document.querySelector("[data-card-cvc]");
                         imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                         imgName = "cvc-other.svg";
-                        imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                        imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                         imgSrc = "";
                 }
                 if (imgSrc) {
-                    bankCardIconEl.setAttribute("src", `/style_checkout/images/pay-systems/${imgSrc}`);
+                    bankCardIconEl.setAttribute("src", `style_checkout/images/pay-systems/${imgSrc}`);
                     bankCardIconEl.setAttribute("width", imgWidth);
                     bankCardIconEl.setAttribute("height", imgHeight);
                     bankCardIconEl.classList.remove("hide");
@@ -1864,6 +1864,7 @@
             const paypalBlock = document.querySelector(".enter-info__paypal-content");
             const giftCardBlock = document.querySelector('.enter-info__gift-card-content');
             const googleBlock = document.querySelector(".enter-info__google-content");
+            const zelleBlock = document.querySelector(".enter-info__zelle-content");
             document.addEventListener("selectCallback", (function (e) {
                 const currentSelect = e.detail.select;
                 if (currentSelect.value === "crypto") {
@@ -1877,6 +1878,9 @@
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
                     _slideDown(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
@@ -1888,6 +1892,9 @@
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
                 } else if (currentSelect.value === "sepa") {
                     _slideDown(sepaBlock);
                     _slideUp(cryptoBlock);
@@ -1896,6 +1903,9 @@
                     // _slideUp(giftCardBlock);
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
+                    }
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
                     }
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
@@ -1908,6 +1918,9 @@
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
                 } else if (currentSelect.value === 'gift_card') {
                     // _slideDown(giftCardBlock);
                     _slideUp(paypalBlock);
@@ -1919,8 +1932,26 @@
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
                 } else if (currentSelect.value === "google") {
                     _slideDown(googleBlock);
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
+                    _slideUp(paypalBlock);
+                    // _slideUp(giftCardBlock);
+                }  else if (currentSelect.value === "zelle") {
+                    _slideDown(zelleBlock);
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
@@ -1992,7 +2023,7 @@ $(".currency .select__option").click(function () {
 $(".select_billing_country .select__option").click(function () {
     var country = $(this).attr('data-value');
     $.ajax({
-        url: '/checkout/change_country',
+        url: checkoutChangeCountry,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2035,7 +2066,7 @@ $(".card_type .select__option").click(function (e) {
             let currency = $('input[name="crypt_currency"]:checked').val();
 
             $.ajax({
-                url: '/crypto_info',
+                url: checkoutCryptoInfo,
                 type: 'POST',
                 cache: false,
                 dataType: 'html',
@@ -2070,7 +2101,7 @@ $(".card_type .select__option").click(function (e) {
             });
         } else {
             $.ajax({
-                url: '/validate_for_crypt',
+                url: checkoutValidateCrypto,
                 type: 'POST',
                 cache: false,
                 dataType: 'html',
@@ -2102,7 +2133,7 @@ $(".card_type .select__option").click(function (e) {
     else if(type == 'google')
     {
         $.ajax({
-            url: '/validate_for_google',
+            url: checkoutValidateGoogle,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2133,7 +2164,7 @@ $(".card_type .select__option").click(function (e) {
     else if(type == 'sepa')
     {
         $.ajax({
-            url: '/validate_for_sepa',
+            url: checkoutValidateSepa,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2178,7 +2209,7 @@ if ($('#app_google_on').val() == '1') {
 
         // Логирование
         $.ajax({
-            url: '/log_google',
+            url: checkoutGoogleLog,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2223,7 +2254,7 @@ if ($('#app_google_on').val() == '1') {
 
         if(info.payment && info.payment.status === 'PENDING_CAPTURE') {
             $.ajax({
-                url: '/send_google',
+                url: checkoutSendGoogle,
                 type: 'POST',
                 contentType: 'application/json', // Указываем, что отправляем JSON
                 dataType: 'json',
@@ -2231,7 +2262,7 @@ if ($('#app_google_on').val() == '1') {
                 success: function (data) {
                     console.log(data);
                     if (data.response.status === 'ok') {
-                        window.location.replace("/complete");
+                        window.location.replace(checkoutComplete);
                     }
                 },
             });
@@ -2256,7 +2287,7 @@ $('input[name="crypt_currency"]').click(function () {
         // console.log(currency, email.value, total.value);
 
         $.ajax({
-            url: '/crypto_info',
+            url: checkoutCryptoInfo,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2366,7 +2397,7 @@ $("#paid").click(function (e) {
 
 function sendCryptoData(crypto_currency, crypto_total, crypto_discount_price, purse, invoiceId) {
     $.ajax({
-        url: '/data_for_crypt',
+        url: checkoutDataCrypto,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2390,7 +2421,7 @@ function Insurance(val) {
     if (val == 1) {
 
         $.ajax({
-            url: '/checkout/insurance',
+            url: checkoutInsurance,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2406,7 +2437,7 @@ function Insurance(val) {
         });
     } else {
         $.ajax({
-            url: '/checkout/insurance',
+            url: checkoutInsurance,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2426,7 +2457,7 @@ function Insurance(val) {
 function secretPackage() {
     var form = $('form').serialize();
     $.ajax({
-        url: '/checkout/secret_package',
+        url: checkoutSecretPackage,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2443,7 +2474,7 @@ function change_shipping(shipping_name, shipping_price) {
     form += '&shipping_name=' + shipping_name;
     form += '&shipping_price=' + shipping_price;
     $.ajax({
-        url: '/checkout/change-shipping',
+        url: checkoutChangeShipping,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2459,7 +2490,7 @@ function Coupon() {
     let coupon_text = $('input[name="coupon"]').val();
     if (coupon_text) {
         $.ajax({
-            url: '/checkout/coupon',
+            url: checkoutCoupon,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2499,7 +2530,7 @@ function CheckPayment()
     form += "&customer_date=" + date;
 
     $.ajax({
-        url: '/check_payment',
+        url: checkoutCheckPayment,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2509,7 +2540,7 @@ function CheckPayment()
             var data = JSON.parse(data);
 
             if (data.response.status == 'SUCCESS') {
-                window.location.replace("/complete");
+                window.location.replace(checkoutComplete);
             }
             else {
                 var error = '';
@@ -2554,7 +2585,7 @@ function processForm(e) {
     document.body.classList.remove('loaded');
 
     $.ajax({
-        url: '/checkout/order',
+        url: checkoutOrder,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2564,10 +2595,10 @@ function processForm(e) {
 
             if(typeof data.response.url !== 'undefined')
             {
-                window.location.replace("/redirect");
+                window.location.replace(checkoutRedirect);
             }
             else if (data.response.status == 'SUCCESS') {
-                window.location.replace("/complete");
+                window.location.replace(checkoutComplete);
             }
             else {
                 var error = '';
@@ -2612,7 +2643,7 @@ $("#proccess_paypal").click(function (e) {
     document.body.classList.remove('loaded');
 
     $.ajax({
-        url: '/paypal',
+        url: checkoutPaypal,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2666,7 +2697,7 @@ $("#proccess_sepa").click(function (e) {
     document.body.classList.remove('loaded');
 
     $.ajax({
-        url: '/sepa',
+        url: checkoutSepa,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2675,7 +2706,7 @@ $("#proccess_sepa").click(function (e) {
             var data = JSON.parse(data);
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
-                window.location.replace("/complete");
+                window.location.replace(checkoutComplete);
             }
             else {
                 var error = '';
@@ -2704,6 +2735,92 @@ $("#proccess_sepa").click(function (e) {
     return false;
 });
 
+$("#get_zelle_data").click(function (e) {
+    var form = $('form').serialize();
+    // console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    $.ajax({
+        url: checkoutZelleData,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var data = JSON.parse(data);
+            // console.log(data);
+            if (data.response.status == 'SUCCESS') {
+                document.body.classList.add('loaded');
+
+                document.getElementById('zelle_orderId').innerHTML = data.response.order_id;
+                document.getElementById('zelle_email').innerHTML = data.response.zelle_email;
+                document.getElementById('zelle_name').innerHTML = data.response.zelle_name;
+
+                document.getElementById("zelle_requisites").hidden = false;
+                document.getElementById("get_zelle_data").style.display = 'none';
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
+$("#proccess_zelle").click(function (e) {
+
+    document.body.classList.remove('loaded');
+
+    $.ajax({
+        url: checkoutZelle,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: '',
+        success: function (data) {
+            var data = JSON.parse(data);
+            // console.log(data);
+            if (data.status == 'success') {
+                window.location.replace(checkoutComplete);
+            }
+            else {
+                alert(data.text);
+            }
+        }
+    });
+
+    return false;
+});
+
 var form = document.getElementById('order_form');
 if (form.attachEvent) {
     form.attachEvent("submit", processForm);
@@ -2713,7 +2830,7 @@ if (form.attachEvent) {
 
 $('#email').on('change', function (e) {
     $.ajax({
-        url: '/checkout/auth',
+        url: checkoutAuth,
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -2776,53 +2893,53 @@ if (getCookie('christmas')) {
 
 if (window.innerWidth > 1925) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_biggest.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_biggest.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_biggest_v2.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
+    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_biggest_v2.png');
 }
 if (window.innerWidth > 769 && window.innerWidth < 1920) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_big.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_big.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_big_v2.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_big.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
+    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_big_v2.png');
 }
 if (window.innerWidth > 391 && window.innerWidth < 769) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_middle.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_middle.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_middle_v2.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
+    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_middle_v2.png');
 }
 if (window.innerWidth < 391) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_small.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_small.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_small_v2.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_small.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
+    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_small_v2.png');
 }
 
 window.addEventListener('resize', function (e) {
     if (window.innerWidth > 1925) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_biggest.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_biggest.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_biggest_v2.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
+        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_biggest_v2.png');
     }
     if (window.innerWidth > 769 && window.innerWidth < 1920) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_big.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_big.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_big_v2.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_big.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
+        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_big_v2.png');
     }
     if (window.innerWidth > 391 && window.innerWidth < 769) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_middle.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_middle.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_middle_v2.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
+        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_middle_v2.png');
     }
     if (window.innerWidth < 391) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_small.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_small.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_small_v2.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_small.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
+        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_small_v2.png');
     }
 });
 
@@ -2946,7 +3063,7 @@ $("#error_cvc_2").click(function () {
 $(document).ready(function () {
     function sendData(field, value) {
         $.ajax({
-            url: '/send_checkout_phone_email',
+            url: checkoutSendPhoneEmail,
             method: 'POST',
             data: {
                 input_type: field,

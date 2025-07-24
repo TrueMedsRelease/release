@@ -116,7 +116,7 @@
                                         class="form-radio" for="delivery-2">
                                         <div class="form-radio__title" style="display: flex; align-items: center;">
                                             {{__('text.shipping_ems')}}
-                                            <img loading="lazy" style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                            <img loading="lazy" style="max-width: 15px; margin-left: 0.5rem;" src="{{ asset("style_checkout/images/countrys/" . session('location.country_name') . ".svg") }}" alt="{{ session('location.country_name') }}">
                                         </div>
                                         <div class="form-radio__text">
                                             @if ($product_total_check >= 300)
@@ -148,7 +148,7 @@
                                     <label class="form-radio" for="delivery-1">
                                         <div class="form-radio__title" style="display: flex; align-items: center;">
                                             {{__('text.shipping_regular')}}
-                                            <img loading="lazy" style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                            <img loading="lazy" style="max-width: 15px; margin-left: 0.5rem;" src="{{ asset("style_checkout/images/countrys/" . session('location.country_name') . ".svg") }}" alt="{{ session('location.country_name') }}">
                                         </div>
                                         <div class="form-radio__text">
                                             @if ($product_total_check >= 200)

@@ -10,6 +10,31 @@
     <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <title>{{__('text.checkout_title')}}</title>
     {!! isset($pixel) ? $pixel : '' !!}
+    <script>
+        const checkoutChangeCountry = "{{ route('checkout.country') }}";
+        const checkoutCryptoInfo = "{{ route('checkout.crypto_info') }}";
+        const checkoutValidateCrypto = "{{ route('checkout.validate_for_crypt') }}";
+        const checkoutValidateGoogle = "{{ route('checkout.validate_for_google') }}";
+        const checkoutValidateSepa = "{{ route('checkout.validate_for_sepa') }}";
+        const checkoutGoogleLog = "{{ route('checkout.log_google') }}";
+        const checkoutSendGoogle = "{{ route('checkout.send_google') }}";
+        const checkoutDataCrypto = "{{ route('checkout.data_for_crypt') }}";
+        const checkoutInsurance = "{{ route('checkout.insurance') }}";
+        const checkoutSecretPackage = "{{ route('checkout.secret_package') }}";
+        const checkoutChangeShipping = "{{ route('checkout.shipping') }}";
+        const checkoutCoupon = "{{ route('checkout.coupon') }}";
+        const checkoutCheckPayment = "{{ route('checkout.check_payment') }}";
+        const checkoutComplete = "{{ route('checkout.complete') }}";
+        const checkoutRedirect = "{{ route('redirect_url') }}";
+        const checkoutOrder = "{{ route('checkout.order') }}";
+        const checkoutPaypal = "{{ route('checkout.paypal') }}";
+        const checkoutSepa = "{{ route('checkout.sendSepa') }}";
+        const checkoutZelleData = "{{ route('checkout.zelleData') }}";
+        const checkoutZelle = "{{ route('checkout.zelle') }}";
+        const checkoutAuth = "{{ route('checkout.auth') }}";
+        const checkoutSendPhoneEmail = "{{ route('checkout.send_checkout_phone_email') }}";
+
+    </script>
 </head>
 <body>
     <div class="preloader">

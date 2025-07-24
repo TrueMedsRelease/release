@@ -269,6 +269,12 @@ class CartController extends Controller
         return redirect(route('cart.index'));
     }
 
+    public static function add_pack($pack_id)
+    {
+        Cart::add($pack_id);
+        return redirect(route('cart.index'));
+    }
+
     public function up(Request $request)
     {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];

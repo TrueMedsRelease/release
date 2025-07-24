@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\CartController;
+use App\Models\Cart;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -104,7 +106,7 @@ class SessionParameterHandler
 
         // design (перезаписываем всегда при наличии)
         if (!empty($request->query('design'))) {
-            if (in_array($request->query('design'), [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12])) {
+            if (in_array($request->query('design'), [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13])) {
                 session(['design' => 'design_' . $request->query('design')]);
             }
         }
@@ -117,6 +119,16 @@ class SessionParameterHandler
                     return redirect(route('home.product', 'cialis'));
                 }
             }
+        }
+
+        if (!empty($request->query('buy_pack'))) {
+            $pack_id = $request->query('buy_pack');
+
+            if ($pack_id) {
+                CartController::add_pack($pack_id);
+                return redirect(route('cart.index'));
+            }
+
         }
 
         return $next($request);

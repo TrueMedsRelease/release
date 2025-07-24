@@ -108,6 +108,38 @@
     <input type="hidden" id="country_iso" value="{{ $codes }}">
     <input type="hidden" id="initial_country" value="{{ strtolower(session('location.country')) }}">
 
+    @php
+        $phone_arr = [
+            1 => 'US',
+            2 => 'CA',
+            3 => 'AU',
+            4 => 'UK',
+            5 => 'FR',
+            6 => 'ES',
+            7 => 'NZ',
+            8 => 'DK',
+            9 => 'SE',
+            10 => 'CH',
+            11 => 'CZ',
+            12 => 'FI',
+            13 => 'GR',
+            14 => 'PT',
+            15 => 'DE',
+            16 => 'IT',
+            17 => 'NL'
+        ];
+
+        $country_code = session('location.country', 'US');
+
+        if ($country_code && in_array($country_code, $phone_arr)) {
+            $target_key = array_search($country_code, $phone_arr);
+            $target_value = $phone_arr[$target_key];
+            unset($phone_arr[$target_key]);
+
+            $phone_arr = [$target_key => $target_value] + $phone_arr;
+        }
+    @endphp
+
     {{-- <div class="christmas" style="display: none">
         <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
         <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
@@ -121,13 +153,9 @@
                         <button class="link" data-dialog="call">{{ __('text.common_callback') }}</button>
                         <span>&nbsp;{{ __('text.common_call_us_top') }}</span>
                     </div>
-                    <a href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }} {{ __('text.phones_title_phone_1') }}</a>
-                    <a href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }} {{ __('text.phones_title_phone_2') }}</a>
-                    <a href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }} {{ __('text.phones_title_phone_3') }}</a>
-                    <a href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }} {{ __('text.phones_title_phone_4') }}</a>
-                    <a href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }} {{ __('text.phones_title_phone_5') }}</a>
-                    <a href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }} {{ __('text.phones_title_phone_6') }}</a>
-                    <a href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }} {{ __('text.phones_title_phone_7') }}</a>
+                    @foreach ($phone_arr as $id_phone => $phones)
+                        <a href="tel:{{ __('text.phones_title_phone_' . $id_phone) }}">{{ __('text.phones_title_phone_' . $id_phone . '_code') }} {{ __('text.phones_title_phone_' . $id_phone) }}</a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -880,6 +908,7 @@
         const routeRequestLogin = "{{ route('home.request_login') }}";
 
         const routeSavePush = "{{ route('home.save_push_data') }}";
+        const routeCart = "{{ route('cart.index') }}";
     </script>
 
     <script defer src="{{ asset("$design/js/app.js") }}"></script>

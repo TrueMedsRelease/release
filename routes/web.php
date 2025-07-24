@@ -156,6 +156,7 @@ Route::controller(CartController::class)->group(function(){
     Route::post('/cart/upgrade', 'upgrade')->name('cart.upgrade')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/change-shipping', 'change_shipping')->name('cart.shipping')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/cart/change-bonus', 'change_bonus')->name('cart.bonus')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/cart/add_pack/{pack_id}', 'add_pack')->name('cart.add_pack');
 });
 
 Route::controller(CheckoutController::class)->group(function () {
@@ -180,6 +181,8 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/check_payment', 'check_payment')->name('checkout.check_payment')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/complete', 'complete')->name('checkout.complete');
     Route::post('/send_checkout_phone_email', 'send_checkout_phone_email')->name('checkout.send_checkout_phone_email')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/zelle_data', 'zelleData')->name('checkout.zelleData')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/zelle', 'zelle')->name('checkout.zelle')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::get('/redirect', function () {
@@ -187,7 +190,7 @@ Route::get('/redirect', function () {
     {
         return redirect()->to(session('order.url'));
     }
-});
+})->name('redirect_url');
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('/', 'index')->name('home.index');

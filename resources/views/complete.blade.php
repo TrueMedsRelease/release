@@ -13,33 +13,47 @@
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
+@php
+    $phone_arr = [
+        1 => 'US',
+        2 => 'CA',
+        3 => 'AU',
+        4 => 'UK',
+        5 => 'FR',
+        6 => 'ES',
+        7 => 'NZ',
+        8 => 'DK',
+        9 => 'SE',
+        10 => 'CH',
+        11 => 'CZ',
+        12 => 'FI',
+        13 => 'GR',
+        14 => 'PT',
+        15 => 'DE',
+        16 => 'IT',
+        17 => 'NL'
+    ];
+
+    $country_code = session('location.country', 'US');
+
+    if ($country_code && in_array($country_code, $phone_arr)) {
+        $target_key = array_search($country_code, $phone_arr);
+        $target_value = $phone_arr[$target_key];
+        unset($phone_arr[$target_key]);
+
+        $phone_arr = [$target_key => $target_value] + $phone_arr;
+    }
+@endphp
+
 <body>
     <div class="wrapper">
         <header class="header">
             <div class="header__phones-top top-phones-header">
                 <div class="top-phones-header__container header__container">
                     <div class="top-phones-header__items">
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }}
-                            {{ __('text.phones_title_phone_1') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }}
-                            {{ __('text.phones_title_phone_2') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }}
-                            {{ __('text.phones_title_phone_3') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }}
-                            {{ __('text.phones_title_phone_4') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }}
-                            {{ __('text.phones_title_phone_5') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }}
-                            {{ __('text.phones_title_phone_6') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }}
-                            {{ __('text.phones_title_phone_7') }}</a>
+                        @foreach ($phone_arr as $id_phone => $phones)
+                            <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -125,10 +139,10 @@
 						@foreach (session('order.gift_card') as $card)
 							<div class="gift">
 								<div class="gift_text">{{ __('text.common_gift_card') }} {{ $Currency::convert($card['price']) }}</div>
-								<img loading="lazy" src="/style_checkout/images/gift_card_img.svg" class="gift_img">
+								<img loading="lazy" src="{{ asset("style_checkout/images/gift_card_img.svg") }}" class="gift_img">
 								<div class="gift_code">
 									<div class="code_text" id="code_text">{{ $card['code'] }}</div>
-									<img loading="lazy" src="/style_checkout/images/icons/copy.png" id="copy_img">
+									<img loading="lazy" src="{{ asset("style_checkout/images/icons/copy.png") }}" id="copy_img">
 								</div>
 							</div>
 						@endforeach
@@ -149,20 +163,9 @@
                         </p>
                         <p class="succes__phones">
                             <span>{{ __('text.success_call_us') }}</span>
-                            <a class="succes__link"
-                                href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }}{{ __('text.phones_title_phone_1') }}</a>
-                            <a class="succes__link"
-                                href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }}{{ __('text.phones_title_phone_2') }}</a>
-                            <a class="succes__link"
-                                href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }}{{ __('text.phones_title_phone_3') }}</a>
-                            <a class="succes__link"
-                                href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }}{{ __('text.phones_title_phone_4') }}</a>
-                            <a class="succes__link"
-                                href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }}{{ __('text.phones_title_phone_5') }}</a>
-                            <a class="succes__link"
-                                href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }}{{ __('text.phones_title_phone_6') }}</a>
-                            <a class="succes__link"
-                                href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }}{{ __('text.phones_title_phone_7') }}</a>
+                            @foreach ($phone_arr as $id_phone => $phones)
+                                <a class="succes__link" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a>
+                            @endforeach
                         </p>
                     </div>
                 </div>

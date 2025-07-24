@@ -123,7 +123,7 @@
                                             <strong class="name-delivery">
                                                 <span>
                                                     {{__('text.checkout_express')}}
-                                                    <img loading="lazy" style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                                    <img loading="lazy" style="max-width: 15px; margin-left: 0.5rem;" src="{{ asset("style_checkout/images/countrys/" . session('location.country_name') . ".svg") }}" alt="{{ session('location.country_name') }}">
                                                 </span>
                                                 <span class="price">
                                                     @if ($is_only_card)
@@ -159,7 +159,7 @@
                                             <strong class="name-delivery">
                                                 <span>
                                                     {{__('text.checkout_regular')}}
-                                                    <img loading="lazy" style="margin-left: 0.5rem;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                                    <img loading="lazy" style="max-width: 15px; margin-left: 0.5rem;" src="{{ asset("style_checkout/images/countrys/" . session('location.country_name') . ".svg") }}" alt="{{ session('location.country_name') }}">
                                                 </span>
                                                 <span class="price">
                                                     @if ($is_only_card)

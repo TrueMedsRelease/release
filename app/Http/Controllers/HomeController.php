@@ -6,6 +6,7 @@ use App\Helpers\RequestHelper;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\PhoneCodes;
+use App\Models\ProductDesc;
 use App\Services\ProductServices;
 use App\Services\StatisticService;
 use Illuminate\Http\Request;
@@ -30,6 +31,7 @@ class HomeController extends Controller
         $agent           = new Agent();
 
         $codes = $this->getAllCountryISO();
+        $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
         foreach ($codes as $i => $code) {
             $codes[$i] = strtolower($code->iso);
@@ -90,7 +92,15 @@ class HomeController extends Controller
                 ]
             );
         } elseif ($design == 'design_7') {
-            $product = ProductServices::GetProductInfoByUrl('rybelsus');
+            $product_url = DB::table('product_desc')
+                ->where('product_id', '=', 511)
+                ->where('language_id', '=', $language_id)
+                ->get(['url'])
+                ->toArray();
+
+            if (isset($product_url[0])) {
+                $product = ProductServices::GetProductInfoByUrl($product_url[0]->url);
+            }
 
             return view(
                 $design . '.index',
@@ -111,10 +121,20 @@ class HomeController extends Controller
                 ]
             );
         } elseif ($design == 'design_8') {
-            $products_urls = ['viagra', 'cialis', 'levitra'];
+            // $products_urls = ['viagra', 'cialis', 'levitra'];
+            $product_ids = [285, 233, 255];
 
-            foreach ($products_urls as $product_url) {
-                $products[$product_url] = ProductServices::GetProductInfoByUrl($product_url, $design);
+            $products_urls = DB::table('product_desc')
+                ->whereIn('product_id', $product_ids)
+                ->where('language_id', $language_id)
+                ->orderByRaw("FIELD(product_id, " . implode(',', $product_ids) . ")")
+                ->get(['url'])
+                ->toArray();
+
+            if (!empty($products_urls)) {
+                foreach ($products_urls as $product_url) {
+                    $products[$product_url->url] = ProductServices::GetProductInfoByUrl($product_url->url, $design);
+                }
             }
 
             // $page_properties->title = 'EdSale - ' . $domain;
@@ -1185,6 +1205,7 @@ class HomeController extends Controller
     public function language($locale)
     {
         $lang = Language::GetLanguageByCountry($locale);
+        App::setLocale($lang);
         session(['locale' => $lang]);
 
         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
@@ -1272,7 +1293,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -1281,7 +1302,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13])) {
             session(['design' => 'design_' . $design]);
         }
 

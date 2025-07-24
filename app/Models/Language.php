@@ -93,6 +93,14 @@ class Language extends Model
 
         if(empty($language))
         {
+            $language = Language::query()
+                ->where('show', '=', 1)
+                ->where('code', '=', $country)
+                ->first('code');
+        }
+
+        if(empty($language))
+        {
             $languages = Language::GetAllLanuages();
 
             if (count($languages) > 1) {

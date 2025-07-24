@@ -36,7 +36,7 @@ function remove(pack_id) {
         success: function (data) {
             if(data == '')
             {
-                window.location.replace("/cart");
+                window.location.replace(routeCart);
             }
             else
             {
@@ -57,21 +57,6 @@ function upgrade(pack_id) {
         success: function (data) {
             data = JSON.parse(data);
             $('#shopping_cart').html(data.html);
-        }
-    });
-}
-
-function add_pack(pack_id) {
-    $.ajax({
-        url: '/cart/add_pack',
-        type: 'POST',
-        cache: false,
-        dataType: 'json',
-        data: {'pack_id': pack_id},
-        success: function (data) {
-            data = JSON.parse(data);
-            console.log(data.text);
-            location.href = data.url_redirect;
         }
     });
 }
@@ -134,6 +119,9 @@ function change_bonus(bonus_id, bonus_price)
 
 function addCard() {
     let value_card = $('.select_current_gift').attr('curr_packaging_id');
+    if (!value_card) {
+        value_card = $('#select_item_gift').val();
+    }
     $.ajax({
         url: routeCartUp,
         type: 'POST',
