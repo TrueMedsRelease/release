@@ -2598,7 +2598,7 @@ input.just-validate-success-field:focus-visible{
   color:var(--color-grey-1);
 }
 .header-phones__dropdown .dropdown-container{
-  min-width:17.6rem;
+  min-width:18.6rem;
   font-size:1.3rem;
 }
 
@@ -2647,7 +2647,6 @@ input.just-validate-success-field:focus-visible{
   min-width:8.4rem;
   padding:1rem 1.5rem;
   font-size:1.3rem;
-  text-align: center;
 }
 
 .header-select-wrapper{
@@ -4634,4 +4633,18 @@ input.just-validate-success-field:focus-visible{
     transition-property: var(--transition-props-color);
     transition-timing-function: var(--transition-func-cubic);
     transition-duration: var(--transition-duration-short);
+}
+
+.sitemap_menu {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
+}
+
+.site_info_link {
+    --color: var(--color-text);
+    --color-hover: var(--color-secondary);
+    --color-active: var(--color-secondary-hover);
+    text-decoration: none;
 }

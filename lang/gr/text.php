@@ -412,6 +412,8 @@ return [
     "license_text_license2_d9" => "με Άδεια χρήσης από τον Φαρμακευτικό Σύλλογο IPS #25310",
     "license_text_license2_d10" => "με Άδεια χρήσης από τον Φαρμακευτικό Σύλλογο IPS #25311",
     "license_text_license2_d11" => "με Άδεια χρήσης από τον Φαρμακευτικό Σύλλογο IPS #25312",
+    "license_text_license2_d12" => "με Άδεια χρήσης από τον Φαρμακευτικό Σύλλογο IPS #25313",
+    "license_text_license2_d13" => "με Άδεια χρήσης από τον Φαρμακευτικό Σύλλογο IPS #25314",
     "search_result_title" => "Αποτελέσματα αναζήτησης",
     "search_result_title_page" => "Αποτελέσματα αναζήτησης για ",
     "search_result_nothing_found1" => "Δεν βρέθηκαν προϊόντα για το ",

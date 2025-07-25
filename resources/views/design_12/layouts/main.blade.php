@@ -728,7 +728,7 @@
                     {{ __('text.license_text_license1_1') }}
                     {{ $domain }}
                     {{ __('text.license_text_license1_2') }}
-                    {{ __('text.license_text_license2_d11') }}
+                    {{ __('text.license_text_license2_d12') }}
                 </div>
                 <div class="footer-buttons">
                     <div class="footer-buttons__container">

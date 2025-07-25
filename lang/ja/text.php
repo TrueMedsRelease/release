@@ -531,6 +531,8 @@ return [
     "license_text_license2_d9" => "薬事協会認可のIPSライセンス #25310",
     "license_text_license2_d10" => "薬事協会認可のIPSライセンス #25311",
     "license_text_license2_d11" => "薬事協会認可のIPSライセンス #25312",
+    "license_text_license2_d12" => "薬事協会認可のIPSライセンス #25313",
+    "license_text_license2_d13" => "薬事協会認可のIPSライセンス #25314",
     "search_result_title" => "検索結果",
     "search_result_title_page" => "の検索結果 ",
     "search_result_nothing_found1" => "のための製品が見つかりませんでした ",

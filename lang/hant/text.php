@@ -414,6 +414,8 @@ return  [
     "license_text_license2_d9" => "公司獲得藥業協會IPS許可#25310",
     "license_text_license2_d10" => "公司獲得藥業協會IPS許可#25311",
     "license_text_license2_d11" => "公司獲得藥業協會IPS許可#25312",
+    "license_text_license2_d12" => "公司獲得藥業協會IPS許可#25313",
+    "license_text_license2_d13" => "公司獲得藥業協會IPS許可#25314",
     "search_result_title" => "搜尋結果",
     "search_result_title_page" => "的搜尋結果 ",
     "search_result_nothing_found1" => "未找到 ",

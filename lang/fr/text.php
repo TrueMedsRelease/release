@@ -541,6 +541,8 @@ return [
     "license_text_license2_d9" => "Sous licence de l'Association pharmaceutique Licence IPS #25310",
     "license_text_license2_d10" => "Sous licence de l'Association pharmaceutique Licence IPS #25311",
     "license_text_license2_d11" => "Sous licence de l'Association pharmaceutique Licence IPS #25312",
+    "license_text_license2_d12" => "Sous licence de l'Association pharmaceutique Licence IPS #25313",
+    "license_text_license2_d13" => "Sous licence de l'Association pharmaceutique Licence IPS #25314",
     "search_result_title" => "Résultats de la recherche",
     "search_result_title_page" => "Résultats de recherche pour ",
     "search_result_nothing_found1" => "Aucun produit n'a été trouvé pour le ",

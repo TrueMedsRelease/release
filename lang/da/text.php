@@ -462,6 +462,8 @@ return [
     "license_text_license2_d9" => "Tilladelse fra Pharmaceutical Association IPS Tilladelse #25310",
     "license_text_license2_d10" => "Tilladelse fra Pharmaceutical Association IPS Tilladelse #25311",
     "license_text_license2_d11" => "Tilladelse fra Pharmaceutical Association IPS Tilladelse #25312",
+    "license_text_license2_d12" => "Tilladelse fra Pharmaceutical Association IPS Tilladelse #25313",
+    "license_text_license2_d13" => "Tilladelse fra Pharmaceutical Association IPS Tilladelse #25314",
     "search_result_title" => "Søgeresultat",
     "search_result_title_page" => "Søgeresultater for ",
     "search_result_nothing_found1" => "Der blev ikke fundet produkter til ",

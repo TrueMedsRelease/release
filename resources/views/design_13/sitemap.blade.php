@@ -90,8 +90,8 @@
 @endsection
 
 @section('rewies')
-<div class="container">
-    <div class="footer-testimonials">
+<div class="footer-testimonials">
+    <div class="container">
         <div class="testimonial">
             <div class="testimonial__header">
                 <div class="testimonial__author">{!!__('text.testimonials_author_t_1')!!}</div>

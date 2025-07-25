@@ -419,6 +419,8 @@ return [
     "license_text_license2_d9" => "Gyógyszerészeti Szövetség engedélye száma #25310",
     "license_text_license2_d10" => "Gyógyszerészeti Szövetség engedélye száma #25311",
     "license_text_license2_d11" => "Gyógyszerészeti Szövetség engedélye száma #25312",
+    "license_text_license2_d12" => "Gyógyszerészeti Szövetség engedélye száma #25313",
+    "license_text_license2_d13" => "Gyógyszerészeti Szövetség engedélye száma #25314",
     "search_result_title" => "Keresési eredmények",
     "search_result_title_page" => "Keresési eredmények ",
     "search_result_nothing_found1" => "Nem találtak termékeket a ",

@@ -516,14 +516,15 @@
                                     </ul>
                                 @endif
                             </div>
+                             @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                                <div class="sitemap_menu">
+                                    <a class="nav__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
+                                </div>
+                            @endif
                         </nav>
                     </div>
 
-                    @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
-                        <div class="sitemap_menu">
-                            <a class="nav__link" href="{{ route('home.sitemap', '_' . $domainWithoutZone) }}">{{__('text.menu_title_sitemap')}}</a>
-                        </div>
-                    @endif
+
 
                     <div class="footer-brands">
                         <div class="footer-brands__title h4">{{ __('text.common_verified') }}</div>
@@ -580,7 +581,7 @@
                     {{ __('text.license_text_license1_1') }}
                     {{ $domain }}
                     {{ __('text.license_text_license1_2') }}
-                    {{ __('text.license_text_license2_d11') }}
+                    {{ __('text.license_text_license2_d13') }}
                 </div>
                 <div class="footer-buttons">
                     <div class="footer-buttons__container">

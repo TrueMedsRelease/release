@@ -418,6 +418,8 @@ return [
     "license_text_license2_d9" => "由药业协会授权，其药协IPS许可证号为25310",
     "license_text_license2_d10" => "由药业协会授权，其药协IPS许可证号为25311",
     "license_text_license2_d11" => "由药业协会授权，其药协IPS许可证号为25312",
+    "license_text_license2_d12" => "由药业协会授权，其药协IPS许可证号为25313",
+    "license_text_license2_d13" => "由药业协会授权，其药协IPS许可证号为25314",
     "search_result_title" => "搜索结果",
     "search_result_title_page" => "的搜索结果 ",
     "search_result_nothing_found1" => "未找到 ",

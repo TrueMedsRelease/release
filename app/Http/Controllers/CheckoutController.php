@@ -618,7 +618,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-services.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order_test.php', $data);
+                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа

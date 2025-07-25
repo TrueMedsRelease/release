@@ -537,6 +537,8 @@ return [
     "license_text_license2_d9" => "Lizenziert im Rahmen der Pharmaceutical Association IPS License# 25310",
     "license_text_license2_d10" => "Lizenziert im Rahmen der Pharmaceutical Association IPS License# 25311",
     "license_text_license2_d11" => "Lizenziert im Rahmen der Pharmaceutical Association IPS License# 25312",
+    "license_text_license2_d12" => "Lizenziert im Rahmen der Pharmaceutical Association IPS License# 25313",
+    "license_text_license2_d13" => "Lizenziert im Rahmen der Pharmaceutical Association IPS License# 25314",
     "search_result_title" => "Suchergebnisse",
     "search_result_title_page" => "Suchergebnisse für ",
     "search_result_nothing_found1" => "Es wurden keine Produkte gefunden für die ",
