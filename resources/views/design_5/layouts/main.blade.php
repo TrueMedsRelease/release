@@ -67,6 +67,11 @@
     <link href="{{ asset($design . '/css/intlTelInput.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/css/slick.css') }}" rel="stylesheet">
 
+    <script>
+        const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
+        const routeCartContent = "{{ route('cart.content') }}";
+    </script>
+
     <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
     <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
