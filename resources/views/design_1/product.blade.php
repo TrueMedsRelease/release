@@ -154,7 +154,9 @@
                                         <tbody>
                                         <tr class="product-table__list product-table__list--top">
                                             <th class="product-table__package">{{__('text.product_package_title')}}</th>
-                                            <th class="product-table__per">{{__('text.product_price_per_pill_title')}}</th>
+                                            @if ($product['id'] != 616)
+                                                <th class="product-table__per">{{__('text.product_price_per_pill_title')}}</th>
+                                            @endif
                                             <th class="product-table__price">{{__('text.product_price_title')}}</th>
                                             <th></th>
                                         </tr>
@@ -173,7 +175,11 @@
                                                     @endif
                                                 @endif
                                             </th>
-                                            <th class="product-table__per">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
+
+                                            @if ($product['id'] != 616)
+                                                <th class="product-table__per">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
+                                            @endif
+                                            
                                             <th class="product-table__price">
                                                 @if ($loop->remaining != 1 && $product['id'] != 616)
                                                     <span class="product-table__old">{{ $Currency::convert($dosage['max_pill_price'] * $item['num'], true) }}</span>

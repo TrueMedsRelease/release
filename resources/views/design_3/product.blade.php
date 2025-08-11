@@ -164,7 +164,9 @@
                         <thead>
                         <tr class="item-product-info__row item-product-info__row--top">
                             <th class="item-product-info__package">{{__('text.product_package_title')}}</th>
-                            <th class="item-product-info__per-pill">{{__('text.product_price_per_pill_title')}}</th>
+                            @if ($product['id'] != 616)
+                                <th class="item-product-info__per-pill">{{__('text.product_price_per_pill_title')}}</th>
+                            @endif
                             <th class="item-product-info__price">{{__('text.product_price_title')}}</th>
                             <th class="item-product-info__btn"></th>
                         </tr>
@@ -185,7 +187,11 @@
                                 @endif
                             @endif
                         </th>
-                        <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
+
+                        @if ($product['id'] != 616)
+                            <th class="item-product-info__per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
+                        @endif
+                        
                         <th class="item-product-info__price">
                             @if ($loop->remaining != 1 && $product['id'] != 616)
                                 <span class="item-product-info__old-price">
