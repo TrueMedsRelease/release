@@ -319,7 +319,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function category($category): View
+    public function category($category)
     {
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
             $category = str_replace(
@@ -341,6 +341,11 @@ class HomeController extends Controller
         $menu        = ProductServices::GetCategoriesWithProducts($design);
 
         $products      = ProductServices::GetCategoriesWithProducts($design, $category);
+
+        if (empty($products)) {
+            return redirect(route('home.index'));
+        }
+
         $first_letters = ProductServices::getFirstLetters();
         $agent         = new Agent();
         $category      = str_replace('-', ' ', $category);
@@ -1205,7 +1210,7 @@ class HomeController extends Controller
     public function language($locale)
     {
         $lang = Language::GetLanguageByCountry($locale);
-        App::setLocale($lang);
+        // App::setLocale($lang);
         session(['locale' => $lang]);
 
         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {

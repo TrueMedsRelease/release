@@ -853,6 +853,11 @@
 
             const routeSavePush = "{{ route('home.save_push_data') }}";
             const routeCart = "{{ route('cart.index') }}";
+
+            const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/black/checkup_biggest.png') }}";
+            const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/black/checkup_big.png') }}";
+            const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/black/checkup_middle.png') }}";
+            const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/black/checkup_small.png') }}";
         </script>
 
         <script defer src="{{ asset("$design/js/app.js") }}"></script>

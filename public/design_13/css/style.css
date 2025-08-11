@@ -3527,7 +3527,7 @@ input.just-validate-success-field:focus-visible{
     top:0;
     transform:none;
   }
-  .form-radio{
+  .pack-radios .form-radio{
     padding-top:4.4rem;
     padding-left:0;
   }
