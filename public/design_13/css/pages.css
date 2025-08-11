@@ -241,6 +241,7 @@ td.cart-item-wrapper{
 }
 .cart-item__caption a:hover, .cart-item__caption a:focus-visible{
   text-decoration-color:transparent;
+  cursor: pointer;
 }
 
 .pack-radios{
