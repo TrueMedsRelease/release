@@ -4648,3 +4648,13 @@ input.just-validate-success-field:focus-visible{
     --color-active: var(--color-secondary-hover);
     text-decoration: none;
 }
+
+.christmas{
+    width: 100%;
+    cursor: pointer;
+    padding-top: 0 !important;
+}
+
+.christmas img {
+    width: 100%;
+}
