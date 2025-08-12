@@ -124,7 +124,7 @@
                                         <div class="form-radio__title">
                                             {{__('text.shipping_ems')}}
                                             <span class="icon">
-                                                <img loading="lazy" style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                                <img loading="lazy" style="max-width: 15px; margin-left: 0.5rem;" src="{{ asset("style_checkout/images/countrys/" . session('location.country_name') . ".svg") }}" alt="{{ session('location.country_name') }}">
                                             </span>
                                         </div>
                                         <div class="form-radio__text">
@@ -157,7 +157,7 @@
                                         <div class="form-radio__title">
                                             {{__('text.shipping_regular')}}
                                             <span class="icon">
-                                                <img loading="lazy" style="margin-left: 0.5rem; width: auto;" src="/style_checkout/images/countrys/{{session('location')['country_name']}}.svg" alt="{{session('location')['country_name']}}}">
+                                                <img loading="lazy" style="max-width: 15px; margin-left: 0.5rem;" src="{{ asset("style_checkout/images/countrys/" . session('location.country_name') . ".svg") }}" alt="{{ session('location.country_name') }}">
                                             </span>
                                         </div>
                                         <div class="form-radio__text">

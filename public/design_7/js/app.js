@@ -1059,7 +1059,7 @@ $(document).on('click', '.button_request_call', function () {
 
     if (number) {
         $.ajax({
-            url: '/request_call',
+            url: routeRequestCall,
             type: "POST",
             cache: false,
             data: {phone: phone_code+number},

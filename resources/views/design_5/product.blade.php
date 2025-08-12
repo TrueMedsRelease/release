@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="christmas" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
-    <img loading="lazy" src="{{ asset("/pub_images/checkup_img/white/checkup_big.png") }}">
+    <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
 </div>
 
 <div class="product-box">
@@ -113,7 +113,9 @@
                 <div class="head">
                     <div class="item">
                         <span>{{__('text.product_package_title')}}</span>
-                        <span>{{__('text.product_price_per_pill_title')}}</span>
+                        @if ($product['id'] != 616)
+                            <span>{{__('text.product_price_per_pill_title')}}</span>
+                        @endif
                         <span>{{__('text.product_price_title')}}</span>
                         <span></span>
                     </div>
@@ -132,9 +134,13 @@
                             <span class="item-info-delivery">{{__('text.cart_free_regular')}}</span>
                         @endif
                     </div>
-                    <div class="col">
-                        <span>{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
-                    </div>
+
+                    @if ($product['id'] != 616)
+                        <div class="col">
+                            <span>{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
+                        </div>
+                    @endif
+                    
                     @if ($loop->remaining != 1 && $product['id'] != 616)
                         <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span></div>
                     @else

@@ -40,7 +40,9 @@
                         <thead>
                             <tr>
                                 <th>{{__('text.product_package_title')}}</th>
-                                <th>{{__('text.product_price_per_pill_title')}}</th>
+                                @if ($product['id'] != 616)
+                                    <th>{{__('text.product_price_per_pill_title')}}</th>
+                                @endif
                                 <th>{{__('text.product_price_title')}}</th>
                                 <th></th>
                             </tr>
@@ -65,7 +67,11 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <td class="product__price-per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</td>
+
+                                    @if ($product['id'] != 616)
+                                        <td class="product__price-per-pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</td>
+                                    @endif
+                                    
                                     <td>
                                         <div class="product__price-wrapper">
                                             <div class="product__discount">

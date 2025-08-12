@@ -55,19 +55,24 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script defer type="text/javascript" src="{{ asset("/js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset("js/sw-setup.js") }}"></script>
     @endif
 
-    <script type="text/javascript" src="{{ asset("/js/delete_cache.js") }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
 
     {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
 
+    <script>
+        const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
+        const routeCartContent = "{{ route('cart.content') }}";
+    </script>
+
     <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
     <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
-    <script defer type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.js"></script>
+    <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
@@ -90,6 +95,38 @@
     <input type="hidden" id="is_pwa_here" value="{{ env('APP_PWA', 0) }}">
     <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
     <input type="hidden" id="subsc_popup" value="{{ env('SUBSCRIBE_POPUP_STATUS', 1) }}">
+
+    @php
+        $phone_arr = [
+            1 => 'US',
+            2 => 'CA',
+            3 => 'AU',
+            4 => 'UK',
+            5 => 'FR',
+            6 => 'ES',
+            7 => 'NZ',
+            8 => 'DK',
+            9 => 'SE',
+            10 => 'CH',
+            11 => 'CZ',
+            12 => 'FI',
+            13 => 'GR',
+            14 => 'PT',
+            15 => 'DE',
+            16 => 'IT',
+            17 => 'NL'
+        ];
+
+        $country_code = session('location.country', 'US');
+
+        if ($country_code && in_array($country_code, $phone_arr)) {
+            $target_key = array_search($country_code, $phone_arr);
+            $target_value = $phone_arr[$target_key];
+            unset($phone_arr[$target_key]);
+
+            $phone_arr = [$target_key => $target_value] + $phone_arr;
+        }
+    @endphp
 
     <div class="wrapper">
         <input type="hidden" class="design" value="{{ $design }}">
@@ -152,8 +189,8 @@
         <header class="header">
 
             {{-- <div class="christmas" style="display: none">
-                <img loading="lazy" src="{{ asset("/pub_images/pay_big.png") }}">
-                <img loading="lazy" src="{{ asset("/pub_images/christmas_big.png") }}">
+                <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
+                <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
             </div> --}}
 
             <div class="header__phones-top top-phones-header">
@@ -163,20 +200,9 @@
                                 class="request_call">{{ __('text.common_callback') }}</a>
                             <div class="request_text">{{ __('text.common_call_us_top') }}</div>
                         </div>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }}{{ __('text.phones_title_phone_1') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }}{{ __('text.phones_title_phone_2') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }}{{ __('text.phones_title_phone_3') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }}{{ __('text.phones_title_phone_4') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }}{{ __('text.phones_title_phone_5') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }}{{ __('text.phones_title_phone_6') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }}{{ __('text.phones_title_phone_7') }}</a>
+                        @foreach ($phone_arr as $id_phone => $phones)
+                            <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -270,20 +296,9 @@
                                 class="request_call">{{ __('text.common_callback') }}</a>
                             <div class="request_text">{{ __('text.common_call_us_top') }}</div>
                         </div>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_1') }}">{{ __('text.phones_title_phone_1_code') }}{{ __('text.phones_title_phone_1') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_2') }}">{{ __('text.phones_title_phone_2_code') }}{{ __('text.phones_title_phone_2') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_3') }}">{{ __('text.phones_title_phone_3_code') }}{{ __('text.phones_title_phone_3') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_4') }}">{{ __('text.phones_title_phone_4_code') }}{{ __('text.phones_title_phone_4') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_5') }}">{{ __('text.phones_title_phone_5_code') }}{{ __('text.phones_title_phone_5') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_6') }}">{{ __('text.phones_title_phone_6_code') }}{{ __('text.phones_title_phone_6') }}</a>
-                        <a class="top-phones-header__item"
-                            href="tel:{{ __('text.phones_title_phone_7') }}">{{ __('text.phones_title_phone_7_code') }}{{ __('text.phones_title_phone_7') }}</a>
+                        @foreach ($phone_arr as $id_phone => $phones)
+                            <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -295,9 +310,34 @@
                 {{ __('text.license_text_license2_d7') }}
             </p>
 
+            <script>
+                const routeRequestCall = "{{ route('home.request_call') }}";
+                const routeRequestSubscribe = "{{ route('home.request_subscribe') }}";
+                const routeRequestContactUs = "{{ route('home.request_contact_us') }}";
+                const routeRequestAffiliate = "{{ route('home.request_affiliate') }}";
+
+                const routeCartUp = "{{ route('cart.up') }}";
+                const routeCartDown = "{{ route('cart.down') }}";
+                const routeCartRemove = "{{ route('cart.remove') }}";
+                const routeCartUpgrade = "{{ route('cart.upgrade') }}";
+                const routeCartShipping = "{{ route('cart.shipping') }}";
+                const routeCartBonus = "{{ route('cart.bonus') }}";
+
+                const routeCheckCode = "{{ route('home.check_code') }}";
+                const routeRequestLogin = "{{ route('home.request_login') }}";
+
+                const routeSavePush = "{{ route('home.save_push_data') }}";
+                const routeCart = "{{ route('cart.index') }}";
+
+                const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
+                const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";
+                const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/white/checkup_middle.png') }}";
+                const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/white/checkup_small.png') }}";
+            </script>
+
             <script defer src="{{ asset("$design/js/app.js") }}"></script>
             <script defer src="{{ asset("$design/js/main.js") }}"></script>
-            <script defer src="{{ asset('/js/all_js.js') }}"></script>
+            <script defer src="{{ asset('js/all_js.js') }}"></script>
 
         </footer>
 

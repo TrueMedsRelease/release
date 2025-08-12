@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Cart extends Model
 {
@@ -31,29 +32,34 @@ class Cart extends Model
             'upgrade_pack'   => $upgrade_pack
         ];
 
-        if (empty(session('cart'))) {
-            $array[] = $product;
-            session(['cart' => $array]);
-        } else {
-            $products    = session('cart');
-            $new_product = true;
-            foreach ($products as $item) {
-                if ($item['pack_id'] == $pack_id) {
-                    $new_product = false;
-                    break;
-                }
-            }
-            if ($new_product) {
-                $products[] = $product;
+        if (session()->has('cart')) {
+            if (empty(session('cart'))) {
+                $array[] = $product;
+                session(['cart' => $array]);
             } else {
-                foreach ($products as &$item) {
+                $products    = session('cart');
+                $new_product = true;
+                foreach ($products as $item) {
                     if ($item['pack_id'] == $pack_id) {
-                        $item['q']++;
+                        $new_product = false;
                         break;
                     }
                 }
+                if ($new_product) {
+                    $products[] = $product;
+                } else {
+                    foreach ($products as &$item) {
+                        if ($item['pack_id'] == $pack_id) {
+                            $item['q']++;
+                            break;
+                        }
+                    }
+                }
+                session(['cart' => $products]);
             }
-            session(['cart' => $products]);
+        } else {
+            $array[] = $product;
+            session(['cart' => $array]);
         }
     }
 

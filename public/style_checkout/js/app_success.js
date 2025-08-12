@@ -624,7 +624,7 @@
                 this.getSelectedOptionsData(originalSelect).values.length ? selectItem.classList.add(this.selectClasses.classSelectActive) : selectItem.classList.remove(this.selectClasses.classSelectActive);
                 if (originalSelect.hasAttribute("data-search")) return `<div class="${this.selectClasses.classSelectTitle}"><span${pseudoAttribute} class="${this.selectClasses.classSelectValue}"><input autocomplete="off" type="text" placeholder="${selectTitleValue}" data-placeholder="${selectTitleValue}" class="${this.selectClasses.classSelectInput}"></span></div>`; else {
                     const customClass = this.getSelectedOptionsData(originalSelect).elements.length && this.getSelectedOptionsData(originalSelect).elements[0].dataset.class ? ` ${this.getSelectedOptionsData(originalSelect).elements[0].dataset.class}` : "";
-                    return `\n\t\t\t<button type="button" class="${this.selectClasses.classSelectTitle}">\n\t\t\t\t${pseudoAttribute}\n\t\t\t\t<span class="${this.selectClasses.classSelectValue}">\n\t\t\t\t\t<span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span>\n\t\t\t\t\t<span class="select__icon"> \n\t\t\t\t\t\t<svg width="12" height="6">\n\t\t\t\t\t\t\t<use xlink:href="/style_checkout/images/icons/icons.svg#svg-arr-down"></use>\n\t\t\t\t\t\t</svg>\n\t\t\t\t\t</span>\n\t\t\t\t</span>\n\t\t\t</button>`;
+                    return `\n\t\t\t<button type="button" class="${this.selectClasses.classSelectTitle}">\n\t\t\t\t${pseudoAttribute}\n\t\t\t\t<span class="${this.selectClasses.classSelectValue}">\n\t\t\t\t\t<span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span>\n\t\t\t\t\t<span class="select__icon"> \n\t\t\t\t\t\t<svg width="12" height="6">\n\t\t\t\t\t\t\t<use xlink:href="style_checkout/images/icons/icons.svg#svg-arr-down"></use>\n\t\t\t\t\t\t</svg>\n\t\t\t\t\t</span>\n\t\t\t\t</span>\n\t\t\t</button>`;
                 }
             }
             getSelectElementContent(selectOption) {
@@ -1761,7 +1761,7 @@
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-other.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
 
                     break;
 
@@ -1772,7 +1772,7 @@
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-other.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                     break;
 
                   case "3":
@@ -1783,7 +1783,7 @@
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-amex.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
 
                     break;
 
@@ -1794,7 +1794,7 @@
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-other.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                     break;
 
                   case "6":
@@ -1804,7 +1804,7 @@
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-other.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                     break;
 
                   case "35":
@@ -1814,7 +1814,7 @@
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-other.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                     break;
 
                   case "62": case "60":
@@ -1824,18 +1824,18 @@
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-other.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                     break;
 
                   default:
                     cvcInput = document.querySelector("[data-card-cvc]");
                     imgEl = cvcInput.closest(".enter-info__input").querySelector(".enter-info__icon-input");
                     imgName = "cvc-other.svg";
-                    imgEl.setAttribute("src", `/style_checkout/images/icons/${imgName}`);
+                    imgEl.setAttribute("src", `style_checkout/images/icons/${imgName}`);
                     imgSrc = "";
                 }
                 if (imgSrc) {
-                    bankCardIconEl.setAttribute("src", `/style_checkout/images/pay-systems/${imgSrc}`);
+                    bankCardIconEl.setAttribute("src", `style_checkout/images/pay-systems/${imgSrc}`);
                     bankCardIconEl.setAttribute("width", imgWidth);
                     bankCardIconEl.setAttribute("height", imgHeight);
                     bankCardIconEl.classList.remove("hide");

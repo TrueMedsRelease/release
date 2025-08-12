@@ -431,7 +431,7 @@ class CheckoutController extends Controller
                     'enroute'  => '/^2(?:014|149)\\d{11}$/',
                     'jcb'      => '/^(3\\d{4}|2100|1800)\\d{11}$/',
                     'maestro'  => '/^(?:5020|6\\d{3})\\d{12}$/',
-                    'mc'       => '/^5[1-5]\\d{14}$/',
+                    'mc'       => '/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/',
                     'solo'     => '/^(6334[5-9][0-9]|6767[0-9]{2})\\d{10}(\\d{2,3})?$/',
                     'switch'   =>
                         '/^(?:49(03(0[2-9]|3[5-9])|11(0[1-2]|7[4-9]|8[1-2])|36[0-9]{2})\\d{10}(\\d{2,3})?)|(?:564182\\d{10}(\\d{2,3})?)|(6(3(33[0-4][0-9])|759[0-9]{2})\\d{10}(\\d{2,3})?)$/',
@@ -1922,5 +1922,175 @@ class CheckoutController extends Controller
         }
 
         return json_encode($response);
+    }
+
+    public function zelleData(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone'            => ['required', 'min:5', 'max:16'],
+            'email'            => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
+            'firstname'        => ['required', 'max:255'],
+            'lastname'         => ['required', 'max:255'],
+            'billing_country'  => ['required', 'max:2'],
+            'billing_city'     => ['required', 'max:255'],
+            'billing_address'  => ['required', 'max:255'],
+            'billing_zip'      => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        } else {
+            session(['form.payment_type' => 'zelle']);
+
+            $form = session('form');
+
+            $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
+            $phone_code = $phone_code->phonecode;
+
+            $products = [];
+            $sessid   = '';
+
+            foreach (session('cart') as $product) {
+                $products[$product['pack_id']] = [
+                    'qty'            => $product['q'],
+                    'price'          => $product['price'],
+                    'is_ed_category' => false
+                ];
+                $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+            }
+
+            if (session('cart_option.bonus_id') != 0) {
+                $products[session('cart_option.bonus_id')] = [
+                    'qty'            => 1,
+                    'price'          => session('cart_option.bonus_price'),
+                    'is_ed_category' => false
+                ];
+            }
+
+            $products_str = json_encode($products);
+
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+            $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+            $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
+
+            $data = [
+                'method'             => 'order',
+                'api_key'            => $api_key->key_data,
+                'phone'              => e('+' . $phone_code . $form['phone']),
+                'alternative_phone'  => !empty($form['alt_phone']) ? e('+' . $phone_code . $form['alt_phone']) : '',
+                'email'              => e($form['email']),
+                'alter_email'        => !empty($form['alt_email']) ? e($form['alt_email']) : '',
+                'firstname'          => e($form['firstname']),
+                'lastname'           => e($form['lastname']),
+                'billing_country'    => e($form['billing_country']),
+                'billing_state'      => $billing_state,
+                'billing_city'       => e($form['billing_city']),
+                'billing_address'    => e($form['billing_address']),
+                'billing_zip'        => e($form['billing_zip']),
+                'shipping_country'   => !empty($form['address_match']) ? e($form['shipping_country']) : e(
+                    $form['billing_country']
+                ),
+                'shipping_state'     => !empty($form['address_match']) ? $shipping_state : $billing_state,
+                'shipping_city'      => !empty($form['address_match']) ? e($form['shipping_city']) : e(
+                    $form['billing_city']
+                ),
+                'shipping_address'   => !empty($form['address_match']) ? e($form['shipping_address']) : e(
+                    $form['billing_address']
+                ),
+                'shipping_zip'       => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
+                'payment_type'       => 'zelle',
+                // 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                'ip'                 => '89.187.179.179',
+                'aff'                => session('aff', 0),
+                'ref'                => session('referer', ''),
+                'refc'               => session('refc', ''),
+                'keyword'            => session('keyword', ''),
+                'domain_from'        => request()->getHost(),
+                'total'              => session('total.checkout_total'),
+                'shipping'           => session('cart_option.shipping'),
+                'products'           => $products_str,
+                'saff'               => session('saff', ''),
+                'language'           => App::currentLocale(),
+                'currency'           => session('currency'),
+                'user_agent'         => 'user_agent=' . $request->userAgent(),
+                'fingerprint'        => '',
+                'product_total'      => session('total.product_total'),
+                'customer_id'        => '',
+                'reorder'            => 0,
+                'reorder_discount'   => 0,
+                'shipping_price'     => session('total.shipping_total'),
+                'insurance'          => session('total.insurance'),
+                'secret_package'     => session('total.secret_package'),
+                'store_skin'         => config('app.design'),
+                'recurring_period'   => 0,
+                'coupon'             => session('coupon.coupon', ''),
+                'bonus'              => '',
+                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
+                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
+                'theme'              => 13,
+                'coupon_discount'    => session('total.coupon_discount'),
+                'sessid'             => $sessid
+            ];
+
+            if (checkdnsrr('true-services.net', 'A')) {
+                try {
+                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order_test4.php', $data);
+
+                    if ($response->successful()) {
+                        $response = json_decode($response, true);
+
+                        if ($response['status'] == 'ERROR') {
+                            return response()->json(['response' => $response], 200);
+                        } else {
+                            session(['zelle' => [
+                                'name' => $response['zelle_name'],
+                                'email' => $response['zelle_email'],
+                                'orderId' => $response['order_id']
+                            ]]);
+
+                            return response()->json(['response' => $response], 200);
+                        }
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
+        }
+    }
+
+    public function zelle(Request $request)
+    {
+        if (session()->has('zelle') && session('zelle.orderId')) {
+            session(['order' => [
+                'order_id' => session('zelle.orderId')
+            ]]);
+
+            session()->forget('zelle');
+
+            return response()->json(['status' => 'success']);
+        } else {
+            return response()->json(['status' => 'error', 'text' => 'Order ID is empty']);
+        }
     }
 }

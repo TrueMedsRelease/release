@@ -17,7 +17,7 @@ window.addEventListener('load', async () => {
         var params = document.getElementById("stattemp").value + "&theme=" + mode;
         // console.log(params);
         $.ajax({
-            url: "/pwa/pwa_info",
+            url: "pwa/pwa_info",
             type: 'POST',
             data: {
               'params': params,

@@ -4737,7 +4737,7 @@ function sendAjaxAffiliate() {
 
     if (!error) {
         $.ajax({
-            url:     '/request_affiliate',
+            url:     routeRequestAffiliate,
             type:     "POST",
             cache: false,
             data: { 'name' : name,

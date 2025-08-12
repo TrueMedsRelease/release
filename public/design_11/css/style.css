@@ -1786,6 +1786,7 @@ body.has-scroll{
 .nav__item{
   position:relative;
   margin-bottom:0;
+  /* max-width: 150px; */
 }
 
 .nav__link{
@@ -3898,6 +3899,7 @@ body.has-scroll{
   .footer-nav .nav__list{
     flex-direction:row;
     gap:2rem;
+    justify-content: space-between;
   }
   .footer-buttons{
     display:none;
@@ -4011,6 +4013,12 @@ body.has-scroll{
 }
 
 @media (min-width: 1280px){
+.footer__wrapper .nav__item {
+    max-width: 150px;
+}
+.footer-nav .nav__list {
+    gap: 1rem;
+}
   br.lg{
     display:initial;
   }
@@ -4056,7 +4064,7 @@ body.has-scroll{
     gap:2rem;
   }
   .footer-nav .nav__link{
-    font-size:1.5rem;
+    font-size:1.4rem;
   }
   .footer__affiliate-button{
     margin-top:0;

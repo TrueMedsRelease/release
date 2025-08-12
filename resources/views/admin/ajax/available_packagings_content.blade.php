@@ -22,9 +22,9 @@
                 </select>
             </td>
             <td valign="middle" width="10%" align="center">
-                <span class="right_icon" id="add_button" title="{#add_to_list_of_showed_products_text#}" style="cursor: pointer"
+                <span class="right_icon" id="add_button" title="{{ __('text.admin_products_show_add_to_list_of_showed_products_text') }}" style="cursor: pointer"
                 onclick="addPackagngInShowed()">&nbsp;</span><br />
-                <span class="left_icon" id="delete_button" title="{#delete_from_list_of_showed_products_text#}" style="cursor: pointer"
+                <span class="left_icon" id="delete_button" title="{{ __('text.admin_products_show_delete_from_list_of_showed_products_text') }}" style="cursor: pointer"
                 onclick="deletePackagngFromShowed()">&nbsp;</span><br />
             </td>
             <td valign="top" width="26%">
@@ -38,9 +38,9 @@
                 </select>
             </td>
             <td valign="middle" width="10%">
-                <span class="up_icon" id="up_button" title='{#up_pos_text#}' style="cursor: pointer"
+                <span class="up_icon" id="up_button" title='{{ __('text.admin_packagings_show_up_pos_text') }}' style="cursor: pointer"
                 onclick="packagingUpInSort()">&nbsp;</span><br />
-                <span class="down_icon" id="down_button" title='{#down_pos_text#}' style="cursor: pointer"
+                <span class="down_icon" id="down_button" title='{{ __('text.admin_packagings_show_down_pos_text') }}' style="cursor: pointer"
                 onclick="packagingDownInSort()">&nbsp;</span><br />
             </td>
         </tr>

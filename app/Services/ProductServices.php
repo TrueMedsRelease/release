@@ -68,6 +68,29 @@ class ProductServices
             }
         }
 
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         $countryCode = strtoupper(session('location.country') ?? '');
@@ -132,6 +155,9 @@ class ProductServices
                                                 . __('text.text_aff_domain_2');
                     }
                 }
+
+                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+
             } else {
                 $products[$i]['unset'] = true;
             }
@@ -188,6 +214,30 @@ class ProductServices
         $categoriesQuery->with(['product']);
         $categoriesQuery->orderBy('ord');
         $categoriesRaw = $categoriesQuery->get();
+
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
 
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
@@ -265,6 +315,8 @@ class ProductServices
                             'name' => trim($value),
                             'url'  => $activeUrl
                         ];
+
+                        $product['product_dosages'] = isset($dosagesData[$product['id']]) ? $dosagesData[$product['id']] : [];
                     }
                 } else {
                     $product['unset'] = true;
@@ -550,6 +602,29 @@ class ProductServices
                 ->toArray();
         }
 
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
@@ -608,6 +683,9 @@ class ProductServices
                         }
                     }
                 }
+
+                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+
             } else {
                 $products[$i]['unset'] = true;
             }
@@ -665,6 +743,30 @@ class ProductServices
             ->get(['id', 'image', 'aktiv'])
             ->toArray();
 
+
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
@@ -730,6 +832,9 @@ class ProductServices
                         }
                     }
                 }
+
+                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+
             } else {
                 $products[$i]['unset'] = true;
             }
@@ -781,6 +886,29 @@ class ProductServices
                 ->toArray();
         }
 
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
@@ -846,6 +974,9 @@ class ProductServices
                         }
                     }
                 }
+
+                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+
             } else {
                 $products[$i]['unset'] = true;
             }
@@ -1097,6 +1228,29 @@ class ProductServices
             }
         }
 
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
         $product['categories'] = $categories;
         $product['name']       = $products_desc['name'];
         $product['desc']       = $products_desc['desc'];
@@ -1165,6 +1319,7 @@ class ProductServices
         $product['type']     = $type->name;
         $product['rec_name'] = $rec_name;
         $product['rec_url']  = $rec_url;
+        $product['product_dosages'] = $dosagesData[$product['id']];
 
         $product_description = $product['full_desc'];
         $product_description = str_replace(
@@ -1468,6 +1623,29 @@ class ProductServices
             $products = [];
         }
 
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
@@ -1524,6 +1702,9 @@ class ProductServices
                         }
                     }
                 }
+
+                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+
             } else {
                 $products[$i]['unset'] = true;
             }
@@ -2338,6 +2519,29 @@ class ProductServices
             }
         }
 
+        $productsDosages = DB::table('product_dosage as d')
+            ->join('product_packaging as pp', function ($join) {
+                $join->on('d.product_id', '=', 'pp.product_id')
+                    ->on('d.dosage', '=', 'pp.dosage');
+            })
+            ->where('pp.is_showed', 1)
+            ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
+            ->groupBy('d.product_id')
+            ->pluck('active_dosages', 'd.product_id');
+
+        $dosagesData = collect($productsDosages)->map(function ($item) {
+            $parts = explode(';', (string)$item);
+
+            usort($parts, function ($a, $b) {
+                // Извлекаем числовую часть, например: "0.5mg" -> 0.5
+                $numA = floatval(preg_replace('/[^0-9.]/', '', $a));
+                $numB = floatval(preg_replace('/[^0-9.]/', '', $b));
+                return $numA <=> $numB;
+            });
+
+            return $parts;
+        })->toArray();
+
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
         foreach ($products_arr as $product_id) {
             if (isset($product_data[$product_id])) {
@@ -2371,7 +2575,8 @@ class ProductServices
                         ? __('text.text_aff_domain_1')
                           . '_' . $product_data[$product_id]->name
                           . '_' . __('text.text_aff_domain_2')
-                        : $product_data[$product_id]->image
+                        : $product_data[$product_id]->image,
+                    'product_dosages' => $dosagesData[$product_id]
                 ];
             }
         }

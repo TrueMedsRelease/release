@@ -84,7 +84,7 @@ function enableNotif() {
                         format_date = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 
                         $.ajax({
-                            url: '/push/save_push',
+                            url: 'push/save_push',
                             type: "POST",
                             data: {
                                 'shop_url': shop_url,

@@ -100,7 +100,7 @@ $(document).on('click', '#message_send_button', function () {
 
     if (!error) {
         $.ajax({
-            url: '/request_contact_us',
+            url: routeRequestContactUs,
             type: "POST",
             cache: false,
             data: { 'name' : name,
@@ -154,7 +154,7 @@ $(document).on('click', '#affiliate_send_button', function () {
 
     if (!error) {
         $.ajax({
-            url:     '/request_affiliate',
+            url:     routeRequestAffiliate,
             type:     "POST",
             cache: false,
             data: { 'name' : name,
@@ -262,7 +262,7 @@ $(document).on('click', '.button_request_call', function () {
 
     if (number) {
         $.ajax({
-            url: '/request_call',
+            url: routeRequestCall,
             type: "POST",
             cache: false,
             data: {phone: phone_code+number},
@@ -308,53 +308,53 @@ if (getCookie('christmas')) {
 
 if (window.innerWidth > 1925) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_biggest.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_biggest.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_biggest.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
+    $('.christmas img').attr('src', pathImageCheckupBiggest);
 }
 if (window.innerWidth > 769 && window.innerWidth < 1920) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_big.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_big.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_big.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_big.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
+    $('.christmas img').attr('src', pathImageCheckupBig);
 }
 if (window.innerWidth > 391 && window.innerWidth < 769) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_middle.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_middle.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_middle.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
+    $('.christmas img').attr('src', pathImageCheckupMiddle);
 }
 if (window.innerWidth < 391) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-    // $('.christmas img').attr('src', '/pub_images/pay_small.png');
-    // $('.christmas img').attr('src', '/pub_images/christmas_small.png');
-    $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_small.png');
+    // $('.christmas img').attr('src', 'pub_images/pay_small.png');
+    // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
+    $('.christmas img').attr('src', pathImageCheckupSmall);
 }
 
 window.addEventListener('resize', function (e) {
     if (window.innerWidth > 1925) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_biggest.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_biggest.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_biggest.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
+        $('.christmas img').attr('src', pathImageCheckupBiggest);
     }
     if (window.innerWidth > 769 && window.innerWidth < 1920) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_big.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_big.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_big.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_big.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
+        $('.christmas img').attr('src', pathImageCheckupBig);
     }
     if (window.innerWidth > 391 && window.innerWidth < 769) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_middle.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_middle.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_middle.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
+        $('.christmas img').attr('src', pathImageCheckupMiddle);
     }
     if (window.innerWidth < 391) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-        // $('.christmas img').attr('src', '/pub_images/pay_small.png');
-        // $('.christmas img').attr('src', '/pub_images/christmas_small.png');
-        $('.christmas img').attr('src', '/pub_images/checkup_img/white/checkup_small.png');
+        // $('.christmas img').attr('src', 'pub_images/pay_small.png');
+        // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
+        $('.christmas img').attr('src', pathImageCheckupSmall);
     }
 });
 
@@ -362,7 +362,7 @@ $(document).on('click', '.button_sub', function () {
     let email = $('#email_sub').val();
     if (email) {
         $.ajax({
-            url: '/request_subscribe',
+            url: routeRequestSubscribe,
             type: "POST",
             cache: false,
             data: {email: email},
@@ -418,12 +418,12 @@ $(document).on('click', '.push_allow', function () {
     date.setDate(date.getDate() + 900);
     date = date.toUTCString();
     document.cookie = 'hide_push=1; path=/; expires=' + date;
-    enableNotif();
+    // enableNotif();
 });
 
 if ($('#order_info_session').val()) {
     $.ajax({
-        url: '/push/save_push',
+        url: routeSavePush,
         type: "POST",
         data: {
             method: 'update_customer',
