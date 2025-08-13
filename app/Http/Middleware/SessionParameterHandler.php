@@ -106,7 +106,7 @@ class SessionParameterHandler
 
         // design (перезаписываем всегда при наличии)
         if (!empty($request->query('design'))) {
-            if (in_array($request->query('design'), [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13])) {
+            if (in_array($request->query('design'), [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14])) {
                 session(['design' => 'design_' . $request->query('design')]);
             }
         }
