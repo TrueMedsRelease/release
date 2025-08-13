@@ -73,7 +73,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
@@ -220,7 +220,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
@@ -607,7 +607,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
@@ -749,7 +749,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
@@ -891,7 +891,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
@@ -1233,7 +1233,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
@@ -1628,7 +1628,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
@@ -2524,7 +2524,7 @@ class ProductServices
                 $join->on('d.product_id', '=', 'pp.product_id')
                     ->on('d.dosage', '=', 'pp.dosage');
             })
-            ->where('pp.is_showed', 1)
+            ->where('pp.is_showed', '=', 1)
             ->select('d.product_id', DB::raw("GROUP_CONCAT(DISTINCT d.dosage SEPARATOR ';') as active_dosages"))
             ->groupBy('d.product_id')
             ->pluck('active_dosages', 'd.product_id');
