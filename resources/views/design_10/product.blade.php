@@ -181,7 +181,7 @@
                                             @if ($loop->remaining != 1 && $product['id'] != 616)
                                                 <div class="product__discount">
                                                     <s>{{ $Currency::convert($dosage['max_pill_price'] * $item['num'], true) }}</s>
-                                                    -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
+                                                    -{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%
                                                 </div>
                                             @endif
                                             <div class="product__price">

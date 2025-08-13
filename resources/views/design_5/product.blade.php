@@ -140,9 +140,9 @@
                             <span>{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
                         </div>
                     @endif
-                    
+
                     @if ($loop->remaining != 1 && $product['id'] != 616)
-                        <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span></div>
+                        <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span></div>
                     @else
                         <div class="col"><span>{{ $Currency::convert($item['price']) }}</span></div>
                     @endif

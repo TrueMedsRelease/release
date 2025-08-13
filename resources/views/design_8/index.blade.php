@@ -314,10 +314,10 @@
                                             <span class="product_per_pill">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
 
                                             <span class="product_offer">
-                                                @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) > 0)
+                                                @if (abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) > 0)
                                                     <span class="old_price">
                                                         <span>{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }}</span>
-                                                        -{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%
+                                                        -{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%
                                                     </span>{!!__('text.product_only')!!} <span>{{ $Currency::convert($item['price']) }}</span>
                                                 @else
                                                     <span>{{ $Currency::convert($item['price']) }}</span>
