@@ -179,15 +179,15 @@
                                             @if ($product['id'] != 616)
                                                 <th class="product-table__per">{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</th>
                                             @endif
-                                            
+
                                             <th class="product-table__price">
                                                 @if ($loop->remaining != 1 && $product['id'] != 616)
                                                     <span class="product-table__old">{{ $Currency::convert($dosage['max_pill_price'] * $item['num'], true) }}</span>
-                                                    <span class="product-table__discount">-{{ ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) }}%</span>
+                                                    <span class="product-table__discount">-{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%</span>
                                                 @endif
 
                                                 @if ($product['id'] != 616)
-                                                    @if (ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100) == 0)
+                                                    @if (abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) == 0)
                                                         <span class="product-table__current--discount">{{ $Currency::convert($item['price'], true) }}</span>
                                                     @else
                                                         <span class="product-table__current">{{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}</span>
