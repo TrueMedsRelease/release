@@ -188,7 +188,7 @@
                 </div>
             </div>
         </section> --}}
-        <section class="page__bestsellers bestsellers">
+        {{-- <section class="page__bestsellers bestsellers"> --}}
             <div class="bestsellers__container">
                 <h2 class="bestsellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
                 <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
@@ -248,7 +248,7 @@
                     @endforeach
                 </div>
             </div>
-        </section>
+        {{-- </section> --}}
     @else
         <div class="bestsellers__container">
             <h2 class="bestsellers__title title">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>
