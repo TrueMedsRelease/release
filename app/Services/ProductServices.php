@@ -156,7 +156,7 @@ class ProductServices
                     }
                 }
 
-                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : '';
 
             } else {
                 $products[$i]['unset'] = true;
@@ -684,7 +684,7 @@ class ProductServices
                     }
                 }
 
-                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : '';
 
             } else {
                 $products[$i]['unset'] = true;
@@ -833,7 +833,7 @@ class ProductServices
                     }
                 }
 
-                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : '';
 
             } else {
                 $products[$i]['unset'] = true;
@@ -975,7 +975,7 @@ class ProductServices
                     }
                 }
 
-                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : '';
 
             } else {
                 $products[$i]['unset'] = true;
@@ -1319,7 +1319,7 @@ class ProductServices
         $product['type']     = $type->name;
         $product['rec_name'] = $rec_name;
         $product['rec_url']  = $rec_url;
-        $product['product_dosages'] = $dosagesData[$product['id']];
+        $product['product_dosages'] = isset($dosagesData[$product['id']]) ? $dosagesData[$product['id']] : '';
 
         $product_description = $product['full_desc'];
         $product_description = str_replace(
@@ -1703,7 +1703,7 @@ class ProductServices
                     }
                 }
 
-                $products[$i]['product_dosages'] = $dosagesData[$products[$i]['id']];
+                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : '';
 
             } else {
                 $products[$i]['unset'] = true;
@@ -2576,7 +2576,7 @@ class ProductServices
                           . '_' . $product_data[$product_id]->name
                           . '_' . __('text.text_aff_domain_2')
                         : $product_data[$product_id]->image,
-                    'product_dosages' => $dosagesData[$product_id]
+                    'product_dosages' => isset($dosagesData[$product_id]) ? $dosagesData[$product_id] : ''
                 ];
             }
         }
