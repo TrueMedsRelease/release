@@ -14,6 +14,7 @@ class AdminServices
         $not_showed_product = Product::query()
             ->where('is_showed_on_main', '=', 0)
             ->where('is_showed', '=', 1)
+            ->where('ban', '=', 0)
             ->orderBy('main_order', 'asc')
             ->get(['id'])
             ->toArray();
@@ -32,6 +33,7 @@ class AdminServices
         $showed_product = Product::query()
             ->where('is_showed_on_main', '=', 1)
             ->where('is_showed', '=', 1)
+            ->where('ban', '=', 0)
             ->orderBy('main_order', 'asc')
             ->get(['id'])
             ->toArray();
@@ -59,6 +61,7 @@ class AdminServices
                 ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->where('product.is_showed', '=', 0)
+                ->where('product.ban', '=', 0)
                 ->where('product_category.category_id', '=', $cur_category_id->id)
                 ->whereNotIn('product.id', [615, 224, 223, 225])
                 ->orderBy('product_desc.name')
@@ -91,6 +94,7 @@ class AdminServices
                 ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->where('product.is_showed', '=', 1)
+                ->where('product.ban', '=', 0)
                 ->where('product_category.category_id', '=', $cur_category_id->id)
                 ->whereNotIn('product.id', [615, 224, 223, 225])
                 ->orderBy('product_desc.name')
@@ -123,6 +127,7 @@ class AdminServices
                 ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->where('product_category.category_id', '=', $cur_category_id->id)
+                ->where('product.ban', '=', 0)
                 ->whereNotIn('product.id', [615, 224, 223, 225])
                 ->orderBy('product_desc.name')
                 ->get(['product.id', 'product_desc.name', 'product.main_order'])
@@ -162,6 +167,7 @@ class AdminServices
 
             $product = DB::table('product')
                 ->where('id', '=', $product_id)
+                ->where('ban', '=', 0)
                 ->get(['is_showed', 'sinonim'])
                 ->toArray();
             $product = $product[0];
