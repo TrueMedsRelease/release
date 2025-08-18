@@ -11,29 +11,6 @@
     <meta name="theme-color" content="#28d17c"/>
 	<meta name="format-detection" content="telephone=no">
 
-    {{-- <link rel="alternate" href="{{ route('home.language', 'arb') }}" hreflang="ar" />
-    <link rel="alternate" href="{{ route('home.language', 'cs') }}" hreflang="cs" />
-    <link rel="alternate" href="{{ route('home.language', 'da') }}" hreflang="da" />
-    <link rel="alternate" href="{{ route('home.language', 'de') }}" hreflang="de" />
-    <link rel="alternate" href="{{ route('home.language', 'en') }}" hreflang="en" />
-    <link rel="alternate" href="{{ route('home.language', 'es') }}" hreflang="es" />
-    <link rel="alternate" href="{{ route('home.language', 'fi') }}" hreflang="fi" />
-    <link rel="alternate" href="{{ route('home.language', 'fr') }}" hreflang="fr" />
-    <link rel="alternate" href="{{ route('home.language', 'gr') }}" hreflang="el" />
-    <link rel="alternate" href="{{ route('home.language', 'hans') }}" hreflang="zh-Hans" />
-    <link rel="alternate" href="{{ route('home.language', 'hant') }}" hreflang="zh-Hant" />
-    <link rel="alternate" href="{{ route('home.language', 'hu') }}" hreflang="hu" />
-    <link rel="alternate" href="{{ route('home.language', 'it') }}" hreflang="it" />
-    <link rel="alternate" href="{{ route('home.language', 'ja') }}" hreflang="ja" />
-    <link rel="alternate" href="{{ route('home.language', 'ms') }}" hreflang="ms" />
-    <link rel="alternate" href="{{ route('home.language', 'nl') }}" hreflang="nl" />
-    <link rel="alternate" href="{{ route('home.language', 'no') }}" hreflang="no" />
-    <link rel="alternate" href="{{ route('home.language', 'pl') }}" hreflang="pl" />
-    <link rel="alternate" href="{{ route('home.language', 'pt') }}" hreflang="pt" />
-    <link rel="alternate" href="{{ route('home.language', 'ro') }}" hreflang="ro" />
-    <link rel="alternate" href="{{ route('home.language', 'sk') }}" hreflang="sk" />
-    <link rel="alternate" href="{{ route('home.language', 'sv') }}" hreflang="sv" /> --}}
-
     @foreach ($Language::GetAllLanuages() as $item)
         <link rel="alternate" href="{{ route('home.language', $item['code']) }}"
             @if ($item['code'] == 'arb')
@@ -63,6 +40,11 @@
     {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
+
+    <script>
+        const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
+        const routeCartContent = "{{ route('cart.content') }}";
+    </script>
 
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
