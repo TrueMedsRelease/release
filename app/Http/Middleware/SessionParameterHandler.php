@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Http\Controllers\CartController;
+use App\Models\ProductPackaging;
+use App\Models\Product;
 use App\Models\Cart;
 use Closure;
 use Illuminate\Http\Request;
@@ -125,8 +127,15 @@ class SessionParameterHandler
             $pack_id = $request->query('buy_pack');
 
             if ($pack_id) {
-                CartController::add_pack($pack_id);
-                return redirect(route('cart.index'));
+                $product_pack = ProductPackaging::query()->find($pack_id);
+                $product = Product::query()->find($product_pack->product_id);
+
+                if ($product->is_showed == 1 && $product_pack->is_showed == 1) {
+                    CartController::add_pack($pack_id);
+                    return redirect(route('cart.index'));
+                } else {
+                    return redirect(route('home.index'));
+                }
             }
 
         }

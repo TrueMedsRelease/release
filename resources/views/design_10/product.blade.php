@@ -186,9 +186,13 @@
                                             @endif
                                             <div class="product__price">
                                                 @if ($product['id'] != 616)
-                                                    {{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}
+                                                    @if ($loop->remaining != 1)
+                                                        {{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}
+                                                    @else
+                                                        {{ $Currency::convert($item['price'], true) }}
+                                                    @endif
                                                 @else
-                                                   {{ $Currency::convert($item['price'], true) }}
+                                                    {{ $Currency::convert($item['price'], true) }}
                                                 @endif
                                             </div>
                                         </td>

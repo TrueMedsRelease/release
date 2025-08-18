@@ -226,9 +226,13 @@
                                 @endif
                                 <span class="item-product-info__new-price">
                                     @if ($product['id'] != 616)
-                                        {!!__('text.product_only')!!}&nbsp;<span>{{ $Currency::convert($item['price']) }}</span>
+                                        @if ($loop->remaining != 1)
+                                            {{__('text.cart_only')}} {{ $Currency::convert($item['price'], true) }}
+                                        @else
+                                            {{ $Currency::convert($item['price'], true) }}
+                                        @endif
                                     @else
-                                        {{ $Currency::convert($item['price']) }}
+                                        {{ $Currency::convert($item['price'], true) }}
                                     @endif
                                 </span>
                             </th>
