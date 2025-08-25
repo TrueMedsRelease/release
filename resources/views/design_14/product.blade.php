@@ -100,7 +100,7 @@
                 @if (!empty($product['analog']))
                     <div class="info-info__row">
                         {{ $product['name'] }} {!!__('text.product_analogs')!!}
-                        {{-- @if (count(value: $product['analog']) > 10)
+                        @if (count(value: $product['analog']) > 10)
                             <div class="text-box">
                                 <span class="text">
                                     @foreach ($product['analog'] as $analog)
@@ -110,19 +110,19 @@
                                 </span>
                                 <a href="#" class="more">view all</a>
                             </div>
-                        @else --}}
+                        @else
                             @foreach ($product['analog'] as $analog)
                                 <a href="{{ route('home.product', $analog['url']) }}"
                                     class="analog">{{ $analog['name'] }}</a>
                             @endforeach
-                        {{-- @endif --}}
+                        @endif
                     </div>
                 @endif
 
                 @if (!empty($product['sinonim']))
                     <div class="info-info__row">
                         {{ $product['name'] }} {!!__('text.product_others')!!}
-                        {{-- @if (count($product['sinonim']) > 10)
+                        @if (count($product['sinonim']) > 10)
                             <div class="text-box">
                                 <span class="text">
                                     @foreach ($product['sinonim'] as $sinonim)
@@ -136,7 +136,7 @@
                                 </span>
                                 <a href="#" class="more">view all</a>
                             </div>
-                        @else --}}
+                        @else
                             @foreach ($product['sinonim'] as $sinonim)
                                 @php
                                     $sinonim['url'] = str_replace('.', ',', $sinonim['url']);
@@ -145,7 +145,7 @@
                                     {{ $sinonim['name'] }}
                                 </a>
                             @endforeach
-                        {{-- @endif --}}
+                        @endif
                     </div>
                 @endif
             </div>
