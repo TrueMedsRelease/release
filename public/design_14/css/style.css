@@ -4658,3 +4658,7 @@ input.just-validate-success-field:focus-visible{
 .christmas img {
     width: 100%;
 }
+
+.more {
+    text-decoration: underline;
+}
