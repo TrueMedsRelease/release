@@ -331,7 +331,9 @@ ul, ol {
     justify-content: space-between;
     align-items: center;
     padding-top: 5px;
-    padding-bottom: 5px; }
+    padding-bottom: 5px;
+    overflow-x: scroll;
+}
 @media only screen and (max-width: 991px) {
     .phone-box .holder-phone {
         overflow: scroll;

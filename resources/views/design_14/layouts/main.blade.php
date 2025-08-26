@@ -524,45 +524,43 @@
                         </nav>
                     </div>
 
-
-
                     <div class="footer-brands">
                         <div class="footer-brands__title h4">{{ __('text.common_verified') }}</div>
                         <div class="footer-brands__wrapper">
                             <div class="footer-brand">
                                 <picture>
-                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-1-48w.webp 1x, $design/img/brands/brand-1-97w.webp 2x") }}">
-                                    <img src="{{ asset("$design/img/brands/brand-1-48w.png") }}" srcset="{{ asset("$design/img/brands/brand-1-48w.png 1x, $design/img/brands/brand-1-97w.png 2x") }}" width="49" height="32" alt="Brand">
+                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-1-48w.webp") }} 1x, {{ asset("$design/img/brands/brand-1-97w.webp 2x") }}">
+                                    <img src="{{ asset("$design/img/brands/brand-1-48w.png") }}" srcset="{{ asset("$design/img/brands/brand-1-48w.png") }} 1x, {{ asset("$design/img/brands/brand-1-97w.png 2x") }}" width="49" height="32" alt="Brand">
                                 </picture>
                             </div>
                             <div class="footer-brand">
                                 <picture>
-                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-2-46w.webp 1x, $design/img/brands/brand-2-93w.webp 2x") }}">
-                                    <img  src="{{ asset("$design/img/brands/brand-2-46w.png") }}" srcset="{{ asset("$design/img/brands/brand-2-46w.png 1x, $design/img/brands/brand-2-93w.png 2x") }}" width="47" height="36" alt="Brand">
+                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-2-46w.webp") }} 1x, {{ asset("$design/img/brands/brand-2-93w.webp 2x") }}">
+                                    <img  src="{{ asset("$design/img/brands/brand-2-46w.png") }}" srcset="{{ asset("$design/img/brands/brand-2-46w.png") }} 1x, {{ asset("$design/img/brands/brand-2-93w.png 2x") }}" width="47" height="36" alt="Brand">
                                 </picture>
                             </div>
                             <div class="footer-brand">
                                 <picture>
-                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-3-57w.webp 1x, $design/img/brands/brand-3-115w.webp 2x") }}">
-                                    <img src="{{ asset("$design/img/brands/brand-3-57w.png") }}" srcset="{{ asset("$design/img/brands/brand-3-57w.png 1x, $design/img/brands/brand-3-115w.png 2x") }}" width="58" height="38" alt="Brand">
+                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-3-57w.webp") }} 1x, {{ asset("$design/img/brands/brand-3-115w.webp 2x") }}">
+                                    <img src="{{ asset("$design/img/brands/brand-3-57w.png") }}" srcset="{{ asset("$design/img/brands/brand-3-57w.png") }} 1x, {{ asset("$design/img/brands/brand-3-115w.png 2x") }}" width="58" height="38" alt="Brand">
                                 </picture>
                             </div>
                             <div class="footer-brand">
                                 <picture>
-                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-4-38w.webp 1x, $design/img/brands/brand-4-77w.webp 2x") }}">
-                                    <img src="{{ asset("$design/img/brands/brand-4-38w.png") }}" srcset="{{ asset("$design/img/brands/brand-4-38w.png 1x, $design/img/brands/brand-4-77w.png 2x") }}" width="39" height="40" alt="Brand">
+                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-4-38w.webp") }} 1x, {{ asset("$design/img/brands/brand-4-77w.webp 2x") }}">
+                                    <img src="{{ asset("$design/img/brands/brand-4-38w.png") }}" srcset="{{ asset("$design/img/brands/brand-4-38w.png") }} 1x, {{ asset("$design/img/brands/brand-4-77w.png 2x") }}" width="39" height="40" alt="Brand">
                                 </picture>
                             </div>
                             <div class="footer-brand">
                                 <picture>
-                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-5-56w.webp 1x, $design/img/brands/brand-5-113w.webp 2x") }}">
-                                    <img src="{{ asset("$design/img/brands/brand-5-56w.png") }}" srcset="{{ asset("$design/img/brands/brand-5-56w.png 1x, $design/img/brands/brand-5-113w.png 2x") }}" width="57" height="32" alt="Brand">
+                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-5-56w.webp") }} 1x, {{ asset("$design/img/brands/brand-5-113w.webp 2x") }}">
+                                    <img src="{{ asset("$design/img/brands/brand-5-56w.png") }}" srcset="{{ asset("$design/img/brands/brand-5-56w.png") }} 1x, {{ asset("$design/img/brands/brand-5-113w.png 2x") }}" width="57" height="32" alt="Brand">
                                 </picture>
                             </div>
                             <div class="footer-brand">
                                 <picture>
-                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-6-72w.webp 1x, $design/img/brands/brand-6-145w.webp 2x") }}">
-                                    <img src="{{ asset("$design/img/brands/brand-6-72w.png") }}" srcset="{{ asset("$design/img/brands/brand-6-72w.png 1x, $design/img/brands/brand-6-145w.png 2x") }}" width="73" height="30" alt="Brand">
+                                    <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-6-72w.webp") }} 1x, {{ asset("$design/img/brands/brand-6-145w.webp 2x") }}">
+                                    <img src="{{ asset("$design/img/brands/brand-6-72w.png") }}" srcset="{{ asset("$design/img/brands/brand-6-72w.png") }} 1x, {{ asset("$design/img/brands/brand-6-145w.png 2x") }}" width="73" height="30" alt="Brand">
                                 </picture>
                             </div>
                         </div>

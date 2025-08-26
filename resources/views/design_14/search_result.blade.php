@@ -46,8 +46,8 @@
                             <div class="card__img">
                                 @if ($product['id'] == 616)
                                     <picture>
-                                        <source type="image/webp" srcset="{{ asset("$design/img/products/gift-125w.webp 1x, $design/img/products/gift-251w.webp 2x") }}">
-                                        <img src="{{ asset("$design/img/products/gift-125w.jpg") }}" srcset="{{ asset("$design/img/products/gift-125w.jpg 1x, $design/img/products/gift-251w.jpg 2x") }}"
+                                        <source type="image/webp" srcset="{{ asset("$design/img/products/gift-125w.webp") }} 1x, {{ asset("$design/img/products/gift-251w.webp 2x") }}">
+                                        <img src="{{ asset("$design/img/products/gift-125w.jpg") }}" srcset="{{ asset("$design/img/products/gift-125w.jpg") }} 1x, {{ asset("$design/img/products/gift-251w.jpg 2x") }}"
                                         width="126" height="126" alt="{{ $product['image'] }}">
                                     </picture>
                                 @else
@@ -88,17 +88,17 @@
                                     @endif
                                     <div class="card-feature">
                                         <picture>
-                                            <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-1-48w.webp 1x, $design/img/brands/brand-1-97w.webp 2x") }}">
+                                            <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-1-48w.webp") }} 1x, {{ asset("$design/img/brands/brand-1-97w.webp 2x") }}">
                                             <img src="{{ asset("$design/img/brands/brand-1-48w.png") }}"
-                                            srcset="{{ asset("$design/img/brands/brand-1-48w.png 1x, $design/img/brands/brand-1-97w.png 2x") }}" width="49" height="32"
+                                            srcset="{{ asset("$design/img/brands/brand-1-48w.png") }} 1x, {{ asset("$design/img/brands/brand-1-97w.png 2x") }}" width="49" height="32"
                                             alt="Product feature">
                                         </picture>
                                     </div>
                                     <div class="card-feature">
                                         <picture>
-                                            <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-2-46w.webp 1x, $design/img/brands/brand-2-93w.webp 2x") }}">
+                                            <source type="image/webp" srcset="{{ asset("$design/img/brands/brand-2-46w.webp") }} 1x, {{ asset("$design/img/brands/brand-2-93w.webp 2x") }}">
                                             <img src="{{ asset("$design/img/brands/brand-2-46w.png") }}"
-                                            srcset="{{ asset("$design/img/brands/brand-2-46w.png 1x, $design/img/brands/brand-2-93w.png 2x") }}" width="47" height="36"
+                                            srcset="{{ asset("$design/img/brands/brand-2-46w.png") }} 1x, {{ asset("$design/img/brands/brand-2-93w.png 2x") }}" width="47" height="36"
                                             alt="Product feature">
                                         </picture>
                                     </div>
