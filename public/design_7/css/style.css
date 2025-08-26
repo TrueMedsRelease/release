@@ -1412,6 +1412,7 @@ textarea.input {
       -ms-flex-align: center;
           align-items: center;
   gap: 20px;
+  overflow-x: scroll;
 }
 
 .top-phones-header__item {

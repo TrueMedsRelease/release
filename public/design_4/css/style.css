@@ -3502,6 +3502,7 @@ textarea.input {
   align-items: center;
   gap: 20px;
   margin-bottom: 10px;
+  overflow-x: scroll;
 }
 
 .top-phones-header__item {

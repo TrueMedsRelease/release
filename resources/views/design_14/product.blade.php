@@ -26,9 +26,9 @@
                     @if ($product['id'] == 616)
                         <picture>
                             <source type="image/webp"
-                            srcset="{{ asset("$design/img/products/gift-product-175w.webp 1x, $design/img/products/gift-product-350w.webp 2x") }}"><img
+                            srcset="{{ asset("$design/img/products/gift-product-175w.webp") }} 1x, {{ asset("$design/img/products/gift-product-350w.webp 2x") }}"><img
                             src="{{ asset("$design/img/products/gift-product-175w.jpg") }}"
-                            srcset="{{ asset("$design/img/products/gift-product-175w.jpg 1x, $design/img/products/gift-product-350w.jpg 2x") }}" width="175"
+                            srcset="{{ asset("$design/img/products/gift-product-175w.jpg") }} 1x, {{ asset("$design/img/products/gift-product-350w.jpg 2x") }}" width="175"
                             height="175" alt="Gift">
                         </picture>
                     @else
@@ -57,18 +57,18 @@
                             <div class="card-feature">
                                 <picture>
                                     <source type="image/webp"
-                                    srcset="{{ asset("$design/img/products/card-feature-1-48w.webp 1x, $design/img/products/card-feature-1-97w.webp 2x") }}"><img
+                                    srcset="{{ asset("$design/img/products/card-feature-1-48w.webp") }} 1x, {{ asset("$design/img/products/card-feature-1-97w.webp 2x") }}"><img
                                     src="{{ asset("$design/img/products/card-feature-1-48w.png") }}"
-                                    srcset="{{ asset("$design/img/products/card-feature-1-48w.png 1x, $design/img/products/card-feature-1-97w.png 2x") }}"
+                                    srcset="{{ asset("$design/img/products/card-feature-1-48w.png") }} 1x, {{ asset("$design/img/products/card-feature-1-97w.png 2x") }}"
                                     width="49" height="33" alt="Product feature">
                                 </picture>
                             </div>
                             <div class="card-feature">
                                 <picture>
                                     <source type="image/webp"
-                                    srcset="{{ asset("$design/img/products/card-feature-2-46w.webp 1x, $design/img/products/card-feature-2-92w.webp 2x") }}"><img
+                                    srcset="{{ asset("$design/img/products/card-feature-2-46w.webp") }} 1x, {{ asset("$design/img/products/card-feature-2-92w.webp 2x") }}"><img
                                     src="{{ asset("$design/img/products/card-feature-2-46w.png") }}"
-                                    srcset="{{ asset("$design/img/products/card-feature-2-46w.png 1x, $design/img/products/card-feature-2-92w.png 2x") }}"
+                                    srcset="{{ asset("$design/img/products/card-feature-2-46w.png") }} 1x, {{ asset("$design/img/products/card-feature-2-92w.png 2x") }}"
                                     width="46" height="36" alt="Product feature">
                                 </picture>
                             </div>
