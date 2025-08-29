@@ -8,6 +8,13 @@
 	<link rel="stylesheet" href="style_login/style_.css">
 	<link rel="shortcut icon" href="style_login/favicon.ico">
 
+    <script>
+        const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
+        const routeCartContent = "{{ route('cart.content') }}";
+        const routeCheckCode = "{{ route('home.check_code') }}";
+        const routeRequestLogin = "{{ route('home.request_login') }}";
+    </script>
+
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
