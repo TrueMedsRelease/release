@@ -1315,8 +1315,14 @@ class ProductServices
                                 . __('text.text_aff_domain_2');
         }
 
+        $product_types = DB::table('product_type_desc')
+            ->where('language_id', '=', $language_id)
+            ->pluck('name', 'type_id')
+            ->toArray();
+
         $product['packs']    = $packs;
         $product['type']     = $type->name;
+        $product['product_types'] = $product_types;
         $product['rec_name'] = $rec_name;
         $product['rec_url']  = $rec_url;
         $product['product_dosages'] = isset($dosagesData[$product['id']]) ? $dosagesData[$product['id']] : [];

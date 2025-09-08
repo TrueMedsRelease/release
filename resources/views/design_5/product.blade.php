@@ -127,7 +127,7 @@
             <div class="body">
                 <div class="item">
                     <div class="col">
-                        <span>{{ "{$item['num']} {$product['type']}" }}</span>
+                        <span>{{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}</span>
                         @if ($item['price'] >= 300)
                             <span class="item-info-delivery">{{__('text.cart_free_express')}}</span>
                         @elseif($item['price'] < 300 && $item['price'] >= 200)

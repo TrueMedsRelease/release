@@ -57,7 +57,7 @@
                                 <tr class="product">
                                     <td class="product__info-wrapper">
                                         <div class="product__info @if ($loop->iteration == 1 && $product['id'] != 616) product__info--sale @endif" @if ($loop->iteration == 1 && $product['id'] != 616) style="height: auto;" @endif>
-                                            <div class="product__quantity">{{ "{$item['num']} {$product['type']}" }}</div>
+                                            <div class="product__quantity">{{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}</div>
                                             @if ($product['id'] != 616)
                                                 <div class="product__delivery">
                                                     @if ($item['price'] >= 300)

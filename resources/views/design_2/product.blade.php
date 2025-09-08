@@ -332,7 +332,7 @@
                         <tbody @if ($loop->iteration == 1 && $product['id'] != 616) class="item-product-info__row--discount" @endif>
                         <tr class="item-product-info__row">
                             <th class="item-product-info__package">
-                                {{ "{$item['num']} {$product['type']}" }}
+                                {{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}
                                 @if ($product['id'] != 616)
                                     @if ($item['price'] >= 300)
                                         <span class="item-product-info__delivery">{{__('text.cart_free_express')}}</span>

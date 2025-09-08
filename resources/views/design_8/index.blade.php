@@ -298,7 +298,7 @@
                                         <div class="table_row">
                                             <span class="product_package @if ($item['num'] == 360) bonus_block @endif">
                                                 <div class="package_text @if ($item['num'] == 360) big_bonus @endif">
-                                                    {{ "{$item['num']} {$product['type']}" }}
+                                                    {{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}
                                                     @if ($item['price'] >= 300)
                                                         <span class="bonus">{{__('text.cart_free_express')}}</span>
                                                     @elseif($item['price'] < 300 && $item['price'] >= 200)
