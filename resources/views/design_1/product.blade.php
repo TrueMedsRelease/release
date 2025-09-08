@@ -166,7 +166,7 @@
                             @endif
                                         <tr class="product-table__list @if ($loop->iteration == 1 && $product['id'] != 616) product-table__list--badge @endif">
                                             <th class="product-table__package">
-                                                {{ "{$item['num']} {$product['type']}" }}
+                                                {{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}
                                                 @if ($product['id'] != 616)
                                                     @if ($item['price'] >= 300)
                                                         <span class="product-table__prompt">{{__('text.cart_free_express')}}</span>

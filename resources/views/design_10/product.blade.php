@@ -161,7 +161,7 @@
                                             <div
                                                 class="product__info @if ($loop->iteration == 1 && $product['id'] != 616) product__info--sale @endif">
                                                 <div class="product__quantity">
-                                                    {{ "{$item['num']} {$product['type']}" }}
+                                                    {{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}
                                                 </div>
                                                 @if ($product['id'] != 616)
                                                     @if ($item['price'] >= 300)
