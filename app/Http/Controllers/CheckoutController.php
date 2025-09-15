@@ -1034,6 +1034,7 @@ class CheckoutController extends Controller
             $data = [
                 'method'   => 'hold',
                 'id'       => $id,
+                'success' => isset($_GET['success']) ? $_GET['success'] : false,
                 'order_id' => session('order.order_id'),
             ];
 
