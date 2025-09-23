@@ -4207,7 +4207,7 @@
     }
     // const headerPhones = document.querySelector(".phones-header");
     // const searchLettersList = document.querySelector(".search__select");
-    // if (window.innerWidth < 1024) {
+    // if (document.documentElement.clientWidth < 1024) {
     //     document.addEventListener("click", (function (e) {
     //         if (e.target === headerPhones || e.target.closest(".phones-header")) {
     //             headerPhones.classList.toggle("active");
@@ -4222,7 +4222,7 @@
     //     }));
     // }
 
-    if (window.innerWidth < 1024) {
+    if (document.documentElement.clientWidth < 1024) {
         $(document).on('click', '.search__select', function () {
             $(this).toggleClass('active');
         });
@@ -4305,7 +4305,7 @@ if (getCookie('christmas')) {
     $('.christmas').show();
 
     // if ($('.bestsellers').css('visibility') == 'hidden') {
-    //     if (window.innerWidth < 391) {
+    //     if (document.documentElement.clientWidth < 391) {
     //         $('.header__top').css({'top': '100px'});
     //     } else {
     //         $('.header__top').css({'top': '75px'});
@@ -4351,94 +4351,94 @@ $(document).on('click', '.button_sub', function () {
     }
 });
 
-if (window.innerWidth > 1925) {
+if (document.documentElement.clientWidth > 1925) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
     // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
 }
-if (window.innerWidth > 769 && window.innerWidth < 1920) {
+if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
     // $('.christmas img').attr('src', 'pub_images/pay_big.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
 }
-if (window.innerWidth > 391 && window.innerWidth < 769) {
+if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
     // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
 }
-if (window.innerWidth < 391) {
+if (document.documentElement.clientWidth < 391) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
     // $('.christmas img').attr('src', 'pub_images/pay_small.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
 }
 
-if (window.innerWidth > 1150) {
+if (document.documentElement.clientWidth > 1150) {
     $('.christmas.top').show();
     $('.christmas.bottom').hide();
 }
-if (window.innerWidth > 795 && window.innerWidth < 1151) {
+if (document.documentElement.clientWidth > 795 && document.documentElement.clientWidth < 1151) {
     $('.christmas.top').hide();
     $('.christmas.bottom').show();
-    $('.christmas.bottom img').attr('src', 'pub_images/checkup_img/white/checkup_big.png');
+    $('.christmas.bottom img').attr('src', pathImageCheckupBig);
 }
-if (window.innerWidth > 391 && window.innerWidth < 795) {
+if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 795) {
     $('.christmas.top').hide();
-    $('.christmas.bottom img').attr('src', 'pub_images/checkup_img/white/checkup_middle.png');
+    $('.christmas.bottom img').attr('src', pathImageCheckupMiddle);
 }
-if (window.innerWidth < 391) {
+if (document.documentElement.clientWidth < 391) {
     $('.christmas.top').hide();
-    $('.christmas.bottom img').attr('src', 'pub_images/checkup_img/white/checkup_small.png');
+    $('.christmas.bottom img').attr('src', pathImageCheckupSmall);
 }
 
 window.addEventListener('resize', function (e) {
-    if (window.innerWidth > 1925) {
+    if (document.documentElement.clientWidth > 1925) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
         // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
     }
-    if (window.innerWidth > 769 && window.innerWidth < 1920) {
+    if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
         // $('.christmas img').attr('src', 'pub_images/pay_big.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
     }
-    if (window.innerWidth > 391 && window.innerWidth < 769) {
+    if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
         // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
     }
-    if (window.innerWidth < 391) {
+    if (document.documentElement.clientWidth < 391) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
         // $('.christmas img').attr('src', 'pub_images/pay_small.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
     }
 
-    if (window.innerWidth > 1150) {
+    if (document.documentElement.clientWidth > 1150) {
         $('.christmas.top').show();
         $('.christmas.bottom').hide();
     }
-    if (window.innerWidth > 795 && window.innerWidth < 1151) {
+    if (document.documentElement.clientWidth > 795 && document.documentElement.clientWidth < 1151) {
         $('.christmas.top').hide();
         $('.christmas.bottom').show();
-        $('.christmas.bottom img').attr('src', 'pub_images/checkup_img/white/checkup_big.png');
+        $('.christmas.bottom img').attr('src', pathImageCheckupBig);
     }
-    if (window.innerWidth > 391 && window.innerWidth < 795) {
+    if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 795) {
         $('.christmas.top').hide();
         $('.christmas.bottom').show();
-        $('.christmas.bottom img').attr('src', 'pub_images/checkup_img/white/checkup_middle.png');
+        $('.christmas.bottom img').attr('src', pathImageCheckupMiddle);
     }
-    if (window.innerWidth < 391) {
+    if (document.documentElement.clientWidth < 391) {
         $('.christmas.top').hide();
         $('.christmas.bottom').show();
-        $('.christmas.bottom img').attr('src', 'pub_images/checkup_img/white/checkup_small.png');
+        $('.christmas.bottom img').attr('src', pathImageCheckupSmall);
     }
 });
 
 // window.addEventListener('resize', () => {
-//     if (window.innerWidth < 480 && window.pageYOffset > 100) {
+//     if (document.documentElement.clientWidth < 480 && window.pageYOffset > 100) {
 //         $('.header__top').css({'top': 0});
 //     } else {
 //         if ($('.bestsellers').css('visibility') == 'hidden') {
-//             if (window.innerWidth < 391) {
+//             if (document.documentElement.clientWidth < 391) {
 //                 $('.header__top').css({'top': '100px'});
 //             } else {
 //                 $('.header__top').css({'top': '75px'});
@@ -4451,7 +4451,7 @@ window.addEventListener('resize', function (e) {
 //     }
 
 //     if ($('.bestsellers').css('visibility') == 'hidden') {
-        //         if (window.innerWidth < 391) {
+        //         if (document.documentElement.clientWidth < 391) {
         //             $('.header__top').css({'top': '100px'});
         //         } else {
         //             $('.header__top').css({'top': '75px'});
@@ -4464,13 +4464,13 @@ window.addEventListener('resize', function (e) {
 // });
 
 // window.addEventListener('scroll', () => {
-//     if (window.innerWidth < 480 && window.pageYOffset > 100) {
+//     if (document.documentElement.clientWidth < 480 && window.pageYOffset > 100) {
 //         $('.header__top').css({'top': 0});
         //     } else {
 
 //         if ($('.bestsellers').css('visibility') == 'hidden') {
 //             if (window.pageYOffset < 90) {
-//                 if (window.innerWidth < 391) {
+//                 if (document.documentElement.clientWidth < 391) {
 //                     $('.header__top').css({'top': '100px'});
 //                 } else {
 //                     $('.header__top').css({'top': '75px'});
