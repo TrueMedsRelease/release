@@ -906,13 +906,13 @@
         const routeSavePush = "{{ route('home.save_push_data') }}";
         const routeCart = "{{ route('cart.index') }}";
 
-        const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
-        const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";
-        const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/white/checkup_middle.png') }}";
-        const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/white/checkup_small.png') }}";
+        const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest_v2.png') }}";
+        const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big_v2.png') }}";
+        const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/white/checkup_middle_v2.png') }}";
+        const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/white/checkup_small_v2.png') }}";
     </script>
 
-    <script defer src="{{ asset("$design/js/app.js") }}"></script>
+    <script defer src="{{ asset($design . "/js/app.js") }}"></script>
     <script defer src="{{ asset($design . '/js/custom-select.min.js') }}"></script>
     <script defer src="{{ asset($design . '/js/intlTelInput.min.js') }}"></script>
     <script defer src="{{ asset($design . '/js/main.js') }}"></script>
