@@ -1076,20 +1076,20 @@ class CheckoutController extends Controller
                            ->get('key_data')
                            ->toArray()[0];
 
-            $data = [
-                'method'    => 'check_payment',
-                'api_key'   => $api_key->key_data,
-                'invoiceId' => session('crypto.invoiceId'),
-            ];
+            // $data = [
+            //     'method'    => 'check_payment',
+            //     'api_key'   => $api_key->key_data,
+            //     'invoiceId' => session('crypto.invoiceId'),
+            // ];
 
             if (checkdnsrr('true-services.net', 'A')) {
                 try {
-                    $response_payment = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                    // $response_payment = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
 
-                    if ($response_payment->successful()) {
+                    // if ($response_payment->successful()) {
                         // Обработка успешного ответа
 
-                        $response_payment = json_decode($response_payment, true);
+                        // $response_payment = json_decode($response_payment, true);
 
                         // session(['check_payment' => $response_payment]);
 
@@ -1121,10 +1121,6 @@ class CheckoutController extends Controller
                             }
 
                             $products_str = json_encode($products);
-                            // $api_key      = DB::table('shop_keys')
-                            //                     ->where('name_key', '=', 'api_key')
-                            //                     ->get('key_data')
-                            //                     ->toArray()[0];
 
                             $data = [
                                 'method'              => 'order',
@@ -1162,14 +1158,19 @@ class CheckoutController extends Controller
                                     $request->billing_zip
                                 ),
                                 'payment_type'        => e($request->payment_type),
-                                'crypto_currency'     => e($response_payment['payCurrency']),
-                                'invoiceId'           => e($response_payment['invoiceId']),
-                                'merchant_id'         => e($response_payment['merchantId']),
-                                'purse'               => e($response_payment['purse']),
-                                'amount'              => e($response_payment['amount']),
-                                'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
-                                'commission'          => e($response_payment['merchantCommission']),
-                                'crypto_status'       => e($response_payment['status']),
+                                // 'crypto_currency'     => e($response_payment['payCurrency']),
+                                // 'invoiceId'           => e($response_payment['invoiceId']),
+                                // 'merchant_id'         => e($response_payment['merchantId']),
+                                // 'purse'               => e($response_payment['purse']),
+                                // 'amount'              => e($response_payment['amount']),
+                                // 'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
+                                // 'commission'          => e($response_payment['merchantCommission']),
+                                // 'crypto_status'       => e($response_payment['status']),
+                                'crypto_currency'     => session('crypto.currency', ''),
+                                'invoiceId'           => session('crypto.invoiceId', ''),
+                                'purse'               => session('crypto.purse', ''),
+                                'amount'              => round(session('total.checkout_total') * 0.85, 2),
+                                'amountInPayCurrency' => session('crypto.amount', 0),
                                 'ip'                  => request()->headers->get('cf-connecting-ip') ? request(
                                 )->headers->get('cf-connecting-ip') : request()->ip(),
                                 'aff'                 => session('aff', 0),
@@ -1241,11 +1242,11 @@ class CheckoutController extends Controller
                         // return response()->json(json_encode($response_payment));
 
 
-                    } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response_payment->status());
-                        $responseData = ['error' => 'Service returned an error'];
-                    }
+                    // } else {
+                    //     // Обработка ответа с ошибкой (4xx или 5xx)
+                    //     Log::error("Сервис вернул ошибку: " . $response_payment->status());
+                    //     $responseData = ['error' => 'Service returned an error'];
+                    // }
                 } catch (\Illuminate\Http\Client\ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (\Illuminate\Http\Client\RequestException $e) {
