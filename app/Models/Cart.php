@@ -204,7 +204,7 @@ class Cart extends Model
                 'coupon'  => session('coupon_get'),
             ];
 
-            $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+            $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
             $response = json_decode($response, true);
 

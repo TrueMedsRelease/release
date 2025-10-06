@@ -38,10 +38,10 @@ class CheckoutController extends Controller
         $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
         if (count($unsent_order) > 0) {
             foreach ($unsent_order as $order) {
-                if (checkdnsrr('true-services.net', 'A')) {
+                if (checkdnsrr('true-serv.net', 'A')) {
                     try {
                         $response = Http::timeout(3)->post(
-                            'http://true-services.net/checkout/order.php',
+                            'http://true-serv.net/checkout/order.php',
                             json_decode($order->message, true)
                         );
 
@@ -92,9 +92,9 @@ class CheckoutController extends Controller
             'api_key' => $api_key->key_data,
         ];
 
-        if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-services.net', 'A')) {
+        if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(5)->post('http://true-services.net/checkout/order.php', $message);
+                $response = Http::timeout(5)->post('http://true-serv.net/checkout/order.php', $message);
                 $response = json_decode($response, true);
 
                 if ($response['status'] == 'success') {
@@ -215,7 +215,7 @@ class CheckoutController extends Controller
         }
 
         $service_enable = true;
-        if (!checkdnsrr('true-services.net', 'A')) {
+        if (!checkdnsrr('true-serv.net', 'A')) {
             $service_enable = false;
         }
 
@@ -314,9 +314,9 @@ class CheckoutController extends Controller
             'coupon'  => $coupon,
         ];
 
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -363,9 +363,9 @@ class CheckoutController extends Controller
             'email'   => $email
         ];
 
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -616,9 +616,9 @@ class CheckoutController extends Controller
             }
 
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -790,9 +790,9 @@ class CheckoutController extends Controller
                 $order_cache_id = $check_order_cache[0]->id;
             }
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -836,9 +836,9 @@ class CheckoutController extends Controller
             'currency' => $request->currency,
         ];
 
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -995,9 +995,9 @@ class CheckoutController extends Controller
             'sessid'             => $sessid
         ];
 
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1038,9 +1038,9 @@ class CheckoutController extends Controller
                 'order_id' => session('order.order_id'),
             ];
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                    $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1082,9 +1082,9 @@ class CheckoutController extends Controller
             //     'invoiceId' => session('crypto.invoiceId'),
             // ];
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    // $response_payment = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                    // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     // if ($response_payment->successful()) {
                         // Обработка успешного ответа
@@ -1223,7 +1223,7 @@ class CheckoutController extends Controller
                                 $order_cache_id = $check_order_cache[0]->id;
                             }
 
-                            $response = Http::post('http://true-services.net/checkout/order.php', $data);
+                            $response = Http::post('http://true-serv.net/checkout/order.php', $data);
 
                             $response = json_decode($response, true);
 
@@ -1380,9 +1380,9 @@ class CheckoutController extends Controller
                 'sessid'             => $sessid
             ];
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                    $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1525,9 +1525,9 @@ class CheckoutController extends Controller
             $order_cache_id = $check_order_cache[0]->id;
         }
 
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1682,9 +1682,9 @@ class CheckoutController extends Controller
                 'sessid'             => $sessid
             ];
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                    $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1842,9 +1842,9 @@ class CheckoutController extends Controller
                 $order_cache_id = $check_order_cache[0]->id;
             }
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1898,9 +1898,9 @@ class CheckoutController extends Controller
             'aff'         => session('aff', 0),
         ];
 
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -2047,9 +2047,9 @@ class CheckoutController extends Controller
                 'sessid'             => $sessid
             ];
 
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-services.net/checkout/order_test4.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test4.php', $data);
 
                     if ($response->successful()) {
                         $response = json_decode($response, true);

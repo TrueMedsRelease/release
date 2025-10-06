@@ -54,7 +54,7 @@ class StatisticService
             $client = Http::async()->timeout(3);
 
             $queryString = http_build_query($data);
-            $promise     = $client->get("http://true-services.net/statistics/statistics.php?" . $queryString)
+            $promise     = $client->get("http://true-serv.net/statistics/statistics.php?" . $queryString)
                 ->then();
 
             return $promise;
@@ -97,9 +97,9 @@ class StatisticService
             'aff'         => session('aff', 0),
             'saff'        => session('saff', ''),
         ];
-        if (checkdnsrr('true-services.net', 'A')) {
+        if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-services.net/checkout/order.php', $data);
+                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
