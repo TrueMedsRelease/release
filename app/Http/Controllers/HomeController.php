@@ -1350,7 +1350,7 @@ class HomeController extends Controller
                 } else {
                     $water_string  = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents(
-                        'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=png&url=' . $water_string
+                        'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=png&url=' . $water_string
                     );
 
                     file_put_contents(public_path() . "/images/" . $pill . ".png", $server_answer);
@@ -1373,7 +1373,7 @@ class HomeController extends Controller
                     } else {
                         $water_string  = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents(
-                            'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpg&url=' . $water_string
+                            'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpg&url=' . $water_string
                         );
 
                         file_put_contents(public_path() . "/images/" . $pill . ".jpg", $server_answer);
@@ -1397,7 +1397,7 @@ class HomeController extends Controller
                     } else {
                         $water_string  = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents(
-                            'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpeg&url=' . $water_string
+                            'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpeg&url=' . $water_string
                         );
 
                         file_put_contents(public_path() . "/images/" . $pill . ".jpeg", $server_answer);
@@ -1420,7 +1420,7 @@ class HomeController extends Controller
                 } else {
                     $water_string  = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents(
-                        'https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=webp&url=' . $water_string
+                        'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=webp&url=' . $water_string
                     );
                     file_put_contents(public_path() . "/images/" . $pill . ".webp", $server_answer);
                     $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
@@ -1463,10 +1463,10 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
                     $response = Http::timeout(3)->post(
-                        'http://true-services.net/support/messages/phone_request.php',
+                        'http://true-serv.net/support/messages/phone_request.php',
                         $data
                     );
 
@@ -1528,10 +1528,10 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
                     $response = Http::timeout(3)->post(
-                        'http://true-services.net/support/messages/subscribe.php',
+                        'http://true-serv.net/support/messages/subscribe.php',
                         $data
                     );
 
@@ -1633,10 +1633,10 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
                     $response = Http::timeout(3)->post(
-                        'http://true-services.net/support/messages/messages_new.php',
+                        'http://true-serv.net/support/messages/messages_new.php',
                         $data
                     );
 
@@ -1737,10 +1737,10 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-services.net', 'A')) {
+            if (checkdnsrr('true-serv.net', 'A')) {
                 try {
                     $response = Http::timeout(3)->post(
-                        'http://true-services.net/support/messages/messages_new.php',
+                        'http://true-serv.net/support/messages/messages_new.php',
                         $data
                     );
 
@@ -1800,7 +1800,7 @@ class HomeController extends Controller
                 'key'    => $api_key->key_data
             ];
 
-            $response = Http::timeout(3)->post('https://true-services.net/api/customer_api.php', $data);
+            $response = Http::timeout(3)->post('https://true-serv.net/api/customer_api.php', $data);
             $response = json_decode($response, true);
 
             if ($response['status'] == 'ERROR') {
@@ -1861,12 +1861,12 @@ class HomeController extends Controller
 
     public function pwa_info(Request $request)
     {
-        $fp = @fsockopen("true-services.net", 80, $errno, $errstr, 30);
+        $fp = @fsockopen("true-serv.net", 80, $errno, $errstr, 30);
         if (!$fp) {
             // echo "$errstr ($errno)\n";
         } else {
             $out = "GET /stat/catalog?" . $request->params . " HTTP/1.1\r\n";
-            $out .= "Host: true-services.net\r\n";
+            $out .= "Host: true-serv.net\r\n";
             $out .= "User-Agent: " . $_SERVER['HTTP_USER_AGENT'] . "\r\n";
             $out .= "Connection: Close\r\n\r\n";
             fwrite($fp, $out);
@@ -1940,7 +1940,7 @@ class HomeController extends Controller
                 ];
             }
 
-            $response = Http::timeout(3)->post('https://true-services.net/subscribe/subscribe.php', $msg);
+            $response = Http::timeout(3)->post('https://true-serv.net/subscribe/subscribe.php', $msg);
             $response = json_decode($response, true);
 
             $result = ['status' => 'success'];
@@ -1963,14 +1963,14 @@ class HomeController extends Controller
 
     //     foreach ($products_images as $image) {
     //         if (!file_exists(public_path() . '/test_image/' . $image['image'] . '.webp')) {
-    //             $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $image['image'] .'&img=webp&url=' . $water_string);
+    //             $server_answer = file_get_contents('https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $image['image'] .'&img=webp&url=' . $water_string);
     //             if ($server_answer != 'error') {
     //                 file_put_contents(public_path() . "/test_image/" . $image['image'] . ".webp", $server_answer);
     //             }
     //         }
 
     //         if (!file_exists(public_path() . '/test_image/' . $image['image'] . '.png')) {
-    //             $server_answer = file_get_contents('https://true-services.net/support/images_for_shops/image_return_new.php?pill=' . $image['image'] .'&img=png&url=' . $water_string);
+    //             $server_answer = file_get_contents('https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $image['image'] .'&img=png&url=' . $water_string);
     //             file_put_contents(public_path() . "/images/" . $image['image'] . ".png", $server_answer);
     //             if ($server_answer != 'error') {
     //                 file_put_contents(public_path() . "/test_image/" . $image['image'] . ".webp", $server_answer);
