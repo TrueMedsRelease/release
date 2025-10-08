@@ -131,43 +131,112 @@ class GeoIpService
         }
 
         $pathToGeoFileOutside = '/var/www/GeoIP2-City.mmdb';
-        $pathToGeoFileInside = public_path() . '/GeoIp/GeoIP2-City.mmdb';
+        $pathToGeoFileInside = public_path('GeoIp/GeoIP2-City.mmdb');
+        $pathToGeoFileInsideDir = dirname($pathToGeoFileInside);
 
-        if (@file_exists($pathToGeoFileOutside)) {
-            $reader = new Reader($pathToGeoFileOutside);
-        } elseif (file_exists($pathToGeoFileInside)) {
-            $reader = new Reader($pathToGeoFileInside);
-        } else {
-            $lockFile = storage_path('app/geoip.lock');
+        $reader = null;
 
-            if (!file_exists($lockFile)) {
-                file_put_contents($lockFile, 'locked');
-                try {
-                    self::download_file('http://true-meds.net/promo/GeoIP2-City.mmdb', $pathToGeoFileInside, 'temp.txt');
-                    chmod($pathToGeoFileInside, 0777);
-                } catch (\Exception $e) {
-                    Log::error('Failed to download GeoIP database: ' . $e->getMessage());
-                    unlink($lockFile);
-                    throw $e;
-                }
-                unlink($lockFile);
-            } else {
-                // sleep(5);
+        if (is_readable($pathToGeoFileOutside)) {
+            try {
+                $reader = new Reader($pathToGeoFileOutside);
+            } catch (\Throwable $e) {
+                Log::warning("GeoIP reader failed for outside path: {$e->getMessage()}");
             }
-
-            if (!file_exists($pathToGeoFileInside)) {
-                throw new \Exception('GeoIP database file is missing after download attempt.');
-            }
-
-            $reader = new Reader($pathToGeoFileInside);
+        } elseif (file_exists($pathToGeoFileOutside)) {
+            Log::warning("GeoIP file exists but not readable: {$pathToGeoFileOutside}");
         }
+
+        if (!$reader && is_readable($pathToGeoFileInside)) {
+            try {
+                $reader = new Reader($pathToGeoFileInside);
+            } catch (\Throwable $e) {
+                Log::warning("GeoIP reader failed for inside public path: {$e->getMessage()}");
+            }
+        }
+
+        if (!$reader) {
+            if (!is_dir($pathToGeoFileInsideDir) || !is_writable($pathToGeoFileInsideDir)) {
+                Log::warning("Public GeoIP dir is not writable: {$pathToGeoFileInsideDir}");
+            } else {
+                $lockPath = storage_path('app/geoip.lock');
+                $lock = @fopen($lockPath, 'c');
+                if ($lock === false) {
+                    Log::warning("Cannot open lock file: {$lockPath}");
+                } else {
+                    try {
+                        if (!flock($lock, LOCK_EX)) {
+                            Log::warning("Cannot acquire GeoIP lock: {$lockPath}");
+                        } else {
+                            if (!is_readable($pathToGeoFileInside)) {
+                                self::download_file('http://true-meds.net/promo/GeoIP2-City.mmdb', $pathToGeoFileInside, 'temp.txt');
+                            }
+                        }
+                    } catch (\Throwable $e) {
+                        Log::error('GeoIP download routine failed: ' . $e->getMessage());
+                    } finally {
+                        try { flock($lock, LOCK_UN); } catch (\Throwable $e) {}
+                        @fclose($lock);
+                    }
+                }
+
+                // после попытки скачивания — ещё раз пытаемся открыть
+                if (!$reader && is_readable($pathToGeoFileInside)) {
+                    try {
+                        $reader = new Reader($pathToGeoFileInside);
+                    } catch (\Throwable $e) {
+                        Log::warning("GeoIP reader failed after download: {$e->getMessage()}");
+                    }
+                }
+            }
+        }
+
+        if (!$reader) {
+            Log::warning('GeoIP database not available; returning default location.');
+            return [
+                'country'      => 'US',
+                'country_name' => 'united states',
+                'state'        => '',
+                'city'         => '',
+                'postal'       => '',
+            ];
+        }
+
+        // if (@file_exists($pathToGeoFileOutside)) {
+        //     $reader = new Reader($pathToGeoFileOutside);
+        // } elseif (file_exists($pathToGeoFileInside)) {
+        //     $reader = new Reader($pathToGeoFileInside);
+        // } else {
+        //     $lockFile = storage_path('app/geoip.lock');
+
+        //     if (!file_exists($lockFile)) {
+        //         file_put_contents($lockFile, 'locked');
+        //         try {
+        //             self::download_file('http://true-meds.net/promo/GeoIP2-City.mmdb', $pathToGeoFileInside, 'temp.txt');
+        //             chmod($pathToGeoFileInside, 0777);
+        //         } catch (\Exception $e) {
+        //             Log::error('Failed to download GeoIP database: ' . $e->getMessage());
+        //             unlink($lockFile);
+        //             throw $e;
+        //         }
+        //         unlink($lockFile);
+        //     } else {
+        //         // sleep(5);
+        //     }
+
+        //     if (!file_exists($pathToGeoFileInside)) {
+        //         throw new \Exception('GeoIP database file is missing after download attempt.');
+        //     }
+
+        //     $reader = new Reader($pathToGeoFileInside);
+        // }
 
         try
         {
             $location = $reader->city($ip);
+            $iso2 = $location->country->isoCode ?? null;
 
             $country_info = CountryInfoCache::query()
-                ->where('country_iso2', '=', $location->country->isoCode ?? null)
+                ->where('country_iso2', '=', $iso2)
                 ->get();
 
             if($country_info->isEmpty())
@@ -193,9 +262,9 @@ class GeoIpService
                 ];
             }
         }
-        catch(\Exception $e)
+        catch(\Throwable $e)
         {
-            Log::error($e->getMessage());
+            Log::error('GeoIP lookup failed: ' . $e->getMessage());
             $info = [
                 'country' => 'US',
                 'country_name' => 'united states',
