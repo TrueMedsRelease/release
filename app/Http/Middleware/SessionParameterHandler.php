@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\App;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Services\GeoIpService;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Str;
 
 class SessionParameterHandler
 {
@@ -47,8 +49,26 @@ class SessionParameterHandler
         // aff
         if (!empty($request->query('aff'))) {
             session(['aff' => $request->query('aff')]);
+
+            $on7Pills = Str::endsWith($request->getHost(), '7-pills.com');
+            if (config('app.aff') == 0 && !$on7Pills) {
+                Cookie::queue(
+                    Cookie::make(
+                        'AFF_ID',
+                        $request->query('aff'),
+                        60 * 24 * 365,
+                        '/',
+                        $request->getHost(),
+                        config('session.secure'),
+                        true,
+                        false,
+                        config('session.same_site', 'lax')
+                    )
+                );
+            }
         } elseif (!session()->has('aff')) {
-            session(['aff' => config('app.aff')]);
+            $affFromCookie = $request->cookie('AFF_ID');
+            session(['aff' => $affFromCookie ?? config('app.aff')]);
         }
 
         // saff
@@ -61,7 +81,7 @@ class SessionParameterHandler
             session(['keyword' => $request->query('keyword')]);
         }
 
-                // refc
+        // refc
         if (!empty($request->query('refc'))) {
             session(['refc' => $request->query('refc')]);
         }
