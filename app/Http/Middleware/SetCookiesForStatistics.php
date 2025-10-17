@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Helpers\DesignHelper;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class SetCookiesForStatistics
@@ -17,6 +18,10 @@ class SetCookiesForStatistics
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
+
+        if (!$this->isCookieNeeded($request)) {
+            return $response;
+        }
 
         $cookieList = [
             'js_stat_aff_id'    => $this->getAffiliateId($request),
@@ -80,5 +85,10 @@ class SetCookiesForStatistics
         }
 
         return config('app.design');
+    }
+
+    private function isCookieNeeded(Request $request): bool
+    {
+        return !Str::endsWith($request->getHost(), '7-pills.com');
     }
 }
