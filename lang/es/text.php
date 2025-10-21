@@ -776,4 +776,11 @@ return [
 
     "common_per_pill" => "Por pastilla",
     "subscribe_full_text" => "Suscríbete a ofertas especiales y noticias",
+
+    "checkout_crypto_search" => "Buscar",
+    "checkout_crypto_select" => "Seleccionar",
+    "checkout_crypto_select_currency" => "Seleccionar criptomoneda",
+
+    "admin_renewal_shop" => "Actualizar la tienda",
+    "admin_renewal_database" => "Actualizar la base de datos",
 ];

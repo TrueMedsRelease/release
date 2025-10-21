@@ -629,4 +629,11 @@ return [
 
     "common_per_pill" => "لكل حبة",
     "subscribe_full_text" => "اشترك للحصول على العروض الخاصة والأخبار",
+
+    "checkout_crypto_search" => "بحث",
+    "checkout_crypto_select" => "اختر",
+    "checkout_crypto_select_currency" => "اختر عملة مشفرة",
+
+    "admin_renewal_shop" => "تحديث المتجر",
+    "admin_renewal_database" => "تحديث قاعدة البيانات",
 ];

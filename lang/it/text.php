@@ -760,4 +760,11 @@ return [
 
     "common_per_pill" => "Per Pillola",
     "subscribe_full_text" => "Iscriviti a offerte speciali e notizie",
+
+    "checkout_crypto_search" => "Cerca",
+    "checkout_crypto_select" => "Seleziona",
+    "checkout_crypto_select_currency" => "Seleziona una criptovaluta",
+
+    "admin_renewal_shop" => "Aggiorna il negozio",
+    "admin_renewal_database" => "Aggiorna il database",
 ];

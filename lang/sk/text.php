@@ -625,4 +625,11 @@ return [
 
     "common_per_pill" => "Za tabletku",
     "subscribe_full_text" => "Prihláste sa na špeciálne ponuky a novinky",
+
+    "checkout_crypto_search" => "Hľadať",
+    "checkout_crypto_select" => "Vybrať",
+    "checkout_crypto_select_currency" => "Vybrať kryptomenu",
+
+    "admin_renewal_shop" => "Aktualizovať obchod",
+    "admin_renewal_database" => "Aktualizovať databázu",
 ];

@@ -750,4 +750,11 @@ return [
 
     "common_per_pill" => "Pro Tablette",
     "subscribe_full_text" => "Abonnieren Sie Sonderangebote und Neuigkeiten",
+
+    "checkout_crypto_search" => "Suchen",
+    "checkout_crypto_select" => "Auswählen",
+    "checkout_crypto_select_currency" => "Kryptowährung auswählen",
+
+    "admin_renewal_shop" => "Shop aktualisieren",
+    "admin_renewal_database" => "Datenbank aktualisieren",
 ];
