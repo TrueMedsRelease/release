@@ -595,7 +595,7 @@
                     <h2 class="enter-info__title title">{{__('text.checkout_payment')}}</h2>
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
-                            <div class="enter-info__line">
+                            {{-- <div class="enter-info__line"> --}}
                                 <div class="enter-info__select card_type poopup">
                                     <input required type="hidden"
                                         value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
@@ -619,7 +619,31 @@
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
                                 </div>
-                            </div>
+                                <div class="wrap select_crypt_currency" @if (session('form.payment_type', 'card') != 'crypto') hidden @endif>
+                                    <div class="token-select" id="tokenSelect" aria-haspopup="listbox">
+                                        <button class="select__toggle" type="button" aria-expanded="false">
+                                            <div class="toggle-text">
+                                                <span class="caption">{{ __('text.checkout_crypto_select_currency') }}</span>
+                                                <span class="value">{{ __('text.checkout_crypto_select') }}</span>
+                                            </div>
+                                            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </button>
+                                        <div class="select__menu" hidden>
+                                            <div class="search">
+                                                <label class="sr-only" for="selectSearch">{{ __('text.checkout_crypto_search') }}</label>
+                                                <input id="selectSearch" type="text" placeholder="{{ __('text.checkout_crypto_search') }}" autocomplete="off" />
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </div>
+                                            <ul class="options" role="listbox"></ul>
+                                        </div>
+                                        <input type="hidden" name="crypto_currency" />
+                                    </div>
+                                </div>
+                            {{-- </div> --}}
                         </div>
                         <div class="enter-info__card-content" @if (session('form.payment_type', 'card') != 'card') hidden @endif>
                             <div class="enter-info__row">
@@ -682,23 +706,8 @@
                             </button>
                         </div>
                         <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'card') != 'crypto') hidden @endif>
-                            <input type="hidden" id="pay_yes" value="0">
-                            <input type="hidden" id="invoiceId" value="">
-                            <div class="info_text_crypto" style="line-height: 24px">
-                                <div>{{__('text.checkout_crypto_text_1')}}</div>
-                                <div>{{__('text.checkout_crypto_text_2')}}</div>
-                                <ul style="padding-left: 40px; line-height: 24px">
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_0')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_1')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_2')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_3')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_4')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_5')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_6')}}</li>
-                                </ul>
-                            </div>
                             <div class="content-crypto">
-                                <div class="content-crypto__items">
+                                {{-- <div class="content-crypto__items">
                                     <div class="content-crypto__item">
                                         <input id="cr_01" @checked(session('crypto.currency', '') == 'ETH_ETHEREUM') value="ETH_ETHEREUM" type="radio"
                                             name="crypt_currency">
@@ -794,8 +803,8 @@
                                             <span>TON</span>
                                         </label>
                                     </div>
-                                    {{-- <div class="content-crypto__item">
-                                           <input id="cr_09" @checked(session('crypto.currency', '') == 'BUSD_BSC') value="BUSD_BSC" type="radio" name="crypt_currency">
+                                    <div class="content-crypto__item">
+                                        <input id="cr_09" @checked(session('crypto.currency', '') == 'BUSD_BSC') value="BUSD_BSC" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_08">
                                             <svg width="40" height="40">
                                                 <use
@@ -804,7 +813,22 @@
                                             </svg>
                                             <span>Binance USD</span>
                                         </label>
-                                    </div> --}}
+                                    </div>
+                                </div> --}}
+                                <input type="hidden" id="pay_yes" value="0">
+                                <input type="hidden" id="invoiceId" value="">
+                                <div class="info_text_crypto" id="info_text_crypto" style="line-height: 24px" hidden>
+                                    <div>{{__('text.checkout_crypto_text_1')}}</div>
+                                    <div>{{__('text.checkout_crypto_text_2')}}</div>
+                                    <ul style="padding-left: 40px; line-height: 24px">
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_0')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_1')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_2')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_3')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_4')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_5')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_6')}}</li>
+                                    </ul>
                                 </div>
                                 <div style="text-align: center;" id="requisites_load" hidden>
                                     <img loading="lazy" src="{{ asset('style_checkout/images/loading.gif') }}">

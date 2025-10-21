@@ -628,4 +628,11 @@ return [
 
     "common_per_pill" => "Per tablett",
     "subscribe_full_text" => "Abonner på spesialtilbud og nyheter",
+
+    "checkout_crypto_search" => "Søk",
+    "checkout_crypto_select" => "Velg",
+    "checkout_crypto_select_currency" => "Velg kryptovaluta",
+
+    "admin_renewal_shop" => "Oppdater butikken",
+    "admin_renewal_database" => "Oppdater databasen",
 ];

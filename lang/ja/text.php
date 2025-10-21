@@ -743,4 +743,11 @@ return [
 
     "common_per_pill" => "1錠あたり",
     "subscribe_full_text" => "特別オファーとニュースに登録する",
+
+    "checkout_crypto_search" => "検索",
+    "checkout_crypto_select" => "選択",
+    "checkout_crypto_select_currency" => "暗号資産を選択",
+
+    "admin_renewal_shop" => "ショップを更新",
+    "admin_renewal_database" => "データベースを更新",
 ];

@@ -674,4 +674,11 @@ return [
 
     "common_per_pill" => "Pr pille",
     "subscribe_full_text" => "Tilmeld dig særlige tilbud og nyheder",
+
+    "checkout_crypto_search" => "Søg",
+    "checkout_crypto_select" => "Vælg",
+    "checkout_crypto_select_currency" => "Vælg kryptovaluta",
+
+    "admin_renewal_shop" => "Opdater butikken",
+    "admin_renewal_database" => "Opdater databasen",
 ];

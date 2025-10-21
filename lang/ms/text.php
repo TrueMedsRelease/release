@@ -627,4 +627,11 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "common_per_pill" => "Setiap pil",
     "subscribe_full_text" => "Langgan Tawaran Istimewa & Berita",
+
+    "checkout_crypto_search" => "Cari",
+    "checkout_crypto_select" => "Pilih",
+    "checkout_crypto_select_currency" => "Pilih mata wang kripto",
+
+    "admin_renewal_shop" => "Kemas kini kedai",
+    "admin_renewal_database" => "Kemas kini pangkalan data",
 ];

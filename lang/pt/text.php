@@ -744,4 +744,11 @@ return [
 
     "common_per_pill" => "Por comprimido",
     "subscribe_full_text" => "Inscreva-se para ofertas especiais e notícias",
+
+    "checkout_crypto_search" => "Pesquisar",
+    "checkout_crypto_select" => "Selecionar",
+    "checkout_crypto_select_currency" => "Selecionar criptomoeda",
+
+    "admin_renewal_shop" => "Atualizar loja",
+    "admin_renewal_database" => "Atualizar base de dados",
 ];

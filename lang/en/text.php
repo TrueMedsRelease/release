@@ -894,4 +894,11 @@ return [
 
     "common_per_pill" => "PER PILL",
     "subscribe_full_text" => "Subscribe to Special offers & News",
+
+    "checkout_crypto_search" => "Search",
+    "checkout_crypto_select" => "Select",
+    "checkout_crypto_select_currency" => "Select Cryptocurrency",
+
+    "admin_renewal_shop" => "Update Shop",
+    "admin_renewal_database" => "Update Database",
 ];

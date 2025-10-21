@@ -624,4 +624,11 @@ return [
 
     "common_per_pill" => "Ανά χάπι",
     "subscribe_full_text" => "Εγγραφείτε για ειδικές προσφορές και νέα",
+
+    "checkout_crypto_search" => "Αναζήτηση",
+    "checkout_crypto_select" => "Επιλέξτε",
+    "checkout_crypto_select_currency" => "Επιλέξτε κρυπτονόμισμα",
+
+    "admin_renewal_shop" => "Ενημέρωση καταστήματος",
+    "admin_renewal_database" => "Ενημέρωση βάσης δεδομένων",
 ];
