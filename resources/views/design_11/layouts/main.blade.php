@@ -145,10 +145,10 @@
         }
     @endphp
 
-    {{-- <div class="christmas" style="display: none">
+    <div class="christmas" style="display: none">
         <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
-        <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
-    </div> --}}
+        {{-- <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}"> --}}
+    </div>
 
     <div class="topbar">
         <div class="container">
@@ -633,7 +633,7 @@
             </div>
         </div>
 
-        <div class="christmas" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
+        <div class="checkup" onclick="location.href='{{ route('home.checkup') }}'">
             <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
         </div>
     </div>
@@ -919,6 +919,11 @@
         const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";
         const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/white/checkup_middle.png') }}";
         const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/white/checkup_small.png') }}";
+
+        const pathImagePayBiggest = "{{ asset('pub_images/pay_biggest.png') }}";
+        const pathImagePayBig = "{{ asset('pub_images/pay_big.png') }}";
+        const pathImagePayMiddle = "{{ asset('pub_images/pay_middle.png') }}";
+        const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
     </script>
 
     <script defer src="{{ asset("$design/js/app.js") }}"></script>

@@ -5269,10 +5269,15 @@ body.has-scroll{
   .christmas{
     width: 100%;
     cursor: pointer;
+  }
+
+  .checkup{
+    width: 100%;
+    cursor: pointer;
     margin-top: 20px;
   }
 
-  .christmas img {
+  .christmas img, .checkup img {
     width: 100%;
   }
 
