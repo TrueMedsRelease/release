@@ -4486,15 +4486,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 31) {
-        $('.header__top').css({'top': 0});
-    } else {
-        $('.header__top').css({'top': '31px'});
-    }
-});
-
 $(document).on('click', '.popup_white .close_popup', function () {
     $('.popup_white').hide();
     let date = new Date;
