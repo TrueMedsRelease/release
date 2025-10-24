@@ -23,6 +23,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 	<meta name="format-detection" content="telephone=no">
 
+    @php
+        if (!function_exists('asset_ver')) {
+            function asset_ver(string $path): string {
+                static $mtimes = [];
+                $full = public_path($path);
+                if (!isset($mtimes[$path])) {
+                    $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                }
+                $url = asset($path);
+                $v = $mtimes[$path] ?? time();
+                return $url . '?v=' . $v;
+            }
+        }
+    @endphp
+
     @foreach ($Language::GetAllLanuages() as $item)
         <link rel="alternate" href="{{ route('home.language', $item['code']) }}"
             @if ($item['code'] == 'arb')
@@ -44,13 +59,18 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script defer type="text/javascript" src="{{ asset("js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
     @endif
 
-    <link href="{{ asset($design . '/css/style.css?v=24102025') }}" rel="stylesheet">
+    <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">
+
+    <script>
+        const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
+        const routeCartContent = "{{ route('cart.content') }}";
+    </script>
 
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
-    <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
+    <script defer src="{{ asset_ver("vendor/jquery/autocomplete.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
     <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
     {!! isset($pixel) ? $pixel : '' !!}
