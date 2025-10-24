@@ -62,7 +62,7 @@
 
     {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
-    <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset($design . '/css/style.css?v=24102025') }}" rel="stylesheet">
     {{-- <link href="{{ asset($design . '/css/all.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset($design . '/css/intlTelInput.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/css/slick.css') }}" rel="stylesheet">
@@ -762,9 +762,9 @@
         const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
     </script>
 
-    <script defer src="{{ asset("$design/js/app.js") }}"></script>
+    <script defer src="{{ asset("$design/js/app.js?v=24102025") }}"></script>
     <script defer src="{{ asset("$design/js/slick.js") }}"></script>
-    <script defer src="{{ asset("$design/js/main.js") }}"></script>
+    <script defer src="{{ asset("$design/js/main.js?v=24102025") }}"></script>
     <script defer src="{{ asset('js/all_js.js') }}"></script>
 
 </body>

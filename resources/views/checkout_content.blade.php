@@ -1218,7 +1218,7 @@
             </div>
         </form>
     </div>
-    <script src="{{ asset('style_checkout/js/app.js?v=1257') }}"></script>
+    <script src="{{ asset('style_checkout/js/app.js?v=24102025') }}"></script>
 </main>
 <footer class="footer">
     <div class="footer__container">

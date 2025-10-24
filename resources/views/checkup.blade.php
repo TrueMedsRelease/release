@@ -47,7 +47,7 @@
         <script defer type="text/javascript" src="{{ asset("js/sw-setup.js") }}"></script>
     @endif
 
-    <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset($design . '/css/style.css?v=24102025') }}" rel="stylesheet">
 
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>

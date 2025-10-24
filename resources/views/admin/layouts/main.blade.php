@@ -7,7 +7,7 @@
 	<meta http-equiv="content-style-type" content="text/css">
     <link rel="icon" href="{{ asset('/admin_style/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('/admin_style/images/favicon/apple-touch-icon-180x180.png') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin_style/css/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('/admin_style/css/style.css?v=24102025') }}" />
     <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
     <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
@@ -73,9 +73,9 @@
 								<li class="menu__item">
 								    <a href="{{ route('admin.admin_currencies') }}">{{__('text.admin_common_main_menu_10_element')}}</a>
 								</li>
-								{{-- <li class="menu__item">
-								    <a href="{$path.page}/updates">{{__('text.admin_common_main_menu_11_element')}}</a>
-								</li> --}}
+								<li class="menu__item">
+                                    <a href="{{ route('admin.renewal_page') }}">{{ __('text.admin_renewal_shop') }}</a>
+								</li>
                                 <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
                                         <svg width="20" height="20">
@@ -217,6 +217,8 @@
         const routeAdminGiftCardInfo = "{{ route('admin.gift_card_info') }}";
         const routeAdminSaveCheckoutInfo = "{{ route('admin.save_checkout_info') }}";
         const routeAdminSaveSubscribeInfo = "{{ route('admin.save_subscribe_info') }}";
+        const routeAdminRenewalShop = "{{ route('admin.renewal_page_shop') }}";
+        const routeAdminRenewalDatabase = "{{ route('admin.renewal_page_data') }}";
     </script>
 
     <script src="{{ asset("admin_style/js/style.js") }}"></script>
