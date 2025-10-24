@@ -7838,12 +7838,11 @@ footer .top-phones-header {
 
 .christmas{
   width: 100%;
-  /*background: url("../images/pay_big.png") no-repeat center;*/
-  /*height: 80px;*/
+  height: 80px;
   cursor: pointer;
 }
 
-.christmas.main {
+.checkup.main {
     width: auto;
     padding: 0 15px;
     margin: 0 auto;
@@ -7851,14 +7850,14 @@ footer .top-phones-header {
     max-width: 75rem;
 }
 
-.christmas img {
+.christmas img, .checkup img {
   width: 100%;
 }
 
 @media (max-width: 390px) {
-  /*.christmas{*/
-  /*  height: 66px;*/
-  /*}*/
+  .christmas{
+   height: 66px;
+  }
 }
 
 .block_subscribe {

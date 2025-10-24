@@ -3341,20 +3341,24 @@ input[type=number] {
 
 .christmas{
     width: 100%;
-    /*background: url("../images/pay_big.png") no-repeat center;*/
-    /*height: 80px;*/
+    height: 80px;
+    cursor: pointer;
+}
+
+.checkup{
+    width: 100%;
     cursor: pointer;
     margin: 15px 0;
 }
 
-.christmas img {
+.christmas img, .checkup img {
     width: 100%;
 }
 
 @media (max-width: 390px) {
-    /*.christmas{*/
-    /*  height: 66px;*/
-    /*}*/
+    .christmas{
+     height: 66px;
+    }
 }
 
 .subscribe_container {

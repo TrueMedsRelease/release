@@ -34,6 +34,16 @@
         const checkoutAuth = "{{ route('checkout.auth') }}";
         const checkoutSendPhoneEmail = "{{ route('checkout.send_checkout_phone_email') }}";
 
+        const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
+        const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";
+        const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/white/checkup_middle.png') }}";
+        const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/white/checkup_small.png') }}";
+
+        const pathImagePayBiggest = "{{ asset('pub_images/pay_biggest.png') }}";
+        const pathImagePayBig = "{{ asset('pub_images/pay_big.png') }}";
+        const pathImagePayMiddle = "{{ asset('pub_images/pay_middle.png') }}";
+        const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
+
     </script>
 </head>
 <body>

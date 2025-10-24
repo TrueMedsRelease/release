@@ -104,10 +104,10 @@
 <div class="wrapper">
 	<header class="header">
 
-        {{-- <div class="christmas" style="display: none">
+        <div class="christmas" style="display: none">
             <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
-        </div> --}}
+            {{-- <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}"> --}}
+        </div>
 
 		<div class="header__phones-top top-phones-header">
             <div class="header__container">
@@ -445,7 +445,7 @@
     </div>
     <main class="page">
         <div class="page__container page__container--home">
-            <div class="christmas top" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
+            <div class="checkup top" onclick="location.href='{{ route('home.checkup') }}'">
                 <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_middle.png") }}">
                 <div></div>
             </div>
@@ -604,7 +604,7 @@
                 </aside>
             </div>
 
-            <div class="christmas bottom" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
+            <div class="checkup bottom" onclick="location.href='{{ route('home.checkup') }}'">
                 <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
                 <div></div>
             </div>
@@ -994,6 +994,11 @@
     const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";
     const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/white/checkup_middle.png') }}";
     const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/white/checkup_small.png') }}";
+
+    const pathImagePayBiggest = "{{ asset('pub_images/pay_biggest.png') }}";
+    const pathImagePayBig = "{{ asset('pub_images/pay_big.png') }}";
+    const pathImagePayMiddle = "{{ asset('pub_images/pay_middle.png') }}";
+    const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
 </script>
 
 <script defer src="{{ asset("$design/js/app.js") }}"></script>

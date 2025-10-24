@@ -209,7 +209,7 @@
             </div>
         </section>
 
-        <div class="christmas" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
+        <div class="checkup" onclick="location.href='{{ route('home.checkup') }}'">
             <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
         </div>
     </div>

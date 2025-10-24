@@ -778,3 +778,43 @@ function saveSubscribePopupInfo() {
         }
     });
 }
+
+function renewalShop() {
+    $.ajax({
+        url: routeAdminRenewalShop,
+        type: 'GET',
+        cache: false,
+        dataType: 'html',
+        data: {
+            // 'popup_status': popup_status,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
+function renewalDatabase() {
+    $.ajax({
+        url: routeAdminRenewalDatabase,
+        type: 'GET',
+        cache: false,
+        dataType: 'html',
+        data: {
+            // 'popup_status': popup_status,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}

@@ -2966,10 +2966,17 @@ textarea.input {
 
 .christmas{
   width: 100%;
+  cursor: pointer;
 }
 
 .christmas img {
   width: 100%;
+}
+
+@media (max-width: 390px) {
+  .christmas{
+   height: 66px;
+  }
 }
 
 .gift_block {

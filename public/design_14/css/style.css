@@ -4649,13 +4649,13 @@ input.just-validate-success-field:focus-visible{
     text-decoration: none;
 }
 
-.christmas{
+.christmas, .checkup{
     width: 100%;
     cursor: pointer;
     padding-top: 0 !important;
 }
 
-.christmas img {
+.christmas img, .checkup img {
     width: 100%;
 }
 
