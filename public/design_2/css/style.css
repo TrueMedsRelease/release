@@ -7494,7 +7494,11 @@ body {
   cursor: pointer;
 }
 
-.christmas img, .checkup img {
+.christmas img {
+  width: 100%;
+}
+
+.checkup img {
   width: 100%;
   height: 100%;
 }
