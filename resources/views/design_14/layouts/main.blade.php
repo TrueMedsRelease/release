@@ -41,7 +41,7 @@
 
         <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
         <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
-        <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset($design . '/css/style.css?v=24102025') }}" rel="stylesheet">
         <link href="{{ asset($design . '/css/pages.css') }}" rel="stylesheet">
 
         <script>
@@ -750,7 +750,7 @@
         </script>
 
         <script defer src="{{ asset("$design/js/main.7dfb0a3d.js") }}"></script>
-        <script defer src="{{ asset("$design/js/app.js") }}"></script>
+        <script defer src="{{ asset("$design/js/app.js?v=24102025") }}"></script>
         <script defer src="{{ asset('js/all_js.js') }}"></script>
 
         @if ($web_statistic)

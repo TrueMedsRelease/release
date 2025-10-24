@@ -62,7 +62,7 @@
 
     {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
-    <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset($design . '/css/style.css?v=24102025') }}" rel="stylesheet">
 
     <script>
         const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
@@ -340,8 +340,8 @@
                 const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
             </script>
 
-            <script defer src="{{ asset("$design/js/app.js") }}"></script>
-            <script defer src="{{ asset("$design/js/main.js") }}"></script>
+            <script defer src="{{ asset("$design/js/app.js?v=24102025") }}"></script>
+            <script defer src="{{ asset("$design/js/main.js?v=24102025") }}"></script>
             <script defer src="{{ asset('js/all_js.js') }}"></script>
 
         </footer>

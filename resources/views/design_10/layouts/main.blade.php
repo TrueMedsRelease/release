@@ -65,7 +65,7 @@
 
     <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
-    <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset($design . '/css/style.css?v=24102025') }}" rel="stylesheet">
 
     <script>
         const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
@@ -917,10 +917,10 @@
         const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
     </script>
 
-    <script defer src="{{ asset($design . "/js/app.js") }}"></script>
+    <script defer src="{{ asset($design . "/js/app.js?v=24102025") }}"></script>
     <script defer src="{{ asset($design . '/js/custom-select.min.js') }}"></script>
     <script defer src="{{ asset($design . '/js/intlTelInput.min.js') }}"></script>
-    <script defer src="{{ asset($design . '/js/main.js') }}"></script>
+    <script defer src="{{ asset($design . '/js/main.js?v=24102025') }}"></script>
     <script defer src="{{ asset('js/all_js.js') }}"></script>
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">

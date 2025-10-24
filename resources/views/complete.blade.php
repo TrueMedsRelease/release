@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="format-detection" content="telephone=no">
     <meta name="robots" content="index, follow" />
-    <link rel="stylesheet" href="{{ asset('style_checkout/style.css') }}?v=24042024">
+    <link rel="stylesheet" href="{{ asset('style_checkout/style.css?v=24102025') }}">
     <link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
