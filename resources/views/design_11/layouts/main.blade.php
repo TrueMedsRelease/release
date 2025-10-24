@@ -11,28 +11,20 @@
     <meta name="theme-color" content="#616ede" />
     <meta name="format-detection" content="telephone=no">
 
-    {{-- <link rel="alternate" href="{{ route('home.language', 'arb') }}" hreflang="ar" />
-    <link rel="alternate" href="{{ route('home.language', 'cs') }}" hreflang="cs" />
-    <link rel="alternate" href="{{ route('home.language', 'da') }}" hreflang="da" />
-    <link rel="alternate" href="{{ route('home.language', 'de') }}" hreflang="de" />
-    <link rel="alternate" href="{{ route('home.language', 'en') }}" hreflang="en" />
-    <link rel="alternate" href="{{ route('home.language', 'es') }}" hreflang="es" />
-    <link rel="alternate" href="{{ route('home.language', 'fi') }}" hreflang="fi" />
-    <link rel="alternate" href="{{ route('home.language', 'fr') }}" hreflang="fr" />
-    <link rel="alternate" href="{{ route('home.language', 'gr') }}" hreflang="el" />
-    <link rel="alternate" href="{{ route('home.language', 'hans') }}" hreflang="zh-Hans" />
-    <link rel="alternate" href="{{ route('home.language', 'hant') }}" hreflang="zh-Hant" />
-    <link rel="alternate" href="{{ route('home.language', 'hu') }}" hreflang="hu" />
-    <link rel="alternate" href="{{ route('home.language', 'it') }}" hreflang="it" />
-    <link rel="alternate" href="{{ route('home.language', 'ja') }}" hreflang="ja" />
-    <link rel="alternate" href="{{ route('home.language', 'ms') }}" hreflang="ms" />
-    <link rel="alternate" href="{{ route('home.language', 'nl') }}" hreflang="nl" />
-    <link rel="alternate" href="{{ route('home.language', 'no') }}" hreflang="no" />
-    <link rel="alternate" href="{{ route('home.language', 'pl') }}" hreflang="pl" />
-    <link rel="alternate" href="{{ route('home.language', 'pt') }}" hreflang="pt" />
-    <link rel="alternate" href="{{ route('home.language', 'ro') }}" hreflang="ro" />
-    <link rel="alternate" href="{{ route('home.language', 'sk') }}" hreflang="sk" />
-    <link rel="alternate" href="{{ route('home.language', 'sv') }}" hreflang="sv" /> --}}
+    @php
+        if (!function_exists('asset_ver')) {
+            function asset_ver(string $path): string {
+                static $mtimes = [];
+                $full = public_path($path);
+                if (!isset($mtimes[$path])) {
+                    $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                }
+                $url = asset($path);
+                $v = $mtimes[$path] ?? time();
+                return $url . '?v=' . $v;
+            }
+        }
+    @endphp
 
     @foreach ($Language::GetAllLanuages() as $item)
         <link rel="alternate" href="{{ route('home.language', $item['code']) }}"
@@ -62,7 +54,7 @@
 
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-        <script defer type="text/javascript" src="{{ asset("js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
     @endif
 
     {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
@@ -71,7 +63,7 @@
 
     <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
-    <link href="{{ asset($design . '/css/style.css?v=24102025') }}" rel="stylesheet">
+    <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/css/pages.css') }}" rel="stylesheet">
 
     <script>
@@ -80,7 +72,7 @@
     </script>
 
     <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
-    <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
+    <script defer src="{{ asset_ver('vendor/jquery/autocomplete.js') }}"></script>
     <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
     <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
 
@@ -926,8 +918,8 @@
         const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
     </script>
 
-    <script defer src="{{ asset("$design/js/app.js?v=24102025") }}"></script>
-    <script defer src="{{ asset('js/all_js.js') }}"></script>
+    <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>
+    <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">

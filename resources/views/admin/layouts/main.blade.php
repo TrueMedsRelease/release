@@ -5,9 +5,25 @@
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
+
+    @php
+        if (!function_exists('asset_ver')) {
+            function asset_ver(string $path): string {
+                static $mtimes = [];
+                $full = public_path($path);
+                if (!isset($mtimes[$path])) {
+                    $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                }
+                $url = asset($path);
+                $v = $mtimes[$path] ?? time();
+                return $url . '?v=' . $v;
+            }
+        }
+    @endphp
+
     <link rel="icon" href="{{ asset('/admin_style/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('/admin_style/images/favicon/apple-touch-icon-180x180.png') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin_style/css/style.css?v=24102025') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset_ver('/admin_style/css/style.css') }}" />
     <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
     <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
@@ -221,6 +237,6 @@
         const routeAdminRenewalDatabase = "{{ route('admin.renewal_page_data') }}";
     </script>
 
-    <script src="{{ asset("admin_style/js/style.js") }}"></script>
+    <script src="{{ asset_ver("admin_style/js/style.js") }}"></script>
 </body>
 </html>

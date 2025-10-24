@@ -6,10 +6,27 @@
     <meta charset="UTF-8">
     <meta name="format-detection" content="telephone=no">
     <meta name="robots" content="index, follow" />
-    <link rel="stylesheet" href="{{ asset('style_checkout/style.css?v=24102025') }}">
+
+    @php
+        if (!function_exists('asset_ver')) {
+            function asset_ver(string $path): string {
+                static $mtimes = [];
+                $full = public_path($path);
+                if (!isset($mtimes[$path])) {
+                    $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                }
+                $url = asset($path);
+                $v = $mtimes[$path] ?? time();
+                return $url . '?v=' . $v;
+            }
+        }
+    @endphp
+
+    <link rel="stylesheet" href="{{ asset_ver('style_checkout/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 
@@ -196,7 +213,7 @@
         </footer>
     </div>
 
-    <script src="{{ asset('style_checkout/js/app_success.js') }}"></script>
+    <script src="{{ asset_ver('style_checkout/js/app_success.js') }}"></script>
 
     <script>
         $(".succes__button").click(function() {

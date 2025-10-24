@@ -28,6 +28,19 @@
 
         $phone_arr = [$target_key => $target_value] + $phone_arr;
     }
+
+    if (!function_exists('asset_ver')) {
+        function asset_ver(string $path): string {
+            static $mtimes = [];
+            $full = public_path($path);
+            if (!isset($mtimes[$path])) {
+                $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+            }
+            $url = asset($path);
+            $v = $mtimes[$path] ?? time();
+            return $url . '?v=' . $v;
+        }
+    }
 @endphp
 <header class="header">
     <div class="christmas" style="display: none">
@@ -1218,7 +1231,7 @@
             </div>
         </form>
     </div>
-    <script src="{{ asset('style_checkout/js/app.js?v=24102025') }}"></script>
+    <script src="{{ asset_ver('style_checkout/js/app.js') }}"></script>
 </main>
 <footer class="footer">
     <div class="footer__container">
