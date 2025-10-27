@@ -89,9 +89,9 @@
 								<li class="menu__item">
 								    <a href="{{ route('admin.admin_currencies') }}">{{__('text.admin_common_main_menu_10_element')}}</a>
 								</li>
-								<li class="menu__item">
-                                    <a href="{{ route('admin.renewal_page') }}">{{ __('text.admin_renewal_shop') }}</a>
-								</li>
+								{{-- <li class="menu__item">
+                                    <a href="Update">{{ __('text.admin_renewal_shop') }}</a>
+								</li> --}}
                                 <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
                                         <svg width="20" height="20">
