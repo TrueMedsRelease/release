@@ -233,8 +233,6 @@
         const routeAdminGiftCardInfo = "{{ route('admin.gift_card_info') }}";
         const routeAdminSaveCheckoutInfo = "{{ route('admin.save_checkout_info') }}";
         const routeAdminSaveSubscribeInfo = "{{ route('admin.save_subscribe_info') }}";
-        const routeAdminRenewalShop = "{{ route('admin.renewal_page_shop') }}";
-        const routeAdminRenewalDatabase = "{{ route('admin.renewal_page_data') }}";
     </script>
 
     <script src="{{ asset_ver("admin_style/js/style.js") }}"></script>
