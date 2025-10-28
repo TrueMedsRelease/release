@@ -117,8 +117,26 @@
                 </div>
             </div>
             <div class="payment-details__bottom">
-            <div id="templates_messages">&nbsp;</div>
-                <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
+                <div id="templates_messages">&nbsp;</div>
+                <div style="display: flex; gap:20px;">
+                    <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
+                        <span>
+                            {{__('text.admin_main_properties_password_form_submit')}}
+                        </span>
+                        <svg width="20" height="20">
+                            <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                        </svg>
+                    </button>
+                    <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); DeletePixelData();">
+                        <span>
+                            {{__('text.admin_common_delete_text')}}
+                        </span>
+                        <svg width="20" height="20">
+                            <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-remove") }}"></use>
+                        </svg>
+                    </button>
+                </div>
+                {{-- <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
                     <span>
                         {{__('text.admin_main_properties_password_form_submit')}}
                     </span>
@@ -126,6 +144,14 @@
                         <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                     </svg>
                 </button>
+                <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); DeletePixelData();">
+                    <span>
+                        {{__('text.admin_common_delete_text')}}
+                    </span>
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                    </svg>
+                </button> --}}
             </div>
         </form>
     </div>

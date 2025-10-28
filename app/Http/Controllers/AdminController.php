@@ -313,6 +313,43 @@ class AdminController extends Controller
         }
     }
 
+    public function delete_pixel(Request $request) {
+        $page = $request->selected_page;
+        $pixel_text = $request->pixel_text['pixel_text'];
+        $has_error = false;
+        $error = [];
+
+        if (empty($page)) {
+            $has_error = true;
+            $error = [
+                'status' => 'error',
+                'text' => 'Empty Page'
+            ];
+        }
+
+        $pixel = DB::select("SELECT * FROM `pixel` WHERE `page` = '$page'");
+
+        if (!$has_error) {
+            if (count($pixel) > 0) {
+                $pixel = $pixel[0];
+                if ($pixel_text == null || $pixel_text == 'null') {
+                    $pixel_text = '';
+                }
+                DB::table('pixel')
+                    ->where('page', '=', $page)
+                    ->update(['pixel' => '']);
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+
+            Cache::flush();
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
+        }
+    }
+
     public function main_properties() {
         if (!session()->has('logged_in') || !session('logged_in')) {
             return redirect()->route('admin.admin_login');
