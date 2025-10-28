@@ -675,7 +675,7 @@ function SavePixelData() {
     }, {});
 
     if (pixel_text['pixel_text']) {
-        if (pixel_text['pixel_text'].includes('<script>') && pixel_text['pixel_text'].includes('</script>')) {
+        if (pixel_text['pixel_text'].includes('<script') && pixel_text['pixel_text'].includes('</script>')) {
             if (selected_page) {
                 $.ajax({
                     url: routeAdminSavePixel,
