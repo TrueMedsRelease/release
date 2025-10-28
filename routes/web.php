@@ -164,6 +164,7 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('/admin/main_properties/load_page_properties', 'load_page_properties')->name('admin.load_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_properties/save_page_properties', 'save_page_properties')->name('admin.save_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_properties/save_template', 'save_template')->name('admin.save_template')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_properties/save_default_error_page', 'save_default_error_page')->name('admin.save_default_error_page')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/available_products', 'available_products')->name('admin.available_products');
     Route::get('/admin/available_products_content', 'available_products_content')->name('admin.available_products_content')->withoutMiddleware(VerifyCsrfToken::class);
