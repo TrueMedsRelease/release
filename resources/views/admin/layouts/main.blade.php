@@ -24,7 +24,8 @@
     <link rel="icon" href="{{ asset('/admin_style/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('/admin_style/images/favicon/apple-touch-icon-180x180.png') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset_ver('/admin_style/css/style.css') }}" />
-    <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
+    {{-- <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script> --}}
+    <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
     <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
 	<script src="{{ asset("vendor/jquery/dialog/dialog.js") }}"></script>
@@ -230,6 +231,7 @@
         const routeAdminSaveCurrenciesInfo = "{{ route('admin.save_currencies_info') }}";
         const routeAdminLoadPixel = "{{ route('admin.load_pixel') }}";
         const routeAdminSavePixel = "{{ route('admin.save_pixel') }}";
+        const routeAdminDeletePixel = "{{ route('admin.delete_pixel') }}";
         const routeAdminGiftCardInfo = "{{ route('admin.gift_card_info') }}";
         const routeAdminSaveCheckoutInfo = "{{ route('admin.save_checkout_info') }}";
         const routeAdminSaveSubscribeInfo = "{{ route('admin.save_subscribe_info') }}";
