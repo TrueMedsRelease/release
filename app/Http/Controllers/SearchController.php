@@ -134,7 +134,11 @@ class SearchController extends Controller
         if (!empty(request('search'))) {
             return $this->search_result(request('search'));
         } else {
-            return redirect(route('home.index'));
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
     }
 

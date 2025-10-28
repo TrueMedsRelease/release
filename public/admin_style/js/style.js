@@ -818,3 +818,25 @@ function renewalDatabase() {
         }
     });
 }
+
+function saveDefaultErrorPage() {
+    let default_error_page = $('input[name="default_error_page"]:checked').val();
+
+    $.ajax({
+        url: routeAdminSaveDefaultErrorPage,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'default_error_page': default_error_page,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}

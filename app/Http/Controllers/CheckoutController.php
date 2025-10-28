@@ -24,8 +24,12 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        if (empty(session('cart'))) {
-            return redirect(route('home.index'));
+        if (empty(session('cart')) || !session()->has('cart')) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
 
         if (session('crypto')) {
@@ -121,8 +125,12 @@ class CheckoutController extends Controller
 
     public function checkout()
     {
-        if (empty(session('cart'))) {
-            return redirect(route('home.index'));
+        if (empty(session('cart')) || !session()->has('cart')) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
 
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
@@ -1019,8 +1027,8 @@ class CheckoutController extends Controller
 
     public function complete()
     {
-        if (empty(session('order'))) {
-            return redirect(route('home.index'));
+        if (empty(session('order')) || !session()->has('cart')) {
+            return response()->view('404', ['design' => session('design', config('app.design'))], 404);
         }
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'complete'");

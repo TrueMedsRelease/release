@@ -233,6 +233,7 @@
         const routeAdminGiftCardInfo = "{{ route('admin.gift_card_info') }}";
         const routeAdminSaveCheckoutInfo = "{{ route('admin.save_checkout_info') }}";
         const routeAdminSaveSubscribeInfo = "{{ route('admin.save_subscribe_info') }}";
+        const routeAdminSaveDefaultErrorPage = "{{ route('admin.save_default_error_page') }}";
     </script>
 
     <script src="{{ asset_ver("admin_style/js/style.js") }}"></script>
