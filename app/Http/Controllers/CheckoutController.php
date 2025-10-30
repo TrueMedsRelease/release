@@ -25,11 +25,7 @@ class CheckoutController extends Controller
     public function index()
     {
         if (empty(session('cart')) || !session()->has('cart')) {
-            if (env('APP_ERROR_PAGE')) {
-                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
-            } else {
-                return redirect(route('home.index'));
-            }
+            return redirect(route('home.index'));
         }
 
         if (session('crypto')) {
@@ -126,11 +122,7 @@ class CheckoutController extends Controller
     public function checkout()
     {
         if (empty(session('cart')) || !session()->has('cart')) {
-            if (env('APP_ERROR_PAGE')) {
-                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
-            } else {
-                return redirect(route('home.index'));
-            }
+            return redirect(route('home.index'));
         }
 
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
