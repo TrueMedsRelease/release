@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SessionHelper;
 use App\Models\Cart;
 use App\Models\CountryInfoCache;
 use App\Models\Currency;
@@ -12,6 +13,8 @@ use App\Models\State;
 use App\Services\CacheServices;
 use App\Services\ProductServices;
 use App\Services\StatisticService;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -61,9 +64,9 @@ class CheckoutController extends Controller
                             Log::error("Сервис вернул ошибку: " . $response->status());
                             $responseData = ['error' => 'Service returned an error'];
                         }
-                    } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    } catch (ConnectionException $e) {
                         Log::error("Ошибка подключения: " . $e->getMessage());
-                    } catch (\Illuminate\Http\Client\RequestException $e) {
+                    } catch (RequestException $e) {
                         // Обработка ошибок запроса, таких как таймаут или недоступность
                         Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                         $responseData = ['error' => 'Service unavailable'];
@@ -103,9 +106,9 @@ class CheckoutController extends Controller
                 } else {
                     session(['paypal_limit' => $paypal_limit]);
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
@@ -340,9 +343,9 @@ class CheckoutController extends Controller
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
@@ -384,9 +387,9 @@ class CheckoutController extends Controller
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
@@ -509,7 +512,8 @@ class CheckoutController extends Controller
                     'price'          => $product['price'],
                     'is_ed_category' => false
                 ];
-                $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -625,10 +629,10 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
-                                    json_encode($response['message']),
-                                    'repeat_order'
-                                ))) {
+                        if ($response['status'] === 'SUCCESS' ||
+                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
+                             && str_contains(json_encode($response['message']), 'repeat_order' ))
+                        ) {
                             DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                             session(['order' => $response]);
                         }
@@ -639,9 +643,9 @@ class CheckoutController extends Controller
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -690,7 +694,8 @@ class CheckoutController extends Controller
                     'price'          => $product['price'],
                     'is_ed_category' => false
                 ];
-                $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -813,9 +818,9 @@ class CheckoutController extends Controller
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -848,7 +853,8 @@ class CheckoutController extends Controller
                     if (isset($response['status']) && $response['status'] == 'error') {
                         return response()->json(json_encode(['status' => 'error', 'text' => 'Service unavailable']));
                     } else {
-                        $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
+                        $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c',
+                                    1), 2);
                         $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
                         $response['currency']     = $request->currency;
 
@@ -856,15 +862,14 @@ class CheckoutController extends Controller
 
                         return response()->json(json_encode($response));
                     }
-
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
@@ -920,7 +925,8 @@ class CheckoutController extends Controller
                 'price'          => $product['price'],
                 'is_ed_category' => false
             ];
-            $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
         }
 
         if (session('cart_option.bonus_id') != 0) {
@@ -935,64 +941,64 @@ class CheckoutController extends Controller
 
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
-        $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+        $billing_state  = isset($form['billing_state']) ? e($form['billing_state']) : '';
         $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
 
         $data = [
-            'method'             => 'save_order_data',
-            'api_key'            => $api_key->key_data,
-            'phone'              => e('+' . $phone_code . $form['phone']),
-            'alternative_phone'  => !empty($form['alt_phone']) ? e('+' . $phone_code . $form['alt_phone']) : '',
-            'email'              => e($form['email']),
-            'alter_email'        => !empty($form['alt_email']) ? e($form['alt_email']) : '',
-            'firstname'          => e($form['firstname']),
-            'lastname'           => e($form['lastname']),
-            'billing_country'    => e($form['billing_country']),
-            'billing_state'      => $billing_state,
-            'billing_city'       => e($form['billing_city']),
-            'billing_address'    => e($form['billing_address']),
-            'billing_zip'        => e($form['billing_zip']),
-            'shipping_country'   => !empty($form['address_match']) ? e($form['shipping_country']) : e($form['billing_country']),
-            'shipping_state'     => !empty($form['address_match']) ? $shipping_state : $billing_state,
-            'shipping_city'      => !empty($form['address_match']) ? e($form['shipping_city']) : e($form['billing_city']),
-            'shipping_address'   => !empty($form['address_match']) ? e($form['shipping_address']) : e($form['billing_address']),
-            'shipping_zip'       => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
-            'payment_type'       => 'crypto',
-            'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
-            'crypto_currency'    => $request->crypto_currency ?? '',
-            'amount'             => round(session('total.checkout_total') * 0.85, 2),
-            'amountInPayCurrency'=> $request->crypto_total,
-            'purse'              => $request->purse ?? '',
-            'invoiceId'          => $request->invoiceId ?? '',
-            'aff'                => session('aff', 0),
-            'ref'                => session('referer', ''),
-            'refc'               => session('refc', ''),
-            'keyword'            => session('keyword', ''),
-            'domain_from'        => request()->getHost(),
-            'total'              => round(session('total.checkout_total'), 2),
-            'shipping'           => session('cart_option.shipping'),
-            'products'           => $products_str,
-            'saff'               => session('saff', ''),
-            'language'           => App::currentLocale(),
-            'currency'           => session('currency', 'usd'),
-            'user_agent'         => 'user_agent=' . $request->userAgent(),
-            'fingerprint'        => '',
-            'product_total'      => session('total.product_total'),
-            'customer_id'        => '',
-            'reorder'            => 0,
-            'reorder_discount'   => 0,
-            'shipping_price'     => session('total.shipping_total'),
-            'insurance'          => session('total.insurance'),
-            'secret_package'     => session('total.secret_package'),
-            'store_skin'         => config('app.design'),
-            'recurring_period'   => 0,
-            'coupon'             => session('coupon.coupon', ''),
-            'bonus'              => '',
-            'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-            'gift_card_discount' => 0, //session('total.coupon_discount', 0),
-            'theme'              => 13,
-            'coupon_discount'    => session('total.coupon_discount'),
-            'sessid'             => $sessid
+            'method'              => 'save_order_data',
+            'api_key'             => $api_key->key_data,
+            'phone'               => e('+' . $phone_code . $form['phone']),
+            'alternative_phone'   => !empty($form['alt_phone']) ? e('+' . $phone_code . $form['alt_phone']) : '',
+            'email'               => e($form['email']),
+            'alter_email'         => !empty($form['alt_email']) ? e($form['alt_email']) : '',
+            'firstname'           => e($form['firstname']),
+            'lastname'            => e($form['lastname']),
+            'billing_country'     => e($form['billing_country']),
+            'billing_state'       => $billing_state,
+            'billing_city'        => e($form['billing_city']),
+            'billing_address'     => e($form['billing_address']),
+            'billing_zip'         => e($form['billing_zip']),
+            'shipping_country'    => !empty($form['address_match']) ? e($form['shipping_country']) : e($form['billing_country']),
+            'shipping_state'      => !empty($form['address_match']) ? $shipping_state : $billing_state,
+            'shipping_city'       => !empty($form['address_match']) ? e($form['shipping_city']) : e($form['billing_city']),
+            'shipping_address'    => !empty($form['address_match']) ? e($form['shipping_address']) : e($form['billing_address']),
+            'shipping_zip'        => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
+            'payment_type'        => 'crypto',
+            'ip'                  => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+            'crypto_currency'     => $request->crypto_currency ?? '',
+            'amount'              => round(session('total.checkout_total') * 0.85, 2),
+            'amountInPayCurrency' => $request->crypto_total,
+            'purse'               => $request->purse ?? '',
+            'invoiceId'           => $request->invoiceId ?? '',
+            'aff'                 => session('aff', 0),
+            'ref'                 => session('referer', ''),
+            'refc'                => session('refc', ''),
+            'keyword'             => session('keyword', ''),
+            'domain_from'         => request()->getHost(),
+            'total'               => round(session('total.checkout_total'), 2),
+            'shipping'            => session('cart_option.shipping'),
+            'products'            => $products_str,
+            'saff'                => session('saff', ''),
+            'language'            => App::currentLocale(),
+            'currency'            => session('currency', 'usd'),
+            'user_agent'          => 'user_agent=' . $request->userAgent(),
+            'fingerprint'         => '',
+            'product_total'       => session('total.product_total'),
+            'customer_id'         => '',
+            'reorder'             => 0,
+            'reorder_discount'    => 0,
+            'shipping_price'      => session('total.shipping_total'),
+            'insurance'           => session('total.insurance'),
+            'secret_package'      => session('total.secret_package'),
+            'store_skin'          => config('app.design'),
+            'recurring_period'    => 0,
+            'coupon'              => session('coupon.coupon', ''),
+            'bonus'               => '',
+            'gift_card_code'      => '', //session('gift_card.gift_card_code', ''),
+            'gift_card_discount'  => 0, //session('total.coupon_discount', 0),
+            'theme'               => 13,
+            'coupon_discount'     => session('total.coupon_discount'),
+            'sessid'              => $sessid
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
@@ -1007,9 +1013,9 @@ class CheckoutController extends Controller
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
@@ -1034,7 +1040,7 @@ class CheckoutController extends Controller
             $data = [
                 'method'   => 'hold',
                 'id'       => $id,
-                'success' => isset($_GET['success']) ? $_GET['success'] : false,
+                'success'  => isset($_GET['success']) ? $_GET['success'] : false,
                 'order_id' => session('order.order_id'),
             ];
 
@@ -1050,9 +1056,9 @@ class CheckoutController extends Controller
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -1087,159 +1093,160 @@ class CheckoutController extends Controller
                     // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     // if ($response_payment->successful()) {
-                        // Обработка успешного ответа
+                    // Обработка успешного ответа
 
-                        // $response_payment = json_decode($response_payment, true);
+                    // $response_payment = json_decode($response_payment, true);
 
-                        // session(['check_payment' => $response_payment]);
+                    // session(['check_payment' => $response_payment]);
 
-                        // if ($response_payment['status'] == 3 || $response_payment == 5) {
-                            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-                            $phone_code = $phone_code->phonecode;
+                    // if ($response_payment['status'] == 3 || $response_payment == 5) {
+                    $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+                    $phone_code = $phone_code->phonecode;
 
-                            $products = [];
-                            $sessid   = '';
+                    $products = [];
+                    $sessid   = '';
 
-                            foreach (session('cart') as $product) {
-                                $products[$product['pack_id']] = [
-                                    'qty'            => $product['q'],
-                                    'price'          => $product['price'],
-                                    'is_ed_category' => false
-                                ];
+                    foreach (session('cart') as $product) {
+                        $products[$product['pack_id']] = [
+                            'qty'            => $product['q'],
+                            'price'          => $product['price'],
+                            'is_ed_category' => false
+                        ];
 
-                                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
-                            }
+                        $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                    }
 
-                            if (session('cart_option.bonus_id') != 0) {
-                                $products[session('cart_option.bonus_id')] = [
-                                    'qty'            => 1,
-                                    'price'          => session(
-                                        'cart_option.bonus_price'
-                                    ),
-                                    'is_ed_category' => false
-                                ];
-                            }
+                    if (session('cart_option.bonus_id') != 0) {
+                        $products[session('cart_option.bonus_id')] = [
+                            'qty'            => 1,
+                            'price'          => session(
+                                'cart_option.bonus_price'
+                            ),
+                            'is_ed_category' => false
+                        ];
+                    }
 
-                            $products_str = json_encode($products);
+                    $products_str = json_encode($products);
 
-                            $data = [
-                                'method'              => 'order',
-                                'api_key'             => $api_key->key_data,
-                                'phone'               => e('+' . $phone_code . $request->phone),
-                                'alternative_phone'   => !empty($request->alt_phone) ? e(
-                                    '+' . $phone_code . $request->alt_phone
-                                ) : '',
-                                'email'               => e($request->email),
-                                'alter_email'         => !empty($request->alt_email) ? e($request->alt_email) : '',
-                                'firstname'           => e($request->firstname),
-                                'lastname'            => e($request->lastname),
-                                'billing_country'     => e($request->billing_country),
-                                'billing_state'       => e($request->billing_state),
-                                'billing_city'        => e($request->billing_city),
-                                'billing_address'     => e($request->billing_address),
-                                'billing_zip'         => e($request->billing_zip),
-                                'shipping_country'    => !empty($request->address_match) ? e(
-                                    $request->shipping_country
-                                ) : e($request->billing_country),
-                                'shipping_state'      => !empty($request->address_match) ? e(
-                                    $request->shipping_state
-                                ) : e($request->billing_state),
-                                'shipping_city'       => !empty($request->address_match) ? e(
-                                    $request->shipping_city
-                                ) : e(
-                                    $request->billing_city
-                                ),
-                                'shipping_address'    => !empty($request->address_match) ? e(
-                                    $request->shipping_address
-                                ) : e($request->billing_address),
-                                'shipping_zip'        => !empty($request->address_match) ? e(
-                                    $request->shipping_zip
-                                ) : e(
-                                    $request->billing_zip
-                                ),
-                                'payment_type'        => e($request->payment_type),
-                                // 'crypto_currency'     => e($response_payment['payCurrency']),
-                                // 'invoiceId'           => e($response_payment['invoiceId']),
-                                // 'merchant_id'         => e($response_payment['merchantId']),
-                                // 'purse'               => e($response_payment['purse']),
-                                // 'amount'              => e($response_payment['amount']),
-                                // 'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
-                                // 'commission'          => e($response_payment['merchantCommission']),
-                                // 'crypto_status'       => e($response_payment['status']),
-                                'crypto_currency'     => session('crypto.currency', ''),
-                                'invoiceId'           => session('crypto.invoiceId', ''),
-                                'purse'               => session('crypto.purse', ''),
-                                'amount'              => round(session('total.checkout_total') * 0.85, 2),
-                                'amountInPayCurrency' => session('crypto.amount', 0),
-                                'ip'                  => request()->headers->get('cf-connecting-ip') ? request(
-                                )->headers->get('cf-connecting-ip') : request()->ip(),
-                                'aff'                 => session('aff', 0),
-                                'ref'                 => session('referer', ''),
-                                'refc'                => session('refc', ''),
-                                'keyword'             => session('keyword', ''),
-                                'domain_from'         => request()->getHost(),
-                                'total'               => session('total.checkout_total'),
-                                'shipping'            => session('cart_option.shipping'),
-                                'products'            => $products_str,
-                                'saff'                => session('saff', ''),
-                                'language'            => App::currentLocale(),
-                                'currency'            => session('currency'),
-                                'user_agent'          => 'user_agent=' . $request->userAgent() . '&lang=' . request(
-                                    )->header(
-                                        'Accept-Language'
-                                    ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
-                                'fingerprint'         => '',
-                                'product_total'       => session('total.product_total'),
-                                'customer_id'         => '',
-                                'reorder'             => 0,
-                                'reorder_discount'    => 0,
-                                'shipping_price'      => session('total.shipping_total'),
-                                'insurance'           => session('total.insurance'),
-                                'secret_package'      => session('total.secret_package'),
-                                'store_skin'          => config('app.design'),
-                                'recurring_period'    => 0,
-                                'coupon'              => session('coupon.coupon', ''),
-                                'bonus'               => '',
-                                'gift_card_code'      => '', //session('gift_card.gift_card_code', ''),
-                                'gift_card_discount'  => 0, //session('total.coupon_discount', 0),
-                                'theme'               => 13,
-                                'coupon_discount'     => session('total.coupon_discount'),
-                                'sessid'              => $sessid
-                            ];
+                    $data = [
+                        'method'              => 'order',
+                        'api_key'             => $api_key->key_data,
+                        'phone'               => e('+' . $phone_code . $request->phone),
+                        'alternative_phone'   => !empty($request->alt_phone) ? e(
+                            '+' . $phone_code . $request->alt_phone
+                        ) : '',
+                        'email'               => e($request->email),
+                        'alter_email'         => !empty($request->alt_email) ? e($request->alt_email) : '',
+                        'firstname'           => e($request->firstname),
+                        'lastname'            => e($request->lastname),
+                        'billing_country'     => e($request->billing_country),
+                        'billing_state'       => e($request->billing_state),
+                        'billing_city'        => e($request->billing_city),
+                        'billing_address'     => e($request->billing_address),
+                        'billing_zip'         => e($request->billing_zip),
+                        'shipping_country'    => !empty($request->address_match) ? e(
+                            $request->shipping_country
+                        ) : e($request->billing_country),
+                        'shipping_state'      => !empty($request->address_match) ? e(
+                            $request->shipping_state
+                        ) : e($request->billing_state),
+                        'shipping_city'       => !empty($request->address_match) ? e(
+                            $request->shipping_city
+                        ) : e(
+                            $request->billing_city
+                        ),
+                        'shipping_address'    => !empty($request->address_match) ? e(
+                            $request->shipping_address
+                        ) : e($request->billing_address),
+                        'shipping_zip'        => !empty($request->address_match) ? e(
+                            $request->shipping_zip
+                        ) : e(
+                            $request->billing_zip
+                        ),
+                        'payment_type'        => e($request->payment_type),
+                        // 'crypto_currency'     => e($response_payment['payCurrency']),
+                        // 'invoiceId'           => e($response_payment['invoiceId']),
+                        // 'merchant_id'         => e($response_payment['merchantId']),
+                        // 'purse'               => e($response_payment['purse']),
+                        // 'amount'              => e($response_payment['amount']),
+                        // 'amountInPayCurrency' => e($response_payment['amountInPayCurrency']),
+                        // 'commission'          => e($response_payment['merchantCommission']),
+                        // 'crypto_status'       => e($response_payment['status']),
+                        'crypto_currency'     => session('crypto.currency', ''),
+                        'invoiceId'           => session('crypto.invoiceId', ''),
+                        'purse'               => session('crypto.purse', ''),
+                        'amount'              => round(session('total.checkout_total') * 0.85, 2),
+                        'amountInPayCurrency' => session('crypto.amount', 0),
+                        'ip'                  => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                        'aff'                 => session('aff', 0),
+                        'ref'                 => session('referer', ''),
+                        'refc'                => session('refc', ''),
+                        'keyword'             => session('keyword', ''),
+                        'domain_from'         => request()->getHost(),
+                        'total'               => session('total.checkout_total'),
+                        'shipping'            => session('cart_option.shipping'),
+                        'products'            => $products_str,
+                        'saff'                => session('saff', ''),
+                        'language'            => App::currentLocale(),
+                        'currency'            => session('currency'),
+                        'user_agent'          => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
+                                'Accept-Language'
+                            ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
+                        'fingerprint'         => '',
+                        'product_total'       => session('total.product_total'),
+                        'customer_id'         => '',
+                        'reorder'             => 0,
+                        'reorder_discount'    => 0,
+                        'shipping_price'      => session('total.shipping_total'),
+                        'insurance'           => session('total.insurance'),
+                        'secret_package'      => session('total.secret_package'),
+                        'store_skin'          => config('app.design'),
+                        'recurring_period'    => 0,
+                        'coupon'              => session('coupon.coupon', ''),
+                        'bonus'               => '',
+                        'gift_card_code'      => '', //session('gift_card.gift_card_code', ''),
+                        'gift_card_discount'  => 0, //session('total.coupon_discount', 0),
+                        'theme'               => 13,
+                        'coupon_discount'     => session('total.coupon_discount'),
+                        'sessid'              => $sessid
+                    ];
 
-                            session(['data' => $data]);
+                    session(['data' => $data]);
 
-                            $email             = e($request->email);
-                            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+                    $email             = e($request->email);
+                    $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
 
-                            if (count($check_order_cache) == 0) {
-                                $data_for_cache             = $data;
-                                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                                    'message' => json_encode($data_for_cache),
-                                    'is_send' => 0
-                                ]);
-                            } else {
-                                $order_cache_id = $check_order_cache[0]->id;
-                            }
+                    if (count($check_order_cache) == 0) {
+                        $data_for_cache             = $data;
+                        $data_for_cache['products'] = addslashes($data_for_cache['products']);
+                        $order_cache_id             = DB::table('order_cache')->insertGetId([
+                            'message' => json_encode($data_for_cache),
+                            'is_send' => 0
+                        ]);
+                    } else {
+                        $order_cache_id = $check_order_cache[0]->id;
+                    }
 
-                            $response = Http::post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::post('http://true-serv.net/checkout/order.php', $data);
 
-                            $response = json_decode($response, true);
+                    $response = json_decode($response, true);
 
-                            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
-                                        json_encode($response['message']),
-                                        'repeat_order'
-                                    ))) {
-                                DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
-                                session(['order' => $response]);
-                                return json_encode(['status' => 'success', 'response' => $response]);
-                            } else {
-                                return response()->json(json_encode(['status' => 'error', 'text' => 'Service returned an error']));
-                            }
-                        // }
+                    if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
+                                json_encode($response['message']),
+                                'repeat_order'
+                            ))) {
+                        DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                        session(['order' => $response]);
+                        return json_encode(['status' => 'success', 'response' => $response]);
+                    } else {
+                        return response()->json(json_encode([
+                            'status' => 'error',
+                            'text'   => 'Service returned an error'
+                        ]));
+                    }
+                    // }
 
-                        // return response()->json(json_encode($response_payment));
+                    // return response()->json(json_encode($response_payment));
 
 
                     // } else {
@@ -1247,9 +1254,9 @@ class CheckoutController extends Controller
                     //     Log::error("Сервис вернул ошибку: " . $response_payment->status());
                     //     $responseData = ['error' => 'Service returned an error'];
                     // }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -1302,7 +1309,8 @@ class CheckoutController extends Controller
                     'price'          => $product['price'],
                     'is_ed_category' => false
                 ];
-                $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -1317,7 +1325,7 @@ class CheckoutController extends Controller
 
             $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
-            $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+            $billing_state  = isset($form['billing_state']) ? e($form['billing_state']) : '';
             $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
 
             $data = [
@@ -1392,9 +1400,9 @@ class CheckoutController extends Controller
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -1429,7 +1437,8 @@ class CheckoutController extends Controller
                 'price'          => $product['price'],
                 'is_ed_category' => false
             ];
-            $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
         }
 
         if (session('cart_option.bonus_id') != 0) {
@@ -1547,9 +1556,9 @@ class CheckoutController extends Controller
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
@@ -1604,7 +1613,8 @@ class CheckoutController extends Controller
                     'price'          => $product['price'],
                     'is_ed_category' => false
                 ];
-                $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -1619,7 +1629,7 @@ class CheckoutController extends Controller
 
             $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
-            $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+            $billing_state  = isset($form['billing_state']) ? e($form['billing_state']) : '';
             $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
 
             $data = [
@@ -1694,9 +1704,9 @@ class CheckoutController extends Controller
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -1742,7 +1752,8 @@ class CheckoutController extends Controller
                     'price'          => $product['price'],
                     'is_ed_category' => false
                 ];
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -1865,9 +1876,9 @@ class CheckoutController extends Controller
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -1883,7 +1894,7 @@ class CheckoutController extends Controller
         $input_value = $request->input_value;
 
         foreach (session('cart') as $product) {
-            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
         }
 
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
@@ -1912,9 +1923,9 @@ class CheckoutController extends Controller
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
@@ -1970,7 +1981,8 @@ class CheckoutController extends Controller
                     'price'          => $product['price'],
                     'is_ed_category' => false
                 ];
-                $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -1985,7 +1997,7 @@ class CheckoutController extends Controller
 
             $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
-            $billing_state = isset($form['billing_state']) ? e($form['billing_state']) : '';
+            $billing_state  = isset($form['billing_state']) ? e($form['billing_state']) : '';
             $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
 
             $data = [
@@ -2040,8 +2052,10 @@ class CheckoutController extends Controller
                 'recurring_period'   => 0,
                 'coupon'             => session('coupon.coupon', ''),
                 'bonus'              => '',
-                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
+                'gift_card_code'     => '',
+                //session('gift_card.gift_card_code', ''),
+                'gift_card_discount' => 0,
+                //session('total.coupon_discount', 0),
                 'theme'              => 13,
                 'coupon_discount'    => session('total.coupon_discount'),
                 'sessid'             => $sessid
@@ -2057,11 +2071,13 @@ class CheckoutController extends Controller
                         if ($response['status'] == 'ERROR') {
                             return response()->json(['response' => $response], 200);
                         } else {
-                            session(['zelle' => [
-                                'name' => $response['zelle_name'],
-                                'email' => $response['zelle_email'],
-                                'orderId' => $response['order_id']
-                            ]]);
+                            session([
+                                'zelle' => [
+                                    'name'    => $response['zelle_name'],
+                                    'email'   => $response['zelle_email'],
+                                    'orderId' => $response['order_id']
+                                ]
+                            ]);
 
                             return response()->json(['response' => $response], 200);
                         }
@@ -2070,9 +2086,9 @@ class CheckoutController extends Controller
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
-                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
-                } catch (\Illuminate\Http\Client\RequestException $e) {
+                } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
@@ -2084,9 +2100,11 @@ class CheckoutController extends Controller
     public function zelle(Request $request)
     {
         if (session()->has('zelle') && session('zelle.orderId')) {
-            session(['order' => [
-                'order_id' => session('zelle.orderId')
-            ]]);
+            session([
+                'order' => [
+                    'order_id' => session('zelle.orderId')
+                ]
+            ]);
 
             session()->forget('zelle');
 

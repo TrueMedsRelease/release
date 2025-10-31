@@ -14,5 +14,8 @@ class EncryptCookies extends Middleware
     protected $except = [
         'js_stat_aff_id',
         'js_stat_design_id',
+        'tm_session_id',
+        'tm_initial_referrer',
+        'tm_visit_data'
     ];
 }
