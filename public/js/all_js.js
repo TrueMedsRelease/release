@@ -198,17 +198,118 @@ function enterProfile() {
 (function (w, d) {
     "use strict";
 
-    window.AffStatsConfig = {
-        endpoint: "http://localhost:8173/statistics/v1",
-        visitTimeoutMin: 120,
-        debug: true,
+    if (window._affStatsSdkLoaded) {
+        return;
+    }
+    window._affStatsSdkLoaded = true;
+
+    function validateConfig() {
+        const defaults = {
+            endpoint: "http://localhost:8173/statistics/v1/collect/visit",
+            visitTimeoutMin: 120,
+            debug: true,
+            // storeTheme: "default"
+        };
+
+        const config = { ...defaults };
+
+        // Validate endpoint URL
+        try {
+            new URL(config.endpoint);
+        } catch {
+            console.warn('[AffSDK] Invalid endpoint, using default');
+            config.endpoint = defaults.endpoint;
+        }
+
+        // Validate timeout
+        if (typeof config.visitTimeoutMin !== 'number' ||
+            !isFinite(config.visitTimeoutMin) ||
+            config.visitTimeoutMin <= 0) {
+            config.visitTimeoutMin = defaults.visitTimeoutMin;
+        }
+
+        return config;
     }
 
-    const cfg = w.AffStatsConfig || {};
-    const ENDPOINT = cfg.endpoint || "/collect/visit";
-    const VISIT_TIMEOUT_MIN = (typeof cfg.visitTimeoutMin === "number" && isFinite(cfg.visitTimeoutMin)) ? cfg.visitTimeoutMin : 120;
+    const cfg = validateConfig();
+    const ENDPOINT = cfg.endpoint;
+    const VISIT_TIMEOUT_MIN = cfg.visitTimeoutMin;
+    const DEFAULT_COOKIE_LIFETIME_MINUTES = 365 * 24 * 60;
     const SDK_VERSION = "aff-collector-js/0.1.0";
-    const SCHEMA_VERSION = "aff_pageview/0.1.0";
+    const SCHEMA_VERSION = "aff_pageview/1.0.0";
+
+    function withErrorHandling(fn, context) {
+        return function(...args) {
+            try {
+                return fn.apply(this, args);
+            } catch (error) {
+                if (cfg.debug && w.console) {
+                    console.error(`[AffSDK] Error in ${context}:`, error);
+                }
+                return null;
+            }
+        };
+    }
+
+    function setCookie(name, value, minutes = 120) {
+        try {
+            let cookie = `${name}=${encodeURIComponent(value)}`;
+
+            if (minutes) {
+                const date = new Date();
+                date.setTime(date.getTime() + (minutes * 60 * 1000));
+                cookie += `; expires=${date.toUTCString()}`;
+            }
+
+            cookie += `; path=/`;
+            cookie += `; SameSite=Lax`;
+
+            if (location.protocol === 'https:') {
+                cookie += '; Secure';
+            }
+
+            document.cookie = cookie;
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function getCookie(name) {
+        try {
+            const nameEq = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEq) === 0) {
+                    return decodeURIComponent(c.substring(nameEq.length, c.length));
+                }
+            }
+            return undefined;
+        } catch (error) {
+            return undefined;
+        }
+    }
+
+    function getParamWithCookieFallback(qs, paramName, cookieName, defaultValue = null) {
+        // 1. Check query string first
+        const qsValue = qs.get(paramName);
+        if (qsValue !== null && qsValue !== undefined && qsValue !== '') {
+            // 2. If found, update cookie and return value
+            setCookie(cookieName, qsValue, DEFAULT_COOKIE_LIFETIME_MINUTES);
+            return safeStr(qsValue);
+        }
+
+        // 3. If not in query string, check cookie
+        const cookieValue = getCookie(cookieName);
+        if (cookieValue !== undefined) {
+            return safeStr(cookieValue);
+        }
+
+        // 4. Return default value
+        return defaultValue;
+    }
 
     function nowISO() {
         try {
@@ -222,61 +323,40 @@ function enterProfile() {
         return (v === undefined || v === null) ? null : String(v);
     }
 
-    function hasStorage(type) {
-        try {
-            const s = w[type];
-            if (!s) return false;
-            const k = "__tm_t";
-            s.setItem(k, "1");
-            s.removeItem(k);
-            return true;
-        } catch (_) {
-            return false;
-        }
-    }
-
     function uuid() {
         try {
-            if (w.crypto && crypto.randomUUID) return crypto.randomUUID();
-        } catch (_) {
-        }
+            if (w.crypto && crypto.randomUUID) {
+                return crypto.randomUUID();
+            }
+        } catch (_) {}
+
         try {
             if (w.crypto && crypto.getRandomValues) {
-                const a = crypto.getRandomValues(new Uint8Array(16));
-                a[6] = (a[6] & 0x0f) | 0x40;
-                a[8] = (a[8] & 0x3f) | 0x80;
-                const h = Array.prototype.map.call(a, function (b) {
-                    return ('0' + b.toString(16)).slice(-2);
-                }).join('');
-                return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
-            }
-        } catch (_) {
-        }
-        // very last-resort fallback
-        const t = Date.now().toString(16);
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = (Math.random() * 16) | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        }) + t.slice(0, 4);
-    }
+                const buffer = new Uint8Array(16);
+                crypto.getRandomValues(buffer);
 
-    function getOrSet(store, key, gen) {
-        try {
-            const v = store.getItem(key);
-            if (v) return v;
-            const n = gen();
-            store.setItem(key, n);
-            return n;
-        } catch (_) {
-            return gen();
-        }
+                buffer[6] = (buffer[6] & 0x0f) | 0x40;
+                buffer[8] = (buffer[8] & 0x3f) | 0x80;
+
+                const hex = Array.from(buffer, byte =>
+                    byte.toString(16).padStart(2, '0')
+                ).join('');
+
+                return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+            }
+        } catch (_) {}
+
+        // Final fallback with timestamp
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substring(2, 10);
+        return `fallback-${timestamp}-${random}`;
     }
 
     function parseQS() {
         try {
             return new URLSearchParams(w.location.search);
         } catch (_) {
-            const p = new URLSearchParams(); // polyfill-ish usage
+            const p = new URLSearchParams();
             const q = (w.location.search || '').replace(/^\?/, '');
             if (!q) return p;
             const parts = q.split('&');
@@ -296,135 +376,146 @@ function enterProfile() {
     function getNetworkClickId(qs) {
         const keys = ["gclid", "fbclid", "msclkid", "ttclid", "yclid"];
         for (let i = 0; i < keys.length; i++) {
-            const v = qs.get(keys[i]);
+            const v = getParamWithCookieFallback(qs, keys[i], "tm_network_click_id", null);
             if (v) return v;
         }
         return null;
     }
 
-    function extractSubs(qs) {
-        const obj = {};
-        qs.forEach(function (v, k) {
-            if (!v) return;
-            if (/^sub[1-9]\d*$/.test(k) || /^sub_/.test(k)) obj[k] = v;
-        });
-        return obj;
+    function extractIndividualSubs(qs) {
+        const subs = {};
+        for (let i = 1; i <= 10; i++) {
+            const subKey = `sub${i}`;
+            subs[subKey] = getParamWithCookieFallback(qs, subKey, `js_stat_${subKey}`, null);
+        }
+        return subs;
     }
 
     function currentAttributionSignature(qs) {
         const parts = [
-            qs.get("utm_source") || "",
-            qs.get("utm_medium") || "",
-            qs.get("utm_campaign") || "",
-            qs.get("utm_term") || "",
-            qs.get("utm_content") || "",
-            getNetworkClickId(qs) || "",
-            qs.get("aff") || "",
-            (qs.get("click_id") || qs.get("saff") || "")
+            getParamWithCookieFallback(qs, "aff", "js_stat_aff_id", ""),
+            getParamWithCookieFallback(qs, "click_id", "js_stat_click_id", ""),
+            getParamWithCookieFallback(qs, "saff", "js_stat_saff", ""),
+            getParamWithCookieFallback(qs, "utm_source", "js_stat_utm_source", ""),
+            getParamWithCookieFallback(qs, "utm_medium", "js_stat_utm_medium", ""),
+            getParamWithCookieFallback(qs, "utm_campaign", "js_stat_utm_campaign", ""),
+            getParamWithCookieFallback(qs, "utm_term", "js_stat_utm_term", ""),
+            getParamWithCookieFallback(qs, "utm_content", "js_stat_utm_content", ""),
         ];
         return parts.join("|");
     }
 
-    function computeVisitId(qs) {
-        const VISIT_KEY = "tm_visit_id";
-        const TOUCH_KEY = "tm_visit_touch_sig";
-        const SEEN_KEY = "tm_visit_last_seen_ms";
-        const lsOK = hasStorage('localStorage');
-        const now = Date.now();
-        const curSig = currentAttributionSignature(qs);
-        let oldSig = null, lastSeen = 0, vId = null;
-        if (lsOK) {
-            try {
-                vId = localStorage.getItem(VISIT_KEY);
-                oldSig = localStorage.getItem(TOUCH_KEY);
-                lastSeen = parseInt(localStorage.getItem(SEEN_KEY) || "0", 10);
-            } catch (_) {
-            }
+    // Get or set initial referrer from cookie
+    function getInitialReferrer() {
+        // Try to get from cookie first
+        const cookieReferrer = getCookie("tm_initial_referrer");
+        if (cookieReferrer) {
+            return cookieReferrer;
         }
-        const timeoutMs = VISIT_TIMEOUT_MIN * 60 * 1000;
-        const needNew = !vId || (oldSig !== curSig && curSig) || (lastSeen && (now - lastSeen > timeoutMs));
-        if (needNew) vId = uuid();
-        if (lsOK) {
-            try {
-                localStorage.setItem(VISIT_KEY, vId);
-                localStorage.setItem(TOUCH_KEY, curSig);
-                localStorage.setItem(SEEN_KEY, String(now));
-            } catch (_) {
-            }
-        }
-        return vId;
+
+        // If no cookie, use current referrer and store it
+        const currentReferrer = d.referrer || "no referrer";
+        setCookie("tm_initial_referrer", currentReferrer, DEFAULT_COOKIE_LIFETIME_MINUTES);
+
+        return currentReferrer;
     }
 
     function computeSessionId() {
-        const key = "tm_session_id";
-        const ssOK = hasStorage('sessionStorage');
-        if (ssOK) return getOrSet(sessionStorage, key, uuid);
-        if (!w.__tm_sid) w.__tm_sid = uuid(); // in-memory fallback
-        return w.__tm_sid;
+        const cookieSessionId = getCookie("tm_session_id");
+        if (cookieSessionId) {
+            return cookieSessionId;
+        }
+
+        const newSessionId = uuid();
+        setCookie("tm_session_id", newSessionId, VISIT_TIMEOUT_MIN);
+        return newSessionId;
     }
 
-    function detectStoreTheme(qs) {
-        let designId = safeStr(qs.get("design"))
-        if (designId) return designId;
+    function computeVisitID(qs) {
+        const currentSignature = currentAttributionSignature(qs);
 
-        designId = getCookie("js_stat_design_id")
-        if (designId) return designId;
+        const visitDataCookie = getCookie("tm_visit_data");
+        let existingVisitId = null;
+        let existingSignature = null;
 
-        if (cfg.storeTheme !== undefined && cfg.storeTheme !== null) return String(cfg.storeTheme);
-        return null;
+        if (visitDataCookie) {
+            try {
+                const data = JSON.parse(visitDataCookie);
+                existingVisitId = data.visit_id;
+                existingSignature = data.signature;
+            } catch (_) {
+                // Invalid JSON, treat as no existing data
+            }
+        }
+
+        let visitId;
+        let isUniq;
+
+        // If we have existing visit data and signature matches, reuse it
+        if (existingVisitId && existingSignature === currentSignature) {
+            visitId = existingVisitId;
+            isUniq = false;
+        } else {
+            // Signature changed or no existing data - generate new visit_id
+            visitId = uuid();
+            isUniq = true;
+
+            // Store new visit data in cookie (120 minutes)
+            const visitData = {
+                visit_id: visitId,
+                signature: currentSignature
+            };
+            setCookie("tm_visit_data", JSON.stringify(visitData), VISIT_TIMEOUT_MIN);
+        }
+
+        return { visit_id: visitId, is_uniq: isUniq };
     }
 
-    function detectAffId(qs) {
-        let affId = safeStr(qs.get("aff"))
-        if (affId) return affId;
-
-        affId = getCookie("js_stat_aff_id")
-        if (affId) return affId;
-
-        return 0;
-    }
-
-    function getCookie(name) {
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\/+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-
-    function buildPayload() {
+    const buildPayload = withErrorHandling(function() {
         const qs = parseQS();
+
+        const { visit_id, is_uniq } = computeVisitID(qs);
+
+        const individualSubs = extractIndividualSubs(qs);
+
         const payload = {
             schema_version: SCHEMA_VERSION,
             sdk_version: SDK_VERSION,
             event_id: uuid(),
             event_type: "pageview",
             client_ts: nowISO(),
-            visit_id: computeVisitId(qs),
+            visit_id: visit_id,
             session_id: computeSessionId(),
+            is_uniq: is_uniq,
 
             landing_url: w.location.href,
-            referrer_url: d.referrer || null,
+            referrer_url: getInitialReferrer(),
 
-            aff_id: detectAffId(qs),
-            click_id: safeStr(qs.get("click_id") || qs.get("saff")),
+            aff_id: getParamWithCookieFallback(qs, "aff", "js_stat_aff_id", 0),
 
-            utm_source: safeStr(qs.get("utm_source")),
-            utm_medium: safeStr(qs.get("utm_medium")),
-            utm_campaign: safeStr(qs.get("utm_campaign")),
-            utm_term: safeStr(qs.get("utm_term")),
-            utm_content: safeStr(qs.get("utm_content")),
+            click_id: getParamWithCookieFallback(qs, "click_id", "js_stat_click_id",
+                getParamWithCookieFallback(qs, "saff", "js_stat_saff", null)),
+
+            utm_source: getParamWithCookieFallback(qs, "utm_source", "js_stat_utm_source"),
+            utm_medium: getParamWithCookieFallback(qs, "utm_medium", "js_stat_utm_medium"),
+            utm_campaign: getParamWithCookieFallback(qs, "utm_campaign", "js_stat_utm_campaign"),
+            utm_term: getParamWithCookieFallback(qs, "utm_term", "js_stat_utm_term"),
+            utm_content: getParamWithCookieFallback(qs, "utm_content", "js_stat_utm_content"),
+
             network_click_id: safeStr(getNetworkClickId(qs)),
 
-            sub_params: extractSubs(qs),
-            store_theme: detectStoreTheme(qs),
-            keyword: safeStr(qs.get("keyword") || qs.get("q")),
+            ...individualSubs,
+
+            store_theme: getParamWithCookieFallback(qs, "design", "js_stat_design_id", cfg.storeTheme || "unknown"),
+
+            keyword: getParamWithCookieFallback(qs, "keyword", "js_stat_keyword",
+                getParamWithCookieFallback(qs, "q", "js_stat_q", null)),
 
             language: (navigator.language || null),
             tz_offset_min: -new Date().getTimezoneOffset(),
             screen_w: (w.screen && screen.width) || null,
             screen_h: (w.screen && screen.height) || null,
             dpr: w.devicePixelRatio || 1,
-            ua_raw: navigator.userAgent
         };
 
         if (cfg.debug && w.console && console.debug) {
@@ -434,72 +525,82 @@ function enterProfile() {
             }
         }
         return payload;
-    }
+    }, 'buildPayload');
 
-    function send(payload) {
+    const send = withErrorHandling(function(payload) {
         const body = JSON.stringify(payload);
-        if (navigator.sendBeacon) {
-            try {
-                const ok = navigator.sendBeacon(ENDPOINT, new Blob([body], {type: "application/json"}));
-                if (ok) return "beacon";
-            } catch (_) {
-            }
-        }
 
-        try {
+        if (window.fetch) {
             fetch(ENDPOINT, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: body,
                 keepalive: true,
-                credentials: "omit",
-                cache: "no-store"
-            }).catch(function () {
-            });
-            return "fetch";
-        } catch (_) {
+                credentials: "omit"
+            })
+                .then(response => {
+                    if (cfg.debug) {
+                        console.debug('[AffSDK] Fetch response status:', response.status);
+                    }
+                })
+                .catch(function () {});
+            return 'fetch';
         }
 
         try {
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", ENDPOINT, false);
+            xhr.open("POST", ENDPOINT, true);
             xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.timeout = 5000;
             xhr.send(body);
-            return "xhr";
+            return 'xhr';
         } catch (_) {
-            return "none";
+            return 'none';
         }
-    }
+    }, 'send');
 
-    // -------- fire once on load --------
     let _isAutoSent = false;
 
     function autoFire() {
         if (_isAutoSent) return;
         _isAutoSent = true;
+
+        const startTime = performance.now();
+
         try {
-            const p = buildPayload();
-            const t = send(p);
+            const payload = buildPayload();
+            if (!payload) {
+                if (cfg.debug) console.warn('[AffSDK] Failed to build payload');
+                return;
+            }
+
+            const transport = send(payload);
+            const duration = performance.now() - startTime;
+
             if (cfg.debug && w.console) {
-                try {
-                    console.debug("[AffSDK] sent via:", t);
-                } catch (_) {
-                }
+                console.debug(`[AffSDK] Sent in ${duration.toFixed(2)}ms via: ${transport}`);
             }
         } catch (e) {
             if (cfg.debug && w.console) {
-                try {
-                    console.warn("[AffSDK] failed:", e);
-                } catch (_) {
-                }
+                console.warn("[AffSDK] autoFire failed:", e);
             }
         }
     }
 
-    if (d.readyState === "loading") d.addEventListener("DOMContentLoaded", autoFire, {once: true});
-    else setTimeout(autoFire, 0);
+    function initialize() {
+        if (d.readyState === "loading") {
+            d.addEventListener("DOMContentLoaded", autoFire, { once: true });
+        } else {
+            setTimeout(autoFire, 0);
+        }
 
-    d.addEventListener("visibilitychange", function () {
-        if (d.visibilityState === "hidden") autoFire();
-    }, {once: true});
+        d.addEventListener("visibilitychange", function () {
+            if (d.visibilityState === "hidden") autoFire();
+        }, { once: true });
+
+        w.addEventListener("beforeunload", autoFire, { once: true });
+    }
+
+    initialize();
+
 })(window, document);

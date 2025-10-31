@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Helpers\DesignHelper;
+use App\Helpers\SessionHelper;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,37 +13,57 @@ class SetCookiesForStatistics
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $response = $next($request);
-
         if (!$this->isCookieNeeded($request)) {
-            return $response;
+            return $next($request);
         }
 
+        // Compute session and visit data
+        $sessionId       = SessionHelper::computeSessionId($request);
+        $visitData       = SessionHelper::computeVisitId($request);
+        $initialReferrer = SessionHelper::getInitialReferrer($request);
+
         $cookieList = [
-            'js_stat_aff_id'    => $this->getAffiliateId($request),
-            'js_stat_design_id' => $this->getDesignId($request),
+            'js_stat_aff_id'      => $this->getAffiliateId($request),
+            'js_stat_design_id'   => $this->getDesignId($request),
+
+            // New cookies for session tracking
+            'tm_session_id'       => $sessionId,
+            'tm_initial_referrer' => $initialReferrer,
+            'tm_visit_data'       => json_encode([
+                'visit_id'  => $visitData['visit_id'],
+                'signature' => $visitData['signature']
+            ]),
         ];
+
+        $response = $next($request);
 
         foreach ($cookieList as $name => $value) {
             if (!$request->hasCookie($name) || $request->cookie($name) != $value) {
+                $minutes = $this->getCookieLifetime($name);
+
                 $cookie = cookie(
                     name: $name,
                     value: $value,
-                    minutes: 365 * 24 * 60, // 365 days
+                    minutes: $minutes,
                     path: '/',
                     secure: true,
-                    httpOnly: false, // set true if JS should NOT read it
+                    httpOnly: false, // false = JavaScript can read cookie
                     sameSite: 'lax'
                 );
 
                 $response->headers->setCookie($cookie);
             }
         }
+
+        // Store in session for current request usage
+        session([
+            'tm_session_id'    => $sessionId,
+            'tm_visit_id'      => $visitData['visit_id'],
+            'tm_visit_is_uniq' => $visitData['is_uniq'],
+        ]);
 
         return $response;
     }
@@ -85,6 +106,14 @@ class SetCookiesForStatistics
         }
 
         return config('app.design');
+    }
+
+    private function getCookieLifetime(string $cookieName): int
+    {
+        return match ($cookieName) {
+            'tm_session_id', 'tm_visit_data' => SessionHelper::VISIT_TIMEOUT_MIN,
+            default => SessionHelper::DEFAULT_COOKIE_LIFETIME,
+        };
     }
 
     private function isCookieNeeded(Request $request): bool
