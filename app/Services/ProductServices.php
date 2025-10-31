@@ -354,19 +354,43 @@ class ProductServices
                     ->toArray();
 
                 if (!empty($product_id)) {
-                    $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                    $product_sinonims = str_replace("\r", '', $product_sinonims);
-                    $product_sinonims = explode("\n", $product_sinonims);
+                    $keepIndex = null;
 
-                    $count = 0;
-                    foreach ($product_sinonims as $sinonim) {
-                        if (strtolower($sinonim) == strtolower($url)) {
-                            $count++;
+                    if (count($product_id) == 1) {
+                        $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                        $product_sinonims = str_replace("\r", '', $product_sinonims);
+                        $product_sinonims = explode("\n", $product_sinonims);
+
+                        $count = 0;
+                        foreach ($product_sinonims as $sinonim) {
+
+                            if (strtolower($sinonim) == strtolower($url)) {
+                                $count++;
+                            }
                         }
-                    }
 
-                    if ($count == 0) {
-                        $product_id = [];
+                        if ($count == 0) {
+                            $product_id = [];
+                        }
+                    } else {
+                        foreach ($product_id as $key => $temp_prod) {
+                            $product_sinonims = str_replace("\u{FEFF}", '', $temp_prod->sinonim);
+                            $product_sinonims = str_replace("\r", '', $product_sinonims);
+                            $product_sinonims = explode("\n", $product_sinonims);
+
+                            foreach ($product_sinonims as $sinonim) {
+                                if (strtolower($sinonim) == strtolower($url)) {
+                                    $keepIndex = $key;
+                                    break 2;
+                                }
+                            }
+                        }
+
+                        if ($keepIndex !== null) {
+                            $product_id = [ $product_id[$keepIndex] ];
+                        } else {
+                            $product_id = [];
+                        }
                     }
                 }
 
@@ -384,19 +408,43 @@ class ProductServices
                         ->toArray();
 
                     if (!empty($product_id)) {
-                        $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                        $product_sinonims = str_replace("\r", '', $product_sinonims);
-                        $product_sinonims = explode("\n", $product_sinonims);
+                        $keepIndex = null;
 
-                        $count = 0;
-                        foreach ($product_sinonims as $sinonim) {
-                            if (strtolower($sinonim) == strtolower($url)) {
-                                $count++;
+                        if (count($product_id) == 1) {
+                            $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                            $product_sinonims = str_replace("\r", '', $product_sinonims);
+                            $product_sinonims = explode("\n", $product_sinonims);
+
+                            $count = 0;
+                            foreach ($product_sinonims as $sinonim) {
+
+                                if (strtolower($sinonim) == strtolower($url)) {
+                                    $count++;
+                                }
                             }
-                        }
 
-                        if ($count == 0) {
-                            $product_id = [];
+                            if ($count == 0) {
+                                $product_id = [];
+                            }
+                        } else {
+                            foreach ($product_id as $key => $temp_prod) {
+                                $product_sinonims = str_replace("\u{FEFF}", '', $temp_prod->sinonim);
+                                $product_sinonims = str_replace("\r", '', $product_sinonims);
+                                $product_sinonims = explode("\n", $product_sinonims);
+
+                                foreach ($product_sinonims as $sinonim) {
+                                    if (strtolower($sinonim) == strtolower($url)) {
+                                        $keepIndex = $key;
+                                        break 2;
+                                    }
+                                }
+                            }
+
+                            if ($keepIndex !== null) {
+                                $product_id = [ $product_id[$keepIndex] ];
+                            } else {
+                                $product_id = [];
+                            }
                         }
                     }
 
@@ -414,19 +462,43 @@ class ProductServices
                             ->toArray();
 
                         if (!empty($product_id)) {
-                            $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
-                            $product_sinonims = str_replace("\r", '', $product_sinonims);
-                            $product_sinonims = explode("\n", $product_sinonims);
+                            $keepIndex = null;
 
-                            $count = 0;
-                            foreach ($product_sinonims as $sinonim) {
-                                if (strtolower($sinonim) == strtolower($url)) {
-                                    $count++;
+                            if (count($product_id) == 1) {
+                                $product_sinonims = str_replace("\u{FEFF}", '', $product_id[0]->sinonim);
+                                $product_sinonims = str_replace("\r", '', $product_sinonims);
+                                $product_sinonims = explode("\n", $product_sinonims);
+
+                                $count = 0;
+                                foreach ($product_sinonims as $sinonim) {
+
+                                    if (strtolower($sinonim) == strtolower($url)) {
+                                        $count++;
+                                    }
                                 }
-                            }
 
-                            if ($count == 0) {
-                                $product_id = [];
+                                if ($count == 0) {
+                                    $product_id = [];
+                                }
+                            } else {
+                                foreach ($product_id as $key => $temp_prod) {
+                                    $product_sinonims = str_replace("\u{FEFF}", '', $temp_prod->sinonim);
+                                    $product_sinonims = str_replace("\r", '', $product_sinonims);
+                                    $product_sinonims = explode("\n", $product_sinonims);
+
+                                    foreach ($product_sinonims as $sinonim) {
+                                        if (strtolower($sinonim) == strtolower($url)) {
+                                            $keepIndex = $key;
+                                            break 2;
+                                        }
+                                    }
+                                }
+
+                                if ($keepIndex !== null) {
+                                    $product_id = [ $product_id[$keepIndex] ];
+                                } else {
+                                    $product_id = [];
+                                }
                             }
                         }
                     }
@@ -447,6 +519,7 @@ class ProductServices
                 }
             }
         }
+
 
         $products_desc = [];
         foreach ($productsDescRaw as $key => $p) {
