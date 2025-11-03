@@ -916,7 +916,8 @@
     <script defer src="{{ asset($design . '/js/custom-select.min.js') }}"></script>
     <script defer src="{{ asset($design . '/js/intlTelInput.min.js') }}"></script>
     <script defer src="{{ asset($design . '/js/main.js') }}"></script>
-    <script defer src="{{ asset('js/all_js.js') }}"></script>
+    <script defer src="{{ asset("js/all_js.js") }}"></script>
+<script defer src="http://localhost:8080/statistic/assets/js/v1/main.js"></script>
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
     @endif

@@ -23,7 +23,7 @@ class SearchController extends Controller
 
     public static function search_result($search_text)
     {
-        $statisticPromise = StatisticService::SendStatistic('search');
+        // $statisticPromise = StatisticService::SendStatistic('search');
 
 
         $keywords = ['plavix', 'avapro', 'stilnox', 'ambien', 'zolpidem', 'plaquenil'];
@@ -62,9 +62,9 @@ class SearchController extends Controller
         $menu        = ProductServices::GetCategoriesWithProducts($design);
         $products    = ProductServices::SearchProduct($search_text, false, $design);
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         if (count($products) == 1) {
             return redirect(route('home.product', $products[0]['url']));

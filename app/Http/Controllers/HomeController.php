@@ -22,7 +22,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $statisticPromise = StatisticService::SendStatistic('index');
+        // $statisticPromise = StatisticService::SendStatistic('index');
 
         $design          = session('design') ? session('design') : config('app.design');
         $phone_codes     = PhoneCodes::all()->toArray();
@@ -64,9 +64,9 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         if (!in_array($design, ['design_7', 'design_8'])) {
             $bestsellers = ProductServices::GetBestsellers($design);
@@ -161,7 +161,7 @@ class HomeController extends Controller
 
     public function first_letter($char): View
     {
-        $statisticPromise = StatisticService::SendStatistic('first_letter');
+        // $statisticPromise = StatisticService::SendStatistic('first_letter');
 
         $design      = session('design') ? session('design') : config('app.design');
         $products    = ProductServices::GetProductByFirstLetter($char, $design);
@@ -205,9 +205,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.first_letter', [
             'design'          => $design,
@@ -231,7 +231,7 @@ class HomeController extends Controller
 
     public function active($active)
     {
-        $statisticPromise = StatisticService::SendStatistic('active');
+        // $statisticPromise = StatisticService::SendStatistic('active');
 
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
             $active = str_replace(
@@ -255,9 +255,9 @@ class HomeController extends Controller
         $first_letters   = ProductServices::getFirstLetters();
         $agent           = new Agent();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         if (empty($products)) {
             return redirect(route('home.index'));
@@ -333,7 +333,7 @@ class HomeController extends Controller
                 $category);
         }
 
-        $statisticPromise = StatisticService::SendStatistic('category');
+        // $statisticPromise = StatisticService::SendStatistic('category');
 
         $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -386,9 +386,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.category', [
             'design'          => $design,
@@ -423,7 +423,7 @@ class HomeController extends Controller
                 $disease);
         }
 
-        $statisticPromise = StatisticService::SendStatistic('disease');
+        // $statisticPromise = StatisticService::SendStatistic('disease');
 
         $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -471,9 +471,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.disease', [
             'design'          => $design,
@@ -523,7 +523,7 @@ class HomeController extends Controller
             return $this->product_landing($product, 1);
         }
 
-        $statisticPromise = StatisticService::SendStatistic($product);
+        // $statisticPromise = StatisticService::SendStatistic($product);
 
         $product_name = $product;
 
@@ -551,9 +551,9 @@ class HomeController extends Controller
             return redirect()->route('home.index');
         }
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         if (!$product) {
             return redirect()->route('home.index');
@@ -697,7 +697,7 @@ class HomeController extends Controller
 
     public function about(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('about_us');
+        // $statisticPromise = StatisticService::SendStatistic('about_us');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -739,9 +739,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.about', [
             'design'          => $design,
@@ -763,7 +763,7 @@ class HomeController extends Controller
 
     public function help(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('faq');
+        // $statisticPromise = StatisticService::SendStatistic('faq');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -805,9 +805,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.help', [
             'design'          => $design,
@@ -829,7 +829,7 @@ class HomeController extends Controller
 
     public function testimonials(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('testimonials');
+        // $statisticPromise = StatisticService::SendStatistic('testimonials');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -871,9 +871,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.testimonials', [
             'design'          => $design,
@@ -895,7 +895,7 @@ class HomeController extends Controller
 
     public function delivery(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('shipping');
+        // $statisticPromise = StatisticService::SendStatistic('shipping');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -937,9 +937,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.delivery', [
             'design'          => $design,
@@ -961,7 +961,7 @@ class HomeController extends Controller
 
     public function moneyback(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('moneyback');
+        // $statisticPromise = StatisticService::SendStatistic('moneyback');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -1003,9 +1003,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.moneyback', [
             'design'          => $design,
@@ -1027,7 +1027,7 @@ class HomeController extends Controller
 
     public function contact_us($default_subject = 0): View
     {
-        $statisticPromise = StatisticService::SendStatistic('contact_us');
+        // $statisticPromise = StatisticService::SendStatistic('contact_us');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -1090,9 +1090,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.contact_us', [
             'design'          => $design,
@@ -1117,7 +1117,7 @@ class HomeController extends Controller
 
     public function affiliate(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('affiliate');
+        // $statisticPromise = StatisticService::SendStatistic('affiliate');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -1159,9 +1159,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.affiliate', [
             'design'          => $design,
@@ -1183,7 +1183,7 @@ class HomeController extends Controller
 
     public function login(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('login');
+        // $statisticPromise = StatisticService::SendStatistic('login');
 
         $design      = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
@@ -1194,9 +1194,9 @@ class HomeController extends Controller
             $pixel .= stripcslashes($item->pixel) . "\n\n";
         }
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view('login', [
             'design'      => $design,
@@ -1997,7 +1997,7 @@ class HomeController extends Controller
 
     public function checkup(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('checkup');
+        // $statisticPromise = StatisticService::SendStatistic('checkup');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -2039,9 +2039,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view('checkup', [
             'design'          => $design,
@@ -2063,7 +2063,7 @@ class HomeController extends Controller
 
     public function sitemap(): View
     {
-        $statisticPromise = StatisticService::SendStatistic('sitemap');
+        // $statisticPromise = StatisticService::SendStatistic('sitemap');
 
         $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
@@ -2104,9 +2104,9 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.sitemap', [
             'design'          => $design,

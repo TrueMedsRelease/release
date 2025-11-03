@@ -35,7 +35,7 @@ class CheckoutController extends Controller
             Session::forget('crypto');
         }
 
-        $statisticPromise = StatisticService::SendStatistic('checkout');
+        // $statisticPromise = StatisticService::SendStatistic('checkout');
         StatisticService::SendCheckout();
 
         $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
@@ -83,9 +83,9 @@ class CheckoutController extends Controller
 
         $design = session('design') ? session('design') : config('app.design');
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         $paypal_limit = 'none';
         $api_key      = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];

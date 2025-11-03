@@ -1126,7 +1126,8 @@
     </script>
 
     <script defer src="{{ asset("$design/js/app.js") }}"></script>
-    <script defer src="{{ asset('js/all_js.js') }}"></script>
+    <script defer src="{{ asset("js/all_js.js") }}"></script>
+<script defer src="http://localhost:8080/statistic/assets/js/v1/main.js"></script>
 
 </body>
 
