@@ -134,10 +134,10 @@
             }
         @endphp
 
-        <div class="christmas" style="display: none">
+        {{-- <div class="christmas" style="display: none">
             <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
-            {{-- <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}"> --}}
-        </div>
+            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
+        </div> --}}
 
         <header class="header">
             <div class="topbar">
