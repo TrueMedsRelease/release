@@ -305,6 +305,8 @@ class CheckoutController extends Controller
         Session::put('form.billing_country', $request->billing_country);
         if ($request->billing_country == 'US') {
             session(['form.payment_type' => 'zelle']);
+        } else {
+            session(['form.payment_type' => 'card']);
         }
 
         return $this->checkout();
