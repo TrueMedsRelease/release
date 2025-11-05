@@ -1101,9 +1101,10 @@
                                         <div class="details-payment__rows" style="margin-bottom: 30px;">
                                             <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">Zelle {{ __('text.contact_us_name') }}:</h3>
+                                                    {{-- <h3 class="details-payment__title">Zelle {{ __('text.contact_us_name') }}:</h3> --}}
+                                                    <h3 class="details-payment__title">{{ __('text.checkout_zelle_recipient') }}</h3>
                                                     <div class="details-payment__cells">
-                                                        <span id="zelle_name" class="details-payment__amount">{{ session('zelle.name', '') }}</span>
+                                                        <span id="zelle_recipient" class="details-payment__amount">{{ session('zelle.recipient', '') }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -1124,7 +1125,8 @@
                                             </div>
                                             <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">Zelle {{ __('text.contact_us_email') }}:</h3>
+                                                    {{-- <h3 class="details-payment__title">Zelle {{ __('text.contact_us_email') }}:</h3> --}}
+                                                    <h3 class="details-payment__title">{{ __('text.contact_us_email') }}:</h3>
                                                     <div class="details-payment__cells">
                                                         <span id="zelle_email" class="details-payment__amount">{{ session('zelle.email', '') }}</span>
                                                     </div>

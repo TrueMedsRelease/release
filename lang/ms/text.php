@@ -624,6 +624,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "checkout_zelle_order" => "Nombor Pesanan:",
     "checkout_zelle_continue" => "Teruskan",
+    "checkout_zelle_recipient" => "Penerima:",
 
     "common_per_pill" => "Setiap pil",
     "subscribe_full_text" => "Langgan Tawaran Istimewa & Berita",

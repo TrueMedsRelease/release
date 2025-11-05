@@ -618,6 +618,7 @@ return [
 
     "checkout_zelle_order" => "Număr comandă:",
     "checkout_zelle_continue" => "Continuă",
+    "checkout_zelle_recipient" => "Destinatar:",
 
     "common_per_pill" => "Pe pastilă",
     "subscribe_full_text" => "Abonează-te la oferte speciale și noutăți",

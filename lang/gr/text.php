@@ -621,6 +621,7 @@ return [
 
     "checkout_zelle_order" => "Αριθμός παραγγελίας:",
     "checkout_zelle_continue" => "Συνέχεια",
+    "checkout_zelle_recipient" => "Παραλήπτης:",
 
     "common_per_pill" => "Ανά χάπι",
     "subscribe_full_text" => "Εγγραφείτε για ειδικές προσφορές και νέα",

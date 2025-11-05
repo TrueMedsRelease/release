@@ -622,6 +622,7 @@ return [
 
     "checkout_zelle_order" => "Ordernummer:",
     "checkout_zelle_continue" => "Fortsätt",
+    "checkout_zelle_recipient" => "Mottagare:",
 
     "common_per_pill" => "Per tablett",
     "subscribe_full_text" => "Prenumerera på specialerbjudanden och nyheter",

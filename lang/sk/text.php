@@ -622,6 +622,7 @@ return [
 
     "checkout_zelle_order" => "Číslo objednávky:",
     "checkout_zelle_continue" => "Pokračovať",
+    "checkout_zelle_recipient" => "Príjemca:",
 
     "common_per_pill" => "Za tabletku",
     "subscribe_full_text" => "Prihláste sa na špeciálne ponuky a novinky",

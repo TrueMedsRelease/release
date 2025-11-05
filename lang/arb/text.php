@@ -626,6 +626,7 @@ return [
 
     "checkout_zelle_order" => "رقم الطلب:",
     "checkout_zelle_continue" => "استمرار",
+    "checkout_zelle_recipient" => "المستلم:",
 
     "common_per_pill" => "لكل حبة",
     "subscribe_full_text" => "اشترك للحصول على العروض الخاصة والأخبار",

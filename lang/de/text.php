@@ -747,6 +747,7 @@ return [
 
     "checkout_zelle_order" => "Bestellnummer:",
     "checkout_zelle_continue" => "Weiter",
+    "checkout_zelle_recipient" => "Empfänger:",
 
     "common_per_pill" => "Pro Tablette",
     "subscribe_full_text" => "Abonnieren Sie Sonderangebote und Neuigkeiten",

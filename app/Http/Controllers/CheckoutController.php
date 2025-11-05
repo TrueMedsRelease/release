@@ -2014,8 +2014,8 @@ class CheckoutController extends Controller
                 ),
                 'shipping_zip'       => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
                 'payment_type'       => 'zelle',
-                // 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
-                'ip'                 => '89.187.179.179',
+                'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                // 'ip'                 => '89.187.179.179',
                 'aff'                => session('aff', 0),
                 'ref'                => session('referer', ''),
                 'refc'               => session('refc', ''),
@@ -2049,7 +2049,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test4.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         $response = json_decode($response, true);
@@ -2058,7 +2058,7 @@ class CheckoutController extends Controller
                             return response()->json(['response' => $response], 200);
                         } else {
                             session(['zelle' => [
-                                'name' => $response['zelle_name'],
+                                'recipient' => $response['zelle_recipient'],
                                 'email' => $response['zelle_email'],
                                 'orderId' => $response['order_id']
                             ]]);
