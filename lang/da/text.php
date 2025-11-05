@@ -671,6 +671,7 @@ return [
 
     "checkout_zelle_order" => "Ordrenummer:",
     "checkout_zelle_continue" => "Fortsæt",
+    "checkout_zelle_recipient" => "Modtager:",
 
     "common_per_pill" => "Pr pille",
     "subscribe_full_text" => "Tilmeld dig særlige tilbud og nyheder",

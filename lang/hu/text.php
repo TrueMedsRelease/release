@@ -628,6 +628,7 @@ return [
 
     "checkout_zelle_order" => "Rendelési szám:",
     "checkout_zelle_continue" => "Folytatás",
+    "checkout_zelle_recipient" => "Címzett:",
 
     "common_per_pill" => "Tablettánként",
     "subscribe_full_text" => "Iratkozz fel különleges ajánlatokra és hírekre",

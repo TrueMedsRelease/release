@@ -891,6 +891,7 @@ return [
 
     "checkout_zelle_order" => "Order Number:",
     "checkout_zelle_continue" => "Continue",
+    "checkout_zelle_recipient" => "Recipient:",
 
     "common_per_pill" => "PER PILL",
     "subscribe_full_text" => "Subscribe to Special offers & News",
@@ -901,4 +902,6 @@ return [
 
     "admin_renewal_shop" => "Update Shop",
     "admin_renewal_database" => "Update Database",
+    "admin_renewal_text1" => "Warning: If you update the store, your changes will be lost. If you need to update, please contact support.",
+    "admin_renewal_text2" => "If you want to update manually, please create a dump of your database and store.",
 ];

@@ -773,6 +773,7 @@ return [
 
     "checkout_zelle_order" => "Número de pedido:",
     "checkout_zelle_continue" => "Continuar",
+    "checkout_zelle_recipient" => "Destinatario:",
 
     "common_per_pill" => "Por pastilla",
     "subscribe_full_text" => "Suscríbete a ofertas especiales y noticias",

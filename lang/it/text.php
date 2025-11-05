@@ -757,6 +757,7 @@ return [
 
     "checkout_zelle_order" => "Numero d’ordine:",
     "checkout_zelle_continue" => "Continua",
+    "checkout_zelle_recipient" => "Destinatario:",
 
     "common_per_pill" => "Per Pillola",
     "subscribe_full_text" => "Iscriviti a offerte speciali e notizie",

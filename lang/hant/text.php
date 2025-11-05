@@ -623,6 +623,7 @@ return  [
 
     "checkout_zelle_order" => "訂單號碼：",
     "checkout_zelle_continue" => "繼續",
+    "checkout_zelle_recipient" => "收件者:",
 
     "common_per_pill" => "每顆",
     "subscribe_full_text" => "訂閱特別優惠和新聞",

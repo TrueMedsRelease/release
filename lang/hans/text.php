@@ -627,6 +627,7 @@ return [
 
     "checkout_zelle_order" => "订单号：",
     "checkout_zelle_continue" => "继续",
+    "checkout_zelle_recipient" => "收件人:",
 
     "common_per_pill" => "每片",
     "subscribe_full_text" => "订阅特别优惠和新闻",

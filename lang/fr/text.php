@@ -752,6 +752,7 @@ return [
 
     "checkout_zelle_order" => "Numéro de commande:",
     "checkout_zelle_continue" => "Continuer",
+    "checkout_zelle_recipient" => "Destinataire:",
 
     "common_per_pill" => "Par comprimé",
     "subscribe_full_text" => "Abonnez-vous aux offres spéciales et aux actualités",

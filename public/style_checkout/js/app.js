@@ -2775,7 +2775,7 @@ $("#get_zelle_data").click(function (e) {
 
                 document.getElementById('zelle_orderId').innerHTML = data.response.order_id;
                 document.getElementById('zelle_email').innerHTML = data.response.zelle_email;
-                document.getElementById('zelle_name').innerHTML = data.response.zelle_name;
+                document.getElementById('zelle_recipient').innerHTML = data.response.zelle_recipient;
 
                 document.getElementById("zelle_requisites").hidden = false;
                 document.getElementById("get_zelle_data").style.display = 'none';

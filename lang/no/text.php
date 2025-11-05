@@ -625,6 +625,7 @@ return [
 
     "checkout_zelle_order" => "Ordrenummer:",
     "checkout_zelle_continue" => "Fortsett",
+    "checkout_zelle_recipient" => "Mottaker:",
 
     "common_per_pill" => "Per tablett",
     "subscribe_full_text" => "Abonner på spesialtilbud og nyheter",

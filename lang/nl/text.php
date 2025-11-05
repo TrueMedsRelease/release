@@ -662,6 +662,7 @@ return [
 
     "checkout_zelle_order" => "Ordernummer:",
     "checkout_zelle_continue" => "Fortsett",
+    "checkout_zelle_recipient" => "Ontvanger:",
 
     "common_per_pill" => "Per pil",
     "subscribe_full_text" => "Abonneer je op speciale aanbiedingen en nieuws",
