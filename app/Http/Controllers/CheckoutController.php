@@ -303,6 +303,9 @@ class CheckoutController extends Controller
     public function change_country(Request $request)
     {
         Session::put('form.billing_country', $request->billing_country);
+        if ($request->billing_country == 'US') {
+            session(['form.payment_type' => 'zelle']);
+        }
 
         return $this->checkout();
     }

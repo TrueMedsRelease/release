@@ -51,7 +51,7 @@
     <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
     <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
     <input type="hidden" id="app_sepa_on" @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"])) value="1" @else value="0" @endif>
-    <input type="hidden" id="app_zelle_on" @if(env('APP_ZELLE_ON', 0) && in_array(session('location.country'), ["US"])) value="1" @else value="0" @endif>
+    <input type="hidden" id="app_zelle_on" @if(env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US")) value="1" @else value="0" @endif>
     <div class="header__phones-top top-phones-header">
         <div class="top-phones-header__container header__container">
             <div class="top-phones-header__items">
@@ -614,6 +614,9 @@
                                         value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
                                     <select name="payment_type" class="form" id="payment_type_select"
                                         data-pseudo-label="{{__('text.checkout_type')}}">
+                                        @if(env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                            <option value="zelle" @selected(session('form.payment_type', 'card') == 'zelle')>ZELLE</option>
+                                        @endif
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
                                         @if($service_enable)<option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>@endif
                                         @if(env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
@@ -621,9 +624,6 @@
                                         @endif
                                         @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
                                             <option value="sepa" @selected(session('form.payment_type', 'card') == 'sepa')>SEPA</option>
-                                        @endif
-                                        @if(env('APP_ZELLE_ON', 0) && in_array(session('location.country'), ["US"]))
-                                            <option value="zelle" @selected(session('form.payment_type', 'card') == 'zelle')>ZELLE</option>
                                         @endif
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
@@ -1094,7 +1094,7 @@
                             </div>
                         @endif
 
-                        @if (env('APP_ZELLE_ON', 0) == 1 && in_array(session('location.country'), ["US"]))
+                        @if (env('APP_ZELLE_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
                             <div class="enter-info__zelle-content"  @if (session('form.payment_type', 'card') != 'zelle') hidden @endif>
                                 <div class="content-zelle">
                                     <div id="zelle_requisites" @if (empty(session('zelle'))) hidden @endif>
