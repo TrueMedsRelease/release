@@ -112,6 +112,10 @@ class CheckoutController extends Controller
             }
         }
 
+        if (session('location.country') == "US") {
+            session(['form.payment_type' => 'zelle']);
+        }
+
         return view('checkout', [
             'pixel'    => $pixel,
             'Language' => Language::class,
