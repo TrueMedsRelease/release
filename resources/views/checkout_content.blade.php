@@ -1100,6 +1100,26 @@
                                     <div id="zelle_requisites" @if (empty(session('zelle'))) hidden @endif>
                                         <div class="details-payment__rows" style="margin-bottom: 30px;">
                                             <div class="details-payment__row">
+                                                <div class="details-payment__data" style="line-height: 2">
+                                                    <p>{{ __('text.checkout_zelle_steps') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step1') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step2') }}</p>
+                                                    <p>
+                                                        {{ __('text.checkout_zelle_step3') }} <span id='zelle_email'></span>.
+                                                        <ul style="margin-left: 45px">
+                                                            <li style="list-style: disc">{{ __('text.checkout_zelle_step31') }} <span id="zelle_recipient"></span>.</li>
+                                                            <li style="list-style: disc">{{ __('text.checkout_zelle_step32') }}</li>
+                                                        </ul>
+                                                    </p>
+                                                    <p>{{ __('text.checkout_zelle_step4') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step5') }} <span>{{ session('total.checkout_total', 0)}}</span> USD.</p>
+                                                    <p>{{ __('text.checkout_zelle_step61') }} <span id="zelle_orderId"></span> {{ __('text.checkout_zelle_step62') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step7') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step8') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step9') }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
                                                 <div class="details-payment__data">
                                                     {{-- <h3 class="details-payment__title">Zelle {{ __('text.contact_us_name') }}:</h3> --}}
                                                     <h3 class="details-payment__title">{{ __('text.checkout_zelle_recipient') }}</h3>
@@ -1175,7 +1195,7 @@
                                                     <h3 class="details-payment__title">{{__('text.checkout_amount')}}:</h3>
                                                     <div class="details-payment__cells">
                                                         <span id="purse"
-                                                            class="details-payment__amount">{{ $Currency::Convert(session('total.checkout_total', 0)) }}</span>
+                                                            class="details-payment__amount">{{ session('total.checkout_total', 0) }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
