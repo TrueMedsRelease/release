@@ -2773,6 +2773,10 @@ $("#get_zelle_data").click(function (e) {
             if (data.response.status == 'SUCCESS') {
                 document.body.classList.add('loaded');
 
+                document.getElementById('zelle_orderId_text').innerHTML = data.response.order_id;
+                document.getElementById('zelle_email_text').innerHTML = data.response.zelle_email;
+                document.getElementById('zelle_recipient_text').innerHTML = data.response.zelle_recipient;
+
                 document.getElementById('zelle_orderId').innerHTML = data.response.order_id;
                 document.getElementById('zelle_email').innerHTML = data.response.zelle_email;
                 document.getElementById('zelle_recipient').innerHTML = data.response.zelle_recipient;

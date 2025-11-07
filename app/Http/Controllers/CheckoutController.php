@@ -2058,7 +2058,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://tm-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         $response = json_decode($response, true);
