@@ -1105,15 +1105,15 @@
                                                     <p>{{ __('text.checkout_zelle_step1') }}</p>
                                                     <p>{{ __('text.checkout_zelle_step2') }}</p>
                                                     <p>
-                                                        {{ __('text.checkout_zelle_step3') }} <span id='zelle_email'></span>.
+                                                        {{ __('text.checkout_zelle_step3') }} <span id='zelle_email_text'></span>.
                                                         <ul style="margin-left: 45px">
-                                                            <li style="list-style: disc">{{ __('text.checkout_zelle_step31') }} <span id="zelle_recipient"></span>.</li>
+                                                            <li style="list-style: disc">{{ __('text.checkout_zelle_step31') }} <span id="zelle_recipient_text"></span>.</li>
                                                             <li style="list-style: disc">{{ __('text.checkout_zelle_step32') }}</li>
                                                         </ul>
                                                     </p>
                                                     <p>{{ __('text.checkout_zelle_step4') }}</p>
                                                     <p>{{ __('text.checkout_zelle_step5') }} <span>{{ session('total.checkout_total', 0)}}</span> USD.</p>
-                                                    <p>{{ __('text.checkout_zelle_step61') }} <span id="zelle_orderId"></span> {{ __('text.checkout_zelle_step62') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step61') }} <span id="zelle_orderId_text"></span> {{ __('text.checkout_zelle_step62') }}</p>
                                                     <p>{{ __('text.checkout_zelle_step7') }}</p>
                                                     <p>{{ __('text.checkout_zelle_step8') }}</p>
                                                     <p>{{ __('text.checkout_zelle_step9') }}</p>
