@@ -1,4 +1,5 @@
 User-agent: *
+Request-rate: 30/1m
 Disallow:
 Sitemap: https://#URL#/sitemap.xml
 
