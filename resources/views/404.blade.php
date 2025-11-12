@@ -1,5 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+@if (session('locale', 'en') == 'arb')
+    lang="ar"
+@elseif (session('locale', 'en') == 'gr')
+    lang="el"
+@elseif (session('locale', 'en') == 'hans')
+    lang="zh-Hans"
+@elseif (session('locale', 'en') == 'hant')
+    lang="zh-Hant"
+@elseif (session('locale', 'en') == 'no')
+    lang="nb"
+@else
+    lang="{{ session('locale', 'en') }}"
+@endif
+>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
