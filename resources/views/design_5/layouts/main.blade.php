@@ -24,6 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#4FAFCD" />
     <meta name="format-detection" content="telephone=no">
+    <link rel="canonical" href="{{ url()->current() }}">
 
     @php
         if (!function_exists('asset_ver')) {

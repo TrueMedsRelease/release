@@ -21,6 +21,7 @@
         <meta name="keywords" content="@yield('keywords', 'Keywords')">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="theme-color" content="#14151a" />
+        <link rel="canonical" href="{{ url()->current() }}">
 
         @php
             if (!function_exists('asset_ver')) {
@@ -185,7 +186,7 @@
                                                 <ul class="aside-nav__list">
                                                     @foreach ($bestsellers as $bestseller)
                                                         <li class="aside-nav__item">
-                                                            <a class="aside-nav__link" href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }} <span class="aside-nav__price">{{ $Currency::convert($bestseller['price'], false, true) }}</span></a>
+                                                            <a class="aside-nav__link" rel="canonical" href="{{ route('home.product', $bestseller['url']) }}">{{ $bestseller['name'] }} <span class="aside-nav__price">{{ $Currency::convert($bestseller['price'], false, true) }}</span></a>
                                                         </li>
                                                     @endforeach
                                                 </ul>

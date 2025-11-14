@@ -21,6 +21,7 @@
         <meta name="keywords" content="@yield('keywords', 'Keywords')">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="theme-color" content="#14151a" />
+        <link rel="canonical" href="{{ url()->current() }}">
 
         @php
             if (!function_exists('asset_ver')) {
