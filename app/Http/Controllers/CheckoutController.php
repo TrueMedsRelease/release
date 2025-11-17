@@ -112,9 +112,9 @@ class CheckoutController extends Controller
             }
         }
 
-        if (session('location.country') == "US") {
-            session(['form.payment_type' => 'zelle']);
-        }
+        // if (session('location.country') == "US") {
+        //     session(['form.payment_type' => 'zelle']);
+        // }
 
         return view('checkout', [
             'pixel'    => $pixel,
@@ -303,11 +303,11 @@ class CheckoutController extends Controller
     public function change_country(Request $request)
     {
         Session::put('form.billing_country', $request->billing_country);
-        if ($request->billing_country == 'US') {
-            session(['form.payment_type' => 'zelle']);
-        } else {
-            session(['form.payment_type' => 'card']);
-        }
+        // if ($request->billing_country == 'US') {
+        //     session(['form.payment_type' => 'zelle']);
+        // } else {
+        //     session(['form.payment_type' => 'card']);
+        // }
 
         return $this->checkout();
     }
