@@ -96,7 +96,7 @@
         <script>
             let flagc = false;
             let flagp = false;
-            const design = 13;
+            const design = 14;
         </script>
 
         @if (session('locale'))

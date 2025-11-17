@@ -12,7 +12,7 @@ return [
     "common_after" => "Compre productos de farmacia baratos online",
     "common_home_main_menu_item" => "Inicio",
     "common_product1" => " personas ",
-    "common_product2" => "are están mirando este producto ahora",
+    "common_product2" => "están mirando este producto ahora",
     "common_cart1" => "Comprado por última vez desde ",
     "common_cart2" => " hace 1 minuto",
     "common_callback" => "Solicitar una devolución de llamada",
