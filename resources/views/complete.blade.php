@@ -215,6 +215,13 @@
 
     <script src="{{ asset_ver('style_checkout/js/app_success.js') }}"></script>
 
+    @if (session()->has('order.is_paygwt_enable') && session('order.is_paygwt_enable') == true)
+        <script src="https://true-serv.net/checkout/paygwt.js"></script>
+        <script>
+
+        </script>
+    @endif
+
     <script>
         $(".succes__button").click(function() {
             document.getElementById("succes__button").style.display = 'none';
