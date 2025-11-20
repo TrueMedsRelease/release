@@ -2104,4 +2104,47 @@ class CheckoutController extends Controller
             return response()->json(['status' => 'error', 'text' => 'Order ID is empty']);
         }
     }
+
+    public function send_paygwt_3ds(Request $request) {
+        $fl_sid = $request->fl_sid;
+        $wauuid = $request->wauuid;
+        $sessid = session()->getId();
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $data = [
+            'method' => 'send_paygwt_3ds',
+            'api_key' => $api_key->key_data,
+            'order_id' => session('order.order_id'),
+            'aff_paygwt' => session('aff'),
+            'fl_sid' => $fl_sid,
+            'wauuid' => $wauuid,
+            'sessid' => $sessid
+        ];
+
+        if (checkdnsrr('true-serv.net', 'A')) {
+            try {
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+
+                if ($response->successful()) {
+                    $response = json_decode($response, true);
+
+                    if ($response['status'] == 'ERROR') {
+                        return response()->json(['response' => $response], 400);
+                    } else {
+                        return response()->json(['response' => $response], 200);
+                    }
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
+    }
 }
