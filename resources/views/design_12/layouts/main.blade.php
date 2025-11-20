@@ -158,6 +158,7 @@
         {{-- <div class="christmas" style="display: none">
             <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
             <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
+            <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
         </div> --}}
 
         <div class="topbar">
@@ -893,6 +894,11 @@
             const pathImagePayBig = "{{ asset('pub_images/pay_big.png') }}";
             const pathImagePayMiddle = "{{ asset('pub_images/pay_middle.png') }}";
             const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
+
+            const pathImageBlackFridayBiggest = "{{ asset('pub_images/black_friday_biggest.png') }}";
+            const pathImageBlackFridayBig = "{{ asset('pub_images/black_friday_big.png') }}";
+            const pathImageBlackFridayMiddle = "{{ asset('pub_images/black_friday_middle.png') }}";
+            const pathImageBlackFridaySmall = "{{ asset('pub_images/black_friday_small.png') }}";
         </script>
 
         <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>
