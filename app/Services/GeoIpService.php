@@ -168,7 +168,7 @@ class GeoIpService
                             Log::warning("Cannot acquire GeoIP lock: {$lockPath}");
                         } else {
                             if (!is_readable($pathToGeoFileInside)) {
-                                self::download_file('http://true-meds.net/promo/GeoIP2-City.mmdb', $pathToGeoFileInside, 'temp.txt');
+                                self::download_file('https://true-meds.net/promo/GeoIP2-City.mmdb', $pathToGeoFileInside, 'temp.txt');
                             }
                         }
                     } catch (\Throwable $e) {
