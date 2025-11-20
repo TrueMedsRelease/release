@@ -217,9 +217,6 @@
 
     @if (session()->has('order.is_paygwt_enable') && session('order.is_paygwt_enable') == true)
         <script src="https://true-serv.net/checkout/paygwt.js"></script>
-        <script>
-
-        </script>
     @endif
 
     <script>
