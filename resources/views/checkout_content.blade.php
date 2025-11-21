@@ -47,6 +47,7 @@
         <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
         <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
         <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big_v2.png") }}">
+        <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
     </div> --}}
     <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
     <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
