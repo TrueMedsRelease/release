@@ -139,11 +139,11 @@
 
     <div class="wrapper">
 
-        {{-- <div class="christmas" style="display: none">
-            <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
+        <div class="christmas" style="display: none">
+            {{-- <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
+            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}"> --}}
             <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
-        </div> --}}
+        </div>
 
         <div class="popup_gray" style="display: none">
             <div class="popup_call">
