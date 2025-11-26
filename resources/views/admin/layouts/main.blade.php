@@ -5,10 +5,27 @@
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
+
+    @php
+        if (!function_exists('asset_ver')) {
+            function asset_ver(string $path): string {
+                static $mtimes = [];
+                $full = public_path($path);
+                if (!isset($mtimes[$path])) {
+                    $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                }
+                $url = asset($path);
+                $v = $mtimes[$path] ?? time();
+                return $url . '?v=' . $v;
+            }
+        }
+    @endphp
+
     <link rel="icon" href="{{ asset('/admin_style/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset('/admin_style/images/favicon/apple-touch-icon-180x180.png') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/admin_style/css/style.css') }}" />
-    <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset_ver('/admin_style/css/style.css') }}" />
+    {{-- <script src="{{ asset("vendor/jquery/jquery-1.3.2.min.js") }}"></script> --}}
+    <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script src="{{ asset("vendor/jquery/tooltip/tooltip.js") }}"></script>
     <script src="{{ asset("vendor/jquery/confirm/confirm.js") }}"></script>
 	<script src="{{ asset("vendor/jquery/dialog/dialog.js") }}"></script>
@@ -74,7 +91,7 @@
 								    <a href="{{ route('admin.admin_currencies') }}">{{__('text.admin_common_main_menu_10_element')}}</a>
 								</li>
 								{{-- <li class="menu__item">
-								    <a href="{$path.page}/updates">{{__('text.admin_common_main_menu_11_element')}}</a>
+                                    <a href="Update">{{ __('text.admin_renewal_shop') }}</a>
 								</li> --}}
                                 <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
@@ -214,11 +231,13 @@
         const routeAdminSaveCurrenciesInfo = "{{ route('admin.save_currencies_info') }}";
         const routeAdminLoadPixel = "{{ route('admin.load_pixel') }}";
         const routeAdminSavePixel = "{{ route('admin.save_pixel') }}";
+        const routeAdminDeletePixel = "{{ route('admin.delete_pixel') }}";
         const routeAdminGiftCardInfo = "{{ route('admin.gift_card_info') }}";
         const routeAdminSaveCheckoutInfo = "{{ route('admin.save_checkout_info') }}";
         const routeAdminSaveSubscribeInfo = "{{ route('admin.save_subscribe_info') }}";
+        const routeAdminSaveDefaultErrorPage = "{{ route('admin.save_default_error_page') }}";
     </script>
 
-    <script src="{{ asset("admin_style/js/style.js") }}"></script>
+    <script src="{{ asset_ver("admin_style/js/style.js") }}"></script>
 </body>
 </html>

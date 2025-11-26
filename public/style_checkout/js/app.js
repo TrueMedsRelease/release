@@ -1865,6 +1865,9 @@
             const giftCardBlock = document.querySelector('.enter-info__gift-card-content');
             const googleBlock = document.querySelector(".enter-info__google-content");
             const zelleBlock = document.querySelector(".enter-info__zelle-content");
+
+            const cryptoCurrencySelect = document.querySelector(".select_crypt_currency");
+            const cryptoRequisites = document.getElementById("requisites");
             document.addEventListener("selectCallback", (function (e) {
                 const currentSelect = e.detail.select;
                 if (currentSelect.value === "crypto") {
@@ -1881,6 +1884,7 @@
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
+                    cryptoCurrencySelect.hidden = false;
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
                     _slideDown(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
@@ -1968,6 +1972,11 @@
                     document.getElementById("c_83").disabled = false;
                     document.getElementById("c_85").disabled = false;
                     document.getElementById("c_86").disabled = false;
+                    cryptoCurrencySelect.hidden = true;
+                    cryptoRequisites.hidden = true;
+                    const el_token = document.getElementById('tokenSelect');
+                    if (el_token && typeof el_token.resetSelect === 'function') el_token.resetSelect();
+                    document.getElementById("info_text_crypto").hidden = true;
                 }
             }));
             const copyBtns = document.querySelectorAll(".details-payment__copy-button");
@@ -2063,42 +2072,42 @@ $(".card_type .select__option").click(function (e) {
 
         if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
 
-            let currency = $('input[name="crypt_currency"]:checked').val();
+            // let currency = $('input[name="crypt_currency"]:checked').val();
 
-            $.ajax({
-                url: checkoutCryptoInfo,
-                type: 'POST',
-                cache: false,
-                dataType: 'html',
-                data: { 'currency': currency, 'email': $('#email').val() },
-                success: function (data) {
-                    // alert(data);
-                    var result = JSON.parse(JSON.parse(data));
-                    var cur = currency.split('_');
-                    cur = cur[0];
-                    var total = result.amount;
-                    // //alert(total);
-                    document.getElementById('crypto_total').innerHTML = total;
-                    // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
-                    document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
-                    document.getElementById('purse').innerHTML = result.purse;
-                    document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
-                    document.getElementById('invoiceId').value = result.invoiceId;
-                    document.getElementById('invoce_p').innerHTML = result.invoiceId;
+            // $.ajax({
+            //     url: checkoutCryptoInfo,
+            //     type: 'POST',
+            //     cache: false,
+            //     dataType: 'html',
+            //     data: { 'currency': currency, 'email': $('#email').val() },
+            //     success: function (data) {
+            //         // alert(data);
+            //         var result = JSON.parse(JSON.parse(data));
+            //         var cur = currency.split('_');
+            //         cur = cur[0];
+            //         var total = result.amount;
+            //         // //alert(total);
+            //         document.getElementById('crypto_total').innerHTML = total;
+            //         // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
+            //         document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
+            //         document.getElementById('purse').innerHTML = result.purse;
+            //         document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
+            //         document.getElementById('invoiceId').value = result.invoiceId;
+            //         document.getElementById('invoce_p').innerHTML = result.invoiceId;
 
-                    document.getElementById("requisites_load").hidden = true;
-                    document.getElementById("requisites").hidden = false;
-                    document.getElementById('paid').disabled = false;
-                    // PollingManager.startPolling(CheckPayment, 1800000, 5000);
+            //         document.getElementById("requisites_load").hidden = true;
+            //         document.getElementById("requisites").hidden = false;
+            //         document.getElementById('paid').disabled = false;
+            //         // PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
-                    document.getElementById("coupon").disabled = true;
-                    document.getElementById("coupon_submit").disabled = true;
-                    document.getElementById("c_82").disabled = true;
-                    document.getElementById("c_83").disabled = true;
-                    document.getElementById("c_85").disabled = true;
-                    document.getElementById("c_86").disabled = true;
-                }
-            });
+            //         document.getElementById("coupon").disabled = true;
+            //         document.getElementById("coupon_submit").disabled = true;
+            //         document.getElementById("c_82").disabled = true;
+            //         document.getElementById("c_83").disabled = true;
+            //         document.getElementById("c_85").disabled = true;
+            //         document.getElementById("c_86").disabled = true;
+            //     }
+            // });
         } else {
             $.ajax({
                 url: checkoutValidateCrypto,
@@ -2260,7 +2269,7 @@ if ($('#app_google_on').val() == '1') {
                 dataType: 'json',
                 data: JSON.stringify(formData), // Преобразуем данные в JSON
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.response.status === 'ok') {
                         window.location.replace(checkoutComplete);
                     }
@@ -2279,7 +2288,7 @@ $('input[name="crypt_currency"]').click(function () {
     if (currency != '') {
         //document.body.classList.remove('loaded');
 
-        document.getElementById("requisites_load").hidden = false;
+        // document.getElementById("requisites_load").hidden = false;
         document.getElementById("requisites").hidden = true;
         document.getElementById('paid').style.display = "none";
         // document.getElementById('waiting').style.display = "none";
@@ -2298,7 +2307,7 @@ $('input[name="crypt_currency"]').click(function () {
 
                 if (result.status == 'error') {
                     alert(result.text);
-                    document.getElementById("requisites_load").hidden = true;
+                    // document.getElementById("requisites_load").hidden = true;
                 } else {
                     var cur = currency.split('_');
                     cur = cur[0];
@@ -2314,7 +2323,7 @@ $('input[name="crypt_currency"]').click(function () {
 
                     sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
 
-                    document.getElementById("requisites_load").hidden = true;
+                    // document.getElementById("requisites_load").hidden = true;
                     document.getElementById("requisites").hidden = false;
                     document.getElementById('paid').style.display = "flex";
                     document.getElementById('paid').disabled = false;
@@ -2529,6 +2538,8 @@ function CheckPayment()
 
     form += "&customer_date=" + date;
 
+    // console.log(form);
+
     $.ajax({
         url: checkoutCheckPayment,
         type: 'POST',
@@ -2571,7 +2582,7 @@ function processForm(e) {
     if (e.preventDefault) e.preventDefault();
 
     var form = $('form').serialize();
-    console.log(form);
+    // console.log(form);
 
     form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
 
@@ -2629,7 +2640,7 @@ function processForm(e) {
 
 $("#proccess_paypal").click(function (e) {
     var form = $('form').serialize();
-    console.log(form);
+    // console.log(form);
 
     form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
 
@@ -2683,7 +2694,7 @@ $("#proccess_paypal").click(function (e) {
 
 $("#proccess_sepa").click(function (e) {
     var form = $('form').serialize();
-    console.log(form);
+    // console.log(form);
 
     form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
 
@@ -2762,9 +2773,13 @@ $("#get_zelle_data").click(function (e) {
             if (data.response.status == 'SUCCESS') {
                 document.body.classList.add('loaded');
 
+                document.getElementById('zelle_orderId_text').innerHTML = data.response.order_id;
+                document.getElementById('zelle_email_text').innerHTML = data.response.zelle_email;
+                document.getElementById('zelle_recipient_text').innerHTML = data.response.zelle_recipient;
+
                 document.getElementById('zelle_orderId').innerHTML = data.response.order_id;
                 document.getElementById('zelle_email').innerHTML = data.response.zelle_email;
-                document.getElementById('zelle_name').innerHTML = data.response.zelle_name;
+                document.getElementById('zelle_recipient').innerHTML = data.response.zelle_recipient;
 
                 document.getElementById("zelle_requisites").hidden = false;
                 document.getElementById("get_zelle_data").style.display = 'none';
@@ -2891,55 +2906,71 @@ if (getCookie('christmas')) {
     $('.christmas').show();
 }
 
+$(document).on('click', '.christmas', function () {
+    $(this).hide();
+    var date = new Date;
+    date.setDate(date.getDate() + 1);
+    date = date.toUTCString();
+    document.cookie = 'christmas=1; path=/; expires=' + date;
+});
+
 if (document.documentElement.clientWidth > 1925) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_biggest_v2.png');
+    // $('.christmas img').attr('src', pathImagePayBiggest);
+    $('.christmas img').attr('src', pathImageBlackFridayBiggest);
+    // $('.checkup img').attr('src', pathImageCheckupBiggest);
 }
 if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/pay_big.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_big_v2.png');
+    // $('.christmas img').attr('src', pathImagePayBig);
+    $('.christmas img').attr('src', pathImageBlackFridayBig);
+    // $('.checkup img').attr('src', pathImageCheckupBig);
 }
 if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_middle_v2.png');
+    // $('.christmas img').attr('src', pathImagePayMiddle);
+    $('.christmas img').attr('src', pathImageBlackFridayMiddle);
+    // $('.checkup img').attr('src', pathImageCheckupMiddle);
 }
 if (document.documentElement.clientWidth < 391) {
     //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/pay_small.png');
     // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-    $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_small_v2.png');
+    // $('.christmas img').attr('src', pathImagePaySmall);
+    $('.christmas img').attr('src', pathImageBlackFridaySmall);
+    // $('.checkup img').attr('src', pathImageCheckupSmall);
 }
 
 window.addEventListener('resize', function (e) {
     if (document.documentElement.clientWidth > 1925) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/pay_biggest.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_biggest_v2.png');
+        // $('.christmas img').attr('src', pathImagePayBiggest);
+        $('.christmas img').attr('src', pathImageBlackFridayBiggest);
+        // $('.checkup img').attr('src', pathImageCheckupBiggest);
     }
     if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/pay_big.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_big_v2.png');
+        // $('.christmas img').attr('src', pathImagePayBig);
+        $('.christmas img').attr('src', pathImageBlackFridayBig);
+        // $('.checkup img').attr('src', pathImageCheckupBig);
     }
     if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/pay_middle.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_middle_v2.png');
+        // $('.christmas img').attr('src', pathImagePayMiddle);
+        $('.christmas img').attr('src', pathImageBlackFridayMiddle);
+        // $('.checkup img').attr('src', pathImageCheckupMiddle);
     }
     if (document.documentElement.clientWidth < 391) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/pay_small.png');
         // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-        $('.christmas img').attr('src', 'pub_images/checkup_img/white/checkup_small_v2.png');
+        // $('.christmas img').attr('src', pathImagePaySmall);
+        $('.christmas img').attr('src', pathImageBlackFridaySmall);
+        // $('.checkup img').attr('src', pathImageCheckupSmall);
     }
 });
 
@@ -3104,3 +3135,302 @@ document.querySelectorAll('input[type=number]').forEach(function(input) {
         }
     });
 });
+
+window.__TOKENS__ = window.__TOKENS__ || [
+    // { value:'ARB_ARBITRUM', symbol:'ARB', chain:'ARBITRUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/arb.svg"></use></svg>' },
+    // { value:'ETH_ARBITRUM', symbol:'ETH', chain:'ARBITRUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/eth.svg"></use></svg>' },
+    // { value:'USDC_ARBITRUM', symbol:'USDC', chain:'ARBITRUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/usdc.svg"></use></svg>' },
+    // { value:'USDT_ARBITRUM', symbol:'USDT', chain:'ARBITRUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trc20"></use></svg>' },
+    // { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-bnb"></use></svg>' },
+    // { value:'USDC_BSC', symbol:'USDC', chain:'BSC', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/usdc.svg"></use></svg>' },
+    // { value:'USDT_BSC', symbol:'USDT', chain:'BSC', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trc20"></use></svg>' },
+    // { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-btc"></use></svg>' },
+    // { value:'DAI_BASE', symbol:'DAI', chain:'BASE', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/dai.svg"></use></svg>' },
+    // { value:'ETH_BASE', symbol:'ETH', chain:'BASE', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/eth.svg"></use></svg>' },
+    // { value:'USDC_BASE', symbol:'USDC', chain:'BASE', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/usdc.svg"></use></svg>' },
+    // { value:'DAI_ETHEREUM', symbol:'DAI', chain:'ETHEREUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/dai.svg"></use></svg>' },
+    // { value:'ETH_ETHEREUM', symbol:'ETH', chain:'ETHEREUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/eth.svg"></use></svg>' },
+    // { value:'USDC_ETHEREUM', symbol:'USDC', chain:'ETHEREUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/usdc.svg"></use></svg>' },
+    // { value:'USDT_ETHEREUM', symbol:'USDT', chain:'ETHEREUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-erc20"></use></svg>' },
+    // { value:'DOGE_DOGECOIN', symbol:'DOGE', chain:'DOGECOIN', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/doge.svg"></use></svg>' },
+    // { value:'ETH_OPTIMISM', symbol:'ETH', chain:'OPTIMISM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/eth.svg"></use></svg>' },
+    // { value:'OP_OPTIMISM', symbol:'OP', chain:'OPTIMISM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/op.svg"></use></svg>' },
+    // { value:'USDC_OPTIMISM', symbol:'USDC', chain:'OPTIMISM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/usdc.svg"></use></svg>' },
+    // { value:'USDT_OPTIMISM', symbol:'USDT', chain:'OPTIMISM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trc20"></use></svg>' },
+    // { value:'POL_POLYGON', symbol:'POL', chain:'POLYGON', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/pol.svg"></use></svg>' },
+    // { value:'USDC_POLYGON', symbol:'USDC', chain:'POLYGON', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/usdc.svg"></use></svg>' },
+    // { value:'USDT_POLYGON', symbol:'USDT', chain:'POLYGON', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trc20"></use></svg>' },
+    // { value:'SOL_SOLANA', symbol:'SOL', chain:'SOLANA', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/sol.svg"></use></svg>' },
+    // { value:'USDC_SOLANA', symbol:'USDC', chain:'SOLANA', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/usdc.svg"></use></svg>' },
+    // { value:'USDT_SOLANA', symbol:'USDT', chain:'SOLANA', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trc20"></use></svg>' },
+    // { value:'TON_TON', symbol:'TON', chain:'TON', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/ton.svg"></use></svg>' },
+    // { value:'USDT_TON', symbol:'USDT', chain:'TON', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trc20"></use></svg>' },
+    // { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trx"></use></svg>' },
+    // { value:'USDT_TRON', symbol:'USDT', chain:'TRON', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-trc20"></use></svg>' },
+    // { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-ltc"></use></svg>' },
+    // { value:'XRP_RIPPLE', symbol:'XRP', chain:'RIPPLE', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/xrp.svg"></use></svg>' }
+
+    { value:'ARB_ARBITRUM', symbol:'ARB', chain:'ARBITRUM', icon:'arb.svg' },
+    { value:'ETH_ARBITRUM', symbol:'ETH', chain:'ARBITRUM', icon:'eth.svg' },
+    { value:'USDC_ARBITRUM', symbol:'USDC', chain:'ARBITRUM', icon:'usdc_arb.svg' },
+    { value:'USDT_ARBITRUM', symbol:'USDT', chain:'ARBITRUM', icon:'usdt_arb.svg' },
+    { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'icons.svg#svg-bnb' },
+    { value:'USDC_BSC', symbol:'USDC', chain:'BSC', icon:'usdc_bsc.svg' },
+    { value:'USDT_BSC', symbol:'USDT', chain:'BSC', icon:'usdt_bsc.svg' },
+    { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'icons.svg#svg-btc' },
+    { value:'DAI_BASE', symbol:'DAI', chain:'BASE', icon:'dai.svg' },
+    { value:'ETH_BASE', symbol:'ETH', chain:'BASE', icon:'eth.svg' },
+    { value:'USDC_BASE', symbol:'USDC', chain:'BASE', icon:'usdc.svg' },
+    { value:'DAI_ETHEREUM', symbol:'DAI', chain:'ETHEREUM', icon:'dai.svg' },
+    { value:'ETH_ETHEREUM', symbol:'ETH', chain:'ETHEREUM', icon:'eth.svg' },
+    { value:'USDC_ETHEREUM', symbol:'USDC', chain:'ETHEREUM', icon:'usdc_eth.svg' },
+    { value:'USDT_ETHEREUM', symbol:'USDT', chain:'ETHEREUM', icon:'usdt_eth.svg' },
+    { value:'DOGE_DOGECOIN', symbol:'DOGE', chain:'DOGECOIN', icon:'doge.svg' },
+    { value:'ETH_OPTIMISM', symbol:'ETH', chain:'OPTIMISM', icon:'eth.svg' },
+    { value:'OP_OPTIMISM', symbol:'OP', chain:'OPTIMISM', icon:'op.svg' },
+    { value:'USDC_OPTIMISM', symbol:'USDC', chain:'OPTIMISM', icon:'usdc_op.svg' },
+    { value:'USDT_OPTIMISM', symbol:'USDT', chain:'OPTIMISM', icon:'usdt_op.svg' },
+    { value:'POL_POLYGON', symbol:'POL', chain:'POLYGON', icon:'pol.svg' },
+    { value:'USDC_POLYGON', symbol:'USDC', chain:'POLYGON', icon:'usdc_pol.svg' },
+    { value:'USDT_POLYGON', symbol:'USDT', chain:'POLYGON', icon:'usdt_pol.svg' },
+    { value:'SOL_SOLANA', symbol:'SOL', chain:'SOLANA', icon:'sol.svg' },
+    { value:'USDC_SOLANA', symbol:'USDC', chain:'SOLANA', icon:'usdc_sol.svg' },
+    { value:'USDT_SOLANA', symbol:'USDT', chain:'SOLANA', icon:'usdt_sol.svg' },
+    { value:'TON_TON', symbol:'TON', chain:'TON', icon:'ton.svg' },
+    { value:'USDT_TON', symbol:'USDT', chain:'TON', icon:'usdt_ton.svg' },
+    { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'icons.svg#svg-trx' },
+    { value:'USDT_TRON', symbol:'USDT', chain:'TRON', icon:'usdt_trx.svg' },
+    { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'icons.svg#svg-ltc' },
+    { value:'XRP_RIPPLE', symbol:'XRP', chain:'RIPPLE', icon:'xrp.svg' }
+ ];
+
+(function init(root, items){
+    const toggle = root.querySelector('.select__toggle');
+    const menu   = root.querySelector('.select__menu');
+    const list   = root.querySelector('.options');
+    const search = root.querySelector('#selectSearch');
+    const hidden = root.querySelector('input[type="hidden"]');
+    const valueSpan = root.querySelector('.value');
+    const placeholderText = valueSpan.textContent;
+
+    let filtered = [...items];
+    let activeIndex = -1;
+
+    function render() {
+        list.innerHTML = '';
+        filtered.forEach((it, idx) => {
+            const li = document.createElement('li');
+            li.className = 'option';
+            li.role='option';
+            li.tabIndex=-1;
+            li.dataset.value = it.value;
+            li.dataset.index = idx;
+
+            // const icon = document.createElement('div');
+            // icon.className = 'opt-icon';
+            // icon.innerHTML = it.icon;
+
+            const icon = makeIconEl(it.icon);
+
+            const label = document.createElement('div');
+            label.className = 'opt-label';
+
+            const main = document.createElement('div');
+            main.className = 'opt-main';
+            main.textContent = it.symbol;
+
+            const sub = document.createElement('div');
+            sub.className = 'opt-subtle';
+            sub.textContent = it.chain;
+            label.append(main, sub);
+
+            li.append(icon, label);
+            li.addEventListener('click', () => choose(idx));
+            list.appendChild(li);
+        });
+        // setActive(0);
+    }
+
+    function open(){
+        menu.hidden=false;
+        root.classList.add('open');
+        toggle.setAttribute('aria-expanded','true');
+        search.value='';
+        filtered=[...items];
+        render();
+        setTimeout(()=>search.focus(),0);
+    }
+
+    function close(){
+        menu.hidden=true;
+        root.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+        activeIndex=-1;
+    }
+
+    function reset() {
+        hidden.value = '';
+        valueSpan.textContent = placeholderText;
+        search.value = '';
+        filtered = [...items];
+        render();
+        close();
+    }
+
+    function setActive(i){
+        const opts=[...list.children];
+        opts.forEach(el=>el.classList.remove('is-active'));
+        if(!opts.length) return; i=Math.max(0, Math.min(i, opts.length-1));
+        opts[i].classList.add('is-active');
+        opts[i].scrollIntoView({
+            block:'nearest'
+        });
+
+        activeIndex=i;
+    }
+
+    function choose(i){
+      const it = filtered[i]; if(!it) return;
+      hidden.value = it.value;
+      valueSpan.textContent = `${it.symbol} ${it.chain}`;
+      root.dispatchEvent(new CustomEvent('change', { detail:{ value: it.value, symbol: it.symbol, chain: it.chain }}));
+      close();
+      toggle.focus();
+    }
+
+    const ICON_BASE = 'style_checkout/images/icons/';
+    const SVG_NS   = 'http://www.w3.org/2000/svg';
+    const XLINK_NS = 'http://www.w3.org/1999/xlink';
+
+    function makeIconEl(iconRef) {
+        const wrap = document.createElement('div');
+        wrap.className = 'opt-icon';
+
+        const svg = document.createElementNS(SVG_NS, 'svg');
+        svg.setAttribute('width', '26');
+        svg.setAttribute('height', '26');
+
+        const use = document.createElementNS(SVG_NS, 'use');
+        // если это спрайт вида "icons.svg#svg-xxx", оставляем как есть,
+        // если это отдельный файл "xrp.svg", просто склеиваем базовый путь
+        const href = iconRef.includes('#') ? ICON_BASE + iconRef : ICON_BASE + iconRef;
+        use.setAttributeNS(XLINK_NS, 'xlink:href', href);
+
+        svg.appendChild(use);
+        wrap.appendChild(svg);
+        return wrap;
+    }
+
+    root.resetSelect = reset;
+
+    toggle.addEventListener('click', () => menu.hidden ? open() : close());
+
+    search.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase();
+      filtered = items.filter(it => (`${it.symbol} ${it.chain}`).toLowerCase().includes(q));
+      render();
+    });
+
+    search.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowDown'){e.preventDefault(); setActive(activeIndex+1)}
+      if(e.key==='ArrowUp'){e.preventDefault(); setActive(activeIndex-1)}
+      if(e.key==='Enter'){e.preventDefault(); choose(activeIndex)}
+      if(e.key==='Escape'){e.preventDefault(); close()}
+    });
+
+    document.addEventListener('click', (e)=>{ if(!root.contains(e.target)) close(); });
+
+    root.addEventListener('change', (e)=>{
+        // console.log('Выбрано:', e.detail.value, '|', e.detail.symbol, e.detail.chain);
+        $(".ploader").show();
+        document.getElementById("requisites").hidden = true;
+        // document.getElementById("requisites_load").hidden = false;
+        document.getElementById('paid').style.display = "none";
+        document.getElementById('paid').disabled = true;
+        document.getElementById("info_text_crypto").hidden = true;
+
+        let currency = e.detail.value;
+
+        $.ajax({
+            url: checkoutCryptoInfo,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: { 'currency': currency, 'email': $('#email').val() },
+            success: function (data) {
+                var result = JSON.parse(JSON.parse(data));
+                if (result.status == 'error') {
+                    alert(result.text);
+                    // document.getElementById("requisites_load").hidden = true;
+                    $(".ploader").hide();
+                } else {
+                    $(".ploader").hide();
+
+                    const $c = $('html'); // твой прокручиваемый контейнер
+                    const top = $('#requisites').position().top + $c.scrollTop() + 600;
+                    $c.animate({ scrollTop: top }, 500);
+
+                    var cur = currency.split('_');
+                    cur = cur[0];
+                    var total = result.amount;
+                    // //alert(total);
+                    document.getElementById('crypto_total').innerHTML = total;
+                    // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
+                    document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
+                    document.getElementById('purse').innerHTML = result.purse;
+                    document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
+                    document.getElementById('invoiceId').value = result.invoiceId;
+                    document.getElementById('invoce_p').innerHTML = result.invoiceId;
+
+                    sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
+
+                    document.getElementById("info_text_crypto").hidden = false;
+                    // document.getElementById("requisites_load").hidden = true;
+                    document.getElementById("requisites").hidden = false;
+                    document.getElementById('paid').style.display = "flex";
+                    document.getElementById('paid').disabled = false;
+                    // PollingManager.startPolling(CheckPayment, 1800000, 5000);
+
+                    document.getElementById("coupon").disabled = true;
+                    document.getElementById("coupon_submit").disabled = true;
+                    document.getElementById("c_82").disabled = true;
+                    document.getElementById("c_83").disabled = true;
+                    document.getElementById("c_85").disabled = true;
+                    document.getElementById("c_86").disabled = true;
+                }
+            }
+        });
+
+        var countDownDate = new Date().getTime() + 1800000;
+        clearInterval(window.countdownfunction);
+
+        // Update the count down every 1 second
+        window.countdownfunction = setInterval(function () {
+            //alert('aaaa');
+
+            // Get todays date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now an the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Output the result in an element with id="demo"
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+            document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+
+            // If the count down is over, write some text
+            if (distance < 0) {
+                clearInterval(countdownfunction);
+                document.getElementById("timer").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    });
+
+    render();
+})(document.getElementById('tokenSelect'), window.__TOKENS__);

@@ -1,15 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+@if (session('locale', 'en') == 'arb')
+    lang="ar"
+@elseif (session('locale', 'en') == 'gr')
+    lang="el"
+@elseif (session('locale', 'en') == 'hans')
+    lang="zh-Hans"
+@elseif (session('locale', 'en') == 'hant')
+    lang="zh-Hant"
+@elseif (session('locale', 'en') == 'no')
+    lang="nb"
+@else
+    lang="{{ session('locale', 'en') }}"
+@endif
+>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="robots" content="index, follow" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('style_checkout/style.css') }}">
+
+    @php
+        if (!function_exists('asset_ver')) {
+            function asset_ver(string $path): string {
+                static $mtimes = [];
+                $full = public_path($path);
+                if (!isset($mtimes[$path])) {
+                    $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                }
+                $url = asset($path);
+                $v = $mtimes[$path] ?? time();
+                return $url . '?v=' . $v;
+            }
+        }
+    @endphp
+
+    <link rel="stylesheet" type="text/css" href="{{ asset_ver('style_checkout/style.css') }}">
 	<link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <title>{{__('text.checkout_title')}}</title>
+
     {!! isset($pixel) ? $pixel : '' !!}
+
     <script>
         const checkoutChangeCountry = "{{ route('checkout.country') }}";
         const checkoutCryptoInfo = "{{ route('checkout.crypto_info') }}";
@@ -34,6 +66,20 @@
         const checkoutAuth = "{{ route('checkout.auth') }}";
         const checkoutSendPhoneEmail = "{{ route('checkout.send_checkout_phone_email') }}";
 
+        const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
+        const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";
+        const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/white/checkup_middle.png') }}";
+        const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/white/checkup_small.png') }}";
+
+        const pathImagePayBiggest = "{{ asset('pub_images/pay_biggest.png') }}";
+        const pathImagePayBig = "{{ asset('pub_images/pay_big.png') }}";
+        const pathImagePayMiddle = "{{ asset('pub_images/pay_middle.png') }}";
+        const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
+
+        const pathImageBlackFridayBiggest = "{{ asset('pub_images/black_friday_biggest.png') }}";
+        const pathImageBlackFridayBig = "{{ asset('pub_images/black_friday_big.png') }}";
+        const pathImageBlackFridayMiddle = "{{ asset('pub_images/black_friday_middle.png') }}";
+        const pathImageBlackFridaySmall = "{{ asset('pub_images/black_friday_small.png') }}";
     </script>
 </head>
 <body>

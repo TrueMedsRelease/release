@@ -7546,8 +7546,12 @@ textarea.input {
 
 .christmas{
   width: 100%;
-  /*background: url("../images/pay_big.png") no-repeat center;*/
-  /*height: 80px;*/
+  /* height: 80px; */
+  cursor: pointer;
+}
+
+.checkup{
+  width: 100%;
   cursor: pointer;
   max-width: 75rem;
   margin: 0 auto;
@@ -7557,14 +7561,14 @@ textarea.input {
     width: auto;
 }
 
-.christmas img {
+.christmas img, .checkup img {
   width: 100%;
 }
 
 @media (max-width: 390px) {
-  /*.christmas{*/
-  /*  height: 66px;*/
-  /*}*/
+  .christmas{
+   height: 66px;
+  }
 }
 
 .block_subscribe {

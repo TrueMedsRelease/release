@@ -618,7 +618,15 @@ return [
 
     "checkout_zelle_order" => "Număr comandă:",
     "checkout_zelle_continue" => "Continuă",
+    "checkout_zelle_recipient" => "Destinatar:",
 
     "common_per_pill" => "Pe pastilă",
     "subscribe_full_text" => "Abonează-te la oferte speciale și noutăți",
+
+    "checkout_crypto_search" => "Caută",
+    "checkout_crypto_select" => "Selectează",
+    "checkout_crypto_select_currency" => "Selectează o criptomonedă",
+
+    "admin_renewal_shop" => "Actualizează magazinul",
+    "admin_renewal_database" => "Actualizează baza de date",
 ];

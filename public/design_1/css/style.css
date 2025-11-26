@@ -4551,10 +4551,13 @@ opacity:0;
 }
 
 .christmas{
-  /* width: 100%; */
-  /*background: url("../images/pay_big.png") no-repeat center;*/
-  /*height: 80px;*/
+  width: 100%;
+  /* height: 80px; */
   /* margin-bottom: 10px; */
+  cursor: pointer;
+}
+
+.checkup{
   cursor: pointer;
   max-width: 62.5rem;
   -webkit-box-sizing: content-box;
@@ -4563,15 +4566,19 @@ opacity:0;
   padding: 0 0.9375rem;
 }
 
-.christmas img {
+.christmas img{
+  width: 100%;
+}
+
+.checkup img {
   width: 100%;
   height: 100%;
 }
 
 @media (max-width: 390px) {
-  /*.christmas{*/
-  /*  height: 66px;*/
-  /*}*/
+  .christmas {
+    height: 66px;
+  }
 }
 
 .block_subscribe {

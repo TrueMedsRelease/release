@@ -675,7 +675,7 @@ function SavePixelData() {
     }, {});
 
     if (pixel_text['pixel_text']) {
-        if (pixel_text['pixel_text'].includes('<script>') && pixel_text['pixel_text'].includes('</script>')) {
+        if (pixel_text['pixel_text'].includes('<script') && pixel_text['pixel_text'].includes('</script>')) {
             if (selected_page) {
                 $.ajax({
                     url: routeAdminSavePixel,
@@ -703,6 +703,37 @@ function SavePixelData() {
         }
     } else {
         document.getElementById('templates_messages').innerHTML = '';
+    }
+}
+
+function DeletePixelData() {
+    let selected_page = $('input[name="pixel_name_field"]:checked').val();
+
+    let pixel_text = $('#pixel_form').serializeArray().reduce(function(obj, item) {
+        obj[item.name] = item.value;
+        return obj;
+    }, {});
+
+    if (selected_page) {
+        $.ajax({
+            url: routeAdminDeletePixel,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: {
+                'selected_page': selected_page,
+                'pixel_text': pixel_text
+            },
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.status == 'error') {
+                    document.getElementById('templates_messages').innerHTML = '';
+                    alert(data.text);
+                } else {
+                    location.href = data.url;
+                }
+            }
+        });
     }
 }
 
@@ -767,6 +798,68 @@ function saveSubscribePopupInfo() {
         dataType: 'html',
         data: {
             'popup_status': popup_status,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
+function renewalShop() {
+    $.ajax({
+        url: routeAdminRenewalShop,
+        type: 'GET',
+        cache: false,
+        dataType: 'html',
+        data: {
+            // 'popup_status': popup_status,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
+function renewalDatabase() {
+    $.ajax({
+        url: routeAdminRenewalDatabase,
+        type: 'GET',
+        cache: false,
+        dataType: 'html',
+        data: {
+            // 'popup_status': popup_status,
+        },
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.status == 'error') {
+                alert(data.text);
+            } else {
+                location.href = data.url;
+            }
+        }
+    });
+}
+
+function saveDefaultErrorPage() {
+    let default_error_page = $('input[name="default_error_page"]:checked').val();
+
+    $.ajax({
+        url: routeAdminSaveDefaultErrorPage,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'default_error_page': default_error_page,
         },
         success: function (data) {
             data = JSON.parse(data);

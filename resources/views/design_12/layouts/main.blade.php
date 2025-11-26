@@ -1,5 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+@if (session('locale', 'en') == 'arb')
+    lang="ar"
+@elseif (session('locale', 'en') == 'gr')
+    lang="el"
+@elseif (session('locale', 'en') == 'hans')
+    lang="zh-Hans"
+@elseif (session('locale', 'en') == 'hant')
+    lang="zh-Hant"
+@elseif (session('locale', 'en') == 'no')
+    lang="nb"
+@else
+    lang="{{ session('locale', 'en') }}"
+@endif
+>
     <head>
         <meta charset="utf-8">
         <title>@yield('title', 'Title')</title>
@@ -7,6 +21,22 @@
         <meta name="keywords" content="@yield('keywords', 'Keywords')">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="theme-color" content="#14151a" />
+        <link rel="canonical" href="{{ url()->current() }}">
+
+        @php
+            if (!function_exists('asset_ver')) {
+                function asset_ver(string $path): string {
+                    static $mtimes = [];
+                    $full = public_path($path);
+                    if (!isset($mtimes[$path])) {
+                        $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                    }
+                    $url = asset($path);
+                    $v = $mtimes[$path] ?? time();
+                    return $url . '?v=' . $v;
+                }
+            }
+        @endphp
 
         @foreach ($Language::GetAllLanuages() as $item)
             <link rel="alternate" href="{{ route('home.language', $item['code']) }}"
@@ -30,7 +60,7 @@
 
         @if (env('APP_PWA', 0))
             <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-            <script defer type="text/javascript" src="{{ asset("js/sw-setup.js") }}"></script>
+            <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
         @endif
 
         {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
@@ -49,8 +79,8 @@
 
         <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
         <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
-        <link href="{{ asset($design . '/css/style.css') }}" rel="stylesheet">
-        <link href="{{ asset($design . '/css/pages.css') }}" rel="stylesheet">
+        <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset_ver($design . '/css/pages.css') }}" rel="stylesheet">
 
         <script>
             const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
@@ -58,7 +88,7 @@
         </script>
 
         <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
-        <script defer src="{{ asset('vendor/jquery/autocomplete.js') }}"></script>
+        <script defer src="{{ asset_ver('vendor/jquery/autocomplete.js') }}"></script>
         <script defer src="{{ asset('vendor/jquery/init.js') }}"></script>
         <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
 
@@ -125,10 +155,11 @@
             }
         @endphp
 
-        {{-- <div class="christmas" style="display: none">
-            <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
-        </div> --}}
+        <div class="christmas" style="display: none">
+            {{-- <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
+            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}"> --}}
+            <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
+        </div>
 
         <div class="topbar">
             <div class="container">
@@ -636,7 +667,7 @@
             </div>
         </div>
 
-        <div class="christmas" style="display: none" onclick="location.href='{{ route('home.checkup') }}'">
+        <div class="checkup" onclick="location.href='{{ route('home.checkup') }}'">
             <img loading="lazy" src="{{ asset("pub_images/checkup_img/black/checkup_big.png") }}">
         </div>
 
@@ -858,11 +889,20 @@
             const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/black/checkup_big.png') }}";
             const pathImageCheckupMiddle = "{{ asset('pub_images/checkup_img/black/checkup_middle.png') }}";
             const pathImageCheckupSmall = "{{ asset('pub_images/checkup_img/black/checkup_small.png') }}";
+
+            const pathImagePayBiggest = "{{ asset('pub_images/pay_biggest.png') }}";
+            const pathImagePayBig = "{{ asset('pub_images/pay_big.png') }}";
+            const pathImagePayMiddle = "{{ asset('pub_images/pay_middle.png') }}";
+            const pathImagePaySmall = "{{ asset('pub_images/pay_small.png') }}";
+
+            const pathImageBlackFridayBiggest = "{{ asset('pub_images/black_friday_biggest.png') }}";
+            const pathImageBlackFridayBig = "{{ asset('pub_images/black_friday_big.png') }}";
+            const pathImageBlackFridayMiddle = "{{ asset('pub_images/black_friday_middle.png') }}";
+            const pathImageBlackFridaySmall = "{{ asset('pub_images/black_friday_small.png') }}";
         </script>
 
-        <script defer src="{{ asset("$design/js/app.js") }}"></script>
-        <script defer src="{{ asset("js/all_js.js") }}"></script>
-<script defer src="http://localhost:8080/statistic/assets/js/v1/main.js"></script>
+        <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>
+        <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 
         @if ($web_statistic)
             <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">

@@ -708,9 +708,15 @@ return [
 
     "checkout_zelle_order" => "Číslo objednávky:",
     "checkout_zelle_continue" => "Pokračovat",
+    "checkout_zelle_recipient" => "Příjemce:",
 
     "common_per_pill" => "Za tabletu",
-    "subscribe_full_text" => "Přihlaste se k odběru speciálních nabídek a novinek
+    "subscribe_full_text" => "Přihlaste se k odběru speciálních nabídek a novinek",
 
-",
+    "checkout_crypto_search" => "Hledat",
+    "checkout_crypto_select" => "Vybrat",
+    "checkout_crypto_select_currency" => "Vybrat kryptoměnu",
+
+    "admin_renewal_shop" => "Aktualizovat obchod",
+    "admin_renewal_database" => "Aktualizovat databázi",
 ];

@@ -4688,16 +4688,20 @@ body.has-scroll{
     margin-right: 5px;
   }
 
-  .christmas{
+  .checkup{
     width: 100%;
     cursor: pointer;
     margin: 20px auto 0 auto;
     min-width: 32rem;
-    width: 100%;
     max-width: 120rem;
   }
 
-  .christmas img {
+.christmas{
+    width: 100%;
+    cursor: pointer;
+}
+
+  .christmas img, .checkup img {
     width: 100%;
   }
 

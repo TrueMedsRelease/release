@@ -740,7 +740,15 @@ return [
 
     "checkout_zelle_order" => "注文番号：",
     "checkout_zelle_continue" => "続ける",
+    "checkout_zelle_recipient" => "受取人:",
 
     "common_per_pill" => "1錠あたり",
     "subscribe_full_text" => "特別オファーとニュースに登録する",
+
+    "checkout_crypto_search" => "検索",
+    "checkout_crypto_select" => "選択",
+    "checkout_crypto_select_currency" => "暗号資産を選択",
+
+    "admin_renewal_shop" => "ショップを更新",
+    "admin_renewal_database" => "データベースを更新",
 ];

@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+@if (session('locale', 'en') == 'arb')
+    lang="ar"
+@elseif (session('locale', 'en') == 'gr')
+    lang="el"
+@elseif (session('locale', 'en') == 'hans')
+    lang="zh-Hans"
+@elseif (session('locale', 'en') == 'hant')
+    lang="zh-Hant"
+@elseif (session('locale', 'en') == 'no')
+    lang="nb"
+@else
+    lang="{{ session('locale', 'en') }}"
+@endif
+>
 
 <head>
 	<title>{{__('text.login_title')}}</title>
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
+
+    @php
+        if (!function_exists('asset_ver')) {
+            function asset_ver(string $path): string {
+                static $mtimes = [];
+                $full = public_path($path);
+                if (!isset($mtimes[$path])) {
+                    $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+                }
+                $url = asset($path);
+                $v = $mtimes[$path] ?? time();
+                return $url . '?v=' . $v;
+            }
+        }
+    @endphp
+
 	<link rel="stylesheet" href="style_login/style_.css">
 	<link rel="shortcut icon" href="style_login/favicon.ico">
 
@@ -16,7 +46,7 @@
     </script>
 
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
-    <script defer src="{{ asset("vendor/jquery/autocomplete.js") }}"></script>
+    <script defer src="{{ asset_ver("vendor/jquery/autocomplete.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
     <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
 
@@ -142,7 +172,7 @@
         preloader.style.display = 'none';
     });
 </script>
-<script defer src="js/all_js.js"></script>
+<script defer src="{{ asset_ver("js/all_js.js") }}"></script>
 </body>
 
 </html>

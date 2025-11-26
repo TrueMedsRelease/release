@@ -25,119 +25,27 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
-// if(!session()->has('location'))
-// {
-//     session(['location' => GeoIpService::GetInfoByIp()]);
 
-//     if(!empty(session('location.country')))
-//     {
-//         $curr = Currency::GetCurrencyByCountry(session('location.country'));
+// if (isset($_GET['design']) && $_GET['design']) {
+//     $design = $_GET['design'] ? $_GET['design'] : config('app.design');
+//     unset($_GET['design']);
 
-//         $coef = Currency::GetCoef($curr);
-//         session(['currency' => $curr]);
-//         session(['currency_c' => $coef]);
-
-//         $lang = Language::GetLanguageByCountry(session('location.country'));
-//         App::setLocale($lang);
-//     }
+//     request()->route('home.design_with_url', ['any_url' => request()->server('REQUEST_URI'), 'design' => $design]);
 // }
 
-// if(!session()->has('referer'))
-// {
-//     if(!empty($_SERVER['HTTP_REFERER']))
-//     {
-//         session(['referer' => $_SERVER['HTTP_REFERER']]);
-//     }
-//     else
-//     {
-//         session(['referer' => '']);
-//     }
+// if (isset($_GET['lang']) && $_GET['lang']) {
+//     $lang = $_GET['lang'] ? $_GET['lang'] : App::currentLocale();
+//     unset($_GET['lang']);
+
+//     request()->route('home.language_with_url', ['any_url' => request()->server('REQUEST_URI'), 'locale' => $lang]);
 // }
 
-// if(!session()->has('aff'))
-// {
-//     if(!empty(request('aff')))
-//     {
-//         session(['aff' => request('aff')]);
-//     }
-//     else
-//     {
-//         session(['aff' => config('app.aff')]);
-//     }
+// if (isset($_GET['curr']) && $_GET['curr']) {
+//     $curr = $_GET['curr'] ? $_GET['curr'] : config('app.currency');
+//     unset($_GET['curr']);
+
+//     request()->route('home.currency_with_url', ['any_url' => request()->server('REQUEST_URI'), 'currency' => $curr]);
 // }
-
-// if(!session()->has('saff'))
-// {
-//     if(!empty(request('saff')))
-//     {
-//         session(['saff' => request('saff')]);
-//     }
-// }
-
-// if(!session()->has('keyword'))
-// {
-//     if(!empty(request('keyword')))
-//     {
-//         session(['keyword' => request('keyword')]);
-//     }
-// }
-
-// if(!session()->has('refc'))
-// {
-//     if(!empty(request('refc')))
-//     {
-//         session(['refc' => request('refc')]);
-//     }
-// }
-
-// if(!session()->has('coupon_get'))
-// {
-//     if(!empty(request('coupon')))
-//     {
-//         session(['coupon_get' => request('coupon')]);
-//     }
-// }
-
-// if(!empty(request('lang')))
-// {
-//     session(['locale' => request('lang')]);
-// }
-
-// if(!empty(request('curr')))
-// {
-//     dump(request('curr'));
-//     $coef = Currency::GetCoef(request('curr'));
-//     session(['currency' => request('curr')]);
-//     session(['currency_c' => $coef]);;
-// }
-
-// if(!empty(request('design')))
-// {
-//     if (in_array(request('design'), [1,2,3,4,5,7,8,9,10,11,12])) {
-//         session(['design' => 'design_' . request('design')]);
-//     }
-// }
-
-if (isset($_GET['design']) && $_GET['design']) {
-    $design = $_GET['design'] ? $_GET['design'] : config('app.design');
-    unset($_GET['design']);
-
-    request()->route('home.design_with_url', ['any_url' => request()->server('REQUEST_URI'), 'design' => $design]);
-}
-
-if (isset($_GET['lang']) && $_GET['lang']) {
-    $lang = $_GET['lang'] ? $_GET['lang'] : App::currentLocale();
-    unset($_GET['lang']);
-
-    request()->route('home.language_with_url', ['any_url' => request()->server('REQUEST_URI'), 'locale' => $lang]);
-}
-
-if (isset($_GET['curr']) && $_GET['curr']) {
-    $curr = $_GET['curr'] ? $_GET['curr'] : config('app.currency');
-    unset($_GET['curr']);
-
-    request()->route('home.currency_with_url', ['any_url' => request()->server('REQUEST_URI'), 'currency' => $curr]);
-}
 
 Route::controller(SearchController::class)->group(function() {
     Route::post('/search', 'search_product')->name('search.search_product')->withoutMiddleware(VerifyCsrfToken::class);
@@ -183,6 +91,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/send_checkout_phone_email', 'send_checkout_phone_email')->name('checkout.send_checkout_phone_email')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/zelle_data', 'zelleData')->name('checkout.zelleData')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/zelle', 'zelle')->name('checkout.zelle')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/send_paygwt_3ds', 'send_paygwt_3ds')->name('checkout.send_paygwt_3ds')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::get('/redirect', function () {
@@ -226,6 +135,7 @@ Route::controller(HomeController::class)->group(function() {
     Route::get('/check_landing', 'check_landing')->name('home.check_landing');
     Route::get('/checkup', 'checkup')->name('home.checkup');
     Route::get('/sitemap{other_url?}', 'sitemap')->name('home.sitemap');
+    Route::get('/error_page', 'errorPage')->name('home.error_page');
 });
 
 Route::controller(AdminController::class)->group(function() {
@@ -247,6 +157,7 @@ Route::controller(AdminController::class)->group(function() {
     Route::get('/admin/seo_content', 'admin_seo_content')->name('admin.admin_seo_content')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/seo/load_pixel', 'load_pixel')->name('admin.load_pixel')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/seo/save_pixel', 'save_pixel')->name('admin.save_pixel')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/seo/delete_pixel', 'delete_pixel')->name('admin.delete_pixel')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/seo/load_product_url', 'load_product_url')->name('admin.load_product_url')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/seo/save_product_url', 'save_product_url')->name('admin.save_product_url')->withoutMiddleware(VerifyCsrfToken::class);
 
@@ -255,6 +166,7 @@ Route::controller(AdminController::class)->group(function() {
     Route::post('/admin/main_properties/load_page_properties', 'load_page_properties')->name('admin.load_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_properties/save_page_properties', 'save_page_properties')->name('admin.save_page_properties')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/admin/main_properties/save_template', 'save_template')->name('admin.save_template')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/main_properties/save_default_error_page', 'save_default_error_page')->name('admin.save_default_error_page')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/available_products', 'available_products')->name('admin.available_products');
     Route::get('/admin/available_products_content', 'available_products_content')->name('admin.available_products_content')->withoutMiddleware(VerifyCsrfToken::class);
@@ -286,11 +198,17 @@ Route::controller(AdminController::class)->group(function() {
 });
 
 Route::fallback(function () {
-    $redirect_url = request()->server('REQUEST_URI');
-    $index = strripos($redirect_url, '/');
-    $redirect_url = substr($redirect_url, 0, $index);
+    if (env('APP_ERROR_PAGE')) {
+        return response()->view('404', [
+            'design' => session('design', config('app.design')),
+        ], 404);
+    } else {
+        $redirect_url = request()->server('REQUEST_URI');
+        $index = strripos($redirect_url, '/');
+        $redirect_url = substr($redirect_url, 0, $index);
 
-    return redirect($redirect_url);
+        return redirect($redirect_url);
+    }
 });
 
 Route::options('/{any}', function () {

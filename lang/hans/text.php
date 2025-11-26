@@ -627,7 +627,15 @@ return [
 
     "checkout_zelle_order" => "订单号：",
     "checkout_zelle_continue" => "继续",
+    "checkout_zelle_recipient" => "收件人:",
 
     "common_per_pill" => "每片",
     "subscribe_full_text" => "订阅特别优惠和新闻",
+
+    "checkout_crypto_search" => "搜索",
+    "checkout_crypto_select" => "选择",
+    "checkout_crypto_select_currency" => "选择加密货币",
+
+    "admin_renewal_shop" => "更新商店",
+    "admin_renewal_database" => "更新数据库",
 ];

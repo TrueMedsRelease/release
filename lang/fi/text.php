@@ -628,7 +628,15 @@ return [
 
     "checkout_zelle_order" => "Tilausnumero:",
     "checkout_zelle_continue" => "Jatka",
+    "checkout_zelle_recipient" => "Vastaanottaja:",
 
     "common_per_pill" => "Tablettia kohti",
     "subscribe_full_text" => "Tilaa erikoistarjoukset ja uutiset",
+
+    "checkout_crypto_search" => "Etsi",
+    "checkout_crypto_select" => "Valitse",
+    "checkout_crypto_select_currency" => "Valitse kryptovaluutta",
+
+    "admin_renewal_shop" => "Päivitä kauppa",
+    "admin_renewal_database" => "Päivitä tietokanta",
 ];

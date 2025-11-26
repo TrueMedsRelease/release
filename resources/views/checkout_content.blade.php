@@ -28,17 +28,31 @@
 
         $phone_arr = [$target_key => $target_value] + $phone_arr;
     }
+
+    if (!function_exists('asset_ver')) {
+        function asset_ver(string $path): string {
+            static $mtimes = [];
+            $full = public_path($path);
+            if (!isset($mtimes[$path])) {
+                $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+            }
+            $url = asset($path);
+            $v = $mtimes[$path] ?? time();
+            return $url . '?v=' . $v;
+        }
+    }
 @endphp
 <header class="header">
     {{-- <div class="christmas" style="display: none">
         <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
         <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
         <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big_v2.png") }}">
+        <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
     </div> --}}
     <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
     <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
     <input type="hidden" id="app_sepa_on" @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"])) value="1" @else value="0" @endif>
-    <input type="hidden" id="app_zelle_on" @if(env('APP_ZELLE_ON', 0) && in_array(session('location.country'), ["US"])) value="1" @else value="0" @endif>
+    <input type="hidden" id="app_zelle_on" @if(env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US")) value="1" @else value="0" @endif>
     <div class="header__phones-top top-phones-header">
         <div class="top-phones-header__container header__container">
             <div class="top-phones-header__items">
@@ -595,12 +609,15 @@
                     <h2 class="enter-info__title title">{{__('text.checkout_payment')}}</h2>
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
-                            <div class="enter-info__line">
+                            {{-- <div class="enter-info__line"> --}}
                                 <div class="enter-info__select card_type poopup">
                                     <input required type="hidden"
                                         value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
                                     <select name="payment_type" class="form" id="payment_type_select"
                                         data-pseudo-label="{{__('text.checkout_type')}}">
+                                        @if(env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                            <option value="zelle" @selected(session('form.payment_type', 'card') == 'zelle')>ZELLE</option>
+                                        @endif
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
                                         @if($service_enable)<option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>@endif
                                         @if(env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
@@ -609,9 +626,6 @@
                                         @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
                                             <option value="sepa" @selected(session('form.payment_type', 'card') == 'sepa')>SEPA</option>
                                         @endif
-                                        @if(env('APP_ZELLE_ON', 0) && in_array(session('location.country'), ["US"]))
-                                            <option value="zelle" @selected(session('form.payment_type', 'card') == 'zelle')>ZELLE</option>
-                                        @endif
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif --}}
@@ -619,7 +633,31 @@
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
                                 </div>
-                            </div>
+                                <div class="wrap select_crypt_currency" @if (session('form.payment_type', 'card') != 'crypto') hidden @endif>
+                                    <div class="token-select" id="tokenSelect" aria-haspopup="listbox">
+                                        <button class="select__toggle" type="button" aria-expanded="false">
+                                            <div class="toggle-text">
+                                                <span class="caption">{{ __('text.checkout_crypto_select_currency') }}</span>
+                                                <span class="value">{{ __('text.checkout_crypto_select') }}</span>
+                                            </div>
+                                            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </button>
+                                        <div class="select__menu" hidden>
+                                            <div class="search">
+                                                <label class="sr-only" for="selectSearch">{{ __('text.checkout_crypto_search') }}</label>
+                                                <input id="selectSearch" type="text" placeholder="{{ __('text.checkout_crypto_search') }}" autocomplete="off" />
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                                </svg>
+                                            </div>
+                                            <ul class="options" role="listbox"></ul>
+                                        </div>
+                                        <input type="hidden" name="crypto_currency" />
+                                    </div>
+                                </div>
+                            {{-- </div> --}}
                         </div>
                         <div class="enter-info__card-content" @if (session('form.payment_type', 'card') != 'card') hidden @endif>
                             <div class="enter-info__row">
@@ -682,23 +720,8 @@
                             </button>
                         </div>
                         <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'card') != 'crypto') hidden @endif>
-                            <input type="hidden" id="pay_yes" value="0">
-                            <input type="hidden" id="invoiceId" value="">
-                            <div class="info_text_crypto" style="line-height: 24px">
-                                <div>{{__('text.checkout_crypto_text_1')}}</div>
-                                <div>{{__('text.checkout_crypto_text_2')}}</div>
-                                <ul style="padding-left: 40px; line-height: 24px">
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_0')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_1')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_2')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_3')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_4')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_5')}}</li>
-                                    <li style="list-style: disc">{{__('text.checkout_crypto_li_6')}}</li>
-                                </ul>
-                            </div>
                             <div class="content-crypto">
-                                <div class="content-crypto__items">
+                                {{-- <div class="content-crypto__items">
                                     <div class="content-crypto__item">
                                         <input id="cr_01" @checked(session('crypto.currency', '') == 'ETH_ETHEREUM') value="ETH_ETHEREUM" type="radio"
                                             name="crypt_currency">
@@ -794,8 +817,8 @@
                                             <span>TON</span>
                                         </label>
                                     </div>
-                                    {{-- <div class="content-crypto__item">
-                                           <input id="cr_09" @checked(session('crypto.currency', '') == 'BUSD_BSC') value="BUSD_BSC" type="radio" name="crypt_currency">
+                                    <div class="content-crypto__item">
+                                        <input id="cr_09" @checked(session('crypto.currency', '') == 'BUSD_BSC') value="BUSD_BSC" type="radio" name="crypt_currency">
                                         <label class="content-crypto__label" for="cr_08">
                                             <svg width="40" height="40">
                                                 <use
@@ -804,7 +827,22 @@
                                             </svg>
                                             <span>Binance USD</span>
                                         </label>
-                                    </div> --}}
+                                    </div>
+                                </div> --}}
+                                <input type="hidden" id="pay_yes" value="0">
+                                <input type="hidden" id="invoiceId" value="">
+                                <div class="info_text_crypto" id="info_text_crypto" style="line-height: 24px" hidden>
+                                    <div>{{__('text.checkout_crypto_text_1')}}</div>
+                                    <div>{{__('text.checkout_crypto_text_2')}}</div>
+                                    <ul style="padding-left: 40px; line-height: 24px">
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_0')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_1')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_2')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_3')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_4')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_5')}}</li>
+                                        <li style="list-style: disc">{{__('text.checkout_crypto_li_6')}}</li>
+                                    </ul>
                                 </div>
                                 <div style="text-align: center;" id="requisites_load" hidden>
                                     <img loading="lazy" src="{{ asset('style_checkout/images/loading.gif') }}">
@@ -1057,16 +1095,37 @@
                             </div>
                         @endif
 
-                        @if (env('APP_ZELLE_ON', 0) == 1 && in_array(session('location.country'), ["US"]))
+                        @if (env('APP_ZELLE_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
                             <div class="enter-info__zelle-content"  @if (session('form.payment_type', 'card') != 'zelle') hidden @endif>
                                 <div class="content-zelle">
                                     <div id="zelle_requisites" @if (empty(session('zelle'))) hidden @endif>
                                         <div class="details-payment__rows" style="margin-bottom: 30px;">
                                             <div class="details-payment__row">
+                                                <div class="details-payment__data" style="line-height: 2">
+                                                    <p>{{ __('text.checkout_zelle_steps') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step1') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step2') }}</p>
+                                                    <p>
+                                                        {{ __('text.checkout_zelle_step3') }} <span id='zelle_email_text'></span>.
+                                                        <ul style="margin-left: 45px">
+                                                            <li style="list-style: disc">{{ __('text.checkout_zelle_step31') }} <span id="zelle_recipient_text"></span>.</li>
+                                                            <li style="list-style: disc">{{ __('text.checkout_zelle_step32') }}</li>
+                                                        </ul>
+                                                    </p>
+                                                    <p>{{ __('text.checkout_zelle_step4') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step5') }} <span>{{ session('total.checkout_total', 0)}}</span> USD.</p>
+                                                    <p>{{ __('text.checkout_zelle_step61') }} <span id="zelle_orderId_text"></span> {{ __('text.checkout_zelle_step62') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step7') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step8') }}</p>
+                                                    <p>{{ __('text.checkout_zelle_step9') }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">Zelle {{ __('text.contact_us_name') }}:</h3>
+                                                    {{-- <h3 class="details-payment__title">Zelle {{ __('text.contact_us_name') }}:</h3> --}}
+                                                    <h3 class="details-payment__title">{{ __('text.checkout_zelle_recipient') }}</h3>
                                                     <div class="details-payment__cells">
-                                                        <span id="zelle_name" class="details-payment__amount">{{ session('zelle.name', '') }}</span>
+                                                        <span id="zelle_recipient" class="details-payment__amount">{{ session('zelle.recipient', '') }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -1087,7 +1146,8 @@
                                             </div>
                                             <div class="details-payment__row">
                                                 <div class="details-payment__data">
-                                                    <h3 class="details-payment__title">Zelle {{ __('text.contact_us_email') }}:</h3>
+                                                    {{-- <h3 class="details-payment__title">Zelle {{ __('text.contact_us_email') }}:</h3> --}}
+                                                    <h3 class="details-payment__title">{{ __('text.contact_us_email') }}:</h3>
                                                     <div class="details-payment__cells">
                                                         <span id="zelle_email" class="details-payment__amount">{{ session('zelle.email', '') }}</span>
                                                     </div>
@@ -1136,7 +1196,7 @@
                                                     <h3 class="details-payment__title">{{__('text.checkout_amount')}}:</h3>
                                                     <div class="details-payment__cells">
                                                         <span id="purse"
-                                                            class="details-payment__amount">{{ $Currency::Convert(session('total.checkout_total', 0)) }}</span>
+                                                            class="details-payment__amount">{{ session('total.checkout_total', 0) }}</span>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="details-payment__copy-button">
@@ -1194,7 +1254,7 @@
             </div>
         </form>
     </div>
-    <script src="{{ asset('style_checkout/js/app.js?v=1257') }}"></script>
+    <script src="{{ asset_ver('style_checkout/js/app.js') }}"></script>
 </main>
 <footer class="footer">
     <div class="footer__container">

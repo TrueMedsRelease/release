@@ -12,7 +12,7 @@ return [
     "common_after" => "Compre productos de farmacia baratos online",
     "common_home_main_menu_item" => "Inicio",
     "common_product1" => " personas ",
-    "common_product2" => "are están mirando este producto ahora",
+    "common_product2" => "están mirando este producto ahora",
     "common_cart1" => "Comprado por última vez desde ",
     "common_cart2" => " hace 1 minuto",
     "common_callback" => "Solicitar una devolución de llamada",
@@ -773,7 +773,28 @@ return [
 
     "checkout_zelle_order" => "Número de pedido:",
     "checkout_zelle_continue" => "Continuar",
+    "checkout_zelle_recipient" => "Destinatario:",
+    "checkout_zelle_steps" => "Pasos (en tu app bancaria con Zelle)",
+    "checkout_zelle_step1" => "1. Abre tu app bancaria → ve a Pay/Transfer → Send money with Zelle.",
+    "checkout_zelle_step2" => "2. Toca Add recipient / New contact.",
+    "checkout_zelle_step3" => "3. Introduce el correo electrónico del destinatario ",
+    "checkout_zelle_step31" => "Puedes establecer el nombre para tus registros como ",
+    "checkout_zelle_step32" => "Si tu banco muestra un nombre registrado diferente, detente y verifica con el vendedor.",
+    "checkout_zelle_step4" => "4. Selecciona al destinatario → toca Send.",
+    "checkout_zelle_step5" => "5. Introduce el monto de ",
+    "checkout_zelle_step61" => "6. En el campo Memo/Note/Message, escribe: ",
+    "checkout_zelle_step62" => " (para que el vendedor pueda asociar tu pago).",
+    "checkout_zelle_step7" => "7. Verifica el correo y el monto → confirma la transferencia (Send/Confirm).",
+    "checkout_zelle_step8" => "8. Guarda o haz una captura del recibo o del ID de la transacción.",
+    "checkout_zelle_step9" => "9. Regresa a la página del pedido y haz clic en “He pagado”.",
 
     "common_per_pill" => "Por pastilla",
     "subscribe_full_text" => "Suscríbete a ofertas especiales y noticias",
+
+    "checkout_crypto_search" => "Buscar",
+    "checkout_crypto_select" => "Seleccionar",
+    "checkout_crypto_select_currency" => "Seleccionar criptomoneda",
+
+    "admin_renewal_shop" => "Actualizar la tienda",
+    "admin_renewal_database" => "Actualizar la base de datos",
 ];

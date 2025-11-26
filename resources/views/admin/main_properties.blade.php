@@ -69,6 +69,51 @@
                 </div>
             </form>
         </div>
+        <div class="parked-domains__col">
+            <form name="default_error_page_block" id="default_error_page_block" method="POST">
+                <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
+                    <tbody style="display: flex; gap: 15px; flex-direction: column;">
+                        <tr style="display:flex; justify-content: space-between; padding-top: 15px; gap: 15px;">
+                            <td style="width: 30%;">
+                                <div>
+                                    Default Error Page
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="default_error_page" id="404_page" value="1" @if (env('APP_ERROR_PAGE', '1') == 1) checked @endif />
+                                    <label for="404_page">
+                                        404 Page
+                                    </label>
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="default_error_page" id="redirect_page" value="0" @if (env('APP_ERROR_PAGE', '1') == 0) checked @endif />
+                                    <label for="redirect_page">
+                                        Redirect to Main Page
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="saveDefaultErrorPage();">
+                                    <span>
+                                        <span>
+                                            {{__('text.admin_currencies_currencies_form_submit')}}
+                                        </span>
+                                        <svg width="20" height="20">
+                                            <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                                        </svg>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -313,6 +313,43 @@ class AdminController extends Controller
         }
     }
 
+    public function delete_pixel(Request $request) {
+        $page = $request->selected_page;
+        $pixel_text = $request->pixel_text['pixel_text'];
+        $has_error = false;
+        $error = [];
+
+        if (empty($page)) {
+            $has_error = true;
+            $error = [
+                'status' => 'error',
+                'text' => 'Empty Page'
+            ];
+        }
+
+        $pixel = DB::select("SELECT * FROM `pixel` WHERE `page` = '$page'");
+
+        if (!$has_error) {
+            if (count($pixel) > 0) {
+                $pixel = $pixel[0];
+                if ($pixel_text == null || $pixel_text == 'null') {
+                    $pixel_text = '';
+                }
+                DB::table('pixel')
+                    ->where('page', '=', $page)
+                    ->update(['pixel' => '']);
+            }
+        }
+
+        if (count($error) > 0) {
+            return response()->json(array('status' => 'error', 'text' => $error['text']));
+        } else {
+
+            Cache::flush();
+            return response()->json(array('status' => 'success', 'url' => route('admin.admin_seo')));
+        }
+    }
+
     public function main_properties() {
         if (!session()->has('logged_in') || !session('logged_in')) {
             return redirect()->route('admin.admin_login');
@@ -1374,6 +1411,15 @@ class AdminController extends Controller
         return response()->json(array('status' => 'success', 'url' => route('admin.admin_checkout')));
     }
 
+    public function save_default_error_page(Request $request) {
+        $default_error_page = $request->default_error_page;
+        $this->envUpdate('APP_ERROR_PAGE', $default_error_page);
+
+        Cache::flush();
+
+        return response()->json(array('status' => 'success', 'url' => route('admin.main_properties')));
+    }
+
     public function save_subscribe_info(Request $request) {
         $popup_status = $request->popup_status;
 
@@ -1435,7 +1481,7 @@ class AdminController extends Controller
 
     public function envUpdate($flag,$value)
     {
-        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON'];
+        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE'];
 
         if (in_array($flag, $allow_flags))
         {

@@ -662,7 +662,15 @@ return [
 
     "checkout_zelle_order" => "Ordernummer:",
     "checkout_zelle_continue" => "Fortsett",
+    "checkout_zelle_recipient" => "Ontvanger:",
 
     "common_per_pill" => "Per pil",
     "subscribe_full_text" => "Abonneer je op speciale aanbiedingen en nieuws",
+
+    "checkout_crypto_search" => "Zoeken",
+    "checkout_crypto_select" => "Selecteren",
+    "checkout_crypto_select_currency" => "Cryptovaluta selecteren",
+
+    "admin_renewal_shop" => "Winkel bijwerken",
+    "admin_renewal_database" => "Database bijwerken",
 ];

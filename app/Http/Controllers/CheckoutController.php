@@ -27,7 +27,7 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        if (empty(session('cart'))) {
+        if (empty(session('cart')) || !session()->has('cart')) {
             return redirect(route('home.index'));
         }
 
@@ -43,7 +43,7 @@ class CheckoutController extends Controller
             foreach ($unsent_order as $order) {
                 if (checkdnsrr('true-serv.net', 'A')) {
                     try {
-                        $response = Http::timeout(3)->post(
+                        $response = Http::timeout(10)->post(
                             'http://true-serv.net/checkout/order.php',
                             json_decode($order->message, true)
                         );
@@ -97,7 +97,7 @@ class CheckoutController extends Controller
 
         if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(5)->post('http://true-serv.net/checkout/order.php', $message);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $message);
                 $response = json_decode($response, true);
 
                 if ($response['status'] == 'success') {
@@ -115,6 +115,10 @@ class CheckoutController extends Controller
             }
         }
 
+        // if (session('location.country') == "US") {
+        //     session(['form.payment_type' => 'zelle']);
+        // }
+
         return view('checkout', [
             'pixel'    => $pixel,
             'Language' => Language::class,
@@ -124,7 +128,7 @@ class CheckoutController extends Controller
 
     public function checkout()
     {
-        if (empty(session('cart'))) {
+        if (empty(session('cart')) || !session()->has('cart')) {
             return redirect(route('home.index'));
         }
 
@@ -302,6 +306,11 @@ class CheckoutController extends Controller
     public function change_country(Request $request)
     {
         Session::put('form.billing_country', $request->billing_country);
+        // if ($request->billing_country == 'US') {
+        //     session(['form.payment_type' => 'zelle']);
+        // } else {
+        //     session(['form.payment_type' => 'card']);
+        // }
 
         return $this->checkout();
     }
@@ -319,7 +328,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -368,7 +377,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -975,7 +984,7 @@ class CheckoutController extends Controller
             'refc'                => session('refc', ''),
             'keyword'             => session('keyword', ''),
             'domain_from'         => request()->getHost(),
-            'total'               => round(session('total.checkout_total'), 2),
+            'total'               => round(session('total.checkout_total') * 0.85, 2),
             'shipping'            => session('cart_option.shipping'),
             'products'            => $products_str,
             'saff'                => session('saff', ''),
@@ -1025,8 +1034,8 @@ class CheckoutController extends Controller
 
     public function complete()
     {
-        if (empty(session('order'))) {
-            return redirect(route('home.index'));
+        if (empty(session('order')) || !session()->has('cart')) {
+            return response()->view('404', ['design' => session('design', config('app.design'))], 404);
         }
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'complete'");
@@ -1046,7 +1055,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1227,7 +1236,7 @@ class CheckoutController extends Controller
                         $order_cache_id = $check_order_cache[0]->id;
                     }
 
-                    $response = Http::post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     $response = json_decode($response, true);
 
@@ -1390,7 +1399,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1536,7 +1545,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1694,7 +1703,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1911,7 +1920,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -2026,8 +2035,8 @@ class CheckoutController extends Controller
                 ),
                 'shipping_zip'       => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
                 'payment_type'       => 'zelle',
-                // 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
-                'ip'                 => '89.187.179.179',
+                'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                // 'ip'                 => '89.187.179.179',
                 'aff'                => session('aff', 0),
                 'ref'                => session('referer', ''),
                 'refc'               => session('refc', ''),
@@ -2063,7 +2072,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test4.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         $response = json_decode($response, true);
@@ -2073,7 +2082,7 @@ class CheckoutController extends Controller
                         } else {
                             session([
                                 'zelle' => [
-                                    'name'    => $response['zelle_name'],
+                                    'recipient'    => $response['zelle_recipient'],
                                     'email'   => $response['zelle_email'],
                                     'orderId' => $response['order_id']
                                 ]
@@ -2111,6 +2120,49 @@ class CheckoutController extends Controller
             return response()->json(['status' => 'success']);
         } else {
             return response()->json(['status' => 'error', 'text' => 'Order ID is empty']);
+        }
+    }
+
+    public function send_paygwt_3ds(Request $request) {
+        $fl_sid = $request->fl_sid;
+        $wauuid = $request->wauuid;
+        $sessid = session()->getId();
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $data = [
+            'method' => 'send_paygwt_3ds',
+            'api_key' => $api_key->key_data,
+            'order_id' => session('order.order_id'),
+            'aff_paygwt' => session('aff'),
+            'fl_sid' => $fl_sid,
+            'wauuid' => $wauuid,
+            'sessid' => $sessid
+        ];
+
+        if (checkdnsrr('true-serv.net', 'A')) {
+            try {
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+
+                if ($response->successful()) {
+                    $response = json_decode($response, true);
+
+                    if ($response['status'] == 'ERROR') {
+                        return response()->json(['response' => $response], 400);
+                    } else {
+                        return response()->json(['response' => $response], 200);
+                    }
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (\Illuminate\Http\Client\RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
         }
     }
 }

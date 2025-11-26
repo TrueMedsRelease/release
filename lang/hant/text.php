@@ -623,7 +623,15 @@ return  [
 
     "checkout_zelle_order" => "訂單號碼：",
     "checkout_zelle_continue" => "繼續",
+    "checkout_zelle_recipient" => "收件者:",
 
     "common_per_pill" => "每顆",
     "subscribe_full_text" => "訂閱特別優惠和新聞",
+
+    "checkout_crypto_search" => "搜尋",
+    "checkout_crypto_select" => "選擇",
+    "checkout_crypto_select_currency" => "選擇加密貨幣",
+
+    "admin_renewal_shop" => "更新商店",
+    "admin_renewal_database" => "更新資料庫",
 ];

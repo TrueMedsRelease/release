@@ -622,7 +622,15 @@ return [
 
     "checkout_zelle_order" => "Ordernummer:",
     "checkout_zelle_continue" => "Fortsätt",
+    "checkout_zelle_recipient" => "Mottagare:",
 
     "common_per_pill" => "Per tablett",
     "subscribe_full_text" => "Prenumerera på specialerbjudanden och nyheter",
+
+    "checkout_crypto_search" => "Sök",
+    "checkout_crypto_select" => "Välj",
+    "checkout_crypto_select_currency" => "Välj kryptovaluta",
+
+    "admin_renewal_shop" => "Uppdatera butiken",
+    "admin_renewal_database" => "Uppdatera databasen",
 ];

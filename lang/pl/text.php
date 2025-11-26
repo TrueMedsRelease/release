@@ -623,7 +623,15 @@ return [
 
     "checkout_zelle_order" => "Numer zamówienia:",
     "checkout_zelle_continue" => "Kontynuuj",
+    "checkout_zelle_recipient" => "Odbiorca:",
 
     "common_per_pill" => "Za tabletkę",
     "subscribe_full_text" => "Zapisz się na oferty specjalne i wiadomości",
+
+    "checkout_crypto_search" => "Szukaj",
+    "checkout_crypto_select" => "Wybierz",
+    "checkout_crypto_select_currency" => "Wybierz kryptowalutę",
+
+    "admin_renewal_shop" => "Zaktualizuj sklep",
+    "admin_renewal_database" => "Zaktualizuj bazę danych",
 ];

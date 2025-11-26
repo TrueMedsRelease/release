@@ -260,7 +260,11 @@ class HomeController extends Controller
         // }
 
         if (empty($products)) {
-            return redirect(route('home.index'));
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -343,7 +347,11 @@ class HomeController extends Controller
         $products      = ProductServices::GetCategoriesWithProducts($design, $category);
 
         if (empty($products)) {
-            return redirect(route('home.index'));
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
 
         $first_letters = ProductServices::getFirstLetters();
@@ -436,7 +444,11 @@ class HomeController extends Controller
         $agent           = new Agent();
 
         if (empty($products)) {
-            return redirect(route('home.index'));
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -509,7 +521,11 @@ class HomeController extends Controller
                 ->toArray();
 
             if (empty($product_name_begin) || !isset($product_name_begin[0])) {
-                return redirect()->route('home.index');
+                if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
             }
 
             $product = $product_name_begin[0]->url;
@@ -548,7 +564,11 @@ class HomeController extends Controller
         $product     = ProductServices::GetProductInfoByUrl($product, $design);
 
         if (empty($product['packs'])) {
-            return redirect()->route('home.index');
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
 
         // if (!is_null($statisticPromise)) {
@@ -556,7 +576,11 @@ class HomeController extends Controller
         // }
 
         if (!$product) {
-            return redirect()->route('home.index');
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
         }
 
         $first_letters = ProductServices::getFirstLetters();
@@ -2060,7 +2084,6 @@ class HomeController extends Controller
             'codes'           => json_encode($codes),
         ]);
     }
-
     public function sitemap(): View
     {
         // $statisticPromise = StatisticService::SendStatistic('sitemap');
@@ -2123,6 +2146,13 @@ class HomeController extends Controller
             'domain'          => $domain,
             'web_statistic'   => $web_statistic,
             'codes'           => json_encode($codes),
+        ]);
+    }
+    public function errorPage() {
+        $design = session('design') ? session('design') : config('app.design');
+
+        return view('404', [
+            'design' => $design,
         ]);
     }
 }

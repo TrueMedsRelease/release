@@ -16,7 +16,7 @@
 		<div class="order__line">
 			<div class="order__row">
 				<div class="order__package" id="{{ $product['product_id'] }}">
-					{{ $product['pack_name'] }}
+					{{ $product['name'] }}
                     @if (!in_array($product['product_id'], [616, 619, 620, 483, 484, 501, 615]))
                         {{$product['dosage_name']}}
                     @endif

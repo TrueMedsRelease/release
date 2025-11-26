@@ -154,7 +154,11 @@ class SessionParameterHandler
                     CartController::add_pack($pack_id);
                     return redirect(route('cart.index'));
                 } else {
-                    return redirect(route('home.index'));
+                    if (env('APP_ERROR_PAGE')) {
+                        return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+                    } else {
+                        return redirect(route('home.index'));
+                    }
                 }
             }
 
