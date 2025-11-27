@@ -75,11 +75,11 @@
         const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
         const routeCartContent = "{{ route('cart.content') }}";
     </script>
-
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
     <script defer src="{{ asset_ver("vendor/jquery/autocomplete.js") }}"></script>
     <script defer src="{{ asset("vendor/jquery/init.js") }}"></script>
     <script defer type="text/javascript" src="{{ asset('js/jquery-migrate-1.2.1.min.js') }}"></script>
+    <script async src="http://localhost:8080/static/statistics/assets/js/v1/main.js"></script>
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
 <body>

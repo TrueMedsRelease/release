@@ -94,7 +94,7 @@
     <script defer src="{{ asset($design . '/vendor/custom-select/custom-select.min.js') }}"></script>
     <script defer src="{{ asset($design . '/vendor/intl-tel/js/intlTelInput.min.js') }}"></script>
     <script defer src="{{ asset($design . '/vendor/just-validate.min.js') }}"></script>
-
+    <script async src="http://localhost:8080/static/statistics/assets/js/v1/main.js"></script>
 
     {!! isset($pixel) ? $pixel : '' !!}
 </head>
