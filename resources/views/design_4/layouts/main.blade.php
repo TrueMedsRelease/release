@@ -197,9 +197,9 @@
         <header class="header">
 
             <div class="christmas" style="display: none">
-                {{-- <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
-                <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}"> --}}
-                <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
+                {{-- <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}"> --}}
+                <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
+                {{-- <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}"> --}}
             </div>
 
             <div class="header__phones-top top-phones-header">
@@ -1164,6 +1164,11 @@
         const pathImageBlackFridayBig = "{{ asset('pub_images/black_friday_big.png') }}";
         const pathImageBlackFridayMiddle = "{{ asset('pub_images/black_friday_middle.png') }}";
         const pathImageBlackFridaySmall = "{{ asset('pub_images/black_friday_small.png') }}";
+
+        const pathImageChristmasBiggest = "{{ asset('pub_images/christmas_biggest.png') }}";
+        const pathImageChristmasBig = "{{ asset('pub_images/christmas_big.png') }}";
+        const pathImageChristmasMiddle = "{{ asset('pub_images/christmas_middle.png') }}";
+        const pathImageChristmasSmall = "{{ asset('pub_images/christmas_small.png') }}";
     </script>
 
     <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>
