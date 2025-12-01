@@ -80,6 +80,11 @@
         const pathImageBlackFridayBig = "{{ asset('pub_images/black_friday_big.png') }}";
         const pathImageBlackFridayMiddle = "{{ asset('pub_images/black_friday_middle.png') }}";
         const pathImageBlackFridaySmall = "{{ asset('pub_images/black_friday_small.png') }}";
+
+        const pathImageChristmasBiggest = "{{ asset('pub_images/christmas_biggest.png') }}";
+        const pathImageChristmasBig = "{{ asset('pub_images/christmas_big.png') }}";
+        const pathImageChristmasMiddle = "{{ asset('pub_images/christmas_middle.png') }}";
+        const pathImageChristmasSmall = "{{ asset('pub_images/christmas_small.png') }}";
     </script>
 </head>
 <body>
