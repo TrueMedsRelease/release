@@ -85,6 +85,11 @@
         const pathImageChristmasBig = "{{ asset('pub_images/christmas_big.png') }}";
         const pathImageChristmasMiddle = "{{ asset('pub_images/christmas_middle.png') }}";
         const pathImageChristmasSmall = "{{ asset('pub_images/christmas_small.png') }}";
+
+        const pathImageNewYearBiggest = "{{ asset('pub_images/new_year_biggest.png') }}";
+        const pathImageNewYearBig = "{{ asset('pub_images/new_year_big.png') }}";
+        const pathImageNewYearMiddle = "{{ asset('pub_images/new_year_middle.png') }}";
+        const pathImageNewYearSmall = "{{ asset('pub_images/new_year_small.png') }}";
     </script>
 </head>
 <body>
