@@ -518,16 +518,16 @@ class CheckoutController extends Controller
                     'price'          => $product['price'],
                     'is_ed_category' => false
                 ];
-                $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
-            if (session('cart_option.bonus_id') != 0) {
-                $products[session('cart_option.bonus_id')] = [
-                    'qty'            => 1,
-                    'price'          => session('cart_option.bonus_price'),
-                    'is_ed_category' => false
-                ];
-            }
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
 
             $products_str = json_encode($products);
 
@@ -601,12 +601,25 @@ class CheckoutController extends Controller
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
                 'coupon'             => session('coupon.coupon', ''),
-                'bonus'              => '',
+                'bonus'              => session('cart_option.bonus_id', 0),
                 'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
                 'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
                 'coupon_discount'    => session('total.coupon_discount'),
-                'sessid'             => $sessid
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
             ];
 
             session(['data' => $data]);
@@ -623,7 +636,6 @@ class CheckoutController extends Controller
             } else {
                 $order_cache_id = $check_order_cache[0]->id;
             }
-
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
@@ -702,13 +714,13 @@ class CheckoutController extends Controller
                 $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
-            if (session('cart_option.bonus_id') != 0) {
-                $products[session('cart_option.bonus_id')] = [
-                    'qty'            => 1,
-                    'price'          => session('cart_option.bonus_price'),
-                    'is_ed_category' => false
-                ];
-            }
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
 
             $products_str = json_encode($products);
 
@@ -776,12 +788,25 @@ class CheckoutController extends Controller
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
                 'coupon'             => session('coupon.coupon', ''),
-                'bonus'              => '',
+                'bonus'              => session('cart_option.bonus_id', 0),
                 'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
                 'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
                 'coupon_discount'    => session('total.coupon_discount'),
-                'sessid'             => $sessid
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
             ];
 
             session(['data' => $data]);
@@ -932,13 +957,13 @@ class CheckoutController extends Controller
             $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
         }
 
-        if (session('cart_option.bonus_id') != 0) {
-            $products[session('cart_option.bonus_id')] = [
-                'qty'            => 1,
-                'price'          => session('cart_option.bonus_price'),
-                'is_ed_category' => false
-            ];
-        }
+        // if (session('cart_option.bonus_id') != 0) {
+        //     $products[session('cart_option.bonus_id')] = [
+        //         'qty'            => 1,
+        //         'price'          => session('cart_option.bonus_price'),
+        //         'is_ed_category' => false
+        //     ];
+        // }
 
         $products_str = json_encode($products);
 
@@ -996,12 +1021,25 @@ class CheckoutController extends Controller
             'store_skin'         => config('app.design'),
             'recurring_period'   => 0,
             'coupon'             => session('coupon.coupon', ''),
-            'bonus'              => '',
+            'bonus'              => session('cart_option.bonus_id', 0),
             'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
             'gift_card_discount' => 0, //session('total.coupon_discount', 0),
             'theme'              => 13,
             'coupon_discount'    => session('total.coupon_discount'),
-            'sessid'             => $sessid
+            'sessid'             => $sessid,
+            'browser_details' => [
+                'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                'browser_language' => $request->browser_details['browser_language'] ?? '',
+                'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                'browser_user_agent' => $request->userAgent(),
+                'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                'window_height' => $request->browser_details['window_height'] ?? '',
+                'window_width' => $request->browser_details['window_width'] ?? '',
+            ],
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
@@ -1119,15 +1157,15 @@ class CheckoutController extends Controller
                                 $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
                             }
 
-                            if (session('cart_option.bonus_id') != 0) {
-                                $products[session('cart_option.bonus_id')] = [
-                                    'qty'            => 1,
-                                    'price'          => session(
-                                        'cart_option.bonus_price'
-                                    ),
-                                    'is_ed_category' => false
-                                ];
-                            }
+                            // if (session('cart_option.bonus_id') != 0) {
+                            //     $products[session('cart_option.bonus_id')] = [
+                            //         'qty'            => 1,
+                            //         'price'          => session(
+                            //             'cart_option.bonus_price'
+                            //         ),
+                            //         'is_ed_category' => false
+                            //     ];
+                            // }
 
                             $products_str = json_encode($products);
 
@@ -1208,7 +1246,7 @@ class CheckoutController extends Controller
                                 'store_skin'          => config('app.design'),
                                 'recurring_period'    => 0,
                                 'coupon'              => session('coupon.coupon', ''),
-                                'bonus'               => '',
+                                'bonus'              => session('cart_option.bonus_id', 0),
                                 'gift_card_code'      => '', //session('gift_card.gift_card_code', ''),
                                 'gift_card_discount'  => 0, //session('total.coupon_discount', 0),
                                 'theme'               => 13,
@@ -1314,13 +1352,13 @@ class CheckoutController extends Controller
                 $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
-            if (session('cart_option.bonus_id') != 0) {
-                $products[session('cart_option.bonus_id')] = [
-                    'qty'            => 1,
-                    'price'          => session('cart_option.bonus_price'),
-                    'is_ed_category' => false
-                ];
-            }
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
 
             $products_str = json_encode($products);
 
@@ -1381,12 +1419,25 @@ class CheckoutController extends Controller
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
                 'coupon'             => session('coupon.coupon', ''),
-                'bonus'              => '',
+                'bonus'              => session('cart_option.bonus_id', 0),
                 'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
                 'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
                 'coupon_discount'    => session('total.coupon_discount'),
-                'sessid'             => $sessid
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -1441,13 +1492,13 @@ class CheckoutController extends Controller
             $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
         }
 
-        if (session('cart_option.bonus_id') != 0) {
-            $products[session('cart_option.bonus_id')] = [
-                'qty'            => 1,
-                'price'          => session('cart_option.bonus_price'),
-                'is_ed_category' => false
-            ];
-        }
+        // if (session('cart_option.bonus_id') != 0) {
+        //     $products[session('cart_option.bonus_id')] = [
+        //         'qty'            => 1,
+        //         'price'          => session('cart_option.bonus_price'),
+        //         'is_ed_category' => false
+        //     ];
+        // }
 
         $products_str = json_encode($products);
         $api_key      = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
@@ -1511,12 +1562,25 @@ class CheckoutController extends Controller
             'store_skin'         => config('app.design'),
             'recurring_period'   => 0,
             'coupon'             => session('coupon.coupon', ''),
-            'bonus'              => '',
+            'bonus'              => session('cart_option.bonus_id', 0),
             'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
             'gift_card_discount' => 0, //session('total.coupon_discount', 0),
             'theme'              => 13,
             'coupon_discount'    => session('total.coupon_discount'),
-            'sessid'             => $sessid
+            'sessid'             => $sessid,
+            'browser_details' => [
+                'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                'browser_language' => $request->browser_details['browser_language'] ?? '',
+                'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                'browser_user_agent' => $request->userAgent(),
+                'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                'window_height' => $request->browser_details['window_height'] ?? '',
+                'window_width' => $request->browser_details['window_width'] ?? '',
+            ],
         ];
 
         session(['data' => $data]);
@@ -1616,13 +1680,13 @@ class CheckoutController extends Controller
                 $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
-            if (session('cart_option.bonus_id') != 0) {
-                $products[session('cart_option.bonus_id')] = [
-                    'qty'            => 1,
-                    'price'          => session('cart_option.bonus_price'),
-                    'is_ed_category' => false
-                ];
-            }
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
 
             $products_str = json_encode($products);
 
@@ -1683,12 +1747,25 @@ class CheckoutController extends Controller
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
                 'coupon'             => session('coupon.coupon', ''),
-                'bonus'              => '',
+                'bonus'              => session('cart_option.bonus_id', 0),
                 'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
                 'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
                 'coupon_discount'    => session('total.coupon_discount'),
-                'sessid'             => $sessid
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -1754,13 +1831,13 @@ class CheckoutController extends Controller
                 $sessid = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
-            if (session('cart_option.bonus_id') != 0) {
-                $products[session('cart_option.bonus_id')] = [
-                    'qty'            => 1,
-                    'price'          => session('cart_option.bonus_price'),
-                    'is_ed_category' => false
-                ];
-            }
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
 
             $products_str = json_encode($products);
 
@@ -1828,12 +1905,25 @@ class CheckoutController extends Controller
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
                 'coupon'             => session('coupon.coupon', ''),
-                'bonus'              => '',
+                'bonus'              => session('cart_option.bonus_id', 0),
                 'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
                 'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
                 'coupon_discount'    => session('total.coupon_discount'),
-                'sessid'             => $sessid
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
             ];
 
             session(['data' => $data]);
@@ -1982,13 +2072,13 @@ class CheckoutController extends Controller
                 $sessid                        = !empty($product['cart_id']) ? $product['cart_id'] : '';
             }
 
-            if (session('cart_option.bonus_id') != 0) {
-                $products[session('cart_option.bonus_id')] = [
-                    'qty'            => 1,
-                    'price'          => session('cart_option.bonus_price'),
-                    'is_ed_category' => false
-                ];
-            }
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
 
             $products_str = json_encode($products);
 
@@ -2048,12 +2138,25 @@ class CheckoutController extends Controller
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
                 'coupon'             => session('coupon.coupon', ''),
-                'bonus'              => '',
+                'bonus'              => session('cart_option.bonus_id', 0),
                 'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
                 'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
                 'coupon_discount'    => session('total.coupon_discount'),
-                'sessid'             => $sessid
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
