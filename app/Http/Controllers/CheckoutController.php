@@ -1070,6 +1070,8 @@ class CheckoutController extends Controller
             return response()->view('404', ['design' => session('design', config('app.design'))], 404);
         }
 
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'complete'");
         $pixel  = "";
         foreach ($pixels as $item) {
@@ -1088,6 +1090,40 @@ class CheckoutController extends Controller
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (\Illuminate\Http\Client\ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (\Illuminate\Http\Client\RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            }
+        }
+
+        if (isset($_GET['order_id']) || isset($_GET['cres'])) {
+
+            if (isset($_GET['order_id'])) {
+                $id   = isset($_GET['order_id']) ? $_GET['order_id'] : 0;
+                $data = [
+                    'method' => 'usa_reorder_complete',
+                    'transaction_id' => $id,
+                    'order_id' => isset($_GET['our_order_id']) ? $_GET['our_order_id'] : session('order.order_id'),
+                    'api_key' => $api_key->key_data
+                ];
+            }
+            
+            if (checkdnsrr('true-serv.net', 'A')) {
+                try {
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test5.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
