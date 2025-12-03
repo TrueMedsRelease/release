@@ -34,8 +34,9 @@ class SetCookiesForStatistics
             'tm_initial_referrer' => $initialReferrer,
             'tm_visit_data'       => json_encode([
                 'visit_id'  => $visitData['visit_id'],
-                'signature' => $visitData['signature']
-            ]),
+                'signature' => $visitData['signature'],
+                'is_uniq'   => $visitData['is_uniq']
+            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
         ];
 
         $response = $next($request);
@@ -49,9 +50,9 @@ class SetCookiesForStatistics
                     value: $value,
                     minutes: $minutes,
                     path: '/',
-                    secure: true,
+                    secure: config('session.secure'),
                     httpOnly: false, // false = JavaScript can read cookie
-                    sameSite: 'lax'
+                    sameSite: config('session.same_site', 'lax')
                 );
 
                 $response->headers->setCookie($cookie);
@@ -71,17 +72,17 @@ class SetCookiesForStatistics
     private function getAffiliateId(Request $request)
     {
         $aff = $request->query('aff');
-        if ($aff) {
+        if ($aff !== null && $aff !== '') {
             return $aff;
         }
 
         $aff = $request->cookie('AFF_ID');
-        if ($aff) {
+        if ($aff !== null && $aff !== '') {
             return $aff;
         }
 
         $aff = $request->cookie('js_stat_aff_id');
-        if ($aff) {
+        if ($aff !== null && $aff !== '') {
             return $aff;
         }
 

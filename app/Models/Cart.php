@@ -21,7 +21,7 @@ class Cart extends Model
         $upgrade_pack   = ProductServices::GetUpgradePack($pack_id);
         $max_pill_price = ProductServices::GetMaxPriceForPill($product_pack->product_id, $product_pack->dosage);
         $product        = [
-            'cart_id'        => SessionHelper::getVisitId(request()),
+            'cart_id'        => SessionHelper::getSessionId(request()),
             'pack_id'        => $product_pack->id,
             'product_id'     => $product_pack->product_id,
             'dosage'         => $product_pack->dosage,
@@ -126,7 +126,7 @@ class Cart extends Model
         $upgrade_pack   = ProductServices::GetUpgradePack($product_pack['id']);
         $max_pill_price = ProductServices::GetMaxPriceForPill($product_pack['product_id'], $product_pack['dosage']);
         $product        = [
-            'cart_id'        => SessionHelper::getVisitId(request()),
+            'cart_id'        => SessionHelper::getSessionId(request()),
             'pack_id'        => $product_pack['id'],
             'product_id'     => $product_pack['product_id'],
             'dosage'         => $product_pack['dosage'],

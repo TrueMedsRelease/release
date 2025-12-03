@@ -44,7 +44,7 @@ class SessionHelper
         $visitId = session('tm_visit_id');
         if (empty($visitId) || !self::isValidUuid($visitId)) {
             $visitData = static::computeVisitId($request);
-            $visitId = $visitData['visit_id'];
+            $visitId   = $visitData['visit_id'];
         }
 
         return $visitId;
@@ -82,7 +82,7 @@ class SessionHelper
     public static function currentAttributionSignature(Request $request): string
     {
         $parts = [
-            self::getParamWithCookieFallback($request, 'aff', 'js_stat_aff_id', ''),
+            self::getParamWithCookieFallback($request, 'aff', 'js_stat_aff_id', config('app.aff')),
             self::getParamWithCookieFallback($request, 'click_id', 'js_stat_click_id', ''),
             self::getParamWithCookieFallback($request, 'saff', 'js_stat_saff', ''),
             self::getParamWithCookieFallback($request, 'utm_source', 'js_stat_utm_source', ''),
@@ -93,7 +93,7 @@ class SessionHelper
         ];
 
         // Filter out null values and ensure all parts are strings
-        $stringParts = array_map(fn($part) => (string) $part, $parts);
+        $stringParts = array_map(fn($part) => (string)$part, $parts);
 
         return implode('|', $stringParts);
     }
@@ -106,7 +106,7 @@ class SessionHelper
     ): mixed {
         // 1. Check query string first
         $qsValue = $request->query($paramName);
-        if ($qsValue !== null && $qsValue !== '' && $qsValue !== '0') {
+        if ($qsValue !== null && $qsValue !== '') {
             return self::safeString($qsValue);
         }
 
@@ -157,7 +157,7 @@ class SessionHelper
         }
 
         if (is_scalar($value) || (is_object($value) && method_exists($value, '__toString'))) {
-            return (string) $value;
+            return (string)$value;
         }
 
         return '';
@@ -169,7 +169,7 @@ class SessionHelper
             return false;
         }
 
-        return (bool) preg_match(
+        return (bool)preg_match(
             '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i',
             $value
         );

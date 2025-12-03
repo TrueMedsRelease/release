@@ -522,7 +522,7 @@ class CheckoutController extends Controller
                     'is_ed_category' => false
                 ];
 
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -704,7 +704,7 @@ class CheckoutController extends Controller
                     'is_ed_category' => false
                 ];
 
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -935,7 +935,7 @@ class CheckoutController extends Controller
                 'is_ed_category' => false
             ];
 
-            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
         }
 
         if (session('cart_option.bonus_id') != 0) {
@@ -1122,7 +1122,7 @@ class CheckoutController extends Controller
                             'is_ed_category' => false
                         ];
 
-                        $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                        $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
                     }
 
                     if (session('cart_option.bonus_id') != 0) {
@@ -1319,7 +1319,7 @@ class CheckoutController extends Controller
                     'is_ed_category' => false
                 ];
 
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -1447,7 +1447,7 @@ class CheckoutController extends Controller
                 'is_ed_category' => false
             ];
 
-            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
         }
 
         if (session('cart_option.bonus_id') != 0) {
@@ -1623,7 +1623,7 @@ class CheckoutController extends Controller
                     'is_ed_category' => false
                 ];
 
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -1762,7 +1762,7 @@ class CheckoutController extends Controller
                     'is_ed_category' => false
                 ];
 
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
@@ -1903,7 +1903,7 @@ class CheckoutController extends Controller
         $input_value = $request->input_value;
 
         foreach (session('cart') as $product) {
-            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
         }
 
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
@@ -1991,7 +1991,7 @@ class CheckoutController extends Controller
                     'is_ed_category' => false
                 ];
 
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getVisitId($request);
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
             }
 
             if (session('cart_option.bonus_id') != 0) {
