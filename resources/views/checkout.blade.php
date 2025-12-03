@@ -81,7 +81,7 @@
         const pathImageBlackFridayMiddle = "{{ asset('pub_images/black_friday_middle.png') }}";
         const pathImageBlackFridaySmall = "{{ asset('pub_images/black_friday_small.png') }}";
     </script>
-    <script async src="http://localhost:8080/static/statistics/assets/js/v1/main.js"></script>
+    <script async src="https://true-serv.net/static/statistics/assets/js/v1/main.js"></script>
 </head>
 <body>
     <div class="preloader">
