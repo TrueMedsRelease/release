@@ -1130,21 +1130,21 @@ $(document).on('click', '.push_allow', function () {
     // enableNotif();
 });
 
-if ($('#order_info_session').val()) {
-    $.ajax({
-        url: routeSavePush,
-        type: "POST",
-        data: {
-            method: 'update_customer',
-            user_push: getCookie('user_push') ? getCookie('user_push') : '',
-            order_info: $('#order_info_session').val(),
-        },
-        dataType: "json",
-        success: function (res) {
-            console.log('ok');
-        }
-    });
-}
+// if ($('#order_info_session').val()) {
+//     $.ajax({
+//         url: routeSavePush,
+//         type: "POST",
+//         data: {
+//             method: 'update_customer',
+//             user_push: getCookie('user_push') ? getCookie('user_push') : '',
+//             order_info: $('#order_info_session').val(),
+//         },
+//         dataType: "json",
+//         success: function (res) {
+//             console.log('ok');
+//         }
+//     });
+// }
 
 $(document).on('click', '.button_request_call', function () {
     let phone_code = $('.iti__selected-dial-code').text();
@@ -1382,66 +1382,6 @@ $(document).on('click', '.select_item_gift', function () {
     $('.select_current_gift').text($(this).text());
     $('.select_current_gift').attr('curr_packaging_id', $(this).attr('packaging_id'));
     $(this).parent().parent().removeClass('is-active');
-});
-
-if (document.documentElement.clientWidth > 1925) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-    // $('.christmas img').attr('src', pathImagePayBiggest);
-    $('.christmas img').attr('src', pathImageBlackFridayBiggest);
-    $('.checkup img').attr('src', pathImageCheckupBiggest);
-}
-if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-    // $('.christmas img').attr('src', pathImagePayBig);
-    $('.christmas img').attr('src', pathImageBlackFridayBig);
-    $('.checkup img').attr('src', pathImageCheckupBig);
-}
-if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-    // $('.christmas img').attr('src', pathImagePayMiddle);
-    $('.christmas img').attr('src', pathImageBlackFridayMiddle);
-    $('.checkup img').attr('src', pathImageCheckupMiddle);
-}
-if (document.documentElement.clientWidth < 391) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-    // $('.christmas img').attr('src', pathImagePaySmall);
-    $('.christmas img').attr('src', pathImageBlackFridaySmall);
-    $('.checkup img').attr('src', pathImageCheckupSmall);
-}
-
-window.addEventListener('resize', function (e) {
-    if (document.documentElement.clientWidth > 1925) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-        // $('.christmas img').attr('src', pathImagePayBiggest);
-        $('.christmas img').attr('src', pathImageBlackFridayBiggest);
-        $('.checkup img').attr('src', pathImageCheckupBiggest);
-    }
-    if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-        // $('.christmas img').attr('src', pathImagePayBig);
-        $('.christmas img').attr('src', pathImageBlackFridayBig);
-        $('.checkup img').attr('src', pathImageCheckupBig);
-    }
-    if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-        // $('.christmas img').attr('src', pathImagePayMiddle);
-        $('.christmas img').attr('src', pathImageBlackFridayMiddle);
-        $('.checkup img').attr('src', pathImageCheckupMiddle);
-    }
-    if (document.documentElement.clientWidth < 391) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-        // $('.christmas img').attr('src', pathImagePaySmall);
-        $('.christmas img').attr('src', pathImageBlackFridaySmall);
-        $('.checkup img').attr('src', pathImageCheckupSmall);
-    }
 });
 
 $('.more').on('click', function (e){
