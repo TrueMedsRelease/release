@@ -1120,10 +1120,10 @@ class CheckoutController extends Controller
                     'api_key' => $api_key->key_data
                 ];
             }
-            
+
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test5.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
