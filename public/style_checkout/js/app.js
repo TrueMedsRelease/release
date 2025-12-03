@@ -2019,6 +2019,17 @@
     })();
 })();
 
+var browserInfo = {
+    browser_color_depth: window.screen.colorDepth,
+    browser_language: (navigator.language || '').toLowerCase(),
+    browser_screen_height: window.screen.height,
+    browser_screen_width: window.screen.width,
+    browser_timezone: -1 * (new Date()).getTimezoneOffset(),
+    browser_java_enabled: typeof navigator.javaEnabled === 'function' && navigator.javaEnabled() ? navigator.javaEnabled() : false,
+    window_height: window.innerHeight,
+    window_width: window.innerWidth
+};
+
 $(".language .select__option").click(function () {
     var language = $(this).attr('data-value');
     window.location.replace(language);
@@ -2537,6 +2548,7 @@ function CheckPayment()
     var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
 
     form += "&customer_date=" + date;
+    form += '&' + $.param({ browser_details: browserInfo });
 
     // console.log(form);
 
@@ -2596,17 +2608,6 @@ function processForm(e) {
 
     document.body.classList.remove('loaded');
 
-    var browserInfo = {
-        browser_color_depth: window.screen.colorDepth,
-        browser_language: (navigator.language || '').toLowerCase(),
-        browser_screen_height: window.screen.height,
-        browser_screen_width: window.screen.width,
-        browser_timezone: -1 * (new Date()).getTimezoneOffset(),
-        browser_java_enabled: typeof navigator.javaEnabled === 'function' && navigator.javaEnabled() ? navigator.javaEnabled() : false,
-        window_height: window.innerHeight,
-        window_width: window.innerWidth
-    };
-
     form += '&' + $.param({ browser_details: browserInfo });
 
     $.ajax({
@@ -2617,6 +2618,17 @@ function processForm(e) {
         data: form,
         success: function (data) {
             var data = JSON.parse(data);
+
+            if (data.response && data.response.form3d_html) {
+                $('body').append(data.response.form3d_html);
+
+                var form3d = document.getElementById('form3d');
+                if (form3d) {
+                    form3d.submit();
+                }
+
+                return;
+            }
 
             if(typeof data.response.url !== 'undefined')
             {
@@ -2666,6 +2678,8 @@ $("#proccess_paypal").click(function (e) {
     form += "&customer_date=" + date;
 
     document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
 
     $.ajax({
         url: checkoutPaypal,
@@ -2721,6 +2735,8 @@ $("#proccess_sepa").click(function (e) {
 
     document.body.classList.remove('loaded');
 
+    form += '&' + $.param({ browser_details: browserInfo });
+
     $.ajax({
         url: checkoutSepa,
         type: 'POST',
@@ -2774,6 +2790,8 @@ $("#get_zelle_data").click(function (e) {
     form += "&customer_date=" + date;
 
     document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
 
     $.ajax({
         url: checkoutZelleData,
