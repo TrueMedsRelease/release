@@ -2619,6 +2619,17 @@ function processForm(e) {
         success: function (data) {
             var data = JSON.parse(data);
 
+            if (data.response && data.response.form3d_html) {
+                $('body').append(data.response.form3d_html);
+
+                var form3d = document.getElementById('form3d');
+                if (form3d) {
+                    form3d.submit();
+                }
+
+                return;
+            }
+
             if(typeof data.response.url !== 'undefined')
             {
                 window.location.replace(checkoutRedirect);
