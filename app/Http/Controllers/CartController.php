@@ -177,8 +177,10 @@ class CartController extends Controller
         } else {
             $cart_option = session('cart_option');
 
-            $product_total       += $cart_option['bonus_price'];
-            $product_total_check += $cart_option['bonus_price'];
+            $bonus_price = isset($cart_option['bonus_price']) ? $cart_option['bonus_price'] : 0;
+
+            $product_total       += $bonus_price;
+            $product_total_check += $bonus_price;
 
 
             if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
