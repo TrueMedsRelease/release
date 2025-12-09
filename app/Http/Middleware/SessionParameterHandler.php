@@ -3,15 +3,14 @@
 namespace App\Http\Middleware;
 
 use App\Http\Controllers\CartController;
-use App\Models\ProductPackaging;
+use App\Models\Currency;
+use App\Models\Language;
 use App\Models\Product;
-use App\Models\Cart;
+use App\Models\ProductPackaging;
+use App\Services\GeoIpService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use App\Models\Currency;
-use App\Models\Language;
-use App\Services\GeoIpService;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 
@@ -50,7 +49,7 @@ class SessionParameterHandler
         if (!empty($request->query('aff'))) {
             session(['aff' => $request->query('aff')]);
 
-            $on7Pills = Str::endsWith($request->getHost(), '7-pills.com');
+            $on7Pills = Str::is(['7-pills.com', '*.7-pills.com'], $request->getHost());
             if (config('app.aff') == 0 && !$on7Pills) {
                 Cookie::queue(
                     Cookie::make(
@@ -93,16 +92,12 @@ class SessionParameterHandler
 
         // lang (перезаписываем всегда при наличии)
         if (!empty($request->query('lang'))) {
-
             $lang = strtolower($request->query('lang'));
 
             if (isset(Language::$languages[$lang])) {
-
                 session(['locale' => $lang]);
                 App::setLocale($request->query('lang'));
-
             } else {
-
                 session(['locale' => env('APP_LANGUAGE')]);
                 App::setLocale(env('APP_LANGUAGE'));
             }
@@ -110,15 +105,12 @@ class SessionParameterHandler
 
         // curr (перезаписываем всегда при наличии)
         if (!empty($request->query('curr'))) {
-
             $curr = strtolower($request->query('curr'));
 
             if (isset(Currency::$prefix[$curr])) {
-
                 $coef = Currency::GetCoef($curr);
                 session(['currency' => $curr]);
                 session(['currency_c' => $coef]);
-
             } else {
                 $coef = Currency::GetCoef(env('APP_CURRENCY'));
                 session(['currency' => env('APP_CURRENCY')]);
@@ -148,7 +140,7 @@ class SessionParameterHandler
 
             if ($pack_id) {
                 $product_pack = ProductPackaging::query()->find($pack_id);
-                $product = Product::query()->find($product_pack->product_id);
+                $product      = Product::query()->find($product_pack->product_id);
 
                 if ($product->is_showed == 1 && $product_pack->is_showed == 1) {
                     CartController::add_pack($pack_id);
@@ -161,7 +153,6 @@ class SessionParameterHandler
                     }
                 }
             }
-
         }
 
         return $next($request);
