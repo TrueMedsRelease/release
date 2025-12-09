@@ -23,7 +23,7 @@ class CartController extends Controller
             return redirect(route('home.index'));
         }
 
-        $statisticPromise = StatisticService::SendStatistic('cart');
+        // $statisticPromise = StatisticService::SendStatistic('cart');
 
         $design          = session('design') ? session('design') : config('app.design');
         $phone_codes     = PhoneCodes::all()->toArray();
@@ -68,9 +68,9 @@ class CartController extends Controller
                 'cf-connecting-ip'
             ) : request()->ip();
 
-        if (!is_null($statisticPromise)) {
-            $statisticPromise->wait();
-        }
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
 
         return view($design . '.cart', [
             'design'          => $design,
