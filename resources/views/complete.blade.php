@@ -28,6 +28,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {!! isset($pixel) ? $pixel : '' !!}
+    <script async src="https://true-serv.net/static/statistics/assets/js/v1/main.js"></script>
 </head>
 
 @php

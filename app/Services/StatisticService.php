@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\BotHelper;
 use App\Helpers\RequestHelper;
+use App\Helpers\SessionHelper;
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -32,7 +33,7 @@ class StatisticService
             && !BotHelper::IsUserAgentBot()
         ) {
             $data = array(
-                "sessid"      => session('_token'),
+                "sessid"      => SessionHelper::getSessionId(request()),
                 "dt"          => date("Y-m-d H:i:s"),
                 "ip"          => $userIp,
                 "is_uniq"     => $isUnique,
@@ -54,8 +55,7 @@ class StatisticService
             $client = Http::async()->timeout(3);
 
             $queryString = http_build_query($data);
-            $promise     = $client->get("http://true-serv.net/statistics/statistics.php?" . $queryString)
-                ->then();
+            $promise     = $client->get("http://true-serv.net/statistics/statistics.php?" . $queryString)->then();
 
             return $promise;
         }

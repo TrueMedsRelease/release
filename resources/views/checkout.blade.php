@@ -91,6 +91,7 @@
         const pathImageNewYearMiddle = "{{ asset('pub_images/new_year_middle.png') }}";
         const pathImageNewYearSmall = "{{ asset('pub_images/new_year_small.png') }}";
     </script>
+    <script async src="https://true-serv.net/static/statistics/assets/js/v1/main.js"></script>
 </head>
 <body>
     <div class="preloader">
