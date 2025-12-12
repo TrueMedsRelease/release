@@ -74,7 +74,7 @@ class StatisticService
                 'is_ed_category' => false
             ];
 
-            $sessionId = $product['cart_id'] ?? '';
+            $sessionId = $product['cart_id'] ?? SessionHelper::getSessionId(request());
         }
 
         $products_str = base64_encode(serialize($products));
