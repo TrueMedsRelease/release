@@ -96,6 +96,7 @@ class StatisticService
             'email'       => session('form.email', ''),
             'aff'         => session('aff', 0),
             'saff'        => session('saff', ''),
+            'is_checkout_data_send' => session('is_checkout_data_send', 0)
         ];
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
@@ -104,6 +105,7 @@ class StatisticService
                 if ($response->successful()) {
                     // Обработка успешного ответа
                     $responseData = $response->json(); // Если ожидается JSON-ответ
+                    session(['is_checkout_data_send' => 1]);
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
