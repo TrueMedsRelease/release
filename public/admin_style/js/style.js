@@ -815,16 +815,17 @@ function renewalShop() {
         url: routeAdminRenewalShop,
         type: 'GET',
         cache: false,
-        dataType: 'html',
+        dataType: 'json',
         data: {
             // 'popup_status': popup_status,
         },
         success: function (data) {
             data = JSON.parse(data);
-            if (data.status == 'error') {
+            if (data.status === 'OK') {
                 alert(data.text);
+                location.reload();
             } else {
-                location.href = data.url;
+                alert('Error');
             }
         }
     });
@@ -835,17 +836,33 @@ function renewalDatabase() {
         url: routeAdminRenewalDatabase,
         type: 'GET',
         cache: false,
-        dataType: 'html',
+        dataType: 'json',
         data: {
             // 'popup_status': popup_status,
         },
         success: function (data) {
-            data = JSON.parse(data);
-            if (data.status == 'error') {
+            console.log('SUCCESS:', data);
+
+            if (data.status === 'ERROR') {
+                alert('Error: ' + data.text);
+                if (data.debug) {
+                    console.log('DEBUG (from server):', data.debug);
+                }
+            } else if (data.status === 'OK') {
                 alert(data.text);
+                location.reload();
+                // Если захочешь редиректить после успеха:
+                // if (data.url) {
+                //     location.href = data.url;
+                // }
             } else {
-                location.href = data.url;
+                console.log('Wrong format data:', data);
             }
+        },
+        error: function (xhr, status, error) {
+            console.log('AJAX ERROR:', status, error);
+            console.log('responseText:', xhr.responseText);
+            alert('The update request failed with an error: ' + status + '. Details in the console.');
         }
     });
 }
