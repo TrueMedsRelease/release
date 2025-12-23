@@ -14,6 +14,7 @@ use App\Models\Currency;
 use App\Models\Category;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Cache;
+use App\Services\RenewalService;
 
 class AdminController extends Controller
 {
@@ -1430,6 +1431,57 @@ class AdminController extends Controller
         return response()->json(array('status' => 'success', 'url' => route('admin.index')));
     }
 
+    public function renewal_page()
+    {
+        if (!session()->has('logged_in') || !session('logged_in')) {
+            return redirect()->route('admin.admin_login');
+        }
+
+        $design = session('design') ? session('design') : config('app.design');
+        $title = $this->pageAdminTitle('update_shop');
+        $agent = new Agent();
+
+        return view('admin.shop_update',
+        [
+            'design' => $design,
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+        ]);
+    }
+
+    public function renewal_page_shop(Request $request)
+    {
+        if (env('APP_UPDATE_ON', 1)) {
+            $access = DB::table('user')
+                ->where('md5_pw', '=', $request->renewal_hash)
+                ->get(['id'])
+                ->toArray();
+
+            if ($access || session('logged_in') == true) {
+                return RenewalService::renewalShop();
+            }
+        } else {
+            return redirect()->route('admin.renewal_page');
+        }
+    }
+
+    public function renewal_page_data(Request $request)
+    {
+        if (env('APP_UPDATE_ON', 1)) {
+            $access = DB::table('user')
+                ->where('md5_pw', '=', $request->renewal_hash)
+                ->get(['id'])
+                ->toArray();
+
+            if ($access || session('logged_in') == true) {
+                return RenewalService::renewalDatabase();
+            }
+        } else {
+            return redirect()->route('admin.renewal_page');
+        }
+    }
+
     public function pageAdminTitle($page) {
         switch ($page){
             case 'login':
@@ -1461,6 +1513,9 @@ class AdminController extends Controller
                 break;
             case 'checkout':
                 $title = 'Checkout';
+                break;
+            case 'update_shop':
+                $title = __('text.admin_renewal_shop');
                 break;
             default:
                 $title = 'Admin';
