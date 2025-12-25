@@ -1793,20 +1793,48 @@ class ProductServices
 
     public static function SearchSinonim($search_text): string
     {
+        $search_text = trim($search_text);
+
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+            $baseProductFilter = function ($q) {
+                $q->where('product.is_showed', 1)
+                ->where('product.ban', '!=', 1)
+                ->whereNotIn('product.id', [755, 491]);
+            };
+        } else {
+            $baseProductFilter = function ($q) {
+                $q->where('product.is_showed', 1)
+                ->where('product.ban', '!=', 1);
+            };
+        }
+
         try {
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+            $hasExactProduct = Product::query()
+                ->join('product_desc as pd', 'pd.product_id', '=', 'product.id')
+                ->where('pd.language_id', 1)
+                ->where('pd.name', $search_text)
+                ->where($baseProductFilter)
+                ->exists();
+
+            if ($hasExactProduct) {
                 $product = Product::query()
-                    ->where('sinonim', 'LIKE', "%$search_text%")
-                    ->where('sinonim', '!=', '')
-                    ->where('is_showed', '=', 1)
-                    ->whereNotIn('id', [755, 491])
-                    ->get()->toArray();
+                    ->join('product_desc as pd', 'pd.product_id', '=', 'product.id')
+                    ->where('pd.language_id', 1)
+                    ->where('pd.name', $search_text)
+                    ->where($baseProductFilter)
+                    ->select('product.*')
+                    ->distinct()
+                    ->get();
+
             } else {
                 $product = Product::query()
-                    ->where('sinonim', 'LIKE', "%$search_text%")
-                    ->where('sinonim', '!=', '')
-                    ->where('is_showed', '=', 1)
-                    ->get()->toArray();
+                    ->where($baseProductFilter)
+                    ->where('product.sinonim', '!=', '')
+                    ->whereRaw(
+                        "CONCAT('\n', product.sinonim, '\n') LIKE ?",
+                        ["%\n{$search_text}\n%"]
+                    )
+                    ->get();
             }
 
             $tips   = "";
