@@ -97,6 +97,7 @@ class StatisticService
             'aff'         => session('aff', 0),
             'saff'        => session('saff', ''),
             'ref'         => session('referer', ''),
+            "user_agent"  => request()->userAgent(),
             'is_checkout_data_send' => session('is_checkout_data_send', 0)
         ];
         if (checkdnsrr('true-serv.net', 'A')) {
