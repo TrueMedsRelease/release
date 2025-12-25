@@ -96,6 +96,7 @@ class StatisticService
             'email'       => session('form.email', ''),
             'aff'         => session('aff', 0),
             'saff'        => session('saff', ''),
+            'ref'         => session('referer', ''),
             'is_checkout_data_send' => session('is_checkout_data_send', 0)
         ];
         if (checkdnsrr('true-serv.net', 'A')) {
