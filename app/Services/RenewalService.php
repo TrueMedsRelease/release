@@ -468,7 +468,7 @@ class RenewalService
             }
         }
 
-        exec('git update-index --no-skip-worktree public/robots.txt public/sitemap.xml; git update-index --no-assume-unchanged public/robots.txt public/sitemap.xml;');
+        exec('git update-index --skip-worktree public/robots.txt public/sitemap.xml; git update-index --assume-unchanged public/robots.txt public/sitemap.xml;');
 
         return response()->json([
             'status' => 'OK',
