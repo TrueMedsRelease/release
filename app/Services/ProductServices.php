@@ -1827,13 +1827,17 @@ class ProductServices
                     ->get();
 
             } else {
+
+                $like = '%' . addcslashes($search_text, "\\%_") . '%';
+                
                 $product = Product::query()
                     ->where($baseProductFilter)
                     ->where('product.sinonim', '!=', '')
-                    ->whereRaw(
-                        "CONCAT('\n', product.sinonim, '\n') LIKE ?",
-                        ["%\n{$search_text}\n%"]
-                    )
+                    ->where('product.sinonim', 'LIKE', $like)
+                    // ->whereRaw(
+                    //     "CONCAT('\n', product.sinonim, '\n') LIKE ?",
+                    //     ["%\n{$search_text}\n%"]
+                    // )
                     ->get();
             }
 
