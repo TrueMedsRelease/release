@@ -49,7 +49,7 @@ class SessionParameterHandler
         if (!empty($request->query('aff'))) {
             session(['aff' => $request->query('aff')]);
 
-            $on7Pills = Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net'], $request->getHost());
+            $on7Pills = Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net', '7-pill.com', '*.7-pill.com', '77-pills.com', '*.77-pills.com'], $request->getHost());
             if (config('app.aff') == 0 && !$on7Pills) {
                 Cookie::queue(
                     Cookie::make(
