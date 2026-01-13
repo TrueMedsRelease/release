@@ -119,6 +119,6 @@ class SetCookiesForStatistics
 
     private function isCookieNeeded(Request $request): bool
     {
-        return !Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net'], $request->getHost());
+        return !Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net', '7-pill.com', '*.7-pill.com', '77-pills.com', '*.77-pills.com'], $request->getHost());
     }
 }
