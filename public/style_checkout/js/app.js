@@ -3222,11 +3222,13 @@ window.__TOKENS__ = window.__TOKENS__ || [
     { value:'ETH_ARBITRUM', symbol:'ETH', chain:'ARBITRUM', icon:'eth.svg' },
     { value:'USDC_ARBITRUM', symbol:'USDC', chain:'ARBITRUM', icon:'usdc_arb.svg' },
     { value:'USDT_ARBITRUM', symbol:'USDT', chain:'ARBITRUM', icon:'usdt_arb.svg' },
-    { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'icons.svg#svg-bnb' },
+    // { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'icons.svg#svg-bnb' },
+    { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'bnb.svg' },
     { value:'USDC_BSC', symbol:'USDC', chain:'BSC', icon:'usdc_bsc.svg' },
     { value:'USDT_BSC', symbol:'USDT', chain:'BSC', icon:'usdt_bsc.svg' },
-    { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'icons.svg#svg-btc' },
-    { value:'DAI_BASE', symbol:'DAI', chain:'BASE', icon:'dai.svg' },
+    // { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'icons.svg#svg-btc' },
+    { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'btc.svg' },
+    // { value:'DAI_BASE', symbol:'DAI', chain:'BASE', icon:'dai.svg' },
     { value:'ETH_BASE', symbol:'ETH', chain:'BASE', icon:'eth.svg' },
     { value:'USDC_BASE', symbol:'USDC', chain:'BASE', icon:'usdc.svg' },
     { value:'DAI_ETHEREUM', symbol:'DAI', chain:'ETHEREUM', icon:'dai.svg' },
@@ -3235,9 +3237,9 @@ window.__TOKENS__ = window.__TOKENS__ || [
     { value:'USDT_ETHEREUM', symbol:'USDT', chain:'ETHEREUM', icon:'usdt_eth.svg' },
     { value:'DOGE_DOGECOIN', symbol:'DOGE', chain:'DOGECOIN', icon:'doge.svg' },
     { value:'ETH_OPTIMISM', symbol:'ETH', chain:'OPTIMISM', icon:'eth.svg' },
-    { value:'OP_OPTIMISM', symbol:'OP', chain:'OPTIMISM', icon:'op.svg' },
-    { value:'USDC_OPTIMISM', symbol:'USDC', chain:'OPTIMISM', icon:'usdc_op.svg' },
-    { value:'USDT_OPTIMISM', symbol:'USDT', chain:'OPTIMISM', icon:'usdt_op.svg' },
+    // { value:'OP_OPTIMISM', symbol:'OP', chain:'OPTIMISM', icon:'op.svg' },
+    // { value:'USDC_OPTIMISM', symbol:'USDC', chain:'OPTIMISM', icon:'usdc_op.svg' },
+    // { value:'USDT_OPTIMISM', symbol:'USDT', chain:'OPTIMISM', icon:'usdt_op.svg' },
     { value:'POL_POLYGON', symbol:'POL', chain:'POLYGON', icon:'pol.svg' },
     { value:'USDC_POLYGON', symbol:'USDC', chain:'POLYGON', icon:'usdc_pol.svg' },
     { value:'USDT_POLYGON', symbol:'USDT', chain:'POLYGON', icon:'usdt_pol.svg' },
@@ -3246,9 +3248,11 @@ window.__TOKENS__ = window.__TOKENS__ || [
     { value:'USDT_SOLANA', symbol:'USDT', chain:'SOLANA', icon:'usdt_sol.svg' },
     { value:'TON_TON', symbol:'TON', chain:'TON', icon:'ton.svg' },
     { value:'USDT_TON', symbol:'USDT', chain:'TON', icon:'usdt_ton.svg' },
-    { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'icons.svg#svg-trx' },
+    // { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'icons.svg#svg-trx' },
+    { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'trx.svg' },
     { value:'USDT_TRON', symbol:'USDT', chain:'TRON', icon:'usdt_trx.svg' },
-    { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'icons.svg#svg-ltc' },
+    // { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'icons.svg#svg-ltc' },
+    { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'ltc.svg' },
     { value:'XRP_RIPPLE', symbol:'XRP', chain:'RIPPLE', icon:'xrp.svg' }
  ];
 
@@ -3350,22 +3354,39 @@ window.__TOKENS__ = window.__TOKENS__ || [
     const SVG_NS   = 'http://www.w3.org/2000/svg';
     const XLINK_NS = 'http://www.w3.org/1999/xlink';
 
+    // function makeIconEl(iconRef) {
+    //     const wrap = document.createElement('div');
+    //     wrap.className = 'opt-icon';
+
+    //     const svg = document.createElementNS(SVG_NS, 'svg');
+    //     svg.setAttribute('width', '26');
+    //     svg.setAttribute('height', '26');
+
+    //     const use = document.createElementNS(SVG_NS, 'use');
+    //     // если это спрайт вида "icons.svg#svg-xxx", оставляем как есть,
+    //     // если это отдельный файл "xrp.svg", просто склеиваем базовый путь
+    //     const href = iconRef.includes('#') ? ICON_BASE + iconRef : ICON_BASE + iconRef;
+    //     use.setAttributeNS(XLINK_NS, 'xlink:href', href);
+
+    //     svg.appendChild(use);
+    //     wrap.appendChild(svg);
+    //     return wrap;
+    // }
+
     function makeIconEl(iconRef) {
         const wrap = document.createElement('div');
         wrap.className = 'opt-icon';
 
-        const svg = document.createElementNS(SVG_NS, 'svg');
-        svg.setAttribute('width', '26');
-        svg.setAttribute('height', '26');
+        const img = document.createElement('img');
+        img.width = 26;
+        img.height = 26;
+        img.alt = '';
 
-        const use = document.createElementNS(SVG_NS, 'use');
-        // если это спрайт вида "icons.svg#svg-xxx", оставляем как есть,
-        // если это отдельный файл "xrp.svg", просто склеиваем базовый путь
-        const href = iconRef.includes('#') ? ICON_BASE + iconRef : ICON_BASE + iconRef;
-        use.setAttributeNS(XLINK_NS, 'xlink:href', href);
+        // img не поддерживает выбор фрагмента SVG-спрайта через #id
+        const src = ICON_BASE + (iconRef.includes('#') ? iconRef.split('#')[0] : iconRef);
+        img.src = src;
 
-        svg.appendChild(use);
-        wrap.appendChild(svg);
+        wrap.appendChild(img);
         return wrap;
     }
 
