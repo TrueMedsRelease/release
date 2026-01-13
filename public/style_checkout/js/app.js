@@ -3236,7 +3236,7 @@ window.__TOKENS__ = window.__TOKENS__ || [
     { value:'USDC_ETHEREUM', symbol:'USDC', chain:'ETHEREUM', icon:'usdc_eth.svg' },
     { value:'USDT_ETHEREUM', symbol:'USDT', chain:'ETHEREUM', icon:'usdt_eth.svg' },
     { value:'DOGE_DOGECOIN', symbol:'DOGE', chain:'DOGECOIN', icon:'doge.svg' },
-    { value:'ETH_OPTIMISM', symbol:'ETH', chain:'OPTIMISM', icon:'eth.svg' },
+    // { value:'ETH_OPTIMISM', symbol:'ETH', chain:'OPTIMISM', icon:'eth.svg' },
     // { value:'OP_OPTIMISM', symbol:'OP', chain:'OPTIMISM', icon:'op.svg' },
     // { value:'USDC_OPTIMISM', symbol:'USDC', chain:'OPTIMISM', icon:'usdc_op.svg' },
     // { value:'USDT_OPTIMISM', symbol:'USDT', chain:'OPTIMISM', icon:'usdt_op.svg' },
