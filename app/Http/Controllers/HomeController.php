@@ -159,11 +159,20 @@ class HomeController extends Controller
         }
     }
 
-    public function first_letter($char): View
+    public function first_letter($char)
     {
+        $design      = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('first_letter');
 
-        $design      = session('design') ? session('design') : config('app.design');
         $products    = ProductServices::GetProductByFirstLetter($char, $design);
         $phone_codes = PhoneCodes::all()->toArray();
         $bestsellers = ProductServices::GetBestsellers($design);
@@ -231,6 +240,16 @@ class HomeController extends Controller
 
     public function active($active)
     {
+        $design      = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('active');
 
         if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
@@ -245,7 +264,7 @@ class HomeController extends Controller
                 $active);
         }
 
-        $design      = session('design') ? session('design') : config('app.design');
+
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu        = ProductServices::GetCategoriesWithProducts($design);
@@ -337,9 +356,18 @@ class HomeController extends Controller
                 $category);
         }
 
+        $design      = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('category');
 
-        $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu        = ProductServices::GetCategoriesWithProducts($design);
@@ -431,9 +459,18 @@ class HomeController extends Controller
                 $disease);
         }
 
+        $design      = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('disease');
 
-        $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $phone_codes = PhoneCodes::all()->toArray();
         $menu        = ProductServices::GetCategoriesWithProducts($design);
@@ -719,11 +756,20 @@ class HomeController extends Controller
             ->header('Content-Type', 'application/javascript');
     }
 
-    public function about(): View
+    public function about()
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('about_us');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);
@@ -785,11 +831,20 @@ class HomeController extends Controller
         ]);
     }
 
-    public function help(): View
+    public function help()
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('faq');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);
@@ -851,11 +906,20 @@ class HomeController extends Controller
         ]);
     }
 
-    public function testimonials(): View
+    public function testimonials()
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('testimonials');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);
@@ -917,11 +981,20 @@ class HomeController extends Controller
         ]);
     }
 
-    public function delivery(): View
+    public function delivery()
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('shipping');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);
@@ -983,11 +1056,20 @@ class HomeController extends Controller
         ]);
     }
 
-    public function moneyback(): View
+    public function moneyback()
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('moneyback');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);
@@ -1049,11 +1131,20 @@ class HomeController extends Controller
         ]);
     }
 
-    public function contact_us($default_subject = 0): View
+    public function contact_us($default_subject = 0)
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('contact_us');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);
@@ -1139,11 +1230,20 @@ class HomeController extends Controller
         ]);
     }
 
-    public function affiliate(): View
+    public function affiliate()
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('affiliate');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);
@@ -1205,11 +1305,20 @@ class HomeController extends Controller
         ]);
     }
 
-    public function login(): View
+    public function login()
     {
+        $design      = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('login');
 
-        $design      = session('design') ? session('design') : config('app.design');
         $phone_codes = PhoneCodes::all()->toArray();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
@@ -2084,11 +2193,20 @@ class HomeController extends Controller
             'codes'           => json_encode($codes),
         ]);
     }
-    public function sitemap(): View
+    public function sitemap()
     {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('sitemap');
 
-        $design          = session('design') ? session('design') : config('app.design');
         $bestsellers     = ProductServices::GetBestsellers($design);
         $phone_codes     = PhoneCodes::all()->toArray();
         $menu            = ProductServices::GetCategoriesWithProducts($design);

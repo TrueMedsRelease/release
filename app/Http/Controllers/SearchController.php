@@ -23,8 +23,17 @@ class SearchController extends Controller
 
     public static function search_result($search_text)
     {
-        // $statisticPromise = StatisticService::SendStatistic('search');
+        $design      = session('design') ? session('design') : config('app.design');
 
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
+        // $statisticPromise = StatisticService::SendStatistic('search');
 
         $keywords = ['plavix', 'avapro', 'stilnox', 'ambien', 'zolpidem', 'plaquenil'];
 
@@ -56,8 +65,6 @@ class SearchController extends Controller
             }
         }
 
-
-        $design      = session('design') ? session('design') : config('app.design');
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu        = ProductServices::GetCategoriesWithProducts($design);
         $products    = ProductServices::SearchProduct($search_text, false, $design);
