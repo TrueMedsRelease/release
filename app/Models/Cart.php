@@ -154,10 +154,10 @@ class Cart extends Model
         if (!empty($products)) {
             foreach ($products as $product) {
                 if ($product['dosage'] != '1card') {
-                    $insurance += round(($product['price'] * 0.1) * $product['q'], 2);
+                    $insurance += round(($product['price'] * 0.12) * $product['q'], 2);
                 }
             }
-            $insurance += session('cart_option.bonus_price', 0) * 0.1;
+            $insurance += session('cart_option.bonus_price', 0) * 0.12;
         }
 
         $insurance = $insurance < 9.99 ? 9.99 : $insurance;
