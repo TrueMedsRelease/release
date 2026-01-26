@@ -45,12 +45,17 @@ class SessionParameterHandler
             session(['referer' => $referer]);
         }
 
+        $on7Pills = Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net', '7-pill.com', '*.7-pill.com', '77-pills.com', '*.77-pills.com'], $request->getHost());
+
         // aff
         if (!empty($request->query('aff'))) {
-            session(['aff' => $request->query('aff')]);
+            if ($on7Pills) {
+                session(['aff' => 0]);
+            } else {
+                session(['aff' => $request->query('aff')]);
+            }
 
-            $on7Pills = Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net', '7-pill.com', '*.7-pill.com', '77-pills.com', '*.77-pills.com'], $request->getHost());
-            if (config('app.aff') == 0 && !$on7Pills) {
+            if (config('app.aff') == 0 && $on7Pills) {
                 Cookie::queue(
                     Cookie::make(
                         'AFF_ID',
@@ -66,8 +71,12 @@ class SessionParameterHandler
                 );
             }
         } elseif (!session()->has('aff')) {
-            $affFromCookie = $request->cookie('AFF_ID');
-            session(['aff' => $affFromCookie ?? config('app.aff')]);
+            if ($on7Pills) {
+                session(['aff' => 0]);
+            } else {
+                $affFromCookie = $request->cookie('AFF_ID');
+                session(['aff' => $affFromCookie ?? config('app.aff')]);
+            }
         }
 
         // saff
