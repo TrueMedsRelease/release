@@ -55,7 +55,7 @@ class SessionParameterHandler
                 session(['aff' => $request->query('aff')]);
             }
 
-            if (config('app.aff') == 0 && $on7Pills) {
+            if (config('app.aff') == 0 && !$on7Pills) {
                 Cookie::queue(
                     Cookie::make(
                         'AFF_ID',
