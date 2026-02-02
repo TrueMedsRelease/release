@@ -1459,7 +1459,7 @@ class HomeController extends Controller
             if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]
                 )) {
                 $parts = explode('_', $pill, 2);
-                $pill  = $parts[1];
+                $pill  = $parts[1] ?? $pill;
             }
 
             $safari = false;
