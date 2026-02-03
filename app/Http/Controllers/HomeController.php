@@ -710,6 +710,15 @@ class HomeController extends Controller
         }
 
         $product = ProductServices::GetProductInfoByUrl($product, $design);
+
+        if (!$product) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         $agent   = new Agent();
 
         $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
