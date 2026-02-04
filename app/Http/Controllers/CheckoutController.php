@@ -2262,17 +2262,17 @@ class CheckoutController extends Controller
         }
     }
 
-    public function send_paygwt_3ds(Request $request) {
+    public function send_paygwt_ids(Request $request) {
         $fl_sid = $request->fl_sid;
         $wauuid = $request->wauuid;
         $sessid = session()->getId();
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
-            'method' => 'send_paygwt_3ds',
+            'method' => 'send_paygwt_ids',
             'api_key' => $api_key->key_data,
             'order_id' => session('order.order_id'),
-            'aff_paygwt' => session('aff'),
+            'aff_id' => session('aff'),
             'fl_sid' => $fl_sid,
             'wauuid' => $wauuid,
             'sessid' => $sessid
@@ -2295,9 +2295,9 @@ class CheckoutController extends Controller
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (\Illuminate\Http\Client\RequestException $e) {
+            } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
