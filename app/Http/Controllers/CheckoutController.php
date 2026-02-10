@@ -313,6 +313,12 @@ class CheckoutController extends Controller
         //     session(['form.payment_type' => 'card']);
         // }
 
+
+        if (session()->has('local_payment')) {
+            session()->forget('local_payment');
+            session(['form.payment_type' => 'card']);
+        }
+
         return $this->checkout();
     }
 
@@ -1159,8 +1165,9 @@ class CheckoutController extends Controller
                         }
 
                         session(['local_payment' => $local_payment]);
+                        session(['form.payment_type' => $form['local_payment']]);
 
-                        return response()->json(['response' => $response], 200);
+                        return $this->checkout();
 
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)

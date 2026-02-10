@@ -2243,7 +2243,8 @@ $(".card_type .select__option").click(function (e) {
             data: form,
             async: false,
             success: function (data) {
-
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
             },
             error: function (data) {
                 flag = true;
