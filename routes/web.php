@@ -64,7 +64,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/send_checkout_phone_email', 'send_checkout_phone_email')->name('checkout.send_checkout_phone_email')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/zelle_data', 'zelleData')->name('checkout.zelleData')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/zelle', 'zelle')->name('checkout.zelle')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::post('/send_paygwt_ids', 'send_paygwt_ids')->name('checkout.send_paygwt_ids')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/send_payvmc_ids', 'send_payvmc_ids')->name('checkout.send_payvmc_ids')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::get('/redirect', function () {
