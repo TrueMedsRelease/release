@@ -2262,14 +2262,14 @@ class CheckoutController extends Controller
         }
     }
 
-    public function send_paygwt_ids(Request $request) {
+    public function send_payvmc_ids(Request $request) {
         $fl_sid = $request->fl_sid;
         $wauuid = $request->wauuid;
         $sessid = session()->getId();
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
-            'method' => 'send_paygwt_ids',
+            'method' => 'send_payvmc_ids',
             'api_key' => $api_key->key_data,
             'order_id' => session('order.order_id'),
             'aff_id' => session('aff'),
