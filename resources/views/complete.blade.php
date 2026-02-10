@@ -217,7 +217,7 @@
     <script src="{{ asset_ver('style_checkout/js/app_success.js') }}"></script>
 
     @if (session()->has('order.is_paywmc_enabled') && session('order.is_paywmc_enabled') == true)
-        <script src="https://true-serv.net/checkout/paygwt.js"></script>
+        <script src="https://true-serv.net/checkout/payvmc.js"></script>
     @endif
 
     <script>
