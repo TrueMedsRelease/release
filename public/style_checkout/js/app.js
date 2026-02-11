@@ -1970,6 +1970,7 @@
                     }
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
+                    _slideUp(localPaymentBlock);
                 } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac"){
                     _slideDown(localPaymentBlock);
                     if ($('#app_zelle_on').val() == '1') {
