@@ -637,10 +637,10 @@
                                             <option value="domestic" @selected(session('form.payment_type', 'card') == 'domestic')>Domestic</option>
                                         @endif
                                         @if (env('APP_ACH_ON', 0) && session('form.billing_country', session('location.country')) == "US")
-                                            <option value="ach" @selected(session('form.payment_type', 'card') == 'ach')>ACH</option>
+                                            <option value="ach" @selected(session('form.payment_type', 'card') == 'ach')>ACH / Wire</option>
                                         @endif
                                         @if (env('APP_INTERAC_ON', 0) && session('form.billing_country', session('location.country')) == "CA")
-                                            <option value="interac" @selected(session('form.payment_type', 'card') == 'interac')>Interac</option>
+                                            <option value="interac" @selected(session('form.payment_type', 'card') == 'interac')>Interac / EFT</option>
                                         @endif
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
