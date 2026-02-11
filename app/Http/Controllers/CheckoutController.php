@@ -1164,16 +1164,20 @@ class CheckoutController extends Controller
                             }
                         }
 
-                        session(['local_payment' => $local_payment]);
-                        session(['form.payment_type' => $form['local_payment']]);
+                        if ($local_payment) {
+                            session(['local_payment' => $local_payment]);
+                            session(['form.payment_type' => $form['local_payment']]);
 
-                        return $this->checkout();
-
+                            return $this->checkout();
+                        } else {
+                            return json_encode(['success' => false, 'text' => 'Sorry, this payment method is currently unavailable']);
+                        }
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         Log::error($response);
                         $responseData = ['error' => 'Service returned an error'];
+                        return json_encode(['success' => false, 'text' => 'Sorry, this payment method is currently unavailable']);
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
