@@ -26,7 +26,7 @@ class AdvancedSqlInjectionChecker
         $patterns = [
             '/\b(select|union|insert|update|delete|drop|alter|create|truncate)\b.*?\b(from|into|set|values|where|join|table)?\b/i',
             // '/\b(and|or|xor|not)\b\s+[^\n]*?\s*(=|like|>|<|in|is|between)\s+[^\n]*/i',
-            '/\b(and|or|xor|not)\b.{0,120}?(=|like|>|<|!=|<>).{0,120}/i',
+            // '/\b(and|or|xor|not)\b.{0,120}?(=|like|>|<|!=|<>).{0,120}/i',
             '/\b(and|or|xor|not)\b.{0,120}?\bin\s*\(/i',
             '/\b(and|or|xor|not)\b.{0,120}?\bis\s+(not\s+)?null\b/i',
             '/\b(exec|execute|sp_executesql|xp_cmdshell)\b/i',

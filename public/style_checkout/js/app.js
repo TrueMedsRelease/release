@@ -1865,6 +1865,7 @@
             const giftCardBlock = document.querySelector('.enter-info__gift-card-content');
             const googleBlock = document.querySelector(".enter-info__google-content");
             const zelleBlock = document.querySelector(".enter-info__zelle-content");
+            const localPaymentBlock = document.querySelector('.enter-info__local_payment-content');
 
             const cryptoCurrencySelect = document.querySelector(".select_crypt_currency");
             const cryptoRequisites = document.getElementById("requisites");
@@ -1884,6 +1885,7 @@
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
+                    _slideUp(localPaymentBlock);
                     cryptoCurrencySelect.hidden = false;
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
                     _slideDown(cardBlock);
@@ -1899,6 +1901,7 @@
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
+                    _slideUp(localPaymentBlock);
                 } else if (currentSelect.value === "sepa") {
                     _slideDown(sepaBlock);
                     _slideUp(cryptoBlock);
@@ -1911,6 +1914,7 @@
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
+                    _slideUp(localPaymentBlock);
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
                     _slideUp(cryptoBlock);
@@ -1925,6 +1929,7 @@
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
+                    _slideUp(localPaymentBlock);
                 } else if (currentSelect.value === 'gift_card') {
                     // _slideDown(giftCardBlock);
                     _slideUp(paypalBlock);
@@ -1939,6 +1944,7 @@
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
+                    _slideUp(localPaymentBlock);
                 } else if (currentSelect.value === "google") {
                     _slideDown(googleBlock);
                     _slideUp(cryptoBlock);
@@ -1951,8 +1957,24 @@
                     }
                     _slideUp(paypalBlock);
                     // _slideUp(giftCardBlock);
+                    _slideUp(localPaymentBlock);
                 }  else if (currentSelect.value === "zelle") {
                     _slideDown(zelleBlock);
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
+                    _slideUp(paypalBlock);
+                    // _slideUp(giftCardBlock);
+                } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac"){
+                    _slideDown(localPaymentBlock);
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
@@ -2211,6 +2233,37 @@ $(".card_type .select__option").click(function (e) {
             e.target.selectedIndex = previousIndex;
             return false;
         }
+    } else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac') {
+        form += '&local_payment=' + type;
+        $.ajax({
+            url: checkoutLocalPaymentInfo,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
+            },
+            error: function (data) {
+                flag = true;
+                var errors = JSON.parse(data.responseText);
+                errors.errors.forEach(function (error, i) {
+                    console.log(i + '.' + error.message + ' (' + error.field + ')');
+                    var popup = document.getElementById("error_" + error.field);
+                    popup.classList.add("show");
+                    if (i == 0) {
+                        popup.scrollIntoView();
+                    }
+                });
+            }
+        });
+        // if (flag) {
+        //     previousIndex = this.selectedIndex;
+        //     e.target.selectedIndex = previousIndex;
+        //     return false;
+        // }
     }
 
     if (type != 'crypto') {
@@ -2632,7 +2685,7 @@ function processForm(e) {
 
             if(typeof data.response.url !== 'undefined')
             {
-                window.location.replace(checkoutRedirect);
+                window.location.replace(data.response.url);
             }
             else if (data.response.status == 'SUCCESS') {
                 window.location.replace(checkoutComplete);
@@ -2747,6 +2800,67 @@ $("#proccess_sepa").click(function (e) {
             var data = JSON.parse(data);
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
+                window.location.replace(checkoutComplete);
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
+$("#proccess_local_payment").click(function (e) {
+    var form = $('form').serialize();
+    // console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
+
+    $.ajax({
+        url: checkoutLocalPayment,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var data = JSON.parse(data);
+            // console.log(data);
+
+            if(typeof data.response.url !== 'undefined')
+            {
+                window.location.replace(data.response.url);
+            }
+            else if (data.response.status == 'SUCCESS') {
                 window.location.replace(checkoutComplete);
             }
             else {

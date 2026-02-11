@@ -627,6 +627,21 @@
                                         @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
                                             <option value="sepa" @selected(session('form.payment_type', 'card') == 'sepa')>SEPA</option>
                                         @endif
+                                        @if (env('APP_SEPA_LOCAL_ON', 0) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
+                                            <option value="sepa_local" @selected(session('form.payment_type', 'card') == 'sepa_local')>SEPA</option>
+                                        @endif
+                                        @if (env('APP_FPS_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
+                                            <option value="fps" @selected(session('form.payment_type', 'card') == 'fps')>FPS</option>
+                                        @endif
+                                        @if (env('APP_DOMESTIC_ON', 0) && session('form.billing_country', session('location.country')) == "AU")
+                                            <option value="domestic" @selected(session('form.payment_type', 'card') == 'domestic')>Domestic</option>
+                                        @endif
+                                        @if (env('APP_ACH_ON', 0) && session('form.billing_country', session('location.country')) == "US")
+                                            <option value="ach" @selected(session('form.payment_type', 'card') == 'ach')>ACH</option>
+                                        @endif
+                                        @if (env('APP_INTERAC_ON', 0) && session('form.billing_country', session('location.country')) == "CA")
+                                            <option value="interac" @selected(session('form.payment_type', 'card') == 'interac')>Interac</option>
+                                        @endif
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif --}}
@@ -925,11 +940,87 @@
                             <button style="display: none;" type="button" class="enter-info__button button" id="paid" disabled>
                                 <span>{{__('text.checkout_paid')}}</span>
                             </button>
-                            {{-- <button style="display: none; cursor: not-allowed;" type="submit" class="enter-info__button button"
-                                id="waiting">
-                                {{__('text.checkout_approving')}} <img loading="lazy" src="{{ asset('style_checkout/images/131.gif') }}"
-                                    width="30px" height="30px">
-                            </button> --}}
+                        </div>
+
+                        <div class="enter-info__local_payment-content"  @if (!in_array(session('form.payment_type', 'card'), ['sepa_local', 'fps', 'domestic', 'ach', 'interac'])) hidden @endif>
+                            <div class="content-local-payment" @if (!session()->has('local_payment')) hidden @endif>
+                                <div class="details-payment__rows">
+                                    <div class="details-payment__row">
+                                        <div class="details-payment__data">
+                                            <h3 class="details-payment__title">Amount ({{ session('local_payment.currency') }})</h3>
+                                            <div class="details-payment__cells">
+                                                <span id="amount" class="details-payment__amount">{{ session('local_payment.amount') }}</span>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="details-payment__copy-button">
+                                            <svg width="18" height="18">
+                                                <use
+                                                    xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                </use>
+                                            </svg>
+                                        </button>
+                                        <div class="details-payment__tip">
+                                            <svg width="18" height="18">
+                                                <use
+                                                    xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                </use>
+                                            </svg>
+                                            <span>{{__('text.checkout_copy')}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="details-payment__row">
+                                        <div class="details-payment__data">
+                                            <h3 class="details-payment__title">Reference (Invoice number)</h3>
+                                            <div class="details-payment__cells">
+                                                <span id="ref_id" class="details-payment__amount">{{ session('payment_ref_id') }}</span>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="details-payment__copy-button">
+                                            <svg width="18" height="18">
+                                                <use
+                                                    xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                </use>
+                                            </svg>
+                                        </button>
+                                        <div class="details-payment__tip">
+                                            <svg width="18" height="18">
+                                                <use
+                                                    xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                </use>
+                                            </svg>
+                                            <span>{{__('text.checkout_copy')}}</span>
+                                        </div>
+                                    </div>
+                                    @foreach (session('local_payment.instructions', []) as $title => $data)
+                                        <div class="details-payment__row">
+                                            <div class="details-payment__data">
+                                                <h3 class="details-payment__title">{{ $title }}</h3>
+                                                <div class="details-payment__cells">
+                                                    <span id="{{ strtolower($title) }}" class="details-payment__amount">{{ $data }}</span>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="details-payment__copy-button">
+                                                <svg width="18" height="18">
+                                                    <use
+                                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy">
+                                                    </use>
+                                                </svg>
+                                            </button>
+                                            <div class="details-payment__tip">
+                                                <svg width="18" height="18">
+                                                    <use
+                                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-checkmark">
+                                                    </use>
+                                                </svg>
+                                                <span>{{__('text.checkout_copy')}}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <button style="margin-top: 20px;" type="button" class="enter-info__button button" name="proccess" id="proccess_local_payment">
+                                    <span>{{__('text.checkout_paid')}}</span>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="enter-info__paypal-content" @if (session('form.payment_type', 'card') != 'paypal') hidden @endif>

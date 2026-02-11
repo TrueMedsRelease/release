@@ -46,6 +46,8 @@
         const checkoutChangeCountry = "{{ route('checkout.country') }}";
         const checkoutCryptoInfo = "{{ route('checkout.crypto_info') }}";
         const checkoutValidateCrypto = "{{ route('checkout.validate_for_crypt') }}";
+        const checkoutLocalPaymentInfo = "{{ route('checkout.local_payment_info') }}";
+        const checkoutLocalPayment = "{{ route('checkout.local_payment') }}";
         const checkoutValidateGoogle = "{{ route('checkout.validate_for_google') }}";
         const checkoutValidateSepa = "{{ route('checkout.validate_for_sepa') }}";
         const checkoutGoogleLog = "{{ route('checkout.log_google') }}";
