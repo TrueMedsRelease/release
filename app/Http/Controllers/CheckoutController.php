@@ -1106,6 +1106,8 @@ class CheckoutController extends Controller
             return response()->json(['errors' => $errors], 422);
         } else {
 
+            session()->forget('local_payment');
+
             $form = session('form');
 
             $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
@@ -1170,6 +1172,7 @@ class CheckoutController extends Controller
 
                             return $this->checkout();
                         } else {
+                            session(['form.payment_type' => 'card']);
                             return json_encode(['success' => false, 'text' => 'Sorry, this payment method is currently unavailable']);
                         }
                     } else {
