@@ -2244,7 +2244,11 @@ $(".card_type .select__option").click(function (e) {
             async: false,
             success: function (data) {
                 data = JSON.parse(data);
-                $('.wrapper').html(data.html);
+                if (data.success == true) {
+                    $('.wrapper').html(data.html);
+                } else {
+                    alert(data.text);
+                }
             },
             error: function (data) {
                 flag = true;
