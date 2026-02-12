@@ -1168,6 +1168,7 @@ class CheckoutController extends Controller
 
                         if ($local_payment) {
                             session(['local_payment' => $local_payment]);
+                            session(['local_payment.referer_id' => $response['id']]);
                             session(['form.payment_type' => $form['local_payment']]);
 
                             return $this->checkout();
