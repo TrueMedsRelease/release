@@ -972,7 +972,7 @@
                                         <div class="details-payment__data">
                                             <h3 class="details-payment__title">Reference (Invoice number)</h3>
                                             <div class="details-payment__cells">
-                                                <span id="ref_id" class="details-payment__amount">{{ session('payment_ref_id') }}</span>
+                                                <span id="ref_id" class="details-payment__amount">{{ session('local_payment.referer_id') }}</span>
                                             </div>
                                         </div>
                                         <button type="button" class="details-payment__copy-button">
