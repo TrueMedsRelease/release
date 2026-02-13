@@ -917,4 +917,15 @@ return [
     "admin_renewal_database" => "Update Database",
     "admin_renewal_text1" => "Warning: If you update the store, your changes will be lost. If you need to update, please contact support.",
     "admin_renewal_text2" => "If you want to update manually, please create a dump of your database and store.",
+
+    "checkout_discount_code" => "Discount Code",
+    "checkout_bonus_card" => "Bonus Card",
+    "checkout_your_bonus_card" => "Your Bonus Card",
+    "checkout_available_amount" => "Available amount",
+    "checkout_bonus_text1" => "This amount will be debited from your bonus card.",
+    "checkout_bonus_text2" => "This amount will be debited from your account.",
+    "checkout_your_discount_code" => "Your Discount Code",
+
+    "local_payment_amount" => "Use a personal bank acount in your own name (same as biling details).",
+    "local_payment_reference" => "If this number is missing or changed in your bank memo, we may not be able to detect your payment automatically.",
 ];

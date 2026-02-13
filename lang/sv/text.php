@@ -633,4 +633,17 @@ return [
 
     "admin_renewal_shop" => "Uppdatera butiken",
     "admin_renewal_database" => "Uppdatera databasen",
+    "admin_renewal_text1" => "Varning: Om du uppdaterar butiken kommer dina ändringar att gå förlorade. Om du behöver uppdatera, kontakta support.",
+    "admin_renewal_text2" => "Om du vill uppdatera manuellt, skapa en dump (säkerhetskopia) av din databas och din butik.",
+
+    "checkout_discount_code" => "Rabattkod",
+    "checkout_bonus_card" => "Bonus kort",
+    "checkout_your_bonus_card" => "Ditt bonuskort",
+    "checkout_available_amount" => "Tillgängligt belopp",
+    "checkout_bonus_text1" => "Detta belopp kommer att dras från ditt bonuskort.",
+    "checkout_bonus_text2" => "Detta belopp kommer att dras från ditt konto.",
+    "checkout_your_discount_code" => "Din rabattkod",
+
+    "local_payment_amount" => "Använd ett personligt bankkonto i ditt eget namn (samma som faktureringsuppgifterna).",
+    "local_payment_reference" => "Om detta nummer saknas eller ändras i bankens meddelande, kanske vi inte kan upptäcka din betalning automatiskt.",
 ];

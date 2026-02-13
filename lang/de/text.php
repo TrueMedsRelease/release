@@ -758,4 +758,17 @@ return [
 
     "admin_renewal_shop" => "Shop aktualisieren",
     "admin_renewal_database" => "Datenbank aktualisieren",
+    "admin_renewal_text1" => "Warnung: Wenn Sie den Shop aktualisieren, gehen Ihre Änderungen verloren. Wenn Sie aktualisieren müssen, wenden Sie sich bitte an den Support.",
+    "admin_renewal_text2" => "Wenn Sie manuell aktualisieren möchten, erstellen Sie bitte einen Dump (Sicherung) Ihrer Datenbank und Ihres Shops.",
+
+    "checkout_discount_code" => "Rabattcode",
+    "checkout_bonus_card" => "Bonuskarten",
+    "checkout_your_bonus_card" => "Ihre Bonuskarte",
+    "checkout_available_amount" => "Verfügbarer Betrag",
+    "checkout_bonus_text1" => "Dieser Betrag wird von Ihrer Bonuskarte abgebucht.",
+    "checkout_bonus_text2" => "Dieser Betrag wird von Ihrem Konto abgebucht.",
+    "checkout_your_discount_code" => "Ihr Rabattcode",
+
+    "local_payment_amount" => "Verwenden Sie ein persönliches Bankkonto auf Ihren Namen (wie in den Rechnungsdaten).",
+    "local_payment_reference" => "Wenn diese Nummer im Verwendungszweck fehlt oder geändert wird, können wir Ihre Zahlung möglicherweise nicht automatisch erkennen.",
 ];

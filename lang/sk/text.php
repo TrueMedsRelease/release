@@ -633,4 +633,17 @@ return [
 
     "admin_renewal_shop" => "Aktualizovať obchod",
     "admin_renewal_database" => "Aktualizovať databázu",
+    "admin_renewal_text1" => "Upozornenie: Ak aktualizujete obchod, vaše zmeny sa stratia. Ak potrebujete aktualizovať, kontaktujte prosím podporu.",
+    "admin_renewal_text2" => "Ak chcete aktualizovať manuálne, vytvorte prosím dump (zálohu) svojej databázy a obchodu.",
+
+    "checkout_discount_code" => "Zľavový kód",
+    "checkout_bonus_card" => "Bonusová karta",
+    "checkout_your_bonus_card" => "Vaša bonusová karta",
+    "checkout_available_amount" => "Dostupná suma",
+    "checkout_bonus_text1" => "Táto suma bude odpočítaná z vašej bonusovej karty.",
+    "checkout_bonus_text2" => "Táto suma bude odpočítaná z vášho účtu.",
+    "checkout_your_discount_code" => "Váš zľavový kód",
+
+    "local_payment_amount" => "Použite osobný bankový účet vedený na vaše meno (rovnaké ako fakturačné údaje).",
+    "local_payment_reference" => "Ak toto číslo v poznámke pre banku chýba alebo sa zmení, nemusíme byť schopní automaticky rozpoznať vašu platbu.",
 ];

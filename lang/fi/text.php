@@ -639,4 +639,17 @@ return [
 
     "admin_renewal_shop" => "Päivitä kauppa",
     "admin_renewal_database" => "Päivitä tietokanta",
+    "admin_renewal_text1" => "Varoitus: Jos päivität kaupan, muutoksesi menetetään. Jos sinun täytyy päivittää, ota yhteyttä tukeen.",
+    "admin_renewal_text2" => "Jos haluat päivittää manuaalisesti, tee dump (varmuuskopio) tietokannastasi ja kaupastasi.",
+
+    "checkout_discount_code" => "Alennuskoodi",
+    "checkout_bonus_card" => "Bonuskortti",
+    "checkout_your_bonus_card" => "Bonuskorttisi",
+    "checkout_available_amount" => "Käytettävissä oleva summa",
+    "checkout_bonus_text1" => "Tämä summa veloitetaan bonuskortiltasi.",
+    "checkout_bonus_text2" => "Tämä summa veloitetaan tililtäsi.",
+    "checkout_your_discount_code" => "Alennuskoodisi",
+
+    "local_payment_amount" => "Käytä henkilökohtaista pankkitiliä omalla nimelläsi (sama kuin laskutustiedoissa).",
+    "local_payment_reference" => "Jos tämä numero puuttuu tai sitä muutetaan pankin viestikentässä, emme ehkä pysty tunnistamaan maksuasi automaattisesti.",
 ];

@@ -768,4 +768,17 @@ return [
 
     "admin_renewal_shop" => "Aggiorna il negozio",
     "admin_renewal_database" => "Aggiorna il database",
+    "admin_renewal_text1" => "Avviso: se aggiorni il negozio, le modifiche andranno perse. Se devi aggiornare, contatta l’assistenza.",
+    "admin_renewal_text2" => "Se vuoi aggiornare manualmente, crea un dump (backup) del tuo database e del tuo negozio.",
+
+    "checkout_discount_code" => "Codice sconto",
+    "checkout_bonus_card" => "Carta bonus",
+    "checkout_your_bonus_card" => "La tua carta bonus",
+    "checkout_available_amount" => "Importo disponibile",
+    "checkout_bonus_text1" => "Questo importo verrà addebitato dalla tua carta bonus.",
+    "checkout_bonus_text2" => "Questo importo verrà addebitato dal tuo account.",
+    "checkout_your_discount_code" => "Il tuo codice sconto",
+
+    "local_payment_amount" => "Utilizza un conto bancario personale intestato a te (come nei dati di fatturazione).",
+    "local_payment_reference" => "Se questo numero è mancante o viene modificato nella causale del bonifico, potremmo non essere in grado di rilevare automaticamente il tuo pagamento.",
 ];

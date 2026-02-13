@@ -751,4 +751,17 @@ return [
 
     "admin_renewal_shop" => "ショップを更新",
     "admin_renewal_database" => "データベースを更新",
+    "admin_renewal_text1" => "警告：ストアを更新すると、変更内容は失われます。更新が必要な場合は、サポートにお問い合わせください。",
+    "admin_renewal_text2" => "手動で更新する場合は、データベースとストアのダンプ（バックアップ）を作成してください。",
+
+    "checkout_discount_code" => "割引コード",
+    "checkout_bonus_card" => "ボーナスカード",
+    "checkout_your_bonus_card" => "あなたのボーナスカード",
+    "checkout_available_amount" => "利用可能額",
+    "checkout_bonus_text1" => "この金額はボーナスカードから引き落とされます.",
+    "checkout_bonus_text2" => "この金額はアカウントから引き落とされます.",
+    "checkout_your_discount_code" => "あなたの割引コード",
+
+    "local_payment_amount" => "請求先情報と同じ名義の個人口座をご利用ください。",
+    "local_payment_reference" => "銀行の振込メモ（摘要）にこの番号がない、または変更されている場合、お支払いを自動で確認できない可能性があります。",
 ];

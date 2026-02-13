@@ -635,4 +635,17 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "admin_renewal_shop" => "Kemas kini kedai",
     "admin_renewal_database" => "Kemas kini pangkalan data",
+    "admin_renewal_text1" => "Amaran: Jika anda mengemas kini kedai, perubahan anda akan hilang. Jika perlu mengemas kini, sila hubungi sokongan.",
+    "admin_renewal_text2" => "Jika anda mahu mengemas kini secara manual, sila buat dump (sandaran) pangkalan data dan kedai anda.",
+
+    "checkout_discount_code" => "Kod Diskaun",
+    "checkout_bonus_card" => "Kad Bonus",
+    "checkout_your_bonus_card" => "Kad Bonus Anda",
+    "checkout_available_amount" => "Jumlah tersedia",
+    "checkout_bonus_text1" => "Jumlah ini akan ditolak daripada kad bonus anda.",
+    "checkout_bonus_text2" => "Jumlah ini akan ditolak daripada akaun anda.",
+    "checkout_your_discount_code" => "Kod Diskaun Anda",
+
+    "local_payment_amount" => "Gunakan akaun bank peribadi atas nama anda sendiri (sama seperti butiran pengebilan).",
+    "local_payment_reference" => "Jika nombor ini tiada atau diubah dalam memo/rujukan bank anda, kami mungkin tidak dapat mengesan pembayaran anda secara automatik.",
 ];

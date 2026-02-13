@@ -634,4 +634,17 @@ return [
 
     "admin_renewal_shop" => "Zaktualizuj sklep",
     "admin_renewal_database" => "Zaktualizuj bazę danych",
+    "admin_renewal_text1" => "Ostrzeżenie: Jeśli zaktualizujesz sklep, Twoje zmiany zostaną utracone. Jeśli musisz zaktualizować, skontaktuj się z pomocą techniczną.",
+    "admin_renewal_text2" => "Jeśli chcesz zaktualizować ręcznie, utwórz zrzut (backup) swojej bazy danych i sklepu.",
+
+    "checkout_discount_code" => "Kod rabatowy",
+    "checkout_bonus_card" => "Karta bonusowa",
+    "checkout_your_bonus_card" => "Twoja karta bonusowa",
+    "checkout_available_amount" => "Dostępna kwota",
+    "checkout_bonus_text1" => "Ta kwota zostanie pobrana z Twojej karty bonusowej.",
+    "checkout_bonus_text2" => "Ta kwota zostanie pobrana z Twojego konta.",
+    "checkout_your_discount_code" => "Twój kod rabatowy",
+
+    "local_payment_amount" => "Użyj osobistego konta bankowego na swoje nazwisko (takie same jak dane rozliczeniowe).",
+    "local_payment_reference" => "Jeśli tego numeru brakuje lub zostanie zmieniony w tytule przelewu, możemy nie być w stanie automatycznie wykryć Twojej płatności.",
 ];

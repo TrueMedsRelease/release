@@ -638,4 +638,17 @@ return [
 
     "admin_renewal_shop" => "更新商店",
     "admin_renewal_database" => "更新数据库",
+    "admin_renewal_text1" => "警告：如果您更新商店，您的更改将会丢失。如需更新，请联系支持。",
+    "admin_renewal_text2" => "如果您想手动更新，请创建数据库和商店的转储（备份）。",
+
+    "checkout_discount_code" => "折扣码",
+    "checkout_bonus_card" => "积分卡",
+    "checkout_your_bonus_card" => "您的积分卡",
+    "checkout_available_amount" => "可用金额",
+    "checkout_bonus_text1" => "此金额将从您的积分卡中扣除.",
+    "checkout_bonus_text2" => "此金额将从您的账户中扣除.",
+    "checkout_your_discount_code" => "您的折扣码",
+
+    "local_payment_amount" => "请使用与账单信息一致、以本人名义开立的个人银行账户。",
+    "local_payment_reference" => "如果该号码在银行转账备注中缺失或被更改，我们可能无法自动识别您的付款。",
 ];
