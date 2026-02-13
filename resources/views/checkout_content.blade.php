@@ -945,12 +945,16 @@
                         <div class="enter-info__local_payment-content"  @if (!in_array(session('form.payment_type', 'card'), ['sepa_local', 'fps', 'domestic', 'ach', 'interac'])) hidden @endif>
                             <div class="content-local-payment" @if (!session()->has('local_payment')) hidden @endif>
                                 <div class="details-payment__rows">
-                                    <div class="details-payment__row">
-                                        <div class="details-payment__data">
-                                            <h3 class="details-payment__title">Amount ({{ session('local_payment.currency') }})</h3>
+                                    <div class="details-payment__row details-payment__row--amount">
+                                        <div class="details-payment__data" style="line-height: 25px">
+                                            <h3 class="details-payment__title">Amount to pay</h3>
                                             <div class="details-payment__cells">
+                                                <span style="font-weight: 600">{{ session('local_payment.currency') }}</span>
                                                 <span id="amount" class="details-payment__amount">{{ session('local_payment.amount') }}</span>
                                             </div>
+                                            <span class="details-payment__note">
+                                                {{ __('text.local_payment_amount') }}
+                                            </span>
                                         </div>
                                         <button type="button" class="details-payment__copy-button">
                                             <svg width="18" height="18">
@@ -968,12 +972,32 @@
                                             <span>{{__('text.checkout_copy')}}</span>
                                         </div>
                                     </div>
-                                    <div class="details-payment__row">
-                                        <div class="details-payment__data">
-                                            <h3 class="details-payment__title">Reference (Invoice number)</h3>
+                                    <div class="details-payment__row details-payment__row--reference">
+                                        <div class="details-payment__data" style="line-height: 25px">
+                                            <h3 class="details-payment__title">Reference (Invoice number) - Enter this only</h3>
                                             <div class="details-payment__cells">
                                                 <span id="ref_id" class="details-payment__amount">{{ session('local_payment.referer_id') }}</span>
                                             </div>
+                                            <div class="details-payment__chips" aria-label="Reference examples">
+                                                <span class="details-payment__chip details-payment__chip--do">
+                                                    <span class="details-payment__chip-icon">✓</span>
+                                                    <span class="details-payment__chip-label">DO:</span>
+                                                    <span class="details-payment__chip-value">{{ session('local_payment.referer_id') }}</span>
+                                                </span>
+                                                <span class="details-payment__chip details-payment__chip--dont">
+                                                    <span class="details-payment__chip-icon">×</span>
+                                                    <span class="details-payment__chip-label">DON'T:</span>
+                                                    <span class="details-payment__chip-value">INV-123456</span>
+                                                </span>
+                                                <span class="details-payment__chip details-payment__chip--dont">
+                                                    <span class="details-payment__chip-icon">×</span>
+                                                    <span class="details-payment__chip-label">DON'T:</span>
+                                                    <span class="details-payment__chip-value">123456&nbsp;PRODUCT&nbsp;NAME</span>
+                                                </span>
+                                            </div>
+                                            <span class="details-payment__note">
+                                                {{ __('text.local_payment_reference') }}
+                                            </span>
                                         </div>
                                         <button type="button" class="details-payment__copy-button">
                                             <svg width="18" height="18">

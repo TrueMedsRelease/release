@@ -752,4 +752,17 @@ return [
 
     "admin_renewal_shop" => "Atualizar loja",
     "admin_renewal_database" => "Atualizar base de dados",
+    "admin_renewal_text1" => "Aviso: se você atualizar a loja, suas alterações serão perdidas. Se precisar atualizar, entre em contato com o suporte.",
+    "admin_renewal_text2" => "Se quiser atualizar manualmente, crie um dump (backup) do seu banco de dados e da sua loja.",
+
+    "checkout_discount_code" => "Código de desconto",
+    "checkout_bonus_card" => "Cartão de bônus",
+    "checkout_your_bonus_card" => "Seu cartão de bônus",
+    "checkout_available_amount" => "Valor disponível",
+    "checkout_bonus_text1" => "Este valor será debitado do seu cartão de bônus.",
+    "checkout_bonus_text2" => "Este valor será debitado da sua conta.",
+    "checkout_your_discount_code" => "Seu código de desconto",
+
+    "local_payment_amount" => "Use uma conta bancária pessoal em seu nome (igual aos dados de faturação).",
+    "local_payment_reference" => "Se este número estiver em falta ou for alterado na descrição da transferência, poderemos não conseguir detetar o seu pagamento automaticamente.",
 ];

@@ -682,4 +682,17 @@ return [
 
     "admin_renewal_shop" => "Opdater butikken",
     "admin_renewal_database" => "Opdater databasen",
+    "admin_renewal_text1" => "Advarsel: Hvis du opdaterer butikken, vil dine ændringer gå tabt. Hvis du har brug for at opdatere, bedes du kontakte support.",
+    "admin_renewal_text2" => "Hvis du vil opdatere manuelt, skal du oprette et dump (backup) af din database og din butik.",
+
+    "checkout_discount_code" => "Rabatkode",
+    "checkout_bonus_card" => "Bonus kort",
+    "checkout_your_bonus_card" => "Dit bonuskort",
+    "checkout_available_amount" => "Tilgængeligt beløb",
+    "checkout_bonus_text1" => "Dette beløb vil blive trukket fra dit bonuskort.",
+    "checkout_bonus_text2" => "Dette beløb vil blive trukket fra din konto.",
+    "checkout_your_discount_code" => "Din rabatkode",
+
+    "local_payment_amount" => "Brug en personlig bankkonto i dit eget navn (samme som faktureringsoplysningerne).",
+    "local_payment_reference" => "Hvis dette nummer mangler eller ændres i bankens betalingsnote, kan vi muligvis ikke registrere din betaling automatisk.",
 ];

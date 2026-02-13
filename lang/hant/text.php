@@ -634,4 +634,17 @@ return  [
 
     "admin_renewal_shop" => "更新商店",
     "admin_renewal_database" => "更新資料庫",
+    "admin_renewal_text1" => "警告：如果您更新商店，您的變更將會遺失。如需更新，請聯絡客服支援。",
+    "admin_renewal_text2" => "如果您想手動更新，請建立您的資料庫與商店的轉存（備份）。",
+
+    "checkout_discount_code" => "折扣碼",
+    "checkout_bonus_card" => "紅利卡",
+    "checkout_your_bonus_card" => "您的紅利卡",
+    "checkout_available_amount" => "可用金額",
+    "checkout_bonus_text1" => "此金額將從您的紅利卡扣除.",
+    "checkout_bonus_text2" => "此金額將從您的帳戶扣除.",
+    "checkout_your_discount_code" => "您的折扣碼",
+
+    "local_payment_amount" => "請使用與帳單資料相同姓名的個人銀行帳戶。",
+    "local_payment_reference" => "若此號碼在銀行轉帳附言/備註中缺失或被更改，我們可能無法自動識別您的付款。",
 ];

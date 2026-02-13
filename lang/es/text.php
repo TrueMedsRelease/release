@@ -797,4 +797,17 @@ return [
 
     "admin_renewal_shop" => "Actualizar la tienda",
     "admin_renewal_database" => "Actualizar la base de datos",
+    "admin_renewal_text1" => "Advertencia: si actualiza la tienda, se perderán sus cambios. Si necesita actualizar, póngase en contacto con el soporte.",
+    "admin_renewal_text2" => "Si desea actualizar manualmente, cree un volcado (copia) de su base de datos y de su tienda.",
+
+    "checkout_discount_code" => "Código de descuento",
+    "checkout_bonus_card" => "Tarjeta de bonificación",
+    "checkout_your_bonus_card" => "Su tarjeta de bonificación",
+    "checkout_available_amount" => "Importe disponible",
+    "checkout_bonus_text1" => "Este importe se debitará de su tarjeta de bonificación.",
+    "checkout_bonus_text2" => "Este importe se debitará de su cuenta.",
+    "checkout_your_discount_code" => "Su código de descuento",
+
+    "local_payment_amount" => "Utilice una cuenta bancaria personal a su nombre (igual que los datos de facturación).",
+    "local_payment_reference" => "Si este número falta o se modifica en el concepto de la transferencia, es posible que no podamos detectar su pago automáticamente.",
 ];

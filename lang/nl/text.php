@@ -673,4 +673,17 @@ return [
 
     "admin_renewal_shop" => "Winkel bijwerken",
     "admin_renewal_database" => "Database bijwerken",
+    "admin_renewal_text1" => "Waarschuwing: als u de winkel bijwerkt, gaan uw wijzigingen verloren. Als u moet bijwerken, neem dan contact op met support.",
+    "admin_renewal_text2" => "Als u handmatig wilt bijwerken, maak dan een dump (back-up) van uw database en uw winkel.",
+
+    "checkout_discount_code" => "Kortingscode",
+    "checkout_bonus_card" => "Bonuskaart",
+    "checkout_your_bonus_card" => "Uw bonuskaart",
+    "checkout_available_amount" => "Beschikbaar bedrag",
+    "checkout_bonus_text1" => "Dit bedrag wordt van uw bonuskaart afgeschreven.",
+    "checkout_bonus_text2" => "Dit bedrag wordt van uw account afgeschreven.",
+    "checkout_your_discount_code" => "Uw kortingscode",
+
+    "local_payment_amount" => "Gebruik een persoonlijke bankrekening op uw eigen naam (dezelfde als de factuurgegevens).",
+    "local_payment_reference" => "Als dit nummer ontbreekt of wordt gewijzigd in de bankomschrijving, kunnen we uw betaling mogelijk niet automatisch detecteren.",
 ];

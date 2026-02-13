@@ -763,4 +763,17 @@ return [
 
     "admin_renewal_shop" => "Mettre à jour la boutique",
     "admin_renewal_database" => "Mettre à jour la base de données",
+    "admin_renewal_text1" => "Avertissement : si vous mettez à jour la boutique, vos modifications seront perdues. Si vous devez effectuer une mise à jour, veuillez contacter le support.",
+    "admin_renewal_text2" => "Si vous souhaitez mettre à jour manuellement, veuillez créer un dump (sauvegarde) de votre base de données et de votre boutique.",
+
+    "checkout_discount_code" => "Code de réduction",
+    "checkout_bonus_card" => "Carte bonus",
+    "checkout_your_bonus_card" => "Votre carte bonus",
+    "checkout_available_amount" => "Montant disponible",
+    "checkout_bonus_text1" => "Ce montant sera débité de votre carte bonus.",
+    "checkout_bonus_text2" => "Ce montant sera débité de votre compte.",
+    "checkout_your_discount_code" => "Votre code de réduction",
+
+    "local_payment_amount" => "Utilisez un compte bancaire personnel à votre nom (identique aux informations de facturation).",
+    "local_payment_reference" => "Si ce numéro est absent ou modifié dans le libellé de votre virement, nous pourrions ne pas être en mesure de détecter automatiquement votre paiement.",
 ];

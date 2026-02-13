@@ -3226,3 +3226,317 @@ input[type=number] {
 
 html { scroll-behavior: smooth; }
 #requisites { scroll-margin-top: 80px; }
+
+.your-order__row.bonuses_block{
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.top_bonuses_block {
+    width: 100%;
+    /* height: 162px; */
+    /* height: 233px; */
+    padding: 15px;
+    background-color: #f4f5f5;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+}
+
+.bottom_bonuses_block {
+    width: 100%;
+    padding: 15px;
+    background-color: #f4f5f5;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+}
+
+.check_bonuses {
+    width: 100%;
+    /* height: 55px; */
+    padding: 5px;
+    border-radius: 12px;
+    background-color: white;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+.discount_block, .gift_card_block {
+    width: 100%;
+    border-radius: 8px;
+    height: 40px;
+    background-color: white;
+    color: #508111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.discount_block.is_active, .gift_card_block.is_active {
+    background-color: #508111;
+    color: white;
+}
+
+.bonus_block {
+    width: 100%;
+    border-radius: 8px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #508111;
+    gap: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.bonus_block.is_active {
+    background-color: #508111;
+    color: white;
+}
+
+.bonus_block_mark {
+    width: 16px;
+    height: 16px;
+    background-color: #508111;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.bonus_block.is_active .bonus_block_mark{
+    color: #508111;
+    background-color: white;
+}
+
+#bonus_card_submit, #coupon_submit {
+    top: 7%;
+}
+
+.bottom_bonuses_block_body {
+    display: flex;
+    flex-direction:
+    column; gap: 5px;
+}
+
+.bottom_bonuses_block_head {
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom_bonuses_block_text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.bonus_block.is_active:hover, .discount_block.is_active:hover, .gift_card_block.is_active:hover {
+    opacity: 0.85;
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.bonus_block:hover, .discount_block:hover, .gift_card_block:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    transform: translateY(-2px);
+}
+
+.delete_bonus_card, .delete_discount, .delete_gift_card {
+    cursor: pointer;
+    -webkit-transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease;
+}
+
+.delete_bonus_card:hover, .delete_discount:hover, .delete_gift_card:hover {
+    color: rgb(148, 148, 148);
+}
+
+.discount_code_input, .bonus_card_input, .gift_card_input {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 12px;
+}
+
+#coupon, #bonus_card, #gift_card {
+    padding: 20px 15px;
+    display: block;
+    width: 100%;
+    font-size: 15px;
+    line-height: 1.4666666667;
+    font-weight: 700;
+    border-radius: 12px;
+    background-color: var(--white);
+    -webkit-box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.15);
+}
+
+.coupon-button {
+    width: 38px;
+    height: 38px;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 38px;
+            flex: 0 0 38px;
+    padding: 7px;
+    -webkit-box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background-color: var(--green);
+    color: var(--white);
+    -webkit-transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.coupon-button:hover {
+    opacity: 0.85;
+}
+
+.details-payment__row--amount {
+    background: #EAF6F1;      /* мягкий зелёный фон */
+    border-color: #BFE8D7;    /* зелёная рамка */
+    color: #0E3A2B;           /* основной текст */
+    border: 1px solid;
+}
+
+.details-payment__row--amount .details-payment__copy-button {
+    color: #0E3A2B;
+    top: 40%;
+}
+
+.details-payment__row--reference {
+    background: #FBF3DF;      /* мягкий жёлтый фон */
+    border-color: #F2D38B;    /* жёлтая рамка */
+    color: #5A3A07;           /* коричневатый текст */
+    border: 1px solid;
+}
+
+.details-payment__row--amount .details-payment__title {
+    color: #0E3A2B;
+}
+
+.details-payment__row--reference .details-payment__title {
+    color: #5A3A07;
+}
+
+.details-payment__row--reference .details-payment__copy-button {
+    color: #8A5A0A;
+    top: 25%;
+}
+
+.details-payment__row--reference .details-payment__pill {
+    background: #DFF2E8;
+    color: #0E3A2B;
+}
+
+.details-payment__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0 6px;
+}
+
+.details-payment__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.details-payment__chip-icon {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.details-payment__chip-label { opacity: .9; }
+.details-payment__chip-value { letter-spacing: .02em; }
+
+/* Цвета как на примере: зелёный DO, красный DON'T */
+.details-payment__chip--do {
+    background: #E7F5EF;
+    border-color: #BFE8D7;
+    color: #0E3A2B;
+}
+
+.details-payment__chip--do .details-payment__chip-icon {
+    background: #BFE8D7;
+    color: #0E3A2B;
+}
+
+.details-payment__chip--dont {
+    background: #FBE7E7;
+    border-color: #F3B5B5;
+    color: #7A1E1E;
+}
+
+.details-payment__chip--dont .details-payment__chip-icon {
+    background: #F3B5B5;
+    color: #7A1E1E;
+}
+
+.details-payment__note {
+    font-size: 13px;
+}
+
+.details-payment__row--reference .details-payment__copy-button:hover,  .details-payment__row--amount .details-payment__copy-button:hover{
+    color: var(--main-color);
+}
+
+@media (max-width: 875px) {
+    .details-payment__row--reference .details-payment__copy-button {
+        top: 20%;
+    }
+}
+
+@media (max-width: 660px) {
+    .details-payment__row--reference .details-payment__copy-button {
+        top: 17%;
+    }
+
+    .details-payment__row--amount .details-payment__copy-button {
+        top: 40%;
+    }
+}
+
+@media (max-width: 580px) {
+    .details-payment__row--reference .details-payment__copy-button {
+        top: 15%;
+    }
+
+    .details-payment__row--amount .details-payment__copy-button {
+        top: 30%;
+    }
+}

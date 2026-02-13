@@ -629,4 +629,17 @@ return [
 
     "admin_renewal_shop" => "Actualizează magazinul",
     "admin_renewal_database" => "Actualizează baza de date",
+    "admin_renewal_text1" => "Avertisment: Dacă actualizați magazinul, modificările dvs. se vor pierde. Dacă trebuie să actualizați, vă rugăm să contactați suportul.",
+    "admin_renewal_text2" => "Dacă doriți să actualizați manual, vă rugăm să creați un dump (copie de siguranță) al bazei dvs. de date și al magazinului.",
+
+    "checkout_discount_code" => "Cod de reducere",
+    "checkout_bonus_card" => "Card bonus",
+    "checkout_your_bonus_card" => "Cardul dvs. bonus",
+    "checkout_available_amount" => "Sumă disponibilă",
+    "checkout_bonus_text1" => "Această sumă va fi debitată de pe cardul dvs. bonus.",
+    "checkout_bonus_text2" => "Această sumă va fi debitată din contul dvs.",
+    "checkout_your_discount_code" => "Codul dvs. de reducere",
+
+    "local_payment_amount" => "Folosiți un cont bancar personal pe numele dumneavoastră (același ca în detaliile de facturare).",
+    "local_payment_reference" => "Dacă acest număr lipsește sau este modificat în mențiunea plății la bancă, este posibil să nu putem detecta plata automat.",
 ];

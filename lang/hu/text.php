@@ -639,4 +639,17 @@ return [
 
     "admin_renewal_shop" => "Bolt frissítése",
     "admin_renewal_database" => "Adatbázis frissítése",
+    "admin_renewal_text1" => "Figyelmeztetés: Ha frissíti az áruházat, a módosításai elvesznek. Ha frissítenie kell, kérjük, lépjen kapcsolatba az ügyfélszolgálattal.",
+    "admin_renewal_text2" => "Ha manuálisan szeretne frissíteni, készítsen dumpot (mentést) az adatbázisáról és az áruházáról.",
+
+    "checkout_discount_code" => "Kedvezménykód",
+    "checkout_bonus_card" => "Bónuszkártya",
+    "checkout_your_bonus_card" => "Az Ön bónuszkártyája",
+    "checkout_available_amount" => "Elérhető összeg",
+    "checkout_bonus_text1" => "Ez az összeg levonásra kerül a bónuszkártyájáról.",
+    "checkout_bonus_text2" => "Ez az összeg levonásra kerül a fiókjáról.",
+    "checkout_your_discount_code" => "Az Ön kedvezménykódja",
+
+    "local_payment_amount" => "A saját nevére szóló személyes bankszámlát használjon (megegyezik a számlázási adatokkal).",
+    "local_payment_reference" => "Ha ez a szám hiányzik vagy megváltozik a banki közleményben, előfordulhat, hogy nem tudjuk automatikusan azonosítani a befizetését.",
 ];
