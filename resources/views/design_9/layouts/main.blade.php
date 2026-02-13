@@ -140,12 +140,13 @@
 
     <div class="wrapper">
 
-        {{-- <div class="christmas" style="display: none">
-            <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
+        <div class="christmas" style="display: none">
+            {{-- <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
             <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
             <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/new_year_big.png") }}">
-        </div> --}}
+            <img loading="lazy" src="{{ asset("pub_images/new_year_big.png") }}"> --}}
+            <img loading="lazy" src="{{ asset("pub_images/valentine_day_big.png") }}">
+        </div>
 
         <div class="popup_gray" style="display: none">
             <div class="popup_call">
@@ -972,6 +973,11 @@
         const pathImageNewYearBig = "{{ asset('pub_images/new_year_big.png') }}";
         const pathImageNewYearMiddle = "{{ asset('pub_images/new_year_middle.png') }}";
         const pathImageNewYearSmall = "{{ asset('pub_images/new_year_small.png') }}";
+
+        const pathImageValentineDayBiggest = "{{ asset('pub_images/valentine_day_biggest.png') }}";
+        const pathImageValentineDayBig = "{{ asset('pub_images/valentine_day_big.png') }}";
+        const pathImageValentineDayMiddle = "{{ asset('pub_images/valentine_day_middle.png') }}";
+        const pathImageValentineDaySmall = "{{ asset('pub_images/valentine_day_small.png') }}";
     </script>
 
     <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>

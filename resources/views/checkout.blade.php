@@ -92,6 +92,11 @@
         const pathImageNewYearBig = "{{ asset('pub_images/new_year_big.png') }}";
         const pathImageNewYearMiddle = "{{ asset('pub_images/new_year_middle.png') }}";
         const pathImageNewYearSmall = "{{ asset('pub_images/new_year_small.png') }}";
+
+        const pathImageValentineDayBiggest = "{{ asset('pub_images/valentine_day_biggest.png') }}";
+        const pathImageValentineDayBig = "{{ asset('pub_images/valentine_day_big.png') }}";
+        const pathImageValentineDayMiddle = "{{ asset('pub_images/valentine_day_middle.png') }}";
+        const pathImageValentineDaySmall = "{{ asset('pub_images/valentine_day_small.png') }}";
     </script>
     <script async src="https://true-serv.net/static/statistics/assets/js/v1/main.js"></script>
 </head>

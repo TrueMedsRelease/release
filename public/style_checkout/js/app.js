@@ -3071,7 +3071,8 @@ if (document.documentElement.clientWidth > 1925) {
     // $('.christmas img').attr('src', pathImagePayBiggest);
     // $('.christmas img').attr('src', pathImageBlackFridayBiggest);
     // $('.christmas img').attr('src', pathImageChristmasBiggest);
-    $('.christmas img').attr('src', pathImageNewYearBiggest);
+    // $('.christmas img').attr('src', pathImageNewYearBiggest);
+    $('.christmas img').attr('src', pathImageValentineDayBiggest);
     // $('.checkup img').attr('src', pathImageCheckupBiggest);
 }
 if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
@@ -3080,7 +3081,8 @@ if (document.documentElement.clientWidth > 769 && document.documentElement.clien
     // $('.christmas img').attr('src', pathImagePayBig);
     // $('.christmas img').attr('src', pathImageBlackFridayBig);
     // $('.christmas img').attr('src', pathImageChristmasBig);
-    $('.christmas img').attr('src', pathImageNewYearBig);
+    // $('.christmas img').attr('src', pathImageNewYearBig);
+    $('.christmas img').attr('src', pathImageValentineDayBig);
     // $('.checkup img').attr('src', pathImageCheckupBig);
 }
 if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
@@ -3089,7 +3091,8 @@ if (document.documentElement.clientWidth > 391 && document.documentElement.clien
     // $('.christmas img').attr('src', pathImagePayMiddle);
     // $('.christmas img').attr('src', pathImageBlackFridayMiddle);
     // $('.christmas img').attr('src', pathImageChristmasMiddle);
-    $('.christmas img').attr('src', pathImageNewYearMiddle);
+    // $('.christmas img').attr('src', pathImageNewYearMiddle);
+    $('.christmas img').attr('src', pathImageValentineDayMiddle);
     // $('.checkup img').attr('src', pathImageCheckupMiddle);
 }
 if (document.documentElement.clientWidth < 391) {
@@ -3098,7 +3101,8 @@ if (document.documentElement.clientWidth < 391) {
     // $('.christmas img').attr('src', pathImagePaySmall);
     // $('.christmas img').attr('src', pathImageBlackFridaySmall);
     // $('.christmas img').attr('src', pathImageChristmasSmall);
-    $('.christmas img').attr('src', pathImageNewYearSmall);
+    // $('.christmas img').attr('src', pathImageNewYearSmall);
+    $('.christmas img').attr('src', pathImageValentineDaySmall);
     // $('.checkup img').attr('src', pathImageCheckupSmall);
 }
 
@@ -3109,7 +3113,8 @@ window.addEventListener('resize', function (e) {
         // $('.christmas img').attr('src', pathImagePayBiggest);
         // $('.christmas img').attr('src', pathImageBlackFridayBiggest);
         // $('.christmas img').attr('src', pathImageChristmasBiggest);
-        $('.christmas img').attr('src', pathImageNewYearBiggest);
+        // $('.christmas img').attr('src', pathImageNewYearBiggest);
+        $('.christmas img').attr('src', pathImageValentineDayBiggest);
         // $('.checkup img').attr('src', pathImageCheckupBiggest);
     }
     if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
@@ -3118,7 +3123,8 @@ window.addEventListener('resize', function (e) {
         // $('.christmas img').attr('src', pathImagePayBig);
         // $('.christmas img').attr('src', pathImageBlackFridayBig);
         // $('.christmas img').attr('src', pathImageChristmasBig);
-        $('.christmas img').attr('src', pathImageNewYearBig);
+        // $('.christmas img').attr('src', pathImageNewYearBig);
+        $('.christmas img').attr('src', pathImageValentineDayBig);
         // $('.checkup img').attr('src', pathImageCheckupBig);
     }
     if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
@@ -3127,7 +3133,8 @@ window.addEventListener('resize', function (e) {
         // $('.christmas img').attr('src', pathImagePayMiddle);
         // $('.christmas img').attr('src', pathImageBlackFridayMiddle);
         // $('.christmas img').attr('src', pathImageChristmasMiddle);
-        $('.christmas img').attr('src', pathImageNewYearMiddle);
+        // $('.christmas img').attr('src', pathImageNewYearMiddle);
+        $('.christmas img').attr('src', pathImageValentineDayMiddle);
         // $('.checkup img').attr('src', pathImageCheckupMiddle);
     }
     if (document.documentElement.clientWidth < 391) {
@@ -3136,7 +3143,8 @@ window.addEventListener('resize', function (e) {
         // $('.christmas img').attr('src', pathImagePaySmall);
         // $('.christmas img').attr('src', pathImageBlackFridaySmall);
         // $('.christmas img').attr('src', pathImageChristmasSmall);
-        $('.christmas img').attr('src', pathImageNewYearSmall);
+        // $('.christmas img').attr('src', pathImageNewYearSmall);
+        $('.christmas img').attr('src', pathImageValentineDaySmall);
         // $('.checkup img').attr('src', pathImageCheckupSmall);
     }
 });
