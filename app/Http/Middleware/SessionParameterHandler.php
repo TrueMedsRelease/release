@@ -45,7 +45,7 @@ class SessionParameterHandler
             session(['referer' => $referer]);
         }
 
-        $on7Pills = Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net', '7-pill.com', '*.7-pill.com', '77-pills.com', '*.77-pills.com', '7-pillz.com', '*.7-pillz.com', '77-pillz.com', '*.77-pillz.com', '777-pills.com', '*.777-pills.com'], $request->getHost());
+        $on7Pills = Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net', '7-pill.com', '*.7-pill.com', '77-pills.com', '*.77-pills.com', '7-pillz.com', '*.7-pillz.com', '77-pillz.com', '*.77-pillz.com', '777-pills.com', '*.777-pills.com', '777pills.com', '*.777pills.com'], $request->getHost());
 
         // aff
         if (!empty($request->query('aff'))) {
