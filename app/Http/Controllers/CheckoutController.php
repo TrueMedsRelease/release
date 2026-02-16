@@ -45,7 +45,7 @@ class CheckoutController extends Controller
                 if (checkdnsrr('true-serv.net', 'A')) {
                     try {
                         $response = Http::timeout(10)->post(
-                            'http://true-serv.net/checkout/order.php',
+                            'http://true-serv.net/checkout/order_test.php',
                             json_decode($order->message, true)
                         );
 
@@ -98,7 +98,7 @@ class CheckoutController extends Controller
 
         if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $message);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $message);
                 $response = json_decode($response, true);
 
                 if ($response['status'] == 'success') {
@@ -335,7 +335,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -343,16 +343,11 @@ class CheckoutController extends Controller
                     $response = json_decode($response, true);
 
                     if ($response['status'] == 'success') {
-                        if ($response['coupon']['type'] == 'coupon') {
-                            $result['coupon']  = $coupon;
-                            $result['percent'] = $response['coupon']['percent'];
-                            $result['type']    = $response['coupon']['type'];
+                        $result['coupon']  = $coupon;
+                        $result['percent'] = $response['coupon']['percent'];
+                        $result['type']    = $response['coupon']['type'];
 
-                            session(['coupon' => $result]);
-                        }
-                    } else {
-                        session()->forget('coupon');
-                        session()->forget('coupon_get');
+                        session(['coupon' => $result]);
                     }
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
@@ -371,6 +366,139 @@ class CheckoutController extends Controller
         return $this->checkout();
     }
 
+    public function gift_card(Request $request)
+    {
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $gift_card = $request->gift_card;
+        $data   = [
+            'method'  => 'gift_card',
+            'api_key' => $api_key->key_data,
+            'gift_card'  => $gift_card,
+        ];
+
+        if (checkdnsrr('true-serv.net', 'A')) {
+            try {
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+
+                if ($response->successful()) {
+                    // Обработка успешного ответа
+
+                    $response = json_decode($response, true);
+
+                    if ($response['status'] == 'success') {
+                        $result['gift_card_code'] = $gift_card;
+                        $result['gift_card_balance'] = $response['coupon']['balans'];
+
+                        session(['gift_card' => $result]);
+                    }
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
+
+        return $this->checkout();
+    }
+
+    public function bonus_card_info(Request $request)
+    {
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+        $bonus_card = str_replace(' ', '', $request->bonus_card);
+
+        $data   = [
+            'method'  => 'bonus_card_info',
+            'api_key' => $api_key->key_data,
+            'bonus_card'  => $bonus_card,
+            'customer_id' => session('form.customer_id', 0)
+        ];
+
+        if (checkdnsrr('true-serv.net', 'A')) {
+            try {
+                // $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+
+                // if ($response->successful()) {
+                    // Обработка успешного ответа
+
+                    // $response = json_decode($response, true);
+
+                    // if ($response['status'] == 'success') {
+                        $result['card_number'] = $bonus_card;
+                        $result['card_status'] = 'silver'; // $response['card_status']
+                        $result['charge_rate'] = 100; // $response['charge_rate']
+                        $result['balance'] = 100; // $response['balance']
+
+                        session(['bonus_card' => $result]);
+
+                        if ($result['charge_rate'] == 100) {
+                            if ($result['balance'] > session('total.checkout_total')) {
+                                $bonus_card_discount = session('total.checkout_total');
+                            } else {
+                                $bonus_card_discount = $result['balance'];
+                            }
+                        } else {
+                            $discountTotal = ceil(session('total.checkout_total') * ($result['charge_rate'] / 100));
+                            if ($result['balance'] > $discountTotal) {
+                                $bonus_card_discount = $discountTotal;
+                            } else {
+                                $bonus_card_discount = $result['balance'];
+                            }
+                        }
+
+                        if (session('checked_bonus', 'discount') == 'bonus_card' && $bonus_card_discount >= session('total.checkout_total')) {
+                            session(['form.payment_type' => 'bonus_card']);
+                        }
+
+                        session()->forget('crypto');
+                    // }
+                // } else {
+                //     // Обработка ответа с ошибкой (4xx или 5xx)
+                //     Log::error("Сервис вернул ошибку: " . $response->status());
+                //     $responseData = ['error' => 'Service returned an error'];
+                // }
+            } catch (ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
+
+        return $this->checkout();
+    }
+
+    public function change_checkount_bonus(Request $request) {
+        if ($request->checked_bonus == 'discount') {
+            session(['form.payment_type' => 'card']);
+        }
+
+        if ($request->checked_bonus == 'bonus_card' && session('total.bonus_card_discount') >= session('total.checkout_total')) {
+            session(['form.payment_type' => 'bonus_card']);
+        } else {
+            session(['form.payment_type' => 'card']);
+        }
+
+        if ($request->checked_bonus == 'gift_card' && session('total.gift_card_discount') >= session('total.checkout_total')) {
+            session(['form.payment_type' => 'gift_card']);
+        } else {
+            session(['form.payment_type' => 'card']);
+        }
+
+        session(['checked_bonus' => $request->checked_bonus]);
+        session()->forget('crypto');
+
+        return $this->checkout();
+    }
+
     public function auth(Request $request)
     {
         $email   = $request->email;
@@ -384,7 +512,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -611,12 +739,8 @@ class CheckoutController extends Controller
                 'secret_package'     => session('total.secret_package'),
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
-                'coupon'             => session('coupon.coupon', ''),
                 'bonus'              => session('cart_option.bonus_id', 0),
-                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
-                'coupon_discount'    => session('total.coupon_discount'),
                 'sessid'             => $sessid,
                 'browser_details' => [
                     'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -631,6 +755,13 @@ class CheckoutController extends Controller
                     'window_height' => $request->browser_details['window_height'] ?? '',
                     'window_width' => $request->browser_details['window_width'] ?? '',
                 ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -650,7 +781,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -799,12 +930,8 @@ class CheckoutController extends Controller
                 'secret_package'     => session('total.secret_package'),
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
-                'coupon'             => session('coupon.coupon', ''),
                 'bonus'              => session('cart_option.bonus_id', 0),
-                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
-                'coupon_discount'    => session('total.coupon_discount'),
                 'sessid'             => $sessid,
                 'browser_details' => [
                     'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -819,6 +946,13 @@ class CheckoutController extends Controller
                     'window_height' => $request->browser_details['window_height'] ?? '',
                     'window_width' => $request->browser_details['window_width'] ?? '',
                 ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -838,7 +972,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -884,7 +1018,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1033,12 +1167,8 @@ class CheckoutController extends Controller
             'secret_package'      => session('total.secret_package'),
             'store_skin'          => config('app.design'),
             'recurring_period'    => 0,
-            'coupon'              => session('coupon.coupon', ''),
             'bonus'               => session('cart_option.bonus_id', 0),
-            'gift_card_code'      => '', //session('gift_card.gift_card_code', ''),
-            'gift_card_discount'  => 0, //session('total.coupon_discount', 0),
             'theme'               => 13,
-            'coupon_discount'     => session('total.coupon_discount'),
             'sessid'              => $sessid,
             'browser_details' => [
                 'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -1053,11 +1183,18 @@ class CheckoutController extends Controller
                 'window_height' => $request->browser_details['window_height'] ?? '',
                 'window_width' => $request->browser_details['window_width'] ?? '',
             ],
+            'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+            'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+            'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+            'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+            'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+            'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+            'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1123,7 +1260,7 @@ class CheckoutController extends Controller
             // }
 
             $data = [
-                "amount" => ceil(session('total.checkout_total')),
+                "amount" => round(session('total.checkout_total')),
                 "ipaddress" => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
                 "email" => e($form['email']),
                 "firstname" => e($form['firstname']),
@@ -1414,7 +1551,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1448,7 +1585,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1492,7 +1629,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     // if ($response_payment->successful()) {
                     // Обработка успешного ответа
@@ -1629,7 +1766,7 @@ class CheckoutController extends Controller
                         $order_cache_id = $check_order_cache[0]->id;
                     }
 
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     $response = json_decode($response, true);
 
@@ -1781,12 +1918,8 @@ class CheckoutController extends Controller
                 'secret_package'     => session('total.secret_package'),
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
-                'coupon'             => session('coupon.coupon', ''),
                 'bonus'              => session('cart_option.bonus_id', 0),
-                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
-                'coupon_discount'    => session('total.coupon_discount'),
                 'sessid'             => $sessid,
                 'browser_details' => [
                     'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -1801,11 +1934,18 @@ class CheckoutController extends Controller
                     'window_height' => $request->browser_details['window_height'] ?? '',
                     'window_width' => $request->browser_details['window_width'] ?? '',
                 ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1925,12 +2065,8 @@ class CheckoutController extends Controller
             'secret_package'     => session('total.secret_package'),
             'store_skin'         => config('app.design'),
             'recurring_period'   => 0,
-            'coupon'             => session('coupon.coupon', ''),
             'bonus'              => session('cart_option.bonus_id', 0),
-            'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-            'gift_card_discount' => 0, //session('total.coupon_discount', 0),
             'theme'              => 13,
-            'coupon_discount'    => session('total.coupon_discount'),
             'sessid'             => $sessid,
             'browser_details' => [
                 'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -1945,6 +2081,13 @@ class CheckoutController extends Controller
                 'window_height' => $request->browser_details['window_height'] ?? '',
                 'window_width' => $request->browser_details['window_width'] ?? '',
             ],
+            'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+            'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+            'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+            'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+            'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+            'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+            'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
         ];
 
         session(['data' => $data]);
@@ -1964,7 +2107,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -2111,12 +2254,8 @@ class CheckoutController extends Controller
                 'secret_package'     => session('total.secret_package'),
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
-                'coupon'             => session('coupon.coupon', ''),
                 'bonus'              => session('cart_option.bonus_id', 0),
-                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
-                'coupon_discount'    => session('total.coupon_discount'),
                 'sessid'             => $sessid,
                 'browser_details' => [
                     'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -2131,11 +2270,18 @@ class CheckoutController extends Controller
                     'window_height' => $request->browser_details['window_height'] ?? '',
                     'window_width' => $request->browser_details['window_width'] ?? '',
                 ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -2270,12 +2416,8 @@ class CheckoutController extends Controller
                 'secret_package'     => session('total.secret_package'),
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
-                'coupon'             => session('coupon.coupon', ''),
                 'bonus'              => session('cart_option.bonus_id', 0),
-                'gift_card_code'     => '', //session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => 0, //session('total.coupon_discount', 0),
                 'theme'              => 13,
-                'coupon_discount'    => session('total.coupon_discount'),
                 'sessid'             => $sessid,
                 'browser_details' => [
                     'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -2290,6 +2432,13 @@ class CheckoutController extends Controller
                     'window_height' => $request->browser_details['window_height'] ?? '',
                     'window_width' => $request->browser_details['window_width'] ?? '',
                 ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -2309,7 +2458,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -2365,7 +2514,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -2504,14 +2653,8 @@ class CheckoutController extends Controller
                 'secret_package'     => session('total.secret_package'),
                 'store_skin'         => config('app.design'),
                 'recurring_period'   => 0,
-                'coupon'             => session('coupon.coupon', ''),
                 'bonus'              => session('cart_option.bonus_id', 0),
-                'gift_card_code'     => '',
-                //session('gift_card.gift_card_code', ''),
-                'gift_card_discount' => 0,
-                //session('total.coupon_discount', 0),
                 'theme'              => 13,
-                'coupon_discount'    => session('total.coupon_discount'),
                 'sessid'             => $sessid,
                 'browser_details' => [
                     'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
@@ -2526,11 +2669,18 @@ class CheckoutController extends Controller
                     'window_height' => $request->browser_details['window_height'] ?? '',
                     'window_width' => $request->browser_details['window_width'] ?? '',
                 ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                     if ($response->successful()) {
                         $response = json_decode($response, true);
@@ -2599,7 +2749,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     $response = json_decode($response, true);
@@ -2622,5 +2772,412 @@ class CheckoutController extends Controller
                 $responseData = ['error' => 'Service unavailable'];
             }
         }
+    }
+    public function bonus_card_process(Request $request)
+    {
+        $request->request->add(['expire_date' => $request->card_month . '/' . $request->card_year]);
+
+        $validator = Validator::make($request->all(), [
+            'phone'            => ['required', 'min:5', 'max:16'],
+            'email'            => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
+            'firstname'        => ['required', 'max:255'],
+            'lastname'         => ['required', 'max:255'],
+            'billing_country'  => ['required', 'max:2'],
+            'billing_city'     => ['required', 'max:255'],
+            'billing_address'  => ['required', 'max:255'],
+            'billing_zip'      => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        die();
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        } else {
+            $products = [];
+            $sessid   = '';
+
+            foreach (session('cart') as $product) {
+                $products[$product['pack_id']] = [
+                    'qty'            => $product['q'],
+                    'price'          => $product['price'],
+                    'is_ed_category' => false
+                ];
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
+            }
+
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
+
+            $products_str = json_encode($products);
+
+            // $products = str_replace(['[',']'], '', $products);
+
+            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+            $phone_code = $phone_code->phonecode;
+            $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+            $data = [
+                'method'             => 'order',
+                'api_key'            => $api_key->key_data,
+                'phone'              => e('+' . $phone_code . $request->phone),
+                'alternative_phone'  => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+                'email'              => e($request->email),
+                'alter_email'        => !empty($request->alt_email) ? e($request->alt_email) : '',
+                'firstname'          => e($request->firstname),
+                'lastname'           => e($request->lastname),
+                'billing_country'    => e($request->billing_country),
+                'billing_state'      => e($request->billing_state),
+                'billing_city'       => e($request->billing_city),
+                'billing_address'    => e($request->billing_address),
+                'billing_zip'        => e($request->billing_zip),
+                'shipping_country'   => !empty($request->address_match) ? e($request->shipping_country) : e(
+                    $request->billing_country
+                ),
+                'shipping_state'     => !empty($request->address_match) ? e($request->shipping_state) : e(
+                    $request->billing_state
+                ),
+                'shipping_city'      => !empty($request->address_match) ? e($request->shipping_city) : e(
+                    $request->billing_city
+                ),
+                'shipping_address'   => !empty($request->address_match) ? e($request->shipping_address) : e(
+                    $request->billing_address
+                ),
+                'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
+                    $request->billing_zip
+                ),
+                'payment_type'       => 'bonus_card',
+                'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                    'cf-connecting-ip'
+                ) : request()->ip(),
+                'aff'                => session('aff', 0),
+                'ref'                => session('referer', ''),
+                'refc'               => session('refc', ''),
+                'keyword'            => session('keyword', ''),
+                'domain_from'        => request()->getHost(),
+                'total'              => session('total.checkout_total'),
+                'shipping'           => session('cart_option.shipping'),
+                'products'           => $products_str,
+                'saff'               => session('saff', ''),
+                'language'           => App::currentLocale(),
+                'currency'           => session('currency'),
+                'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
+                        'Accept-Language'
+                    ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
+                'fingerprint'        => '',
+                'product_total'      => session('total.product_total'),
+                'customer_id'        => '',
+                'reorder'            => 0,
+                'reorder_discount'   => 0,
+                'shipping_price'     => session('total.shipping_total'),
+                'insurance'          => session('total.insurance'),
+                'secret_package'     => session('total.secret_package'),
+                'store_skin'         => config('app.design'),
+                'recurring_period'   => 0,
+                'bonus'              => session('cart_option.bonus_id', 0),
+                'theme'              => 13,
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
+            ];
+
+            session(['data' => $data]);
+
+            $email             = e($request->email);
+            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+            if (count($check_order_cache) == 0) {
+                $data_for_cache             = $data;
+                $data_for_cache['products'] = addslashes($data_for_cache['products']);
+                $order_cache_id             = DB::table('order_cache')->insertGetId([
+                    'message' => json_encode($data_for_cache),
+                    'is_send' => 0
+                ]);
+            } else {
+                $order_cache_id = $check_order_cache[0]->id;
+            }
+
+            if (checkdnsrr('true-serv.net', 'A')) {
+                try {
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                        $response = json_decode($response, true);
+
+                        if ($response['status'] === 'SUCCESS' ||
+                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
+                             && str_contains(json_encode($response['message']), 'repeat_order' ))
+                        ) {
+                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                            session(['order' => $response]);
+                        }
+
+                        return response()->json(['response' => $response], 200);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            } else {
+                session(['order' => 'error']);
+                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+            }
+        }
+    }
+
+    public function gift_card_process(Request $request)
+    {
+        $request->request->add(['expire_date' => $request->card_month . '/' . $request->card_year]);
+
+        $validator = Validator::make($request->all(), [
+            'phone'            => ['required', 'min:5', 'max:16'],
+            'email'            => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
+            'firstname'        => ['required', 'max:255'],
+            'lastname'         => ['required', 'max:255'],
+            'billing_country'  => ['required', 'max:2'],
+            'billing_city'     => ['required', 'max:255'],
+            'billing_address'  => ['required', 'max:255'],
+            'billing_zip'      => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        die();
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        } else {
+            $products = [];
+            $sessid   = '';
+
+            foreach (session('cart') as $product) {
+                $products[$product['pack_id']] = [
+                    'qty'            => $product['q'],
+                    'price'          => $product['price'],
+                    'is_ed_category' => false
+                ];
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
+            }
+
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
+
+            $products_str = json_encode($products);
+
+            // $products = str_replace(['[',']'], '', $products);
+
+            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+            $phone_code = $phone_code->phonecode;
+            $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+            $data = [
+                'method'             => 'order',
+                'api_key'            => $api_key->key_data,
+                'phone'              => e('+' . $phone_code . $request->phone),
+                'alternative_phone'  => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+                'email'              => e($request->email),
+                'alter_email'        => !empty($request->alt_email) ? e($request->alt_email) : '',
+                'firstname'          => e($request->firstname),
+                'lastname'           => e($request->lastname),
+                'billing_country'    => e($request->billing_country),
+                'billing_state'      => e($request->billing_state),
+                'billing_city'       => e($request->billing_city),
+                'billing_address'    => e($request->billing_address),
+                'billing_zip'        => e($request->billing_zip),
+                'shipping_country'   => !empty($request->address_match) ? e($request->shipping_country) : e(
+                    $request->billing_country
+                ),
+                'shipping_state'     => !empty($request->address_match) ? e($request->shipping_state) : e(
+                    $request->billing_state
+                ),
+                'shipping_city'      => !empty($request->address_match) ? e($request->shipping_city) : e(
+                    $request->billing_city
+                ),
+                'shipping_address'   => !empty($request->address_match) ? e($request->shipping_address) : e(
+                    $request->billing_address
+                ),
+                'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
+                    $request->billing_zip
+                ),
+                'payment_type'       => 'gift_card',
+                'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                    'cf-connecting-ip'
+                ) : request()->ip(),
+                'aff'                => session('aff', 0),
+                'ref'                => session('referer', ''),
+                'refc'               => session('refc', ''),
+                'keyword'            => session('keyword', ''),
+                'domain_from'        => request()->getHost(),
+                'total'              => session('total.checkout_total'),
+                'shipping'           => session('cart_option.shipping'),
+                'products'           => $products_str,
+                'saff'               => session('saff', ''),
+                'language'           => App::currentLocale(),
+                'currency'           => session('currency'),
+                'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
+                        'Accept-Language'
+                    ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
+                'fingerprint'        => '',
+                'product_total'      => session('total.product_total'),
+                'customer_id'        => '',
+                'reorder'            => 0,
+                'reorder_discount'   => 0,
+                'shipping_price'     => session('total.shipping_total'),
+                'insurance'          => session('total.insurance'),
+                'secret_package'     => session('total.secret_package'),
+                'store_skin'         => config('app.design'),
+                'recurring_period'   => 0,
+                'bonus'              => session('cart_option.bonus_id', 0),
+                'theme'              => 13,
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
+            ];
+
+            session(['data' => $data]);
+
+            $email             = e($request->email);
+            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+            if (count($check_order_cache) == 0) {
+                $data_for_cache             = $data;
+                $data_for_cache['products'] = addslashes($data_for_cache['products']);
+                $order_cache_id             = DB::table('order_cache')->insertGetId([
+                    'message' => json_encode($data_for_cache),
+                    'is_send' => 0
+                ]);
+            } else {
+                $order_cache_id = $check_order_cache[0]->id;
+            }
+
+            if (checkdnsrr('true-serv.net', 'A')) {
+                try {
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+
+                    if ($response->successful()) {
+                        // Обработка успешного ответа
+
+                        $response = json_decode($response, true);
+
+                        if ($response['status'] === 'SUCCESS' ||
+                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
+                             && str_contains(json_encode($response['message']), 'repeat_order' ))
+                        ) {
+                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                            session(['order' => $response]);
+                        }
+
+                        return response()->json(['response' => $response], 200);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        Log::error("Сервис вернул ошибку: " . $response->status());
+                        $responseData = ['error' => 'Service returned an error'];
+                    }
+                } catch (ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+                } catch (RequestException $e) {
+                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                    $responseData = ['error' => 'Service unavailable'];
+                }
+            } else {
+                session(['order' => 'error']);
+                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+            }
+        }
+    }
+
+    public function forget_bonuses(Request $request)
+    {
+        $witch_forget = $request->witch_forget;
+
+        if ($witch_forget) {
+            if ($witch_forget == 'discount') {
+                session()->forget('coupon');
+            } else {
+                session()->forget($witch_forget);
+            }
+
+            session()->forget('crypto');
+            session(['form.payment_type' => 'card']);
+        }
+
+        return $this->checkout();
     }
 }

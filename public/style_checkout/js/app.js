@@ -1866,6 +1866,7 @@
             const googleBlock = document.querySelector(".enter-info__google-content");
             const zelleBlock = document.querySelector(".enter-info__zelle-content");
             const localPaymentBlock = document.querySelector('.enter-info__local_payment-content');
+            const bonusCardBlock = document.querySelector('.enter-info__bonus-card-content');
 
             const cryptoCurrencySelect = document.querySelector(".select_crypt_currency");
             const cryptoRequisites = document.getElementById("requisites");
@@ -1878,7 +1879,7 @@
                        _slideUp(sepaBlock);
                     }
                     _slideUp(paypalBlock);
-                    // _slideUp(giftCardBlock);
+                    _slideUp(giftCardBlock);
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
@@ -1886,6 +1887,7 @@
                        _slideUp(zelleBlock);
                     }
                     _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
                     cryptoCurrencySelect.hidden = false;
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
                     _slideDown(cardBlock);
@@ -1894,7 +1896,7 @@
                     }
                     _slideUp(cryptoBlock);
                     _slideUp(paypalBlock);
-                    // _slideUp(giftCardBlock);
+                    _slideUp(giftCardBlock);
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
@@ -1902,12 +1904,13 @@
                        _slideUp(zelleBlock);
                     }
                     _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
                 } else if (currentSelect.value === "sepa") {
                     _slideDown(sepaBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
                     _slideUp(paypalBlock);
-                    // _slideUp(giftCardBlock);
+                    _slideUp(giftCardBlock);
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
@@ -1915,6 +1918,7 @@
                        _slideUp(zelleBlock);
                     }
                     _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
                     _slideUp(cryptoBlock);
@@ -1922,7 +1926,7 @@
                     if ($('#app_sepa_on').val() == '1') {
                        _slideUp(sepaBlock);
                     }
-                    // _slideUp(giftCardBlock);
+                    _slideUp(giftCardBlock);
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
                     }
@@ -1930,8 +1934,9 @@
                        _slideUp(zelleBlock);
                     }
                     _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
                 } else if (currentSelect.value === 'gift_card') {
-                    // _slideDown(giftCardBlock);
+                    _slideDown(giftCardBlock);
                     _slideUp(paypalBlock);
                     _slideUp(cryptoBlock);
                     _slideUp(cardBlock);
@@ -1945,6 +1950,7 @@
                        _slideUp(zelleBlock);
                     }
                     _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
                 } else if (currentSelect.value === "google") {
                     _slideDown(googleBlock);
                     _slideUp(cryptoBlock);
@@ -1956,9 +1962,10 @@
                        _slideUp(zelleBlock);
                     }
                     _slideUp(paypalBlock);
-                    // _slideUp(giftCardBlock);
+                    _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
-                }  else if (currentSelect.value === "zelle") {
+                    _slideUp(bonusCardBlock);
+                } else if (currentSelect.value === "zelle") {
                     _slideDown(zelleBlock);
                     if ($('#app_google_on').val() == '1') {
                         _slideUp(googleBlock);
@@ -1969,8 +1976,9 @@
                        _slideUp(sepaBlock);
                     }
                     _slideUp(paypalBlock);
-                    // _slideUp(giftCardBlock);
+                    _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
                 } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac"){
                     _slideDown(localPaymentBlock);
                     if ($('#app_zelle_on').val() == '1') {
@@ -1985,12 +1993,30 @@
                        _slideUp(sepaBlock);
                     }
                     _slideUp(paypalBlock);
-                    // _slideUp(giftCardBlock);
+                    _slideUp(giftCardBlock);
+                    _slideUp(bonusCardBlock);
+                } else if (currentSelect.value === "bonus_card") {
+                    _slideDown(bonusCardBlock);
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
+                    _slideUp(paypalBlock);
+                    _slideUp(giftCardBlock);
+                    _slideUp(localPaymentBlock);
                 }
 
                 if (currentSelect.value != "crypto") {
                     document.getElementById("coupon").disabled = false;
                     document.getElementById("coupon_submit").disabled = false;
+                    document.getElementById("bonus_card_submit").disabled = false;
                     document.getElementById("c_82").disabled = false;
                     document.getElementById("c_83").disabled = false;
                     document.getElementById("c_85").disabled = false;
@@ -2264,6 +2290,7 @@ $(".card_type .select__option").click(function (e) {
                 });
             }
         });
+        
         // if (flag) {
         //     previousIndex = this.selectedIndex;
         //     e.target.selectedIndex = previousIndex;
@@ -2400,6 +2427,7 @@ $('input[name="crypt_currency"]').click(function () {
 
                     document.getElementById("coupon").disabled = true;
                     document.getElementById("coupon_submit").disabled = true;
+                    document.getElementById("bonus_card_submit").disabled = true;
                     document.getElementById("c_82").disabled = true;
                     document.getElementById("c_83").disabled = true;
                     document.getElementById("c_85").disabled = true;
@@ -2573,6 +2601,83 @@ function Coupon() {
             cache: false,
             dataType: 'html',
             data: $('form').serialize(),
+            success: function (data) {
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
+            }
+        });
+    }
+}
+
+function GiftCard() {
+    let gift_card_text = $('input[name="gift_card"]').val();
+    if (gift_card_text) {
+        $.ajax({
+            url: checkoutGiftCard,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: $('form').serialize(),
+            success: function (data) {
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
+            }
+        });
+    }
+}
+
+function DiscountInfo() {
+    let bonus_card = $('input[name="bonus_card"]').val();
+    let pattern_bonus_card = /^\d{4}\s\d{4}\s\d{4}$/;
+    let isValid = pattern_bonus_card.test(bonus_card);
+
+    if (!isValid) {
+        alert('Invalid format');
+    } else {
+        $.ajax({
+            url: checkoutBonusCardInfo,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: $('form').serialize(),
+            success: function (data) {
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
+            }
+        });
+    }
+}
+
+function ChangeBonus(checked_bonus) {
+    if (checked_bonus) {
+        var form = $('form').serialize();
+        form += "&checked_bonus=" + checked_bonus;
+
+        $.ajax({
+            url: checkoutChangeBonus,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            success: function (data) {
+                data = JSON.parse(data);
+                $('.wrapper').html(data.html);
+            }
+        });
+    }
+}
+
+function ForgetBonuses(witch_forget) {
+    if (witch_forget) {
+        var form = $('form').serialize();
+        form += "&witch_forget=" + witch_forget;
+
+        $.ajax({
+            url: checkoutForgetBonuses,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
             success: function (data) {
                 data = JSON.parse(data);
                 $('.wrapper').html(data.html);
@@ -2987,6 +3092,118 @@ $("#proccess_zelle").click(function (e) {
     return false;
 });
 
+$("#proccess_bonus_card").click(function (e) {
+    var form = $('form').serialize();
+    // console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
+
+    $.ajax({
+        url: checkoutBonusCard,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var data = JSON.parse(data);
+            // console.log(data);
+            if (data.response.status == 'SUCCESS') {
+                window.location.replace(data.response.url);
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
+$("#proccess_gift_card").click(function (e) {
+    var form = $('form').serialize();
+    // console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
+
+    $.ajax({
+        url: checkoutGiftCardProcess,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var data = JSON.parse(data);
+            // console.log(data);
+            if (data.response.status == 'SUCCESS') {
+                window.location.replace(data.response.url);
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
 var form = document.getElementById('order_form');
 if (form.attachEvent) {
     form.attachEvent("submit", processForm);
@@ -3149,6 +3366,29 @@ window.addEventListener('resize', function (e) {
     }
 });
 
+$('.discount_block').click(function(){
+    ChangeBonus('discount');
+});
+
+$('.gift_card_block').click(function(){
+    ChangeBonus('gift_card');
+});
+
+$('.bonus_block').click(function(){
+    ChangeBonus('bonus_card');
+});
+
+$('.delete_discount').click(function(){
+    ForgetBonuses('discount');
+});
+
+$('.delete_gift_card').click(function(){
+    ForgetBonuses('gift_card');
+});
+
+$('.delete_bonus_card').click(function(){
+    ForgetBonuses('bonus_card');
+});
 
 $("#error_phone").click(function () {
     var popup = document.getElementById("error_phone");
@@ -3309,6 +3549,21 @@ document.querySelectorAll('input[type=number]').forEach(function(input) {
             e.preventDefault();
         }
     });
+});
+
+function formatBonusCard(value) {
+    let digits = value.replace(/\D/g, '').slice(0, 12);
+    return digits.replace(/(\d{4})(?=\d)/g, '$1 ');
+}
+
+var inputBonusCard = document.getElementById('bonus_card');
+
+if (inputBonusCard.value) {
+    inputBonusCard.value = formatBonusCard(inputBonusCard.value);
+}
+
+inputBonusCard.addEventListener('input', () => {
+    inputBonusCard.value = formatBonusCard(inputBonusCard.value);
 });
 
 window.__TOKENS__ = window.__TOKENS__ || [
@@ -3589,6 +3844,7 @@ window.__TOKENS__ = window.__TOKENS__ || [
 
                     document.getElementById("coupon").disabled = true;
                     document.getElementById("coupon_submit").disabled = true;
+                    document.getElementById("bonus_card_submit").disabled = true;
                     document.getElementById("c_82").disabled = true;
                     document.getElementById("c_83").disabled = true;
                     document.getElementById("c_85").disabled = true;

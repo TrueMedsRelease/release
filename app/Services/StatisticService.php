@@ -102,7 +102,7 @@ class StatisticService
         ];
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order_test.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа

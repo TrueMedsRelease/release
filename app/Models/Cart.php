@@ -192,74 +192,6 @@ class Cart extends Model
 
         $product_total += $bonus_total;
 
-        if (!empty($coupon = session('coupon'))) {
-            if ($coupon['type'] == 'coupon') {
-                $coupon_discount = ceil($product_total * ($coupon['percent']) / 100);
-            }
-        } elseif (session()->has('coupon_get')) {
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
-
-            $data = [
-                'method'  => 'coupon',
-                'api_key' => $api_key->key_data,
-                'coupon'  => session('coupon_get'),
-            ];
-
-            $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
-
-            $response = json_decode($response, true);
-
-            if ($response['status'] == 'success') {
-                if ($response['coupon']['type'] == 'coupon') {
-                    $result['coupon']  = session('coupon_get');
-                    $result['percent'] = $response['coupon']['percent'];
-                    $result['type']    = $response['coupon']['type'];
-
-                    session(['coupon' => $result]);
-
-                    if ($result['type'] == 'coupon') {
-                        $coupon_discount = ceil($product_total * ($result['percent']) / 100);
-                        // $gift_card_discount = 0;
-                        // session()->forget('gift_card');
-                    }
-                } else {
-                    session()->forget('coupon_get');
-                    session()->forget('coupon');
-                    $coupon_discount = 0;
-                }
-                // else {
-                //     $result['gift_card_code'] = session('coupon_get');
-                //     $result['gift_card_balance'] = $response['coupon']['balans'];
-                //     $result['type'] = $response['coupon']['type'];
-
-                //     session(['gift_card' => $result]);
-
-                //     if($result['type'] == 'gift_card')
-                //     {
-                //         $coupon_discount = ceil($product_total * ($result['gift_card_balance']) / 100);
-                //         $checkout_total = $product_total + $shipping_total + $insurance + $secret_package - $coupon_discount;
-
-                //         if ($result['gift_card_balance'] > session('total.checkout_total')) {
-                //             $gift_card_discount = session('total.checkout_total');
-                //         } else {
-                //             $gift_card_discount = $result['gift_card_balance'];
-                //         }
-
-                //         $coupon_discount = 0;
-                //         session()->forget('coupon');
-                //     }
-                // }
-            } else {
-                session()->forget('coupon_get');
-                session()->forget('coupon');
-                $coupon_discount = 0;
-                // $gift_card_discount = 0;
-            }
-        } else {
-            $coupon_discount = 0;
-            // $gift_card_discount = 0;
-        }
-
         $has_card     = 0;
         $sum_card     = 0;
         $is_only_card = 0;
@@ -274,6 +206,93 @@ class Cart extends Model
 
         if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
             $is_only_card = 1;
+        }
+
+        $coupon_discount = 0;
+        $gift_card_discount = 0;
+        $bonus_card_discount = 0;
+
+        $checkoutTotal = $product_total + $shipping_total + $insurance + $secret_package - $sum_card;
+        $productTotal = $product_total - $sum_card;
+
+        if (session()->has('coupon')) {
+            $coupon_discount = ceil($productTotal * (session('coupon.percent') / 100));
+        } elseif (session()->has('coupon_get')) {
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+            $data = [
+                'method'  => 'coupon',
+                'api_key' => $api_key->key_data,
+                'coupon'  => session('coupon_get'),
+            ];
+
+            $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+
+            $response = json_decode($response, true);
+
+            if ($response['status'] == 'success') {
+                $result['coupon']  = session('coupon_get');
+                $result['percent'] = $response['coupon']['percent'];
+
+                session(['coupon' => $result]);
+                $coupon_discount = ceil($productTotal * ($result['percent']) / 100);
+            } else {
+                session()->forget('coupon_get');
+            }
+        }
+
+        if (session('checked_bonus', 'discount') == 'discount') {
+            $gift_card_discount = 0;
+            $bonus_card_discount = 0;
+        } else if (session('checked_bonus', 'discount') == 'gift_card') {
+            $giftCardBalance = session('gift_card.gift_card_balance', 0);
+
+            if ($giftCardBalance > $checkoutTotal) {
+                $gift_card_discount = $checkoutTotal;
+            } else {
+                $gift_card_discount = $giftCardBalance;
+            }
+
+            $bonus_card_discount = 0;
+            $coupon_discount = 0;
+        } else if (session('checked_bonus', 'discount') == 'bonus_card') {
+            $bonusCardBalance = session('bonus_card.balance', 0);
+            $chargeRate = session('bonus_card.charge_rate', 100);
+
+            if ($chargeRate == 100) {
+                if ($bonusCardBalance > $checkoutTotal) {
+                    $bonus_card_discount = $checkoutTotal;
+                } else {
+                    $bonus_card_discount = $bonusCardBalance;
+                }
+            } else {
+                $discountTotal = ceil($checkoutTotal * ($chargeRate / 100));
+
+                if ($bonusCardBalance > $discountTotal) {
+                    $bonus_card_discount = $discountTotal;
+                } else {
+                    $bonus_card_discount = $bonusCardBalance;
+                }
+            }
+
+            $coupon_discount = 0;
+            $gift_card_discount = 0;
+        }
+
+        if ($is_only_card) {
+            $coupon_discount = 0;
+            $gift_card_discount = 0;
+            $bonus_card_discount = 0;
+        }
+
+        $checkoutTotalWithoutGiftCard = $product_total + $shipping_total + $insurance + $secret_package;
+
+        if (session('checked_bonus', 'discount') == 'bonus_card' && $bonus_card_discount >= $checkoutTotalWithoutGiftCard) {
+            session(['form.payment_type' => 'bonus_card']);
+        }
+
+        if (session('checked_bonus', 'discount') == 'gift_card' && $gift_card_discount >= $checkoutTotalWithoutGiftCard) {
+            session(['form.payment_type' => 'gift_card']);
         }
 
         if ($is_only_card) {
@@ -301,7 +320,8 @@ class Cart extends Model
                 Currency::Convert($insurance),
                 Currency::Convert($secret_package),
                 Currency::Convert($coupon_discount * (-1)),
-                // Currency::Convert($gift_card_discount * (-1)),
+                Currency::Convert($gift_card_discount * (-1)),
+                Currency::Convert($bonus_card_discount * (-1)),
             ], true);
         }
 
@@ -313,6 +333,16 @@ class Cart extends Model
 
         $eur = Currency::GetCoef('eur');
 
+        $cashback = ceil($checkout_total * 0.03);
+
+        if (session()->has('bonus_card')) {
+            if (session('bonus_card.card_status', 'silver') == 'gold') {
+                $cashback = ceil($checkout_total * 0.05);
+            } else if (session('bonus_card.card_status', 'silver') == 'vip') {
+                $cashback = ceil($checkout_total * 0.07);
+            }
+        }
+
         $cart_total = [
             "product_total"              => $product_total,
             "shipping_total"             => $shipping_total,
@@ -320,12 +350,15 @@ class Cart extends Model
             "insurance"                  => $insurance,
             "secret_package"             => $secret_package,
             'coupon_discount'            => $coupon_discount,
-            // 'gift_card_discount' => $gift_card_discount,
+            'gift_card_discount'         => $gift_card_discount,
+            'bonus_card_discount'        => $bonus_card_discount,
             'checkout_total'             => $checkout_total,
             'checkout_total_eur'         => round($checkout_total * $eur, 2),
             'checkout_total_in_currency' => $checkout_total_in_currency,
             "all"                        => $all,
             "all_in_currency"            => $all_in_currency,
+            "cashback"                   => $cashback,
+            "is_only_card"               => $is_only_card
         ];
 
         session(['total' => $cart_total]);

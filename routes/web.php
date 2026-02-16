@@ -47,6 +47,9 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/checkout/secret_package', 'secret_package')->name('checkout.secret_package')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/change-shipping', 'change_shipping')->name('checkout.shipping')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/coupon', 'coupon')->name('checkout.coupon');
+    Route::post('/checkout/gift_card', 'gift_card')->name('checkout.gift_card');
+    Route::post('/checkout/bonus_card_info', 'bonus_card_info')->name('checkout.bonus_card_info');
+    Route::post('/checkout/change_checkount_bonus', 'change_checkount_bonus')->name('checkout.change_checkount_bonus')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/order', 'order')->name('checkout.order');
     Route::post('/checkout/auth', 'auth')->name('checkout.auth');
     Route::post('/checkout/change_country', 'change_country')->name('checkout.country')->withoutMiddleware(VerifyCsrfToken::class);
@@ -67,6 +70,9 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/zelle_data', 'zelleData')->name('checkout.zelleData')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/zelle', 'zelle')->name('checkout.zelle')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/send_payvmc_ids', 'send_payvmc_ids')->name('checkout.send_payvmc_ids')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/bonus_card_process', 'bonus_card_process')->name('checkout.bonus_card_process')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/forget_bonuses', 'forget_bonuses')->name('checkout.forget_bonuses')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/gift_card_process', 'gift_card_process')->name('checkout.gift_card_process')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::get('/redirect', function () {
