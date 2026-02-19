@@ -54,6 +54,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/validate_for_crypt', 'validate_for_crypt')->name('checkout.validate_for_crypt');
     Route::post('/data_for_crypt', 'data_for_crypt')->name('checkout.data_for_crypt')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/local_payment_info', 'local_payment_info')->name('checkout.local_payment_info');
+    Route::post('/data_for_local_payment', 'data_for_local_payment')->name('checkout.data_for_local_payment')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/local_payment', 'local_payment')->name('checkout.local_payment');
     Route::post('/validate_for_google', 'validate_for_google')->name('checkout.validate_for_google');
     Route::post('/validate_for_sepa', 'validate_for_sepa')->name('checkout.validate_for_sepa');
