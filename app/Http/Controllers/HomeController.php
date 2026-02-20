@@ -99,7 +99,7 @@ class HomeController extends Controller
                 ->toArray();
 
             if (isset($product_url[0])) {
-                $product = ProductServices::GetProductInfoByUrl($product_url[0]->url);
+                $product = ProductServices::GetProductInfoByUrl($product_url[0]->url, $design);
             }
 
             return view(
@@ -143,6 +143,29 @@ class HomeController extends Controller
                 [
                     'design'          => $design,
                     'products'        => $products,
+                    'phone_codes'     => $phone_codes,
+                    'page_properties' => $page_properties,
+                    'cur_category'    => '',
+                    'agent'           => $agent,
+                    'Language'        => Language::class,
+                    'Currency'        => Currency::class,
+                    'pixel'           => $pixel,
+                    'first_letters'   => $first_letters,
+                    'domain'          => $domain,
+                    'web_statistic'   => $web_statistic,
+                    'codes'           => json_encode($codes),
+                ]
+            );
+        } else if ($design == 'design_15') {
+            $bestsellers = ProductServices::GetBestsellers($design);
+            $menu = ProductServices::GetCategoriesWithProducts($design);
+
+            return view(
+                $design . '.index',
+                [
+                    'design'          => $design,
+                    'bestsellers'     => $bestsellers,
+                    'menu'            => $menu,
                     'phone_codes'     => $phone_codes,
                     'page_properties' => $page_properties,
                     'cur_category'    => '',
@@ -1440,7 +1463,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -1449,7 +1472,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15])) {
             session(['design' => 'design_' . $design]);
         }
 
