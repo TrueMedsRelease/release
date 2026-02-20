@@ -60,16 +60,16 @@ class ProductServices
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
 
-            // $card = Product::query()
-            //     ->where('id', '=', 616)
-            //     ->where('is_showed_on_main', '=', 1)
-            //     ->where('is_showed', '=', 1)
-            //     ->get(['product.id', 'product.image', 'product.aktiv'])
-            //     ->toArray();
+            $card = Product::query()
+                ->where('id', '=', 616)
+                ->where('is_showed_on_main', '=', 1)
+                ->where('is_showed', '=', 1)
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
 
-            // if ($card) {
-            //     array_unshift($products, $card[0]);
-            // }
+            if ($card) {
+                array_unshift($products, $card[0]);
+            }
         } else {
             $products = Product::query()
                 ->where('is_showed_on_main', '=', 1)
