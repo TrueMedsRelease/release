@@ -747,7 +747,7 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductByDisease($disease): array
+    public static function GetProductByDisease($disease, $design): array
     {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $products_desc = self::GetProductDesc($language_id);
@@ -760,6 +760,11 @@ class ProductServices
         if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
             $diseases = DB::select(
                 'SELECT * FROM product_disease WHERE language_id = ? AND disease = ? AND product_id not in (755, 491)',
+                [$language_id, $disease]
+            );
+        } else if ($design == 'design_15') {
+            $diseases = DB::select(
+                'SELECT * FROM product_disease pd JOIN product_category pc ON pc.product_id = pd.product_id WHERE pd.language_id = ? AND pd.disease = ? AND pc.category_id = 44',
                 [$language_id, $disease]
             );
         } else {
