@@ -19,9 +19,11 @@
             <div class="main__heading">
                 <h1 class="h1">{{ $product['name'] }}</h1>
                 {{-- <a class="link" href="#!">30 chewable tabs 1.25 mg</a> --}}
-                @foreach ($product['categories'] as $category)
-                    <a class="link" href="{{ route('home.category', $category['url']) }} ">{{ $category['name'] }}</a>
-                @endforeach
+                @if ($product['id'] != 616)
+                    @foreach ($product['categories'] as $category)
+                        <a class="link" href="{{ route('home.category', $category['url']) }} ">{{ $category['name'] }}</a>
+                    @endforeach
+                @endif
             </div>
             @foreach ($product['packs'] as $key => $dosage)
                 <div class="panel">
