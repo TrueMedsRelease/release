@@ -60,16 +60,16 @@ class ProductServices
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
 
-            $card = Product::query()
-                ->where('id', '=', 616)
-                ->where('is_showed_on_main', '=', 1)
-                ->where('is_showed', '=', 1)
-                ->get(['product.id', 'product.image', 'product.aktiv'])
-                ->toArray();
+            // $card = Product::query()
+            //     ->where('id', '=', 616)
+            //     ->where('is_showed_on_main', '=', 1)
+            //     ->where('is_showed', '=', 1)
+            //     ->get(['product.id', 'product.image', 'product.aktiv'])
+            //     ->toArray();
 
-            if ($card) {
-                array_unshift($products, $card[0]);
-            }
+            // if ($card) {
+            //     array_unshift($products, $card[0]);
+            // }
         } else {
             $products = Product::query()
                 ->where('is_showed_on_main', '=', 1)
@@ -626,7 +626,7 @@ class ProductServices
         return $product_price;
     }
 
-    public static function GetProductByFirstLetter($letter): array
+    public static function GetProductByFirstLetter($letter, $design): array
     {
         $products_desc = Cache::remember(App::currentLocale() . "_product_desc", 180, function () {
             $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
@@ -643,6 +643,15 @@ class ProductServices
                 ->whereNotIn('id', [755, 491])
                 ->orderBy('main_order')
                 ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        } else if ($design == 'design_15') {
+            $products = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [44])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.first_letter', '=', $letter)
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
         } else {
             $products = Product::query()
@@ -865,7 +874,7 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductByActive($active): array
+    public static function GetProductByActive($active, $design): array
     {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $products_desc = self::GetProductDesc($language_id);
@@ -883,6 +892,15 @@ class ProductServices
                 ->whereNotIn('id', [755, 491])
                 ->orderBy('main_order')
                 ->get(['id', 'image', 'aktiv'])
+                ->toArray();
+        } else if ($design == 'design_15') {
+            $products = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [44])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.aktiv', 'LIKE', "%$active%")
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
         } else {
             $products = Product::query()
@@ -994,7 +1012,7 @@ class ProductServices
             return [];
         }
 
-        if ($design == 'design_15') {
+        if ($design == 'design_15' && $url != 'gift-card') {
             $product = Product::query()
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [44])

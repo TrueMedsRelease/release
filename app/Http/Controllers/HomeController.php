@@ -686,7 +686,11 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        $recommendation = ProductServices::getProductRecommendation($product['id']);
+        if ($product['id'] == 616 && $design == 'design_15') {
+            $recommendation = $bestsellers;
+        } else {
+            $recommendation = ProductServices::getProductRecommendation($product['id']);
+        }
 
         return view($design . '.product', [
             'design'          => $design,
