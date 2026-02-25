@@ -658,7 +658,7 @@ class ProductServices
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
                     unset($products[$i]);
                     continue;
@@ -785,7 +785,7 @@ class ProductServices
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
                     unset($products[$i]);
                     continue;
@@ -906,7 +906,7 @@ class ProductServices
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
                     unset($products[$i]);
                     continue;
@@ -1136,7 +1136,7 @@ class ProductServices
         $product = $product->toArray()[0];
         unset($product['category']);
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR']) && ($product['id'] == 755 || $product['id'] == 491)) {
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU']) && ($product['id'] == 755 || $product['id'] == 491)) {
             return [];
         }
 
@@ -1422,7 +1422,7 @@ class ProductServices
 
         $tips = "";
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
             foreach ($products as $key => $product) {
                 if ($product->product_id == 755 || $product->product_id == 491) {
                     unset($products[$key]);
@@ -1614,7 +1614,7 @@ class ProductServices
             }
         }
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
             foreach ($product_id as $key => $val) {
                 if ($val == 755 || $val == 491) {
                     unset($product_id[$key]);
@@ -1798,7 +1798,7 @@ class ProductServices
 
         $tips = "";
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
             foreach ($result as $key => $item) {
                 if ($item->id == 755 || $item->id == 491) {
                     unset($result[$key]);
@@ -1838,7 +1838,7 @@ class ProductServices
             $all_active = Product::distinct()->where('is_showed', '=', 1)->get('aktiv')->toArray();
         }
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
             foreach ($all_active as $key => $item) {
                 if ($item['id'] == 755 || $item['id'] == 491) {
                     unset($all_active[$key]);
@@ -1888,7 +1888,7 @@ class ProductServices
 
         if ($design == 'design_15') {
 
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 $baseProductFilter = function ($q) {
                     $q->join('product_category', 'product.id', '=', 'product_category.product_id')
                     ->whereIn('product_category.category_id', [44])
@@ -1907,7 +1907,7 @@ class ProductServices
             }
         } else {
 
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 $baseProductFilter = function ($q) {
                     $q->where('product.is_showed', 1)
                     ->where('product.ban', '!=', 1)
@@ -2560,7 +2560,7 @@ class ProductServices
                 ->keyBy('id')
                 ->toArray();
         } else {
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 $product_data = DB::table('product')
                     ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
                     ->whereIn('product.id', $products_arr)
