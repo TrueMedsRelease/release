@@ -68,7 +68,7 @@
                             </div>
                         @endif
                     </article>
-                    @if ($loop->index == 2)
+                    @if ($loop->index == 0)
                         <a class="promo-card promo-card--green" href="/">
                             <div class="promo-card__content">
                                 <div class="promo-card__title">{{ Str::ucfirst(__('text.common_banner1_text1')) }} {{ Str::ucfirst(__('text.common_banner1_text2')) }}</div>
