@@ -389,7 +389,7 @@ return  [
     "phones_title_phone_5" => "+33-64-463-9941",
     "phones_title_phone_6" => "+34-51-889-9156",
     "phones_title_phone_7" => "+64-80-074-8315",
-    "phones_title_phone_8" => "+45-78-79-53-40",
+    "phones_title_phone_8" => "+45-52-51-72-02",
     "phones_title_phone_9" => "+46-77-421-88-58",
     "phones_title_phone_10" => "+41-43-508-24-74",
     "phones_title_phone_11" => "+420-228-885-478",

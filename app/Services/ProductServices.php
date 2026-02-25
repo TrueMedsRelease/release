@@ -50,6 +50,26 @@ class ProductServices
             if ($card) {
                 array_unshift($products, $card[0]);
             }
+        } else if ($design == 'design_15') {
+            $products = Product::query()
+                // ->where('product.is_showed_on_main', '=', 1)
+                ->where('product.is_showed', '=', 1)
+                ->where('product_category.category_id', '=', 44)
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+
+            $card = Product::query()
+                ->where('id', '=', 616)
+                ->where('is_showed_on_main', '=', 1)
+                ->where('is_showed', '=', 1)
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+
+            if ($card) {
+                array_unshift($products, $card[0]);
+            }
         } else {
             $products = Product::query()
                 ->where('is_showed_on_main', '=', 1)
@@ -184,6 +204,9 @@ class ProductServices
         $categoriesQuery = Category::query();
         if ($design == 'design_5') {
             $categoriesQuery->whereIn('id', [13, 14]);
+        }
+        if ($design == 'design_15') {
+            $categoriesQuery->whereIn('id', [44]);
         }
         if (!empty($url)) {
             $categoriesQuery->where('url', '=', $url);
@@ -603,7 +626,7 @@ class ProductServices
         return $product_price;
     }
 
-    public static function GetProductByFirstLetter($letter): array
+    public static function GetProductByFirstLetter($letter, $design): array
     {
         $products_desc = Cache::remember(App::currentLocale() . "_product_desc", 180, function () {
             $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
@@ -613,13 +636,14 @@ class ProductServices
             return self::GetAllProductPillPrice();
         });
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if ($design == 'design_15') {
             $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->where('first_letter', '=', $letter)
-                ->whereNotIn('id', [755, 491])
-                ->orderBy('main_order')
-                ->get(['id', 'image', 'aktiv'])
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [44])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.first_letter', '=', $letter)
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
         } else {
             $products = Product::query()
@@ -634,6 +658,13 @@ class ProductServices
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
+                    unset($products[$i]);
+                    continue;
+                }
+            }
+
             if (isset($products_desc[$products[$i]['id']])) {
                 $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
                 $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
@@ -715,7 +746,7 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductByDisease($disease): array
+    public static function GetProductByDisease($disease, $design): array
     {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $products_desc = self::GetProductDesc($language_id);
@@ -725,9 +756,9 @@ class ProductServices
 
         $disease = str_replace('-', ' ', $disease);
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if ($design == 'design_15') {
             $diseases = DB::select(
-                'SELECT * FROM product_disease WHERE language_id = ? AND disease = ? AND product_id not in (755, 491)',
+                'SELECT * FROM product_disease pd JOIN product_category pc ON pc.product_id = pd.product_id WHERE pd.language_id = ? AND pd.disease = ? AND pc.category_id = 44',
                 [$language_id, $disease]
             );
         } else {
@@ -754,11 +785,11 @@ class ProductServices
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
-            if (strtoupper(
-                    session('location.country')
-                ) != 'US' && ($products[$i]['id'] == 755 || $products[$i]['id'] == 491)) {
-                unset($products[$i]);
-                continue;
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
+                    unset($products[$i]);
+                    continue;
+                }
             }
 
             if (isset($products_desc[$products[$i]['id']])) {
@@ -842,7 +873,7 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductByActive($active): array
+    public static function GetProductByActive($active, $design): array
     {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $products_desc = self::GetProductDesc($language_id);
@@ -853,13 +884,14 @@ class ProductServices
 
         $active = str_replace('-', ' ', $active);
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if ($design == 'design_15') {
             $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->where('aktiv', 'LIKE', "%$active%")
-                ->whereNotIn('id', [755, 491])
-                ->orderBy('main_order')
-                ->get(['id', 'image', 'aktiv'])
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [44])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.aktiv', 'LIKE', "%$active%")
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
         } else {
             $products = Product::query()
@@ -874,11 +906,11 @@ class ProductServices
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
         for ($i = 0; $i < count($products); $i++) {
-            if (strtoupper(
-                    session('location.country')
-                ) != 'US' && ($products[$i]['id'] == 755 || $products[$i]['id'] == 491)) {
-                unset($products[$i]);
-                continue;
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
+                    unset($products[$i]);
+                    continue;
+                }
             }
 
             if (isset($products_desc[$products[$i]['id']])) {
@@ -962,7 +994,7 @@ class ProductServices
         return $products;
     }
 
-    public static function GetProductInfoByUrl($url)
+    public static function GetProductInfoByUrl($url, $design)
     {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $products_desc = self::GetProductDesc($language_id, $url);
@@ -971,12 +1003,25 @@ class ProductServices
             return [];
         }
 
-        $product = Product::query()
-            ->where('id', '=', $products_desc['product_id'])
-            ->where('is_showed', '=', 1)
-            ->with('category.category_desc')
-            ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+        if ($design == 'design_15' && $url != 'gift-card') {
+            $product = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [44])
+                ->where('product.id', '=', $products_desc['product_id'])
+                ->where('product.is_showed', '=', 1)
+                ->with('category.category_desc')
+                ->get(['product.id', 'product.image', 'product.aktiv', 'product.sinonim', 'product.product_info_file_path']);
+        } else {
+            $product = Product::query()
+                ->where('id', '=', $products_desc['product_id'])
+                ->where('is_showed', '=', 1)
+                ->with('category.category_desc')
+                ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+        }
 
+        if (empty($product) || !isset($product[0])) {
+            return [];
+        }
 
         #region Category
         $categories = [];
@@ -1091,7 +1136,7 @@ class ProductServices
         $product = $product->toArray()[0];
         unset($product['category']);
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR']) && ($product['id'] == 755 || $product['id'] == 491)) {
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU']) && ($product['id'] == 755 || $product['id'] == 491)) {
             return [];
         }
 
@@ -1343,7 +1388,7 @@ class ProductServices
     {
         if ($design == "design_5") {
             $products = DB::table('product_desc')
-                ->join('product_category', 'product_desc.product_id', '=', 'product_desc.product_id')
+                ->join('product_category', 'product_desc.product_id', '=', 'product_category.product_id')
                 ->join('product', 'product.id', '=', 'product_desc.product_id')
                 ->distinct()
                 ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
@@ -1352,20 +1397,20 @@ class ProductServices
                 ->orderBy('product.menu_order')
                 ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url', 'product.menu_order'])
                 ->toArray();
-        } elseif (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        } else if ($design == "design_15") {
             $products = DB::table('product_desc')
-                ->join('product_category', 'product_desc.product_id', '=', 'product_desc.product_id')
+                ->join('product_category', 'product_desc.product_id', '=', 'product_category.product_id')
                 ->join('product', 'product.id', '=', 'product_desc.product_id')
                 ->distinct()
                 ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
                 ->where('product.is_showed', '=', '1')
-                ->whereNotIn('product.id', [755, 491])
-                ->orderBy('product.menu_order', 'asc')
+                ->whereIn('product_category.category_id', [44])
+                ->orderBy('product.menu_order')
                 ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url', 'product.menu_order'])
                 ->toArray();
         } else {
             $products = DB::table('product_desc')
-                ->join('product_category', 'product_desc.product_id', '=', 'product_desc.product_id')
+                ->join('product_category', 'product_desc.product_id', '=', 'product_category.product_id')
                 ->join('product', 'product.id', '=', 'product_desc.product_id')
                 ->distinct()
                 ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
@@ -1376,6 +1421,14 @@ class ProductServices
         }
 
         $tips = "";
+
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+            foreach ($products as $key => $product) {
+                if ($product->product_id == 755 || $product->product_id == 491) {
+                    unset($products[$key]);
+                }
+            }
+        }
 
         foreach ($products as $product) {
             if (static::isAffIdInSpecialUrlList()) {
@@ -1458,89 +1511,91 @@ class ProductServices
 
                 $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
             }
-        } else {
+        } else if ($design == 'design_15') {
             if (env('APP_GIFT_CARD') == 0) {
-                if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
-                    $exactMatchProductIds = ProductSearch::whereRaw('LOWER(keyword) = ?', [$search_text_lower])
-                        ->where('is_showed', '=', 1)
-                        ->where('product_id', '<>', 616)
-                        ->whereNotIn('product_id', [755, 491])
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
+                $exactMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->whereRaw('LOWER(product_search.keyword) = ?', [$search_text_lower])
+                    ->whereIn('product_category.category_id', [44])
+                    ->where('product_search.is_showed', '=', 1)
+                    ->where('product_search.product_id', '<>', 616)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
 
-                    $partialMatchProductIds = ProductSearch::whereFullText(
-                        'keyword',
-                        $search_full_text_lower,
-                        ['mode' => 'boolean']
-                    )
-                        ->where('is_showed', '=', 1)
-                        ->where('product_id', '<>', 616)
-                        ->whereNotIn('product_id', [755, 491])
-                        ->whereNotIn('product_id', $exactMatchProductIds) // Исключаем уже найденные точные совпадения
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
-                } else {
-                    $exactMatchProductIds = ProductSearch::whereRaw('LOWER(keyword) = ?', [$search_text_lower])
-                        ->where('is_showed', '=', 1)
-                        ->where('product_id', '<>', 616)
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
-
-                    $partialMatchProductIds = ProductSearch::whereFullText(
-                        'keyword',
-                        $search_full_text_lower,
-                        ['mode' => 'boolean']
-                    )
-                        ->where('is_showed', '=', 1)
-                        ->where('product_id', '<>', 616)
-                        ->whereNotIn('product_id', $exactMatchProductIds) // Исключаем уже найденные точные совпадения
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
-                }
+                $partialMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->whereFullText('product_search.keyword', $search_full_text_lower, ['mode' => 'boolean'])
+                    ->whereIn('product_category.category_id', [44])
+                    ->whereNotIn('product_search.product_id', $exactMatchProductIds)
+                    ->where('product_search.is_showed', '=', 1)
+                    ->where('product_search.product_id', '<>', 616)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
 
                 $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
             } else {
-                if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
-                    $exactMatchProductIds = ProductSearch::whereRaw('LOWER(keyword) = ?', [$search_text_lower])
-                        ->where('is_showed', '=', 1)
-                        ->whereNotIn('product_id', [755, 491])
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
+                $exactMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->whereRaw('LOWER(product_search.keyword) = ?', [$search_text_lower])
+                    ->whereIn('product_category.category_id', [44])
+                    ->where('product_search.is_showed', '=', 1)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
 
-                    $partialMatchProductIds = ProductSearch::whereFullText(
-                        'keyword',
-                        $search_full_text_lower,
-                        ['mode' => 'boolean']
-                    )
-                        ->where('is_showed', '=', 1)
-                        ->whereNotIn('product_id', [755, 491])
-                        ->whereNotIn('product_id', $exactMatchProductIds) // Исключаем уже найденные точные совпадения
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
-                } else {
-                    $exactMatchProductIds = ProductSearch::whereRaw('LOWER(keyword) = ?', [$search_text_lower])
-                        ->where('is_showed', '=', 1)
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
+                $partialMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->whereFullText('product_search.keyword', $search_full_text_lower, ['mode' => 'boolean'])
+                    ->whereIn('product_category.category_id', [44])
+                    ->whereNotIn('product_search.product_id', $exactMatchProductIds)
+                    ->where('product_search.is_showed', '=', 1)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
 
-                    $partialMatchProductIds = ProductSearch::whereFullText(
-                        'keyword',
-                        $search_full_text_lower,
-                        ['mode' => 'boolean']
-                    )
-                        ->where('is_showed', '=', 1)
-                        ->whereNotIn('product_id', $exactMatchProductIds) // Исключаем уже найденные точные совпадения
-                        ->distinct()
-                        ->pluck('product_id')
-                        ->toArray();
-                }
+                $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
+            }
+        } else {
+            if (env('APP_GIFT_CARD') == 0) {
+                $exactMatchProductIds = ProductSearch::whereRaw('LOWER(keyword) = ?', [$search_text_lower])
+                    ->where('is_showed', '=', 1)
+                    ->where('product_id', '<>', 616)
+                    ->distinct()
+                    ->pluck('product_id')
+                    ->toArray();
+
+                $partialMatchProductIds = ProductSearch::whereFullText(
+                    'keyword',
+                    $search_full_text_lower,
+                    ['mode' => 'boolean']
+                )
+                    ->where('is_showed', '=', 1)
+                    ->where('product_id', '<>', 616)
+                    ->whereNotIn('product_id', $exactMatchProductIds) // Исключаем уже найденные точные совпадения
+                    ->distinct()
+                    ->pluck('product_id')
+                    ->toArray();
+
+                $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
+            } else {
+                $exactMatchProductIds = ProductSearch::whereRaw('LOWER(keyword) = ?', [$search_text_lower])
+                    ->where('is_showed', '=', 1)
+                    ->distinct()
+                    ->pluck('product_id')
+                    ->toArray();
+
+                $partialMatchProductIds = ProductSearch::whereFullText(
+                    'keyword',
+                    $search_full_text_lower,
+                    ['mode' => 'boolean']
+                )
+                    ->where('is_showed', '=', 1)
+                    ->whereNotIn('product_id', $exactMatchProductIds) // Исключаем уже найденные точные совпадения
+                    ->distinct()
+                    ->pluck('product_id')
+                    ->toArray();
 
                 $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
             }
@@ -1554,6 +1609,14 @@ class ProductServices
         if (env('APP_GIFT_CARD') == 0) {
             foreach ($product_id as $key => $val) {
                 if ($val == 616) {
+                    unset($product_id[$key]);
+                }
+            }
+        }
+
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+            foreach ($product_id as $key => $val) {
+                if ($val == 755 || $val == 491) {
                     unset($product_id[$key]);
                 }
             }
@@ -1675,14 +1738,23 @@ class ProductServices
         return $result;
     }
 
-    public static function SearchCategory($search_text): string
+    public static function SearchCategory($search_text, $design): string
     {
         $category    = trans('text.common_category_search');
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
-        $result      = DB::select(
-            "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND language_id = ? AND cd.name LIKE ?",
-            [$language_id, '%' . $search_text . '%']
-        );
+
+
+        if ($design == 'design_15') {
+            $result      = DB::select(
+                "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND c.id = 44 AND language_id = ? AND cd.name LIKE ?",
+                [$language_id, '%' . $search_text . '%']
+            );
+        } else {
+            $result = DB::select(
+                "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND language_id = ? AND cd.name LIKE ?",
+                [$language_id, '%' . $search_text . '%']
+            );
+        }
 
         $tips = "";
         foreach ($result as $item) {
@@ -1702,21 +1774,22 @@ class ProductServices
         return $tips;
     }
 
-    public static function SearchDisease($search_text): string
+    public static function SearchDisease($search_text, $design): string
     {
         $disease     = trans('text.common_disease_search');
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if ($design == 'design_15') {
             $result = DB::select(
-                "SELECT DISTINCT pd.disease FROM product p
+                "SELECT DISTINCT pd.disease, p.id FROM product p
                             JOIN product_disease pd ON pd.product_id = p.id
-                            WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND pd.product_id not in (755, 491)",
+                            JOIN product_category pc ON pc.product_id = p.id
+                            WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND pc.category_id = 44",
                 ['%' . $search_text . '%', $language_id]
             );
         } else {
             $result = DB::select(
-                "SELECT DISTINCT pd.disease FROM product p
+                "SELECT DISTINCT pd.disease, p.id FROM product p
                             JOIN product_disease pd ON pd.product_id = p.id
                             WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1",
                 ['%' . $search_text . '%', $language_id]
@@ -1724,6 +1797,15 @@ class ProductServices
         }
 
         $tips = "";
+
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+            foreach ($result as $key => $item) {
+                if ($item->id == 755 || $item->id == 491) {
+                    unset($result[$key]);
+                }
+            }
+        }
+
         foreach ($result as $item) {
             $url = str_replace(' ', '-', strtolower($item->disease));
 
@@ -1741,18 +1823,27 @@ class ProductServices
         return $tips;
     }
 
-    public static function SearchActive($search_text): string
+    public static function SearchActive($search_text, $design): string
     {
         $aktiv = trans('text.common_aktiv_search');
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+        if ($design == 'design_15') {
             $all_active = Product::distinct()
-                ->where('is_showed', '=', 1)
-                ->whereNotIn('id', [755, 491])
-                ->get('aktiv')
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [44])
+                ->where('product.is_showed', '=', 1)
+                ->get(['product.aktiv', 'product.id'])
                 ->toArray();
         } else {
             $all_active = Product::distinct()->where('is_showed', '=', 1)->get('aktiv')->toArray();
+        }
+
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+            foreach ($all_active as $key => $item) {
+                if ($item['id'] == 755 || $item['id'] == 491) {
+                    unset($all_active[$key]);
+                }
+            }
         }
 
         $active = [];
@@ -1791,24 +1882,47 @@ class ProductServices
         return $tips;
     }
 
-    public static function SearchSinonim($search_text): string
+    public static function SearchSinonim($search_text, $design): string
     {
         $search_text = trim($search_text);
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
-            $baseProductFilter = function ($q) {
-                $q->where('product.is_showed', 1)
-                ->where('product.ban', '!=', 1)
-                ->whereNotIn('product.id', [755, 491]);
-            };
+        if ($design == 'design_15') {
+
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $baseProductFilter = function ($q) {
+                    $q->join('product_category', 'product.id', '=', 'product_category.product_id')
+                    ->whereIn('product_category.category_id', [44])
+                    ->where('product.is_showed', 1)
+                    ->whereNotIn('product.id', [755, 491])
+                    ->where('product.ban', '!=', 1);
+                };
+
+            } else {
+                $baseProductFilter = function ($q) {
+                    $q->join('product_category', 'product.id', '=', 'product_category.product_id')
+                    ->whereIn('product_category.category_id', [44])
+                    ->where('product.is_showed', 1)
+                    ->where('product.ban', '!=', 1);
+                };
+            }
         } else {
-            $baseProductFilter = function ($q) {
-                $q->where('product.is_showed', 1)
-                ->where('product.ban', '!=', 1);
-            };
+
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $baseProductFilter = function ($q) {
+                    $q->where('product.is_showed', 1)
+                    ->where('product.ban', '!=', 1)
+                    ->whereNotIn('product.id', [755, 491]);
+                };
+            } else {
+                $baseProductFilter = function ($q) {
+                    $q->where('product.is_showed', 1)
+                    ->where('product.ban', '!=', 1);
+                };
+            }
         }
 
         try {
+
             $hasExactProduct = Product::query()
                 ->join('product_desc as pd', 'pd.product_id', '=', 'product.id')
                 ->where('pd.language_id', 1)
@@ -2142,6 +2256,16 @@ class ProductServices
                 ->where('category.id', '=', 14)
                 ->get(['product.first_letter'])
                 ->toArray();
+        } else if ($design == 'design_15') {
+            $first_letters_result = DB::table('product')
+                ->distinct()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'product_category.category_id', '=', 'category.id')
+                ->where('product.is_showed', '=', 1)
+                ->where('category.is_showed', '=', 1)
+                ->where('category.id', '=', 44)
+                ->get(['product.first_letter'])
+                ->toArray();
         } else {
             $first_letters_result = DB::table('product')
                 ->distinct()
@@ -2436,7 +2560,7 @@ class ProductServices
                 ->keyBy('id')
                 ->toArray();
         } else {
-            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU','FR'])) {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 $product_data = DB::table('product')
                     ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
                     ->whereIn('product.id', $products_arr)

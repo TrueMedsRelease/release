@@ -1195,6 +1195,132 @@ class CheckoutController extends Controller
         }
     }
 
+    public function data_for_local_payment(Request $request)
+    {
+        $form = session('form');
+
+        $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
+        $phone_code = $phone_code->phonecode;
+
+        $products = [];
+        $sessid   = '';
+
+        foreach (session('cart') as $product) {
+            $products[$product['pack_id']] = [
+                'qty'            => $product['q'],
+                'price'          => $product['price'],
+                'is_ed_category' => false
+            ];
+
+            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
+        }
+
+        // if (session('cart_option.bonus_id') != 0) {
+        //     $products[session('cart_option.bonus_id')] = [
+        //         'qty'            => 1,
+        //         'price'          => session('cart_option.bonus_price'),
+        //         'is_ed_category' => false
+        //     ];
+        // }
+
+        $products_str = json_encode($products);
+
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $billing_state  = isset($form['billing_state']) ? e($form['billing_state']) : '';
+        $shipping_state = isset($form['shipping_state']) ? e($form['shipping_state']) : '';
+
+        $data = [
+            'method'              => 'save_order_data',
+            'api_key'             => $api_key->key_data,
+            'phone'               => e('+' . $phone_code . $form['phone']),
+            'alternative_phone'   => !empty($form['alt_phone']) ? e('+' . $phone_code . $form['alt_phone']) : '',
+            'email'               => e($form['email']),
+            'alter_email'         => !empty($form['alt_email']) ? e($form['alt_email']) : '',
+            'firstname'           => e($form['firstname']),
+            'lastname'            => e($form['lastname']),
+            'billing_country'     => e($form['billing_country']),
+            'billing_state'       => $billing_state,
+            'billing_city'        => e($form['billing_city']),
+            'billing_address'     => e($form['billing_address']),
+            'billing_zip'         => e($form['billing_zip']),
+            'shipping_country'    => !empty($form['address_match']) ? e($form['shipping_country']) : e($form['billing_country']),
+            'shipping_state'      => !empty($form['address_match']) ? $shipping_state : $billing_state,
+            'shipping_city'       => !empty($form['address_match']) ? e($form['shipping_city']) : e($form['billing_city']),
+            'shipping_address'    => !empty($form['address_match']) ? e($form['shipping_address']) : e($form['billing_address']),
+            'shipping_zip'        => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
+            'payment_type'        => 'transfer',
+            'transfer_id'         => session('payment_ref_id', ''),
+            'ip'                  => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+            'aff'                 => session('aff', 0),
+            'ref'                 => session('referer', ''),
+            'refc'                => session('refc', ''),
+            'keyword'             => session('keyword', ''),
+            'domain_from'         => request()->getHost(),
+            'total'               => round(session('total.checkout_total') * 0.85, 2),
+            'shipping'            => session('cart_option.shipping'),
+            'products'            => $products_str,
+            'saff'                => session('saff', ''),
+            'language'            => App::currentLocale(),
+            'currency'            => session('currency', 'usd'),
+            'user_agent'          => 'user_agent=' . $request->userAgent(),
+            'fingerprint'         => '',
+            'product_total'       => session('total.product_total'),
+            'customer_id'         => '',
+            'reorder'             => 0,
+            'reorder_discount'    => 0,
+            'shipping_price'      => session('total.shipping_total'),
+            'insurance'           => session('total.insurance'),
+            'secret_package'      => session('total.secret_package'),
+            'store_skin'          => config('app.design'),
+            'recurring_period'    => 0,
+            'bonus'               => session('cart_option.bonus_id', 0),
+            'theme'               => 13,
+            'sessid'              => $sessid,
+            'browser_details' => [
+                'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                'browser_language' => $request->browser_details['browser_language'] ?? '',
+                'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                'browser_user_agent' => $request->userAgent(),
+                'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                'window_height' => $request->browser_details['window_height'] ?? '',
+                'window_width' => $request->browser_details['window_width'] ?? '',
+            ],
+            'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+            'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+            'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+            'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+            'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+            'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+            'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
+        ];
+
+        if (checkdnsrr('true-serv.net', 'A')) {
+            try {
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+
+                if ($response->successful()) {
+                    // Обработка успешного ответа
+
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
+            } catch (ConnectionException $e) {
+                Log::error("Ошибка подключения: " . $e->getMessage());
+            } catch (RequestException $e) {
+                // Обработка ошибок запроса, таких как таймаут или недоступность
+                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+                $responseData = ['error' => 'Service unavailable'];
+            }
+        }
+    }
+
     public function local_payment(Request $request)
     {
         $request->request->add(['expire_date' => $request->card_month . '/' . $request->card_year]);
