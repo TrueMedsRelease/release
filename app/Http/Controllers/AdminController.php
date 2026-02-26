@@ -1515,7 +1515,8 @@ class AdminController extends Controller
                 $title = 'Checkout';
                 break;
             case 'update_shop':
-                $title = __('text.admin_renewal_shop');
+                // $title = __('text.admin_renewal_shop');
+                $title = 'Update Shop';
                 break;
             default:
                 $title = 'Admin';
