@@ -2473,8 +2473,12 @@ class CheckoutController extends Controller
         $input_type  = $request->input_type;
         $input_value = $request->input_value;
 
-        foreach (session('cart') as $product) {
-            $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
+        if (session()->has('cart')) {
+            foreach (session('cart') as $product) {
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
+            }
+        } else {
+            $sessid = SessionHelper::getSessionId(request());
         }
 
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
