@@ -11,7 +11,8 @@
                 <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('new_password_messages', '{{__('text.admin_common_saving_message')}}'); renewalShop();">
                     <span>
                         <span>
-                            {{ __('text.admin_renewal_shop') }}
+                            {{-- {{ __('text.admin_renewal_shop') }} --}}
+                            Update Shop
                         </span>
                     </span>
                     <svg width="20" height="20">
@@ -21,7 +22,8 @@
                 <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('new_password_messages', '{{__('text.admin_common_saving_message')}}'); renewalDatabase();">
                     <span>
                         <span>
-                            {{ __('text.admin_renewal_database') }}
+                            {{-- {{ __('text.admin_renewal_database') }} --}}
+                            Update Database
                         </span>
                     </span>
                     <svg width="20" height="20">
@@ -31,8 +33,10 @@
                 <div id="new_password_messages"></div>
             </div>
             <div style="line-height: 2.5; color: red; font-size: 18px;">
-                <p>{{ __('text.admin_renewal_text1') }}</p>
-                <p>{{ __('text.admin_renewal_text2') }}</p>
+                {{-- <p>{{ __('text.admin_renewal_text1') }}</p> --}}
+                {{-- <p>{{ __('text.admin_renewal_text2') }}</p> --}}
+                <p>Warning: If you update the store, your changes will be lost. If you need to update, please contact support.</p>
+                <p>If you want to update manually, please create a dump of your database and store.</p>
             </div>
         </div>
     </div>

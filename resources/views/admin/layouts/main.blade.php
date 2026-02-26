@@ -92,7 +92,8 @@
 								</li>
                                 @if (env("APP_UPDATE_ON", 1))
                                     <li class="menu__item">
-                                        <a href="{{ route('admin.renewal_page') }}">{{ __('text.admin_renewal_shop') }}</a>
+                                        {{-- <a href="{{ route('admin.renewal_page') }}">{{ __('text.admin_renewal_shop') }}</a> --}}
+                                        Update Shop
 								    </li>
                                 @endif
                                 <li class="menu__item">
