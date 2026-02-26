@@ -20,8 +20,23 @@ class CheckForSqlInjection
         $allInputs = $request->all();//array_merge($request->all(), $request->route()->parameters());
 
         foreach ($allInputs as $key => $value) {
+            // if (is_array($value)) {
+            //     $value = implode(' ', $value);
+            // }
+
             if (is_array($value)) {
-                $value = implode(' ', $value);
+                $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                if ($value === false) {
+                    continue;
+                }
+            }
+
+            if (is_scalar($value)) {
+                $value = (string) $value;
+            }
+
+            if (!is_string($value)) {
+                continue;
             }
 
             if (is_string($value)) {
@@ -29,7 +44,7 @@ class CheckForSqlInjection
             } else {
                 $count = 0;
             }
-            
+
             if ($key == 'push_info' || ($key == 'search' && $count == 1)) {
                 continue;
             } else {
