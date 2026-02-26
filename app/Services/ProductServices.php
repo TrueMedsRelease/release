@@ -1835,7 +1835,7 @@ class ProductServices
                 ->get(['product.aktiv', 'product.id'])
                 ->toArray();
         } else {
-            $all_active = Product::distinct()->where('is_showed', '=', 1)->get('aktiv')->toArray();
+            $all_active = Product::distinct()->where('is_showed', '=', 1)->get(['aktiv', 'id'])->toArray();
         }
 
         if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
