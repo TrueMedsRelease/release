@@ -679,7 +679,7 @@ class HomeController extends Controller
             'product'         => $product,
             'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category'    => $product['categories'][0]['name'],
+            'cur_category'    => $product['categories'][0]['name'] ?? '',
             'agent'           => $agent,
             'Language'        => Language::class,
             'Currency'        => Currency::class,

@@ -34,10 +34,7 @@
                             <div class="info-panel__image">
                                 @if ($product['id'] == 616)
                                     <picture>
-                                        <source type="image/webp" srcset="{{ asset("$design/img/products/gift-137w.webp") }} 1x, {{ asset("$design/img/products/gift-274w.webp") }} 2x"><img
-                                            src="{{ asset("$design/img/products/gift-137w.png") }}"
-                                            srcset="{{ asset("$design/img/products/gift-137w.png") }} 1x, {{ asset("$design/img/products/gift-274w.png") }} 2x" width="137" height="183"
-                                            alt="{{ $product['image'] }}">
+                                        <img src="{{ asset("$design/img/products/gift-bg-400w.png") }}" alt="{{ $product['image'] }}">
                                     </picture>
                                 @else
                                     <picture style="max-height: 200px; max-width: 200px;">
