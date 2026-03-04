@@ -6668,3 +6668,42 @@ textarea.input {
 .sitemap_menu:hover{
     color: #72bad0;
 }
+
+.bonus_card_info {
+    display: flex;
+    align-items: center;
+}
+
+.bonus_card_info a {
+    display: flex;
+    align-items: center;
+}
+
+.bonus_top {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bonus_head {
+    line-height: 1.2222222222;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 16px;
+}
+
+@media (max-width: 40.6238em) {
+    .bonus_card_info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bonus_card_info a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}

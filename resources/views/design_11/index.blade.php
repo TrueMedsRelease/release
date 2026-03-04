@@ -109,6 +109,15 @@
 
 @section('promo_bonus')
     <div class="promo-items">
+        {{-- <div class="promo-item">
+            <div class="promo-item__info">
+                <div class="promo-item__title">Bonus Card & Referral Program</div>
+                <div class="promo-item__text">Save & Earn</div>
+            </div>
+            <div class="promo-item__img">
+                <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="172" height="112" alt="Promo">
+            </div>
+        </div> --}}
         <div class="promo-item">
             <div class="promo-item__info">
                 <div class="promo-item__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>

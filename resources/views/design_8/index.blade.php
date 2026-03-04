@@ -72,6 +72,11 @@
             </div>
         </div>
 
+        <div class="bonus_block_info">
+            <img class="bonus1" src="{{ asset($design . '/images/bonus_programm.png') }}">
+            <img class="bonus2" src="{{ asset($design . '/images/bonus_programm_2.png') }}">
+        </div>
+
         <section class="pay-index">
             <div class="pay-index__container">
                 <ul class="pay-index__list">

@@ -23,6 +23,23 @@
                     <div class="promo-card__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
                 </article>
             </div>
+            {{-- <article class="card bonus">
+                <div class="card__img">
+                    <picture style="max-height: 175px; max-width: 175px;">
+                        <img src="{{ asset($design . '/images/bonus_programm.png') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                    </picture>
+                </div>
+                <div class="card__content">
+                    <h2 class="card__title">
+                        <a class="card__link" href="/">
+                            Bonus Card & Referral Program
+                        </a>
+                    </h2>
+                    <span class="card__ingredient">
+                        Save & Earn
+                    </span>
+                </div>
+            </article> --}}
             @foreach ($bestsellers as $product)
                 <article class="card">
                     @if ($product['id'] != 616 && $product['discount'] != 0)
