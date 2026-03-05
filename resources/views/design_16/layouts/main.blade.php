@@ -714,22 +714,22 @@
                             <span class="promo-card__text">Save & Earn</span>
                         </div>
                     </a> --}}
-                    <a class="promo-card promo-card--hour" href="/">
+                    <div class="promo-card promo-card--hour" href="/">
                         <div class="promo-card__content">
                             <div class="promo-card__title">
                                 {{ Str::ucfirst(__('text.common_banner1_text1')) }} <br> {{ Str::ucfirst(__('text.common_banner1_text2')) }}
                             </div>
                             <span class="promo-card__text">{{ __('text.common_banner1_text3') }} {{ __('text.common_banner1_text4') }}</span>
                         </div>
-                    </a>
-                    <a class="promo-card promo-card--sale" href="/">
+                    </div>
+                    <div class="promo-card promo-card--sale" href="/">
                         <div class="promo-card__content">
                             <div class="promo-card__title">
                                 {{ __('text.common_banner2_text1') }} <br> {!! __('text.common_banner2_text2') !!}
                             </div>
                             <span class="promo-card__text">{{ __('text.common_banner2_text3') }} {{ __('text.common_banner2_text4') }}</span>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 {{-- <div class="checkup" onclick="location.href='{{ route('home.checkup') }}'">
                     <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
