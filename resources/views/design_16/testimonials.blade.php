@@ -342,7 +342,7 @@
                 </div>
             </details>
             @foreach ($menu as $category)
-                <details class="accordion-item @if($cur_category == $category['name']) is-open @endif" data-accordion-item @if($cur_category == $category['name']) open @endif>
+                <details class="accordion-item @if(strtolower($cur_category) == strtolower($category['name'])) is-open @endif" data-accordion-item @if(strtolower($cur_category) == strtolower($category['name'])) open @endif>
                     <summary class="accordion-button" data-accordion-button>
                         <span class="button-text">{{ $category['name'] }}</span>
                         <span class="icon">

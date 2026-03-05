@@ -78,6 +78,7 @@ class ProductServices
                 ->join('category', 'category.id', '=', 'product_category.category_id')
                 ->whereIn('category.category_parent_id',  [47])
                 ->orderBy('product.main_order')
+                ->limit(31)
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
 
@@ -2122,15 +2123,16 @@ class ProductServices
                 ->join('product_desc as pd', 'pd.product_id', '=', 'product.id')
                 ->where('pd.language_id', 1)
                 ->where('pd.name', $search_text)
-                ->where($baseProductFilter)
+                ->tap($baseProductFilter)
                 ->exists();
+
 
             if ($hasExactProduct) {
                 $product = Product::query()
                     ->join('product_desc as pd', 'pd.product_id', '=', 'product.id')
                     ->where('pd.language_id', 1)
                     ->where('pd.name', $search_text)
-                    ->where($baseProductFilter)
+                    ->tap($baseProductFilter)
                     ->select('product.*')
                     ->distinct()
                     ->get();
@@ -2140,7 +2142,7 @@ class ProductServices
                 $like = '%' . addcslashes($search_text, "\\%_") . '%';
 
                 $product = Product::query()
-                    ->where($baseProductFilter)
+                    ->tap($baseProductFilter)
                     ->where('product.sinonim', '!=', '')
                     ->where('product.sinonim', 'LIKE', $like)
                     // ->whereRaw(
