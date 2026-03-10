@@ -156,29 +156,6 @@ class HomeController extends Controller
                     'codes'           => json_encode($codes),
                 ]
             );
-        } else if ($design == 'design_15') {
-            $bestsellers = ProductServices::GetBestsellers($design);
-            $menu = ProductServices::GetCategoriesWithProducts($design);
-
-            return view(
-                $design . '.index',
-                [
-                    'design'          => $design,
-                    'bestsellers'     => $bestsellers,
-                    'menu'            => $menu,
-                    'phone_codes'     => $phone_codes,
-                    'page_properties' => $page_properties,
-                    'cur_category'    => '',
-                    'agent'           => $agent,
-                    'Language'        => Language::class,
-                    'Currency'        => Currency::class,
-                    'pixel'           => $pixel,
-                    'first_letters'   => $first_letters,
-                    'domain'          => $domain,
-                    'web_statistic'   => $web_statistic,
-                    'codes'           => json_encode($codes),
-                ]
-            );
         }
     }
 
@@ -686,7 +663,8 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        if ($product['id'] == 616 && $design == 'design_15') {
+        // if ($product['id'] == 616 && ($design == 'design_15' || $design == 'design_16')) {
+        if ($design == 'design_15' || $design == 'design_16') {
             $rec_dump = $bestsellers;
             array_shift($rec_dump);
             $recommendation = $rec_dump;
@@ -701,7 +679,7 @@ class HomeController extends Controller
             'product'         => $product,
             'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category'    => $product['categories'][0]['name'],
+            'cur_category'    => $product['categories'][0]['name'] ?? '',
             'agent'           => $agent,
             'Language'        => Language::class,
             'Currency'        => Currency::class,
@@ -1469,7 +1447,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -1478,7 +1456,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16])) {
             session(['design' => 'design_' . $design]);
         }
 

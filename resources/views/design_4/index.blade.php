@@ -13,6 +13,17 @@
 <div class="products">
     <h2 class="products__title title">{{__('text.main_best_selling_title')}}</h2>
     <div class="products__items">
+        {{-- <div class="products__item item-product bonus_card_info">
+            <a href="/">
+                <div class="bonus_image">
+                    <img src="{{ asset($design . '/images/bonus_programm.png') }}">
+                </div>
+                <div class="bonus_top">
+                    <div class="bonus_head">Bonus Card & Referral Program</div>
+                    <div class="bonus_text">Save & Earn</div>
+                </div>
+            </a>
+        </div> --}}
         @foreach ($bestsellers as $product)
             <div class="products__item item-product">
                 @if ($product['id'] != 616 && $product['discount'] != 0)

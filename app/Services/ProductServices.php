@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 
 class ProductServices
 {
@@ -57,6 +58,47 @@ class ProductServices
                 ->where('product_category.category_id', '=', 44)
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+
+            $card = Product::query()
+                ->where('id', '=', 616)
+                ->where('is_showed_on_main', '=', 1)
+                ->where('is_showed', '=', 1)
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+
+            if ($card) {
+                array_unshift($products, $card[0]);
+            }
+        } else if ($design == 'design_16') {
+            // $products = Product::query()
+            //     // ->where('product.is_showed_on_main', '=', 1)
+            //     ->where('product.is_showed', '=', 1)
+            //     ->join('product_category', 'product.id', '=', 'product_category.product_id')
+            //     ->join('category', 'category.id', '=', 'product_category.category_id')
+            //     ->whereIn('category.category_parent_id',  [47])
+            //     // ->orderBy('product.sport_order')
+            //     ->orderBy('product.main_order')
+            //     ->limit(31)
+            //     ->get(['product.id', 'product.image', 'product.aktiv'])
+            //     ->toArray();
+
+            $query = Product::query()
+                ->where('product.is_showed', 1)
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'category.id', '=', 'product_category.category_id')
+                ->whereIn('category.category_parent_id', [47]);
+
+            if (Schema::hasColumn('product', 'sport_order')) {
+                $query->orderBy('product.sport_order');
+                $query->orderBy('product.main_order');
+            } else {
+                $query->orderBy('product.main_order');
+            }
+
+            $products = $query
+                ->limit(31)
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
 
@@ -200,13 +242,17 @@ class ProductServices
 
         $countryCode = Str::upper(session('location.country') ?? '');
 
-
         $categoriesQuery = Category::query();
         if ($design == 'design_5') {
             $categoriesQuery->whereIn('id', [13, 14]);
         }
         if ($design == 'design_15') {
             $categoriesQuery->whereIn('id', [44]);
+        }
+        if ($design == 'design_16') {
+            $categoriesQuery->whereIn('category_parent_id', [47]);
+        } else {
+            $categoriesQuery->where('category_parent_id', '=', null);
         }
         if (!empty($url)) {
             $categoriesQuery->where('url', '=', $url);
@@ -645,6 +691,16 @@ class ProductServices
                 ->orderBy('product.main_order')
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
+        } else if ($design == 'design_16') {
+            $products = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'category.id', '=', 'product_category.category_id')
+                ->whereIn('category.category_parent_id', [47])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.first_letter', '=', $letter)
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
         } else {
             $products = Product::query()
                 ->where('is_showed', '=', 1)
@@ -761,6 +817,11 @@ class ProductServices
                 'SELECT * FROM product_disease pd JOIN product_category pc ON pc.product_id = pd.product_id WHERE pd.language_id = ? AND pd.disease = ? AND pc.category_id = 44',
                 [$language_id, $disease]
             );
+        } else if ($design == 'design_16') {
+            $diseases = DB::select(
+                'SELECT * FROM product_disease pd JOIN product_category pc ON pc.product_id = pd.product_id JOIN category c ON c.id = pc.category_id WHERE pd.language_id = ? AND pd.disease = ? AND c.category_parent_id = 47',
+                [$language_id, $disease]
+            );
         } else {
             $diseases = DB::select(
                 'SELECT * FROM product_disease WHERE language_id = ? AND disease = ?',
@@ -784,43 +845,43 @@ class ProductServices
         $dosagesData = static::dosagesList();
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
-        for ($i = 0; $i < count($products); $i++) {
+        foreach ($products as $key => &$items) {
             if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
-                if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
-                    unset($products[$i]);
+                if ($items['id'] == 755 || $items['id'] == 491) {
+                    unset($products[$key]);
                     continue;
                 }
             }
 
-            if (isset($products_desc[$products[$i]['id']])) {
-                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+            if (isset($products_desc[$items['id']])) {
+                $items['name'] = $products_desc[$items['id']]['name'];
+                $items['desc'] = $products_desc[$items['id']]['desc'];
 
                 if (static::isAffIdInSpecialUrlList()) {
                     if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                        $products[$i]['url'] = 'Buying_' . $products_desc[$products[$i]['id']]['url'] . '_online';
+                        $items['url'] = 'Buying_' . $products_desc[$items['id']]['url'] . '_online';
                     } else {
-                        $products[$i]['url'] = __(
+                        $items['url'] = __(
                                                    'text.text_aff_domain_1'
-                                               ) . '_' . $products_desc[$products[$i]['id']]['url'] . '_' . __(
+                                               ) . '_' . $products_desc[$items['id']]['url'] . '_' . __(
                                                    'text.text_aff_domain_2'
                                                );
                     }
                 } else {
-                    $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                    $items['url'] = $products_desc[$items['id']]['url'];
                 }
 
-                $products[$i]['alt'] = $products[$i]['image'];
+                $items['alt'] = $items['image'];
 
                 if (static::isAffIdInSpecialUrlList()) {
-                    $products[$i]['image'] = $domainWithoutZone . '_' . $products[$i]['image'];
-                    $products[$i]['alt']   = __('text.text_aff_domain_1') . '_' . $products[$i]['name'] . '_' . __(
+                    $items['image'] = $domainWithoutZone . '_' . $items['image'];
+                    $items['alt']   = __('text.text_aff_domain_1') . '_' . $items['name'] . '_' . __(
                             'text.text_aff_domain_2'
                         );
                 }
 
-                $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
-                foreach ($products[$i]['aktiv'] as $key => $value) {
+                $items['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($items['aktiv']))));
+                foreach ($items['aktiv'] as $key => $value) {
                     $activeUrl = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
                     if (static::isAffIdInSpecialUrlList()) {
@@ -833,25 +894,25 @@ class ProductServices
                         }
                     }
 
-                    $products[$i]['aktiv'][$key] = [
+                    $items['aktiv'][$key] = [
                         'name' => trim($value),
                         'url'  => $activeUrl
                     ];
                 }
                 foreach ($product_price as $key => $pp) {
-                    if ($products[$i]['id'] == $key) {
-                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+                    if ($items['id'] == $key) {
+                        $items['price'] = $product_price[$items['id']]['price'];
 
-                        if (isset($product_price[$products[$i]['id']]['discount'])) {
-                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        if (isset($product_price[$items['id']]['discount'])) {
+                            $items['discount'] = $product_price[$items['id']]['discount'];
                         }
                     }
                 }
 
-                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : [];
+                $items['product_dosages'] = isset($dosagesData[$items['id']]) ? $dosagesData[$items['id']] : [];
 
             } else {
-                $products[$i]['unset'] = true;
+                $items['unset'] = true;
             }
         }
 
@@ -893,6 +954,16 @@ class ProductServices
                 ->orderBy('product.main_order')
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
+        } else if ($design == 'design_16') {
+            $products = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'category.id', '=', 'product_category.category_id')
+                ->whereIn('category.category_parent_id', [47])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.aktiv', 'LIKE', "%$active%")
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
         } else {
             $products = Product::query()
                 ->where('is_showed', '=', 1)
@@ -905,43 +976,43 @@ class ProductServices
         $dosagesData = static::dosagesList();
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
-        for ($i = 0; $i < count($products); $i++) {
+        foreach ($products as $key => &$items) {
             if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
-                if ($products[$i]['id'] == 755 || $products[$i]['id'] == 491) {
-                    unset($products[$i]);
+                if ($items['id'] == 755 || $items['id'] == 491) {
+                    unset($products[$key]);
                     continue;
                 }
             }
 
-            if (isset($products_desc[$products[$i]['id']])) {
-                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+            if (isset($products_desc[$items['id']])) {
+                $items['name'] = $products_desc[$items['id']]['name'];
+                $items['desc'] = $products_desc[$items['id']]['desc'];
 
                 if (static::isAffIdInSpecialUrlList()) {
                     if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                        $products[$i]['url'] = 'Buying_' . $products_desc[$products[$i]['id']]['url'] . '_online';
+                        $items['url'] = 'Buying_' . $products_desc[$items['id']]['url'] . '_online';
                     } else {
-                        $products[$i]['url'] = __(
+                        $items['url'] = __(
                                                    'text.text_aff_domain_1'
-                                               ) . '_' . $products_desc[$products[$i]['id']]['url'] . '_' . __(
+                                               ) . '_' . $products_desc[$items['id']]['url'] . '_' . __(
                                                    'text.text_aff_domain_2'
                                                );
                     }
                 } else {
-                    $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                    $items['url'] = $products_desc[$items['id']]['url'];
                 }
 
-                $products[$i]['alt'] = $products[$i]['image'];
+                $items['alt'] = $items['image'];
 
                 if (static::isAffIdInSpecialUrlList()) {
-                    $products[$i]['image'] = $domainWithoutZone . '_' . $products[$i]['image'];
-                    $products[$i]['alt']   = __('text.text_aff_domain_1') . '_' . $products[$i]['name'] . '_' . __(
+                    $items['image'] = $domainWithoutZone . '_' . $items['image'];
+                    $items['alt']   = __('text.text_aff_domain_1') . '_' . $items['name'] . '_' . __(
                             'text.text_aff_domain_2'
                         );
                 }
 
-                $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
-                foreach ($products[$i]['aktiv'] as $key => $value) {
+                $items['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($items['aktiv']))));
+                foreach ($items['aktiv'] as $key => $value) {
                     $activeUrl = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
                     if (static::isAffIdInSpecialUrlList()) {
@@ -954,25 +1025,25 @@ class ProductServices
                         }
                     }
 
-                    $products[$i]['aktiv'][$key] = [
+                    $items['aktiv'][$key] = [
                         'name' => trim($value),
                         'url'  => $activeUrl
                     ];
                 }
                 foreach ($product_price as $key => $pp) {
-                    if ($products[$i]['id'] == $key) {
-                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+                    if ($items['id'] == $key) {
+                        $items['price'] = $product_price[$items['id']]['price'];
 
-                        if (isset($product_price[$products[$i]['id']]['discount'])) {
-                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        if (isset($product_price[$items['id']]['discount'])) {
+                            $items['discount'] = $product_price[$items['id']]['discount'];
                         }
                     }
                 }
 
-                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : [];
+                $items['product_dosages'] = isset($dosagesData[$items['id']]) ? $dosagesData[$items['id']] : [];
 
             } else {
-                $products[$i]['unset'] = true;
+                $items['unset'] = true;
             }
         }
 
@@ -1011,6 +1082,15 @@ class ProductServices
                 ->where('product.is_showed', '=', 1)
                 ->with('category.category_desc')
                 ->get(['product.id', 'product.image', 'product.aktiv', 'product.sinonim', 'product.product_info_file_path']);
+        } else if ($design == 'design_16' && $url != 'gift-card') {
+            $product = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'category.id', '=', 'product_category.category_id')
+                ->whereIn('category.category_parent_id', [47])
+                ->where('product.id', '=', $products_desc['product_id'])
+                ->where('product.is_showed', '=', 1)
+                ->with('category.category_desc')
+                ->get(['product.id', 'product.image', 'product.aktiv', 'product.sinonim', 'product.product_info_file_path']);
         } else {
             $product = Product::query()
                 ->where('id', '=', $products_desc['product_id'])
@@ -1026,27 +1106,58 @@ class ProductServices
         #region Category
         $categories = [];
         foreach ($product[0]->category as $category) {
-            $names = $category->category_desc->where('language_id', '=', $language_id);
-            foreach ($names as $n) {
-                if ($n['name']) {
-                    $name = $n['name'];
-                }
-            }
+            if ($design == 'design_16') {
+                if ($category->is_showed == 1 && $category->category_parent_id == 47) {
+                    $names = $category->category_desc->where('language_id', '=', $language_id);
 
-            if (isset($name)) {
-                $category_url = $category->url;
+                    foreach ($names as $n) {
+                        if ($n['name']) {
+                            $name = $n['name'];
+                        }
+                    }
 
-                if (static::isAffIdInSpecialUrlList()) {
-                    if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                        $category_url = 'Buying_' . $category_url . '_online';
-                    } else {
-                        $category_url = __('text.text_aff_domain_1') . '_' . $category_url . '_' . __(
-                                'text.text_aff_domain_2'
-                            );
+                    if (isset($name)) {
+                        $category_url = $category->url;
+
+                        if (static::isAffIdInSpecialUrlList()) {
+                            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                                $category_url = 'Buying_' . $category_url . '_online';
+                            } else {
+                                $category_url = __('text.text_aff_domain_1') . '_' . $category_url . '_' . __(
+                                        'text.text_aff_domain_2'
+                                    );
+                            }
+                        }
+
+                        $categories[] = ['name' => $name, 'url' => $category_url];
                     }
                 }
+            } else {
+                if ($category->is_showed == 1 && $category->category_parent_id == null) {
+                    $names = $category->category_desc->where('language_id', '=', $language_id);
 
-                $categories[] = ['name' => $name, 'url' => $category_url];
+                    foreach ($names as $n) {
+                        if ($n['name']) {
+                            $name = $n['name'];
+                        }
+                    }
+
+                    if (isset($name)) {
+                        $category_url = $category->url;
+
+                        if (static::isAffIdInSpecialUrlList()) {
+                            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
+                                $category_url = 'Buying_' . $category_url . '_online';
+                            } else {
+                                $category_url = __('text.text_aff_domain_1') . '_' . $category_url . '_' . __(
+                                        'text.text_aff_domain_2'
+                                    );
+                            }
+                        }
+
+                        $categories[] = ['name' => $name, 'url' => $category_url];
+                    }
+                }
             }
         }
         #endregion
@@ -1408,6 +1519,18 @@ class ProductServices
                 ->orderBy('product.menu_order')
                 ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url', 'product.menu_order'])
                 ->toArray();
+        } else if ($design == "design_16") {
+            $products = DB::table('product_desc')
+                ->join('product_category', 'product_desc.product_id', '=', 'product_category.product_id')
+                ->join('product', 'product.id', '=', 'product_desc.product_id')
+                ->join('category', 'category.id', '=', 'product_category.category_id')
+                ->distinct()
+                ->where('product_desc.name', 'LIKE', '%' . $search_text . '%')
+                ->where('product.is_showed', '=', '1')
+                ->whereIn('category.category_parent_id', [47])
+                ->orderBy('product.menu_order')
+                ->get(['product_desc.product_id', 'product_desc.name', 'product_desc.url', 'product.menu_order'])
+                ->toArray();
         } else {
             $products = DB::table('product_desc')
                 ->join('product_category', 'product_desc.product_id', '=', 'product_category.product_id')
@@ -1557,6 +1680,56 @@ class ProductServices
 
                 $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
             }
+        } else if ($design == 'design_16') {
+            if (env('APP_GIFT_CARD') == 0) {
+                $exactMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->join('category', 'category.id', '=', 'product_category.category_id')
+                    ->whereRaw('LOWER(product_search.keyword) = ?', [$search_text_lower])
+                    ->whereIn('category.category_parent_id', [47])
+                    ->where('product_search.is_showed', '=', 1)
+                    ->where('product_search.product_id', '<>', 616)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
+
+                $partialMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->join('category', 'category.id', '=', 'product_category.category_id')
+                    ->whereFullText('product_search.keyword', $search_full_text_lower, ['mode' => 'boolean'])
+                    ->whereIn('category.category_parent_id', [47])
+                    ->whereNotIn('product_search.product_id', $exactMatchProductIds)
+                    ->where('product_search.is_showed', '=', 1)
+                    ->where('product_search.product_id', '<>', 616)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
+
+                $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
+            } else {
+                $exactMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->join('category', 'category.id', '=', 'product_category.category_id')
+                    ->whereRaw('LOWER(product_search.keyword) = ?', [$search_text_lower])
+                    ->whereIn('category.category_parent_id', [47])
+                    ->where('product_search.is_showed', '=', 1)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
+
+                $partialMatchProductIds = DB::table('product_search')
+                    ->join('product_category', 'product_search.product_id', '=', 'product_category.product_id')
+                    ->join('category', 'category.id', '=', 'product_category.category_id')
+                    ->whereFullText('product_search.keyword', $search_full_text_lower, ['mode' => 'boolean'])
+                    ->whereIn('category.category_parent_id', [47])
+                    ->whereNotIn('product_search.product_id', $exactMatchProductIds)
+                    ->where('product_search.is_showed', '=', 1)
+                    ->distinct()
+                    ->pluck('product_search.product_id')
+                    ->toArray();
+
+                $product_ids = array_merge($exactMatchProductIds, $partialMatchProductIds);
+            }
         } else {
             if (env('APP_GIFT_CARD') == 0) {
                 $exactMatchProductIds = ProductSearch::whereRaw('LOWER(keyword) = ?', [$search_text_lower])
@@ -1636,34 +1809,34 @@ class ProductServices
         $dosagesData = static::dosagesList();
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
-        for ($i = 0; $i < count($products); $i++) {
-            if (isset($products_desc[$products[$i]['id']])) {
-                $products[$i]['name'] = $products_desc[$products[$i]['id']]['name'];
-                $products[$i]['desc'] = $products_desc[$products[$i]['id']]['desc'];
+        foreach ($products as $key => &$items) {
+            if (isset($products_desc[$items['id']])) {
+                $items['name'] = $products_desc[$items['id']]['name'];
+                $items['desc'] = $products_desc[$items['id']]['desc'];
 
                 if (static::isAffIdInSpecialUrlList()) {
                     if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                        $products[$i]['url'] = "Buying_" . $products_desc[$products[$i]['id']]['url'] . "_online";
+                        $items['url'] = "Buying_" . $products_desc[$items['id']]['url'] . "_online";
                     } else {
-                        $products[$i]['url'] = __('text.text_aff_domain_1')
-                                               . '_' . $products_desc[$products[$i]['id']]['url']
+                        $items['url'] = __('text.text_aff_domain_1')
+                                               . '_' . $products_desc[$items['id']]['url']
                                                . '_' . __('text.text_aff_domain_2');
                     }
                 } else {
-                    $products[$i]['url'] = $products_desc[$products[$i]['id']]['url'];
+                    $items['url'] = $products_desc[$items['id']]['url'];
                 }
 
-                $products[$i]['alt'] = $products[$i]['image'];
+                $items['alt'] = $items['image'];
 
                 if (static::isAffIdInSpecialUrlList()) {
-                    $products[$i]['image'] = $domainWithoutZone . '_' . $products[$i]['image'];
-                    $products[$i]['alt']   = __('text.text_aff_domain_1')
-                                             . '_' . $products[$i]['name']
+                    $items['image'] = $domainWithoutZone . '_' . $items['image'];
+                    $items['alt']   = __('text.text_aff_domain_1')
+                                             . '_' . $items['name']
                                              . '_' . __('text.text_aff_domain_2');
                 }
 
-                $products[$i]['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($products[$i]['aktiv']))));
-                foreach ($products[$i]['aktiv'] as $key => $value) {
+                $items['aktiv'] = explode(',', ucwords(str_replace("\r\n", '', trim($items['aktiv']))));
+                foreach ($items['aktiv'] as $key => $value) {
                     $activeUrl = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
 
                     if (static::isAffIdInSpecialUrlList()) {
@@ -1676,25 +1849,25 @@ class ProductServices
                         }
                     }
 
-                    $products[$i]['aktiv'][$key] = [
+                    $items['aktiv'][$key] = [
                         'name' => trim($value),
                         'url'  => $activeUrl
                     ];
                 }
                 foreach ($product_price as $key => $pp) {
-                    if ($products[$i]['id'] == $key) {
-                        $products[$i]['price'] = $product_price[$products[$i]['id']]['price'];
+                    if ($items['id'] == $key) {
+                        $items['price'] = $product_price[$items['id']]['price'];
 
-                        if (isset($product_price[$products[$i]['id']]['discount'])) {
-                            $products[$i]['discount'] = $product_price[$products[$i]['id']]['discount'];
+                        if (isset($product_price[$items['id']]['discount'])) {
+                            $items['discount'] = $product_price[$items['id']]['discount'];
                         }
                     }
                 }
 
-                $products[$i]['product_dosages'] = isset($dosagesData[$products[$i]['id']]) ? $dosagesData[$products[$i]['id']] : [];
+                $items['product_dosages'] = isset($dosagesData[$items['id']]) ? $dosagesData[$items['id']] : [];
 
             } else {
-                $products[$i]['unset'] = true;
+                $items['unset'] = true;
             }
         }
 
@@ -1749,6 +1922,11 @@ class ProductServices
                 "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND c.id = 44 AND language_id = ? AND cd.name LIKE ?",
                 [$language_id, '%' . $search_text . '%']
             );
+        } else if ($design == 'design_16') {
+            $result      = DB::select(
+                "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND c.category_parent_id = 47 AND language_id = ? AND cd.name LIKE ?",
+                [$language_id, '%' . $search_text . '%']
+            );
         } else {
             $result = DB::select(
                 "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND language_id = ? AND cd.name LIKE ?",
@@ -1785,6 +1963,15 @@ class ProductServices
                             JOIN product_disease pd ON pd.product_id = p.id
                             JOIN product_category pc ON pc.product_id = p.id
                             WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND pc.category_id = 44",
+                ['%' . $search_text . '%', $language_id]
+            );
+        } else if ($design == 'design_16') {
+            $result = DB::select(
+                "SELECT DISTINCT pd.disease, p.id FROM product p
+                            JOIN product_disease pd ON pd.product_id = p.id
+                            JOIN product_category pc ON pc.product_id = p.id
+                            JOIN category c ON c.id = pc.category_id
+                            WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND c.category_parent_id = 47",
                 ['%' . $search_text . '%', $language_id]
             );
         } else {
@@ -1834,6 +2021,14 @@ class ProductServices
                 ->where('product.is_showed', '=', 1)
                 ->get(['product.aktiv', 'product.id'])
                 ->toArray();
+        } else if ($design == 'design_16') {
+            $all_active = Product::distinct()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'category.id', '=', 'product_category.category_id')
+                ->whereIn('category.category_parent_id', [47])
+                ->where('product.is_showed', '=', 1)
+                ->get(['product.aktiv', 'product.id'])
+                ->toArray();
         } else {
             $all_active = Product::distinct()->where('is_showed', '=', 1)->get(['aktiv', 'id'])->toArray();
         }
@@ -1869,7 +2064,7 @@ class ProductServices
 
                 if (static::isAffIdInSpecialUrlList()) {
                     if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                        $url = 'Buying_' . $url . "_online";
+                            $url = 'Buying_' . $url . "_online";
                     } else {
                         $url = __('text.text_aff_domain_1') . '_' . $url . "_" . __('text.text_aff_domain_2');
                     }
@@ -1905,6 +2100,27 @@ class ProductServices
                     ->where('product.ban', '!=', 1);
                 };
             }
+        } else if ($design == 'design_16') {
+
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $baseProductFilter = function ($q) {
+                    $q->join('product_category', 'product.id', '=', 'product_category.product_id')
+                    ->join('category', 'category.id', '=', 'product_category.category_id')
+                    ->whereIn('category.category_parent_id', [47])
+                    ->where('product.is_showed', 1)
+                    ->whereNotIn('product.id', [755, 491])
+                    ->where('product.ban', '!=', 1);
+                };
+
+            } else {
+                $baseProductFilter = function ($q) {
+                    $q->join('product_category', 'product.id', '=', 'product_category.product_id')
+                    ->join('category', 'category.id', '=', 'product_category.category_id')
+                    ->whereIn('category.category_parent_id', [47])
+                    ->where('product.is_showed', 1)
+                    ->where('product.ban', '!=', 1);
+                };
+            }
         } else {
 
             if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
@@ -1927,15 +2143,16 @@ class ProductServices
                 ->join('product_desc as pd', 'pd.product_id', '=', 'product.id')
                 ->where('pd.language_id', 1)
                 ->where('pd.name', $search_text)
-                ->where($baseProductFilter)
+                ->tap($baseProductFilter)
                 ->exists();
+
 
             if ($hasExactProduct) {
                 $product = Product::query()
                     ->join('product_desc as pd', 'pd.product_id', '=', 'product.id')
                     ->where('pd.language_id', 1)
                     ->where('pd.name', $search_text)
-                    ->where($baseProductFilter)
+                    ->tap($baseProductFilter)
                     ->select('product.*')
                     ->distinct()
                     ->get();
@@ -1945,7 +2162,7 @@ class ProductServices
                 $like = '%' . addcslashes($search_text, "\\%_") . '%';
 
                 $product = Product::query()
-                    ->where($baseProductFilter)
+                    ->tap($baseProductFilter)
                     ->where('product.sinonim', '!=', '')
                     ->where('product.sinonim', 'LIKE', $like)
                     // ->whereRaw(
@@ -2264,6 +2481,16 @@ class ProductServices
                 ->where('product.is_showed', '=', 1)
                 ->where('category.is_showed', '=', 1)
                 ->where('category.id', '=', 44)
+                ->get(['product.first_letter'])
+                ->toArray();
+        } else if ($design == 'design_16') {
+            $first_letters_result = DB::table('product')
+                ->distinct()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->join('category', 'product_category.category_id', '=', 'category.id')
+                ->where('product.is_showed', '=', 1)
+                ->where('category.is_showed', '=', 1)
+                ->where('category.category_parent_id', '=', 47)
                 ->get(['product.first_letter'])
                 ->toArray();
         } else {

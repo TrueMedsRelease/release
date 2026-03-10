@@ -6217,3 +6217,38 @@ body::after {
 .sitemap_menu:hover{
     text-decoration: underline;
 }
+
+.item-product.bonus_card {
+    padding-bottom: 0;
+    background-color: rgba(245, 225, 117, 1);
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.bonus_top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bonus_head {
+    font-size: 20px;
+    font-weight: 800;
+    color: rgba(69, 77, 88, 1);
+    text-transform: uppercase;
+}
+
+.bonus_text {
+    color: rgba(237, 76, 84, 1);
+}
+
+.bonus_image {
+    display: flex;
+    justify-content: center;
+}
+
+.bonus_image img {
+    width: 120px;
+}
