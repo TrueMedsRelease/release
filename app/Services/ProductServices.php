@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 
 class ProductServices
 {
@@ -71,13 +72,32 @@ class ProductServices
                 array_unshift($products, $card[0]);
             }
         } else if ($design == 'design_16') {
-            $products = Product::query()
-                // ->where('product.is_showed_on_main', '=', 1)
-                ->where('product.is_showed', '=', 1)
+            // $products = Product::query()
+            //     // ->where('product.is_showed_on_main', '=', 1)
+            //     ->where('product.is_showed', '=', 1)
+            //     ->join('product_category', 'product.id', '=', 'product_category.product_id')
+            //     ->join('category', 'category.id', '=', 'product_category.category_id')
+            //     ->whereIn('category.category_parent_id',  [47])
+            //     // ->orderBy('product.sport_order')
+            //     ->orderBy('product.main_order')
+            //     ->limit(31)
+            //     ->get(['product.id', 'product.image', 'product.aktiv'])
+            //     ->toArray();
+
+            $query = Product::query()
+                ->where('product.is_showed', 1)
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->join('category', 'category.id', '=', 'product_category.category_id')
-                ->whereIn('category.category_parent_id',  [47])
-                ->orderBy('product.main_order')
+                ->whereIn('category.category_parent_id', [47]);
+
+            if (Schema::hasColumn('product', 'sport_order')) {
+                $query->orderBy('product.sport_order');
+                $query->orderBy('product.main_order');
+            } else {
+                $query->orderBy('product.main_order');
+            }
+
+            $products = $query
                 ->limit(31)
                 ->get(['product.id', 'product.image', 'product.aktiv'])
                 ->toArray();
