@@ -252,7 +252,9 @@ class ProductServices
         if ($design == 'design_16') {
             $categoriesQuery->whereIn('category_parent_id', [47]);
         } else {
-            $categoriesQuery->where('category_parent_id', '=', null);
+            if (Schema::hasColumn('category', 'category_parent_id')) {
+                $categoriesQuery->where('category_parent_id', '=', null);
+            }
         }
         if (!empty($url)) {
             $categoriesQuery->where('url', '=', $url);
