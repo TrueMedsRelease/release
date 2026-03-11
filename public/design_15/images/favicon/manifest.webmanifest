@@ -1,0 +1,42 @@
+{
+  "name": "True Pet Meds",
+  "short_name": "TruePetMeds",
+  "dir": "auto",
+  "lang": "en-US",
+  "display": "standalone",
+  "orientation": "any",
+  "start_url": "/",
+  "background_color": "#fff",
+  "theme_color": "#474ce6",
+  "screenshots": [
+    {
+        "src":"screen_1.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    },
+    {
+        "src":"screen_2.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    },
+    {
+        "src":"screen_3.webp",
+        "sizes":"839x1682",
+        "type":"image/webp"
+    }
+  ],
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

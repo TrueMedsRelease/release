@@ -99,7 +99,7 @@ class HomeController extends Controller
                 ->toArray();
 
             if (isset($product_url[0])) {
-                $product = ProductServices::GetProductInfoByUrl($product_url[0]->url);
+                $product = ProductServices::GetProductInfoByUrl($product_url[0]->url, $design);
             }
 
             return view(
@@ -663,7 +663,14 @@ class HomeController extends Controller
             "&timestamp=" . time() .
             "&user_ip=" . RequestHelper::GetUserIp();
 
-        $recommendation = ProductServices::getProductRecommendation($product['id']);
+        // if ($product['id'] == 616 && ($design == 'design_15' || $design == 'design_16')) {
+        if ($design == 'design_15' || $design == 'design_16') {
+            $rec_dump = $bestsellers;
+            array_shift($rec_dump);
+            $recommendation = $rec_dump;
+        } else {
+            $recommendation = ProductServices::getProductRecommendation($product['id']);
+        }
 
         return view($design . '.product', [
             'design'          => $design,
@@ -672,7 +679,7 @@ class HomeController extends Controller
             'product'         => $product,
             'phone_codes'     => $phone_codes,
             'page_properties' => $page_properties,
-            'cur_category'    => $product['categories'][0]['name'],
+            'cur_category'    => $product['categories'][0]['name'] ?? '',
             'agent'           => $agent,
             'Language'        => Language::class,
             'Currency'        => Currency::class,
@@ -1440,7 +1447,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16])) {
             session(['design' => 'design_' . $design]);
         }
 
@@ -1449,7 +1456,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14])) {
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16])) {
             session(['design' => 'design_' . $design]);
         }
 

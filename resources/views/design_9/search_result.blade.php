@@ -65,6 +65,28 @@
                         <img src="{{ asset("$design/images/bonus2_2.png") }}">
                     </div>
                 </div>
+                {{-- <div class="bonus_block all_padding big">
+                    <div class="bonus1">
+                        <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+                    </div>
+                    <div class="bonus1">
+                        <img loading="lazy" src="{{ asset("$design/images/happy_day.png") }}">
+                    </div>
+                    <div class="bonus2">
+                        <img loading="lazy" src="{{ asset("$design/images/super_sale.png") }}">
+                    </div>
+                </div>
+                <div class="bonus_block all_padding small">
+                    <div class="bonus1">
+                        <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+                    </div>
+                    <div class="bonus1">
+                        <img loading="lazy" src="{{ asset("$design/images/bonus_2_small.png") }}">
+                    </div>
+                    <div class="bonus2">
+                        <img loading="lazy" src="{{ asset("$design/images/bonus_3_small.png") }}">
+                    </div>
+                </div> --}}
 
                 <h2 class="bestsellers__title title no_product_head" style="margin-bottom: 20px">{{ __("text.common_product_text") }} «{{ $search_text }}» {{ __("text.search_not_found") }}</h2>
                 <div class="no_product_text" style="margin-bottom: 10px">{{ __("text.search_not_carry") }} «{{ $search_text }}» {{ __("text.search_this_time") }}</div>
@@ -147,6 +169,30 @@
                     <img src="{{ asset("$design/images/bonus2_2.png") }}">
                 </div>
             </div>
+            {{-- <div class="bonus_block all_padding big">
+                <div class="bonus1">
+                    <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+                </div>
+                <div class="bonus1">
+                    <img loading="lazy" src="{{ asset("$design/images/happy_day.png") }}">
+                </div>
+                <div class="bonus2">
+                    <img loading="lazy" src="{{ asset("$design/images/super_sale.png") }}">
+                </div>
+            </div>
+            <div class="bonus_block all_padding small">
+                <div class="bonus1">
+                    <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+                </div>
+                <div class="bonus1">
+                    <img loading="lazy" src="{{ asset("$design/images/bonus_2_small.png") }}">
+                </div>
+                <div class="bonus2">
+                    <img loading="lazy" src="{{ asset("$design/images/bonus_3_small.png") }}">
+                </div>
+            </div> --}}
+
+
             <h2 class="bestsellers__title title">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>
             <div class="bestsellers__body">
                 <div class="product_list">

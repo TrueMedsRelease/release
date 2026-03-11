@@ -28,6 +28,31 @@
         </div>
         <div class="product-cards">
             <div class="cards">
+                {{-- <article class="card">
+                    <div class="card__header">
+                        <h2 class="card__title">
+                            <a href="/">Bonus Card & Referral Program</a>
+                        </h2>
+                        <div class="card__ingredients">
+                            <span class="card__ingredient">
+                                Save & Earn
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card__img">
+                        <picture style="max-height: 126px; max-width: 126px;">
+                            <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}" style="max-height: 126px; max-width: 126px;">
+                        </picture>
+                    </div>
+                    <div class="card__footer">
+                        <div class="card__price-wrapper">
+                            <span class="card__price"></span>
+                        </div>
+                        <button class="card__button button button--outlined" onclick="location.href = '/'">
+                            View More
+                        </button>
+                    </div>
+                </article> --}}
                 @foreach ($bestsellers as $product)
                     <article class="card">
                         <div class="card__header">

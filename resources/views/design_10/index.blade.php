@@ -48,6 +48,12 @@
                 </article>
                 @if ($loop->index == 1)
                     <div class="combo-cards">
+                        {{-- <article class="card combo-card combo-card--bonus">
+                            <a class="link-primary combo-card__link-wrapper" href="">
+                                <h2 class="combo-card__title">Bonus Card & Referral Program</h2>
+                                <div class="combo-card__text">Save & Earn</div>
+                            </a>
+                        </article> --}}
                         <article class="card combo-card">
                             <a class="link-primary combo-card__link-wrapper" href="">
                                 <h2 class="combo-card__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</h2>

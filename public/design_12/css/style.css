@@ -4232,6 +4232,9 @@ body.has-scroll{
   .card{
     gap:1rem;
   }
+  .card.bonus{
+    gap:5rem;
+  }
   .card__img{
     width:16rem;
   }

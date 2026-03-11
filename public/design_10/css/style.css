@@ -1517,6 +1517,10 @@ iframe{
   background-image:url(../images/ui/sale.svg);
   background-position:calc(100% - 3.1rem) calc(50% - 0.1rem);
 }
+.combo-card--bonus{
+  background-image:url(../images/bonus_programm.png);
+  background-position:calc(100% - 3.1rem) calc(50% - 0.1rem);
+}
 .combo-card--sale .combo-card__title{
   line-height:2.4rem;
 }
@@ -3455,7 +3459,7 @@ body{
   }
   .combo-card__title{
     padding-right:0;
-    margin:2.4rem 0 0.9rem;
+    margin-bottom:0.9rem;
     font-size:2.4rem;
     line-height:3rem;
   }
@@ -4281,12 +4285,12 @@ body{
 }
 
 @media (max-width: 574.98px){
-  .combo-cards{
+  /* .combo-cards{
     grid-column:span 2;
     grid-row:2;
     flex-direction:row;
     gap:1rem;
-  }
+  } */
   .cart-table thead{
     display:none;
   }

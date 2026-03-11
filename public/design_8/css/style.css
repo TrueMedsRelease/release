@@ -8163,3 +8163,21 @@ footer .top-phones-header {
   }
 
 }
+
+.bonus_block_info img {
+    width: 100%;
+}
+
+.bonus2 {
+    display: none;
+}
+
+@media (max-width: 630px) {
+    .bonus1 {
+        display: none;
+    }
+
+    .bonus2 {
+        display: block;
+    }
+}

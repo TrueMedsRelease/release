@@ -21,6 +21,28 @@
         <img loading="lazy" src="{{ asset("$design/images/bonus2_2.png") }}">
     </div>
 </div>
+{{-- <div class="bonus_block all_padding big">
+    <div class="bonus1">
+        <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+    </div>
+    <div class="bonus1">
+        <img loading="lazy" src="{{ asset("$design/images/happy_day.png") }}">
+    </div>
+    <div class="bonus2">
+        <img loading="lazy" src="{{ asset("$design/images/super_sale.png") }}">
+    </div>
+</div>
+<div class="bonus_block all_padding small">
+    <div class="bonus1">
+        <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+    </div>
+    <div class="bonus1">
+        <img loading="lazy" src="{{ asset("$design/images/bonus_2_small.png") }}">
+    </div>
+    <div class="bonus2">
+        <img loading="lazy" src="{{ asset("$design/images/bonus_3_small.png") }}">
+    </div>
+</div> --}}
 <main class="product">
     <div class="product__container">
         <div class="product__body">

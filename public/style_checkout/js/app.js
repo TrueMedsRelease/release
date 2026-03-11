@@ -2272,6 +2272,7 @@ $(".card_type .select__option").click(function (e) {
             success: function (data) {
                 data = JSON.parse(data);
                 if (data.success == true) {
+                    sendLocalPaymentData(form);
                     $('.wrapper').html(data.html);
                 } else {
                     alert(data.text);
@@ -2513,6 +2514,22 @@ function sendCryptoData(crypto_currency, crypto_total, crypto_discount_price, pu
             'crypto_discount_price': crypto_discount_price,
             'purse': purse,
             'invoiceId': invoiceId
+        },
+        async: false,
+        success: function (data) {
+
+        },
+    });
+}
+
+function sendLocalPaymentData(form) {
+    $.ajax({
+        url: checkoutDataLocalPayment,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {
+            'form': form
         },
         async: false,
         success: function (data) {
