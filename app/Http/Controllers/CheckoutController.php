@@ -98,12 +98,8 @@ class CheckoutController extends Controller
 
         if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-serv.net', 'A')) {
             try {
-<<<<<<< HEAD
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $message);
-=======
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $message);
                 Log::info("Paypal limit answer: " . $response);
->>>>>>> main
                 $response = json_decode($response, true);
 
                 if ($response['status'] == 'success') {
@@ -340,12 +336,8 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-<<<<<<< HEAD
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Coupon answer: " . $response);
->>>>>>> main
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -791,12 +783,8 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-<<<<<<< HEAD
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Order answer: " . $response);
->>>>>>> main
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -987,12 +975,8 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-<<<<<<< HEAD
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Paypal answer: " . $response);
->>>>>>> main
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1038,12 +1022,8 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-<<<<<<< HEAD
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Crypto info answer: " . $response);
->>>>>>> main
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1918,12 +1898,8 @@ class CheckoutController extends Controller
                         $order_cache_id = $check_order_cache[0]->id;
                     }
 
-<<<<<<< HEAD
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Crypto answer: " . $response);
->>>>>>> main
 
                     $response = json_decode($response, true);
 
@@ -2264,12 +2240,8 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-<<<<<<< HEAD
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("GooglePay answer: " . $response);
->>>>>>> main
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -2620,12 +2592,8 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-<<<<<<< HEAD
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Sepa answer: " . $response);
->>>>>>> main
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -2851,12 +2819,8 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-<<<<<<< HEAD
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Zelle Data answer: " . $response);
->>>>>>> main
 
                     if ($response->successful()) {
                         $response = json_decode($response, true);
@@ -2925,13 +2889,9 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-<<<<<<< HEAD
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
-=======
                 Log::info("PayVMC data answer: " . json_encode($data));
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("PayVMC answer: " . $response);
->>>>>>> main
 
                 if ($response->successful()) {
                     $response = json_decode($response, true);
