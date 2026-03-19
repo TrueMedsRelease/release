@@ -172,11 +172,25 @@
                                 @foreach ($phone_codes as $item)
                                     <option id=""
                                         @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
-                                @else
-                                    @selected($item['iso'] == session('form.phone_code', '')) @endif
-                                        data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
-                                        value="+{{ $item['phonecode'] }}">
-                                        +{{ $item['phonecode'] }}
+
+                                        @else
+                                            @selected($item['iso'] == session('form.phone_code', ''))
+                                        @endif
+                                        @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                            data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
+                                        @else
+                                            @php
+                                                $file = 'style_checkout/images/countrys/' . $item['nicename'] . '.svg';
+                                            @endphp
+
+                                            @if (file_exists(public_path($file)))
+                                                data-asset="{{ asset($file) }}"
+                                            @else
+                                                data-asset=""
+                                            @endif
+                                        @endif
+                                            value="+{{ $item['phonecode'] }}">
+                                            +{{ $item['phonecode'] }}
                                     </option>
                                 @endforeach
                             </select>
