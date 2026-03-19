@@ -53,9 +53,15 @@
                     @endif
 				</div>
 				<button type="button" class="order__remove" onclick="remove({{ $product['pack_id'] }})">
-				    <svg width="18" height="18">
-						<use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-trash") }}"></use>
-					</svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg width="18" height="18">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-trash") }}"></use>
+                        </svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 20" fill="currentColor" width="18" height="18">
+                            <path d="M9 .804c1.86 0 3.072.966 3.46 2.74h4.757a.783.783 0 0 1 0 1.565h-.864L15.09 17.094a2.348 2.348 0 0 1-2.335 2.102H5.244a2.348 2.348 0 0 1-2.335-2.102L1.647 5.109H.783a.783.783 0 0 1 0-1.566H5.54C5.928 1.77 7.14.804 9 .804Zm5.778 4.305H3.221l1.245 11.82a.782.782 0 0 0 .778.701h7.512c.4 0 .736-.302.778-.7l1.244-11.821ZM9 6.674c.432 0 .783.35.783.782v7.827a.783.783 0 0 1-1.566 0V7.457c0-.433.35-.783.783-.783Zm3.17 0a.783.783 0 0 1 .742.822l-.391 7.826a.783.783 0 0 1-1.564-.079l.392-7.826a.783.783 0 0 1 .82-.742Zm-6.34 0c.432-.02.8.312.821.743l.392 7.826a.783.783 0 0 1-1.564.079l-.391-7.826a.783.783 0 0 1 .742-.821ZM9 2.37c-.991 0-1.565.355-1.84 1.173h3.68C10.566 2.725 9.992 2.37 9 2.37Z"/>
+                        </svg>
+                    @endif
 				</button>
 			</div>
             @if (!empty($product['upgrade_pack']))
@@ -187,9 +193,16 @@
 		<a href="{{ route('home.index') }}" class="actions-line__continue button button--outline">{{__('text.cart_back_to_shop')}}</a>
         <a href="{{ route('checkout.index') }}" class="actions-line__pay button button--outline">
             <span>{{__('text.cart_pay_button')}}</span>
-            <svg width="16" height="16">
-                <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-right") }}"></use>
-            </svg>
+            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                <svg width="16" height="16">
+                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-right") }}"></use>
+                </svg>
+            @else
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 16" fill="currentColor" width="16" height="16">
+                    <path fill-rule="evenodd" d="M9.503 2.459a.75.75 0 0 1 1.06.021l4.478 4.667a.75.75 0 0 1 0 1.039l-4.478 4.666a.75.75 0 0 1-1.082-1.038l3.98-4.148L9.48 3.52a.75.75 0 0 1 .022-1.06Z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M14.322 7.75a.75.75 0 0 1-.75.75H3.25a.75.75 0 1 1 0-1.5h10.322a.75.75 0 0 1 .75.75Z" clip-rule="evenodd"/>
+                </svg>
+            @endif
         </a>
 	</div>
 </div>

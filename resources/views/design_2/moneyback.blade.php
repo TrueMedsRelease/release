@@ -291,16 +291,42 @@
             </div>
             <div class="reviews__controls">
                 <button type="button" class="reviews__arrow reviews__arrow--prev">
-                    <svg width="20" height="20">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-prev") }}"></use>
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg width="20" height="20">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-prev") }}"></use>
+                        </svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                            <g clip-path="url(#arrPrevClip)">
+                                <path d="M.733 11.742 3.958 15a.833.833 0 0 0 1.184 0 .833.833 0 0 0 0-1.183l-2.967-2.984h16.992a.833.833 0 1 0 0-1.666H2.125L5.142 6.15a.833.833 0 0 0 0-1.15.833.833 0 0 0-1.184 0L.733 8.208a2.5 2.5 0 0 0 0 3.534Z"/>
+                            </g>
+                            <defs>
+                                <clipPath id="arrPrevClip">
+                                    <path d="M0 0h20v20H0z"/>
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    @endif
                     <span>{{__('text.testimonials_prev')}}</span>
                 </button>
                 <button type="button" class="reviews__arrow reviews__arrow--next">
                     <span>{{__('text.testimonials_next')}}</span>
-                    <svg width="20" height="20">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg width="20" height="20">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
+                        </svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                            <g clip-path="url(#arrNextClip)">
+                                <path d="M19.267 8.258 16.04 5a.833.833 0 0 0-1.183 0 .833.833 0 0 0 0 1.183l2.967 2.984H.833a.833.833 0 0 0 0 1.666h17.042l-3.017 3.017a.834.834 0 0 0 0 1.15.834.834 0 0 0 1.183 0l3.226-3.208a2.5 2.5 0 0 0 0-3.534Z"/>
+                            </g>
+                            <defs>
+                                <clipPath id="arrNextClip">
+                                    <path d="M0 0h20v20H0z" transform="rotate(-180 10 10)"/>
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    @endif
                 </button>
             </div>
         </div>

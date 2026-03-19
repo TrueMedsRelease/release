@@ -79,9 +79,46 @@
                                                     <td class="cart-item__remove" width="2.6%">
                                                         <button class="cart-remove" type="button" aria-label="Remove from cart" onclick="remove({{ $product['pack_id'] }})">
                                                             <span class="icon">
-                                                                <svg width="1em" height="1em" fill="currentColor">
-                                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?1utcbwkl#trash') }}"></use>
-                                                                </svg>
+                                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                                    <svg width="1em" height="1em" fill="currentColor">
+                                                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?1utcbwkl#trash') }}"></use>
+                                                                    </svg>
+                                                                @else
+                                                                    <svg width="15" height="21" viewBox="0 0 15 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <g filter="url(#trash_filter0_d_1_7410)">
+                                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5041 11.6788L12.7227 10.1079C12.7899 9.62459 12.8514 9.18275 12.9061 8.77745C13.0184 7.94452 13.0746 7.52806 12.8255 7.2432C12.5765 6.95833 12.1485 6.95833 11.2925 6.95833H3.29087C2.43485 6.95833 2.00684 6.95833 1.75781 7.2432C1.50878 7.52806 1.56495 7.94452 1.67727 8.77744C1.73194 9.18287 1.79339 9.62442 1.86068 10.1079L2.07929 11.6788C2.31689 13.386 2.43569 14.2397 2.68758 14.9253C3.15862 16.2073 3.97286 17.1623 4.94471 17.5724C5.46442 17.7917 6.07351 17.7917 7.29168 17.7917C8.50984 17.7917 9.11893 17.7917 9.63864 17.5724C10.6105 17.1623 11.4247 16.2073 11.8958 14.9253C12.1477 14.2397 12.2665 13.386 12.5041 11.6788ZM6.25 8.625C6.25 8.27982 5.97018 8 5.625 8C5.27982 8 5 8.27982 5 8.625V15.2917C5 15.6368 5.27982 15.9167 5.625 15.9167C5.97018 15.9167 6.25 15.6368 6.25 15.2917V8.625ZM9.58333 8.625C9.58333 8.27982 9.30351 8 8.95833 8C8.61316 8 8.33333 8.27982 8.33333 8.625V15.2917C8.33333 15.6368 8.61316 15.9167 8.95833 15.9167C9.30351 15.9167 9.58333 15.6368 9.58333 15.2917V8.625Z" fill="url(#trash_paint0_linear_1_7410)" />
+                                                                            <path d="M7.29167 0.5C5.10554 0.5 3.33333 2.27221 3.33333 4.45833V4.66667H0.625C0.279822 4.66667 0 4.94649 0 5.29167C0 5.63684 0.279822 5.91667 0.625 5.91667H13.9583C14.3035 5.91667 14.5833 5.63684 14.5833 5.29167C14.5833 4.94649 14.3035 4.66667 13.9583 4.66667H11.25V4.45833C11.25 2.27221 9.47779 0.5 7.29167 0.5Z" fill="url(#trash_paint1_linear_1_7410)" />
+                                                                        </g>
+
+                                                                        <defs>
+                                                                            <filter id="trash_filter0_d_1_7410" x="0" y="0.5" width="14.5833" height="20.2916" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                                                            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                                                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                                                            <feOffset dy="3"/>
+                                                                            <feComposite in2="hardAlpha" operator="out"/>
+                                                                            <feColorMatrix type="matrix" values="0 0 0 0 0.178072 0 0 0 0 0.205659 0 0 0 0 0.443333 0 0 0 0.5 0"/>
+                                                                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_7410"/>
+                                                                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_7410" result="shape"/>
+                                                                            </filter>
+
+                                                                            <linearGradient id="trash_paint0_linear_1_7410" x1="8.04637" y1="0.499999" x2="8.04637" y2="17.7917" gradientUnits="userSpaceOnUse">
+                                                                            <stop stop-color="white"/>
+                                                                            <stop offset="0.3" stop-color="#FECCD1"/>
+                                                                            <stop offset="0.6" stop-color="#FFECEE"/>
+                                                                            <stop offset="1" stop-color="white"/>
+                                                                            <stop offset="1" stop-color="white"/>
+                                                                            </linearGradient>
+
+                                                                            <linearGradient id="trash_paint1_linear_1_7410" x1="8.04637" y1="0.499999" x2="8.04637" y2="17.7917" gradientUnits="userSpaceOnUse">
+                                                                            <stop stop-color="white"/>
+                                                                            <stop offset="0.3" stop-color="#FECCD1"/>
+                                                                            <stop offset="0.6" stop-color="#FFECEE"/>
+                                                                            <stop offset="1" stop-color="white"/>
+                                                                            <stop offset="1" stop-color="white"/>
+                                                                            </linearGradient>
+                                                                        </defs>
+                                                                    </svg>
+                                                                @endif
                                                             </span>
                                                         </button>
                                                     </td>
@@ -237,9 +274,15 @@
                                                 <div class="select_header_gift">
                                                     <span class="select_current_gift" curr_packaging_id = "{{ $cards[0]->pack_id }}">{{ $Currency::convert($cards[0]->price) }}</span>
                                                     <div class="select_icon">
-                                                        <svg width="1em" height="1em" fill="currentColor">
-                                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?1utcbwkl#fi-rr-angle-small-down') }}"></use>
-                                                        </svg>
+                                                        @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                            <svg width="1em" height="1em" fill="currentColor">
+                                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?1utcbwkl#fi-rr-angle-small-down') }}"></use>
+                                                            </svg>
+                                                        @else
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" fill="none" width="1em" height="1em" fill="currentColor">
+                                                                <path d="M9.47256 3.1972C9.41058 3.13471 9.33685 3.08512 9.25561 3.05127C9.17437 3.01743 9.08723 3 8.99923 3C8.91122 3 8.82408 3.01743 8.74284 3.05127C8.6616 3.08512 8.58787 3.13471 8.52589 3.1972L5.47256 6.25053C5.41058 6.31301 5.33685 6.36261 5.25561 6.39645C5.17437 6.4303 5.08723 6.44772 4.99923 6.44772C4.91122 6.44772 4.82408 6.4303 4.74284 6.39645C4.6616 6.36261 4.58787 6.31301 4.52589 6.25053L1.47256 3.1972C1.41058 3.13471 1.33685 3.08512 1.25561 3.05127C1.17437 3.01743 1.08723 3 0.999226 3C0.911218 3 0.824081 3.01743 0.742842 3.05127C0.661602 3.08512 0.587868 3.13471 0.525893 3.1972C0.401726 3.32211 0.332031 3.49107 0.332031 3.6672C0.332031 3.84332 0.401726 4.01229 0.525893 4.1372L3.58589 7.19719C3.96089 7.57172 4.46922 7.7821 4.99923 7.7821C5.52923 7.7821 6.03756 7.57172 6.41256 7.19719L9.47256 4.1372C9.59673 4.01229 9.66642 3.84332 9.66642 3.6672C9.66642 3.49107 9.59673 3.32211 9.47256 3.1972Z" fill="currentColor"/>
+                                                            </svg>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="select_body_gifts">

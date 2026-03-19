@@ -228,9 +228,16 @@
                                             @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt', 'es']))
                                                 {{__('text.product_add_to_cart_text_d2')}}
                                             @else
-                                                <svg width="18.5" height="21.5">
-                                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="18.5" height="21.5">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 22" fill="currentColor" width="18.5" height="21.5">
+                                                        <path fill-rule="evenodd" d="M0 7.715c0-.967.784-1.75 1.75-1.75h15.053c.966 0 1.75.783 1.75 1.75v6.017a7.768 7.768 0 0 1-7.768 7.768H7.768A7.768 7.768 0 0 1 0 13.732V7.715Zm1.75-.25a.25.25 0 0 0-.25.25v6.017A6.268 6.268 0 0 0 7.768 20h3.017a6.268 6.268 0 0 0 6.268-6.268V7.715a.25.25 0 0 0-.25-.25H1.75Z" clip-rule="evenodd"/>
+                                                        <path fill-rule="evenodd" d="M6.757 2.166c-.627.413-.994.985-.994 1.742v7.018a.75.75 0 1 1-1.5 0V3.908c0-1.348.698-2.355 1.67-2.995C6.881.288 8.1 0 9.275 0c1.175 0 2.394.288 3.343.913.972.64 1.67 1.647 1.67 2.995v7.018a.75.75 0 1 1-1.5 0V3.908c0-.758-.367-1.33-.995-1.742-.649-.428-1.562-.666-2.518-.666-.956 0-1.87.238-2.519.666Z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                @endif
                                             @endif
                                         </span>
                                     </button>
@@ -298,9 +305,16 @@
                                     @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt', 'es']))
                                         {{__('text.common_buy_button')}}
                                     @else
-                                        <svg width="18.5" height="21.5">
-                                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
-                                        </svg>
+                                        @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                            <svg width="18.5" height="21.5">
+                                                <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                                            </svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 22" fill="currentColor" width="18.5" height="21.5">
+                                                <path fill-rule="evenodd" d="M0 7.715c0-.967.784-1.75 1.75-1.75h15.053c.966 0 1.75.783 1.75 1.75v6.017a7.768 7.768 0 0 1-7.768 7.768H7.768A7.768 7.768 0 0 1 0 13.732V7.715Zm1.75-.25a.25.25 0 0 0-.25.25v6.017A6.268 6.268 0 0 0 7.768 20h3.017a6.268 6.268 0 0 0 6.268-6.268V7.715a.25.25 0 0 0-.25-.25H1.75Z" clip-rule="evenodd"/>
+                                                <path fill-rule="evenodd" d="M6.757 2.166c-.627.413-.994.985-.994 1.742v7.018a.75.75 0 1 1-1.5 0V3.908c0-1.348.698-2.355 1.67-2.995C6.881.288 8.1 0 9.275 0c1.175 0 2.394.288 3.343.913.972.64 1.67 1.647 1.67 2.995v7.018a.75.75 0 1 1-1.5 0V3.908c0-.758-.367-1.33-.995-1.742-.649-.428-1.562-.666-2.518-.666-.956 0-1.87.238-2.519.666Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        @endif
                                     @endif
                                 </a>
                             </div>

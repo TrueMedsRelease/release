@@ -142,9 +142,15 @@
         <div class="popup_gray" style="display: none">
             <div class="popup_call">
                 <div class="button_close">
-                    <svg class="close_popup" width="15" height="15">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg class="close_popup" width="15" height="15">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                        </svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
+                            <path d="M15.59 2.39A1.4 1.4 0 1 0 13.61.41L8 6.02 2.39.41A1.4 1.4 0 1 0 .41 2.39L6.02 8 .41 13.61a1.4 1.4 0 0 0 1.98 1.98L8 9.98l5.61 5.61a1.4 1.4 0 1 0 1.98-1.98L9.98 8l5.61-5.61Z"/>
+                        </svg>
+                    @endif
                 </div>
                 <div class="popup_bottom">
                     <div class="popup_text">{{ __('text.common_callback') }}</div>
@@ -181,9 +187,15 @@
         <div class="popup_white hide">
             <div class="popup_push">
                 <div class="button_close">
-                    <svg class="close_popup" width="15" height="15">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg class="close_popup" width="15" height="15">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                        </svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
+                            <path d="M15.59 2.39A1.4 1.4 0 1 0 13.61.41L8 6.02 2.39.41A1.4 1.4 0 1 0 .41 2.39L6.02 8 .41 13.61a1.4 1.4 0 0 0 1.98 1.98L8 9.98l5.61 5.61a1.4 1.4 0 1 0 1.98-1.98L9.98 8l5.61-5.61Z"/>
+                        </svg>
+                    @endif
                 </div>
                 <div class="popup_block">
                     <div class="popup_head">{{ __('text.common_push_head') }}</div>
@@ -302,13 +314,18 @@
                                             </li>
                                         @endif
                                         <li class="menu__item menu__item--action">
-                                            <svg width="3" height="16">
-                                                <use
-                                                    xlink:href="{{ asset("$design/images/icons/icons.svg#svg-dots") }}">
-                                                </use>
-                                            </svg>
-                                            <ul class="menu__sublist">
-                                            </ul>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg width="3" height="16">
+                                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-dots") }}"></use>
+                                                </svg>
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 16" width="3" height="16">
+                                                    <circle cx="1.5" cy="2" r="1.5" fill="#fff"/>
+                                                    <circle cx="1.5" cy="8" r="1.5" fill="#fff"/>
+                                                    <circle cx="1.5" cy="14" r="1.5" fill="#fff"/>
+                                                </svg>
+                                            @endif
+                                            <ul class="menu__sublist"></ul>
                                         </li>
                                     </ul>
                                 </nav>
@@ -319,10 +336,15 @@
                                 <div class="hero-header__reviews reviews-hero">
                                     <div class="reviews-hero__quantity">1 000 000</div>
                                     <div class="reviews-hero__icon">
-                                        <svg width="98" height="18">
-                                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}">
-                                            </use>
-                                        </svg>
+                                        @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                            <svg width="98" height="18">
+                                                <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                            </svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 18" width="98" height="18">
+                                                <path fill="#EECD58" d="M8.308 1.658a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75L1.34 7.967a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Z"/>
+                                            </svg>
+                                        @endif
                                     </div>
                                     <p class="reviews-hero__descr">{{ __('text.common_customers') }}</p>
                                 </div>
@@ -375,11 +397,16 @@
                                         </div>
                                         <div class="cart-hero__body">
                                             <div class="cart-hero__icon">
-                                                <svg width="18.5" height="21.5">
-                                                    <use
-                                                        xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}">
-                                                    </use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="18.5" height="21.5">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 22" fill="currentColor" width="18.5" height="21.5">
+                                                        <path fill-rule="evenodd" d="M0 7.715c0-.967.784-1.75 1.75-1.75h15.053c.966 0 1.75.783 1.75 1.75v6.017a7.768 7.768 0 0 1-7.768 7.768H7.768A7.768 7.768 0 0 1 0 13.732V7.715Zm1.75-.25a.25.25 0 0 0-.25.25v6.017A6.268 6.268 0 0 0 7.768 20h3.017a6.268 6.268 0 0 0 6.268-6.268V7.715a.25.25 0 0 0-.25-.25H1.75Z" clip-rule="evenodd"/>
+                                                        <path fill-rule="evenodd" d="M6.757 2.166c-.627.413-.994.985-.994 1.742v7.018a.75.75 0 1 1-1.5 0V3.908c0-1.348.698-2.355 1.67-2.995C6.881.288 8.1 0 9.275 0c1.175 0 2.394.288 3.343.913.972.64 1.67 1.647 1.67 2.995v7.018a.75.75 0 1 1-1.5 0V3.908c0-.758-.367-1.33-.995-1.742-.649-.428-1.562-.666-2.518-.666-.956 0-1.87.238-2.519.666Z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                @endif
                                             </div>
                                             <div class="cart-hero__row">
                                                 <h2 class="cart-hero__label">
@@ -506,134 +533,238 @@
                                 <div class="pay-index__container">
                                     <ul class="pay-index__list">
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#visa') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' visa' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#visa') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/visa.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' visa' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#mastercard') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' mastercard' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#mastercard') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/mastercard.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' mastercard' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#maestro') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' maestro' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#maestro') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/maestro.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' maestro' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#discover') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' discover' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#discover') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/discover.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' discover' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#amex') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' amex' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#amex') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/amex.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' amex' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#jsb') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' jcb' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#jsb') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/jsb.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' jcb' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#unionpay') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' union-pay' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#unionpay') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/unionpay.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' unionpay' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#dinners-club') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dinners-club' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#dinners-club') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/dinners-club.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dinners-club' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#apple-pay') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' apple-pay' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#apple-pay') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/apple-pay.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' apple-pay' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#google-pay') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' google-pay' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#google-pay') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/google-pay.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' google-pay' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#amazon-pay') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' amazon-pay' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#amazon-pay') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/amazon-pay.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' amazon-pay' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#stripe') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' stripe' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#stripe') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/stripe.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' stripe' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#paypal') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' paypal' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#paypal') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/paypal.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' paypal' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#sepa') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' sepa' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#sepa') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/sepa.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' sepa' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#cashapp') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' cashapp' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#cashapp') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/cashapp.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' cashapp' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#adyen') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' adyen' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#adyen') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/adyen.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' adyen' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#skrill') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' skrill' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#skrill') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/skrill.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' skrill' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#worldpay') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' worldpay' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#worldpay') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/worldpay.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' worldpay' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#payline') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' payline' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#payline') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/payline.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' payline' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#bitcoin') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' bitcoin' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#bitcoin') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/bitcoin.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' bitcoin' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#binance-coin') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' binance-coin' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#binance-coin') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/binance-coin.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' binance-coin' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#ethereum') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ethereum' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#ethereum') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/ethereum.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ethereum' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#litecoin') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' litecoin' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#litecoin') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/litecoin.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' litecoin' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#tron') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tron' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#tron') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/tron.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tron' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#usdt(erc20)') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usdt(erc20)' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#usdt(erc20)') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/usdt(erc20).svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usdt(erc20)' }}" @endif>
+                                            @endif
                                         </li>
                                         <li class="pay-index__item">
-                                            <svg>
-                                                <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#usdt(trc20)') }}">
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usdt(trc20)' }}" @endif>
+                                                    <use width="100%" height="100%" href="{{ asset('pub_images/pay_icons/sprite.svg#usdt(trc20)') }}">
+                                                </svg>
+                                            @else
+                                                <img width="100%" height="100%" src="{{ asset('pub_images/pay_icons/usdt(trc20).svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usdt(trc20)' }}" @endif>
+                                            @endif
                                         </li>
                                     </ul>
                                 </div>
@@ -647,19 +778,28 @@
                                             name="search_text" data-error="Error" class="input"
                                             placeholder="{{ __('text.common_search') }}">
                                         <button type="submit" class="search-bar__icon">
-                                            <svg width="15" height="15">
-                                                <use
-                                                    xlink:href="{{ asset("$design/images/icons/icons.svg#svg-search") }}">
-                                                </use>
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg width="15" height="15">
+                                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-search") }}"></use>
+                                                </svg>
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 16" fill="currentColor" width="15" height="15">
+                                                    <path fill-rule="evenodd" d="M6.875 2.75a4.625 4.625 0 1 0 0 9.25 4.625 4.625 0 0 0 0-9.25ZM.25 7.375a6.625 6.625 0 1 1 13.25 0 6.625 6.625 0 0 1-13.25 0Z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd" d="M10.543 11.043a1 1 0 0 1 1.414 0l2.5 2.5a1 1 0 0 1-1.414 1.414l-2.5-2.5a1 1 0 0 1 0-1.414Z" clip-rule="evenodd"/>
+                                                </svg>
+                                            @endif
                                             <span class="sr-only" style="display: none;">search</span>
                                         </button>
                                         <button type="button" class="search-bar__close">
-                                            <svg width="13" height="13">
-                                                <use
-                                                    xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}">
-                                                </use>
-                                            </svg>
+                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                <svg width="13" height="13">
+                                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                                                </svg>
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="13" height="13">
+                                                    <path d="M15.59 2.39A1.4 1.4 0 1 0 13.61.41L8 6.02 2.39.41A1.4 1.4 0 1 0 .41 2.39L6.02 8 .41 13.61a1.4 1.4 0 0 0 1.98 1.98L8 9.98l5.61 5.61a1.4 1.4 0 1 0 1.98-1.98L9.98 8l5.61-5.61Z"/>
+                                                </svg>
+                                            @endif
                                         </button>
                                         <ul class="search-bar__results" style="display: none;"></ul>
                                     </form>
@@ -765,69 +905,121 @@
         <div class="ship-index__container">
             <ul class="ship-index__list">
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usps' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#usps') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usps' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#usps')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/usps.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' usps' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ems' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#ems') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ems' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#ems')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/ems.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ems' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dhl' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#dhl') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dhl' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#dhl')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/dhl.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dhl' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ups' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#ups') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ups' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#ups')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/ups.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' ups' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' fedex' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#fedex') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' fedex' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#fedex')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/fedex.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' fedex' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tnt' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#tnt') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tnt' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#tnt')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/tnt.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' tnt' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' postnl' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#postnl') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' postnl' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#postnl')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/postnl.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' postnl' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' deutsche_post' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#deutsche_post') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' deutsche_post' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#deutsche_post')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/deutsche_post.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' deutsche_post' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dpd' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#dpd') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dpd' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#dpd')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/dpd.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' dpd' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' gls' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#gls') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' gls' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#gls')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/gls.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' gls' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' australia_post' }}" @endif>
-                        <use width="100%" height="100%" width="100%" href="{{ asset('pub_images/shipping/sprite.svg#australia_post') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' australia_post' }}" @endif>
+                            <use width="100%" height="100%" width="100%" href="{{ asset('pub_images/shipping/sprite.svg#australia_post')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/australia_post.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' australia_post' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' colissimo' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#colissimo') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' colissimo' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#colissimo')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/colissimo.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' colissimo' }}" @endif>
+                    @endif
                 </li>
                 <li class="ship-index__item">
-                    <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' correos' }}" @endif>
-                        <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#correos') }}" preserveAspectRatio="xMinYMin">
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) aria-label="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' correos' }}" @endif>
+                            <use width="100%" height="100%" href="{{ asset('pub_images/shipping/sprite.svg#correos')  }}" preserveAspectRatio="xMinYMin">
+                        </svg>
+                    @else
+                        <img width="100%" height="100%" src="{{ asset('pub_images/shipping/correos.svg') }}" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) alt="{{ __('text.text_aff_domain_1') . ' ' . __('text.text_aff_domain_2') . ' correos' }}" @endif>
+                    @endif
                 </li>
             </ul>
         </div>
@@ -893,11 +1085,15 @@
                                         <div class="review-item__top">
                                             <div class="review-item__name">{!! __('text.testimonials_author_t_1') !!}</div>
                                             <div class="review-item__stars">
-                                                <svg width="98" height="18">
-                                                    <use
-                                                        xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}">
-                                                    </use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="98" height="18">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 18" width="98" height="18">
+                                                        <path fill="#EECD58" d="M8.308 1.658a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75L1.34 7.967a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Z"/>
+                                                    </svg>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="review-item__text">{{ __('text.testimonials_t_1') }}</div>
@@ -908,11 +1104,15 @@
                                         <div class="review-item__top">
                                             <div class="review-item__name">{!! __('text.testimonials_author_t_2') !!}</div>
                                             <div class="review-item__stars">
-                                                <svg width="98" height="18">
-                                                    <use
-                                                        xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}">
-                                                    </use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="98" height="18">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 18" width="98" height="18">
+                                                        <path fill="#EECD58" d="M8.308 1.658a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75L1.34 7.967a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Z"/>
+                                                    </svg>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="review-item__text">{{ __('text.testimonials_t_2') }}</div>
@@ -923,11 +1123,15 @@
                                         <div class="review-item__top">
                                             <div class="review-item__name">{!! __('text.testimonials_author_t_3') !!}</div>
                                             <div class="review-item__stars">
-                                                <svg width="98" height="18">
-                                                    <use
-                                                        xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}">
-                                                    </use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="98" height="18">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 18" width="98" height="18">
+                                                        <path fill="#EECD58" d="M8.308 1.658a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75L1.34 7.967a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Z"/>
+                                                    </svg>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="review-item__text">{{ __('text.testimonials_t_3') }}</div>
@@ -938,11 +1142,15 @@
                                         <div class="review-item__top">
                                             <div class="review-item__name">{!! __('text.testimonials_author_t_4') !!}</div>
                                             <div class="review-item__stars">
-                                                <svg width="98" height="18">
-                                                    <use
-                                                        xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}">
-                                                    </use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="98" height="18">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 18" width="98" height="18">
+                                                        <path fill="#EECD58" d="M8.308 1.658a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75L1.34 7.967a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Z"/>
+                                                    </svg>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="review-item__text">{{ __('text.testimonials_t_4') }}</div>
@@ -953,11 +1161,15 @@
                                         <div class="review-item__top">
                                             <div class="review-item__name">{!! __('text.testimonials_author_t_5') !!}</div>
                                             <div class="review-item__stars">
-                                                <svg width="98" height="18">
-                                                    <use
-                                                        xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}">
-                                                    </use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="98" height="18">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 18" width="98" height="18">
+                                                        <path fill="#EECD58" d="M8.308 1.658a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75L1.34 7.967a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Z"/>
+                                                    </svg>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="review-item__text">{{ __('text.testimonials_t_5') }}</div>
@@ -968,11 +1180,15 @@
                                         <div class="review-item__top">
                                             <div class="review-item__name">{!! __('text.testimonials_author_t_6') !!}</div>
                                             <div class="review-item__stars">
-                                                <svg width="98" height="18">
-                                                    <use
-                                                        xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}">
-                                                    </use>
-                                                </svg>
+                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                    <svg width="98" height="18">
+                                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-stars") }}"></use>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 18" width="98" height="18">
+                                                        <path fill="#EECD58" d="M8.308 1.658a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75L1.34 7.967a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.645 3.941a.75.75 0 0 0 .592.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .592-.455l1.645-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Zm20 0a.75.75 0 0 1 1.384 0l1.646 3.941a.75.75 0 0 0 .591.455l4.359.59a.75.75 0 0 1 .373 1.324l-3.356 2.739a.75.75 0 0 0-.257.75l1.073 4.635c.155.67-.599 1.178-1.162.783l-3.528-2.476a.75.75 0 0 0-.862 0l-3.528 2.476c-.563.395-1.317-.113-1.162-.783l1.073-4.635a.75.75 0 0 0-.257-.75l-3.356-2.74a.75.75 0 0 1 .373-1.323l4.359-.59a.75.75 0 0 0 .591-.455l1.646-3.941Z"/>
+                                                    </svg>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="review-item__text">{{ __('text.testimonials_t_6') }}</div>
@@ -982,16 +1198,28 @@
                         </div>
                         <div class="reviews__controls">
                             <button type="button" class="reviews__arrow reviews__arrow--prev">
-                                <svg width="19" height="17">
-                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-prev") }}">
-                                    </use>
-                                </svg>
+                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                    <svg width="19" height="17">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-prev") }}"></use>
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 17" fill="currentColor" width="19" height="17">
+                                        <path fill-rule="evenodd" d="M7.841 16.366a.5.5 0 0 1-.707-.025l-7-7.5a.5.5 0 0 1 0-.682l7-7.5a.5.5 0 0 1 .732.682L1.184 8.5l6.682 7.159a.5.5 0 0 1-.025.707Z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M.5 8.5A.5.5 0 0 1 1 8h17a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5Z" clip-rule="evenodd"/>
+                                    </svg>
+                                @endif
                             </button>
                             <button type="button" class="reviews__arrow reviews__arrow--next">
-                                <svg width="19" height="17">
-                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}">
-                                    </use>
-                                </svg>
+                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                    <svg width="19" height="17">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 17" fill="currentColor" width="19" height="17">
+                                        <path fill-rule="evenodd" d="M11.159.634a.5.5 0 0 1 .707.025l7 7.5a.5.5 0 0 1 0 .682l-7 7.5a.5.5 0 0 1-.732-.682L17.816 8.5l-6.681-7.159a.5.5 0 0 1 .024-.707Z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M18.5 8.5a.5.5 0 0 1-.5.5H1a.5.5 0 0 1 0-1h17a.5.5 0 0 1 .5.5Z" clip-rule="evenodd"/>
+                                    </svg>
+                                @endif
                             </button>
                         </div>
                     </div>
@@ -1074,9 +1302,15 @@
                     <div class="actions-mobile__item">
                         <a href="{{ route('home.index') }}">
                             <div class="actions-mobile__icon">
-                                <svg width="20" height="20">
-                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-home") }}"></use>
-                                </svg>
+                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                    <svg width="20" height="20">
+                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-home") }}"></use>
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 20" width="20" height="20">
+                                        <path fill="#54A8C2" d="m19.007 6.786-5.689-5.69a3.756 3.756 0 0 0-5.303 0l-5.69 5.69a2.234 2.234 0 0 0-.658 1.59v7.363a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25V8.376a2.234 2.234 0 0 0-.66-1.59Zm-6.09 9.703h-4.5v-2.95a2.25 2.25 0 0 1 4.5 0v2.95Zm5.25-.75a.75.75 0 0 1-.75.75h-3v-2.95a3.75 3.75 0 1 0-7.5 0v2.95h-3a.75.75 0 0 1-.75-.75V8.376c0-.198.08-.389.22-.53L9.074 2.16a2.256 2.256 0 0 1 3.183 0l5.689 5.69c.14.14.218.33.22.527v7.363Z"/>
+                                    </svg>
+                                @endif
                             </div>
                             <h3 class="actions-mobile__label">{{ __('text.common_home_main_menu_item') }}</h3>
                         </a>
@@ -1100,9 +1334,16 @@
                             <a href="{{ route('cart.index') }}">
                         @endif
                         <div class="actions-mobile__icon">
-                            <svg width="20" height="20">
-                                <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
-                            </svg>
+                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                <svg width="20" height="20">
+                                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 22" fill="currentColor" width="20" height="20">
+                                    <path fill-rule="evenodd" d="M0 7.715c0-.967.784-1.75 1.75-1.75h15.053c.966 0 1.75.783 1.75 1.75v6.017a7.768 7.768 0 0 1-7.768 7.768H7.768A7.768 7.768 0 0 1 0 13.732V7.715Zm1.75-.25a.25.25 0 0 0-.25.25v6.017A6.268 6.268 0 0 0 7.768 20h3.017a6.268 6.268 0 0 0 6.268-6.268V7.715a.25.25 0 0 0-.25-.25H1.75Z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M6.757 2.166c-.627.413-.994.985-.994 1.742v7.018a.75.75 0 1 1-1.5 0V3.908c0-1.348.698-2.355 1.67-2.995C6.881.288 8.1 0 9.275 0c1.175 0 2.394.288 3.343.913.972.64 1.67 1.647 1.67 2.995v7.018a.75.75 0 1 1-1.5 0V3.908c0-.758-.367-1.33-.995-1.742-.649-.428-1.562-.666-2.518-.666-.956 0-1.87.238-2.519.666Z" clip-rule="evenodd"/>
+                                </svg>
+                            @endif
                             <div class="actions-mobile__quantity">
                                 {{ $cart_count }}
                             </div>
@@ -1120,9 +1361,15 @@
     <div class="announce">
         <div class="announce__item @yield('announce_color', 'announce__item--blue')">
             <div class="announce__icon">
-                <svg width="24" height="24">
-                    <use xlink:href="@yield('announce_img', asset($design . '/images/icons/icons.svg#svg-checkmark'))"></use>
-                </svg>
+                {{-- @if (env('APP_PRINT_SPRITE', 1) == 1) --}}
+                    <svg width="24" height="24">
+                        <use xlink:href="@yield('announce_img', asset($design . '/images/icons/icons.svg#svg-checkmark'))"></use>
+                    </svg>
+                {{-- @else
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                        <path fill-rule="evenodd" d="M3.293 11.607a1 1 0 0 1 1.414 0l4.95 4.95L20.264 5.95a1 1 0 1 1 1.414 1.414L9.657 19.384l-6.364-6.363a1 1 0 0 1 0-1.414Z" clip-rule="evenodd"/>
+                    </svg>
+                @endif --}}
             </div>
             <div class="announce__text">
                 <b>@yield('announce_text_1', random_int(2, 30) .' ' .__('text.common_product1'))</b>@yield('announce_text_2', __('text.common_product2'))
