@@ -116,6 +116,7 @@
         <input type="hidden" id="is_pwa_here" value="{{ env('APP_PWA', 0) }}">
         <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
         <input type="hidden" id="subsc_popup" value="{{ env('SUBSCRIBE_POPUP_STATUS', 1) }}">
+        <input type="hidden" id="print_sprite" value="{{ env('APP_PRINT_SPRITE', 1) }}">
         <input type="hidden" id="country_iso" value="{{ $codes }}">
         <input type="hidden" id="initial_country" value="{{ strtolower(session('location.country')) }}">
 

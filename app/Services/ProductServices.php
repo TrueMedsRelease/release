@@ -583,9 +583,19 @@ class ProductServices
                         ->groupBy('product_id')
                         ->toArray();
                     foreach ($productsDescRaw as $key => $product) {
-                        $productsDescRaw[$key][0]['name'] = ucfirst($url) . ' ('
+                        if (env('APP_AFF', 0) == 1439) {
+                            if ($key == 11) {
+                                $productsDescRaw[$key][0]['name'] = ucfirst($url);
+                            } else {
+                                $productsDescRaw[$key][0]['name'] = ucfirst($url) . ' ('
+                                                                . __('text.product_other_name')
+                                                                . $product[0]['name'] . ')';
+                            }
+                        } else {
+                            $productsDescRaw[$key][0]['name'] = ucfirst($url) . ' ('
                                                             . __('text.product_other_name')
                                                             . $product[0]['name'] . ')';
+                        }
                     }
                 }
             }
@@ -1248,6 +1258,12 @@ class ProductServices
 
         $product = $product->toArray()[0];
         unset($product['category']);
+
+        if (env('APP_AFF', 0) == 1439) {
+            if ($url == 'prednisone') {
+                $product['image'] = 'prednisone';
+            }
+        }
 
         if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU']) && ($product['id'] == 755 || $product['id'] == 491)) {
             return [];
