@@ -105,6 +105,9 @@
     <input type="hidden" id="is_pwa_here" value="{{ env('APP_PWA', 0) }}">
     <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
     <input type="hidden" id="subsc_popup" value="{{ env('SUBSCRIBE_POPUP_STATUS', 1) }}">
+    <input type="hidden" id="print_sprite" value="{{ env('APP_PRINT_SPRITE', 1) }}">
+    <input type="hidden" id="country_iso" value="{{ $codes }}">
+    <input type="hidden" id="initial_country" value="{{ strtolower(session('location.country')) }}">
 
     @php
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
@@ -1115,11 +1118,25 @@
                             @foreach ($phone_codes as $item)
                                 <option id=""
                                     @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
-                                @else
-                                    @selected($item['iso'] == session('form.phone_code', '')) @endif
-                                    data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
-                                    value="+{{ $item['phonecode'] }}">
-                                    +{{ $item['phonecode'] }}
+
+                                    @else
+                                        @selected($item['iso'] == session('form.phone_code', ''))
+                                    @endif
+                                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                        data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
+                                    @else
+                                        @php
+                                            $file = 'style_checkout/images/countrys/' . $item['nicename'] . '.svg';
+                                        @endphp
+
+                                        @if (file_exists(public_path($file)))
+                                            data-asset="{{ asset($file) }}"
+                                        @else
+                                            data-asset=""
+                                        @endif
+                                    @endif
+                                        value="+{{ $item['phonecode'] }}">
+                                        +{{ $item['phonecode'] }}
                                 </option>
                             @endforeach
                         </select>
