@@ -39,9 +39,23 @@
 									<div class="order__new-price">{{ $Currency::convert($product['price']) }}</div>
 								</div>
                                 <button type="button" data-remove class="order__remove" onclick="remove({{ $product['pack_id'] }})">
-                                    <svg width="20" height="20">
-                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-trash") }}"></use>
-                                    </svg>
+                                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                        <svg width="20" height="20">
+                                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-trash") }}"></use>
+                                        </svg>
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                                            <g clip-path="url(#trashClip)">
+                                                <path d="M17.5 3.333h-2.583A4.174 4.174 0 0 0 10.833 0H9.167a4.174 4.174 0 0 0-4.084 3.333H2.5A.833.833 0 0 0 2.5 5h.833v10.833A4.172 4.172 0 0 0 7.5 20h5a4.172 4.172 0 0 0 4.167-4.167V5h.833a.833.833 0 0 0 0-1.667ZM9.167 1.667h1.666a2.505 2.505 0 0 1 2.358 1.666H6.809a2.505 2.505 0 0 1 2.358-1.666ZM15 15.833a2.5 2.5 0 0 1-2.5 2.5h-5a2.5 2.5 0 0 1-2.5-2.5V5h10v10.833Z"/>
+                                                <path d="M8.333 15a.833.833 0 0 0 .834-.834v-5a.833.833 0 1 0-1.667 0v5a.833.833 0 0 0 .833.834Zm3.333 0a.833.833 0 0 0 .834-.834v-5a.833.833 0 1 0-1.667 0v5a.833.833 0 0 0 .833.834Z"/>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="trashClip">
+                                                <path d="M0 0h20v20H0z"/>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    @endif
                                 </button>
 							</div>
 						</div>
@@ -86,9 +100,23 @@
                                     @endif
 								</div>
                                 <button type="button" data-remove class="order__remove" onclick="remove({{ $product['pack_id'] }})">
-                                    <svg width="20" height="20">
-                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-trash") }}"></use>
-                                    </svg>
+                                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                        <svg width="20" height="20">
+                                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-trash") }}"></use>
+                                        </svg>
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                                            <g clip-path="url(#trashClip)">
+                                                <path d="M17.5 3.333h-2.583A4.174 4.174 0 0 0 10.833 0H9.167a4.174 4.174 0 0 0-4.084 3.333H2.5A.833.833 0 0 0 2.5 5h.833v10.833A4.172 4.172 0 0 0 7.5 20h5a4.172 4.172 0 0 0 4.167-4.167V5h.833a.833.833 0 0 0 0-1.667ZM9.167 1.667h1.666a2.505 2.505 0 0 1 2.358 1.666H6.809a2.505 2.505 0 0 1 2.358-1.666ZM15 15.833a2.5 2.5 0 0 1-2.5 2.5h-5a2.5 2.5 0 0 1-2.5-2.5V5h10v10.833Z"/>
+                                                <path d="M8.333 15a.833.833 0 0 0 .834-.834v-5a.833.833 0 1 0-1.667 0v5a.833.833 0 0 0 .833.834Zm3.333 0a.833.833 0 0 0 .834-.834v-5a.833.833 0 1 0-1.667 0v5a.833.833 0 0 0 .833.834Z"/>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="trashClip">
+                                                <path d="M0 0h20v20H0z"/>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    @endif
                                 </button>
 							</div>
                             @if (!empty($product['upgrade_pack']))
@@ -314,9 +342,22 @@
 					<a href="{{ route('home.index') }}" class="actions-line__continue">{{__('text.cart_back_to_shop')}}</a>
 					<a href="{{ route('checkout.index') }}" class="actions-line__pay">
 					    <span>{{__('text.cart_pay_button')}}</span>
-						<svg width="20" height="20">
-							<use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
-						</svg>
+						@if (env('APP_PRINT_SPRITE', 1) == 1)
+                            <svg width="20" height="20">
+                                <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-next") }}"></use>
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                                <g clip-path="url(#arrNextClip)">
+                                    <path d="M19.267 8.258 16.04 5a.833.833 0 0 0-1.183 0 .833.833 0 0 0 0 1.183l2.967 2.984H.833a.833.833 0 0 0 0 1.666h17.042l-3.017 3.017a.834.834 0 0 0 0 1.15.834.834 0 0 0 1.183 0l3.226-3.208a2.5 2.5 0 0 0 0-3.534Z"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="arrNextClip">
+                                        <path d="M0 0h20v20H0z" transform="rotate(-180 10 10)"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        @endif
 					</a>
 				</div>
 			</div>
@@ -350,9 +391,15 @@
                                     <div class="product-card__price">{{ $Currency::convert($product_data['price'], false, true) }}</div>
                                 </div>
                                 <button type="button" class="product-card__button button button--accent" title="Add to cart" onclick="location.href='{{ route('home.product', $product_data['url']) }}'">
-                                    <svg width="24" height="24">
-                                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
-                                    </svg>
+                                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                        <svg width="24" height="24">
+                                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-cart") }}"></use>
+                                        </svg>
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                                            <path d="M22.713 4.077A2.993 2.993 0 0 0 20.41 3H4.242L4.2 2.649A3 3 0 0 0 1.222 0H1a1 1 0 0 0 0 2h.222a1 1 0 0 1 .993.883l1.376 11.7A5 5 0 0 0 8.557 19H19a1 1 0 0 0 0-2H8.557a3 3 0 0 1-2.82-2h11.92a5 5 0 0 0 4.921-4.113l.785-4.354a2.994 2.994 0 0 0-.65-2.456ZM21.4 6.178l-.786 4.354A3 3 0 0 1 17.657 13H5.419l-.941-8H20.41a1 1 0 0 1 .99 1.178ZM7 24a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                                        </svg>
+                                    @endif
                                     <span>{{__('text.common_add_to_cart_text_d2')}}</span>
                                 </button>
                             </div>

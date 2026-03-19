@@ -69,11 +69,17 @@
                                                     <button class="icon-button" type="button" aria-label="Remove from cart"
                                                         onclick="remove({{ $product['pack_id'] }})">
                                                         <span class="icon">
-                                                            <svg width="1em" height="1em" fill="currentColor">
-                                                                <use
-                                                                    href="{{ asset("$design/svg/icons/sprite.svg") }}#trash">
-                                                                </use>
-                                                            </svg>
+                                                            @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                                <svg width="1em" height="1em" fill="currentColor">
+                                                                    <use
+                                                                        href="{{ asset("$design/svg/icons/sprite.svg") }}#trash">
+                                                                    </use>
+                                                                </svg>
+                                                            @else
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="1em" height="1em" fill="currentColor">
+                                                                    <path d="M13.9997 2.66666H11.933C11.614 1.11572 10.2497 0.002 8.66632 0H7.33298C5.74957 0.002 4.38526 1.11572 4.06632 2.66666H1.99966C1.63148 2.66666 1.33301 2.96513 1.33301 3.33331C1.33301 3.7015 1.63148 4 1.99966 4H2.66632V12.6667C2.66854 14.5067 4.15963 15.9978 5.99966 16H9.99966C11.8397 15.9978 13.3308 14.5067 13.333 12.6667V4H13.9997C14.3679 4 14.6663 3.70153 14.6663 3.33334C14.6663 2.96516 14.3679 2.66666 13.9997 2.66666ZM7.33301 11.3333C7.33301 11.7015 7.03454 12 6.66635 12C6.29813 12 5.99966 11.7015 5.99966 11.3333V7.33334C5.99966 6.96516 6.29813 6.66669 6.66632 6.66669C7.03451 6.66669 7.33298 6.96516 7.33298 7.33334V11.3333H7.33301ZM9.99966 11.3333C9.99966 11.7015 9.7012 12 9.33301 12C8.96482 12 8.66635 11.7015 8.66635 11.3333V7.33334C8.66635 6.96516 8.96482 6.66669 9.33301 6.66669C9.7012 6.66669 9.99966 6.96516 9.99966 7.33334V11.3333ZM5.44701 2.66666C5.73057 1.86819 6.4857 1.33434 7.33301 1.33331H8.66635C9.51366 1.33434 10.2688 1.86819 10.5524 2.66666H5.44701Z" fill="currentColor"/>
+                                                                </svg>
+                                                            @endif
                                                         </span>
                                                     </button>
                                                 </td>
@@ -304,9 +310,15 @@
                         <button class="button button--outline" type="button" onclick="document.location.href='{{ route('home.index') }}'">{{__('text.cart_back_to_shop')}}</button>
                         <button class="button cart-form__checkout" type="button" onclick="document.location.href='{{ route('checkout.index') }}'">{{__('text.cart_pay_button')}}
                             <span class="icon">
-                                <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset("$design/svg/icons/sprite.svg") }}#arrow"></use>
-                                </svg>
+                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                    <svg width="1em" height="1em" fill="currentColor">
+                                        <use href="{{ asset("$design/svg/icons/sprite.svg") }}#arrow"></use>
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 12" fill="none" width="1em" height="1em" fill="currentColor">
+                                        <path d="M15.5303 6.53033C15.8232 6.23744 15.8232 5.76256 15.5303 5.46967L10.7574 0.696699C10.4645 0.403806 9.98959 0.403806 9.6967 0.696699C9.40381 0.989593 9.40381 1.46447 9.6967 1.75736L13.9393 6L9.6967 10.2426C9.40381 10.5355 9.40381 11.0104 9.6967 11.3033C9.98959 11.5962 10.4645 11.5962 10.7574 11.3033L15.5303 6.53033ZM0 6.75H15V5.25H0V6.75Z" fill="white"/>
+                                    </svg>
+                                @endif
                             </span>
                         </button>
                     </div>
@@ -344,10 +356,25 @@
                     <div class="product-card__controls">
                         <button class="button product-card__button" aria-label="{{__('text.common_buy_button')}}" onclick="location.href='{{ route('home.product', $product_data['url']) }}'">
                             <span class="icon">
-                                <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
-                                </svg>
+                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                    <svg width="1em" height="1em" fill="currentColor">
+                                        <use href="{{ asset("$design/svg/icons/sprite.svg#cart") }}"></use>
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" width="1em" height="1em" fill="currentColor">
+                                        <defs>
+                                            <clipPath id="cart_clip0">
+                                            <rect width="20" height="20" fill="currentColor"/>
+                                            </clipPath>
+                                        </defs>
 
+                                        <g clip-path="url(#cart_clip0)">
+                                            <path d="M18.9275 3.3975C18.6931 3.1162 18.3996 2.88996 18.0679 2.73485C17.7363 2.57973 17.3745 2.49955 17.0083 2.5H3.535L3.5 2.2075C3.42837 1.59951 3.13615 1.03894 2.67874 0.632065C2.22133 0.225186 1.63052 0.000284828 1.01833 0L0.833333 0C0.61232 0 0.400358 0.0877974 0.244078 0.244078C0.0877974 0.400358 0 0.61232 0 0.833333C0 1.05435 0.0877974 1.26631 0.244078 1.42259C0.400358 1.57887 0.61232 1.66667 0.833333 1.66667H1.01833C1.22244 1.66669 1.41945 1.74163 1.57198 1.87726C1.72451 2.0129 1.82195 2.19979 1.84583 2.4025L2.9925 12.1525C3.11154 13.1665 3.59873 14.1015 4.36159 14.78C5.12445 15.4585 6.10988 15.8334 7.13083 15.8333H15.8333C16.0543 15.8333 16.2663 15.7455 16.4226 15.5893C16.5789 15.433 16.6667 15.221 16.6667 15C16.6667 14.779 16.5789 14.567 16.4226 14.4107C16.2663 14.2545 16.0543 14.1667 15.8333 14.1667H7.13083C6.61505 14.1652 6.11233 14.0043 5.69161 13.7059C5.27089 13.4075 4.95276 12.9863 4.78083 12.5H14.7142C15.6911 12.5001 16.6369 12.1569 17.3865 11.5304C18.1361 10.9039 18.6417 10.0339 18.815 9.0725L19.4692 5.44417C19.5345 5.08417 19.5198 4.71422 19.4262 4.36053C19.3326 4.00684 19.1623 3.67806 18.9275 3.3975Z" fill="currentColor"/>
+                                            <path d="M5.83329 20.0006C6.75376 20.0006 7.49995 19.2544 7.49995 18.3339C7.49995 17.4134 6.75376 16.6672 5.83329 16.6672C4.91282 16.6672 4.16663 17.4134 4.16663 18.3339C4.16663 19.2544 4.91282 20.0006 5.83329 20.0006Z" fill="currentColor"/>
+                                            <path d="M14.1667 20.0006C15.0871 20.0006 15.8333 19.2544 15.8333 18.3339C15.8333 17.4134 15.0871 16.6672 14.1667 16.6672C13.2462 16.6672 12.5 17.4134 12.5 18.3339C12.5 19.2544 13.2462 20.0006 14.1667 20.0006Z" fill="currentColor"/>
+                                        </g>
+                                    </svg>
+                                @endif
                             </span> <span class="button__text">{{__('text.common_buy_button')}}</span>
                         </button>
                     <div class="product-card__price">{{ $Currency::convert($product_data['price'], false, true) }}</div>
