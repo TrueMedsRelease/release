@@ -1949,7 +1949,7 @@ class HomeController extends Controller
                 'key'    => $api_key->key_data
             ];
 
-            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_test.php', $data);
+            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_new.php', $data);
             $response = json_decode($response, true);
 
             if ($response['status'] == 'ERROR') {
@@ -2006,7 +2006,7 @@ class HomeController extends Controller
                 'key'    => $api_key->key_data
             ];
 
-            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_test.php', $data);
+            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_new.php', $data);
             $response = json_decode($response, true);
 
             if ($response['status'] == 'ERROR') {
