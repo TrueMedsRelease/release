@@ -647,4 +647,7 @@ return [
 
     "local_payment_amount" => "Użyj osobistego konta bankowego na swoje nazwisko (takie same jak dane rozliczeniowe).",
     "local_payment_reference" => "Jeśli tego numeru brakuje lub zostanie zmieniony w tytule przelewu, możemy nie być w stanie automatycznie wykryć Twojej płatności.",
+
+    "profile_verify_text" => "Kod logowania został wysłany na Twój adres e-mail. Wprowadź go poniżej.",
+    "profile_verify_confirm_code" => "Potwierdź kod",
 ];

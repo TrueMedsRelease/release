@@ -651,4 +651,7 @@ return [
 
     "local_payment_amount" => "请使用与账单信息一致、以本人名义开立的个人银行账户。",
     "local_payment_reference" => "如果该号码在银行转账备注中缺失或被更改，我们可能无法自动识别您的付款。",
+
+    "profile_verify_text" => "登录验证码已发送到您的邮箱。请在下方输入。",
+    "profile_verify_confirm_code" => "确认验证码",
 ];

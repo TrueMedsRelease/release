@@ -686,4 +686,7 @@ return [
 
     "local_payment_amount" => "Gebruik een persoonlijke bankrekening op uw eigen naam (dezelfde als de factuurgegevens).",
     "local_payment_reference" => "Als dit nummer ontbreekt of wordt gewijzigd in de bankomschrijving, kunnen we uw betaling mogelijk niet automatisch detecteren.",
+
+    "profile_verify_text" => "Er is een inlogcode naar uw e-mailadres verzonden. Voer deze hieronder in.",
+    "profile_verify_confirm_code" => "Code bevestigen",
 ];

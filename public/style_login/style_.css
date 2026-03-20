@@ -2658,3 +2658,30 @@ button.tag-status__icon svg {
     justify-content: center;
     align-items: center;
 }
+
+.verify_profile_block {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px 25px;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.verify_text {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.verify_input input {
+    border: 1px solid;
+    padding: 20px 12px;
+    font-weight: 400;
+}
+
+.verify_buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}

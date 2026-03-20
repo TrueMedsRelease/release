@@ -151,20 +151,20 @@
 			</div>
 		</div>
 	</div>
-    <div class="popup_verify_profile" style="">
-        <div style="display: flex; flex-direction: column; gap: 15px; padding: 30px 25px; border-radius: 12px; background-color: white;">
-            <div style="text-align: center; font-size: 16px; font-weight: 500;">
-                Login code has been sent to your email. Please enter it below.
+    <div class="popup_verify_profile">
+        <div class="verify_profile_block">
+            <div class="verify_text">
+                {{ __('text.profile_verify_text') }}
             </div>
-            <div>
-                <input id="verify_code" autocomplete="off" type="text" name="verify_code" data-error="Not correct" class="input" placeholder="Verify Code" style="border: 1px solid; padding: 20px 12px; font-weight: 400;">
+            <div class="verify_input">
+                <input id="verify_code" autocomplete="off" type="text" name="verify_code" data-error="Not correct" class="input" placeholder="Code">
             </div>
             <div class="form__row" id="verify_code_error">
                 <p style="color: #ff6666; font-weight: bold; width: max-content; padding: 5px;" class="input">{{__('text.login_email_empty')}}</p>
             </div>
-            <div style="display: flex; justify-content: space-around; gap: 15px;">
+            <div class="verify_buttons">
                 <button class="button button--dark button--single" id="close_verify_block">{{ ucfirst(__('text.admin_common_cancel_text')) }}</button>
-                <button class="button button--single" onclick="verifyProfile()">Confirm code</button>
+                <button class="button button--single" onclick="verifyProfile()">{{ __('text.profile_verify_confirm_code') }}</button>
             </div>
         </div>
     </div>

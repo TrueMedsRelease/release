@@ -764,4 +764,7 @@ return [
 
     "local_payment_amount" => "請求先情報と同じ名義の個人口座をご利用ください。",
     "local_payment_reference" => "銀行の振込メモ（摘要）にこの番号がない、または変更されている場合、お支払いを自動で確認できない可能性があります。",
+
+    "profile_verify_text" => "ログインコードがメールアドレスに送信されました。以下に入力してください。",
+    "profile_verify_confirm_code" => "コードを確認",
 ];
