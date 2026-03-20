@@ -35,7 +35,7 @@
         }
     @endphp
 
-	<link rel="stylesheet" href="style_login/style_.css">
+	<link rel="stylesheet" href="{{ asset_ver("style_login/style_.css") }}">
 	<link rel="shortcut icon" href="style_login/favicon.ico">
 
     <script>
