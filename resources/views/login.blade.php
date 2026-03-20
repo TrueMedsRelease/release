@@ -43,6 +43,7 @@
         const routeCartContent = "{{ route('cart.content') }}";
         const routeCheckCode = "{{ route('home.check_code') }}";
         const routeRequestLogin = "{{ route('home.request_login') }}";
+        const routeVerifyProfile = "{{ route('home.verify_profile') }}";
     </script>
 
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
@@ -86,6 +87,9 @@
 @endphp
 
 <body>
+    <script>
+        const design = 0;
+    </script>
     <div id="preloader">
         <div class="spinner"></div>
     </div>
@@ -147,6 +151,23 @@
 			</div>
 		</div>
 	</div>
+    <div class="popup_verify_profile" style="">
+        <div style="display: flex; flex-direction: column; gap: 15px; padding: 30px 25px; border-radius: 12px; background-color: white;">
+            <div style="text-align: center; font-size: 16px; font-weight: 500;">
+                Login code has been sent to your email. Please enter it below.
+            </div>
+            <div>
+                <input id="verify_code" autocomplete="off" type="text" name="verify_code" data-error="Not correct" class="input" placeholder="Verify Code" style="border: 1px solid; padding: 20px 12px; font-weight: 400;">
+            </div>
+            <div class="form__row" id="verify_code_error">
+                <p style="color: #ff6666; font-weight: bold; width: max-content; padding: 5px;" class="input">{{__('text.login_email_empty')}}</p>
+            </div>
+            <div style="display: flex; justify-content: space-around; gap: 15px;">
+                <button class="button button--dark button--single" id="close_verify_block">{{ ucfirst(__('text.admin_common_cancel_text')) }}</button>
+                <button class="button button--single" onclick="verifyProfile()">Confirm code</button>
+            </div>
+        </div>
+    </div>
 	{{-- <div id="popup" aria-hidden="true" class="popup">
 	    <div class="popup__wrapper">
 		    <div class="popup__content">

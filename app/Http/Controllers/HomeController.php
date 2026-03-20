@@ -1949,7 +1949,7 @@ class HomeController extends Controller
                 'key'    => $api_key->key_data
             ];
 
-            $response = Http::timeout(3)->post('https://true-serv.net/api/customer_api.php', $data);
+            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_test.php', $data);
             $response = json_decode($response, true);
 
             if ($response['status'] == 'ERROR') {
@@ -1959,6 +1959,61 @@ class HomeController extends Controller
                         'text'   => __('text.login_email_unknow')
                     ];
                 }
+            } elseif ($response['status'] == 'OK') {
+                if ($response['message'] == 'NEED_CODE') {
+                    $result = [
+                        'status' => 'need_code',
+                        'text'   => 'need code'
+                    ];
+                }
+                if ($response['message'] == 'Access is allowed!') {
+                    $_SESSION['user'] = $response['uid'];
+                    $lang             = App::currentLocale();
+                    if ($lang === 'gr') {
+                        $lang === 'el';
+                    }
+                    if ($lang === 'arb') {
+                        $lang === 'ar';
+                    }
+
+                    $result = [
+                        'status' => 'success',
+                        'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
+                    ];
+                }
+            }
+        } else {
+            $result = [
+                'status' => 'error',
+                'text'   => __('text.errors_empty_field')
+            ];
+        }
+
+        return json_encode($result);
+    }
+
+    public function verify_profile(Request $request)
+    {
+        $verify_code = $request->verify_code;
+        $email   = $request->email;
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+
+        if ($verify_code && $email) {
+            $data = [
+                "email"  => $email,
+                'code' => $verify_code,
+                'method' => 'verify_code',
+                'key'    => $api_key->key_data
+            ];
+
+            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_test.php', $data);
+            $response = json_decode($response, true);
+
+            if ($response['status'] == 'ERROR') {
+                $result = [
+                    'status' => 'error',
+                    'text'   => $response['message']
+                ];
             } elseif ($response['status'] == 'OK') {
                 if ($response['message'] == 'Access is allowed!') {
                     $_SESSION['user'] = $response['uid'];
@@ -1972,9 +2027,7 @@ class HomeController extends Controller
 
                     $result = [
                         'status' => 'success',
-                        'url'    => 'https://true-help.com/orders.php?eai=' . rawurlencode(
-                                $response['uid']
-                            ) . '&lang=' . $lang,
+                        'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
                     ];
                 }
             }
