@@ -646,4 +646,7 @@ return [
 
     "local_payment_amount" => "Använd ett personligt bankkonto i ditt eget namn (samma som faktureringsuppgifterna).",
     "local_payment_reference" => "Om detta nummer saknas eller ändras i bankens meddelande, kanske vi inte kan upptäcka din betalning automatiskt.",
+
+    "profile_verify_text" => "En inloggningskod har skickats till din e-post. Ange den nedan.",
+    "profile_verify_confirm_code" => "Bekräfta kod",
 ];

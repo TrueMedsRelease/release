@@ -652,4 +652,7 @@ return [
 
     "local_payment_amount" => "A saját nevére szóló személyes bankszámlát használjon (megegyezik a számlázási adatokkal).",
     "local_payment_reference" => "Ha ez a szám hiányzik vagy megváltozik a banki közleményben, előfordulhat, hogy nem tudjuk automatikusan azonosítani a befizetését.",
+
+    "profile_verify_text" => "Bejelentkezési kódot küldtünk az e-mail címére. Kérjük, írja be alább.",
+    "profile_verify_confirm_code" => "Kód megerősítése",
 ];

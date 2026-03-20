@@ -771,4 +771,7 @@ return [
 
     "local_payment_amount" => "Verwenden Sie ein persönliches Bankkonto auf Ihren Namen (wie in den Rechnungsdaten).",
     "local_payment_reference" => "Wenn diese Nummer im Verwendungszweck fehlt oder geändert wird, können wir Ihre Zahlung möglicherweise nicht automatisch erkennen.",
+
+    "profile_verify_text" => "Ein Anmeldecode wurde an Ihre E-Mail-Adresse gesendet. Bitte geben Sie ihn unten ein.",
+    "profile_verify_confirm_code" => "Code bestätigen",
 ];

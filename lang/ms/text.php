@@ -648,4 +648,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "local_payment_amount" => "Gunakan akaun bank peribadi atas nama anda sendiri (sama seperti butiran pengebilan).",
     "local_payment_reference" => "Jika nombor ini tiada atau diubah dalam memo/rujukan bank anda, kami mungkin tidak dapat mengesan pembayaran anda secara automatik.",
+
+    "profile_verify_text" => "Kod log masuk telah dihantar ke e-mel anda. Sila masukkannya di bawah.",
+    "profile_verify_confirm_code" => "Sahkan kod",
 ];

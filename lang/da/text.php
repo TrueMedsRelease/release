@@ -695,4 +695,7 @@ return [
 
     "local_payment_amount" => "Brug en personlig bankkonto i dit eget navn (samme som faktureringsoplysningerne).",
     "local_payment_reference" => "Hvis dette nummer mangler eller ændres i bankens betalingsnote, kan vi muligvis ikke registrere din betaling automatisk.",
+
+    "profile_verify_text" => "En login-kode er blevet sendt til din e-mail. Indtast den venligst nedenfor.",
+    "profile_verify_confirm_code" => "Bekræft kode",
 ];

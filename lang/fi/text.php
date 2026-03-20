@@ -652,4 +652,7 @@ return [
 
     "local_payment_amount" => "Käytä henkilökohtaista pankkitiliä omalla nimelläsi (sama kuin laskutustiedoissa).",
     "local_payment_reference" => "Jos tämä numero puuttuu tai sitä muutetaan pankin viestikentässä, emme ehkä pysty tunnistamaan maksuasi automaattisesti.",
+
+    "profile_verify_text" => "Kirjautumiskoodi on lähetetty sähköpostiisi. Syötä se alle.",
+    "profile_verify_confirm_code" => "Vahvista koodi",
 ];

@@ -642,4 +642,7 @@ return [
 
     "local_payment_amount" => "Folosiți un cont bancar personal pe numele dumneavoastră (același ca în detaliile de facturare).",
     "local_payment_reference" => "Dacă acest număr lipsește sau este modificat în mențiunea plății la bancă, este posibil să nu putem detecta plata automat.",
+
+    "profile_verify_text" => "Un cod de autentificare a fost trimis pe e-mailul dvs. Vă rugăm să îl introduceți mai jos.",
+    "profile_verify_confirm_code" => "Confirmă codul",
 ];

@@ -928,4 +928,7 @@ return [
 
     "local_payment_amount" => "Use a personal bank acount in your own name (same as biling details).",
     "local_payment_reference" => "If this number is missing or changed in your bank memo, we may not be able to detect your payment automatically.",
+
+    "profile_verify_text" => "A login code has been sent to your email. Please enter it below.",
+    "profile_verify_confirm_code" => "Confirm code",
 ];

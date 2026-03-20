@@ -647,4 +647,7 @@ return  [
 
     "local_payment_amount" => "請使用與帳單資料相同姓名的個人銀行帳戶。",
     "local_payment_reference" => "若此號碼在銀行轉帳附言/備註中缺失或被更改，我們可能無法自動識別您的付款。",
+
+    "profile_verify_text" => "登入驗證碼已發送到您的電子郵件。請在下方輸入。",
+    "profile_verify_confirm_code" => "确认验证码",
 ];
