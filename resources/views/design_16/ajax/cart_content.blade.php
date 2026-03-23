@@ -41,9 +41,15 @@
                                                         <div class="qty-input">
                                                             <button class="qty-input__minus" type="button" aria-label="Minus" onclick="down({{ $product['pack_id'] }})">
                                                                 <span class="icon">
-                                                                    <svg width="1em" height="1em" fill="currentColor">
-                                                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?6a5f4frd#minus') }}"></use>
-                                                                    </svg>
+                                                                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                                        <svg width="1em" height="1em" fill="currentColor">
+                                                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?6a5f4frd#minus') }}"></use>
+                                                                        </svg>
+                                                                    @else
+                                                                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+                                                                            <path d="M2 8L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                        </svg>
+                                                                    @endif
                                                                 </span>
                                                             </button>
                                                             <label class="qty-input__label">
@@ -51,9 +57,16 @@
                                                             </label>
                                                             <button class="qty-input__plus" type="button" aria-label="Plus" onclick="up({{ $product['pack_id'] }})">
                                                                 <span class="icon">
-                                                                    <svg width="1em" height="1em" fill="currentColor">
-                                                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?6a5f4frd#plus') }}"></use>
-                                                                    </svg>
+                                                                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                                        <svg width="1em" height="1em" fill="currentColor">
+                                                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?6a5f4frd#plus') }}"></use>
+                                                                        </svg>
+                                                                    @else
+                                                                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+                                                                            <path d="M8 2V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                            <path d="M2 8L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                        </svg>
+                                                                    @endif
                                                                 </span>
                                                             </button>
                                                         </div>
@@ -83,9 +96,15 @@
                                                     <td class="cart-item__remove">
                                                         <button class="cart-remove" type="button" aria-label="Remove from cart" onclick="remove({{ $product['pack_id'] }})">
                                                             <span class="icon">
-                                                                <svg width="1em" height="1em" fill="currentColor">
-                                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?6a5f4frd#trash') }}"></use>
-                                                                </svg>
+                                                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                                    <svg width="1em" height="1em" fill="currentColor">
+                                                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?6a5f4frd#trash') }}"></use>
+                                                                    </svg>
+                                                                @else
+                                                                    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+                                                                        <path d="M5.00033 15.8333C5.00033 16.75 5.75033 17.5 6.66699 17.5H13.3337C14.2503 17.5 15.0003 16.75 15.0003 15.8333V5.83333H5.00033V15.8333ZM15.8337 3.33333H12.917L12.0837 2.5H7.91699L7.08366 3.33333H4.16699V5H15.8337V3.33333Z" fill="currentColor" />
+                                                                    </svg>
+                                                                @endif
                                                             </span>
                                                         </button>
                                                     </td>
@@ -242,9 +261,15 @@
                                                 <div class="select_header_gift">
                                                     <span class="select_current_gift" curr_packaging_id = "{{ $cards[0]->pack_id }}">{{ $Currency::convert($cards[0]->price) }}</span>
                                                     <span class="icon select-wrapper__chevron">
-                                                        <svg width="1em" height="1em" fill="currentColor">
-                                                            <use href="{{ asset("$design/svg/icons/sprite.svg?6a5f4frd#chevron-down") }}"></use>
-                                                        </svg>
+                                                        @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                                            <svg width="1em" height="1em" fill="currentColor">
+                                                                <use href="{{ asset("$design/svg/icons/sprite.svg?rv1wchvg#chevron-down") }}"></use>
+                                                            </svg>
+                                                        @else
+                                                            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+                                                                <path d="M12.6176 5.66666L7.97544 10.3088L3.33333 5.66666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        @endif
                                                     </span>
                                                 </div>
                                                 <div class="select_body_gifts">
@@ -372,9 +397,15 @@
                         </div>
                         <button class="card__button button button--secondary" onclick="location.href = '{{ route('home.product', $product_data['url']) }}'">
                             <span class="icon">
-                                <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset("$design/svg/icons/sprite.svg?6a5f4frd#cart") }}"></use>
-                                </svg>
+                                @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                    <svg width="1em" height="1em" fill="currentColor">
+                                        <use href="{{ asset("$design/svg/icons/sprite.svg?rv1wchvg#cart") }}"></use>
+                                    </svg>
+                                @else
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+                                        <path d="M8 18C6.9 18 6.01 18.9 6.01 20C6.01 21.1 6.9 22 8 22C9.1 22 10 21.1 10 20C10 18.9 9.1 18 8 18ZM2 2V4H4L7.6 11.59L6.25 14.04C6.09 14.32 6 14.65 6 15C6 16.1 6.9 17 8 17H20V15H8.42C8.28 15 8.17 14.89 8.17 14.75L8.2 14.63L9.1 13H16.55C17.3 13 17.96 12.59 18.3 11.97L21.88 5.48C21.96 5.34 22 5.17 22 5C22 4.45 21.55 4 21 4H6.21L5.27 2H2ZM18 18C16.9 18 16.01 18.9 16.01 20C16.01 21.1 16.9 22 18 22C19.1 22 20 21.1 20 20C20 18.9 19.1 18 18 18Z" fill="currentColor" />
+                                    </svg>
+                                @endif
                             </span>
                             {{ __('text.common_add_to_cart_text_d2') }}
                         </button>
