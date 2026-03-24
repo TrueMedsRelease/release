@@ -1104,11 +1104,15 @@ class ProductServices
                 ->with('category.category_desc')
                 ->get(['product.id', 'product.image', 'product.aktiv', 'product.sinonim', 'product.product_info_file_path']);
         } else {
-            $product = Product::query()
-                ->where('id', '=', $products_desc['product_id'])
-                ->where('is_showed', '=', 1)
-                ->with('category.category_desc')
-                ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+            if (isset($products_desc['product_id'])) {
+                $product = Product::query()
+                    ->where('id', '=', $products_desc['product_id'])
+                    ->where('is_showed', '=', 1)
+                    ->with('category.category_desc')
+                    ->get(['id', 'image', 'aktiv', 'sinonim', 'product_info_file_path']);
+            } else {
+                $product = [];
+            }
         }
 
         if (empty($product) || !isset($product[0])) {
