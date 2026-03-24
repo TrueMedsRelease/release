@@ -559,10 +559,10 @@ class HomeController extends Controller
 
             if (empty($product_name_begin) || !isset($product_name_begin[0])) {
                 if (env('APP_ERROR_PAGE')) {
-                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
-            } else {
-                return redirect(route('home.index'));
-            }
+                    return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+                } else {
+                    return redirect(route('home.index'));
+                }
             }
 
             $product = $product_name_begin[0]->url;
