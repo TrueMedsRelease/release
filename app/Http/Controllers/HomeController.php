@@ -1976,10 +1976,19 @@ class HomeController extends Controller
                         $lang === 'ar';
                     }
 
-                    $result = [
-                        'status' => 'success',
-                        'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
-                    ];
+                    if (session('aff', 0) == 1826) {
+                        $result = [
+                            'status' => 'success',
+                            'url' => 'https://re-bill.net/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
+                        ];
+                    } else {
+                        $result = [
+                            'status' => 'success',
+                            'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
+                        ];
+                    }
+
+
                 }
             }
         } else {
