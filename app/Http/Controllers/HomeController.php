@@ -1954,10 +1954,10 @@ class HomeController extends Controller
 
             if ($response['status'] == 'ERROR') {
                 if ($response['message'] == 'Unknown customer!') {
-                    $result = [
-                        'status' => 'error',
-                        'text'   => __('text.login_email_unknow')
-                    ];
+                    // $result = [
+                    //     'status' => 'error',
+                    //     'text'   => __('text.login_email_unknow')
+                    // ];
                 }
             } elseif ($response['status'] == 'OK') {
                 if ($response['message'] == 'NEED_CODE') {
