@@ -776,4 +776,7 @@ return [
 
     "local_payment_amount" => "Utilisez un compte bancaire personnel à votre nom (identique aux informations de facturation).",
     "local_payment_reference" => "Si ce numéro est absent ou modifié dans le libellé de votre virement, nous pourrions ne pas être en mesure de détecter automatiquement votre paiement.",
+
+    "profile_verify_text" => "Un code de connexion a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous.",
+    "profile_verify_confirm_code" => "Confirmer le code",
 ];

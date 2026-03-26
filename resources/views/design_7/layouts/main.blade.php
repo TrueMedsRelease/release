@@ -103,6 +103,9 @@
     <input type="hidden" id="is_pwa_here" value="{{ env('APP_PWA', 0) }}">
     <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
     <input type="hidden" id="subsc_popup" value="{{ env('SUBSCRIBE_POPUP_STATUS', 1) }}">
+    <input type="hidden" id="print_sprite" value="{{ env('APP_PRINT_SPRITE', 1) }}">
+    <input type="hidden" id="country_iso" value="{{ $codes }}">
+    <input type="hidden" id="initial_country" value="{{ strtolower(session('location.country')) }}">
 
     @php
         $phone_arr = [
@@ -141,9 +144,15 @@
         <div class="popup_gray" style="display: none">
             <div class="popup_call">
                 <div class="button_close">
-                    <svg class="close_popup" width="15" height="15">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg class="close_popup" width="15" height="15">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                        </svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
+                            <path d="M15.59 2.39A1.4 1.4 0 1 0 13.61.41L8 6.02 2.39.41A1.4 1.4 0 1 0 .41 2.39L6.02 8 .41 13.61a1.4 1.4 0 0 0 1.98 1.98L8 9.98l5.61 5.61a1.4 1.4 0 1 0 1.98-1.98L9.98 8l5.61-5.61Z"/>
+                        </svg>
+                    @endif
                 </div>
                 <div class="popup_bottom">
                     <div class="popup_text">{{ __('text.common_callback') }}</div>
@@ -153,11 +162,25 @@
                                 @foreach ($phone_codes as $item)
                                     <option id=""
                                         @if (empty(session('form'))) @selected($item['iso'] == session('location.country', ''))
-                                    @else
-                                        @selected($item['iso'] == session('form.phone_code', '')) @endif
-                                        data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
-                                        value="+{{ $item['phonecode'] }}">
-                                        +{{ $item['phonecode'] }}
+
+                                        @else
+                                            @selected($item['iso'] == session('form.phone_code', ''))
+                                        @endif
+                                        @if (env('APP_PRINT_SPRITE', 1) == 1)
+                                            data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
+                                        @else
+                                            @php
+                                                $file = 'style_checkout/images/countrys/' . $item['nicename'] . '.svg';
+                                            @endphp
+
+                                            @if (file_exists(public_path($file)))
+                                                data-asset="{{ asset($file) }}"
+                                            @else
+                                                data-asset=""
+                                            @endif
+                                        @endif
+                                            value="+{{ $item['phonecode'] }}">
+                                            +{{ $item['phonecode'] }}
                                     </option>
                                 @endforeach
                             </select>
@@ -180,9 +203,15 @@
         <div class="popup_white hide">
             <div class="popup_push">
                 <div class="button_close">
-                    <svg class="close_popup" width="15" height="15">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
-                    </svg>
+                    @if (env('APP_PRINT_SPRITE', 1) == 1)
+                        <svg class="close_popup" width="15" height="15">
+                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                        </svg>
+                    @else
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
+                            <path d="M15.59 2.39A1.4 1.4 0 1 0 13.61.41L8 6.02 2.39.41A1.4 1.4 0 1 0 .41 2.39L6.02 8 .41 13.61a1.4 1.4 0 0 0 1.98 1.98L8 9.98l5.61 5.61a1.4 1.4 0 1 0 1.98-1.98L9.98 8l5.61-5.61Z"/>
+                        </svg>
+                    @endif
                 </div>
                 <div class="popup_block">
                     <div class="popup_head">{{ __('text.common_push_head') }}</div>

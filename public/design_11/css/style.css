@@ -3006,6 +3006,7 @@ body.has-scroll{
 }
 .footer-delivery-methods.drag-nav{
   --height:5rem;
+  height: 100%;
 }
 .footer-delivery-methods .drag-nav-container{
   display:flex;
@@ -3013,6 +3014,8 @@ body.has-scroll{
   align-items:center;
   gap:1.9rem;
   padding-right:1.5rem;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 .footer-delivery-method{
@@ -3021,6 +3024,7 @@ body.has-scroll{
   justify-content:center;
   align-items:center;
   width: 75px;
+  height: 100%;
 }
 .footer-delivery-method svg{
     height:5rem;

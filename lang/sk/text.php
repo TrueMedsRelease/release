@@ -646,4 +646,7 @@ return [
 
     "local_payment_amount" => "Použite osobný bankový účet vedený na vaše meno (rovnaké ako fakturačné údaje).",
     "local_payment_reference" => "Ak toto číslo v poznámke pre banku chýba alebo sa zmení, nemusíme byť schopní automaticky rozpoznať vašu platbu.",
+
+    "profile_verify_text" => "Na váš e-mail bol odoslaný prihlasovací kód. Zadajte ho prosím nižšie.",
+    "profile_verify_confirm_code" => "Potvrdiť kód",
 ];

@@ -810,4 +810,7 @@ return [
 
     "local_payment_amount" => "Utilice una cuenta bancaria personal a su nombre (igual que los datos de facturación).",
     "local_payment_reference" => "Si este número falta o se modifica en el concepto de la transferencia, es posible que no podamos detectar su pago automáticamente.",
+
+    "profile_verify_text" => "Ένας κωδικός σύνδεσης στάλθηκε στο email σας. Παρακαλώ εισάγετέ τον παρακάτω.",
+    "profile_verify_confirm_code" => "Επιβεβαίωση κωδικού",
 ];

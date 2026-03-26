@@ -109,6 +109,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/request_contact_us', 'request_contact_us')->name('home.request_contact_us')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/request_affiliate', 'request_affiliate')->name('home.request_affiliate')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/request_login', 'request_login')->name('home.request_login')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/verify_profile', 'verify_profile')->name('home.verify_profile')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/check_code', 'check_code')->name('home.check_code')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/set_images/{pill}', 'set_images')->name('home.set_images')->withoutMiddleware(SetCookiesForStatistics::class);
     Route::post('/pwa/pwa_info', 'pwa_info')->name('home.pwa_info')->withoutMiddleware(VerifyCsrfToken::class);

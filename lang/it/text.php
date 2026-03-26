@@ -781,4 +781,7 @@ return [
 
     "local_payment_amount" => "Utilizza un conto bancario personale intestato a te (come nei dati di fatturazione).",
     "local_payment_reference" => "Se questo numero è mancante o viene modificato nella causale del bonifico, potremmo non essere in grado di rilevare automaticamente il tuo pagamento.",
+
+    "profile_verify_text" => "Un codice di accesso è stato inviato alla tua email. Inseriscilo qui sotto.",
+    "profile_verify_confirm_code" => "Conferma codice",
 ];

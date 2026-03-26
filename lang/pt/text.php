@@ -765,4 +765,7 @@ return [
 
     "local_payment_amount" => "Use uma conta bancária pessoal em seu nome (igual aos dados de faturação).",
     "local_payment_reference" => "Se este número estiver em falta ou for alterado na descrição da transferência, poderemos não conseguir detetar o seu pagamento automaticamente.",
+
+    "profile_verify_text" => "Um código de login foi enviado para o seu e-mail. Por favor, insira-o abaixo.",
+    "profile_verify_confirm_code" => "Confirmar código",
 ];
