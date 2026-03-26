@@ -416,27 +416,23 @@ class CheckoutController extends Controller
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
         $bonus_card = str_replace(' ', '', $request->bonus_card);
 
-        $data   = [
-            'method'  => 'bonus_card_info',
-            'api_key' => $api_key->key_data,
-            'bonus_card'  => $bonus_card,
-            'customer_id' => session('form.customer_id', 0)
-        ];
-
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                // $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+                $response = Http::timeout(10)->withHeaders([
+                        'X-API-KEY' => 'dfv3j8vhutiy54734svfsevf',
+                    ])->get('https://true-serv.net/bonus-api/api/bonus/get-card', [
+                        'card_number' => $bonus_card,
+                    ]);
 
-                // if ($response->successful()) {
-                    // Обработка успешного ответа
+                if ($response->successful()) {
+                    $response = json_decode($response, true);
 
-                    // $response = json_decode($response, true);
+                    if ($response['success'] == true) {
 
-                    // if ($response['status'] == 'success') {
                         $result['card_number'] = $bonus_card;
-                        $result['card_status'] = 'silver'; // $response['card_status']
-                        $result['charge_rate'] = 100; // $response['charge_rate']
-                        $result['balance'] = 100; // $response['balance']
+                        $result['card_status'] = $response['data']['card_status'];
+                        $result['charge_rate'] = $response['data']['max_payment_percent'];
+                        $result['balance'] = $response['data']['balance'];
 
                         session(['bonus_card' => $result]);
 
@@ -460,12 +456,12 @@ class CheckoutController extends Controller
                         }
 
                         session()->forget('crypto');
-                    // }
-                // } else {
-                //     // Обработка ответа с ошибкой (4xx или 5xx)
-                //     Log::error("Сервис вернул ошибку: " . $response->status());
-                //     $responseData = ['error' => 'Service returned an error'];
-                // }
+                    }
+                } else {
+                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    Log::error("Сервис вернул ошибку: " . $response->status());
+                    $responseData = ['error' => 'Service returned an error'];
+                }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
@@ -763,7 +759,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -955,7 +950,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -1194,7 +1188,6 @@ class CheckoutController extends Controller
             'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
             'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
             'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-            'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
@@ -1438,7 +1431,6 @@ class CheckoutController extends Controller
             'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
             'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
             'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-            'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
@@ -1602,7 +1594,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -2073,7 +2064,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -2220,7 +2210,6 @@ class CheckoutController extends Controller
             'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
             'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
             'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-            'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
         ];
 
         session(['data' => $data]);
@@ -2410,7 +2399,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -2572,7 +2560,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -2814,7 +2801,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -3055,7 +3041,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);
@@ -3251,7 +3236,6 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'cashback' => session('total.cashback', ceil(session('total.checkout_total') * 0.03)),
             ];
 
             session(['data' => $data]);

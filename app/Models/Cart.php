@@ -333,16 +333,6 @@ class Cart extends Model
 
         $eur = Currency::GetCoef('eur');
 
-        $cashback = ceil($checkout_total * 0.03);
-
-        if (session()->has('bonus_card')) {
-            if (session('bonus_card.card_status', 'silver') == 'gold') {
-                $cashback = ceil($checkout_total * 0.05);
-            } else if (session('bonus_card.card_status', 'silver') == 'vip') {
-                $cashback = ceil($checkout_total * 0.07);
-            }
-        }
-
         $cart_total = [
             "product_total"              => $product_total,
             "shipping_total"             => $shipping_total,
@@ -357,7 +347,6 @@ class Cart extends Model
             'checkout_total_in_currency' => $checkout_total_in_currency,
             "all"                        => $all,
             "all_in_currency"            => $all_in_currency,
-            "cashback"                   => $cashback,
             "is_only_card"               => $is_only_card
         ];
 

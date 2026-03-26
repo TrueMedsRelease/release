@@ -2291,7 +2291,7 @@ $(".card_type .select__option").click(function (e) {
                 });
             }
         });
-        
+
         // if (flag) {
         //     previousIndex = this.selectedIndex;
         //     e.target.selectedIndex = previousIndex;
@@ -2645,10 +2645,10 @@ function GiftCard() {
 
 function DiscountInfo() {
     let bonus_card = $('input[name="bonus_card"]').val();
-    let pattern_bonus_card = /^\d{4}\s\d{4}\s\d{4}$/;
-    let isValid = pattern_bonus_card.test(bonus_card);
+    // let pattern_bonus_card = /^\d{4}\s\d{4}\s\d{4}$/;
+    // let isValid = pattern_bonus_card.test(bonus_card);
 
-    if (!isValid) {
+    if (bonus_card.length != 15) {
         alert('Invalid format');
     } else {
         $.ajax({
@@ -3573,15 +3573,15 @@ function formatBonusCard(value) {
     return digits.replace(/(\d{4})(?=\d)/g, '$1 ');
 }
 
-var inputBonusCard = document.getElementById('bonus_card');
+// var inputBonusCard = document.getElementById('bonus_card');
 
-if (inputBonusCard.value) {
-    inputBonusCard.value = formatBonusCard(inputBonusCard.value);
-}
+// if (inputBonusCard.value) {
+//     inputBonusCard.value = formatBonusCard(inputBonusCard.value);
+// }
 
-inputBonusCard.addEventListener('input', () => {
-    inputBonusCard.value = formatBonusCard(inputBonusCard.value);
-});
+// inputBonusCard.addEventListener('input', () => {
+//     inputBonusCard.value = formatBonusCard(inputBonusCard.value);
+// });
 
 window.__TOKENS__ = window.__TOKENS__ || [
     // { value:'ARB_ARBITRUM', symbol:'ARB', chain:'ARBITRUM', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/arb.svg"></use></svg>' },
