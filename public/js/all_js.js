@@ -181,7 +181,9 @@ function enterProfile() {
                         },
                         success: function (data) {
                             if (data['status'] == 'error') {
-                                alert(data['text']);
+                                if (data['text'] != 'Error') {
+                                    alert(data['text']);
+                                }
                             } else if (data['status'] == 'need_code') {
                                 $('.popup_verify_profile').css('display', 'flex');
                             } else {
