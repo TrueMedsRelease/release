@@ -19,7 +19,7 @@ class CacheServices
             'api_key' => $api_key->key_data
         ];
 
-        $response = Http::post('http://true-serv.net/checkout/order_test.php', $data);
+        $response = Http::post('http://true-serv.net/checkout/order.php', $data);
 
         $response = json_decode($response, true);
 
@@ -52,7 +52,7 @@ class CacheServices
         if(checkdnsrr('true-serv.net', 'A'))
         {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 if ($response->successful()) {
                     // Обработка успешного ответа
 
