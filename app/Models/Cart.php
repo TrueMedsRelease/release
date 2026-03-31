@@ -328,7 +328,7 @@ class Cart extends Model
         if ($is_only_card) {
             $checkout_total = $all;
         } else {
-            $checkout_total = $all + $insurance + $secret_package - $coupon_discount;
+            $checkout_total = $all + $insurance + $secret_package - $coupon_discount - $bonus_card_discount;
         }
 
         $eur = Currency::GetCoef('eur');

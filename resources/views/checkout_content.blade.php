@@ -417,7 +417,7 @@
                                         $total_discount += session('total.coupon_discount');
                                         $total_discount += session('total.bonus_card_discount');
 
-                                        $saving = $total_discount - session('total.checkout_total') + session('total.bonus_card_discount') + session('total.gift_card_discount');
+                                        $saving = $total_discount - session('total.checkout_total') + session('total.gift_card_discount');
                                     @endphp
 
                                     @if (session('checked_bonus', 'discount') == 'gift_card' && session()->has('gift_card') && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
