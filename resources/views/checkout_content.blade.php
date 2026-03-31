@@ -420,7 +420,7 @@
                                         $saving = $total_discount - session('total.checkout_total') + session('total.gift_card_discount');
                                     @endphp
 
-                                    @if (session('checked_bonus', 'discount') == 'gift_card' && session()->has('gift_card') && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
+                                    @if (session('checked_bonus', 'discount') == 'gift_card' && session()->has('gift_card') && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
                                         <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div>
                                     {{-- @elseif (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
                                         <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div> --}}

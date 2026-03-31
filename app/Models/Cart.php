@@ -291,7 +291,7 @@ class Cart extends Model
         //     session(['form.payment_type' => 'bonus_card']);
         // }
 
-        if (session('checked_bonus', 'discount') == 'gift_card' && $gift_card_discount >= $checkoutTotalWithoutGiftCard) {
+        if (session('checked_bonus', 'discount') == 'gift_card' && $gift_card_discount > 0 && $gift_card_discount >= $checkoutTotalWithoutGiftCard) {
             session(['form.payment_type' => 'gift_card']);
         }
 
