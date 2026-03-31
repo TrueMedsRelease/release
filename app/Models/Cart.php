@@ -260,13 +260,13 @@ class Cart extends Model
             $chargeRate = session('bonus_card.charge_rate', 100);
 
             if ($chargeRate == 100) {
-                if ($bonusCardBalance > $checkoutTotal) {
-                    $bonus_card_discount = $checkoutTotal;
+                if ($bonusCardBalance > $productTotal) {
+                    $bonus_card_discount = $productTotal;
                 } else {
                     $bonus_card_discount = $bonusCardBalance;
                 }
             } else {
-                $discountTotal = ceil($checkoutTotal * ($chargeRate / 100));
+                $discountTotal = ceil($productTotal * ($chargeRate / 100));
 
                 if ($bonusCardBalance > $discountTotal) {
                     $bonus_card_discount = $discountTotal;
@@ -287,9 +287,9 @@ class Cart extends Model
 
         $checkoutTotalWithoutGiftCard = $product_total + $shipping_total + $insurance + $secret_package;
 
-        if (session('checked_bonus', 'discount') == 'bonus_card' && $bonus_card_discount >= $checkoutTotalWithoutGiftCard) {
-            session(['form.payment_type' => 'bonus_card']);
-        }
+        // if (session('checked_bonus', 'discount') == 'bonus_card' && $bonus_card_discount >= $productTotalWithoutGiftCard) {
+        //     session(['form.payment_type' => 'bonus_card']);
+        // }
 
         if (session('checked_bonus', 'discount') == 'gift_card' && $gift_card_discount >= $checkoutTotalWithoutGiftCard) {
             session(['form.payment_type' => 'gift_card']);
@@ -331,6 +331,13 @@ class Cart extends Model
             $checkout_total = $all + $insurance + $secret_package - $coupon_discount - $bonus_card_discount;
         }
 
+        $can_bonus_card = 0;
+
+        if ($insurance == 0 && $secret_package == 0 && $shipping_total == 0 && session('bonus_card.balance', 0) > $checkout_total && session('checked_bonus', 'discount') == 'bonus_card') {
+            $can_bonus_card = 1;
+            session(['form.payment_type' => 'bonus_card']);
+        }
+
         $eur = Currency::GetCoef('eur');
 
         $cart_total = [
@@ -347,7 +354,8 @@ class Cart extends Model
             'checkout_total_in_currency' => $checkout_total_in_currency,
             "all"                        => $all,
             "all_in_currency"            => $all_in_currency,
-            "is_only_card"               => $is_only_card
+            "is_only_card"               => $is_only_card,
+            "can_bonus_card"             => $can_bonus_card
         ];
 
         session(['total' => $cart_total]);

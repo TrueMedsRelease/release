@@ -437,13 +437,13 @@ class CheckoutController extends Controller
                         session(['bonus_card' => $result]);
 
                         if ($result['charge_rate'] == 100) {
-                            if ($result['balance'] > session('total.checkout_total')) {
-                                $bonus_card_discount = session('total.checkout_total');
+                            if ($result['balance'] > session('total.product_total')) {
+                                $bonus_card_discount = session('total.product_total');
                             } else {
                                 $bonus_card_discount = $result['balance'];
                             }
                         } else {
-                            $discountTotal = ceil(session('total.checkout_total') * ($result['charge_rate'] / 100));
+                            $discountTotal = ceil(session('total.product_total') * ($result['charge_rate'] / 100));
                             if ($result['balance'] > $discountTotal) {
                                 $bonus_card_discount = $discountTotal;
                             } else {
@@ -451,7 +451,11 @@ class CheckoutController extends Controller
                             }
                         }
 
-                        if (session('checked_bonus', 'discount') == 'bonus_card' && $bonus_card_discount >= session('total.checkout_total')) {
+                        // if (session('checked_bonus', 'discount') == 'bonus_card' && $bonus_card_discount >= session('total.checkout_total')) {
+                        //     session(['form.payment_type' => 'bonus_card']);
+                        // }
+
+                        if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.xan_bonus_card', 0) == 1) {
                             session(['form.payment_type' => 'bonus_card']);
                         }
 
@@ -479,13 +483,19 @@ class CheckoutController extends Controller
             session(['form.payment_type' => 'card']);
         }
 
-        if ($request->checked_bonus == 'bonus_card' && session('total.bonus_card_discount') >= session('total.checkout_total')) {
+        // if ($request->checked_bonus == 'bonus_card' && session('total.bonus_card_discount') >= session('total.checkout_total')) {
+        //     session(['form.payment_type' => 'bonus_card']);
+        // } else {
+        //     session(['form.payment_type' => 'card']);
+        // }
+
+        if ($request->checked_bonus == 'bonus_card' && session('total.can_bonus_card', 0) == 1) {
             session(['form.payment_type' => 'bonus_card']);
         } else {
             session(['form.payment_type' => 'card']);
         }
 
-        if ($request->checked_bonus == 'gift_card' && session('total.gift_card_discount') >= session('total.checkout_total')) {
+        if ($request->checked_bonus == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total')) {
             session(['form.payment_type' => 'gift_card']);
         } else {
             session(['form.payment_type' => 'card']);

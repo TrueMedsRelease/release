@@ -322,17 +322,17 @@
                                             <div class="bottom_bonuses_block_text">
                                                 <div>{{ __('text.checkout_available_amount') }} - <b>{{ $Currency::convert(session('bonus_card.balance'), true) }}</b></div>
                                             </div>
-                                            @if (session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
+                                            {{-- @if (session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
                                                 <div class="bottom_bonuses_block_text">
                                                     <div>{{ __('text.checkout_bonus_text1') }}</div>
                                                     <div style="color: #ED4C54">-{{ $Currency::convert(session('total.checkout_total'), true) }}</div>
                                                 </div>
-                                            @else
+                                            @else --}}
                                                 <div class="bottom_bonuses_block_text">
                                                     <div>{{ __('text.checkout_bonus_text1') }}</div>
                                                     <div style="color: #ED4C54">-{{ $Currency::convert(session('total.bonus_card_discount'), true) }}</div>
                                                 </div>
-                                            @endif
+                                            {{-- @endif --}}
                                         </div>
                                     </div>
                                 @endif
@@ -422,8 +422,8 @@
 
                                     @if (session('checked_bonus', 'discount') == 'gift_card' && session()->has('gift_card') && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
                                         <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div>
-                                    @elseif (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
-                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div>
+                                    {{-- @elseif (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
+                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div> --}}
                                     @else
                                         @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
                                             <div class="totals-order__total" style="color: var(--green); font-size:18px;">
@@ -662,7 +662,11 @@
                                 <div class="enter-info__select card_type poopup">
                                     <input required type="hidden" value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
 
-                                    <select name="payment_type" class="form" id="payment_type_select" data-pseudo-label="{{__('text.checkout_type')}}" @if ((session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total')) || (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) >= session('total.checkout_total'))) disabled @endif>
+                                    <select name="payment_type" class="form" id="payment_type_select" data-pseudo-label="{{__('text.checkout_type')}}"
+                                        @if (
+                                        (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
+                                        || (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
+                                        ) disabled @endif> {{-- (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total')) --}}
                                         @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
                                             <option value="zelle" @selected(session('form.payment_type', 'card') == 'zelle')>ZELLE</option>
                                         @endif
@@ -695,10 +699,13 @@
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif --}}
-                                        @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
+                                        @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
                                             <option value="gift_card" @selected(session('form.payment_type', 'card') == 'gift_card')>{{ __('text.common_gift_card') }}</option>
                                         @endif
-                                        @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
+                                        {{-- @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
+                                            <option value="bonus_card" @selected(session('form.payment_type', 'card') == 'bonus_card')>{{ __('text.checkout_bonus_card') }}</option>
+                                        @endif --}}
+                                        @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
                                             <option value="bonus_card" @selected(session('form.payment_type', 'card') == 'bonus_card')>{{ __('text.checkout_bonus_card') }}</option>
                                         @endif
                                     </select>
