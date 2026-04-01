@@ -690,8 +690,8 @@ return [
     "profile_verify_text" => "Er is een inlogcode naar uw e-mailadres verzonden. Voer deze hieronder in.",
     "profile_verify_confirm_code" => "Code bevestigen",
 
-    "bonus_ref_menu" => "Bonus- en doorverwijsprogramma",
-    "bonus_card_ref_programm" => "Bonuskaart en doorverwijsprogramma",
+    "bonus_ref_menu" => "Bonus en doorverwijzen",
+    "bonus_card_ref_programm" => "Bonuskaart en doorverwijzen",
     "save_earn" => "Bespaar en verdien",
     "bonus_view_more" => "Meer bekijken",
 

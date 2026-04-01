@@ -656,8 +656,8 @@ return [
     "profile_verify_text" => "Kirjautumiskoodi on lähetetty sähköpostiisi. Syötä se alle.",
     "profile_verify_confirm_code" => "Vahvista koodi",
 
-    "bonus_ref_menu" => "Bonus- ja suositteluohjelma",
-    "bonus_card_ref_programm" => "Bonuskortti ja suositteluohjelma",
+    "bonus_ref_menu" => "Bonus ja suosittelu",
+    "bonus_card_ref_programm" => "Bonuskortti ja suosittelu",
     "save_earn" => "Säästä ja ansaitse",
     "bonus_view_more" => "Näytä lisää",
 
