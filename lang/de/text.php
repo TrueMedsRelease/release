@@ -775,8 +775,8 @@ return [
     "profile_verify_text" => "Ein Anmeldecode wurde an Ihre E-Mail-Adresse gesendet. Bitte geben Sie ihn unten ein.",
     "profile_verify_confirm_code" => "Code bestätigen",
 
-    "bonus_ref_menu" => "Bonus- & Empfehlungsprogramm",
-    "bonus_card_ref_programm" => "Bonuskarte & Empfehlungsprogramm",
+    "bonus_ref_menu" => "Bonus & Empfehlungen",
+    "bonus_card_ref_programm" => "Bonuskarte & Empfehlungen",
     "save_earn" => "Sparen & verdienen",
     "bonus_view_more" => "Mehr anzeigen",
 
