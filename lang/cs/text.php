@@ -740,4 +740,18 @@ return [
     "bonus_card_ref_programm" => "Bonusová karta a doporučovací program",
     "save_earn" => "Ušetřete a vydělávejte",
     "bonus_view_more" => "Zobrazit více",
+
+    "bonus_page_bonus" => "Bonusový program",
+    "bonus_page_text1" => "Bonusová karta vám dává skvělé možnosti získat slevy a účastnit se velkých výprodejů.",
+    "bonus_page_text2" => "Bonusovou kartu obdržíte po své první objednávce. Bonusy můžete použít k úhradě budoucích nákupů. Chcete-li zaplatit objednávku bonusy, zadejte číslo své bonusové karty na stránce platby.",
+    "bonus_page_text3" => "Bonusové karty mají tři úrovně statusu:",
+    "bonus_page_text4" => "Stříbrná",
+    "bonus_page_text5" => "Zlatá",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "S každou objednávkou zaplacenou pomocí <b>stříbrné</b> karty získáte 5 % z částky objednávky v bonusech.<br>Se <b>zlatou</b> kartou — 7 %.<br>S kartou <b>VIP</b> — 10 %.",
+    "bonus_page_text8" => "Status karty se zvyšuje v závislosti na počtu provedených objednávek.<br><b>Zlatá</b> karta je přidělena po 5 objednávkách ročně.<br><b>VIP</b> karta je přidělena po 7 objednávkách ročně.",
+    "bonus_page_text9" => "Bonusy se nepřipisují při použití slevových kupónů.",
+    "bonus_page_referral" => "Doporučovací program",
+    "bonus_page_text10" => "Doporučováním našeho obchodu svým přátelům a známým můžete vydělávat peníze. Po vytvoření objednávky přejděte do svého osobního účtu, který se vytvoří po vaší první objednávce. Tam najdete sekci <b>Doporučovací program</b>, kde získáte svůj osobní odkaz s vaším ID.",
+    "bonus_page_text11" => "Za každý prodej uskutečněný prostřednictvím vašeho odkazu získáte 5 % z částky objednávky. Tyto výdělky se zobrazí v zůstatku vašeho účtu a budete si moci požádat o výběr této částky na své platební údaje.",
 ];

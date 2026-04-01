@@ -936,4 +936,22 @@ return [
     "bonus_card_ref_programm" => "Bonus Card & Referral Program",
     "save_earn" => "Save & Earn",
     "bonus_view_more" => "View More",
+    
+    "bonus_page_bonus" => "Bonus Program",
+    "bonus_page_text1" => "Bonus card gives you great opportunities to receive discounts and take part in major sales.",
+    "bonus_page_text2" => "You will receive a bonus card after your first order. You can use your bonuses to pay for your future purchases. To pay for an order with bonuses, enter your bonus card number on the payment page.",
+    "bonus_page_text3" => "Bonus cards have three status levels:",
+    "bonus_page_text4" => "Silver",
+    "bonus_page_text5" => "Gold",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "With each order paid for using a <b>Silver</b> card, you will receive 5% of the order amount in bonuses.<br>
+                    With a <b>Gold</b> card — 7%.<br>
+                    With a <b>VIP</b> card — 10%.",
+    "bonus_page_text8" => "The card status is upgraded depending on the number of orders placed.<br>
+                    A <b>Gold</b> card is granted after 5 orders per year.<br>
+                    A <b>VIP</b> card is granted after 7 orders per year.",
+    "bonus_page_text9" => "Bonuses are not credited if you use discount coupons.",
+    "bonus_page_referral" => "Referral Program",
+    "bonus_page_text10" => "You can earn money by recommending our store to your friends and acquaintances. To do this, after placing an order, go to your personal account, which is created after your first order. There, you will find the <b>Referral Program</b> section, where you can get your personal link with your ID.",
+    "bonus_page_text11" => "For every sale made through your link, you will receive 5% of the order amount. These earnings will be displayed in your account balance, and you will be able to request a withdrawal of this amount to your payment details.",
 ];

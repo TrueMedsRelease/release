@@ -784,4 +784,18 @@ return [
     "bonus_card_ref_programm" => "Carte bonus et programme de parrainage",
     "save_earn" => "Épargnez et gagnez",
     "bonus_view_more" => "Voir plus",
+
+    "bonus_page_bonus" => "Programme de bonus",
+    "bonus_page_text1" => "La carte bonus vous offre de belles possibilités pour obtenir des réductions et participer à d'importantes promotions.",
+    "bonus_page_text2" => "Vous recevrez une carte bonus après votre première commande. Vous pouvez utiliser vos bonus pour payer vos futurs achats. Pour payer une commande avec des bonus, saisissez le numéro de votre carte bonus sur la page de paiement.",
+    "bonus_page_text3" => "Les cartes bonus ont trois niveaux de statut :",
+    "bonus_page_text4" => "Argent",
+    "bonus_page_text5" => "Or",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "À chaque commande payée avec une carte <b>Argent</b>, vous recevrez 5 % du montant de la commande en bonus.<br>Avec une carte <b>Or</b> — 7 %.<br>Avec une carte <b>VIP</b> — 10 %.",
+    "bonus_page_text8" => "Le statut de la carte est amélioré en fonction du nombre de commandes passées.<br>Une carte <b>Or</b> est accordée après 5 commandes par an.<br>Une carte <b>VIP</b> est accordée après 7 commandes par an.",
+    "bonus_page_text9" => "Les bonus ne sont pas crédités si vous utilisez des coupons de réduction.",
+    "bonus_page_referral" => "Programme de parrainage",
+    "bonus_page_text10" => "Vous pouvez gagner de l'argent en recommandant notre boutique à vos amis et connaissances. Pour cela, après avoir passé une commande, rendez-vous dans votre compte personnel, créé après votre première commande. Vous y trouverez la section <b>Programme de parrainage</b>, où vous pourrez obtenir votre lien personnel avec votre identifiant.",
+    "bonus_page_text11" => "Pour chaque vente réalisée via votre lien, vous recevrez 5 % du montant de la commande. Ces gains seront affichés sur le solde de votre compte et vous pourrez demander le retrait de ce montant vers vos coordonnées de paiement.",
 ];

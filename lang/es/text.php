@@ -818,4 +818,18 @@ return [
     "bonus_card_ref_programm" => "Tarjeta de Bonos y Programa de Referidos",
     "save_earn" => "Ahorra y Gana",
     "bonus_view_more" => "Ver más",
+
+    "bonus_page_bonus" => "Programa de Bonos",
+    "bonus_page_text1" => "La tarjeta de bonos le brinda grandes oportunidades para recibir descuentos y participar en grandes rebajas.",
+    "bonus_page_text2" => "Recibirá una tarjeta de bonos después de su primer pedido. Puede usar sus bonos para pagar sus futuras compras. Para pagar un pedido con bonos, introduzca el número de su tarjeta de bonos en la página de pago.",
+    "bonus_page_text3" => "Las tarjetas de bonos tienen tres niveles de estado:",
+    "bonus_page_text4" => "Plata",
+    "bonus_page_text5" => "Oro",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Con cada pedido pagado con una tarjeta <b>Plata</b>, recibirá el 5 % del importe del pedido en bonos.<br>Con una tarjeta <b>Oro</b> — 7 %.<br>Con una tarjeta <b>VIP</b> — 10 %.",
+    "bonus_page_text8" => "El estado de la tarjeta se actualiza según el número de pedidos realizados.<br>La tarjeta <b>Oro</b> se otorga después de 5 pedidos al año.<br>La tarjeta <b>VIP</b> se otorga después de 7 pedidos al año.",
+    "bonus_page_text9" => "Los bonos no se acreditan si utiliza cupones de descuento.",
+    "bonus_page_referral" => "Programa de Referidos",
+    "bonus_page_text10" => "Puede ganar dinero recomendando nuestra tienda a sus amigos y conocidos. Para ello, después de realizar un pedido, vaya a su cuenta personal, que se crea después de su primer pedido. Allí encontrará la sección <b>Programa de Referidos</b>, donde podrá obtener su enlace personal con su ID.",
+    "bonus_page_text11" => "Por cada venta realizada a través de su enlace, recibirá el 5 % del importe del pedido. Estas ganancias se mostrarán en el saldo de su cuenta y podrá solicitar el retiro de esta cantidad a sus datos de pago.",
 ];

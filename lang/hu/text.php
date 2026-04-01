@@ -660,4 +660,18 @@ return [
     "bonus_card_ref_programm" => "Bónuszkártya és ajánlóprogram",
     "save_earn" => "Takaríts meg és keress",
     "bonus_view_more" => "Továbbiak",
+
+    "bonus_page_bonus" => "Bónuszprogram",
+    "bonus_page_text1" => "A bónuszkártya nagyszerű lehetőséget ad arra, hogy kedvezményeket kapjon és részt vegyen a nagy akciókban.",
+    "bonus_page_text2" => "Az első rendelése után bónuszkártyát kap. A bónuszait felhasználhatja a jövőbeni vásárlások kifizetésére. Ha egy rendelést bónuszokkal szeretne kifizetni, adja meg bónuszkártyája számát a fizetési oldalon.",
+    "bonus_page_text3" => "A bónuszkártyáknak három státuszszintje van:",
+    "bonus_page_text4" => "Ezüst",
+    "bonus_page_text5" => "Arany",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Minden <b>Ezüst</b> kártyával fizetett rendelés után a rendelés összegének 5%-át kapja meg bónuszok formájában.<br><b>Arany</b> kártyával — 7%.<br><b>VIP</b> kártyával — 10%.",
+    "bonus_page_text8" => "A kártya státusza a leadott rendelések számától függően emelkedik.<br><b>Arany</b> kártya évi 5 rendelés után jár.<br><b>VIP</b> kártya évi 7 rendelés után jár.",
+    "bonus_page_text9" => "A bónuszok nem kerülnek jóváírásra, ha kedvezménykuponokat használ.",
+    "bonus_page_referral" => "Ajánlói program",
+    "bonus_page_text10" => "Pénzt kereshet azzal, ha ajánlja áruházunkat barátainak és ismerőseinek. Ehhez a rendelés leadása után lépjen be személyes fiókjába, amely az első rendelése után jön létre. Ott megtalálja az <b>Ajánlói program</b> részt, ahol megszerezheti személyes linkjét az azonosítójával.",
+    "bonus_page_text11" => "Minden, az Ön linkjén keresztül történő eladás után a rendelés összegének 5%-át kapja meg. Ezek a bevételek megjelennek a számlaegyenlegében, és kérheti ennek az összegnek a kifizetését a fizetési adataira.",
 ];
