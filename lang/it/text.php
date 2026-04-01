@@ -784,4 +784,9 @@ return [
 
     "profile_verify_text" => "Un codice di accesso è stato inviato alla tua email. Inseriscilo qui sotto.",
     "profile_verify_confirm_code" => "Conferma codice",
+
+    "bonus_ref_menu" => "Programma bonus e referral",
+    "bonus_card_ref_programm" => "Carta bonus e programma referral",
+    "save_earn" => "Risparmia e guadagna",
+    "bonus_view_more" => "Vedi altro",
 ];

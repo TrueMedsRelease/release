@@ -1466,6 +1466,7 @@ body::after {
   margin-bottom: -10px;
   color: #5b7f2c;
   font-size: 18px;
+  align-items: center;
 }
 
 .navigation__item {
@@ -1473,6 +1474,7 @@ body::after {
   -webkit-transition: color 0.3s ease 0s;
   -o-transition: color 0.3s ease 0s;
   transition: color 0.3s ease 0s;
+  text-align: center;
 }
 
 .header {

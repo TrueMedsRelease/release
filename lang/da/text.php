@@ -698,4 +698,9 @@ return [
 
     "profile_verify_text" => "En login-kode er blevet sendt til din e-mail. Indtast den venligst nedenfor.",
     "profile_verify_confirm_code" => "Bekræft kode",
+
+    "bonus_ref_menu" => "Bonus- og henvisningsprogram",
+    "bonus_card_ref_programm" => "Bonuskort og henvisningsprogram",
+    "save_earn" => "Spar og tjen",
+    "bonus_view_more" => "Se mere",
 ];

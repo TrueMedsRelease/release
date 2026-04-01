@@ -388,16 +388,16 @@
             @endforeach
         </div>
         <div class="aside-cards">
-            {{-- <a class="promo-card promo-card--bonus" href="/">
+            <a class="promo-card promo-card--bonus" href="{{ route('home.bonus_referral_program') }}">
                 <div class="promo-card__content">
-                    <div class="promo-card__title">Bonus Card & <br> Referral Program</div>
-                    <span class="promo-card__text">Save & Earn</span>
+                    <div class="promo-card__title">{{ __('text.bonus_card_ref_programm') }}</div>
+                    <span class="promo-card__text">{{ __('text.save_earn') }}</span>
                 </div>
                 <div class="promo-card__cover">
                     <img src="{{ asset("$design/svg/cards/promo-card-cover-01.svg") }}" width="288" height="211" alt="Promo card cover">
                 </div>
-            </a> --}}
-            <a class="promo-card promo-card--green" href="/">
+            </a>
+            <div class="promo-card promo-card--green" href="/">
                 <div class="promo-card__content">
                     <div class="promo-card__title">{{ Str::ucfirst(__('text.common_banner1_text1')) }} {{ Str::ucfirst(__('text.common_banner1_text2')) }}</div>
                     <span class="promo-card__text">{{ __('text.common_banner1_text3') }} {{ __('text.common_banner1_text4') }}</span>
@@ -405,8 +405,8 @@
                 <div class="promo-card__cover">
                     <img src="{{ asset("$design/svg/cards/promo-card-cover-02.svg") }}" width="124" height="194" alt="Promo card cover">
                 </div>
-            </a>
-            <a class="promo-card promo-card--red" href="/">
+            </div>
+            <div class="promo-card promo-card--red" href="/">
                 <div class="promo-card__content">
                     <div class="promo-card__title">{{ __('text.common_banner2_text1') }} <br> <small>{!! __('text.common_banner2_text2') !!}</small></div>
                     <span class="promo-card__text">{{ __('text.common_banner2_text3') }} {{ __('text.common_banner2_text4') }}</span>
@@ -418,7 +418,7 @@
                     </div>
                     <img src="{{ asset("$design/svg/cards/promo-card-cover-03.svg") }}" width="200" height="171" alt="Promo card cover">
                 </div>
-            </a>
+            </div>
         </div>
     </aside>
 </div>

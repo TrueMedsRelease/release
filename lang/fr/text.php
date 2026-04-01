@@ -779,4 +779,9 @@ return [
 
     "profile_verify_text" => "Un code de connexion a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous.",
     "profile_verify_confirm_code" => "Confirmer le code",
+
+    "bonus_ref_menu" => "Programme de bonus et de parrainage",
+    "bonus_card_ref_programm" => "Carte bonus et programme de parrainage",
+    "save_earn" => "Épargnez et gagnez",
+    "bonus_view_more" => "Voir plus",
 ];

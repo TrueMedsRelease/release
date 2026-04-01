@@ -7,15 +7,15 @@
 @section('content')
     <div class="page__products products">
         <div class="products__items">
-            {{-- <a href="/" class="item-product bonus_card">
+            <a href="{{ route('home.bonus_referral_program') }}" class="item-product bonus_card">
                 <div class="bonus_top">
-                    <div class="bonus_head">Bonus Card & Referral Program</div>
-                    <div class="bonus_text">Save & Earn</div>
+                    <div class="bonus_head">{{ __('text.bonus_card_ref_programm') }}</div>
+                    <div class="bonus_text">{{ __('text.save_earn') }}</div>
                 </div>
                 <div class="bonus_image">
                     <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="100%" height="100%">
                 </div>
-            </a> --}}
+            </a>
             @foreach ($bestsellers as $product)
                 <a href="{{ route('home.product', $product['url']) }}" class="item-product">
                     <div class="item-product__content">

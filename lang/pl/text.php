@@ -650,4 +650,9 @@ return [
 
     "profile_verify_text" => "Kod logowania został wysłany na Twój adres e-mail. Wprowadź go poniżej.",
     "profile_verify_confirm_code" => "Potwierdź kod",
+
+    "bonus_ref_menu" => "Program bonusowy i poleceń",
+    "bonus_card_ref_programm" => "Karta bonusowa i program poleceń",
+    "save_earn" => "Oszczędzaj i zarabiaj",
+    "bonus_view_more" => "Zobacz więcej",
 ];

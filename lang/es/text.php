@@ -813,4 +813,9 @@ return [
 
     "profile_verify_text" => "Ένας κωδικός σύνδεσης στάλθηκε στο email σας. Παρακαλώ εισάγετέ τον παρακάτω.",
     "profile_verify_confirm_code" => "Επιβεβαίωση κωδικού",
+
+    "bonus_ref_menu" => "Programa de Bonos y Referidos",
+    "bonus_card_ref_programm" => "Tarjeta de Bonos y Programa de Referidos",
+    "save_earn" => "Ahorra y Gana",
+    "bonus_view_more" => "Ver más",
 ];

@@ -645,4 +645,9 @@ return [
 
     "profile_verify_text" => "Un cod de autentificare a fost trimis pe e-mailul dvs. Vă rugăm să îl introduceți mai jos.",
     "profile_verify_confirm_code" => "Confirmă codul",
+
+    "bonus_ref_menu" => "Program de bonusuri și recomandări",
+    "bonus_card_ref_programm" => "Card de bonusuri și program de recomandări",
+    "save_earn" => "Economisește și câștigă",
+    "bonus_view_more" => "Vezi mai mult",
 ];

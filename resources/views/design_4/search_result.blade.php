@@ -44,6 +44,17 @@
         {{-- <h2 class="products__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h2> --}}
         <h2 class="products__title title">{{__('text.search_result_best_for_search')}}</h2>
         <div class="products__items">
+            <div class="products__item item-product bonus_card_info">
+                <a href="{{ route('home.bonus_referral_program') }}">
+                    <div class="bonus_image">
+                        <img src="{{ asset($design . '/images/bonus_programm.png') }}">
+                    </div>
+                    <div class="bonus_top">
+                        <div class="bonus_head">{{ __('text.bonus_card_ref_programm') }}</div>
+                        <div class="bonus_text">{{ __('text.save_earn') }}</div>
+                    </div>
+                </a>
+            </div>
             @foreach ($bestsellers as $product)
                 <div class="products__item item-product">
                     @if ($product['id'] != 616 && $product['discount'] != 0)
@@ -99,6 +110,17 @@
     <div class="products">
         <h2 class="products__title title" id="scroll">{{__('text.search_result_title_page')}}  «{{$search_text}}»</h2>
         <div class="products__items">
+            <div class="products__item item-product bonus_card_info">
+                <a href="{{ route('home.bonus_referral_program') }}">
+                    <div class="bonus_image">
+                        <img src="{{ asset($design . '/images/bonus_programm.png') }}">
+                    </div>
+                    <div class="bonus_top">
+                        <div class="bonus_head">{{ __('text.bonus_card_ref_programm') }}</div>
+                        <div class="bonus_text">{{ __('text.save_earn') }}</div>
+                    </div>
+                </a>
+            </div>
             @foreach ($products as $product)
                 <div class="products__item item-product">
                     @if ($product['id'] != 616 && $product['discount'] != 0)

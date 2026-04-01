@@ -655,4 +655,9 @@ return [
 
     "profile_verify_text" => "Bejelentkezési kódot küldtünk az e-mail címére. Kérjük, írja be alább.",
     "profile_verify_confirm_code" => "Kód megerősítése",
+
+    "bonus_ref_menu" => "Bónusz- és ajánlóprogram",
+    "bonus_card_ref_programm" => "Bónuszkártya és ajánlóprogram",
+    "save_earn" => "Takaríts meg és keress",
+    "bonus_view_more" => "Továbbiak",
 ];

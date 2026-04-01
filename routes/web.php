@@ -118,6 +118,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/checkup', 'checkup')->name('home.checkup');
     Route::get('/sitemap{other_url?}', 'sitemap')->name('home.sitemap');
     Route::get('/error_page', 'errorPage')->name('home.error_page');
+    Route::get('/bonus_referral_program', 'bonus_referral_program')->name('home.bonus_referral_program');
 });
 
 Route::controller(AdminController::class)->group(function () {

@@ -652,4 +652,9 @@ return [
 
     "profile_verify_text" => "En innloggingskode er sendt til e-posten din. Vennligst skriv den inn nedenfor.",
     "profile_verify_confirm_code" => "Bekreft kode",
+
+    "bonus_ref_menu" => "Bonus- og vervingsprogram",
+    "bonus_card_ref_programm" => "Bonuskort og vervingsprogram",
+    "save_earn" => "Spar og tjen",
+    "bonus_view_more" => "Se mer",
 ];

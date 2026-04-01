@@ -653,4 +653,9 @@ return [
 
     "profile_verify_text" => "تم إرسال رمز تسجيل الدخول إلى بريدك الإلكتروني. يرجى إدخاله أدناه.",
     "profile_verify_confirm_code" => "تأكيد الرمز",
+    
+    "bonus_ref_menu" => "برنامج المكافآت والإحالة",
+    "bonus_card_ref_programm" => "بطاقة المكافآت وبرنامج الإحالة",
+    "save_earn" => "وفّر واكسب",
+    "bonus_view_more" => "عرض المزيد",
 ];

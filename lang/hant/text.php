@@ -650,4 +650,9 @@ return  [
 
     "profile_verify_text" => "登入驗證碼已發送到您的電子郵件。請在下方輸入。",
     "profile_verify_confirm_code" => "确认验证码",
+
+    "bonus_ref_menu" => "獎勵與推薦計劃",
+    "bonus_card_ref_programm" => "獎勵卡與推薦計劃",
+    "save_earn" => "節省並賺取",
+    "bonus_view_more" => "查看更多",
 ];

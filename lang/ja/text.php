@@ -767,4 +767,9 @@ return [
 
     "profile_verify_text" => "ログインコードがメールアドレスに送信されました。以下に入力してください。",
     "profile_verify_confirm_code" => "コードを確認",
+
+    "bonus_ref_menu" => "ボーナス＆紹介プログラム",
+    "bonus_card_ref_programm" => "ボーナスカード＆紹介プログラム",
+    "save_earn" => "貯めて稼ぐ",
+    "bonus_view_more" => "もっと見る",
 ];

@@ -649,4 +649,9 @@ return [
 
     "profile_verify_text" => "En inloggningskod har skickats till din e-post. Ange den nedan.",
     "profile_verify_confirm_code" => "Bekräfta kod",
+
+    "bonus_ref_menu" => "Bonus- och värvningsprogram",
+    "bonus_card_ref_programm" => "Bonuskort och värvningsprogram",
+    "save_earn" => "Spara och tjäna",
+    "bonus_view_more" => "Visa mer",
 ];

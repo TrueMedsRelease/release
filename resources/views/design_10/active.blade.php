@@ -65,17 +65,23 @@
                 </article>
                 @if ($loop->index == 1)
                     <div class="combo-cards">
-                        <article class="card combo-card">
-                            <a class="link-primary combo-card__link-wrapper" href="">
-                                <h2 class="combo-card__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</h2>
-                                <div class="combo-card__text">{{__('text.common_banner1_text3')}} <br>{{__('text.common_banner1_text4')}}</div>
+                        <article class="card combo-card combo-card--bonus">
+                            <a class="link-primary combo-card__link-wrapper" href="{{ route('home.bonus_referral_program') }}">
+                                <h2 class="combo-card__title">{{ __('text.bonus_card_ref_programm') }}</h2>
+                                <div class="combo-card__text">{{ __('text.save_earn') }}</div>
                             </a>
                         </article>
+                        <article class="card combo-card">
+                            <div class="link-primary combo-card__link-wrapper" href="">
+                                <h2 class="combo-card__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</h2>
+                                <div class="combo-card__text">{{__('text.common_banner1_text3')}} <br>{{__('text.common_banner1_text4')}}</div>
+                            </div>
+                        </article>
                         <article class="card combo-card combo-card--sale">
-                            <a class="link-primary combo-card__link-wrapper" href="">
+                            <div class="link-primary combo-card__link-wrapper" href="">
                                 <h2 class="combo-card__title">{{__('text.common_banner2_text1')}} <br>{!!__('text.common_banner2_text2')!!}</h2>
                                 <div class="combo-card__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
-                            </a>
+                            </div>
                         </article>
                     </div>
                 @endif

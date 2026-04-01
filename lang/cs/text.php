@@ -735,4 +735,9 @@ return [
 
     "profile_verify_text" => "Na váš e-mail byl odeslán přihlašovací kód. Zadejte jej prosím níže.",
     "profile_verify_confirm_code" => "Potvrdit kód",
+
+    "bonus_ref_menu" => "Bonusový a doporučovací program",
+    "bonus_card_ref_programm" => "Bonusová karta a doporučovací program",
+    "save_earn" => "Ušetřete a vydělávejte",
+    "bonus_view_more" => "Zobrazit více",
 ];

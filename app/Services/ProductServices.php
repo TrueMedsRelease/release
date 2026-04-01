@@ -2345,35 +2345,29 @@ class ProductServices
             case 'cart':
 
                 $total = session('total.all_in_currency') ? session('total.all_in_currency') : 0;
-
                 $page_properties->keyword     = str_replace('(cart_total)', $total, $page_properties->keyword);
                 $page_properties->description = str_replace('(cart_total)', $total, $page_properties->description);
 
                 break;
             case 'category':
 
-                $category_name                = session('category_name') ? session('category_name') : __(
-                    'text.category_title'
-                );
+                $category_name                = session('category_name') ? session('category_name') : __('text.category_title');
                 $page_properties->title       = str_replace('(category_name)', $category_name, $page_properties->title);
-                $page_properties->keyword     = str_replace(
-                    '(category_name)',
-                    $category_name,
-                    $page_properties->keyword
-                );
-                $page_properties->description = str_replace(
-                    '(category_name)',
-                    $category_name,
-                    $page_properties->description
-                );
+                $page_properties->keyword     = str_replace('(category_name)', $category_name, $page_properties->keyword);
+                $page_properties->description = str_replace('(category_name)', $category_name, $page_properties->description);
 
                 break;
             case 'sitemap':
 
                 $page_properties->title       = __('text.menu_title_sitemap') . ' - ' . request()->getHost();
                 $page_properties->keyword     = 'Online pharmacy, certified pharmacy, online drugs, pharmacy meds, order medicines online, pharmacies mail order, verified online pharmacy, reputable pharmacy online, drugstore online, meds online, generic pharmacy, discount pharmacy, non prescription pharmacy, legitimate pharmacy online';
-                $page_properties->description = request()->getHost(
-                    ) . ' - Discount Pharmacy Store. Big Sales. High quality products. Fast worldwide shipping.';
+                $page_properties->description = request()->getHost() . ' - Discount Pharmacy Store. Big Sales. High quality products. Fast worldwide shipping.';
+
+            case 'bonus_referral_program':
+
+                $page_properties->title       = __('text.bonus_ref_menu') . ' - ' . request()->getHost();
+                $page_properties->keyword     = 'Online pharmacy, certified pharmacy, online drugs, pharmacy meds, order medicines online, pharmacies mail order, verified online pharmacy, reputable pharmacy online, drugstore online, meds online, generic pharmacy, discount pharmacy, non prescription pharmacy, legitimate pharmacy online';
+                $page_properties->description = request()->getHost() . ' - Discount Pharmacy Store. Big Sales. High quality products. Fast worldwide shipping.';
         }
 
         return $page_properties;

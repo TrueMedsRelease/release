@@ -28,14 +28,14 @@
         </div>
         <div class="product-cards">
             <div class="cards">
-                {{-- <article class="card">
+                <article class="card">
                     <div class="card__header">
                         <h2 class="card__title">
-                            <a href="/">Bonus Card & Referral Program</a>
+                            <a href="{{ route('home.bonus_referral_program') }}">{{ __('text.bonus_card_ref_programm') }}</a>
                         </h2>
                         <div class="card__ingredients">
                             <span class="card__ingredient">
-                                Save & Earn
+                                {{ __('text.save_earn') }}
                             </span>
                         </div>
                     </div>
@@ -48,11 +48,11 @@
                         <div class="card__price-wrapper">
                             <span class="card__price"></span>
                         </div>
-                        <button class="card__button button button--outlined" onclick="location.href = '/'">
-                            View More
+                        <button class="card__button button button--outlined" onclick="location.href = '{{ route('home.bonus_referral_program') }}'">
+                            {{ __('text.bonus_view_more') }}
                         </button>
                     </div>
-                </article> --}}
+                </article>
                 @foreach ($bestsellers as $product)
                     <article class="card">
                         <div class="card__header">

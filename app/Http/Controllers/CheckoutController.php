@@ -2934,8 +2934,6 @@ class CheckoutController extends Controller
 
         session(['form' => $request->all()]);
 
-        die();
-
         if ($validator->fails()) {
             $errors = [];
             foreach ($validator->messages()->toArray() as $key => $error) {
@@ -3128,8 +3126,6 @@ class CheckoutController extends Controller
         ]);
 
         session(['form' => $request->all()]);
-
-        die();
 
         if ($validator->fails()) {
             $errors = [];

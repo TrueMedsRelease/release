@@ -768,4 +768,9 @@ return [
 
     "profile_verify_text" => "Um código de login foi enviado para o seu e-mail. Por favor, insira-o abaixo.",
     "profile_verify_confirm_code" => "Confirmar código",
+
+    "bonus_ref_menu" => "Programa de Bónus e Indicações",
+    "bonus_card_ref_programm" => "Cartão de Bónus e Programa de Indicações",
+    "save_earn" => "Poupe e Ganhe",
+    "bonus_view_more" => "Ver mais",
 ];

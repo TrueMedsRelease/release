@@ -189,6 +189,9 @@
                                     href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                             </li>
                             <li><a
+                                    href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{ __('text.bonus_ref_menu') }}</a>
+                            </li>
+                            <li><a
                                     href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
                             </li>
                             <li><a
@@ -209,6 +212,9 @@
                             </li>
                             <li><a
                                     href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.bonus_referral_program', '') }}">{{ __('text.bonus_ref_menu') }}</a>
                             </li>
                             <li><a
                                     href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
@@ -718,6 +724,9 @@
                                         href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                                 </li>
                                 <li><a
+                                        href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{ __('text.bonus_ref_menu') }}</a>
+                                </li>
+                                <li><a
                                         href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
                                 </li>
                                 <li><a
@@ -749,6 +758,9 @@
                             <ul class="footer-nav">
                                 <li><a
                                         href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.bonus_referral_program', '') }}">{{ __('text.bonus_ref_menu') }}</a>
                                 </li>
                                 <li><a
                                         href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>

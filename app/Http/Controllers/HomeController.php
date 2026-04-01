@@ -2342,4 +2342,79 @@ class HomeController extends Controller
             'design' => $design,
         ]);
     }
+
+    public function bonus_referral_program()
+    {
+        $design          = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
+        // $statisticPromise = StatisticService::SendStatistic('moneyback');
+
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
+        $page_properties = ProductServices::getPageProperties('bonus_referral_program');
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
+
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel  = "";
+        foreach ($pixels as $item) {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
+        $device = ProductServices::getDevice($agent);
+
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=moneyback&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
+
+        return view($design . '.bonus_referral', [
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
+        ]);
+    }
 }

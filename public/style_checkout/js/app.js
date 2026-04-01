@@ -3136,7 +3136,11 @@ $("#proccess_bonus_card").click(function (e) {
             var data = JSON.parse(data);
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
-                window.location.replace(data.response.url);
+                if(typeof data.response.url !== 'undefined') {
+                    window.location.replace(data.response.url);
+                } else {
+                    window.location.replace(checkoutComplete);
+                }
             }
             else {
                 var error = '';
@@ -3192,7 +3196,11 @@ $("#proccess_gift_card").click(function (e) {
             var data = JSON.parse(data);
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
-                window.location.replace(data.response.url);
+                if(typeof data.response.url !== 'undefined') {
+                    window.location.replace(data.response.url);
+                } else {
+                    window.location.replace(checkoutComplete);
+                }
             }
             else {
                 var error = '';

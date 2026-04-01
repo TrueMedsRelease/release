@@ -314,6 +314,14 @@
                 {{-- <h4 class="bestsellers__title title">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4> --}}
                 <h2 class="bestsellers__title title">{{__('text.search_result_best_for_search')}}</h2>
                 <div class="bestsellers__body">
+                    <div class="product-card product-card--offers" style="justify-content: center; align-items: center;">
+                        <a href="{{ route('home.bonus_referral_program') }}">
+                            <picture>
+                                <source srcset="{{ asset("$design/images/offers/bonus_programm.webp") }}" type="image/webp">
+                                <img loading="lazy" src="{{ asset("$design/images/offers/bonus_programm.png") }}" alt="">
+                            </picture>
+                        </a>
+                    </div>
                     @foreach ($bestsellers as $product)
                         <div class="product-card">
                             @if ($product['id'] != 616 && $product['discount'] != 0)
@@ -363,6 +371,14 @@
         <div class="bestsellers__container">
             <h2 class="bestsellers__title title">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>
             <div class="bestsellers__body">
+                <div class="product-card product-card--offers" style="justify-content: center; align-items: center;">
+                    <a href="{{ route('home.bonus_referral_program') }}">
+                        <picture>
+                            <source srcset="{{ asset("$design/images/offers/bonus_programm.webp") }}" type="image/webp">
+                            <img loading="lazy" src="{{ asset("$design/images/offers/bonus_programm.png") }}" alt="">
+                        </picture>
+                    </a>
+                </div>
                 @foreach ($products as $product)
                     <div class="product-card">
                         @if ($product['id'] != 616 && $product['discount'] != 0)

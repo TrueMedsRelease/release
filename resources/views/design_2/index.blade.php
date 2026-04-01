@@ -383,9 +383,14 @@
         <div class="bestsellers__container">
             <h2 class="bestsellers__title title">{{__('text.main_best_selling_title')}}</h2>
             <div class="bestsellers__body">
-                {{-- <div class="product-card product-card--offers">
-                    <picture><source srcset="{{ asset("$design/images/offers/bonus_programm.webp") }}" type="image/webp"><img loading="lazy" src="{{ asset("$design/images/offers/bonus_programm.png") }}" alt=""></picture>
-                </div> --}}
+                <div class="product-card product-card--offers" style="justify-content: center; align-items: center;">
+                    <a href="{{ route('home.bonus_referral_program') }}">
+                        <picture>
+                            <source srcset="{{ asset("$design/images/offers/bonus_programm.webp") }}" type="image/webp">
+                            <img loading="lazy" src="{{ asset("$design/images/offers/bonus_programm.png") }}" alt="">
+                        </picture>
+                    </a>
+                </div>
                 @foreach ($bestsellers as $product)
                     @if ($loop->iteration == 2)
                         <div class="product-card product-card--offers">

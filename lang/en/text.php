@@ -931,4 +931,9 @@ return [
 
     "profile_verify_text" => "A login code has been sent to your email. Please enter it below.",
     "profile_verify_confirm_code" => "Confirm code",
+
+    "bonus_ref_menu" => "Bonus & Referral Program",
+    "bonus_card_ref_programm" => "Bonus Card & Referral Program",
+    "save_earn" => "Save & Earn",
+    "bonus_view_more" => "View More",
 ];

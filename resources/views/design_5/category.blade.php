@@ -343,6 +343,23 @@
             <div class="products">
                 <h2 class="title-page">{{ $category['name'] }}</h2>
                 <div class="product-list">
+                    <div class="item">
+                        <a href="{{ route('home.bonus_referral_program') }}" class="img">
+                            <img src="{{ asset($design . '/images/bonus_programm.png') }}">
+                        </a>
+                        <div class="info">
+                            <div class="box">
+                                <a href="{{ route('home.bonus_referral_program') }}" class="name">
+                                    {{ __('text.bonus_card_ref_programm') }}
+                                </a>
+                            </div>
+                            <div class="box">
+                                <a href="{{ route('home.bonus_referral_program') }}" class="cat">
+                                    {{ __('text.save_earn') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     @foreach ($category['products'] as $product)
                         <div class="item">
                             @if ($product['id'] != 616 && $product['discount'] != 0)

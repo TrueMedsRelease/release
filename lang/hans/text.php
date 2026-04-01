@@ -654,4 +654,9 @@ return [
 
     "profile_verify_text" => "登录验证码已发送到您的邮箱。请在下方输入。",
     "profile_verify_confirm_code" => "确认验证码",
+
+    "bonus_ref_menu" => "奖励与推荐计划",
+    "bonus_card_ref_programm" => "奖励卡与推荐计划",
+    "save_earn" => "节省并赚取",
+    "bonus_view_more" => "查看更多",
 ];

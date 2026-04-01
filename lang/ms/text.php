@@ -651,4 +651,9 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "profile_verify_text" => "Kod log masuk telah dihantar ke e-mel anda. Sila masukkannya di bawah.",
     "profile_verify_confirm_code" => "Sahkan kod",
+
+    "bonus_ref_menu" => "Program Bonus & Rujukan",
+    "bonus_card_ref_programm" => "Kad Bonus & Program Rujukan",
+    "save_earn" => "Simpan & Jana",
+    "bonus_view_more" => "Lihat Lagi",
 ];

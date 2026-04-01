@@ -448,9 +448,12 @@
                                             href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                                     </li>
                                     <li class="menu__item" data-da=".menu__subslist, 1000, first"><a class="menu__link"
-                                            href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                            href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{ __('text.bonus_ref_menu') }}</a>
                                     </li>
                                     <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link"
+                                            href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                    </li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1100, first"><a class="menu__link"
                                             href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
                                     </li>
                                 @else
@@ -470,9 +473,12 @@
                                             href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                                     </li>
                                     <li class="menu__item" data-da=".menu__subslist, 1000, first"><a class="menu__link"
-                                            href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                            href="{{ route('home.bonus_referral_program', '') }}">{{ __('text.bonus_ref_menu') }}</a>
                                     </li>
                                     <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link"
+                                            href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                    </li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1100, first"><a class="menu__link"
                                             href="{{ route('home.contact_us', '') }}">{{ __('text.common_contact_us_main_menu_item') }}</a>
                                     </li>
                                 @endif
@@ -1072,7 +1078,7 @@
                 </div>
                 <div class="footer_right" @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) style="flex-direction: column; gap: 20px;" @endif>
                     @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
-                        <div style="display: flex; gap: 25px;">
+                        <div class="footer_right_block">
                             <ul class="footer__menu">
                                 <li class="footer__item"><a
                                         href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
@@ -1090,6 +1096,9 @@
                                         href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                                 </li>
                                 <li class="footer__item"><a
+                                        href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{ __('text.bonus_ref_menu') }}</a>
+                                </li>
+                                <li class="footer__item"><a
                                         href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
                                 </li>
                                 <li class="footer__item"><a
@@ -1099,7 +1108,7 @@
                             <a href="{{ route('home.affiliate', '_' . $domainWithoutZone) }}" class="footer__button">{{ __('text.common_affiliate_main_menu_button') }}</a>
                         </div>
                     @else
-                        <div style="display: flex; gap: 25px;">
+                        <div class="footer_right_block">
                             <ul class="footer__menu">
                                 <li class="footer__item"><a
                                         href="{{ route('home.index') }}">{{ __('text.common_best_sellers_main_menu_item') }}</a>
@@ -1115,6 +1124,9 @@
                                 </li>
                                 <li class="footer__item"><a
                                         href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li class="footer__item"><a
+                                        href="{{ route('home.bonus_referral_program', '') }}">{{ __('text.bonus_ref_menu') }}</a>
                                 </li>
                                 <li class="footer__item"><a
                                         href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>

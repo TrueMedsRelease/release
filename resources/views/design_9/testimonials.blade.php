@@ -5,17 +5,20 @@
 @section('description', $page_properties->description)
 
 @section('content')
-<div class="bonus_block all_padding">
+{{-- <div class="bonus_block all_padding">
     <div class="bonus1">
         <img src="{{ asset("$design/images/bonus1_1.png") }}">
     </div>
     <div class="bonus2">
         <img src="{{ asset("$design/images/bonus2_2.png") }}">
     </div>
-</div>
-{{-- <div class="bonus_block all_padding big">
+</div> --}}
+
+<div class="bonus_block all_padding big">
     <div class="bonus1">
-        <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+        <a href="{{ route('home.bonus_referral_program') }}">
+            <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+        </a>
     </div>
     <div class="bonus1">
         <img loading="lazy" src="{{ asset("$design/images/happy_day.png") }}">
@@ -26,7 +29,9 @@
 </div>
 <div class="bonus_block all_padding small">
     <div class="bonus1">
-        <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+        <a href="{{ route('home.bonus_referral_program') }}">
+            <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+        </a>
     </div>
     <div class="bonus1">
         <img loading="lazy" src="{{ asset("$design/images/bonus_2_small.png") }}">
@@ -34,7 +39,8 @@
     <div class="bonus2">
         <img loading="lazy" src="{{ asset("$design/images/bonus_3_small.png") }}">
     </div>
-</div> --}}
+</div>
+
 <main class="default">
     <div class="default__container">
         <div class="default__body">

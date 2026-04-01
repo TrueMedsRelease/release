@@ -28,6 +28,23 @@
             {{-- <h2>{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h1> --}}
             <h2>{{__('text.search_result_best_for_search')}}</h1>
             <div class="product-cards">
+                <article class="card bonus">
+                    <div class="card__img">
+                        <picture style="max-height: 175px; max-width: 175px;">
+                            <img src="{{ asset($design . '/images/bonus_programm.png') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                        </picture>
+                    </div>
+                    <div class="card__content">
+                        <h2 class="card__title">
+                            <a class="card__link" href="{{ route('home.bonus_referral_program') }}">
+                                {{ __('text.bonus_card_ref_programm') }}
+                            </a>
+                        </h2>
+                        <span class="card__ingredient">
+                            {{ __('text.save_earn') }}
+                        </span>
+                    </div>
+                </article>
                 @foreach ($bestsellers as $product)
                     <article class="card">
                         @if ($product['id'] != 616 && $product['discount'] != 0)
@@ -73,6 +90,23 @@
         @else
             <h1 class="h1">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h1>
             <div class="product-cards">
+                <article class="card bonus">
+                    <div class="card__img">
+                        <picture style="max-height: 175px; max-width: 175px;">
+                            <img src="{{ asset($design . '/images/bonus_programm.png') }}" style="max-height: 175px; max-width: 175px; width: auto; height: auto;">
+                        </picture>
+                    </div>
+                    <div class="card__content">
+                        <h2 class="card__title">
+                            <a class="card__link" href="{{ route('home.bonus_referral_program') }}">
+                                {{ __('text.bonus_card_ref_programm') }}
+                            </a>
+                        </h2>
+                        <span class="card__ingredient">
+                            {{ __('text.save_earn') }}
+                        </span>
+                    </div>
+                </article>
                 @foreach ($products as $product)
                     <article class="card">
                         @if ($product['id'] != 616 && $product['discount'] != 0)
