@@ -369,7 +369,7 @@
                 <div class="button_close">
                     @if (env('APP_PRINT_SPRITE', 1) == 1)
                         <svg class="close_popup" width="15" height="15">
-                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                            <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-close") }}"></use>
                         </svg>
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
@@ -429,7 +429,7 @@
                 <div class="button_close">
                     @if (env('APP_PRINT_SPRITE', 1) == 1)
                         <svg class="close_popup" width="15" height="15">
-                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                            <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-close") }}"></use>
                         </svg>
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
@@ -824,7 +824,7 @@
             <div class="announce__icon">
                 {{-- @if (env('APP_PRINT_SPRITE', 1) == 1) --}}
                     <svg width="24" height="24">
-                        <use xlink:href="@yield('announce_img', asset($design . '/images/icons/icons.svg#svg-checkmark'))"></use>
+                        <use xlink:href="@yield('announce_img', asset($design . '/images/icon/icons.svg#svg-checkmark'))"></use>
                     </svg>
                 {{-- @else
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
