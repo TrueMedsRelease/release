@@ -1958,6 +1958,10 @@ class HomeController extends Controller
                     //     'status' => 'error',
                     //     'text'   => __('text.login_email_unknow')
                     // ];
+                    $result = [
+                        'status' => 'error',
+                        'text'   => 'Error'
+                    ];
                 }
             } elseif ($response['status'] == 'OK') {
                 if ($response['message'] == 'NEED_CODE') {
