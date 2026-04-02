@@ -654,6 +654,7 @@ return [
     "bonus_card_ref_programm" => "Bonuskort och värvningsprogram",
     "save_earn" => "Spara och tjäna",
     "bonus_view_more" => "Visa mer",
+    "bonus_card_info" => "Du får ett bonuskort efter din första beställning. Du kan använda dina bonusar för att betala dina framtida köp.",
 
     "bonus_page_bonus" => "Bonusprogram",
     "bonus_page_text1" => "Bonuskortet ger dig fantastiska möjligheter att få rabatter och delta i stora kampanjer.",

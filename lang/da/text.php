@@ -703,6 +703,7 @@ return [
     "bonus_card_ref_programm" => "Bonuskort og henvisningsprogram",
     "save_earn" => "Spar og tjen",
     "bonus_view_more" => "Se mere",
+    "bonus_card_info" => "Du modtager et bonuskort efter din første ordre. Du kan bruge dine bonusser til at betale for dine fremtidige køb.",
 
     "bonus_page_bonus" => "Bonusprogram",
     "bonus_page_text1" => "Bonuskortet giver dig gode muligheder for at få rabatter og deltage i store udsalg.",

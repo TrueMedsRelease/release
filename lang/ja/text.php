@@ -772,6 +772,7 @@ return [
     "bonus_card_ref_programm" => "ボーナスカード＆紹介プログラム",
     "save_earn" => "貯めて稼ぐ",
     "bonus_view_more" => "もっと見る",
+    "bonus_card_info" => "初回注文後にボーナスカードを受け取れます。ボーナスを今後のお買い物の支払いに利用できます。",
 
     "bonus_page_bonus" => "ボーナスプログラム",
     "bonus_page_text1" => "ボーナスカードを利用すると、割引を受けたり、大規模なセールに参加したりできます。",

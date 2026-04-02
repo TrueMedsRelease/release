@@ -773,6 +773,7 @@ return [
     "bonus_card_ref_programm" => "Cartão de Bónus e Programa de Indicações",
     "save_earn" => "Poupe e Ganhe",
     "bonus_view_more" => "Ver mais",
+    "bonus_card_info" => "Receberá um cartão de bónus após a sua primeira encomenda. Pode usar os seus bónus para pagar as suas compras futuras.",
 
     "bonus_page_bonus" => "Programa de Bónus",
     "bonus_page_text1" => "O cartão de bónus dá-lhe excelentes oportunidades para receber descontos e participar em grandes promoções.",

@@ -656,6 +656,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "bonus_card_ref_programm" => "Kad Bonus & Program Rujukan",
     "save_earn" => "Simpan & Jana",
     "bonus_view_more" => "Lihat Lagi",
+    "bonus_card_info" => "Anda akan menerima kad bonus selepas pesanan pertama anda. Anda boleh menggunakan bonus anda untuk membayar pembelian anda yang akan datang.",
 
     "bonus_page_bonus" => "Program Bonus",
     "bonus_page_text1" => "Kad bonus memberi anda peluang hebat untuk menerima diskaun dan menyertai jualan besar.",

@@ -657,6 +657,7 @@ return [
     "bonus_card_ref_programm" => "Bonuskort og vervingsprogram",
     "save_earn" => "Spar og tjen",
     "bonus_view_more" => "Se mer",
+    "bonus_card_info" => "Du vil motta et bonuskort etter din første bestilling. Du kan bruke bonusene dine til å betale for fremtidige kjøp.",
 
     "bonus_page_bonus" => "Bonusprogram",
     "bonus_page_text1" => "Bonuskortet gir deg gode muligheter til å få rabatter og delta i store salgskampanjer.",

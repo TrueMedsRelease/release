@@ -818,6 +818,7 @@ return [
     "bonus_card_ref_programm" => "Tarjeta de Bonos y Programa de Referidos",
     "save_earn" => "Ahorra y Gana",
     "bonus_view_more" => "Ver más",
+    "bonus_card_info" => "Recibirá una tarjeta de bonificación después de su primer pedido. Puede usar sus bonificaciones para pagar sus futuras compras.",
 
     "bonus_page_bonus" => "Programa de Bonos",
     "bonus_page_text1" => "La tarjeta de bonos le brinda grandes oportunidades para recibir descuentos y participar en grandes rebajas.",

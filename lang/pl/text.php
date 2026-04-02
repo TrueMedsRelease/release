@@ -655,6 +655,7 @@ return [
     "bonus_card_ref_programm" => "Karta bonusowa i program poleceń",
     "save_earn" => "Oszczędzaj i zarabiaj",
     "bonus_view_more" => "Zobacz więcej",
+    "bonus_card_info" => "Otrzymasz kartę bonusową po swoim pierwszym zamówieniu. Możesz używać swoich bonusów do opłacania przyszłych zakupów.",
 
     "bonus_page_bonus" => "Program bonusowy",
     "bonus_page_text1" => "Karta bonusowa daje Ci świetne możliwości otrzymywania zniżek i udziału w dużych wyprzedażach.",

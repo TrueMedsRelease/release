@@ -694,6 +694,7 @@ return [
     "bonus_card_ref_programm" => "Bonuskaart en doorverwijzen",
     "save_earn" => "Bespaar en verdien",
     "bonus_view_more" => "Meer bekijken",
+    "bonus_card_info" => "Na je eerste bestelling ontvang je een bonuskaart. Je kunt je bonussen gebruiken om je toekomstige aankopen te betalen.",
 
     "bonus_page_bonus" => "Bonusprogramma",
     "bonus_page_text1" => "De bonuskaart biedt u geweldige mogelijkheden om kortingen te ontvangen en deel te nemen aan grote acties.",
