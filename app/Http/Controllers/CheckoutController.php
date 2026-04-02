@@ -425,6 +425,8 @@ class CheckoutController extends Controller
                         'card_number' => $bonus_card,
                     ]);
 
+                Log::info("Bonus Card answer: " . $response);
+
                 if ($response->successful()) {
                     $response = json_decode($response, true);
 
