@@ -655,6 +655,7 @@ return  [
     "bonus_card_ref_programm" => "獎勵卡與推薦計劃",
     "save_earn" => "節省並賺取",
     "bonus_view_more" => "查看更多",
+    "bonus_card_info" => "您將在首次下單後獲得一張獎勵卡。您可以使用獎勵積分支付未來的購物費用。",
 
     "bonus_page_bonus" => "獎勵計劃",
     "bonus_page_text1" => "獎勵卡可讓您獲得折扣並參與大型促銷活動。",

@@ -784,6 +784,7 @@ return [
     "bonus_card_ref_programm" => "Carte bonus et programme de parrainage",
     "save_earn" => "Épargnez et gagnez",
     "bonus_view_more" => "Voir plus",
+    "bonus_card_info" => "Vous recevrez une carte bonus après votre première commande. Vous pourrez utiliser vos bonus pour payer vos futurs achats.",
 
     "bonus_page_bonus" => "Programme de bonus",
     "bonus_page_text1" => "La carte bonus vous offre de belles possibilités pour obtenir des réductions et participer à d'importantes promotions.",

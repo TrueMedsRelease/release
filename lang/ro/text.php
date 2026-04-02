@@ -650,6 +650,7 @@ return [
     "bonus_card_ref_programm" => "Card de bonusuri și program de recomandări",
     "save_earn" => "Economisește și câștigă",
     "bonus_view_more" => "Vezi mai mult",
+    "bonus_card_info" => "Veți primi un card bonus după prima dvs. comandă. Puteți folosi bonusurile pentru a plăti achizițiile viitoare.",
 
     "bonus_page_bonus" => "Program de bonusuri",
     "bonus_page_text1" => "Cardul de bonus vă oferă oportunități excelente de a primi reduceri și de a participa la mari promoții.",

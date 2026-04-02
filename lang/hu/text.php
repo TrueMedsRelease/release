@@ -660,6 +660,7 @@ return [
     "bonus_card_ref_programm" => "Bónuszkártya és ajánlóprogram",
     "save_earn" => "Takaríts meg és keress",
     "bonus_view_more" => "Továbbiak",
+    "bonus_card_info" => "Az első rendelése után bónuszkártyát kap. A bónuszait felhasználhatja a jövőbeni vásárlásai kifizetésére.",
 
     "bonus_page_bonus" => "Bónuszprogram",
     "bonus_page_text1" => "A bónuszkártya nagyszerű lehetőséget ad arra, hogy kedvezményeket kapjon és részt vegyen a nagy akciókban.",

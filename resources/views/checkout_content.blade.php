@@ -273,7 +273,12 @@
                                         <div class="discount_block @if (session('checked_bonus', 'discount') == 'discount' || session('total.is_only_card')) is_active @endif">{{ __('text.checkout_discount_code') }}</div>
                                         <div class="bonus_block @if (session('checked_bonus', 'discount') == 'bonus_card') is_active @endif"  @if (session('total.is_only_card', 0) == 1) style="display: none" @else style="display: flex" @endif>
                                             <div class="bonus_block_text">{{ __('text.checkout_bonus_card') }}</div>
-                                            <div class="bonus_block_mark">?</div>
+                                            <div class="bonus_block_mark">
+                                                ?
+                                                <span class="hint__tooltip" id="bonus-tip" role="tooltip">
+                                                    {{ __('text.bonus_card_info') }}
+                                                </span>
+                                            </div>
                                         </div>
                                         <div class="gift_card_block @if (session('checked_bonus', 'discount') == 'gift_card') is_active @endif" @if (session('total.is_only_card', 0) == 1) style="display: none" @else style="display: flex" @endif>{{ __('text.common_gift_card') }}</div>
                                     </div>

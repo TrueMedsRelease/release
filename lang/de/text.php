@@ -779,6 +779,7 @@ return [
     "bonus_card_ref_programm" => "Bonuskarte & Empfehlungen",
     "save_earn" => "Sparen & verdienen",
     "bonus_view_more" => "Mehr anzeigen",
+    "bonus_card_info" => "Nach Ihrer ersten Bestellung erhalten Sie eine Bonuskarte. Sie können Ihre Bonuspunkte verwenden, um zukünftige Einkäufe zu bezahlen.",
 
     "bonus_page_bonus" => "Bonusprogramm",
     "bonus_page_text1" => "Die Bonuskarte bietet Ihnen großartige Möglichkeiten, Rabatte zu erhalten und an großen Verkaufsaktionen teilzunehmen.",

@@ -789,6 +789,7 @@ return [
     "bonus_card_ref_programm" => "Carta bonus e programma referral",
     "save_earn" => "Risparmia e guadagna",
     "bonus_view_more" => "Vedi altro",
+    "bonus_card_info" => "Riceverai una carta bonus dopo il tuo primo ordine. Potrai usare i tuoi bonus per pagare i tuoi acquisti futuri.",
 
     "bonus_page_bonus" => "Programma Bonus",
     "bonus_page_text1" => "La carta bonus ti offre grandi opportunità per ricevere sconti e partecipare a grandi promozioni.",

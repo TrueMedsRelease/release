@@ -660,6 +660,7 @@ return [
     "bonus_card_ref_programm" => "Bonuskortti ja suosittelu",
     "save_earn" => "Säästä ja ansaitse",
     "bonus_view_more" => "Näytä lisää",
+    "bonus_card_info" => "Saat bonuskortin ensimmäisen tilauksesi jälkeen. Voit käyttää bonuksiasi tulevien ostostesi maksamiseen.",
 
     "bonus_page_bonus" => "Bonusohjelma",
     "bonus_page_text1" => "Bonuskortti tarjoaa sinulle loistavia mahdollisuuksia saada alennuksia ja osallistua suuriin kampanjoihin.",

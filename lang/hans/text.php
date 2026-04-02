@@ -659,6 +659,7 @@ return [
     "bonus_card_ref_programm" => "奖励卡与推荐计划",
     "save_earn" => "节省并赚取",
     "bonus_view_more" => "查看更多",
+    "bonus_card_info" => "您将在首次下单后获得一张奖励卡。您可以使用奖励积分支付今后的购物费用。",
 
     "bonus_page_bonus" => "奖励计划",
     "bonus_page_text1" => "奖励卡为您提供了获得折扣和参与大型促销活动的绝佳机会。",

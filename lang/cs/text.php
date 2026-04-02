@@ -740,6 +740,7 @@ return [
     "bonus_card_ref_programm" => "Bonusová karta a doporučovací program",
     "save_earn" => "Ušetřete a vydělávejte",
     "bonus_view_more" => "Zobrazit více",
+    "bonus_card_info" => "Bonusovou kartu obdržíte po své první objednávce. Své bonusy můžete použít k úhradě budoucích nákupů.",
 
     "bonus_page_bonus" => "Bonusový program",
     "bonus_page_text1" => "Bonusová karta vám dává skvělé možnosti získat slevy a účastnit se velkých výprodejů.",

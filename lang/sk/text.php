@@ -654,6 +654,7 @@ return [
     "bonus_card_ref_programm" => "Bonusová karta a odporúčací program",
     "save_earn" => "Šetrite a zarábajte",
     "bonus_view_more" => "Zobraziť viac",
+    "bonus_card_info" => "Po svojej prvej objednávke získate bonusovú kartu. Svoje bonusy môžete použiť na úhradu budúcich nákupov.",
 
     "bonus_page_bonus" => "Bonusový program",
     "bonus_page_text1" => "Bonusová karta vám dáva skvelé možnosti získať zľavy a zúčastniť sa veľkých výpredajov.",

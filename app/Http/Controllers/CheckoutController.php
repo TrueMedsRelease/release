@@ -382,6 +382,7 @@ class CheckoutController extends Controller
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                Log::info("Gift Card answer: " . $response);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -478,7 +479,8 @@ class CheckoutController extends Controller
         return $this->checkout();
     }
 
-    public function change_checkount_bonus(Request $request) {
+    public function change_checkount_bonus(Request $request)
+    {
         if ($request->checked_bonus == 'discount') {
             session(['form.payment_type' => 'card']);
         }

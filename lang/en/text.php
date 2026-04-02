@@ -936,7 +936,8 @@ return [
     "bonus_card_ref_programm" => "Bonus Card & Referral Program",
     "save_earn" => "Save & Earn",
     "bonus_view_more" => "View More",
-    
+    "bonus_card_info" => "You will receive a bonus card after your first order. You can use your bonuses to pay for your future purchases.",
+
     "bonus_page_bonus" => "Bonus Program",
     "bonus_page_text1" => "Bonus card gives you great opportunities to receive discounts and take part in major sales.",
     "bonus_page_text2" => "You will receive a bonus card after your first order. You can use your bonuses to pay for your future purchases. To pay for an order with bonuses, enter your bonus card number on the payment page.",
