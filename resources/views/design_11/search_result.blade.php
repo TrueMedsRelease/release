@@ -186,6 +186,15 @@
 
 @section('promo_bonus')
   <div class="promo-items">
+        <a class="promo-item" href="{{ route('home.bonus_referral_program') }}" style="text-decoration: none">
+            <div class="promo-item__info">
+                <div class="promo-item__title">{{ __('text.bonus_card_ref_programm') }}</div>
+                <div class="promo-item__text">{{ __('text.save_earn') }}</div>
+            </div>
+            <div class="promo-item__img">
+                <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="172" height="112" alt="Promo">
+            </div>
+        </a>
       <div class="promo-item">
           <div class="promo-item__info">
               <div class="promo-item__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>

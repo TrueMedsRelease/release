@@ -689,4 +689,23 @@ return [
 
     "profile_verify_text" => "Er is een inlogcode naar uw e-mailadres verzonden. Voer deze hieronder in.",
     "profile_verify_confirm_code" => "Code bevestigen",
+
+    "bonus_ref_menu" => "Bonus en doorverwijzen",
+    "bonus_card_ref_programm" => "Bonuskaart en doorverwijzen",
+    "save_earn" => "Bespaar en verdien",
+    "bonus_view_more" => "Meer bekijken",
+
+    "bonus_page_bonus" => "Bonusprogramma",
+    "bonus_page_text1" => "De bonuskaart biedt u geweldige mogelijkheden om kortingen te ontvangen en deel te nemen aan grote acties.",
+    "bonus_page_text2" => "U ontvangt een bonuskaart na uw eerste bestelling. U kunt uw bonussen gebruiken om toekomstige aankopen te betalen. Om een bestelling met bonussen te betalen, voert u uw bonuskaartnummer in op de betaalpagina.",
+    "bonus_page_text3" => "Bonuskaarten hebben drie statusniveaus:",
+    "bonus_page_text4" => "Zilver",
+    "bonus_page_text5" => "Goud",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Bij elke bestelling die met een <b>Zilver</b>-kaart wordt betaald, ontvangt u 5% van het bestelbedrag aan bonussen.<br>Met een <b>Goud</b>-kaart — 7%.<br>Met een <b>VIP</b>-kaart — 10%.",
+    "bonus_page_text8" => "De kaartstatus wordt verhoogd afhankelijk van het aantal geplaatste bestellingen.<br>Een <b>Goud</b>-kaart wordt toegekend na 5 bestellingen per jaar.<br>Een <b>VIP</b>-kaart wordt toegekend na 7 bestellingen per jaar.",
+    "bonus_page_text9" => "Bonussen worden niet toegekend als u kortingscoupons gebruikt.",
+    "bonus_page_referral" => "Doorverwijsprogramma",
+    "bonus_page_text10" => "U kunt geld verdienen door onze winkel aan te bevelen bij uw vrienden en kennissen. Ga hiervoor na het plaatsen van een bestelling naar uw persoonlijke account, dat na uw eerste bestelling wordt aangemaakt. Daar vindt u de sectie <b>Doorverwijsprogramma</b>, waar u uw persoonlijke link met uw ID kunt krijgen.",
+    "bonus_page_text11" => "Voor elke verkoop die via uw link wordt gedaan, ontvangt u 5% van het bestelbedrag. Deze inkomsten worden weergegeven in uw accountsaldo en u kunt een uitbetaling van dit bedrag naar uw betaalgegevens aanvragen.",
 ];

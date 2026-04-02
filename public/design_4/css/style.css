@@ -1500,7 +1500,7 @@ textarea.input {
   transition: color 0.4s ease;
 }
 
-.footer__link::after {
+/* .footer__link::after {
   content: "";
   position: absolute;
   z-index: 1;
@@ -1519,6 +1519,15 @@ textarea.input {
   transition: visibility 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
   opacity: 0;
   visibility: hidden;
+  color: var(--white-pure);
+} */
+
+.footer__link:hover {
+  background: -webkit-gradient(linear, left top, left bottom, from(#72BAD0), color-stop(28.13%, #76C8E1), to(#54A8C2));
+  background: -o-linear-gradient(top, #72BAD0 0%, #76C8E1 28.13%, #54A8C2 100%);
+  background: linear-gradient(180deg, #72BAD0 0%, #76C8E1 28.13%, #54A8C2 100%);
+  border-radius: 20px;
+  color: var(--white-pure);
 }
 
 .footer__link span {

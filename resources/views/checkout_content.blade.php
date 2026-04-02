@@ -248,20 +248,7 @@
                                 </div>
                             @endif
                         @endif
-                        {{-- Discount coupon --}}
-                        @if (!empty(session('coupon')) && session('coupon.type') == 'coupon')
-                            <div class="your-order__row">
-                                <div class="your-order__checkbox checkbox">
-                                    <label style="color: var(--red);">
-                                        <span class="checkbox__text">
-                                            {{__('text.checkout_discount2')}}(-{{ round(session('coupon.percent')) }}%)
-                                        </span>
-                                    </label>
-                                </div>
-                                <div style="color: var(--red); font-weight: 500;">
-                                    -{{ $Currency::convert(session('total.coupon_discount')) }}</div>
-                            </div>
-                        @endif
+
                         {{-- Reorder discount --}}
                         {{-- <div class="your-order__row">
                             <div class="your-order__checkbox checkbox">
@@ -270,6 +257,7 @@
                             </div>
                             <div style="color: var(--red); font-weight: 500;">-{$data.info.reorder_discount_sum}</div>
                         </div> --}}
+
                         {{-- Master Discount --}}
                         {{-- <div class="your-order__row">
                             <div class="your-order__checkbox checkbox">
@@ -278,23 +266,122 @@
                             <div id="master_discount_sum" style="color: var(--red); font-weight: 500;"></div>
                         </div> --}}
 
-                        {{-- Gift card discount --}}
-                        {{-- @if (!empty(session('gift_card')) && session('gift_card'))
-                            <div class="your-order__row">
-                                <div class="your-order__checkbox checkbox">
-                                    <label style="color: var(--red); font-weight: 500;">
-                                        <span class="checkbox__text">{{__('text.common_gift_card')}} {{ session('gift_card.gift_card_code') }}</span>
-                                    </label>
+                        @if (session('total.is_only_card', 0) != 1)
+                            <div class="your-order__row bonuses_block">
+                                <div class="top_bonuses_block">
+                                    <div class="check_bonuses">
+                                        <div class="discount_block @if (session('checked_bonus', 'discount') == 'discount' || session('total.is_only_card')) is_active @endif">{{ __('text.checkout_discount_code') }}</div>
+                                        <div class="bonus_block @if (session('checked_bonus', 'discount') == 'bonus_card') is_active @endif"  @if (session('total.is_only_card', 0) == 1) style="display: none" @else style="display: flex" @endif>
+                                            <div class="bonus_block_text">{{ __('text.checkout_bonus_card') }}</div>
+                                            <div class="bonus_block_mark">?</div>
+                                        </div>
+                                        <div class="gift_card_block @if (session('checked_bonus', 'discount') == 'gift_card') is_active @endif" @if (session('total.is_only_card', 0) == 1) style="display: none" @else style="display: flex" @endif>{{ __('text.common_gift_card') }}</div>
+                                    </div>
+                                    <div class="discount_code_input" @if (session('checked_bonus', 'discount') == 'discount') style="display: flex" @else style="display: none" @endif>
+                                        <input id="coupon" autocomplete="off" type="text" name="coupon" placeholder="{{ __('text.checkout_coupon') }}" value="{{ session('coupon.coupon','') }}">
+                                        <div id="coupon_submit" class="coupon-button" onclick="Coupon()">
+                                            <svg width="24" height="24">
+                                                <use
+                                                    xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                                </use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="bonus_card_input" @if (session('checked_bonus', 'discount') == 'bonus_card') style="display: flex" @else style="display: none" @endif>
+                                        <input id="bonus_card" autocomplete="off" type="text" name="bonus_card" placeholder="{{ __('text.checkout_bonus_card') }}" value="{{ session('bonus_card.card_number','') }}">
+                                        <div id="bonus_card_submit" class="coupon-button" onclick="DiscountInfo()">
+                                            <svg width="24" height="24">
+                                                <use
+                                                    xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                                </use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="gift_card_input" @if (session('checked_bonus', 'discount') == 'gift_card') style="display: flex" @else style="display: none" @endif>
+                                        <input style="background-color: white" id="gift_card" autocomplete="off" type="text" name="gift_card" placeholder="{{ __('text.common_gift_card') }}" value="{{ session('gift_card.gift_card_code','') }}">
+                                        <div id="gift_card_submit" class="coupon-button" onclick="GiftCard()">
+                                            <svg width="24" height="24">
+                                                <use
+                                                    xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                                </use>
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
-                                @if (!empty(session('gift_card')) && session('gift_card') && session('gift_card.gift_card_balance') > session('total.checkout_total'))
-                                    <div id="gift_card_minus" style="color: var(--red); font-weight: 500;">-{{ $Currency::convert(session('total.checkout_total'), true) }}</div>
-                                @else
-                                    <div id="gift_card_minus" style="color: var(--red); font-weight: 500;">-{{ $Currency::convert(session('gift_card.gift_card_balance'), true) }}</div>
+                                @if (session('checked_bonus') == 'bonus_card' && session('bonus_card'))
+                                    <div class="bottom_bonuses_block">
+                                        <div class="bottom_bonuses_block_body">
+                                            <div class="bottom_bonuses_block_head">
+                                                <div>{{ __('text.checkout_your_bonus_card') }}</div>
+                                                <div class="delete_bonus_card">
+                                                    <svg width="14" height="14">
+                                                        <use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-close"></use>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="bottom_bonuses_block_text">
+                                                <div>{{ __('text.checkout_available_amount') }} - <b>{{ $Currency::convert(session('bonus_card.balance'), true) }}</b></div>
+                                            </div>
+                                            {{-- @if (session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
+                                                <div class="bottom_bonuses_block_text">
+                                                    <div>{{ __('text.checkout_bonus_text1') }}</div>
+                                                    <div style="color: #ED4C54">-{{ $Currency::convert(session('total.checkout_total'), true) }}</div>
+                                                </div>
+                                            @else --}}
+                                                <div class="bottom_bonuses_block_text">
+                                                    <div>{{ __('text.checkout_bonus_text1') }}</div>
+                                                    <div style="color: #ED4C54">-{{ $Currency::convert(session('total.bonus_card_discount'), true) }}</div>
+                                                </div>
+                                            {{-- @endif --}}
+                                        </div>
+                                    </div>
+                                @endif
+                                @if (session('checked_bonus') == 'discount' && session('coupon'))
+                                    <div class="bottom_bonuses_block">
+                                        <div class="bottom_bonuses_block_body">
+                                            <div class="bottom_bonuses_block_head">
+                                                <div>{{ __('text.checkout_your_discount_code') }}</div>
+                                                <div class="delete_discount">
+                                                    <svg width="14" height="14">
+                                                        <use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-close"></use>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="bottom_bonuses_block_text">
+                                                <div>{{ __('text.checkout_discount2') }} - <b>{{ round(session('coupon.percent')) }}%</b></div>
+                                            </div>
+                                            <div class="bottom_bonuses_block_text">
+                                                <div>{{ __('text.checkout_bonus_text2') }}</div>
+                                                <div style="color: #ED4C54">-{{ $Currency::convert(session('total.coupon_discount'), true) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if (session('checked_bonus') == 'gift_card' && session('gift_card'))
+                                    <div class="bottom_bonuses_block">
+                                        <div class="bottom_bonuses_block_body">
+                                            <div class="bottom_bonuses_block_head">
+                                                <div>Your Gift Card</div>
+                                                <div class="delete_gift_card">
+                                                    <svg width="14" height="14">
+                                                        <use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-close"></use>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="bottom_bonuses_block_text">
+                                                <div>{{ __('text.checkout_available_amount') }} - <b>{{ $Currency::convert(session('gift_card.gift_card_balance'), true) }}</b></div>
+                                            </div>
+                                            <div class="bottom_bonuses_block_text">
+                                                <div>{{ __('text.checkout_bonus_text2') }}</div>
+                                                <div style="color: #ED4C54">-{{ $Currency::convert(session('total.gift_card_discount'), true) }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
-                        @endif --}}
+                        @endif
 
-                        <div class="your-order__row">
+                        {{-- <div class="your-order__row">
                             <div class="your-order__input enter-info__input"
                                 style="margin-bottom: 0; margin-right:0;">
                                 <label for="coupon" class="enter-info__label">{{__('text.checkout_coupon_card')}}</label>
@@ -307,24 +394,12 @@
                                     </use>
                                 </svg>
                             </button>
-                        </div>
+                        </div> --}}
 
                         <div class="your-order__bottom-row">
-                            {{-- <a href="{$path.page}/cart" class="your-order__edit-button">
-                                <svg width="18" height="18">
-                                    <use
-                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-right">
-                                    </use>
-                                </svg>
-                                <span>{#edit#}</span>
-                            </a> --}}
                             <div class="your-order__total totals-order" style="width: 100%;">
                                 <h3 class="totals-order__title" style="width: 100%;">{{__('text.checkout_total')}}</h3>
                                 <div style="display:flex; align-items: center; width: 100%; justify-content:space-between;">
-                                    {{-- {if $data.info.gift_card_balance > $data.info.total_check && $data.info.gift_card}
-                                    <div class="totals-order__total" style="color: var(--green); font-size:18px;">
-                                    </div>
-                                    {else} --}}
                                     @php
                                         $total_discount = 0;
                                         foreach ($products as $product) {
@@ -340,19 +415,16 @@
                                         $total_discount += session('cart_option.bonus_price');
                                         $total_discount += $shipping[session('cart_option.shipping')];
                                         $total_discount += session('total.coupon_discount');
+                                        $total_discount += session('total.bonus_card_discount');
 
-                                        // if (!empty(session('gift_card')) && session('gift_card')) {
-                                        //     $gift_card_balance = session('gift_card.gift_card_balance', 0);
-                                        // } else {
-                                        //     $gift_card_balance = 0;
-                                        // }
-
-                                        $saving = $total_discount - session('total.checkout_total'); // + $gift_card_balance;
+                                        $saving = $total_discount - session('total.checkout_total') + session('total.gift_card_discount');
                                     @endphp
 
-                                    {{-- @if (!empty(session('gift_card')) && session('gift_card') && session('gift_card.gift_card_balance') > session('total.checkout_total'))
+                                    @if (session('checked_bonus', 'discount') == 'gift_card' && session()->has('gift_card') && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
                                         <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div>
-                                    @else --}}
+                                    {{-- @elseif (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
+                                        <div class="totals-order__total" style="color: var(--green); font-size:18px;">{{ $Currency::convert(0, true) }}</div> --}}
+                                    @else
                                         @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
                                             <div class="totals-order__total" style="color: var(--green); font-size:18px;">
                                                 {{ session('total.checkout_total_in_currency') }}
@@ -378,7 +450,7 @@
                                                 {{ session('total.checkout_total_in_currency') }}
                                             </div>
                                         @endif
-                                    {{-- @endif --}}
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -453,16 +525,12 @@
                             <div class="enter-info__input poopup">
                                 <label for="email" class="enter-info__label">{{__('text.checkout_email')}}</label>
                                 <span class="poopuptext" id="error_email">{{__('text.checkout_wrong_email')}}</span>
-                                <input id="email" required autocomplete="off" type="email" name="email"
-                                    class="input"
-                                    value="{{ session('form.email', '') }}">
+                                <input id="email" required autocomplete="off" type="email" name="email" class="input" value="{{ session('form.email', '') }}">
                             </div>
                             <div class="enter-info__input poopup">
                                 <span class="poopuptext" id="error_alt_email">{{__('text.checkout_wrong_email')}}</span>
                                 <label for="alt_email" class="enter-info__label">{{__('text.checkout_email2')}}</label>
-                                <input id="alt_email" autocomplete="off" type="email" name="alt_email"
-                                    class="input"
-                                    value="{{ session('form.alt_email', '') }}">
+                                <input id="alt_email" autocomplete="off" type="email" name="alt_email" class="input" value="{{ session('form.alt_email', '') }}">
                             </div>
                         </div>
                     </div>
@@ -474,22 +542,17 @@
                             <div class="enter-info__input poopup">
                                 <span class="poopuptext" id="error_firstname">{{__('text.checkout_required')}}</span>
                                 <label for="firstname" class="enter-info__label">{{__('text.checkout_name')}}</label>
-                                <input required id="firstname" autocomplete="off" type="text" name="firstname"
-                                    class="input"
-                                    value="{{ session('form.firstname') }}">
+                                <input required id="firstname" autocomplete="off" type="text" name="firstname" class="input" value="{{ session('form.firstname') }}">
                             </div>
                             <div class="enter-info__input poopup">
                                 <span class="poopuptext" id="error_lastname">{{__('text.checkout_required')}}</span>
                                 <label for="lastname" class="enter-info__label">{{__('text.checkout_surname')}}</label>
-                                <input required id="lastname" autocomplete="off" type="text" name="lastname"
-                                    class="input"
-                                    value="{{ session('form.lastname', '') }}">
+                                <input required id="lastname" autocomplete="off" type="text" name="lastname" class="input" value="{{ session('form.lastname', '') }}">
                             </div>
                         </div>
                         <div class="enter-info__row">
                             <div class="enter-info__select select_billing_country">
-                                <select required id="billing_country" name="billing_country" class="form"
-                                    data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
+                                <select required id="billing_country" name="billing_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
                                     @foreach ($countries as $country)
                                         <option @selected($country['country_iso2'] == session('form.billing_country', session('location.country', 'US'))) value="{{ $country['country_iso2'] }}">
                                             {{ $country['country_name'] }}</option>
@@ -498,12 +561,11 @@
                             </div>
                             @if (in_array(session('form.billing_country', session('location.country', 'US')), array_keys($states)))
                             <div class="enter-info__select select_billing_state">
-                                <select required id="billing_state" name="billing_state" class="form"
-                                    data-pseudo-label="State" data-scroll>
+                                <select required id="billing_state" name="billing_state" class="form" data-pseudo-label="State" data-scroll>
                                     @foreach ($states[session('form.billing_country', session('location.country', 'US'))] as $key => $state)
-                                    <option value="{{ $key }}" @selected($key == session('form.billing_state', session('location.state', '')))>
-                                        {{ $state }}
-                                    </option>
+                                        <option value="{{ $key }}" @selected($key == session('form.billing_state', session('location.state', '')))>
+                                            {{ $state }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -511,25 +573,19 @@
                             <div class="enter-info__input poopup">
                                 <span class="poopuptext" id="error_billing_city">{{__('text.checkout_required')}}</span>
                                 <label for="billing_city" class="enter-info__label">{{__('text.checkout_city')}}</label>
-                                <input required id="billing_city" autocomplete="off" type="text"
-                                    name="billing_city" class="input"
-                                    value="{{ session('form.billing_city', session('location.city', '')) }}">
+                                <input required id="billing_city" autocomplete="off" type="text" name="billing_city" class="input" value="{{ session('form.billing_city', session('location.city', '')) }}">
                             </div>
                         </div>
                         <div class="enter-info__row">
                             <div class="enter-info__input poopup">
                                 <span class="poopuptext" id="error_billing_address">{{__('text.checkout_required')}}</span>
                                 <label for="billing_address" class="enter-info__label">{{__('text.checkout_address')}}</label>
-                                <input required id="billing_address" autocomplete="off" type="text"
-                                    name="billing_address" class="input"
-                                    value="{{ session('form.billing_address', '') }}">
+                                <input required id="billing_address" autocomplete="off" type="text" name="billing_address" class="input" value="{{ session('form.billing_address', '') }}">
                             </div>
                             <div class="enter-info__input poopup">
                                 <span class="poopuptext" id="error_billing_zip">{{__('text.checkout_required')}}</span>
                                 <label for="billing_zip" class="enter-info__label">{{__('text.checkout_zip')}}</label>
-                                <input required id="billing_zip" autocomplete="off" type="text"
-                                    name="billing_zip" class="input"
-                                    value="{{ session('form.billing_zip', session('location.postal', '')) }}">
+                                <input required id="billing_zip" autocomplete="off" type="text" name="billing_zip" class="input" value="{{ session('form.billing_zip', session('location.postal', '')) }}">
                             </div>
                         </div>
                     </div>
@@ -542,8 +598,7 @@
                             @if (!filter_var(session('form.address_match', true), FILTER_VALIDATE_BOOLEAN))
                                 checked
                             @endif
-                            type="checkbox" value="false"
-                                name="address_match">
+                            type="checkbox" value="false" name="address_match">
                             <label for="c_1" class="checkbox__label">
                                 <span class="checkbox__text">
                                     {{__('text.checkout_shipping_info')}}
@@ -559,8 +614,7 @@
                         class="enter-info__add-inputs add-info info-form__add-inputs">
                             <div class="enter-info__row">
                                 <div class="enter-info__select select_shipping_country">
-                                    <select required id="shipping_country" name="shipping_country" class="form"
-                                        data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
+                                    <select required id="shipping_country" name="shipping_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
                                         @foreach ($countries as $country)
                                             <option @selected($country['country_iso2'] == session('form.shipping_country', session('location.country')))
                                                 value="{{ $country['country_iso2'] }}">{{ $country['country_name'] }}
@@ -569,39 +623,32 @@
                                     </select>
                                 </div>
                                 @if (in_array(session('form.shipping_country', session('location.country', 'US')), array_keys($states)))
-                                <div class="enter-info__select select_shipping_state">
-                                    <select required id="shipping_state" name="shipping_state" class="form"
-                                        data-pseudo-label="{{__('text.checkout_state')}}" data-scroll>
-                                        @foreach ($states[session('form.shipping_country', session('location.country', 'US'))] as $key => $state)
-                                        <option value="{{ $key }}" @selected($key == session('form.shipping_state', session('location.state', '')))>
-                                            {{ $state }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    <div class="enter-info__select select_shipping_state">
+                                        <select required id="shipping_state" name="shipping_state" class="form" data-pseudo-label="{{__('text.checkout_state')}}" data-scroll>
+                                            @foreach ($states[session('form.shipping_country', session('location.country', 'US'))] as $key => $state)
+                                                <option value="{{ $key }}" @selected($key == session('form.shipping_state', session('location.state', '')))>
+                                                    {{ $state }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 @endif
                                 <div class="enter-info__input poopup">
                                     <label for="shipping_city" class="enter-info__label">{{__('text.checkout_city')}}</label>
                                     <span class="poopuptext" id="error_shipping_city">{{__('text.checkout_required')}}</span>
-                                    <input id="shipping_city" autocomplete="off" type="text" name="shipping_city"
-                                        class="input"
-                                        value="{{ session('form.shipping_city', session('location.city', '')) }}">
+                                    <input id="shipping_city" autocomplete="off" type="text" name="shipping_city" class="input" value="{{ session('form.shipping_city', session('location.city', '')) }}">
                                 </div>
                             </div>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="shipping_address" class="enter-info__label">{{__('text.checkout_address')}}</label>
                                     <span class="poopuptext" id="error_shipping_address">{{__('text.checkout_required')}}</span>
-                                    <input id="shipping_address" autocomplete="off" type="text"
-                                        name="shipping_address" class="input"
-                                        value="{{ session('form.shipping_address', '') }}">
+                                    <input id="shipping_address" autocomplete="off" type="text" name="shipping_address" class="input" value="{{ session('form.shipping_address', '') }}">
                                 </div>
                                 <div class="enter-info__input poopup">
                                     <label for="shipping_zip" class="enter-info__label">{{__('text.checkout_zip')}}</label>
                                     <span class="poopuptext" id="error_shipping_zip">{{__('text.checkout_required')}}</span>
-                                    <input id="shipping_zip" autocomplete="off" type="text" name="shipping_zip"
-                                        class="input"
-                                        value="{{ session('form.shipping_zip', session('location.postal', '')) }}">
+                                    <input id="shipping_zip" autocomplete="off" type="text" name="shipping_zip" class="input" value="{{ session('form.shipping_zip', session('location.postal', '')) }}">
                                 </div>
                             </div>
                         </div>
@@ -613,16 +660,22 @@
                         <div class="enter-info__row">
                             {{-- <div class="enter-info__line"> --}}
                                 <div class="enter-info__select card_type poopup">
-                                    <input required type="hidden"
-                                        value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
-                                    <select name="payment_type" class="form" id="payment_type_select"
-                                        data-pseudo-label="{{__('text.checkout_type')}}">
-                                        @if(env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                    <input required type="hidden" value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
+
+                                    <select name="payment_type" class="form" id="payment_type_select" data-pseudo-label="{{__('text.checkout_type')}}"
+                                        @if (
+                                        (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
+                                        || (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
+                                        ) disabled @endif> {{-- (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total')) --}}
+                                        @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
                                             <option value="zelle" @selected(session('form.payment_type', 'card') == 'zelle')>ZELLE</option>
                                         @endif
+
                                         <option value="card" @selected(session('form.payment_type', 'card') == 'card')>{{__('text.checkout_bank_card')}}</option>
-                                        @if($service_enable)<option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>@endif
-                                        @if(env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
+
+                                        @if ($service_enable)<option value="crypto" @selected(session('form.payment_type', 'card') == 'crypto')>{{__('text.checkout_crypto')}} -15% extra off</option>@endif
+
+                                        @if (env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
                                         @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
@@ -646,7 +699,15 @@
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'card') == 'google')>Google Pay</option>
                                         @endif --}}
-                                        {{-- <option value="gift_card">{#gift_card#}</option> --}}
+                                        @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
+                                            <option value="gift_card" @selected(session('form.payment_type', 'card') == 'gift_card')>{{ __('text.common_gift_card') }}</option>
+                                        @endif
+                                        {{-- @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
+                                            <option value="bonus_card" @selected(session('form.payment_type', 'card') == 'bonus_card')>{{ __('text.checkout_bonus_card') }}</option>
+                                        @endif --}}
+                                        @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
+                                            <option value="bonus_card" @selected(session('form.payment_type', 'card') == 'bonus_card')>{{ __('text.checkout_bonus_card') }}</option>
+                                        @endif
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
                                 </div>
@@ -681,8 +742,7 @@
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>
                                     <span class="poopuptext" id="error_card_numb">{{__('text.checkout_wrong_card')}}</span>
-                                    <input id="card_numb" data-card autocomplete="off" type="text"
-                                        name="card_numb" class="input" value="{{ session('form.card_numb', '') }}">
+                                    <input id="card_numb" data-card autocomplete="off" type="text" name="card_numb" class="input" value="{{ session('form.card_numb', '') }}">
                                     <img loading="lazy" class="enter-info__pay-systems hide"
                                         src="{{ asset('style_checkout/images/pay-systems/amex.svg') }}"
                                         width="33" height="20" alt="Awesome image">
@@ -690,16 +750,14 @@
                                 <div class="enter-info__input poopup">
                                     <span class="poopuptext" id="error_bank_name">{{__('text.checkout_required')}}</span>
                                     <label for="bank_name" class="enter-info__label">{{__('text.checkout_bank_name')}}</label>
-                                    <input id="bank_name" autocomplete="off" type="text" name="bank_name"
-                                    class="input" value="{{ session('form.bank_name', '') }}">
+                                    <input id="bank_name" autocomplete="off" type="text" name="bank_name" class="input" value="{{ session('form.bank_name', '') }}">
                                 </div>
                             </div>
                             <div class="enter-info__row enter-info__row--no-wrap">
                                 <div class="enter-info__card-date poopup">
                                     <span class="poopuptext" id="error_expire_date">{{__('text.checkout_wrong_exp_date')}}</span>
                                     <div class="enter-info__select card_month">
-                                        <select name="card_month" id = "card_month" name="card_month" class="form"
-                                            data-pseudo-label="{{__('text.checkout_exp_date')}}" data-scroll>
+                                        <select name="card_month" id = "card_month" name="card_month" class="form" data-pseudo-label="{{__('text.checkout_exp_date')}}" data-scroll>
                                             <option value="">MM</option>
                                             @foreach (range(1, 12) as $l)
                                                 <option @selected($l == session('form.card_month', '')) value="{{ $l < 10 ? '0' . $l : $l }}">
@@ -708,8 +766,7 @@
                                         </select>
                                     </div>
                                     <div class="enter-info__select card_year">
-                                        <select autocomplete="off" id = "card_year" name="card_year" class="form"
-                                            data-scroll>
+                                        <select autocomplete="off" id = "card_year" name="card_year" class="form" data-scroll>
                                             <option value="" selected>YY</option>
                                             @foreach (range(now()->year, now()->year + 15) as $l)
                                                 <option @selected($l == session('form.card_year', '')) value="{{ $l }}">{{ $l }}</option>
@@ -720,8 +777,7 @@
                                 <div class="enter-info__input enter-info__input--has-icon poopup">
                                     <span class="poopuptext" id="error_cvc_2">{{__('text.checkout_wrong_cvc')}}</span>
                                     <label for="cvc_2" class="enter-info__label">{{__('text.checkout_cvv')}}</label>
-                                    <input id="cvc_2" autocomplete="off" type="number" name="cvc_2"
-                                        class="input" data-card-cvc value="{{ session('form.cvc_2', '') }}">
+                                    <input id="cvc_2" autocomplete="off" type="number" name="cvc_2" class="input" data-card-cvc value="{{ session('form.cvc_2', '') }}">
                                     <img loading="lazy" class="enter-info__icon-input"
                                         src="{{ asset('style_checkout/images/icons/cvc-other.svg') }}" width="60"
                                         height="28" alt="Awesome image">
@@ -1344,16 +1400,27 @@
                             </div>
                         @endif
 
-                        {{-- <div class="enter-info__gift-card-content" {if $rest_total !==0}hidden{/if}>
-                            <button id="proccess_gift_card" name="proccess" class="enter-info__button button">
-                                <span>{#place#}</span>
+                        <div class="enter-info__bonus-card-content" @if (session('form.payment_type', 'card') != 'bonus_card') hidden @endif>
+                            <button id="proccess_bonus_card" name="proccess" class="enter-info__button button">
+                                <span>{{ __('text.checkout_place') }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
                                     </use>
                                 </svg>
                             </button>
-                        </div> --}}
+                        </div>
+
+                        <div class="enter-info__gift-card-content" @if (session('form.payment_type', 'card') != 'gift_card') hidden @endif>
+                            <button id="proccess_gift_card" name="proccess" class="enter-info__button button">
+                                <span>{{ __('text.checkout_place') }}</span>
+                                <svg width="18" height="18">
+                                    <use
+                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                    </use>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </section>
             </div>

@@ -189,6 +189,9 @@
                                     href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                             </li>
                             <li><a
+                                    href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{ __('text.bonus_ref_menu') }}</a>
+                            </li>
+                            <li><a
                                     href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
                             </li>
                             <li><a
@@ -209,6 +212,9 @@
                             </li>
                             <li><a
                                     href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                            </li>
+                            <li><a
+                                    href="{{ route('home.bonus_referral_program', '') }}">{{ __('text.bonus_ref_menu') }}</a>
                             </li>
                             <li><a
                                     href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
@@ -363,7 +369,7 @@
                 <div class="button_close">
                     @if (env('APP_PRINT_SPRITE', 1) == 1)
                         <svg class="close_popup" width="15" height="15">
-                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                            <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-close") }}"></use>
                         </svg>
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
@@ -423,7 +429,7 @@
                 <div class="button_close">
                     @if (env('APP_PRINT_SPRITE', 1) == 1)
                         <svg class="close_popup" width="15" height="15">
-                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
+                            <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-close") }}"></use>
                         </svg>
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
@@ -718,6 +724,9 @@
                                         href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                                 </li>
                                 <li><a
+                                        href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{ __('text.bonus_ref_menu') }}</a>
+                                </li>
+                                <li><a
                                         href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
                                 </li>
                                 <li><a
@@ -749,6 +758,9 @@
                             <ul class="footer-nav">
                                 <li><a
                                         href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                                </li>
+                                <li><a
+                                        href="{{ route('home.bonus_referral_program', '') }}">{{ __('text.bonus_ref_menu') }}</a>
                                 </li>
                                 <li><a
                                         href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
@@ -812,7 +824,7 @@
             <div class="announce__icon">
                 {{-- @if (env('APP_PRINT_SPRITE', 1) == 1) --}}
                     <svg width="24" height="24">
-                        <use xlink:href="@yield('announce_img', asset($design . '/images/icons/icons.svg#svg-checkmark'))"></use>
+                        <use xlink:href="@yield('announce_img', asset($design . '/images/icon/icons.svg#svg-checkmark'))"></use>
                     </svg>
                 {{-- @else
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">

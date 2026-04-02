@@ -411,6 +411,7 @@ ul, ol {
 .header .menu_top ul {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 @media only screen and (max-width: 991px) {
     .header .nav .close {
@@ -429,7 +430,9 @@ ul, ol {
         flex-direction: column;
         justify-content: center; } }
 .header .menu_top ul li {
-    list-style: none; }
+    list-style: none;
+    text-align: center;
+}
 .header .menu_top ul li a {
     display: flex;
     align-items: center;

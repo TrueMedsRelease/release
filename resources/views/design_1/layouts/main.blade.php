@@ -953,6 +953,9 @@
                             <a class="navigation__link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{__('text.common_shipping_main_menu_item')}}</a>
                         </li>
                         <li class="navigation__item">
+                            <a class="navigation__link" href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{__('text.bonus_ref_menu')}}</a>
+                        </li>
+                        <li class="navigation__item">
                             <a class="navigation__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{__('text.common_moneyback_main_menu_item')}}</a>
                         </li>
                         <li class="navigation__item">
@@ -973,6 +976,9 @@
                         </li>
                         <li class="navigation__item">
                             <a class="navigation__link" href="{{ route('home.delivery', '') }}">{{__('text.common_shipping_main_menu_item')}}</a>
+                        </li>
+                        <li class="navigation__item">
+                            <a class="navigation__link" href="{{ route('home.bonus_referral_program', '') }}">{{__('text.bonus_ref_menu')}}</a>
                         </li>
                         <li class="navigation__item">
                             <a class="navigation__link" href="{{ route('home.moneyback', '') }}">{{__('text.common_moneyback_main_menu_item')}}</a>

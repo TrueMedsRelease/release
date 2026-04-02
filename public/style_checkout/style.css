@@ -3227,7 +3227,7 @@ input[type=number] {
 html { scroll-behavior: smooth; }
 #requisites { scroll-margin-top: 80px; }
 
-/* .your-order__row.bonuses_block{
+.your-order__row.bonuses_block{
     width: 100%;
     padding: 15px;
     display: flex;
@@ -3406,7 +3406,7 @@ html { scroll-behavior: smooth; }
 
 .coupon-button:hover {
     opacity: 0.85;
-} */
+}
 
 .details-payment__row--amount {
     background: #EAF6F1;      /* мягкий зелёный фон */

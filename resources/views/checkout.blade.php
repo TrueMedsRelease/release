@@ -58,6 +58,9 @@
         const checkoutSecretPackage = "{{ route('checkout.secret_package') }}";
         const checkoutChangeShipping = "{{ route('checkout.shipping') }}";
         const checkoutCoupon = "{{ route('checkout.coupon') }}";
+        const checkoutGiftCard = "{{ route('checkout.gift_card') }}";
+        const checkoutBonusCardInfo = "{{ route('checkout.bonus_card_info') }}";
+        const checkoutChangeBonus = "{{ route('checkout.change_checkount_bonus') }}";
         const checkoutCheckPayment = "{{ route('checkout.check_payment') }}";
         const checkoutComplete = "{{ route('checkout.complete') }}";
         const checkoutRedirect = "{{ route('redirect_url') }}";
@@ -68,6 +71,9 @@
         const checkoutZelle = "{{ route('checkout.zelle') }}";
         const checkoutAuth = "{{ route('checkout.auth') }}";
         const checkoutSendPhoneEmail = "{{ route('checkout.send_checkout_phone_email') }}";
+        const checkoutForgetBonuses = "{{ route('checkout.forget_bonuses') }}";
+        const checkoutBonusCard = "{{ route('checkout.bonus_card_process') }}";
+        const checkoutGiftCardProcess = "{{ route('checkout.gift_card_process') }}";
 
         const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
         const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";

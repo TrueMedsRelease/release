@@ -2745,7 +2745,7 @@ body{
 
 .footer-nav{
   flex-grow:1;
-  max-width:71rem;
+  max-width:75rem;
   line-height:1.8rem;
 }
 .footer-nav .nav__list{
@@ -5666,4 +5666,12 @@ strong {
 
 .sitemap_menu a:hover{
     color: var(--link-color);
+}
+
+.footer__wrapper .nav__link {
+    text-align: center;
+}
+
+.header-nav .nav__link {
+    text-align: center;
 }

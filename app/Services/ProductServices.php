@@ -694,7 +694,16 @@ class ProductServices
             return self::GetAllProductPillPrice();
         });
 
-        if ($design == 'design_15') {
+        if ($design == 'design_5') {
+            $products = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [13, 14])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.first_letter', '=', $letter)
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+        } else if ($design == 'design_15') {
             $products = Product::query()
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [44])
@@ -824,7 +833,12 @@ class ProductServices
 
         $disease = str_replace('-', ' ', $disease);
 
-        if ($design == 'design_15') {
+        if ($design == 'design_5') {
+            $diseases = DB::select(
+                'SELECT * FROM product_disease pd JOIN product_category pc ON pc.product_id = pd.product_id WHERE pd.language_id = ? AND pd.disease = ? AND pc.category_id IN (13, 14)',
+                [$language_id, $disease]
+            );
+        } else if ($design == 'design_15') {
             $diseases = DB::select(
                 'SELECT * FROM product_disease pd JOIN product_category pc ON pc.product_id = pd.product_id WHERE pd.language_id = ? AND pd.disease = ? AND pc.category_id = 44',
                 [$language_id, $disease]
@@ -954,10 +968,18 @@ class ProductServices
             return self::GetAllProductPillPrice();
         });
 
-
         $active = str_replace('-', ' ', $active);
 
-        if ($design == 'design_15') {
+        if ($design == 'design_5') {
+            $products = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [13, 14])
+                ->where('product.is_showed', '=', 1)
+                ->where('product.aktiv', 'LIKE', "%$active%")
+                ->orderBy('product.main_order')
+                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->toArray();
+        } else if ($design == 'design_15') {
             $products = Product::query()
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [44])
@@ -1086,7 +1108,15 @@ class ProductServices
             return [];
         }
 
-        if ($design == 'design_15' && $url != 'gift-card') {
+        if ($design == 'design_5' && $url != 'gift-card') {
+            $product = Product::query()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [13, 14])
+                ->where('product.id', '=', $products_desc['product_id'])
+                ->where('product.is_showed', '=', 1)
+                ->with('category.category_desc')
+                ->get(['product.id', 'product.image', 'product.aktiv', 'product.sinonim', 'product.product_info_file_path']);
+        } else if ($design == 'design_15' && $url != 'gift-card') {
             $product = Product::query()
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [44])
@@ -1938,8 +1968,12 @@ class ProductServices
         $category    = trans('text.common_category_search');
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
-
-        if ($design == 'design_15') {
+        if ($design == 'design_5') {
+            $result      = DB::select(
+                "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND c.id IN (13, 14) AND language_id = ? AND cd.name LIKE ?",
+                [$language_id, '%' . $search_text . '%']
+            );
+        } else if ($design == 'design_15') {
             $result      = DB::select(
                 "SELECT cd.name, c.url FROM category c JOIN category_desc cd ON c.id = cd.category_id WHERE c.is_showed = 1 AND c.id = 44 AND language_id = ? AND cd.name LIKE ?",
                 [$language_id, '%' . $search_text . '%']
@@ -1979,41 +2013,89 @@ class ProductServices
         $disease     = trans('text.common_disease_search');
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
 
-        if ($design == 'design_15') {
-            $result = DB::select(
-                "SELECT DISTINCT pd.disease, p.id FROM product p
-                            JOIN product_disease pd ON pd.product_id = p.id
-                            JOIN product_category pc ON pc.product_id = p.id
-                            WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND pc.category_id = 44",
-                ['%' . $search_text . '%', $language_id]
-            );
+        if ($design == 'design_5') {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                JOIN product_category pc ON pc.product_id = p.id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND p.id NOT IN (755, 491) AND pc.category_id IN (13, 14)",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            } else {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                JOIN product_category pc ON pc.product_id = p.id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND pc.category_id IN (13, 14)",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            }
+        } else if ($design == 'design_15') {
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                JOIN product_category pc ON pc.product_id = p.id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND p.id NOT IN (755, 491) AND pc.category_id = 44",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            } else {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                JOIN product_category pc ON pc.product_id = p.id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND pc.category_id = 44",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            }
         } else if ($design == 'design_16') {
-            $result = DB::select(
-                "SELECT DISTINCT pd.disease, p.id FROM product p
-                            JOIN product_disease pd ON pd.product_id = p.id
-                            JOIN product_category pc ON pc.product_id = p.id
-                            JOIN category c ON c.id = pc.category_id
-                            WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND c.category_parent_id = 47",
-                ['%' . $search_text . '%', $language_id]
-            );
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                JOIN product_category pc ON pc.product_id = p.id
+                                JOIN category c ON c.id = pc.category_id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND p.id NOT IN (755, 491) AND c.category_parent_id = 47",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            } else {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                JOIN product_category pc ON pc.product_id = p.id
+                                JOIN category c ON c.id = pc.category_id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND c.category_parent_id = 47",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            }
         } else {
-            $result = DB::select(
-                "SELECT DISTINCT pd.disease, p.id FROM product p
-                            JOIN product_disease pd ON pd.product_id = p.id
-                            WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1",
-                ['%' . $search_text . '%', $language_id]
-            );
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1 AND p.id NOT IN (755, 491)",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            } else {
+                $result = DB::select(
+                    "SELECT DISTINCT pd.disease FROM product p
+                                JOIN product_disease pd ON pd.product_id = p.id
+                                WHERE pd.disease LIKE ? AND pd.language_id = ? AND p.is_showed = 1",
+                    ['%' . $search_text . '%', $language_id]
+                );
+            }
         }
 
         $tips = "";
 
-        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
-            foreach ($result as $key => $item) {
-                if ($item->id == 755 || $item->id == 491) {
-                    unset($result[$key]);
-                }
-            }
-        }
+        // if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+        //     foreach ($result as $key => $item) {
+        //         if ($item->id == 755 || $item->id == 491) {
+        //             unset($result[$key]);
+        //         }
+        //     }
+        // }
 
         foreach ($result as $item) {
             $url = str_replace(' ', '-', strtolower($item->disease));
@@ -2036,7 +2118,14 @@ class ProductServices
     {
         $aktiv = trans('text.common_aktiv_search');
 
-        if ($design == 'design_15') {
+        if ($design == 'design_5') {
+            $all_active = Product::distinct()
+                ->join('product_category', 'product.id', '=', 'product_category.product_id')
+                ->whereIn('product_category.category_id', [13, 14])
+                ->where('product.is_showed', '=', 1)
+                ->get(['product.aktiv', 'product.id'])
+                ->toArray();
+        } else if ($design == 'design_15') {
             $all_active = Product::distinct()
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [44])
@@ -2103,7 +2192,26 @@ class ProductServices
     {
         $search_text = trim($search_text);
 
-        if ($design == 'design_15') {
+        if ($design == 'design_5') {
+
+            if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+                $baseProductFilter = function ($q) {
+                    $q->join('product_category', 'product.id', '=', 'product_category.product_id')
+                    ->whereIn('product_category.category_id', [13, 14])
+                    ->where('product.is_showed', 1)
+                    ->whereNotIn('product.id', [755, 491])
+                    ->where('product.ban', '!=', 1);
+                };
+
+            } else {
+                $baseProductFilter = function ($q) {
+                    $q->join('product_category', 'product.id', '=', 'product_category.product_id')
+                    ->whereIn('product_category.category_id', [13, 14])
+                    ->where('product.is_showed', 1)
+                    ->where('product.ban', '!=', 1);
+                };
+            }
+        } else if ($design == 'design_15') {
 
             if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
                 $baseProductFilter = function ($q) {
@@ -2345,35 +2453,29 @@ class ProductServices
             case 'cart':
 
                 $total = session('total.all_in_currency') ? session('total.all_in_currency') : 0;
-
                 $page_properties->keyword     = str_replace('(cart_total)', $total, $page_properties->keyword);
                 $page_properties->description = str_replace('(cart_total)', $total, $page_properties->description);
 
                 break;
             case 'category':
 
-                $category_name                = session('category_name') ? session('category_name') : __(
-                    'text.category_title'
-                );
+                $category_name                = session('category_name') ? session('category_name') : __('text.category_title');
                 $page_properties->title       = str_replace('(category_name)', $category_name, $page_properties->title);
-                $page_properties->keyword     = str_replace(
-                    '(category_name)',
-                    $category_name,
-                    $page_properties->keyword
-                );
-                $page_properties->description = str_replace(
-                    '(category_name)',
-                    $category_name,
-                    $page_properties->description
-                );
+                $page_properties->keyword     = str_replace('(category_name)', $category_name, $page_properties->keyword);
+                $page_properties->description = str_replace('(category_name)', $category_name, $page_properties->description);
 
                 break;
             case 'sitemap':
 
                 $page_properties->title       = __('text.menu_title_sitemap') . ' - ' . request()->getHost();
                 $page_properties->keyword     = 'Online pharmacy, certified pharmacy, online drugs, pharmacy meds, order medicines online, pharmacies mail order, verified online pharmacy, reputable pharmacy online, drugstore online, meds online, generic pharmacy, discount pharmacy, non prescription pharmacy, legitimate pharmacy online';
-                $page_properties->description = request()->getHost(
-                    ) . ' - Discount Pharmacy Store. Big Sales. High quality products. Fast worldwide shipping.';
+                $page_properties->description = request()->getHost() . ' - Discount Pharmacy Store. Big Sales. High quality products. Fast worldwide shipping.';
+
+            case 'bonus_referral_program':
+
+                $page_properties->title       = __('text.bonus_ref_menu') . ' - ' . request()->getHost();
+                $page_properties->keyword     = 'Online pharmacy, certified pharmacy, online drugs, pharmacy meds, order medicines online, pharmacies mail order, verified online pharmacy, reputable pharmacy online, drugstore online, meds online, generic pharmacy, discount pharmacy, non prescription pharmacy, legitimate pharmacy online';
+                $page_properties->description = request()->getHost() . ' - Discount Pharmacy Store. Big Sales. High quality products. Fast worldwide shipping.';
         }
 
         return $page_properties;
@@ -2485,6 +2587,7 @@ class ProductServices
     public static function getFirstLetters(): array
     {
         $design = session('design') ? session('design') : config('app.design');
+        
         if ($design == 'design_5') {
             $first_letters_result = DB::table('product')
                 ->distinct()

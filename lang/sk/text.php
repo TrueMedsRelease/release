@@ -649,4 +649,23 @@ return [
 
     "profile_verify_text" => "Na váš e-mail bol odoslaný prihlasovací kód. Zadajte ho prosím nižšie.",
     "profile_verify_confirm_code" => "Potvrdiť kód",
+
+    "bonus_ref_menu" => "Bonusový a odporúčací program",
+    "bonus_card_ref_programm" => "Bonusová karta a odporúčací program",
+    "save_earn" => "Šetrite a zarábajte",
+    "bonus_view_more" => "Zobraziť viac",
+
+    "bonus_page_bonus" => "Bonusový program",
+    "bonus_page_text1" => "Bonusová karta vám dáva skvelé možnosti získať zľavy a zúčastniť sa veľkých výpredajov.",
+    "bonus_page_text2" => "Bonusovú kartu dostanete po svojej prvej objednávke. Bonusy môžete použiť na zaplatenie svojich budúcich nákupov. Ak chcete zaplatiť objednávku bonusmi, zadajte číslo svojej bonusovej karty na stránke platby.",
+    "bonus_page_text3" => "Bonusové karty majú tri úrovne statusu:",
+    "bonus_page_text4" => "Strieborná",
+    "bonus_page_text5" => "Zlatá",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "S každou objednávkou zaplatenou pomocou <b>Striebornej</b> karty získate 5 % zo sumy objednávky v bonusoch.<br>So <b>Zlatou</b> kartou — 7 %.<br>S kartou <b>VIP</b> — 10 %.",
+    "bonus_page_text8" => "Status karty sa zvyšuje v závislosti od počtu uskutočnených objednávok.<br><b>Zlatá</b> karta sa udeľuje po 5 objednávkach ročne.<br><b>VIP</b> karta sa udeľuje po 7 objednávkach ročne.",
+    "bonus_page_text9" => "Bonusy sa nepripisujú, ak použijete zľavové kupóny.",
+    "bonus_page_referral" => "Odporúčací program",
+    "bonus_page_text10" => "Môžete zarábať peniaze tým, že odporučíte náš obchod svojim priateľom a známym. Ak to chcete urobiť, po vytvorení objednávky prejdite do svojho osobného účtu, ktorý sa vytvorí po vašej prvej objednávke. Tam nájdete sekciu <b>Odporúčací program</b>, kde môžete získať svoj osobný odkaz so svojím ID.",
+    "bonus_page_text11" => "Za každý predaj uskutočnený prostredníctvom vášho odkazu získate 5 % zo sumy objednávky. Tieto zárobky sa zobrazia v zostatku vášho účtu a budete si môcť požiadať o výber tejto sumy na svoje platobné údaje.",
 ];

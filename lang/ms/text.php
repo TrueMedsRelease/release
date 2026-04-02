@@ -651,4 +651,23 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "profile_verify_text" => "Kod log masuk telah dihantar ke e-mel anda. Sila masukkannya di bawah.",
     "profile_verify_confirm_code" => "Sahkan kod",
+
+    "bonus_ref_menu" => "Program Bonus & Rujukan",
+    "bonus_card_ref_programm" => "Kad Bonus & Program Rujukan",
+    "save_earn" => "Simpan & Jana",
+    "bonus_view_more" => "Lihat Lagi",
+
+    "bonus_page_bonus" => "Program Bonus",
+    "bonus_page_text1" => "Kad bonus memberi anda peluang hebat untuk menerima diskaun dan menyertai jualan besar.",
+    "bonus_page_text2" => "Anda akan menerima kad bonus selepas pesanan pertama anda. Anda boleh menggunakan bonus anda untuk membayar pembelian masa hadapan anda. Untuk membayar pesanan dengan bonus, masukkan nombor kad bonus anda pada halaman pembayaran.",
+    "bonus_page_text3" => "Kad bonus mempunyai tiga tahap status:",
+    "bonus_page_text4" => "Perak",
+    "bonus_page_text5" => "Emas",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Bagi setiap pesanan yang dibayar menggunakan kad <b>Perak</b>, anda akan menerima 5% daripada jumlah pesanan dalam bentuk bonus.<br>Dengan kad <b>Emas</b> — 7%.<br>Dengan kad <b>VIP</b> — 10%.",
+    "bonus_page_text8" => "Status kad dinaik taraf bergantung pada bilangan pesanan yang dibuat.<br>Kad <b>Emas</b> diberikan selepas 5 pesanan setahun.<br>Kad <b>VIP</b> diberikan selepas 7 pesanan setahun.",
+    "bonus_page_text9" => "Bonus tidak akan dikreditkan jika anda menggunakan kupon diskaun.",
+    "bonus_page_referral" => "Program Rujukan",
+    "bonus_page_text10" => "Anda boleh menjana wang dengan mengesyorkan kedai kami kepada rakan dan kenalan anda. Untuk berbuat demikian, selepas membuat pesanan, pergi ke akaun peribadi anda yang dicipta selepas pesanan pertama anda. Di sana, anda akan menemui bahagian <b>Program Rujukan</b>, di mana anda boleh mendapatkan pautan peribadi anda dengan ID anda.",
+    "bonus_page_text11" => "Bagi setiap jualan yang dibuat melalui pautan anda, anda akan menerima 5% daripada jumlah pesanan. Pendapatan ini akan dipaparkan dalam baki akaun anda, dan anda boleh meminta pengeluaran jumlah ini ke butiran pembayaran anda.",
 ];

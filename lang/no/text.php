@@ -652,4 +652,23 @@ return [
 
     "profile_verify_text" => "En innloggingskode er sendt til e-posten din. Vennligst skriv den inn nedenfor.",
     "profile_verify_confirm_code" => "Bekreft kode",
+
+    "bonus_ref_menu" => "Bonus- og vervingsprogram",
+    "bonus_card_ref_programm" => "Bonuskort og vervingsprogram",
+    "save_earn" => "Spar og tjen",
+    "bonus_view_more" => "Se mer",
+
+    "bonus_page_bonus" => "Bonusprogram",
+    "bonus_page_text1" => "Bonuskortet gir deg gode muligheter til å få rabatter og delta i store salgskampanjer.",
+    "bonus_page_text2" => "Du vil motta et bonuskort etter din første bestilling. Du kan bruke bonusene dine til å betale for fremtidige kjøp. For å betale en bestilling med bonuser, skriv inn bonuskortnummeret ditt på betalingssiden.",
+    "bonus_page_text3" => "Bonuskort har tre statusnivåer:",
+    "bonus_page_text4" => "Sølv",
+    "bonus_page_text5" => "Gull",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "For hver bestilling betalt med et <b>Sølv</b>-kort, vil du motta 5 % av bestillingsbeløpet i bonuser.<br>Med et <b>Gull</b>-kort — 7 %.<br>Med et <b>VIP</b>-kort — 10 %.",
+    "bonus_page_text8" => "Kortstatusen oppgraderes avhengig av antall bestillinger som er lagt inn.<br>Et <b>Gull</b>-kort gis etter 5 bestillinger per år.<br>Et <b>VIP</b>-kort gis etter 7 bestillinger per år.",
+    "bonus_page_text9" => "Bonuser krediteres ikke hvis du bruker rabattkuponger.",
+    "bonus_page_referral" => "Vervingsprogram",
+    "bonus_page_text10" => "Du kan tjene penger ved å anbefale butikken vår til venner og bekjente. For å gjøre dette, gå etter at du har lagt inn en bestilling til din personlige konto, som opprettes etter din første bestilling. Der finner du seksjonen <b>Vervingsprogram</b>, hvor du kan få din personlige lenke med din ID.",
+    "bonus_page_text11" => "For hvert salg som gjøres via lenken din, vil du motta 5 % av bestillingsbeløpet. Denne inntekten vil vises i kontosaldoen din, og du vil kunne be om uttak av dette beløpet til betalingsopplysningene dine.",
 ];

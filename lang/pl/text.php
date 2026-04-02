@@ -650,4 +650,23 @@ return [
 
     "profile_verify_text" => "Kod logowania został wysłany na Twój adres e-mail. Wprowadź go poniżej.",
     "profile_verify_confirm_code" => "Potwierdź kod",
+
+    "bonus_ref_menu" => "Program bonusowy i poleceń",
+    "bonus_card_ref_programm" => "Karta bonusowa i program poleceń",
+    "save_earn" => "Oszczędzaj i zarabiaj",
+    "bonus_view_more" => "Zobacz więcej",
+
+    "bonus_page_bonus" => "Program bonusowy",
+    "bonus_page_text1" => "Karta bonusowa daje Ci świetne możliwości otrzymywania zniżek i udziału w dużych wyprzedażach.",
+    "bonus_page_text2" => "Otrzymasz kartę bonusową po swoim pierwszym zamówieniu. Możesz wykorzystać swoje bonusy do opłacania przyszłych zakupów. Aby opłacić zamówienie bonusami, wpisz numer swojej karty bonusowej na stronie płatności.",
+    "bonus_page_text3" => "Karty bonusowe mają trzy poziomy statusu:",
+    "bonus_page_text4" => "Srebrna",
+    "bonus_page_text5" => "Złota",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Przy każdym zamówieniu opłaconym kartą <b>Srebrną</b> otrzymasz 5% wartości zamówienia w bonusach.<br>Z kartą <b>Złotą</b> — 7%.<br>Z kartą <b>VIP</b> — 10%.",
+    "bonus_page_text8" => "Status karty jest podwyższany w zależności od liczby złożonych zamówień.<br>Karta <b>Złota</b> jest przyznawana po 5 zamówieniach rocznie.<br>Karta <b>VIP</b> jest przyznawana po 7 zamówieniach rocznie.",
+    "bonus_page_text9" => "Bonusy nie są naliczane, jeśli używasz kuponów rabatowych.",
+    "bonus_page_referral" => "Program poleceń",
+    "bonus_page_text10" => "Możesz zarabiać pieniądze, polecając nasz sklep swoim znajomym i przyjaciołom. Aby to zrobić, po złożeniu zamówienia przejdź do swojego konta osobistego, które zostanie utworzone po pierwszym zamówieniu. Tam znajdziesz sekcję <b>Program poleceń</b>, w której możesz otrzymać swój osobisty link z Twoim ID.",
+    "bonus_page_text11" => "Za każdą sprzedaż dokonaną przez Twój link otrzymasz 5% wartości zamówienia. Te zarobki będą widoczne w saldzie Twojego konta i będziesz mógł zlecić wypłatę tej kwoty na swoje dane płatnicze.",
 ];

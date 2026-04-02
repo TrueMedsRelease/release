@@ -784,4 +784,23 @@ return [
 
     "profile_verify_text" => "Un codice di accesso è stato inviato alla tua email. Inseriscilo qui sotto.",
     "profile_verify_confirm_code" => "Conferma codice",
+
+    "bonus_ref_menu" => "Programma bonus e referral",
+    "bonus_card_ref_programm" => "Carta bonus e programma referral",
+    "save_earn" => "Risparmia e guadagna",
+    "bonus_view_more" => "Vedi altro",
+
+    "bonus_page_bonus" => "Programma Bonus",
+    "bonus_page_text1" => "La carta bonus ti offre grandi opportunità per ricevere sconti e partecipare a grandi promozioni.",
+    "bonus_page_text2" => "Riceverai una carta bonus dopo il tuo primo ordine. Puoi utilizzare i tuoi bonus per pagare i tuoi acquisti futuri. Per pagare un ordine con i bonus, inserisci il numero della tua carta bonus nella pagina di pagamento.",
+    "bonus_page_text3" => "Le carte bonus hanno tre livelli di stato:",
+    "bonus_page_text4" => "Argento",
+    "bonus_page_text5" => "Oro",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Con ogni ordine pagato con una carta <b>Argento</b>, riceverai il 5% dell'importo dell'ordine in bonus.<br>Con una carta <b>Oro</b> — 7%.<br>Con una carta <b>VIP</b> — 10%.",
+    "bonus_page_text8" => "Lo stato della carta viene aggiornato in base al numero di ordini effettuati.<br>La carta <b>Oro</b> viene assegnata dopo 5 ordini all'anno.<br>La carta <b>VIP</b> viene assegnata dopo 7 ordini all'anno.",
+    "bonus_page_text9" => "I bonus non vengono accreditati se utilizzi coupon sconto.",
+    "bonus_page_referral" => "Programma Referral",
+    "bonus_page_text10" => "Puoi guadagnare denaro consigliando il nostro negozio ai tuoi amici e conoscenti. Per farlo, dopo aver effettuato un ordine, vai al tuo account personale, che viene creato dopo il tuo primo ordine. Lì troverai la sezione <b>Programma Referral</b>, dove potrai ottenere il tuo link personale con il tuo ID.",
+    "bonus_page_text11" => "Per ogni vendita effettuata tramite il tuo link, riceverai il 5% dell'importo dell'ordine. Questi guadagni saranno mostrati nel saldo del tuo account e potrai richiedere il prelievo di questo importo sui tuoi dati di pagamento.",
 ];

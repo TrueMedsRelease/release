@@ -403,16 +403,18 @@
                                     <li class="menu__item"><a class="menu__link" href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{__('text.common_help_main_menu_item')}}</a></li>
                                     <li class="menu__item" data-da=".menu__subslist, 900, first"><a class="menu__link" href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
                                     <li class="menu__item" data-da=".menu__subslist, 950, first"><a class="menu__link" href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
-                                    <li class="menu__item" data-da=".menu__subslist, 1000, first"><a class="menu__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
-                                    <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1000, first"><a class="menu__link" href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{__('text.bonus_ref_menu')}}</a></li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link" href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1100, first"><a class="menu__link" href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
                                 @else
                                     <li class="menu__item"><a class="menu__link" href="{{ route('home.index') }}">{{__('text.common_best_sellers_main_menu_item')}}</a></li>
                                     <li class="menu__item"><a class="menu__link" href="{{ route('home.about', '') }}">{{__('text.common_about_us_main_menu_item')}}</a></li>
                                     <li class="menu__item"><a class="menu__link" href="{{ route('home.help', '') }}">{{__('text.common_help_main_menu_item')}}</a></li>
                                     <li class="menu__item" data-da=".menu__subslist, 900, first"><a class="menu__link" href="{{ route('home.testimonials', '') }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
                                     <li class="menu__item" data-da=".menu__subslist, 950, first"><a class="menu__link" href="{{ route('home.delivery', '') }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
-                                    <li class="menu__item" data-da=".menu__subslist, 1000, first"><a class="menu__link" href="{{ route('home.moneyback', '') }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
-                                    <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link" href="{{ route('home.contact_us', '') }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1000, first"><a class="menu__link" href="{{ route('home.bonus_referral_program', '') }}">{{__('text.bonus_ref_menu')}}</a></li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1050, first"><a class="menu__link" href="{{ route('home.moneyback', '') }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
+                                    <li class="menu__item" data-da=".menu__subslist, 1100, first"><a class="menu__link" href="{{ route('home.contact_us', '') }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
                                 @endif
 								<li class="menu__dotts">
 									<span></span>
@@ -667,6 +669,7 @@
                         <li class="footer__item"><a href="{{ route('home.help', '_' . $domainWithoutZone) }}">{{__('text.common_help_main_menu_item')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.testimonials', '_' . $domainWithoutZone) }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
+                        <li class="footer__item"><a href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{__('text.bonus_ref_menu')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
                     </ul>
@@ -678,6 +681,7 @@
                         <li class="footer__item"><a href="{{ route('home.help', '') }}">{{__('text.common_help_main_menu_item')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.testimonials', '') }}">{{__('text.common_testimonials_main_menu_item')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.delivery', '') }}">{{__('text.common_shipping_main_menu_item')}}</a></li>
+                        <li class="footer__item"><a href="{{ route('home.bonus_referral_program', '') }}">{{__('text.bonus_ref_menu')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.moneyback', '') }}">{{__('text.common_moneyback_main_menu_item')}}</a></li>
                         <li class="footer__item"><a href="{{ route('home.contact_us', '') }}">{{__('text.common_contact_us_main_menu_item')}}</a></li>
                     </ul>

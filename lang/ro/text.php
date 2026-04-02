@@ -645,4 +645,23 @@ return [
 
     "profile_verify_text" => "Un cod de autentificare a fost trimis pe e-mailul dvs. Vă rugăm să îl introduceți mai jos.",
     "profile_verify_confirm_code" => "Confirmă codul",
+
+    "bonus_ref_menu" => "Program de bonusuri și recomandări",
+    "bonus_card_ref_programm" => "Card de bonusuri și program de recomandări",
+    "save_earn" => "Economisește și câștigă",
+    "bonus_view_more" => "Vezi mai mult",
+
+    "bonus_page_bonus" => "Program de bonusuri",
+    "bonus_page_text1" => "Cardul de bonus vă oferă oportunități excelente de a primi reduceri și de a participa la mari promoții.",
+    "bonus_page_text2" => "Veți primi un card de bonus după prima dvs. comandă. Puteți folosi bonusurile pentru a plăti achizițiile viitoare. Pentru a plăti o comandă cu bonusuri, introduceți numărul cardului dvs. de bonus pe pagina de plată.",
+    "bonus_page_text3" => "Cardurile de bonus au trei niveluri de statut:",
+    "bonus_page_text4" => "Argint",
+    "bonus_page_text5" => "Aur",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Cu fiecare comandă plătită folosind un card <b>Argint</b>, veți primi 5% din valoarea comenzii sub formă de bonusuri.<br>Cu un card <b>Aur</b> — 7%.<br>Cu un card <b>VIP</b> — 10%.",
+    "bonus_page_text8" => "Statutul cardului este îmbunătățit în funcție de numărul de comenzi plasate.<br>Un card <b>Aur</b> este acordat după 5 comenzi pe an.<br>Un card <b>VIP</b> este acordat după 7 comenzi pe an.",
+    "bonus_page_text9" => "Bonusurile nu sunt creditate dacă utilizați cupoane de reducere.",
+    "bonus_page_referral" => "Program de recomandări",
+    "bonus_page_text10" => "Puteți câștiga bani recomandând magazinul nostru prietenilor și cunoscuților dvs. Pentru a face acest lucru, după plasarea unei comenzi, accesați contul dvs. personal, care este creat după prima dvs. comandă. Acolo veți găsi secțiunea <b>Program de recomandări</b>, unde puteți obține linkul dvs. personal cu ID-ul dvs.",
+    "bonus_page_text11" => "Pentru fiecare vânzare realizată prin linkul dvs., veți primi 5% din valoarea comenzii. Aceste câștiguri vor fi afișate în soldul contului dvs. și veți putea solicita retragerea acestei sume către datele dvs. de plată.",
 ];

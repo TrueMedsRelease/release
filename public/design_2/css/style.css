@@ -1641,7 +1641,7 @@ textarea.input {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  max-width: 41.875rem;
+  /* max-width: 41.875rem; */
   margin: 0px auto;
 }
 
@@ -1649,6 +1649,7 @@ textarea.input {
   -webkit-transition: color 0.3s ease;
   -o-transition: color 0.3s ease;
   transition: color 0.3s ease;
+  text-align: center;
 }
 
 .menu__link {

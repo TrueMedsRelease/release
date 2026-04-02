@@ -768,4 +768,23 @@ return [
 
     "profile_verify_text" => "Um código de login foi enviado para o seu e-mail. Por favor, insira-o abaixo.",
     "profile_verify_confirm_code" => "Confirmar código",
+
+    "bonus_ref_menu" => "Programa de Bónus e Indicações",
+    "bonus_card_ref_programm" => "Cartão de Bónus e Programa de Indicações",
+    "save_earn" => "Poupe e Ganhe",
+    "bonus_view_more" => "Ver mais",
+
+    "bonus_page_bonus" => "Programa de Bónus",
+    "bonus_page_text1" => "O cartão de bónus dá-lhe excelentes oportunidades para receber descontos e participar em grandes promoções.",
+    "bonus_page_text2" => "Receberá um cartão de bónus após a sua primeira encomenda. Pode usar os seus bónus para pagar as suas futuras compras. Para pagar uma encomenda com bónus, introduza o número do seu cartão de bónus na página de pagamento.",
+    "bonus_page_text3" => "Os cartões de bónus têm três níveis de estatuto:",
+    "bonus_page_text4" => "Prata",
+    "bonus_page_text5" => "Ouro",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Com cada encomenda paga com um cartão <b>Prata</b>, receberá 5% do valor da encomenda em bónus.<br>Com um cartão <b>Ouro</b> — 7%.<br>Com um cartão <b>VIP</b> — 10%.",
+    "bonus_page_text8" => "O estatuto do cartão é atualizado consoante o número de encomendas efetuadas.<br>Um cartão <b>Ouro</b> é atribuído após 5 encomendas por ano.<br>Um cartão <b>VIP</b> é atribuído após 7 encomendas por ano.",
+    "bonus_page_text9" => "Os bónus não são creditados se utilizar cupões de desconto.",
+    "bonus_page_referral" => "Programa de Indicações",
+    "bonus_page_text10" => "Pode ganhar dinheiro ao recomendar a nossa loja aos seus amigos e conhecidos. Para isso, depois de fazer uma encomenda, aceda à sua conta pessoal, que é criada após a sua primeira encomenda. Aí encontrará a secção <b>Programa de Indicações</b>, onde poderá obter o seu link pessoal com o seu ID.",
+    "bonus_page_text11" => "Por cada venda efetuada através do seu link, receberá 5% do valor da encomenda. Estes ganhos serão apresentados no saldo da sua conta e poderá solicitar o levantamento deste valor para os seus dados de pagamento.",
 ];

@@ -655,4 +655,23 @@ return [
 
     "profile_verify_text" => "Kirjautumiskoodi on lähetetty sähköpostiisi. Syötä se alle.",
     "profile_verify_confirm_code" => "Vahvista koodi",
+
+    "bonus_ref_menu" => "Bonus ja suosittelu",
+    "bonus_card_ref_programm" => "Bonuskortti ja suosittelu",
+    "save_earn" => "Säästä ja ansaitse",
+    "bonus_view_more" => "Näytä lisää",
+
+    "bonus_page_bonus" => "Bonusohjelma",
+    "bonus_page_text1" => "Bonuskortti tarjoaa sinulle loistavia mahdollisuuksia saada alennuksia ja osallistua suuriin kampanjoihin.",
+    "bonus_page_text2" => "Saat bonuskortin ensimmäisen tilauksesi jälkeen. Voit käyttää bonuksiasi tulevien ostosten maksamiseen. Maksaaksesi tilauksen bonuksilla syötä bonuskorttisi numero maksusivulla.",
+    "bonus_page_text3" => "Bonuskorteissa on kolme statustasoa:",
+    "bonus_page_text4" => "Hopea",
+    "bonus_page_text5" => "Kulta",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Jokaisesta <b>Hopea</b>-kortilla maksetusta tilauksesta saat bonuksina 5 % tilauksen summasta.<br><b>Kulta</b>-kortilla — 7 %.<br><b>VIP</b>-kortilla — 10 %.",
+    "bonus_page_text8" => "Kortin status päivittyy tehtyjen tilausten määrän mukaan.<br><b>Kulta</b>-kortti myönnetään 5 tilauksen jälkeen vuodessa.<br><b>VIP</b>-kortti myönnetään 7 tilauksen jälkeen vuodessa.",
+    "bonus_page_text9" => "Bonuksia ei hyvitetä, jos käytät alennuskuponkeja.",
+    "bonus_page_referral" => "Suositteluohjelma",
+    "bonus_page_text10" => "Voit ansaita rahaa suosittelemalla kauppaamme ystävillesi ja tuttavillesi. Tee tämä siirtymällä tilauksen tekemisen jälkeen henkilökohtaiselle tilillesi, joka luodaan ensimmäisen tilauksesi jälkeen. Sieltä löydät <b>Suositteluohjelma</b>-osion, josta saat henkilökohtaisen linkkisi tunnisteellasi.",
+    "bonus_page_text11" => "Jokaisesta linkkisi kautta tehdystä myynnistä saat 5 % tilauksen summasta. Nämä ansiot näkyvät tilisi saldossa, ja voit pyytää tämän summan nostamista maksutietoihisi.",
 ];

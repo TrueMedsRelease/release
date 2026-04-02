@@ -649,4 +649,23 @@ return [
 
     "profile_verify_text" => "En inloggningskod har skickats till din e-post. Ange den nedan.",
     "profile_verify_confirm_code" => "Bekräfta kod",
+
+    "bonus_ref_menu" => "Bonus- och värvningsprogram",
+    "bonus_card_ref_programm" => "Bonuskort och värvningsprogram",
+    "save_earn" => "Spara och tjäna",
+    "bonus_view_more" => "Visa mer",
+
+    "bonus_page_bonus" => "Bonusprogram",
+    "bonus_page_text1" => "Bonuskortet ger dig fantastiska möjligheter att få rabatter och delta i stora kampanjer.",
+    "bonus_page_text2" => "Du får ett bonuskort efter din första beställning. Du kan använda dina bonusar för att betala för framtida köp. För att betala en beställning med bonusar anger du ditt bonuskortsnummer på betalningssidan.",
+    "bonus_page_text3" => "Bonuskort har tre statusnivåer:",
+    "bonus_page_text4" => "Silver",
+    "bonus_page_text5" => "Guld",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "För varje beställning som betalas med ett <b>Silver</b>-kort får du 5 % av orderbeloppet i bonusar.<br>Med ett <b>Guld</b>-kort — 7 %.<br>Med ett <b>VIP</b>-kort — 10 %.",
+    "bonus_page_text8" => "Kortstatusen uppgraderas beroende på antalet lagda beställningar.<br>Ett <b>Guld</b>-kort ges efter 5 beställningar per år.<br>Ett <b>VIP</b>-kort ges efter 7 beställningar per år.",
+    "bonus_page_text9" => "Bonusar krediteras inte om du använder rabattkuponger.",
+    "bonus_page_referral" => "Värvningsprogram",
+    "bonus_page_text10" => "Du kan tjäna pengar genom att rekommendera vår butik till dina vänner och bekanta. För att göra detta går du efter att ha lagt en beställning till ditt personliga konto, som skapas efter din första beställning. Där hittar du avsnittet <b>Värvningsprogram</b>, där du kan få din personliga länk med ditt ID.",
+    "bonus_page_text11" => "För varje försäljning som görs via din länk får du 5 % av orderbeloppet. Dessa intäkter visas i ditt kontosaldo, och du kan begära uttag av detta belopp till dina betalningsuppgifter.",
 ];

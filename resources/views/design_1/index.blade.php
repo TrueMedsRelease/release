@@ -10,19 +10,19 @@
     <section class="page__best-sellers best-sellers" >
         <h2 class="best-sellers__title title">{{__('text.main_best_selling_title')}}</h2>
         <div class="best-sellers__items">
-            {{-- <a href="/" class="product-card bonus_programm">
+            <a href="{{ route('home.bonus_referral_program') }}" class="product-card bonus_programm">
                 <div class="bonus_top">
                     <div class="bonus_head">
-                        Bonus Card & Referral Program
+                        {{ __('text.bonus_card_ref_programm') }}
                     </div>
                     <div class="bonus_text">
-                        Save & Earn
+                        {{ __('text.save_earn') }}
                     </div>
                 </div>
                 <div class="bonus_image">
                     <img loading="lazy" src="{{ asset($design . '/images/bonus_programm.png') }}">
                 </div>
-            </a> --}}
+            </a>
             @foreach ($bestsellers as $product)
                 <a href="{{ route('home.product', $product['url']) }}" class="product-card">
                     <div class="product-card__body">

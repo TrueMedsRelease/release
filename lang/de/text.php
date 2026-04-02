@@ -774,4 +774,23 @@ return [
 
     "profile_verify_text" => "Ein Anmeldecode wurde an Ihre E-Mail-Adresse gesendet. Bitte geben Sie ihn unten ein.",
     "profile_verify_confirm_code" => "Code bestätigen",
+
+    "bonus_ref_menu" => "Bonus & Empfehlungen",
+    "bonus_card_ref_programm" => "Bonuskarte & Empfehlungen",
+    "save_earn" => "Sparen & verdienen",
+    "bonus_view_more" => "Mehr anzeigen",
+
+    "bonus_page_bonus" => "Bonusprogramm",
+    "bonus_page_text1" => "Die Bonuskarte bietet Ihnen großartige Möglichkeiten, Rabatte zu erhalten und an großen Verkaufsaktionen teilzunehmen.",
+    "bonus_page_text2" => "Sie erhalten eine Bonuskarte nach Ihrer ersten Bestellung. Sie können Ihre Boni verwenden, um zukünftige Einkäufe zu bezahlen. Um eine Bestellung mit Boni zu bezahlen, geben Sie Ihre Bonuskartennummer auf der Zahlungsseite ein.",
+    "bonus_page_text3" => "Bonuskarten haben drei Statusstufen:",
+    "bonus_page_text4" => "Silber",
+    "bonus_page_text5" => "Gold",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "Mit jeder Bestellung, die mit einer <b>Silber</b>-Karte bezahlt wird, erhalten Sie 5 % des Bestellbetrags als Boni.<br>Mit einer <b>Gold</b>-Karte — 7 %.<br>Mit einer <b>VIP</b>-Karte — 10 %.",
+    "bonus_page_text8" => "Der Kartenstatus wird je nach Anzahl der aufgegebenen Bestellungen erhöht.<br>Eine <b>Gold</b>-Karte wird nach 5 Bestellungen pro Jahr vergeben.<br>Eine <b>VIP</b>-Karte wird nach 7 Bestellungen pro Jahr vergeben.",
+    "bonus_page_text9" => "Boni werden nicht gutgeschrieben, wenn Sie Rabattcoupons verwenden.",
+    "bonus_page_referral" => "Empfehlungsprogramm",
+    "bonus_page_text10" => "Sie können Geld verdienen, indem Sie unseren Shop Ihren Freunden und Bekannten empfehlen. Gehen Sie dazu nach der Bestellung in Ihr persönliches Konto, das nach Ihrer ersten Bestellung erstellt wird. Dort finden Sie den Bereich <b>Empfehlungsprogramm</b>, in dem Sie Ihren persönlichen Link mit Ihrer ID erhalten.",
+    "bonus_page_text11" => "Für jeden Verkauf, der über Ihren Link erfolgt, erhalten Sie 5 % des Bestellbetrags. Diese Einnahmen werden in Ihrem Kontostand angezeigt, und Sie können die Auszahlung dieses Betrags auf Ihre Zahlungsdaten beantragen.",
 ];

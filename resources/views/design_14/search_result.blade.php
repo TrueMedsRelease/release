@@ -29,6 +29,31 @@
             <h2 style="margin-bottom: 20px;">{{__('text.search_result_best_for_search')}}</h2>
             <div class="product-cards">
                 <div class="cards">
+                    <article class="card">
+                        <div class="card__header">
+                            <h2 class="card__title">
+                                <a href="{{ route('home.bonus_referral_program') }}">{{ __('text.bonus_card_ref_programm') }}</a>
+                            </h2>
+                            <div class="card__ingredients">
+                                <span class="card__ingredient">
+                                    {{ __('text.save_earn') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card__img">
+                            <picture style="max-height: 126px; max-width: 126px;">
+                                <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}" style="max-height: 126px; max-width: 126px;">
+                            </picture>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price-wrapper">
+                                <span class="card__price"></span>
+                            </div>
+                            <button class="card__button button button--outlined" onclick="location.href = '{{ route('home.bonus_referral_program') }}'">
+                                {{ __('text.bonus_view_more') }}
+                            </button>
+                        </div>
+                    </article>
                     @foreach ($bestsellers as $product)
                         <article class="card">
                             <div class="card__header">
@@ -112,6 +137,31 @@
             <h1 class="h1">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h1>
             <div class="product-cards">
                 <div class="cards">
+                    <article class="card">
+                        <div class="card__header">
+                            <h2 class="card__title">
+                                <a href="{{ route('home.bonus_referral_program') }}">{{ __('text.bonus_card_ref_programm') }}</a>
+                            </h2>
+                            <div class="card__ingredients">
+                                <span class="card__ingredient">
+                                    {{ __('text.save_earn') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card__img">
+                            <picture style="max-height: 126px; max-width: 126px;">
+                                <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}" style="max-height: 126px; max-width: 126px;">
+                            </picture>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__price-wrapper">
+                                <span class="card__price"></span>
+                            </div>
+                            <button class="card__button button button--outlined" onclick="location.href = '{{ route('home.bonus_referral_program') }}'">
+                                {{ __('text.bonus_view_more') }}
+                            </button>
+                        </div>
+                    </article>
                     @foreach ($products as $product)
                         <article class="card">
                             <div class="card__header">

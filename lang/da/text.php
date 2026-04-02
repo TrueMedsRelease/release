@@ -698,4 +698,23 @@ return [
 
     "profile_verify_text" => "En login-kode er blevet sendt til din e-mail. Indtast den venligst nedenfor.",
     "profile_verify_confirm_code" => "Bekræft kode",
+
+    "bonus_ref_menu" => "Bonus- og henvisningsprogram",
+    "bonus_card_ref_programm" => "Bonuskort og henvisningsprogram",
+    "save_earn" => "Spar og tjen",
+    "bonus_view_more" => "Se mere",
+
+    "bonus_page_bonus" => "Bonusprogram",
+    "bonus_page_text1" => "Bonuskortet giver dig gode muligheder for at få rabatter og deltage i store udsalg.",
+    "bonus_page_text2" => "Du modtager et bonuskort efter din første ordre. Du kan bruge dine bonusser til at betale for dine fremtidige køb. For at betale en ordre med bonusser skal du indtaste dit bonuskortnummer på betalingssiden.",
+    "bonus_page_text3" => "Bonuskort har tre statusniveauer:",
+    "bonus_page_text4" => "Sølv",
+    "bonus_page_text5" => "Guld",
+    "bonus_page_text6" => "VIP",
+    "bonus_page_text7" => "For hver ordre betalt med et <b>Sølv</b>-kort modtager du 5 % af ordrebeløbet i bonusser.<br>Med et <b>Guld</b>-kort — 7 %.<br>Med et <b>VIP</b>-kort — 10 %.",
+    "bonus_page_text8" => "Kortstatus opgraderes afhængigt af antallet af afgivne ordrer.<br>Et <b>Guld</b>-kort gives efter 5 ordrer om året.<br>Et <b>VIP</b>-kort gives efter 7 ordrer om året.",
+    "bonus_page_text9" => "Bonusser krediteres ikke, hvis du bruger rabatkuponer.",
+    "bonus_page_referral" => "Henvisningsprogram",
+    "bonus_page_text10" => "Du kan tjene penge ved at anbefale vores butik til dine venner og bekendte. For at gøre dette skal du efter at have afgivet en ordre gå til din personlige konto, som oprettes efter din første ordre. Der finder du sektionen <b>Henvisningsprogram</b>, hvor du kan få dit personlige link med dit ID.",
+    "bonus_page_text11" => "For hvert salg, der foretages via dit link, modtager du 5 % af ordrebeløbet. Denne indtjening vises på din kontosaldo, og du kan anmode om at få dette beløb udbetalt til dine betalingsoplysninger.",
 ];

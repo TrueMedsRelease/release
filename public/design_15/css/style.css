@@ -4687,10 +4687,10 @@ input.just-validate-success-field:focus-visible{
   }
   .footer-nav .nav__list{
     flex-direction:row;
-    /* flex-wrap:wrap; */
-    /* justify-content:center; */
-    /* row-gap:0.6rem; */
-    /* max-width:60rem; */
+    flex-wrap:wrap;
+    justify-content:center;
+    row-gap:0.6rem;
+    max-width:60rem;
   }
 }
 
@@ -4800,9 +4800,9 @@ input.just-validate-success-field:focus-visible{
   }
   .footer-nav .nav__list{
     justify-content:space-between;
-    /* max-width:48rem; */
-    /* column-gap:2rem; */
-    /* row-gap:1.1rem; */
+    max-width:48rem;
+    column-gap:2rem;
+    row-gap:1.1rem;
   }
 }
 

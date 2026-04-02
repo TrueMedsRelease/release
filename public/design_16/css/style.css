@@ -4628,10 +4628,10 @@ article.content{
   }
   .footer-nav .nav__list{
     flex-direction:row;
-    /* flex-wrap:wrap; */
+    flex-wrap:wrap;
     justify-content:center;
     row-gap:2rem;
-    /* max-width:60rem; */
+    max-width:60rem;
   }
 }
 
@@ -4742,7 +4742,7 @@ article.content{
   }
   .footer-nav .nav__list{
     justify-content:space-between;
-    /* max-width:46.7rem; */
+    max-width:46.7rem;
     column-gap:2rem;
   }
 }

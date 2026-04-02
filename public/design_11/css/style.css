@@ -4924,3 +4924,7 @@ body.has-scroll{
 .sitemap_menu a:hover{
     color: var(--color-primary);
 }
+
+.footer__wrapper .nav__link {
+    text-align: center;
+}

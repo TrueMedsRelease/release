@@ -301,11 +301,8 @@
                                             <li class="menu__item"><a href="{{ route('home.delivery', '_' . $domainWithoutZone) }}"
                                                     class="menu__link">{{ __('text.common_shipping_main_menu_item') }}</a>
                                             </li>
-                                            <li class="menu__item"><a href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}"
-                                                    class="menu__link">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                                            </li>
-                                            <li class="menu__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}"
-                                                    class="menu__link">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                            <li class="menu__item"><a href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}"
+                                                    class="menu__link">{{ __('text.bonus_ref_menu') }}</a>
                                             </li>
                                         @else
                                             <li class="menu__item"><a href="{{ route('home.about', '') }}"
@@ -323,11 +320,8 @@
                                             <li class="menu__item"><a href="{{ route('home.delivery', '') }}"
                                                     class="menu__link">{{ __('text.common_shipping_main_menu_item') }}</a>
                                             </li>
-                                            <li class="menu__item"><a href="{{ route('home.moneyback', '') }}"
-                                                    class="menu__link">{{ __('text.common_moneyback_main_menu_item') }}</a>
-                                            </li>
-                                            <li class="menu__item"><a href="{{ route('home.contact_us', '') }}"
-                                                    class="menu__link">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                            <li class="menu__item"><a href="{{ route('home.bonus_referral_program', '') }}"
+                                                    class="menu__link">{{ __('text.bonus_ref_menu') }}</a>
                                             </li>
                                         @endif
                                         <li class="menu__item menu__item--action">
@@ -342,7 +336,23 @@
                                                     <circle cx="1.5" cy="14" r="1.5" fill="#fff"/>
                                                 </svg>
                                             @endif
-                                            <ul class="menu__sublist"></ul>
+                                            <ul class="menu__sublist">
+                                                @if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]))
+                                                    <li class="menu__item"><a href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}"
+                                                            class="menu__link">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                                    </li>
+                                                    <li class="menu__item"><a href="{{ route('home.contact_us', '_' . $domainWithoutZone) }}"
+                                                            class="menu__link">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                                    </li>
+                                                @else
+                                                    <li class="menu__item"><a href="{{ route('home.moneyback', '') }}"
+                                                        class="menu__link">{{ __('text.common_moneyback_main_menu_item') }}</a>
+                                                    </li>
+                                                    <li class="menu__item"><a href="{{ route('home.contact_us', '') }}"
+                                                        class="menu__link">{{ __('text.common_contact_us_main_menu_item') }}</a>
+                                                    </li>
+                                                @endif
+                                            </ul>
                                         </li>
                                     </ul>
                                 </nav>
@@ -1266,6 +1276,9 @@
                                 href="{{ route('home.delivery', '_' . $domainWithoutZone) }}">{{ __('text.common_shipping_main_menu_item') }}</a>
                         </li>
                         <li class="footer__item"><a class="footer__link"
+                                href="{{ route('home.bonus_referral_program', '_' . $domainWithoutZone) }}">{{ __('text.bonus_ref_menu') }}</a>
+                        </li>
+                        <li class="footer__item"><a class="footer__link"
                                 href="{{ route('home.moneyback', '_' . $domainWithoutZone) }}">{{ __('text.common_moneyback_main_menu_item') }}</a>
                         </li>
                         <li class="footer__item"><a class="footer__link"
@@ -1288,6 +1301,9 @@
                         </li>
                         <li class="footer__item"><a class="footer__link"
                                 href="{{ route('home.delivery', '') }}">{{ __('text.common_shipping_main_menu_item') }}</a>
+                        </li>
+                        <li class="footer__item"><a class="footer__link"
+                                href="{{ route('home.bonus_referral_program', '') }}">{{ __('text.bonus_ref_menu') }}</a>
                         </li>
                         <li class="footer__item"><a class="footer__link"
                                 href="{{ route('home.moneyback', '') }}">{{ __('text.common_moneyback_main_menu_item') }}</a>

@@ -37,17 +37,20 @@
             </div>
         </aside>
         <div class="bestsellers__container">
-            <div class="bonus_block">
+            {{-- <div class="bonus_block">
                 <div class="bonus1">
                     <img loading="lazy" src="{{ asset("$design/images/bonus1_1.png") }}">
                 </div>
                 <div class="bonus2">
                     <img loading="lazy" src="{{ asset("$design/images/bonus2_2.png") }}">
                 </div>
-            </div>
-            {{-- <div class="bonus_block all_padding big">
+            </div> --}}
+
+            <div class="bonus_block all_padding big">
                 <div class="bonus1">
-                    <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+                    <a href="{{ route('home.bonus_referral_program') }}">
+                        <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+                    </a>
                 </div>
                 <div class="bonus1">
                     <img loading="lazy" src="{{ asset("$design/images/happy_day.png") }}">
@@ -58,7 +61,9 @@
             </div>
             <div class="bonus_block all_padding small">
                 <div class="bonus1">
-                    <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+                    <a href="{{ route('home.bonus_referral_program') }}">
+                        <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+                    </a>
                 </div>
                 <div class="bonus1">
                     <img loading="lazy" src="{{ asset("$design/images/bonus_2_small.png") }}">
@@ -66,7 +71,8 @@
                 <div class="bonus2">
                     <img loading="lazy" src="{{ asset("$design/images/bonus_3_small.png") }}">
                 </div>
-            </div> --}}
+            </div>
+            
             <h2 class="bestsellers__title title">{{__('text.aktiv_aktiv_result_title')}} {{ ucwords(str_replace('-', ' ', $active)) }}</h2>
             <div class="bestsellers__body">
                 <div class="product_list">
