@@ -767,6 +767,7 @@ return [
     "checkout_available_amount" => "Verfügbarer Betrag",
     "checkout_bonus_text1" => "Dieser Betrag wird von Ihrer Bonuskarte abgebucht.",
     "checkout_bonus_text2" => "Dieser Betrag wird von Ihrem Konto abgebucht.",
+    "checkout_bonus_text3" => "Dieser Betrag wird von Ihrer Geschenkkarte abgebucht.",
     "checkout_your_discount_code" => "Ihr Rabattcode",
 
     "local_payment_amount" => "Verwenden Sie ein persönliches Bankkonto auf Ihren Namen (wie in den Rechnungsdaten).",

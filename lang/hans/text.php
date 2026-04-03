@@ -647,6 +647,7 @@ return [
     "checkout_available_amount" => "可用金额",
     "checkout_bonus_text1" => "此金额将从您的积分卡中扣除.",
     "checkout_bonus_text2" => "此金额将从您的账户中扣除.",
+    "checkout_bonus_text3" => "该金额将从您的礼品卡中扣除。",
     "checkout_your_discount_code" => "您的折扣码",
 
     "local_payment_amount" => "请使用与账单信息一致、以本人名义开立的个人银行账户。",

@@ -644,6 +644,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "checkout_available_amount" => "Jumlah tersedia",
     "checkout_bonus_text1" => "Jumlah ini akan ditolak daripada kad bonus anda.",
     "checkout_bonus_text2" => "Jumlah ini akan ditolak daripada akaun anda.",
+    "checkout_bonus_text3" => "Amaun ini akan ditolak daripada kad hadiah anda.",
     "checkout_your_discount_code" => "Kod Diskaun Anda",
 
     "local_payment_amount" => "Gunakan akaun bank peribadi atas nama anda sendiri (sama seperti butiran pengebilan).",

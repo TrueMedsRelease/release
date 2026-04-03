@@ -682,6 +682,7 @@ return [
     "checkout_available_amount" => "Beschikbaar bedrag",
     "checkout_bonus_text1" => "Dit bedrag wordt van uw bonuskaart afgeschreven.",
     "checkout_bonus_text2" => "Dit bedrag wordt van uw account afgeschreven.",
+    "checkout_bonus_text3" => "Dit bedrag wordt van je cadeaukaart afgeschreven.",
     "checkout_your_discount_code" => "Uw kortingscode",
 
     "local_payment_amount" => "Gebruik een persoonlijke bankrekening op uw eigen naam (dezelfde als de factuurgegevens).",

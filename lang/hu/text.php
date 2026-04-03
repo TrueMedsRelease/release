@@ -648,6 +648,7 @@ return [
     "checkout_available_amount" => "Elérhető összeg",
     "checkout_bonus_text1" => "Ez az összeg levonásra kerül a bónuszkártyájáról.",
     "checkout_bonus_text2" => "Ez az összeg levonásra kerül a fiókjáról.",
+    "checkout_bonus_text3" => "Ez az összeg levonásra kerül az ajándékkártyájáról.",
     "checkout_your_discount_code" => "Az Ön kedvezménykódja",
 
     "local_payment_amount" => "A saját nevére szóló személyes bankszámlát használjon (megegyezik a számlázási adatokkal).",

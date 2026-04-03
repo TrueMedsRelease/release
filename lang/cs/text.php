@@ -728,6 +728,7 @@ return [
     "checkout_available_amount" => "Dostupná částka",
     "checkout_bonus_text1" => "Tato částka bude odečtena z vaší bonusové karty",
     "checkout_bonus_text2" => "Tato částka bude odečtena z vašeho účtu.",
+    "checkout_bonus_text3" => "Tato částka bude odečtena z vaší dárkové karty.",
     "checkout_your_discount_code" => "Váš slevový kód",
 
     "local_payment_amount" => "Použijte osobní bankovní účet vedený na vaše jméno (stejné jako fakturační údaje).",

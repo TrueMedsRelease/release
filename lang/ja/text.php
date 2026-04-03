@@ -760,6 +760,7 @@ return [
     "checkout_available_amount" => "利用可能額",
     "checkout_bonus_text1" => "この金額はボーナスカードから引き落とされます.",
     "checkout_bonus_text2" => "この金額はアカウントから引き落とされます.",
+    "checkout_bonus_text3" => "この金額はギフトカードから差し引かれます。",
     "checkout_your_discount_code" => "あなたの割引コード",
 
     "local_payment_amount" => "請求先情報と同じ名義の個人口座をご利用ください。",

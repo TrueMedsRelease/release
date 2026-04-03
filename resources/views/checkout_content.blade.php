@@ -335,7 +335,7 @@
                                             @else --}}
                                                 <div class="bottom_bonuses_block_text">
                                                     <div>{{ __('text.checkout_bonus_text1') }}</div>
-                                                    <div style="color: #ED4C54">-{{ $Currency::convert(session('total.bonus_card_discount'), true) }}</div>
+                                                    <div class="red_text">-&nbsp;{{ $Currency::convert(session('total.bonus_card_discount'), true) }}</div>
                                                 </div>
                                             {{-- @endif --}}
                                         </div>
@@ -355,10 +355,10 @@
                                             <div class="bottom_bonuses_block_text">
                                                 <div>{{ __('text.checkout_discount2') }} - <b>{{ round(session('coupon.percent')) }}%</b></div>
                                             </div>
-                                            <div class="bottom_bonuses_block_text">
+                                            {{-- <div class="bottom_bonuses_block_text">
                                                 <div>{{ __('text.checkout_bonus_text2') }}</div>
-                                                <div style="color: #ED4C54">-{{ $Currency::convert(session('total.coupon_discount'), true) }}</div>
-                                            </div>
+                                                <div class="red_text">-{{ $Currency::convert(session('total.coupon_discount'), true) }}</div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 @endif
@@ -377,8 +377,8 @@
                                                 <div>{{ __('text.checkout_available_amount') }} - <b>{{ $Currency::convert(session('gift_card.gift_card_balance'), true) }}</b></div>
                                             </div>
                                             <div class="bottom_bonuses_block_text">
-                                                <div>{{ __('text.checkout_bonus_text2') }}</div>
-                                                <div style="color: #ED4C54">-{{ $Currency::convert(session('total.gift_card_discount'), true) }}</div>
+                                                <div>{{ __('text.checkout_bonus_text3') }}</div>
+                                                <div class="red_text">-&nbsp;{{ $Currency::convert(session('total.gift_card_discount'), true) }}</div>
                                             </div>
                                         </div>
                                     </div>

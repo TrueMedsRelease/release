@@ -691,6 +691,7 @@ return [
     "checkout_available_amount" => "Tilgængeligt beløb",
     "checkout_bonus_text1" => "Dette beløb vil blive trukket fra dit bonuskort.",
     "checkout_bonus_text2" => "Dette beløb vil blive trukket fra din konto.",
+    "checkout_bonus_text3" => "Dette beløb vil blive trukket fra dit gavekort.",
     "checkout_your_discount_code" => "Din rabatkode",
 
     "local_payment_amount" => "Brug en personlig bankkonto i dit eget navn (samme som faktureringsoplysningerne).",

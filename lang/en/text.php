@@ -924,6 +924,7 @@ return [
     "checkout_available_amount" => "Available amount",
     "checkout_bonus_text1" => "This amount will be debited from your bonus card.",
     "checkout_bonus_text2" => "This amount will be debited from your account.",
+    "checkout_bonus_text3" => "This amount will be debited from your gift card.",
     "checkout_your_discount_code" => "Your Discount Code",
 
     "local_payment_amount" => "Use a personal bank acount in your own name (same as biling details).",
