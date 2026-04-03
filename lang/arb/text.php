@@ -646,6 +646,7 @@ return [
     "checkout_available_amount" => "المبلغ المتاح",
     "checkout_bonus_text1" => "سيتم خصم هذا المبلغ من بطاقة المكافآت الخاصة بك",
     "checkout_bonus_text2" => "سيتم خصم هذا المبلغ من حسابك",
+    "checkout_bonus_text3" => "سيتم خصم هذا المبلغ من بطاقة الهدايا الخاصة بك.",
     "checkout_your_discount_code" => "رمز الخصم الخاص بك",
 
     "local_payment_amount" => "استخدم حسابًا بنكيًا شخصيًا باسمك (نفس تفاصيل الفوترة).",

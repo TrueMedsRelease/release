@@ -645,6 +645,7 @@ return [
     "checkout_available_amount" => "Tilgjengelig beløp",
     "checkout_bonus_text1" => "Dette beløpet vil bli trukket fra bonuskortet ditt.",
     "checkout_bonus_text2" => "Dette beløpet vil bli trukket fra kontoen din.",
+    "checkout_bonus_text3" => "Dette beløpet vil bli trukket fra gavekortet ditt.",
     "checkout_your_discount_code" => "Din rabattkode",
 
     "local_payment_amount" => "Bruk en personlig bankkonto i ditt eget navn (samme som faktureringsdetaljene).",

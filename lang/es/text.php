@@ -806,6 +806,7 @@ return [
     "checkout_available_amount" => "Importe disponible",
     "checkout_bonus_text1" => "Este importe se debitará de su tarjeta de bonificación.",
     "checkout_bonus_text2" => "Este importe se debitará de su cuenta.",
+    "checkout_bonus_text3" => "Este importe se descontará de su tarjeta regalo.",
     "checkout_your_discount_code" => "Su código de descuento",
 
     "local_payment_amount" => "Utilice una cuenta bancaria personal a su nombre (igual que los datos de facturación).",

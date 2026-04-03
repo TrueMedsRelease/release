@@ -643,6 +643,7 @@ return [
     "checkout_available_amount" => "Dostępna kwota",
     "checkout_bonus_text1" => "Ta kwota zostanie pobrana z Twojej karty bonusowej.",
     "checkout_bonus_text2" => "Ta kwota zostanie pobrana z Twojego konta.",
+    "checkout_bonus_text3" => "Ta kwota zostanie pobrana z Twojej karty podarunkowej.",
     "checkout_your_discount_code" => "Twój kod rabatowy",
 
     "local_payment_amount" => "Użyj osobistego konta bankowego na swoje nazwisko (takie same jak dane rozliczeniowe).",

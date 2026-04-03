@@ -643,6 +643,7 @@ return  [
     "checkout_available_amount" => "可用金額",
     "checkout_bonus_text1" => "此金額將從您的紅利卡扣除.",
     "checkout_bonus_text2" => "此金額將從您的帳戶扣除.",
+    "checkout_bonus_text3" => "此金額將從您的禮品卡中扣除。",
     "checkout_your_discount_code" => "您的折扣碼",
 
     "local_payment_amount" => "請使用與帳單資料相同姓名的個人銀行帳戶。",

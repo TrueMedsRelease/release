@@ -772,6 +772,7 @@ return [
     "checkout_available_amount" => "Montant disponible",
     "checkout_bonus_text1" => "Ce montant sera débité de votre carte bonus.",
     "checkout_bonus_text2" => "Ce montant sera débité de votre compte.",
+    "checkout_bonus_text3" => "Ce montant sera débité de votre carte-cadeau.",
     "checkout_your_discount_code" => "Votre code de réduction",
 
     "local_payment_amount" => "Utilisez un compte bancaire personnel à votre nom (identique aux informations de facturation).",

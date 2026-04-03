@@ -777,6 +777,7 @@ return [
     "checkout_available_amount" => "Importo disponibile",
     "checkout_bonus_text1" => "Questo importo verrà addebitato dalla tua carta bonus.",
     "checkout_bonus_text2" => "Questo importo verrà addebitato dal tuo account.",
+    "checkout_bonus_text3" => "Questo importo verrà addebitato sulla tua carta regalo.",
     "checkout_your_discount_code" => "Il tuo codice sconto",
 
     "local_payment_amount" => "Utilizza un conto bancario personale intestato a te (come nei dati di fatturazione).",

@@ -648,6 +648,7 @@ return [
     "checkout_available_amount" => "Käytettävissä oleva summa",
     "checkout_bonus_text1" => "Tämä summa veloitetaan bonuskortiltasi.",
     "checkout_bonus_text2" => "Tämä summa veloitetaan tililtäsi.",
+    "checkout_bonus_text3" => "Tämä summa veloitetaan lahjakortiltasi.",
     "checkout_your_discount_code" => "Alennuskoodisi",
 
     "local_payment_amount" => "Käytä henkilökohtaista pankkitiliä omalla nimelläsi (sama kuin laskutustiedoissa).",

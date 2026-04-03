@@ -638,6 +638,7 @@ return [
     "checkout_available_amount" => "Sumă disponibilă",
     "checkout_bonus_text1" => "Această sumă va fi debitată de pe cardul dvs. bonus.",
     "checkout_bonus_text2" => "Această sumă va fi debitată din contul dvs.",
+    "checkout_bonus_text3" => "Această sumă va fi debitată de pe cardul dvs. cadou.",
     "checkout_your_discount_code" => "Codul dvs. de reducere",
 
     "local_payment_amount" => "Folosiți un cont bancar personal pe numele dumneavoastră (același ca în detaliile de facturare).",

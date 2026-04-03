@@ -3340,9 +3340,15 @@ html { scroll-behavior: smooth; }
 
 .bottom_bonuses_block_text {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     font-size: 12px;
+    gap: 10px;
+}
+
+.bottom_bonuses_block_text .red_text {
+    color: #ED4C54;
+    width: 25%;
+    text-align: end;
 }
 
 .bonus_block.is_active:hover, .discount_block.is_active:hover, .gift_card_block.is_active:hover {

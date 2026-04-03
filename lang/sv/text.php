@@ -642,6 +642,7 @@ return [
     "checkout_available_amount" => "Tillgängligt belopp",
     "checkout_bonus_text1" => "Detta belopp kommer att dras från ditt bonuskort.",
     "checkout_bonus_text2" => "Detta belopp kommer att dras från ditt konto.",
+    "checkout_bonus_text3" => "Detta belopp kommer att dras från ditt presentkort.",
     "checkout_your_discount_code" => "Din rabattkod",
 
     "local_payment_amount" => "Använd ett personligt bankkonto i ditt eget namn (samma som faktureringsuppgifterna).",
