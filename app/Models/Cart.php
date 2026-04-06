@@ -80,7 +80,7 @@ class Cart extends Model
 
     public static function remove($pack_id)
     {
-        $products = session('cart');
+        $products = session('cart', []);
 
         if (count($products) > 1) {
             for ($i = 0; $i < count($products); $i++) {
