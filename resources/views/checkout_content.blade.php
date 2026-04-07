@@ -53,7 +53,7 @@
 
     <input type="hidden" id="app_insur_on" value="{{env('APP_INSUR_ON', 1)}}">
     <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
-    <input type="hidden" id="app_sepa_on" @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"])) value="1" @else value="0" @endif>
+    <input type="hidden" id="app_sepa_on" @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"])) value="1" @else value="0" @endif>
     <input type="hidden" id="app_zelle_on" @if(env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US")) value="1" @else value="0" @endif>
     <div class="header__phones-top top-phones-header">
         <div class="top-phones-header__container header__container">
@@ -683,10 +683,10 @@
                                         @if (env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
                                             <option value="paypal" @selected(session('form.payment_type', 'card') == 'paypal')>Paypal</option>
                                         @endif
-                                        @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
+                                        @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
                                             <option value="sepa" @selected(session('form.payment_type', 'card') == 'sepa')>SEPA</option>
                                         @endif
-                                        @if (env('APP_SEPA_LOCAL_ON', 0) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
+                                        @if (env('APP_SEPA_LOCAL_ON', 0) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
                                             <option value="sepa_local" @selected(session('form.payment_type', 'card') == 'sepa_local')>SEPA</option>
                                         @endif
                                         @if (env('APP_FPS_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
@@ -1135,7 +1135,7 @@
                             </div>
                         @endif
 
-                        @if (env('APP_SEPA_ON', 0) == 1 && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
+                        @if (env('APP_SEPA_ON', 0) == 1 && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
                             <div class="enter-info__sepa-content"  @if (session('form.payment_type', 'card') != 'sepa') hidden @endif>
                                 <div class="content-sepa">
                                     <div id="sepa_requisites">
