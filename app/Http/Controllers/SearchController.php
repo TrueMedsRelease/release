@@ -17,7 +17,7 @@ class SearchController extends Controller
 
     public function search_product()
     {
-        $search_text = $_POST['search_text'];
+        $search_text = isset($_POST['search_text']) ? $_POST['search_text'] : '';
         return redirect(route('search.search_result', [$search_text]));
     }
 
