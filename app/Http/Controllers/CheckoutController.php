@@ -137,7 +137,7 @@ class CheckoutController extends Controller
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design      = session('design') ? session('design') : config('app.design');
         $desc        = ProductServices::GetProductDesc($language_id);
-        $products    = session('cart');
+        $products    = session('cart', []);
 
         CacheServices::CheckCountryInfo();
 
@@ -187,7 +187,7 @@ class CheckoutController extends Controller
             $shipping['regular'] = 12.99;
         }
 
-        $cart_option = session('cart_option');
+        $cart_option = session('cart_option', []);
 
         $cart_option['insurance_price'] = Cart::CalcInsurance();
         $cart_option['secret_price']    = $shipping['secret_package'];
@@ -202,8 +202,8 @@ class CheckoutController extends Controller
 
         session(['cart_option' => $cart_option]);
 
-        if (session('cart_option')['bonus_id'] != 0) {
-            $bonus = ProductServices::GetBonuses(session('cart_option')['bonus_id']);
+        if (session('cart_option.bonus_id') != 0) {
+            $bonus = ProductServices::GetBonuses(session('cart_option.bonus_id'));
         } else {
             $bonus = '';
         }
@@ -213,12 +213,12 @@ class CheckoutController extends Controller
 
         Cart::update_cart_total();
 
-        if (!empty(session('form')['phone']) && str_contains(session('form')['phone'], '+')) {
+        if (!empty(session('form.phone')) && str_contains(session('form.phone'), '+')) {
             for ($i = 0; $i < count($phone_codes); $i++) {
-                if ($phone_codes[$i]['iso'] == session('form')['billing_country']) {
+                if ($phone_codes[$i]['iso'] == session('form.billing_country')) {
                     Session::put('form.phone_code', $phone_codes[$i]['iso']);
                     $code = '+' . $phone_codes[$i]['phonecode'];
-                    Session::put('form.phone', str_replace($code, '', session('form')['phone']));
+                    Session::put('form.phone', str_replace($code, '', session('form.phone')));
                 }
             }
         }
@@ -260,31 +260,25 @@ class CheckoutController extends Controller
 
     public function insurance(Request $request)
     {
-        $cart_option = session('cart_option');
         if ($request->val == 0) {
-            $cart_option['insurance'] = false;
+            session(['cart_option.insurance' => 0]);
         } else {
-            $cart_option['insurance'] = true;
+            session(['cart_option.insurance' => 1]);
         }
 
-        session(['cart_option' => $cart_option]);
         session(['form' => $request->all()]);
-
-        Cart::update_cart_total();
 
         return $this->checkout();
     }
 
     public function secret_package(Request $request)
     {
-        $cart_option = session('cart_option');
-        if ($cart_option['secret_package']) {
-            $cart_option['secret_package'] = false;
+        if (session('cart_option.secret_package', 1) == 1) {
+            session(['cart_option.secret_package' => 0]);
         } else {
-            $cart_option['secret_package'] = true;
+            session(['cart_option.secret_package' => 1]);
         }
 
-        session(['cart_option' => $cart_option]);
         session(['form' => $request->all()]);
 
         return $this->checkout();
@@ -295,11 +289,9 @@ class CheckoutController extends Controller
         $shipping_name  = $request->shipping_name;
         $shipping_price = $request->shipping_price;
 
-        $option                   = session('cart_option');
-        $option['shipping']       = $shipping_name;
-        $option['shipping_price'] = $shipping_price;
+        session(['cart_option.shipping' => $shipping_name]);
+        session(['cart_option.shipping_price' => $shipping_price]);
 
-        session(['cart_option' => $option]);
         session(['form' => $request->all()]);
 
         return $this->checkout();
