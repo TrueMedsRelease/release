@@ -74,6 +74,8 @@
         const checkoutForgetBonuses = "{{ route('checkout.forget_bonuses') }}";
         const checkoutBonusCard = "{{ route('checkout.bonus_card_process') }}";
         const checkoutGiftCardProcess = "{{ route('checkout.gift_card_process') }}";
+        const checkoutValidateWallet = "{{ route('checkout.validate_for_wallet') }}";
+        const checkoutWallet = "{{ route('checkout.wallet_process') }}";
 
         const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
         const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";

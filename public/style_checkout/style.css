@@ -499,7 +499,7 @@ textarea.input {
 .select__options {
   position: absolute;
   z-index: 101;
-  top: 50px;
+  top: 65px;
   left: 0px;
   width: 100%;
   padding: 10px 0;
@@ -555,6 +555,7 @@ textarea.input {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+    width: 100%;
 }
 
 .select__asset {
@@ -566,6 +567,10 @@ textarea.input {
           align-items: center;
   gap: 3px;
   margin-right: 5px;
+}
+
+.select__asset img{
+    width: max-content;
 }
 
 .popup-show body::after {
