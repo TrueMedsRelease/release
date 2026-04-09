@@ -627,24 +627,77 @@
                     return `\n\t\t\t<button type="button" class="${this.selectClasses.classSelectTitle}">\n\t\t\t\t${pseudoAttribute}\n\t\t\t\t<span class="${this.selectClasses.classSelectValue}">\n\t\t\t\t\t<span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span>\n\t\t\t\t\t<span class="select__icon"> \n\t\t\t\t\t\t<svg width="12" height="6">\n\t\t\t\t\t\t\t<use xlink:href="style_checkout/images/icons/icons.svg#svg-arr-down"></use>\n\t\t\t\t\t\t</svg>\n\t\t\t\t\t</span>\n\t\t\t\t</span>\n\t\t\t</button>`;
                 }
             }
+            // getSelectElementContent(selectOption) {
+            //     const selectOptionData = selectOption.dataset.asset ? `${selectOption.dataset.asset}` : "";
+            //     const selectOptionContryCode = selectOption.dataset.country ? `${selectOption.dataset.country}` : "";
+            //     // const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<img loading="lazy" src="${selectOptionData}" alt="">` : selectOptionData;
+            //     const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<svg width="18px" height="18px"><use href="${selectOptionData}"></svg>` : selectOptionData;
+            //     let selectOptionContentHTML = ``;
+            //     selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectRow}">` : "";
+            //     selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectData}">` : "";
+            //     selectOptionContentHTML += selectOptionData ? selectOptionDataHTML : "";
+            //     selectOptionContentHTML += selectOptionContryCode ? `<span>` : "";
+            //     selectOptionContentHTML += selectOptionContryCode ? selectOptionContryCode : "";
+            //     selectOptionContentHTML += selectOptionContryCode ? `</span>` : "";
+            //     selectOptionContentHTML += selectOptionData ? `</span>` : "";
+            //     selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectText}">` : "";
+            //     selectOptionContentHTML += selectOption.textContent;
+            //     selectOptionContentHTML += selectOptionData ? `</span>` : "";
+            //     selectOptionContentHTML += selectOptionData ? `</span>` : "";
+            //     return selectOptionContentHTML;
+            // }
             getSelectElementContent(selectOption) {
-                const selectOptionData = selectOption.dataset.asset ? `${selectOption.dataset.asset}` : "";
-                const selectOptionContryCode = selectOption.dataset.country ? `${selectOption.dataset.country}` : "";
-                // const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<img loading="lazy" src="${selectOptionData}" alt="">` : selectOptionData;
-                const selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<svg width="18px" height="18px"><use href="${selectOptionData}"></svg>` : selectOptionData;
-                let selectOptionContentHTML = ``;
-                selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectRow}">` : "";
-                selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectData}">` : "";
-                selectOptionContentHTML += selectOptionData ? selectOptionDataHTML : "";
-                selectOptionContentHTML += selectOptionContryCode ? `<span>` : "";
-                selectOptionContentHTML += selectOptionContryCode ? selectOptionContryCode : "";
-                selectOptionContentHTML += selectOptionContryCode ? `</span>` : "";
-                selectOptionContentHTML += selectOptionData ? `</span>` : "";
-                selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectText}">` : "";
-                selectOptionContentHTML += selectOption.textContent;
-                selectOptionContentHTML += selectOptionData ? `</span>` : "";
-                selectOptionContentHTML += selectOptionData ? `</span>` : "";
-                return selectOptionContentHTML;
+                const asset = selectOption.dataset.asset ? selectOption.dataset.asset.trim() : "";
+                const countryCode = selectOption.dataset.country ? selectOption.dataset.country.trim() : "";
+                const text = selectOption.textContent.trim();
+
+                let assetHTML = "";
+
+                if (asset) {
+                    // Если передан sprite-селектор, например: /icons.svg#paypal
+                    if (asset.includes("#")) {
+                        assetHTML = `
+                            <svg width="18" height="18" aria-hidden="true">
+                                <use href="${asset}"></use>
+                            </svg>
+                        `;
+                    } else {
+                        // Если передан обычный путь к картинке
+                        assetHTML = `
+                            <img
+                                src="${asset}"
+                                alt=""
+                                width="26"
+                                height="26"
+                                loading="lazy"
+                            >
+                        `;
+                    }
+                }
+
+                let html = "";
+
+                if (asset || countryCode) {
+                    html += `<span class="${this.selectClasses.classSelectRow}">`;
+
+                    if (asset) {
+                        html += `<span class="${this.selectClasses.classSelectData}">${assetHTML}</span>`;
+                    }
+
+                    html += `<span class="${this.selectClasses.classSelectText}">`;
+                    html += text;
+
+                    if (countryCode) {
+                        html += ` <span class="select__country-code">${countryCode}</span>`;
+                    }
+
+                    html += `</span>`;
+                    html += `</span>`;
+                } else {
+                    html = text;
+                }
+
+                return html;
             }
             getSelectPlaceholder(originalSelect) {
                 const selectPlaceholder = Array.from(originalSelect.options).find((option => !option.value));
@@ -1867,6 +1920,7 @@
             const zelleBlock = document.querySelector(".enter-info__zelle-content");
             const localPaymentBlock = document.querySelector('.enter-info__local_payment-content');
             const bonusCardBlock = document.querySelector('.enter-info__bonus-card-content');
+            const walletBlock = document.querySelector('.enter-info__wallet-content');
 
             const cryptoCurrencySelect = document.querySelector(".select_crypt_currency");
             const cryptoRequisites = document.getElementById("requisites");
@@ -1888,6 +1942,7 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                     cryptoCurrencySelect.hidden = false;
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
                     _slideDown(cardBlock);
@@ -1905,6 +1960,7 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                 } else if (currentSelect.value === "sepa") {
                     _slideDown(sepaBlock);
                     _slideUp(cryptoBlock);
@@ -1919,6 +1975,7 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
                     _slideUp(cryptoBlock);
@@ -1935,6 +1992,7 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                 } else if (currentSelect.value === 'gift_card') {
                     _slideDown(giftCardBlock);
                     _slideUp(paypalBlock);
@@ -1951,6 +2009,7 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                 } else if (currentSelect.value === "google") {
                     _slideDown(googleBlock);
                     _slideUp(cryptoBlock);
@@ -1965,6 +2024,7 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                 } else if (currentSelect.value === "zelle") {
                     _slideDown(zelleBlock);
                     if ($('#app_google_on').val() == '1') {
@@ -1979,6 +2039,7 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                 } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac"){
                     _slideDown(localPaymentBlock);
                     if ($('#app_zelle_on').val() == '1') {
@@ -1995,6 +2056,7 @@
                     _slideUp(paypalBlock);
                     _slideUp(giftCardBlock);
                     _slideUp(bonusCardBlock);
+                    _slideUp(walletBlock);
                 } else if (currentSelect.value === "bonus_card") {
                     _slideDown(bonusCardBlock);
                     if ($('#app_zelle_on').val() == '1') {
@@ -2011,6 +2073,24 @@
                     _slideUp(paypalBlock);
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
+                    _slideUp(walletBlock);
+                } else if (currentSelect.value === "wallet") {
+                    _slideDown(walletBlock);
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
+                    _slideUp(paypalBlock);
+                    _slideUp(giftCardBlock);
+                    _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
                 }
 
                 if (currentSelect.value != "crypto") {
@@ -2279,6 +2359,37 @@ $(".card_type .select__option").click(function (e) {
                 }
             },
             error: function (data) {
+                flag = true;
+                var errors = JSON.parse(data.responseText);
+                errors.errors.forEach(function (error, i) {
+                    console.log(i + '.' + error.message + ' (' + error.field + ')');
+                    var popup = document.getElementById("error_" + error.field);
+                    popup.classList.add("show");
+                    if (i == 0) {
+                        popup.scrollIntoView();
+                    }
+                });
+            }
+        });
+
+        // if (flag) {
+        //     previousIndex = this.selectedIndex;
+        //     e.target.selectedIndex = previousIndex;
+        //     return false;
+        // }
+    } else if (type == 'wallet') {
+        $.ajax({
+            url: checkoutValidateWallet,
+            type: 'POST',
+            cache: false,
+            dataType: 'html',
+            data: form,
+            async: false,
+            success: function (data) {
+                $('#proccess_wallet').show();
+            },
+            error: function (data) {
+                $('#proccess_wallet').hide();
                 flag = true;
                 var errors = JSON.parse(data.responseText);
                 errors.errors.forEach(function (error, i) {
@@ -3188,6 +3299,66 @@ $("#proccess_gift_card").click(function (e) {
 
     $.ajax({
         url: checkoutGiftCardProcess,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var data = JSON.parse(data);
+            // console.log(data);
+            if (data.response.status == 'SUCCESS') {
+                if(typeof data.response.url !== 'undefined') {
+                    window.location.replace(data.response.url);
+                } else {
+                    window.location.replace(checkoutComplete);
+                }
+            }
+            else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            // console.log(errors);
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
+$("#proccess_wallet").click(function (e) {
+    var form = $('form').serialize();
+    // console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
+
+    $.ajax({
+        url: checkoutWallet,
         type: 'POST',
         cache: false,
         dataType: 'html',
