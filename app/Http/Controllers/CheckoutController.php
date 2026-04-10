@@ -3321,9 +3321,10 @@ class CheckoutController extends Controller
             }
             return response()->json(['errors' => $errors], 422);
         } else {
-            session(['form.payment_type' => 'wallet']);
 
             $form = session('form');
+
+            session(['form.payment_type' => $form['wallet']]);
 
             $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
             $phone_code = $phone_code->phonecode;
@@ -3381,7 +3382,7 @@ class CheckoutController extends Controller
                     $form['billing_address']
                 ),
                 'shipping_zip'       => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
-                'payment_type'       => 'wallet',
+                'payment_type'       => $form['wallet'],
                 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
                     'cf-connecting-ip'
                 ) : request()->ip(),
@@ -3542,7 +3543,7 @@ class CheckoutController extends Controller
                 'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
                     $request->billing_zip
                 ),
-                'payment_type'       => 'wallet',
+                'payment_type'       => $request->wallet,
                 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
                     'cf-connecting-ip'
                 ) : request()->ip(),
