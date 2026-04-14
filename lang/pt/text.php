@@ -789,4 +789,6 @@ return [
     "bonus_page_referral" => "Programa de Indicações",
     "bonus_page_text10" => "Pode ganhar dinheiro ao recomendar a nossa loja aos seus amigos e conhecidos. Para isso, depois de fazer uma encomenda, aceda à sua conta pessoal, que é criada após a sua primeira encomenda. Aí encontrará a secção <b>Programa de Indicações</b>, onde poderá obter o seu link pessoal com o seu ID.",
     "bonus_page_text11" => "Por cada venda efetuada através do seu link, receberá 5% do valor da encomenda. Estes ganhos serão apresentados no saldo da sua conta e poderá solicitar o levantamento deste valor para os seus dados de pagamento.",
+
+    "risk_check_failed" => "O pagamento não está disponível. Selecione outro método de pagamento.",
 ];

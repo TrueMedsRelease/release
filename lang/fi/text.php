@@ -676,4 +676,6 @@ return [
     "bonus_page_referral" => "Suositteluohjelma",
     "bonus_page_text10" => "Voit ansaita rahaa suosittelemalla kauppaamme ystävillesi ja tuttavillesi. Tee tämä siirtymällä tilauksen tekemisen jälkeen henkilökohtaiselle tilillesi, joka luodaan ensimmäisen tilauksesi jälkeen. Sieltä löydät <b>Suositteluohjelma</b>-osion, josta saat henkilökohtaisen linkkisi tunnisteellasi.",
     "bonus_page_text11" => "Jokaisesta linkkisi kautta tehdystä myynnistä saat 5 % tilauksen summasta. Nämä ansiot näkyvät tilisi saldossa, ja voit pyytää tämän summan nostamista maksutietoihisi.",
+
+    "risk_check_failed" => "Maksu ei ole saatavilla. Valitse toinen maksutapa.",
 ];

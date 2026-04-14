@@ -666,4 +666,6 @@ return [
     "bonus_page_referral" => "Program de recomandări",
     "bonus_page_text10" => "Puteți câștiga bani recomandând magazinul nostru prietenilor și cunoscuților dvs. Pentru a face acest lucru, după plasarea unei comenzi, accesați contul dvs. personal, care este creat după prima dvs. comandă. Acolo veți găsi secțiunea <b>Program de recomandări</b>, unde puteți obține linkul dvs. personal cu ID-ul dvs.",
     "bonus_page_text11" => "Pentru fiecare vânzare realizată prin linkul dvs., veți primi 5% din valoarea comenzii. Aceste câștiguri vor fi afișate în soldul contului dvs. și veți putea solicita retragerea acestei sume către datele dvs. de plată.",
+
+    "risk_check_failed" => "Plata nu este disponibilă. Vă rugăm să selectați altă metodă de plată.",
 ];

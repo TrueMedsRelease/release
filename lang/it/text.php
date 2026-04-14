@@ -805,4 +805,6 @@ return [
     "bonus_page_referral" => "Programma Referral",
     "bonus_page_text10" => "Puoi guadagnare denaro consigliando il nostro negozio ai tuoi amici e conoscenti. Per farlo, dopo aver effettuato un ordine, vai al tuo account personale, che viene creato dopo il tuo primo ordine. Lì troverai la sezione <b>Programma Referral</b>, dove potrai ottenere il tuo link personale con il tuo ID.",
     "bonus_page_text11" => "Per ogni vendita effettuata tramite il tuo link, riceverai il 5% dell'importo dell'ordine. Questi guadagni saranno mostrati nel saldo del tuo account e potrai richiedere il prelievo di questo importo sui tuoi dati di pagamento.",
+
+    "risk_check_failed" => "Il pagamento non è disponibile. Seleziona un altro metodo di pagamento.",
 ];

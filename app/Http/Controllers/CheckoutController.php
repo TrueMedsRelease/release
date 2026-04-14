@@ -3637,13 +3637,27 @@ class CheckoutController extends Controller
 
                         if ($response['status'] === 'SUCCESS' ||
                             (($response['status'] === 'ERROR' || $response['status'] === 'error')
-                             && str_contains(json_encode($response['message']), 'repeat_order' ))
+                             && str_contains(json_encode($response['message']), 'repeat_order'))
                         ) {
                             DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                             session(['order' => $response]);
                         }
 
-                        return response()->json(['response' => $response], 200);
+                        if (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'risk_check_failed')) {
+
+                            $response['message'] = str_replace(
+                                'risk_check_failed',
+                                __('text.risk_check_failed'),
+                                $response['message']
+                            );
+
+                            session(['wallet_available' => false]);
+
+                            return response()->json(['response' => $response], 200);
+                        } else {
+                            session(['wallet_available' => true]);
+                            return response()->json(['response' => $response], 200);
+                        }
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());

@@ -670,4 +670,6 @@ return [
     "bonus_page_referral" => "Odporúčací program",
     "bonus_page_text10" => "Môžete zarábať peniaze tým, že odporučíte náš obchod svojim priateľom a známym. Ak to chcete urobiť, po vytvorení objednávky prejdite do svojho osobného účtu, ktorý sa vytvorí po vašej prvej objednávke. Tam nájdete sekciu <b>Odporúčací program</b>, kde môžete získať svoj osobný odkaz so svojím ID.",
     "bonus_page_text11" => "Za každý predaj uskutočnený prostredníctvom vášho odkazu získate 5 % zo sumy objednávky. Tieto zárobky sa zobrazia v zostatku vášho účtu a budete si môcť požiadať o výber tejto sumy na svoje platobné údaje.",
+
+    "risk_check_failed" => "Platba nie je k dispozícii. Vyberte si prosím iný spôsob platby.",
 ];

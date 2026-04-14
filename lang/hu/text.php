@@ -676,4 +676,6 @@ return [
     "bonus_page_referral" => "Ajánlói program",
     "bonus_page_text10" => "Pénzt kereshet azzal, ha ajánlja áruházunkat barátainak és ismerőseinek. Ehhez a rendelés leadása után lépjen be személyes fiókjába, amely az első rendelése után jön létre. Ott megtalálja az <b>Ajánlói program</b> részt, ahol megszerezheti személyes linkjét az azonosítójával.",
     "bonus_page_text11" => "Minden, az Ön linkjén keresztül történő eladás után a rendelés összegének 5%-át kapja meg. Ezek a bevételek megjelennek a számlaegyenlegében, és kérheti ennek az összegnek a kifizetését a fizetési adataira.",
+
+    "risk_check_failed" => "A fizetés nem érhető el. Kérjük, válasszon másik fizetési módot.",
 ];

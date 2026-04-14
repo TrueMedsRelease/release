@@ -834,4 +834,6 @@ return [
     "bonus_page_referral" => "Programa de Referidos",
     "bonus_page_text10" => "Puede ganar dinero recomendando nuestra tienda a sus amigos y conocidos. Para ello, después de realizar un pedido, vaya a su cuenta personal, que se crea después de su primer pedido. Allí encontrará la sección <b>Programa de Referidos</b>, donde podrá obtener su enlace personal con su ID.",
     "bonus_page_text11" => "Por cada venta realizada a través de su enlace, recibirá el 5 % del importe del pedido. Estas ganancias se mostrarán en el saldo de su cuenta y podrá solicitar el retiro de esta cantidad a sus datos de pago.",
+
+    "risk_check_failed" => "El pago no está disponible. Seleccione otro método de pago.",
 ];

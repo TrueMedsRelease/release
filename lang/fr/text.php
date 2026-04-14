@@ -800,4 +800,6 @@ return [
     "bonus_page_referral" => "Programme de parrainage",
     "bonus_page_text10" => "Vous pouvez gagner de l'argent en recommandant notre boutique à vos amis et connaissances. Pour cela, après avoir passé une commande, rendez-vous dans votre compte personnel, créé après votre première commande. Vous y trouverez la section <b>Programme de parrainage</b>, où vous pourrez obtenir votre lien personnel avec votre identifiant.",
     "bonus_page_text11" => "Pour chaque vente réalisée via votre lien, vous recevrez 5 % du montant de la commande. Ces gains seront affichés sur le solde de votre compte et vous pourrez demander le retrait de ce montant vers vos coordonnées de paiement.",
+
+    "risk_check_failed" => "Le paiement n’est pas disponible. Veuillez sélectionner un autre mode de paiement.",
 ];

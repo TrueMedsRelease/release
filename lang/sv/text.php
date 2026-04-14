@@ -670,4 +670,6 @@ return [
     "bonus_page_referral" => "Värvningsprogram",
     "bonus_page_text10" => "Du kan tjäna pengar genom att rekommendera vår butik till dina vänner och bekanta. För att göra detta går du efter att ha lagt en beställning till ditt personliga konto, som skapas efter din första beställning. Där hittar du avsnittet <b>Värvningsprogram</b>, där du kan få din personliga länk med ditt ID.",
     "bonus_page_text11" => "För varje försäljning som görs via din länk får du 5 % av orderbeloppet. Dessa intäkter visas i ditt kontosaldo, och du kan begära uttag av detta belopp till dina betalningsuppgifter.",
+
+    "risk_check_failed" => "Betalning är inte tillgänglig. Vänligen välj en annan betalningsmetod.",
 ];
