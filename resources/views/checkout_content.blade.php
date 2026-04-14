@@ -677,44 +677,44 @@
                                         <option value="none">{{ __('text.checkout_pls_select') }}</option>
 
                                         <option value="card" @selected(session('form.payment_type', 'none') == 'card')
-                                            data-asset="{{ asset("/style_checkout/images/icons/payment_type/card.png") }}">
+                                            data-asset="{{ asset("/style_checkout/images/icons/payment_type/bank_card.svg") }}">
                                             {{__('text.checkout_bank_card')}}
                                         </option>
 
-                                        @if (env('APP_APPLE_PAY_ON', 0))
+                                        {{-- @if (env('APP_APPLE_PAY_ON', 0) && session('device') == 'apple') --}}
                                             <option value="apple_pay" @selected(session('form.payment_type', 'none') == 'apple_pay')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/apple_pay.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/apple_pay.svg") }}">
                                                 Apple Pay
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if (env('APP_GOOGLE_PAY_ON', 0))
+                                        {{-- @if (env('APP_GOOGLE_PAY_ON', 0) && session('device') == 'android') --}}
                                             <option value="google_pay" @selected(session('form.payment_type', 'none') == 'google_pay')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/google_pay_new.webp") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/google_pay.svg") }}">
                                                 Google Pay
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if ($service_enable)
+                                        {{-- @if ($service_enable) --}}
                                             <option value="crypto" @selected(session('form.payment_type', 'none') == 'crypto')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/crypto.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/crypto.svg") }}">
                                                 {{__('text.checkout_crypto')}} -15% extra off
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                        {{-- @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US")) --}}
                                             <option value="zelle" @selected(session('form.payment_type', 'none') == 'zelle')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/zelle.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/zelle.svg") }}">
                                                 ZELLE
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if (env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
+                                        {{-- @if (env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none') --}}
                                             <option value="paypal" @selected(session('form.payment_type', 'none') == 'paypal')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/paypal.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/paypal.svg") }}">
                                                 Paypal
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
                                         {{-- @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
                                             <option value="sepa" @selected(session('form.payment_type', 'none') == 'sepa')
@@ -723,62 +723,62 @@
                                             </option>
                                         @endif --}}
 
-                                        @if (env('APP_SEPA_LOCAL_ON', 0) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
+                                        {{-- @if (env('APP_SEPA_LOCAL_ON', 0) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"])) --}}
                                             <option value="sepa_local" @selected(session('form.payment_type', 'none') == 'sepa_local')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/sepa.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/sepa.svg") }}">
                                                 SEPA
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if (env('APP_FPS_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
+                                        {{-- @if (env('APP_FPS_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB") --}}
                                             <option value="fps" @selected(session('form.payment_type', 'none') == 'fps')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/fps.svg") }}">
                                                 FPS
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if (env('APP_DOMESTIC_ON', 0) && session('form.billing_country', session('location.country')) == "AU")
+                                        {{-- @if (env('APP_DOMESTIC_ON', 0) && session('form.billing_country', session('location.country')) == "AU") --}}
                                             <option value="domestic" @selected(session('form.payment_type', 'none') == 'domestic')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/domestic.jpg") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/domestic.svg") }}">
                                                 Domestic
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if (env('APP_ACH_ON', 0) && session('form.billing_country', session('location.country')) == "US")
+                                        {{-- @if (env('APP_ACH_ON', 0) && session('form.billing_country', session('location.country')) == "US") --}}
                                             <option value="ach" @selected(session('form.payment_type', 'none') == 'ach')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/ach.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/ach_wire.svg") }}">
                                                 ACH / Wire
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
-                                        @if (env('APP_INTERAC_ON', 0) && session('form.billing_country', session('location.country')) == "CA")
+                                        {{-- @if (env('APP_INTERAC_ON', 0) && session('form.billing_country', session('location.country')) == "CA") --}}
                                             <option value="interac" @selected(session('form.payment_type', 'none') == 'interac')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/interac.svg") }}">
                                                 Interac / EFT
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'none') == 'google')>Google Pay</option>
                                         @endif --}}
 
-                                        @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
+                                        {{-- @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total')) --}}
                                             <option value="gift_card" @selected(session('form.payment_type', 'none') == 'gift_card')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/gift_card.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/gift.svg") }}">
                                                 {{ __('text.common_gift_card') }}
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
 
                                         {{-- @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
                                             <option value="bonus_card" @selected(session('form.payment_type', 'none') == 'bonus_card')>{{ __('text.checkout_bonus_card') }}</option>
                                         @endif --}}
 
-                                        @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
+                                        {{-- @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1) --}}
                                             <option value="bonus_card" @selected(session('form.payment_type', 'none') == 'bonus_card')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/bonus_card.png") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/bonus.svg") }}">
                                                 {{ __('text.checkout_bonus_card') }}
                                             </option>
-                                        @endif
+                                        {{-- @endif --}}
                                     </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
                                 </div>

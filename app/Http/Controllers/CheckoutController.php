@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Phattarachai\LaravelMobileDetect\Agent;
 
 class CheckoutController extends Controller
 {
@@ -120,6 +121,20 @@ class CheckoutController extends Controller
         // if (session('location.country') == "US") {
         //     session(['form.payment_type' => 'zelle']);
         // }
+
+        $agent = new Agent();
+
+        if ($agent->isAndroidOS()) {
+            $device = 'android';
+        } elseif ($agent->is('iPhone') || $agent->is('iPad') || $agent->is('iPod')) {
+            $device = 'apple';
+        } elseif ($agent->isDesktop()) {
+            $device = 'desktop';
+        } else {
+            $device = 'unknown';
+        }
+
+        session(['device' => $device]);
 
         return view('checkout', [
             'pixel'    => $pixel,
