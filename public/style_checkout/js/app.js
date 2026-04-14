@@ -3432,8 +3432,11 @@ $("#proccess_apple_pay").click(function (e) {
                 } else {
                     window.location.replace(checkoutComplete);
                 }
-            }
-            else {
+            } else if (data.response.status == 'risk_check') {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else {
                 var error = '';
                 data.response.message.forEach(element => {
                     error += element + "\n";
@@ -3494,8 +3497,11 @@ $("#proccess_google_pay").click(function (e) {
                 } else {
                     window.location.replace(checkoutComplete);
                 }
-            }
-            else {
+            } else if (data.response.status == 'risk_check') {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else {
                 var error = '';
                 data.response.message.forEach(element => {
                     error += element + "\n";

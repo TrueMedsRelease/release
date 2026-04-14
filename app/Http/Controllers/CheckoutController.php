@@ -3627,7 +3627,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Wallet answer: " . $response);
 
                     if ($response->successful()) {
@@ -3645,15 +3645,16 @@ class CheckoutController extends Controller
 
                         if (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'risk_check_failed')) {
 
-                            $response['message'] = str_replace(
-                                'risk_check_failed',
-                                __('text.risk_check_failed'),
-                                $response['message']
-                            );
-
                             session(['wallet_available' => false]);
+                            session(['form.payment_type' => 'none']);
 
-                            return response()->json(['response' => $response], 200);
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'risk_check',
+                                    'message' => __('text.risk_check_failed'),
+                                    'html' => $this->checkout(),
+                                ]
+                            ], 200);
                         } else {
                             session(['wallet_available' => true]);
                             return response()->json(['response' => $response], 200);
