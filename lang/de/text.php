@@ -795,4 +795,6 @@ return [
     "bonus_page_referral" => "Empfehlungsprogramm",
     "bonus_page_text10" => "Sie können Geld verdienen, indem Sie unseren Shop Ihren Freunden und Bekannten empfehlen. Gehen Sie dazu nach der Bestellung in Ihr persönliches Konto, das nach Ihrer ersten Bestellung erstellt wird. Dort finden Sie den Bereich <b>Empfehlungsprogramm</b>, in dem Sie Ihren persönlichen Link mit Ihrer ID erhalten.",
     "bonus_page_text11" => "Für jeden Verkauf, der über Ihren Link erfolgt, erhalten Sie 5 % des Bestellbetrags. Diese Einnahmen werden in Ihrem Kontostand angezeigt, und Sie können die Auszahlung dieses Betrags auf Ihre Zahlungsdaten beantragen.",
+
+    "risk_check_failed" => "Die Zahlung ist nicht verfügbar. Bitte wählen Sie eine andere Zahlungsmethode.",
 ];

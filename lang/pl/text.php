@@ -671,4 +671,6 @@ return [
     "bonus_page_referral" => "Program poleceń",
     "bonus_page_text10" => "Możesz zarabiać pieniądze, polecając nasz sklep swoim znajomym i przyjaciołom. Aby to zrobić, po złożeniu zamówienia przejdź do swojego konta osobistego, które zostanie utworzone po pierwszym zamówieniu. Tam znajdziesz sekcję <b>Program poleceń</b>, w której możesz otrzymać swój osobisty link z Twoim ID.",
     "bonus_page_text11" => "Za każdą sprzedaż dokonaną przez Twój link otrzymasz 5% wartości zamówienia. Te zarobki będą widoczne w saldzie Twojego konta i będziesz mógł zlecić wypłatę tej kwoty na swoje dane płatnicze.",
+
+    "risk_check_failed" => "Płatność jest niedostępna. Proszę wybrać inną metodę płatności.",
 ];

@@ -672,4 +672,6 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "bonus_page_referral" => "Program Rujukan",
     "bonus_page_text10" => "Anda boleh menjana wang dengan mengesyorkan kedai kami kepada rakan dan kenalan anda. Untuk berbuat demikian, selepas membuat pesanan, pergi ke akaun peribadi anda yang dicipta selepas pesanan pertama anda. Di sana, anda akan menemui bahagian <b>Program Rujukan</b>, di mana anda boleh mendapatkan pautan peribadi anda dengan ID anda.",
     "bonus_page_text11" => "Bagi setiap jualan yang dibuat melalui pautan anda, anda akan menerima 5% daripada jumlah pesanan. Pendapatan ini akan dipaparkan dalam baki akaun anda, dan anda boleh meminta pengeluaran jumlah ini ke butiran pembayaran anda.",
+
+    "risk_check_failed" => "Pembayaran tidak tersedia. Sila pilih kaedah pembayaran lain.",
 ];

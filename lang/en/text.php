@@ -956,4 +956,6 @@ return [
     "bonus_page_referral" => "Referral Program",
     "bonus_page_text10" => "You can earn money by recommending our store to your friends and acquaintances. To do this, after placing an order, go to your personal account, which is created after your first order. There, you will find the <b>Referral Program</b> section, where you can get your personal link with your ID.",
     "bonus_page_text11" => "For every sale made through your link, you will receive 5% of the order amount. These earnings will be displayed in your account balance, and you will be able to request a withdrawal of this amount to your payment details.",
+
+    "risk_check_failed" => "Payment is unavailable. Please select another payment method.",
 ];

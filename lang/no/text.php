@@ -673,4 +673,6 @@ return [
     "bonus_page_referral" => "Vervingsprogram",
     "bonus_page_text10" => "Du kan tjene penger ved å anbefale butikken vår til venner og bekjente. For å gjøre dette, gå etter at du har lagt inn en bestilling til din personlige konto, som opprettes etter din første bestilling. Der finner du seksjonen <b>Vervingsprogram</b>, hvor du kan få din personlige lenke med din ID.",
     "bonus_page_text11" => "For hvert salg som gjøres via lenken din, vil du motta 5 % av bestillingsbeløpet. Denne inntekten vil vises i kontosaldoen din, og du vil kunne be om uttak av dette beløpet til betalingsopplysningene dine.",
+
+    "risk_check_failed" => "Betaling er ikke tilgjengelig. Velg en annen betalingsmåte.",
 ];

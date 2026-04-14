@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Phattarachai\LaravelMobileDetect\Agent;
 
 class CheckoutController extends Controller
 {
@@ -120,6 +121,20 @@ class CheckoutController extends Controller
         // if (session('location.country') == "US") {
         //     session(['form.payment_type' => 'zelle']);
         // }
+
+        $agent = new Agent();
+
+        if ($agent->isAndroidOS()) {
+            $device = 'android';
+        } elseif ($agent->is('iPhone') || $agent->is('iPad') || $agent->is('iPod')) {
+            $device = 'apple';
+        } elseif ($agent->isDesktop()) {
+            $device = 'desktop';
+        } else {
+            $device = 'unknown';
+        }
+
+        session(['device' => $device]);
 
         return view('checkout', [
             'pixel'    => $pixel,
@@ -3321,9 +3336,10 @@ class CheckoutController extends Controller
             }
             return response()->json(['errors' => $errors], 422);
         } else {
-            session(['form.payment_type' => 'wallet']);
 
             $form = session('form');
+
+            session(['form.payment_type' => $form['wallet']]);
 
             $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
             $phone_code = $phone_code->phonecode;
@@ -3381,7 +3397,7 @@ class CheckoutController extends Controller
                     $form['billing_address']
                 ),
                 'shipping_zip'       => !empty($form['address_match']) ? e($form['shipping_zip']) : e($form['billing_zip']),
-                'payment_type'       => 'wallet',
+                'payment_type'       => $form['wallet'],
                 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
                     'cf-connecting-ip'
                 ) : request()->ip(),
@@ -3542,7 +3558,7 @@ class CheckoutController extends Controller
                 'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
                     $request->billing_zip
                 ),
-                'payment_type'       => 'wallet',
+                'payment_type'       => $request->wallet,
                 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
                     'cf-connecting-ip'
                 ) : request()->ip(),
@@ -3611,7 +3627,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order_test.php', $data);
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Wallet answer: " . $response);
 
                     if ($response->successful()) {
@@ -3621,13 +3637,28 @@ class CheckoutController extends Controller
 
                         if ($response['status'] === 'SUCCESS' ||
                             (($response['status'] === 'ERROR' || $response['status'] === 'error')
-                             && str_contains(json_encode($response['message']), 'repeat_order' ))
+                             && str_contains(json_encode($response['message']), 'repeat_order'))
                         ) {
                             DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
                             session(['order' => $response]);
                         }
 
-                        return response()->json(['response' => $response], 200);
+                        if (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'risk_check_failed')) {
+
+                            session(['wallet_available' => false]);
+                            session(['form.payment_type' => 'none']);
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'risk_check',
+                                    'message' => __('text.risk_check_failed'),
+                                    'html' => $this->checkout(),
+                                ]
+                            ], 200);
+                        } else {
+                            session(['wallet_available' => true]);
+                            return response()->json(['response' => $response], 200);
+                        }
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());

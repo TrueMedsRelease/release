@@ -719,4 +719,6 @@ return [
     "bonus_page_referral" => "Henvisningsprogram",
     "bonus_page_text10" => "Du kan tjene penge ved at anbefale vores butik til dine venner og bekendte. For at gøre dette skal du efter at have afgivet en ordre gå til din personlige konto, som oprettes efter din første ordre. Der finder du sektionen <b>Henvisningsprogram</b>, hvor du kan få dit personlige link med dit ID.",
     "bonus_page_text11" => "For hvert salg, der foretages via dit link, modtager du 5 % af ordrebeløbet. Denne indtjening vises på din kontosaldo, og du kan anmode om at få dette beløb udbetalt til dine betalingsoplysninger.",
+
+    "risk_check_failed" => "Betaling er ikke tilgængelig. Vælg venligst en anden betalingsmetode.",
 ];

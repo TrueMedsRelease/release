@@ -66,7 +66,7 @@ class Cart extends Model
 
     public static function decrease($pack_id)
     {
-        $products = session('cart');
+        $products = session('cart', []);
         foreach ($products as &$product) {
             if ($product['pack_id'] == $pack_id) {
                 $product['q'] = $product['q'] == 1 ? $product['q'] : $product['q'] -= 1;
@@ -98,7 +98,7 @@ class Cart extends Model
 
     public static function upgrade($pack_id)
     {
-        $products = session('cart');
+        $products = session('cart', []);
         $pack     = ProductPackaging::query()->find($pack_id);
 
         $count = 1;

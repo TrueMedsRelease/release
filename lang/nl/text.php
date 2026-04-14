@@ -710,4 +710,6 @@ return [
     "bonus_page_referral" => "Doorverwijsprogramma",
     "bonus_page_text10" => "U kunt geld verdienen door onze winkel aan te bevelen bij uw vrienden en kennissen. Ga hiervoor na het plaatsen van een bestelling naar uw persoonlijke account, dat na uw eerste bestelling wordt aangemaakt. Daar vindt u de sectie <b>Doorverwijsprogramma</b>, waar u uw persoonlijke link met uw ID kunt krijgen.",
     "bonus_page_text11" => "Voor elke verkoop die via uw link wordt gedaan, ontvangt u 5% van het bestelbedrag. Deze inkomsten worden weergegeven in uw accountsaldo en u kunt een uitbetaling van dit bedrag naar uw betaalgegevens aanvragen.",
+
+    "risk_check_failed" => "Betaling is niet beschikbaar. Selecteer een andere betaalmethode.",
 ];
