@@ -1356,104 +1356,64 @@ class HomeController extends Controller
         ]);
     }
 
-    public function language($locale)
+    public function language(Request $request, $locale)
     {
+        $currentLocale = App::currentLocale();
         $lang = Language::GetLanguageByCountry($locale);
-        // App::setLocale($lang);
+
         session(['locale' => $lang]);
 
-        $back_url = session('last_page', route('home.index'));
+        $backUrl = $this->resolveRedirectUrl($request);
 
-        if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-
-            if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                $new_text_1 = __('text.text_aff_domain_1', [], 'en');
-                $new_text_2 = __('text.text_aff_domain_2', [], 'en');
-            } else {
-                $new_text_1 = __('text.text_aff_domain_1', [], $locale);
-                $new_text_2 = __('text.text_aff_domain_2', [], $locale);
-            }
-
-            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                $back_url = str_replace(__('text.text_aff_domain_1', [], 'en'), $new_text_1, $back_url);
-                $back_url = str_replace(__('text.text_aff_domain_2', [], 'en'), $new_text_2, $back_url);
-            } else {
-                $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
-                $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
-            }
-
-            // return redirect()->to($back_url);
+        if ($this->isAffDomainMode()) {
+            $backUrl = $this->replaceAffDomainTexts($backUrl, $locale, $currentLocale);
         }
-        // else {
-        //     return redirect()->to($back_url);
-        // }
 
-        return redirect()->to($back_url);
+        return redirect()->to($backUrl);
     }
 
-    public function language_with_url($url, $locale)
+    public function language_with_url(Request $request, $url, $locale)
     {
-        session(['locale' => $locale]);
+        $currentLocale = App::currentLocale();
+        $lang = Language::GetLanguageByCountry($locale);
 
-        $back_url = session('last_page', route('home.index'));
+        session(['locale' => $lang]);
 
-        if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-            if ($url) {
-                $back_url = $url;
-            }
+        $backUrl = $this->resolveRedirectUrl($request, $url);
 
-            if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                $new_text_1 = __('text.text_aff_domain_1', [], 'en');
-                $new_text_2 = __('text.text_aff_domain_2', [], 'en');
-            } else {
-                $new_text_1 = __('text.text_aff_domain_1', [], $locale);
-                $new_text_2 = __('text.text_aff_domain_2', [], $locale);
-            }
-
-            if (in_array(App::currentLocale(), ['hant', 'hans', 'gr', 'arb', 'ja'])) {
-                $back_url = str_replace(__('text.text_aff_domain_1', [], 'en'), $new_text_1, $back_url);
-                $back_url = str_replace(__('text.text_aff_domain_2', [], 'en'), $new_text_2, $back_url);
-            } else {
-                $back_url = str_replace(__('text.text_aff_domain_1'), $new_text_1, $back_url);
-                $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
-            }
-
-            return redirect()->to($back_url);
-        } else {
-            if ($url) {
-                return redirect('/' . $url);
-            } else {
-                return redirect()->to($back_url);
-            }
+        if ($this->isAffDomainMode()) {
+            $backUrl = $this->replaceAffDomainTexts($backUrl, $locale, $currentLocale);
         }
+
+        return redirect()->to($backUrl);
     }
 
-    public function currency($currency)
+    public function currency(Request $request, $currency)
     {
         $coef = Currency::GetCoef($currency);
 
         session([
-            'currency' => $currency,
-            'currency_c' => $coef
+            'currency'   => $currency,
+            'currency_c' => $coef,
         ]);
 
-        return redirect()->to(session('last_page', route('home.index')));
+        $backUrl = $this->resolveRedirectUrl($request);
+
+        return redirect()->to($backUrl);
     }
 
-    public function currency_with_url($url, $currency)
+    public function currency_with_url(Request $request, $url, $currency)
     {
         $coef = Currency::GetCoef($currency);
 
         session([
-            'currency' => $currency,
-            'currency_c' => $coef
+            'currency'   => $currency,
+            'currency_c' => $coef,
         ]);
 
-        if ($url) {
-            return redirect('/' . $url);
-        } else {
-            return redirect()->to(session('last_page', route('home.index')));
-        }
+        $backUrl = $this->resolveRedirectUrl($request, $url);
+
+        return redirect()->to($backUrl);
     }
 
     public function design($design)
@@ -1593,6 +1553,88 @@ class HomeController extends Controller
         } else {
             echo "SERVER ERROR";
         }
+    }
+
+    private function resolveRedirectUrl(Request $request, ?string $url = null): string
+    {
+        $homeUrl = route('home.index');
+
+        if (!empty($url)) {
+            $candidate = url('/' . ltrim($url, '/'));
+        } else {
+            $candidate = session('last_page', $homeUrl);
+        }
+
+        if (empty($candidate)) {
+            return $homeUrl;
+        }
+
+        $candidate = $this->normalizeInternalUrl($candidate, $homeUrl);
+
+        if ($candidate === $request->fullUrl()) {
+            return $homeUrl;
+        }
+
+        $blockedParts = [
+            '/lang=',
+            '/curr=',
+            '/design=',
+            '/set_images/',
+        ];
+
+        foreach ($blockedParts as $part) {
+            if (str_contains($candidate, $part)) {
+                return $homeUrl;
+            }
+        }
+
+        return $candidate;
+    }
+
+    private function normalizeInternalUrl(string $url, string $fallback): string
+    {
+        if (!preg_match('#^https?://#i', $url)) {
+            $url = url('/' . ltrim($url, '/'));
+        }
+
+        $targetHost = parse_url($url, PHP_URL_HOST);
+        $appHost = parse_url(url('/'), PHP_URL_HOST);
+
+        if ($targetHost && $appHost && $targetHost !== $appHost) {
+            return $fallback;
+        }
+
+        return $url;
+    }
+
+    private function isAffDomainMode(): bool
+    {
+        return in_array(session('aff'), [1799, 1947, 1952, 1957], true)
+            || in_array((int) env('APP_AFF'), [1799, 1947, 1952, 1957], true);
+    }
+
+    private function replaceAffDomainTexts(string $backUrl, string $locale, string $currentLocale): string
+    {
+        if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'], true)) {
+            $newText1 = __('text.text_aff_domain_1', [], 'en');
+            $newText2 = __('text.text_aff_domain_2', [], 'en');
+        } else {
+            $newText1 = __('text.text_aff_domain_1', [], $locale);
+            $newText2 = __('text.text_aff_domain_2', [], $locale);
+        }
+
+        if (in_array($currentLocale, ['hant', 'hans', 'gr', 'arb', 'ja'], true)) {
+            $oldText1 = __('text.text_aff_domain_1', [], 'en');
+            $oldText2 = __('text.text_aff_domain_2', [], 'en');
+        } else {
+            $oldText1 = __('text.text_aff_domain_1', [], $currentLocale);
+            $oldText2 = __('text.text_aff_domain_2', [], $currentLocale);
+        }
+
+        $backUrl = str_replace($oldText1, $newText1, $backUrl);
+        $backUrl = str_replace($oldText2, $newText2, $backUrl);
+
+        return $backUrl;
     }
 
     public function request_call(Request $request)

@@ -9,18 +9,37 @@ class RememberLastPage
 {
     public function handle(Request $request, Closure $next)
     {
+        $response = $next($request);
+
+        $routeName = $request->route()?->getName();
+
+        $skipRoutes = [
+            'home.language',
+            'home.language_with_url',
+            'home.currency',
+            'home.currency_with_url',
+            'home.design',
+            'home.design_with_url',
+            'home.set_images',
+            'search.search_autocomplete',
+            'cart.content',
+            'checkout.content',
+            'redirect_url',
+        ];
+
+        $contentType = (string) $response->headers->get('Content-Type');
+
         if (
             $request->isMethod('GET') &&
             ! $request->ajax() &&
             ! $request->expectsJson() &&
-            str_contains($request->header('accept', ''), 'text/html') &&
-            ! $request->is('set_images/*') &&
-            ! $request->is('currency/*') &&
-            ! $request->is('language/*')
+            ! in_array($routeName, $skipRoutes, true) &&
+            ! $response->isRedirection() &&
+            str_contains($contentType, 'text/html')
         ) {
             session(['last_page' => $request->fullUrl()]);
         }
 
-        return $next($request);
+        return $response;
     }
 }
