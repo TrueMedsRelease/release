@@ -10,6 +10,7 @@ use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SessionParameterHandler;
 use App\Http\Middleware\SetCookiesForStatistics;
+use App\Http\Middleware\RememberLastPage;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
@@ -68,7 +69,8 @@ class Kernel extends HttpKernel
             SubstituteBindings::class,
             SetLocale::class,
             SessionParameterHandler::class,
-            SetCookiesForStatistics::class
+            SetCookiesForStatistics::class,
+            RememberLastPage::class,
         ],
 
         'api' => [

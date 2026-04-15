@@ -1362,8 +1362,9 @@ class HomeController extends Controller
         // App::setLocale($lang);
         session(['locale' => $lang]);
 
+        $back_url = session('last_page', route('home.index'));
+
         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
-            $back_url = Redirect::back()->getTargetUrl();
 
             if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
                 $new_text_1 = __('text.text_aff_domain_1', [], 'en');
@@ -1381,21 +1382,24 @@ class HomeController extends Controller
                 $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
             }
 
-            return Redirect::to($back_url);
-        } else {
-            return Redirect::back();
+            // return redirect()->to($back_url);
         }
+        // else {
+        //     return redirect()->to($back_url);
+        // }
+
+        return redirect()->to($back_url);
     }
 
     public function language_with_url($url, $locale)
     {
         session(['locale' => $locale]);
 
+        $back_url = session('last_page', route('home.index'));
+
         if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])) {
             if ($url) {
                 $back_url = $url;
-            } else {
-                $back_url = Redirect::back()->getTargetUrl();
             }
 
             if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'])) {
@@ -1414,12 +1418,12 @@ class HomeController extends Controller
                 $back_url = str_replace(__('text.text_aff_domain_2'), $new_text_2, $back_url);
             }
 
-            return Redirect::to($back_url);
+            return redirect()->to($back_url);
         } else {
             if ($url) {
                 return redirect('/' . $url);
             } else {
-                return Redirect::back();
+                return redirect()->to($back_url);
             }
         }
     }
@@ -1427,21 +1431,28 @@ class HomeController extends Controller
     public function currency($currency)
     {
         $coef = Currency::GetCoef($currency);
-        session(['currency' => $currency]);
-        session(['currency_c' => $coef]);
-        return Redirect::back();
+
+        session([
+            'currency' => $currency,
+            'currency_c' => $coef
+        ]);
+
+        return redirect()->to(session('last_page', route('home.index')));
     }
 
     public function currency_with_url($url, $currency)
     {
         $coef = Currency::GetCoef($currency);
-        session(['currency' => $currency]);
-        session(['currency_c' => $coef]);
+
+        session([
+            'currency' => $currency,
+            'currency_c' => $coef
+        ]);
 
         if ($url) {
             return redirect('/' . $url);
         } else {
-            return Redirect::back();
+            return redirect()->to(session('last_page', route('home.index')));
         }
     }
 
