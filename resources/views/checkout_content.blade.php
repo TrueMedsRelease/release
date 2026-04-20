@@ -808,7 +808,7 @@
                                 </div>
                             {{-- </div> --}}
                         </div>
-                        <div class="enter-info__card-content" @if (session('form.payment_type', 'none') != 'card') hidden @endif>
+                        <div class="enter-info__card-content" @if (session('form.payment_type', 'none') != 'card' && session('form.payment_type', 'none') != 'google_pay' && session('form.payment_type', 'none') != 'apple_pay') hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>
@@ -856,6 +856,22 @@
                             </div>
                             <button id="proccess" name="proccess" class="enter-info__button button">
                                 <span>{{__('text.checkout_place')}}</span>
+                                <svg width="18" height="18">
+                                    <use
+                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                    </use>
+                                </svg>
+                            </button>
+                            <button id="proccess_google_pay" name="proccess" class="enter-info__button button" style="display: none">
+                                <span>{{ __('text.checkout_sepa_text') }}</span>
+                                <svg width="18" height="18">
+                                    <use
+                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                    </use>
+                                </svg>
+                            </button>
+                            <button id="proccess_apple_pay" name="proccess" class="enter-info__button button" style="display: none">
+                                <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -1493,7 +1509,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__apple_pay-content" @if (session('form.payment_type', 'none') != 'apple_pay') hidden @endif>
+                        {{-- <div class="enter-info__apple_pay-content" @if (session('form.payment_type', 'none') != 'apple_pay') hidden @endif>
                             <button id="proccess_apple_pay" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
@@ -1502,9 +1518,9 @@
                                     </use>
                                 </svg>
                             </button>
-                        </div>
+                        </div> --}}
 
-                        <div class="enter-info__google_pay-content" @if (session('form.payment_type', 'none') != 'google_pay') hidden @endif>
+                        {{-- <div class="enter-info__google_pay-content" @if (session('form.payment_type', 'none') != 'google_pay') hidden @endif>
                             <button id="proccess_google_pay" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
@@ -1513,7 +1529,7 @@
                                     </use>
                                 </svg>
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </section>
             </div>
