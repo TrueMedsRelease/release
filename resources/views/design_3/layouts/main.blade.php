@@ -19,8 +19,15 @@
     <meta charset="utf-8">
     <title>@yield('title', 'Title')</title>
     <meta name="robots" content="index, follow" />
-    <meta name="Description" content="@yield('description', 'Description')">
-    <meta name="Keywords" content="@yield('keywords', 'Keywords')">
+
+    @if (env('APP_DEFAULT_META', 1))
+        <meta name="Description" content="@yield('description', 'Description')">
+        <meta name="Keywords" content="@yield('keywords', 'Keywords')">
+    @else
+        <meta name="Description" content="Description">
+        <meta name="Keywords" content="Keywords">
+    @endif
+
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#454d58"/>
 	<meta name="format-detection" content="telephone=no">
