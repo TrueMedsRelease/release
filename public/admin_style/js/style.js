@@ -869,6 +869,7 @@ function renewalDatabase() {
 
 function saveDefaultErrorPage() {
     let default_error_page = $('input[name="default_error_page"]:checked').val();
+    let default_meta = $('input[name="default_meta"]:checked').val();
 
     $.ajax({
         url: routeAdminSaveDefaultErrorPage,
@@ -877,6 +878,7 @@ function saveDefaultErrorPage() {
         dataType: 'html',
         data: {
             'default_error_page': default_error_page,
+            'default_meta': default_meta,
         },
         success: function (data) {
             data = JSON.parse(data);

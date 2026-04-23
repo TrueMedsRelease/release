@@ -1414,12 +1414,16 @@ class AdminController extends Controller
 
     public function save_default_error_page(Request $request) {
         $default_error_page = $request->default_error_page;
+        $default_meta = $request->default_meta;
+
         $this->envUpdate('APP_ERROR_PAGE', $default_error_page);
+        $this->envUpdate('APP_DEFAULT_META', $default_meta);
 
         Cache::flush();
 
         return response()->json(array('status' => 'success', 'url' => route('admin.main_properties')));
     }
+
 
     public function save_subscribe_info(Request $request) {
         $popup_status = $request->popup_status;
@@ -1537,7 +1541,7 @@ class AdminController extends Controller
 
     public function envUpdate($flag,$value)
     {
-        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE'];
+        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META'];
 
         if (in_array($flag, $allow_flags))
         {

@@ -96,6 +96,29 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr style="display:flex; justify-content: space-between; padding-top: 15px; gap: 15px;">
+                            <td style="width: 30%;">
+                                <div>
+                                    Show Keywords and Description in meta
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="default_meta" id="our_meta" value="1" @if (env('APP_DEFAULT_META', '1') == 1) checked @endif />
+                                    <label for="our_meta">
+                                        Our Keywords and Description
+                                    </label>
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="default_meta" id="default_meta" value="0" @if (env('APP_DEFAULT_META', '1') == 0) checked @endif />
+                                    <label for="default_meta">
+                                        Default Keywords and Description
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="saveDefaultErrorPage();">
