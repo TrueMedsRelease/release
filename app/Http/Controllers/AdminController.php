@@ -1529,14 +1529,28 @@ class AdminController extends Controller
         return $title;
     }
 
-    public function setEnv($key, $val)
-    {
+    // public function setEnv($key, $val)
+    // {
+    //     $path = base_path('.env');
+
+    //     if (file_exists($path)) {
+
+    //         file_put_contents($path, str_replace($key . '=' . env($key), $key . '=' . $val, file_get_contents($path)));
+    //     }
+
+    // }
+
+    public function setEnv($key, $value) {
         $path = base_path('.env');
+        $content = file_get_contents($path);
 
-        if (file_exists($path)) {
-
-            file_put_contents($path, str_replace($key . '=' . env($key), $key . '=' . $val, file_get_contents($path)));
+        if (strpos($content, $key) !== false) {
+            $content = preg_replace("/^{$key}=(.*)$/m", "{$key}={$value}", $content);
+        } else {
+            $content .= PHP_EOL . "{$key}={$value}";
         }
+
+        file_put_contents($path, $content);
     }
 
     public function envUpdate($flag,$value)
