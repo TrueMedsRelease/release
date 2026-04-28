@@ -57,7 +57,7 @@ class CheckoutController extends Controller
 
                             $response = json_decode($response, true);
 
-                            $message = json_encode($response['message']);
+                            $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                             if ($response['status'] === 'SUCCESS' ||
                                     (
@@ -814,7 +814,7 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        $message = json_encode($response['message']);
+                        $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($response['status'] === 'SUCCESS' ||
                                 (
@@ -1010,7 +1010,7 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        $message = json_encode($response['message']);
+                        $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($response['status'] === 'SUCCESS' ||
                                 (
@@ -1659,7 +1659,7 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        $message = json_encode($response['message']);
+                        $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($response['status'] === 'SUCCESS' ||
                                 (
@@ -1937,7 +1937,7 @@ class CheckoutController extends Controller
 
                     $response = json_decode($response, true);
 
-                    $message = json_encode($response['message']);
+                    $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                     if ($response['status'] === 'SUCCESS' ||
                             (
@@ -2275,7 +2275,7 @@ class CheckoutController extends Controller
                     // Обработка успешного ответа
                     $response = json_decode($response, true);
 
-                    $message = json_encode($response['message']);
+                    $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                     if ($response['status'] === 'SUCCESS' ||
                             (
@@ -2631,7 +2631,7 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        $message = json_encode($response['message']);
+                        $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($response['status'] === 'SUCCESS' ||
                                 (
@@ -3115,7 +3115,7 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        $message = json_encode($response['message']);
+                        $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($response['status'] === 'SUCCESS' ||
                                 (
@@ -3313,7 +3313,7 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        $message = json_encode($response['message']);
+                        $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($response['status'] === 'SUCCESS' ||
                                 (
@@ -3755,7 +3755,7 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        $message = json_encode($response['message']);
+                        $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($response['status'] === 'SUCCESS' ||
                                 (
