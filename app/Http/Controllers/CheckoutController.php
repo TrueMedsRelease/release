@@ -40,7 +40,7 @@ class CheckoutController extends Controller
         // $statisticPromise = StatisticService::SendStatistic('checkout');
         StatisticService::SendCheckout();
 
-        $unsent_order = DB::select("SELECT * FROM order_cache WHERE is_send = 0");
+        $unsent_order = DB::table('order_cache')->where('is_send', '=', 0)->get();
         if (count($unsent_order) > 0) {
             foreach ($unsent_order as $order) {
                 if (checkdnsrr('true-serv.net', 'A')) {
@@ -50,16 +50,23 @@ class CheckoutController extends Controller
                             json_decode($order->message, true)
                         );
 
+                        Log::info("Retry order answer: " . $response);
+
                         if ($response->successful()) {
                             // Обработка успешного ответа
 
                             $response = json_decode($response, true);
 
-                            if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
-                                        json_encode($response['message']),
-                                        'repeat_order'
-                                    ))) {
-                                DB::delete("DELETE FROM order_cache WHERE `id` = {$order->id}");
+                            $message = json_encode($response['message']);
+
+                            if ($response['status'] === 'SUCCESS' ||
+                                    (
+                                        ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                        (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                    )
+                                ) {
+
+                                DB::table('order_cache')->where('id', $order->id)->delete();
                             }
                         } else {
                             // Обработка ответа с ошибкой (4xx или 5xx)
@@ -807,11 +814,16 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
+                        $message = json_encode($response['message']);
+
                         if ($response['status'] === 'SUCCESS' ||
-                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
-                             && str_contains(json_encode($response['message']), 'repeat_order' ))
-                        ) {
-                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                                (
+                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                )
+                            ) {
+
+                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
                         }
 
@@ -998,11 +1010,16 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
-                                    json_encode($response['message']),
-                                    'repeat_order'
-                                ))) {
-                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                        $message = json_encode($response['message']);
+
+                        if ($response['status'] === 'SUCCESS' ||
+                                (
+                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                )
+                            ) {
+
+                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
                         }
 
@@ -1642,11 +1659,16 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
+                        $message = json_encode($response['message']);
+
                         if ($response['status'] === 'SUCCESS' ||
-                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
-                             && str_contains(json_encode($response['message']), 'repeat_order' ))
-                        ) {
-                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                                (
+                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                )
+                            ) {
+
+                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
                         }
 
@@ -1915,29 +1937,25 @@ class CheckoutController extends Controller
 
                     $response = json_decode($response, true);
 
-                    if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
-                                json_encode($response['message']),
-                                'repeat_order'
-                            ))) {
-                        DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                    $message = json_encode($response['message']);
+
+                    if ($response['status'] === 'SUCCESS' ||
+                            (
+                                ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                            )
+                        ) {
+
+                        DB::table('order_cache')->where('id', $order_cache_id)->delete();
                         session(['order' => $response]);
                         return json_encode(['status' => 'success', 'response' => $response]);
                     } else {
-                        return response()->json(json_encode([
+                         return response()->json(json_encode([
                             'status' => 'error',
                             'text'   => 'Service returned an error'
                         ]));
                     }
-                    // }
 
-                    // return response()->json(json_encode($response_payment));
-
-
-                    // } else {
-                    //     // Обработка ответа с ошибкой (4xx или 5xx)
-                    //     Log::error("Сервис вернул ошибку: " . $response_payment->status());
-                    //     $responseData = ['error' => 'Service returned an error'];
-                    // }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
@@ -2257,11 +2275,16 @@ class CheckoutController extends Controller
                     // Обработка успешного ответа
                     $response = json_decode($response, true);
 
-                    if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
-                                json_encode($response['message']),
-                                'repeat_order'
-                            ))) {
-                        DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                    $message = json_encode($response['message']);
+
+                    if ($response['status'] === 'SUCCESS' ||
+                            (
+                                ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                            )
+                        ) {
+
+                        DB::table('order_cache')->where('id', $order_cache_id)->delete();
                         session(['order' => $response]);
                     }
 
@@ -2608,11 +2631,16 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
-                        if ($response['status'] === 'SUCCESS' || (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(
-                                    json_encode($response['message']),
-                                    'repeat_order'
-                                ))) {
-                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                        $message = json_encode($response['message']);
+
+                        if ($response['status'] === 'SUCCESS' ||
+                                (
+                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                )
+                            ) {
+
+                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
                         }
 
@@ -3087,11 +3115,16 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
+                        $message = json_encode($response['message']);
+
                         if ($response['status'] === 'SUCCESS' ||
-                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
-                             && str_contains(json_encode($response['message']), 'repeat_order' ))
-                        ) {
-                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                                (
+                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                )
+                            ) {
+
+                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
                         }
 
@@ -3280,11 +3313,16 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
+                        $message = json_encode($response['message']);
+
                         if ($response['status'] === 'SUCCESS' ||
-                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
-                             && str_contains(json_encode($response['message']), 'repeat_order' ))
-                        ) {
-                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                                (
+                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                )
+                            ) {
+
+                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
                         }
 
@@ -3717,15 +3755,20 @@ class CheckoutController extends Controller
 
                         $response = json_decode($response, true);
 
+                        $message = json_encode($response['message']);
+
                         if ($response['status'] === 'SUCCESS' ||
-                            (($response['status'] === 'ERROR' || $response['status'] === 'error')
-                             && str_contains(json_encode($response['message']), 'repeat_order'))
-                        ) {
-                            DB::delete("DELETE FROM order_cache WHERE `id` = $order_cache_id");
+                                (
+                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
+                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
+                                )
+                            ) {
+
+                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
                         }
 
-                        if (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains(json_encode($response['message']), 'risk_check_failed')) {
+                        if (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($message, 'risk_check_failed')) {
 
                             session(['wallet_available' => false]);
                             session(['form.payment_type' => 'none']);
