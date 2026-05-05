@@ -1946,7 +1946,7 @@
                     // _slideUp(applePayBlock);
                     // _slideUp(googlePayBlock);
                     cryptoCurrencySelect.hidden = false;
-                } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other") {
+                } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other" || currentSelect.value === "visa" || currentSelect.value === "mastercard") {
                     _slideDown(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
                        _slideUp(sepaBlock);
@@ -2474,7 +2474,8 @@ $(".card_type .select__option").click(function (e) {
         // }
     }
 
-    if (type == 'card') {
+    // if (type == 'card') {
+    if (type == 'visa' || type == 'mastercard') {
         $('#proccess').show();
         $('#proccess_google_pay').hide();
         $('#proccess_apple_pay').hide();
@@ -2495,7 +2496,8 @@ if ($('#payment_type_select').val() == 'google_pay') {
     $('#proccess').hide();
     $('#proccess_google_pay').hide();
     $('#proccess_apple_pay').show();
-} else if ($('#payment_type_select').val() == 'card') {
+// } else if ($('#payment_type_select').val() == 'card') {
+} else if ($('#payment_type_select').val() == 'visa' || $('#payment_type_select').val() == 'mastercard') {
     $('#proccess').show();
     $('#proccess_google_pay').hide();
     $('#proccess_apple_pay').hide();

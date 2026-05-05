@@ -676,10 +676,19 @@
 
                                         <option value="none">{{ __('text.checkout_pls_select') }}</option>
 
-                                        <option value="card" @selected(session('form.payment_type', 'none') == 'card')
+                                        {{-- <option value="card" @selected(session('form.payment_type', 'none') == 'card')
                                             data-asset="{{ asset("/style_checkout/images/icons/payment_type/bank_card.svg") }}">
-                                            {{-- {{__('text.checkout_bank_card')}} --}}
-                                            MasterCard/Visa
+                                            {{__('text.checkout_bank_card')}}
+                                        </option> --}}
+
+                                        <option value="mastercard" @selected(session('form.payment_type', 'none') == 'mastercard')
+                                            data-asset="{{ asset("/style_checkout/images/pay-systems/mastercard.svg") }}">
+                                            MasterCard
+                                        </option>
+
+                                        <option value="visa" @selected(session('form.payment_type', 'none') == 'visa')
+                                            data-asset="{{ asset("/style_checkout/images/pay-systems/visa.svg") }}">
+                                            Visa
                                         </option>
 
                                         @if (env('APP_APPLE_PAY_ON', 0) && session('device') == 'apple' && session('wallet_available', true))
@@ -809,7 +818,8 @@
                                 </div>
                             {{-- </div> --}}
                         </div>
-                        <div class="enter-info__card-content" @if (session('form.payment_type', 'none') != 'card' && session('form.payment_type', 'none') != 'google_pay' && session('form.payment_type', 'none') != 'apple_pay') hidden @endif>
+                        {{-- <div class="enter-info__card-content" @if (session('form.payment_type', 'none') != 'card' && session('form.payment_type', 'none') != 'google_pay' && session('form.payment_type', 'none') != 'apple_pay') hidden @endif> --}}
+                        <div class="enter-info__card-content" @if (session('form.payment_type', 'none') != 'visa' && session('form.payment_type', 'none') != 'mastercard' && session('form.payment_type', 'none') != 'google_pay' && session('form.payment_type', 'none') != 'apple_pay') hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>

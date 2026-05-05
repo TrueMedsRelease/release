@@ -331,7 +331,8 @@ class CheckoutController extends Controller
 
         if (session()->has('local_payment')) {
             session()->forget('local_payment');
-            session(['form.payment_type' => 'card']);
+            session(['form.payment_type' => 'none']);
+            // session(['form.payment_type' => 'card']);
         }
 
         return $this->checkout();
@@ -498,7 +499,8 @@ class CheckoutController extends Controller
     public function change_checkount_bonus(Request $request)
     {
         if ($request->checked_bonus == 'discount') {
-            session(['form.payment_type' => 'card']);
+            // session(['form.payment_type' => 'card']);
+            session(['form.payment_type' => 'none']);
         }
 
         // if ($request->checked_bonus == 'bonus_card' && session('total.bonus_card_discount') >= session('total.checkout_total')) {
@@ -510,13 +512,15 @@ class CheckoutController extends Controller
         if ($request->checked_bonus == 'bonus_card' && session('total.can_bonus_card', 0) == 1) {
             session(['form.payment_type' => 'bonus_card']);
         } else {
-            session(['form.payment_type' => 'card']);
+            // session(['form.payment_type' => 'card']);
+            session(['form.payment_type' => 'none']);
         }
 
         if ($request->checked_bonus == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total')) {
             session(['form.payment_type' => 'gift_card']);
         } else {
-            session(['form.payment_type' => 'card']);
+            // session(['form.payment_type' => 'card']);
+            session(['form.payment_type' => 'none']);
         }
 
         session(['checked_bonus' => $request->checked_bonus]);
@@ -731,7 +735,8 @@ class CheckoutController extends Controller
                 'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
                     $request->billing_zip
                 ),
-                'payment_type'       => e($request->payment_type),
+                // 'payment_type'       => e($request->payment_type),
+                'payment_type'       => 'card',
                 'card_holder'        => e($request->firstname . ' ' . $request->lastname),
                 'card_number'        => e($request->card_numb),
                 'bank_name'          => e($request->bank_name),
@@ -3815,7 +3820,8 @@ class CheckoutController extends Controller
             }
 
             session()->forget('crypto');
-            session(['form.payment_type' => 'card']);
+            // session(['form.payment_type' => 'card']);
+            session(['form.payment_type' => 'none']);
         }
 
         return $this->checkout();
