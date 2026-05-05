@@ -571,6 +571,7 @@ textarea.input {
 
 .select__asset img{
     width: max-content;
+    max-width: 26px;
 }
 
 .popup-show body::after {
