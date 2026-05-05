@@ -678,7 +678,8 @@
 
                                         <option value="card" @selected(session('form.payment_type', 'none') == 'card')
                                             data-asset="{{ asset("/style_checkout/images/icons/payment_type/bank_card.svg") }}">
-                                            {{__('text.checkout_bank_card')}}
+                                            {{-- {{__('text.checkout_bank_card')}} --}}
+                                            MasterCard/Visa
                                         </option>
 
                                         @if (env('APP_APPLE_PAY_ON', 0) && session('device') == 'apple' && session('wallet_available', true))
