@@ -331,7 +331,7 @@ class CheckoutController extends Controller
 
         if (session()->has('local_payment')) {
             session()->forget('local_payment');
-            session(['form.payment_type' => 'none']);
+            session(['form.payment_type' => 'mastercard']);
             // session(['form.payment_type' => 'card']);
         }
 
@@ -500,7 +500,7 @@ class CheckoutController extends Controller
     {
         if ($request->checked_bonus == 'discount') {
             // session(['form.payment_type' => 'card']);
-            session(['form.payment_type' => 'none']);
+            session(['form.payment_type' => 'mastercard']);
         }
 
         // if ($request->checked_bonus == 'bonus_card' && session('total.bonus_card_discount') >= session('total.checkout_total')) {
@@ -513,14 +513,14 @@ class CheckoutController extends Controller
             session(['form.payment_type' => 'bonus_card']);
         } else {
             // session(['form.payment_type' => 'card']);
-            session(['form.payment_type' => 'none']);
+            session(['form.payment_type' => 'mastercard']);
         }
 
         if ($request->checked_bonus == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total')) {
             session(['form.payment_type' => 'gift_card']);
         } else {
             // session(['form.payment_type' => 'card']);
-            session(['form.payment_type' => 'none']);
+            session(['form.payment_type' => 'mastercard']);
         }
 
         session(['checked_bonus' => $request->checked_bonus]);
@@ -1351,7 +1351,8 @@ class CheckoutController extends Controller
 
                             return $this->checkout();
                         } else {
-                            session(['form.payment_type' => 'card']);
+                            // session(['form.payment_type' => 'card']);
+                            session(['form.payment_type' => 'mastercard']);
                             return json_encode(['success' => false, 'text' => 'Sorry, this payment method is currently unavailable']);
                         }
                     } else {
@@ -3821,7 +3822,7 @@ class CheckoutController extends Controller
 
             session()->forget('crypto');
             // session(['form.payment_type' => 'card']);
-            session(['form.payment_type' => 'none']);
+            session(['form.payment_type' => 'mastercard']);
         }
 
         return $this->checkout();
