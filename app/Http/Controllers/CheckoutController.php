@@ -573,76 +573,124 @@ class CheckoutController extends Controller
 
     public function order(Request $request)
     {
+        // Validator::extend('credit_card_number', function ($attribute, $value, $parameters, $validator) {
+        //     $regex = null;
+        //     $type  = 'all';
+        //     $ccNum = str_replace(array('-', ' '), '', $value);
+        //     if (empty($ccNum) || strlen($ccNum) < 13 || strlen($ccNum) > 19) {
+        //         return false;
+        //     }
+
+        //     $card_number_checksum = '';
+
+        //     foreach (str_split(strrev((string)$ccNum)) as $i => $d) {
+        //         $card_number_checksum .= $i % 2 !== 0 ? $d * 2 : $d;
+        //     }
+        //     // Check if the card number is valid
+        //     if (!(array_sum(str_split($card_number_checksum)) % 10 === 0)) {
+        //         return false;
+        //     }
+
+        //     if ($regex !== null) {
+        //         if (is_string($regex) && preg_match($regex, $ccNum)) {
+        //             return true;
+        //         }
+        //         return false;
+        //     }
+
+        //     $cards = array(
+        //         'all'  => array(
+        //             // 'amex'     => '/^3[4|7]\\d{13}$/',
+        //             // 'bankcard' => '/^56(10\\d\\d|022[1-5])\\d{10}$/',
+        //             // 'diners'   => '/^(?:3(0[0-5]|[68]\\d)\\d{11})|(?:5[1-5]\\d{14})$/',
+        //             // 'disc'     => '/^(?:6011|650\\d)\\d{12}$/',
+        //             // 'electron' => '/^(?:417500|4917\\d{2}|4913\\d{2})\\d{10}$/',
+        //             // 'enroute'  => '/^2(?:014|149)\\d{11}$/',
+        //             // 'jcb'      => '/^(3\\d{4}|2100|1800)\\d{11}$/',
+        //             // 'maestro'  => '/^(?:5020|6\\d{3})\\d{12}$/',
+        //             'mc'       => '/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/',
+        //             // 'solo'     => '/^(6334[5-9][0-9]|6767[0-9]{2})\\d{10}(\\d{2,3})?$/',
+        //             // 'switch'   =>
+        //             //     '/^(?:49(03(0[2-9]|3[5-9])|11(0[1-2]|7[4-9]|8[1-2])|36[0-9]{2})\\d{10}(\\d{2,3})?)|(?:564182\\d{10}(\\d{2,3})?)|(6(3(33[0-4][0-9])|759[0-9]{2})\\d{10}(\\d{2,3})?)$/',
+        //             'visa'     => '/^4\\d{12}(\\d{3})?$/',
+        //             // 'voyager'  => '/^8699[0-9]{11}$/'
+        //         ),
+        //         // 'fast' =>
+        //         //     '/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6011[0-9]{12}|3(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})$/'
+        //     );
+
+        //     if (is_array($type)) {
+        //         foreach ($type as $value) {
+        //             $regex = $cards['all'][strtolower($value)];
+
+        //             if (is_string($regex) && preg_match($regex, $ccNum)) {
+        //                 return true;
+        //             }
+        //         }
+        //     } elseif ($type === 'all') {
+        //         foreach ($cards['all'] as $value) {
+        //             $regex = $value;
+
+        //             if (is_string($regex) && preg_match($regex, $ccNum)) {
+        //                 return true;
+        //             }
+        //         }
+        //     } else {
+        //         // $regex = $cards['fast'];
+
+        //         // if (is_string($regex) && preg_match($regex, $ccNum)) {
+        //         //     return true;
+        //         // }
+        //     }
+        //     return false;
+        // });
+
         Validator::extend('credit_card_number', function ($attribute, $value, $parameters, $validator) {
             $regex = null;
-            $type  = 'all';
-            $ccNum = str_replace(array('-', ' '), '', $value);
-            if (empty($ccNum) || strlen($ccNum) < 13 || strlen($ccNum) > 19) {
+            $type = $parameters[0] ?? 'all';
+
+            if ($type === 'mastercard') {
+                $type = 'mc';
+            }
+
+            $ccNum = preg_replace('/[\s-]+/', '', $value);
+
+            if (!preg_match('/^\d{13,19}$/', $ccNum)) {
                 return false;
             }
 
             $card_number_checksum = '';
 
-            foreach (str_split(strrev((string)$ccNum)) as $i => $d) {
+            foreach (str_split(strrev((string) $ccNum)) as $i => $d) {
                 $card_number_checksum .= $i % 2 !== 0 ? $d * 2 : $d;
             }
-            // Check if the card number is valid
-            if (!(array_sum(str_split($card_number_checksum)) % 10 === 0)) {
+
+            if (array_sum(str_split($card_number_checksum)) % 10 !== 0) {
                 return false;
             }
 
-            if ($regex !== null) {
-                if (is_string($regex) && preg_match($regex, $ccNum)) {
-                    return true;
+            $cards = [
+                'all' => [
+                    'mc'   => '/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/',
+                    'visa' => '/^4\d{12}(\d{3})?$/',
+                ],
+            ];
+
+            if ($type === 'all') {
+                foreach ($cards['all'] as $regex) {
+                    if (preg_match($regex, $ccNum)) {
+                        return true;
+                    }
                 }
+
                 return false;
             }
 
-            $cards = array(
-                'all'  => array(
-                    // 'amex'     => '/^3[4|7]\\d{13}$/',
-                    // 'bankcard' => '/^56(10\\d\\d|022[1-5])\\d{10}$/',
-                    // 'diners'   => '/^(?:3(0[0-5]|[68]\\d)\\d{11})|(?:5[1-5]\\d{14})$/',
-                    // 'disc'     => '/^(?:6011|650\\d)\\d{12}$/',
-                    // 'electron' => '/^(?:417500|4917\\d{2}|4913\\d{2})\\d{10}$/',
-                    // 'enroute'  => '/^2(?:014|149)\\d{11}$/',
-                    // 'jcb'      => '/^(3\\d{4}|2100|1800)\\d{11}$/',
-                    // 'maestro'  => '/^(?:5020|6\\d{3})\\d{12}$/',
-                    'mc'       => '/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/',
-                    // 'solo'     => '/^(6334[5-9][0-9]|6767[0-9]{2})\\d{10}(\\d{2,3})?$/',
-                    // 'switch'   =>
-                    //     '/^(?:49(03(0[2-9]|3[5-9])|11(0[1-2]|7[4-9]|8[1-2])|36[0-9]{2})\\d{10}(\\d{2,3})?)|(?:564182\\d{10}(\\d{2,3})?)|(6(3(33[0-4][0-9])|759[0-9]{2})\\d{10}(\\d{2,3})?)$/',
-                    'visa'     => '/^4\\d{12}(\\d{3})?$/',
-                    // 'voyager'  => '/^8699[0-9]{11}$/'
-                ),
-                // 'fast' =>
-                //     '/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6011[0-9]{12}|3(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})$/'
-            );
-
-            if (is_array($type)) {
-                foreach ($type as $value) {
-                    $regex = $cards['all'][strtolower($value)];
-
-                    if (is_string($regex) && preg_match($regex, $ccNum)) {
-                        return true;
-                    }
-                }
-            } elseif ($type === 'all') {
-                foreach ($cards['all'] as $value) {
-                    $regex = $value;
-
-                    if (is_string($regex) && preg_match($regex, $ccNum)) {
-                        return true;
-                    }
-                }
-            } else {
-                // $regex = $cards['fast'];
-
-                // if (is_string($regex) && preg_match($regex, $ccNum)) {
-                //     return true;
-                // }
+            if (!isset($cards['all'][$type])) {
+                return false;
             }
-            return false;
+
+            return preg_match($cards['all'][$type], $ccNum) === 1;
         });
 
         $request->request->add(['expire_date' => $request->card_month . '/' . $request->card_year]);
@@ -662,10 +710,15 @@ class CheckoutController extends Controller
             'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
-            'card_numb'        => ['exclude_unless:payment_type,card', 'required', 'credit_card_number'],
-            'bank_name'        => ['exclude_unless:payment_type,card', 'required'],
-            'expire_date'      => ['exclude_unless:payment_type,card', 'required', 'date_format:m/Y', 'after:now'],
-            'cvc_2'            => ['exclude_unless:payment_type,card', 'required', 'min:3', 'max:4']
+            'payment_type'     => ['required', 'in:visa,mastercard'],
+            'card_numb'        => ['required', 'credit_card_number:' . $request->payment_type],
+            'bank_name'        => ['required'],
+            'expire_date'      => ['required', 'date_format:m/Y', 'after:now'],
+            'cvc_2'            => ['required', 'min:3', 'max:4'],
+            // 'card_numb'        => ['exclude_unless:payment_type,card', 'required', 'credit_card_number'],
+            // 'bank_name'        => ['exclude_unless:payment_type,card', 'required'],
+            // 'expire_date'      => ['exclude_unless:payment_type,card', 'required', 'date_format:m/Y', 'after:now'],
+            // 'cvc_2'            => ['exclude_unless:payment_type,card', 'required', 'min:3', 'max:4']
         ]);
 
         session(['form' => $request->all()]);
