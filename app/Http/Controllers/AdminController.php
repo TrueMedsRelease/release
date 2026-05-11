@@ -471,8 +471,28 @@ class AdminController extends Controller
                         ->get(['main_order'])
                         ->toArray();
 
-                    DB::update("UPDATE product SET main_order = '{$cur_product_order[0]['main_order']}' WHERE `id` = '$prev_product_id'");
-                    DB::update("UPDATE product SET main_order = '{$prev_product_order[0]['main_order']}' WHERE `id` = '$cur_product_id'");
+                    $cur_order = (int) $cur_product_order[0]['main_order'];
+                    $prev_order = (int) $prev_product_order[0]['main_order'];
+
+                    if ($cur_order == $prev_order) {
+                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
+                            $cur_order - 1,
+                            $cur_product_id
+                        ]);
+                    } else {
+                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
+                            $cur_order,
+                            $prev_product_id
+                        ]);
+
+                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
+                            $prev_order,
+                            $cur_product_id
+                        ]);
+                    }
+
+                    // DB::update("UPDATE product SET main_order = '{$cur_product_order[0]['main_order']}' WHERE `id` = '$prev_product_id'");
+                    // DB::update("UPDATE product SET main_order = '{$prev_product_order[0]['main_order']}' WHERE `id` = '$cur_product_id'");
                 }
 
             }
@@ -533,8 +553,28 @@ class AdminController extends Controller
                         ->get(['main_order'])
                         ->toArray();
 
-                    DB::update("UPDATE product SET main_order = '{$cur_product_order[0]['main_order']}' WHERE `id` = '$next_product_id'");
-                    DB::update("UPDATE product SET main_order = '{$next_product_order[0]['main_order']}' WHERE `id` = '$cur_product_id'");
+                    $cur_order = (int) $cur_product_order[0]['main_order'];
+                    $next_order = (int) $next_product_order[0]['main_order'];
+
+                    if ($cur_order == $next_order) {
+                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
+                            $cur_order + 1,
+                            $cur_product_id
+                        ]);
+                    } else {
+                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
+                            $cur_order,
+                            $next_product_id
+                        ]);
+
+                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
+                            $next_order,
+                            $cur_product_id
+                        ]);
+                    }
+
+                    // DB::update("UPDATE product SET main_order = '{$cur_product_order[0]['main_order']}' WHERE `id` = '$next_product_id'");
+                    // DB::update("UPDATE product SET main_order = '{$next_product_order[0]['main_order']}' WHERE `id` = '$cur_product_id'");
                 }
 
             }
