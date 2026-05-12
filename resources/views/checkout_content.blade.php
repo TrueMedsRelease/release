@@ -686,11 +686,6 @@
                                             MasterCard
                                         </option>
 
-                                        <option value="visa" @selected(session('form.payment_type', 'mastercard') == 'visa')
-                                            data-asset="{{ asset("/style_checkout/images/pay-systems/visa.svg") }}">
-                                            Visa
-                                        </option>
-
                                         @if (env('APP_APPLE_PAY_ON', 0) && session('device') == 'apple' && session('wallet_available', true))
                                             <option value="apple_pay" @selected(session('form.payment_type', 'mastercard') == 'apple_pay')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/apple_pay.svg") }}">
@@ -702,13 +697,6 @@
                                             <option value="google_pay" @selected(session('form.payment_type', 'mastercard') == 'google_pay')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/google_pay.svg") }}">
                                                 Google Pay
-                                            </option>
-                                        @endif
-
-                                        @if ($service_enable)
-                                            <option value="crypto" @selected(session('form.payment_type', 'mastercard') == 'crypto')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/crypto.svg") }}">
-                                                {{__('text.checkout_crypto')}} -15% extra off
                                             </option>
                                         @endif
 
@@ -740,6 +728,20 @@
                                             </option>
                                         @endif
 
+                                        @if (env('APP_USD_SWIFT_ON', 0))
+                                            <option value="usd_swift" @selected(session('form.payment_type', 'mastercard') == 'usd_swift')
+                                                data-asset="{{ asset("style_checkout/images/icons/payment_type/swift.svg") }}">
+                                                USD (SWIFT)
+                                            </option>
+                                        @endif
+
+                                        @if (env('APP_GBP_SWIFT_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
+                                            <option value="gbp_swift" @selected(session('form.payment_type', 'mastercard') == 'gbp_swift')
+                                                data-asset="{{ asset("style_checkout/images/icons/payment_type/swift.svg") }}">
+                                                GBP (SWIFT)
+                                            </option>
+                                        @endif
+
                                         @if (env('APP_FPS_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
                                             <option value="fps" @selected(session('form.payment_type', 'mastercard') == 'fps')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/fps.svg") }}">
@@ -767,6 +769,32 @@
                                                 Interac / EFT
                                             </option>
                                         @endif
+
+                                        @if ($service_enable)
+                                            <option value="crypto" @selected(session('form.payment_type', 'mastercard') == 'crypto')
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/crypto.svg") }}">
+                                                {{__('text.checkout_crypto')}} -15% extra off
+                                            </option>
+                                        @endif
+
+                                        @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
+                                            <option value="amex" @selected(session('form.payment_type', 'mastercard') == 'amex')
+                                                data-asset="{{ asset("/style_checkout/images/pay-systems/amex.svg") }}">
+                                                Amex
+                                            </option>
+                                        @endif
+
+                                        @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
+                                            <option value="discover" @selected(session('form.payment_type', 'mastercard') == 'discover')
+                                                data-asset="{{ asset("/style_checkout/images/pay-systems/discover.svg") }}">
+                                                Discover
+                                            </option>
+                                        @endif
+
+                                        <option value="visa" @selected(session('form.payment_type', 'mastercard') == 'visa')
+                                            data-asset="{{ asset("/style_checkout/images/pay-systems/visa.svg") }}">
+                                            Visa
+                                        </option>
 
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'none') == 'google')>Google Pay</option>

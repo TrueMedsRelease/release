@@ -1946,7 +1946,7 @@
                     // _slideUp(applePayBlock);
                     // _slideUp(googlePayBlock);
                     cryptoCurrencySelect.hidden = false;
-                } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other" || currentSelect.value === "visa" || currentSelect.value === "mastercard") {
+                } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other" || currentSelect.value === "visa" || currentSelect.value === "mastercard" || currentSelect.value === "amex" || currentSelect.value === "discover") {
                     _slideDown(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
                        _slideUp(sepaBlock);
@@ -2048,7 +2048,7 @@
                     _slideUp(bonusCardBlock);
                     // _slideUp(applePayBlock);
                     // _slideUp(googlePayBlock);
-                } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac"){
+                } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac" || currentSelect.value === "usd_swift" || currentSelect.value === "gbp_swift"){
                     _slideDown(localPaymentBlock);
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
@@ -2475,7 +2475,7 @@ $(".card_type .select__option").click(function (e) {
     }
 
     // if (type == 'card') {
-    if (type == 'visa' || type == 'mastercard') {
+    if (type == 'visa' || type == 'mastercard' || type == 'amex' || type == 'discover') {
         $('#proccess').show();
         $('#proccess_google_pay').hide();
         $('#proccess_apple_pay').hide();
@@ -2497,7 +2497,7 @@ if ($('#payment_type_select').val() == 'google_pay') {
     $('#proccess_google_pay').hide();
     $('#proccess_apple_pay').show();
 // } else if ($('#payment_type_select').val() == 'card') {
-} else if ($('#payment_type_select').val() == 'visa' || $('#payment_type_select').val() == 'mastercard') {
+} else if ($('#payment_type_select').val() == 'visa' || $('#payment_type_select').val() == 'mastercard' || $('#payment_type_select').val() == 'amex' || $('#payment_type_select').val() == 'discover') {
     $('#proccess').show();
     $('#proccess_google_pay').hide();
     $('#proccess_apple_pay').hide();
@@ -3952,42 +3952,66 @@ window.__TOKENS__ = window.__TOKENS__ || [
     // { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/icons.svg#svg-ltc"></use></svg>' },
     // { value:'XRP_RIPPLE', symbol:'XRP', chain:'RIPPLE', icon:'<svg height="26px" width="26px"><use xlink:href="style_checkout/images/icons/xrp.svg"></use></svg>' }
 
-    { value:'ARB_ARBITRUM', symbol:'ARB', chain:'ARBITRUM', icon:'arb.svg' },
+    // { value:'ARB_ARBITRUM', symbol:'ARB', chain:'ARBITRUM', icon:'arb.svg' },
+    // { value:'ETH_ARBITRUM', symbol:'ETH', chain:'ARBITRUM', icon:'eth.svg' },
+    // { value:'USDC_ARBITRUM', symbol:'USDC', chain:'ARBITRUM', icon:'usdc_arb.svg' },
+    // { value:'USDT_ARBITRUM', symbol:'USDT', chain:'ARBITRUM', icon:'usdt_arb.svg' },
+    // { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'bnb.svg' },
+    // { value:'USDC_BSC', symbol:'USDC', chain:'BSC', icon:'usdc_bsc.svg' },
+    // { value:'USDT_BSC', symbol:'USDT', chain:'BSC', icon:'usdt_bsc.svg' },
+    // { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'btc.svg' },
+    // // { value:'DAI_BASE', symbol:'DAI', chain:'BASE', icon:'dai.svg' },
+    // { value:'ETH_BASE', symbol:'ETH', chain:'BASE', icon:'eth.svg' },
+    // { value:'USDC_BASE', symbol:'USDC', chain:'BASE', icon:'usdc.svg' },
+    // { value:'DAI_ETHEREUM', symbol:'DAI', chain:'ETHEREUM', icon:'dai.svg' },
+    // { value:'ETH_ETHEREUM', symbol:'ETH', chain:'ETHEREUM', icon:'eth.svg' },
+    // { value:'USDC_ETHEREUM', symbol:'USDC', chain:'ETHEREUM', icon:'usdc_eth.svg' },
+    // { value:'USDT_ETHEREUM', symbol:'USDT', chain:'ETHEREUM', icon:'usdt_eth.svg' },
+    // { value:'DOGE_DOGECOIN', symbol:'DOGE', chain:'DOGECOIN', icon:'doge.svg' },
+    // // { value:'ETH_OPTIMISM', symbol:'ETH', chain:'OPTIMISM', icon:'eth.svg' },
+    // // { value:'OP_OPTIMISM', symbol:'OP', chain:'OPTIMISM', icon:'op.svg' },
+    // // { value:'USDC_OPTIMISM', symbol:'USDC', chain:'OPTIMISM', icon:'usdc_op.svg' },
+    // // { value:'USDT_OPTIMISM', symbol:'USDT', chain:'OPTIMISM', icon:'usdt_op.svg' },
+    // { value:'POL_POLYGON', symbol:'POL', chain:'POLYGON', icon:'pol.svg' },
+    // { value:'USDC_POLYGON', symbol:'USDC', chain:'POLYGON', icon:'usdc_pol.svg' },
+    // { value:'USDT_POLYGON', symbol:'USDT', chain:'POLYGON', icon:'usdt_pol.svg' },
+    // { value:'SOL_SOLANA', symbol:'SOL', chain:'SOLANA', icon:'sol.svg' },
+    // { value:'USDC_SOLANA', symbol:'USDC', chain:'SOLANA', icon:'usdc_sol.svg' },
+    // { value:'USDT_SOLANA', symbol:'USDT', chain:'SOLANA', icon:'usdt_sol.svg' },
+    // { value:'TON_TON', symbol:'TON', chain:'TON', icon:'ton.svg' },
+    // { value:'USDT_TON', symbol:'USDT', chain:'TON', icon:'usdt_ton.svg' },
+    // { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'trx.svg' },
+    // { value:'USDT_TRON', symbol:'USDT', chain:'TRON', icon:'usdt_trx.svg' },
+    // { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'ltc.svg' },
+    // { value:'XRP_RIPPLE', symbol:'XRP', chain:'RIPPLE', icon:'xrp.svg' },
+
+    { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'btc.svg' },
+    { value:'ETH_ETHEREUM', symbol:'ETH', chain:'ETHEREUM', icon:'eth.svg' },
+    { value:'USDT_TRON', symbol:'USDT', chain:'TRON', icon:'usdt_trx.svg' },
     { value:'ETH_ARBITRUM', symbol:'ETH', chain:'ARBITRUM', icon:'eth.svg' },
+    { value:'USDT_ETHEREUM', symbol:'USDT', chain:'ETHEREUM', icon:'usdt_eth.svg' },
+    { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'bnb.svg' },
+    { value:'TON_TON', symbol:'TON', chain:'TON', icon:'ton.svg' },
+    { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'ltc.svg' },
+    { value:'ARB_ARBITRUM', symbol:'ARB', chain:'ARBITRUM', icon:'arb.svg' },
     { value:'USDC_ARBITRUM', symbol:'USDC', chain:'ARBITRUM', icon:'usdc_arb.svg' },
     { value:'USDT_ARBITRUM', symbol:'USDT', chain:'ARBITRUM', icon:'usdt_arb.svg' },
-    // { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'icons.svg#svg-bnb' },
-    { value:'BNB_BSC', symbol:'BNB', chain:'BSC', icon:'bnb.svg' },
-    { value:'USDC_BSC', symbol:'USDC', chain:'BSC', icon:'usdc_bsc.svg' },
-    { value:'USDT_BSC', symbol:'USDT', chain:'BSC', icon:'usdt_bsc.svg' },
-    // { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'icons.svg#svg-btc' },
-    { value:'BTC_BITCOIN', symbol:'BTC',  chain:'BITCOIN', icon:'btc.svg' },
-    // { value:'DAI_BASE', symbol:'DAI', chain:'BASE', icon:'dai.svg' },
-    { value:'ETH_BASE', symbol:'ETH', chain:'BASE', icon:'eth.svg' },
-    { value:'USDC_BASE', symbol:'USDC', chain:'BASE', icon:'usdc.svg' },
-    { value:'DAI_ETHEREUM', symbol:'DAI', chain:'ETHEREUM', icon:'dai.svg' },
-    { value:'ETH_ETHEREUM', symbol:'ETH', chain:'ETHEREUM', icon:'eth.svg' },
-    { value:'USDC_ETHEREUM', symbol:'USDC', chain:'ETHEREUM', icon:'usdc_eth.svg' },
-    { value:'USDT_ETHEREUM', symbol:'USDT', chain:'ETHEREUM', icon:'usdt_eth.svg' },
-    { value:'DOGE_DOGECOIN', symbol:'DOGE', chain:'DOGECOIN', icon:'doge.svg' },
-    // { value:'ETH_OPTIMISM', symbol:'ETH', chain:'OPTIMISM', icon:'eth.svg' },
-    // { value:'OP_OPTIMISM', symbol:'OP', chain:'OPTIMISM', icon:'op.svg' },
-    // { value:'USDC_OPTIMISM', symbol:'USDC', chain:'OPTIMISM', icon:'usdc_op.svg' },
-    // { value:'USDT_OPTIMISM', symbol:'USDT', chain:'OPTIMISM', icon:'usdt_op.svg' },
-    { value:'POL_POLYGON', symbol:'POL', chain:'POLYGON', icon:'pol.svg' },
-    { value:'USDC_POLYGON', symbol:'USDC', chain:'POLYGON', icon:'usdc_pol.svg' },
-    { value:'USDT_POLYGON', symbol:'USDT', chain:'POLYGON', icon:'usdt_pol.svg' },
-    { value:'SOL_SOLANA', symbol:'SOL', chain:'SOLANA', icon:'sol.svg' },
-    { value:'USDC_SOLANA', symbol:'USDC', chain:'SOLANA', icon:'usdc_sol.svg' },
-    { value:'USDT_SOLANA', symbol:'USDT', chain:'SOLANA', icon:'usdt_sol.svg' },
-    { value:'TON_TON', symbol:'TON', chain:'TON', icon:'ton.svg' },
-    { value:'USDT_TON', symbol:'USDT', chain:'TON', icon:'usdt_ton.svg' },
-    // { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'icons.svg#svg-trx' },
     { value:'TRX_TRON', symbol:'TRX', chain:'TRON', icon:'trx.svg' },
-    { value:'USDT_TRON', symbol:'USDT', chain:'TRON', icon:'usdt_trx.svg' },
-    // { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'icons.svg#svg-ltc' },
-    { value:'LTC_LITECOIN', symbol:'LTC', chain:'LITECOIN', icon:'ltc.svg' },
-    { value:'XRP_RIPPLE', symbol:'XRP', chain:'RIPPLE', icon:'xrp.svg' }
+    { value:'SOL_SOLANA', symbol:'SOL', chain:'SOLANA', icon:'sol.svg' },
+    { value:'USDT_BSC', symbol:'USDT', chain:'BSC', icon:'usdt_bsc.svg' },
+    { value:'USDC_ETHEREUM', symbol:'USDC', chain:'ETHEREUM', icon:'usdc_eth.svg' },
+    { value:'USDC_BSC', symbol:'USDC', chain:'BSC', icon:'usdc_bsc.svg' },
+    { value:'XRP_RIPPLE', symbol:'XRP', chain:'RIPPLE', icon:'xrp.svg' },
+    { value:'ETH_BASE', symbol:'ETH', chain:'BASE', icon:'eth.svg' },
+    { value:'USDC_SOLANA', symbol:'USDC', chain:'SOLANA', icon:'usdc_sol.svg' },
+    { value:'USDT_TON', symbol:'USDT', chain:'TON', icon:'usdt_ton.svg' },
+    { value:'USDT_SOLANA', symbol:'USDT', chain:'SOLANA', icon:'usdt_sol.svg' },
+    { value:'USDC_BASE', symbol:'USDC', chain:'BASE', icon:'usdc.svg' },
+    { value:'USDC_POLYGON', symbol:'USDC', chain:'POLYGON', icon:'usdc_pol.svg' },
+    { value:'DAI_ETHEREUM', symbol:'DAI', chain:'ETHEREUM', icon:'dai.svg' },
+    { value:'DOGE_DOGECOIN', symbol:'DOGE', chain:'DOGECOIN', icon:'doge.svg' },
+    { value:'POL_POLYGON', symbol:'POL', chain:'POLYGON', icon:'pol.svg' },
+    { value:'USDT_POLYGON', symbol:'USDT', chain:'POLYGON', icon:'usdt_pol.svg' },
  ];
 
 (function init(root, items){

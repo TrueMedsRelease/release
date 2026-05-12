@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Phattarachai\LaravelMobileDetect\Agent;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CheckoutController extends Controller
 {
@@ -40,51 +42,11 @@ class CheckoutController extends Controller
         // $statisticPromise = StatisticService::SendStatistic('checkout');
         StatisticService::SendCheckout();
 
-        $unsent_order = DB::table('order_cache')->where('is_send', '=', 0)->get();
-        if (count($unsent_order) > 0) {
-            foreach ($unsent_order as $order) {
-                if (checkdnsrr('true-serv.net', 'A')) {
-                    try {
-                        $response = Http::timeout(10)->post(
-                            'http://true-serv.net/checkout/order.php',
-                            json_decode($order->message, true)
-                        );
+        $this->ensureRequiredShopKeys();
+        $this->ensureOrderCacheRetryColumns();
+        $this->retryUnsentOrders();
 
-                        Log::info("Retry order answer: " . $response);
-
-                        if ($response->successful()) {
-                            // Обработка успешного ответа
-
-                            $response = json_decode($response, true);
-
-                            $message = isset($response['message']) ? json_encode($response['message']) : '';
-
-                            if ($response['status'] === 'SUCCESS' ||
-                                    (
-                                        ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                        (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                    )
-                                ) {
-
-                                DB::table('order_cache')->where('id', $order->id)->delete();
-                            }
-                        } else {
-                            // Обработка ответа с ошибкой (4xx или 5xx)
-                            Log::error("Сервис вернул ошибку: " . $response->status());
-                            $responseData = ['error' => 'Service returned an error'];
-                        }
-                    } catch (ConnectionException $e) {
-                        Log::error("Ошибка подключения: " . $e->getMessage());
-                    } catch (RequestException $e) {
-                        // Обработка ошибок запроса, таких как таймаут или недоступность
-                        Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                        $responseData = ['error' => 'Service unavailable'];
-                    }
-                }
-            }
-        }
-
-        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'checkout'");
+        $pixels = DB::table('pixel')->where('page', '=', 'checkout')->get();
         $pixel  = "";
         foreach ($pixels as $item) {
             $pixel .= stripcslashes($item->pixel) . "\n\n";
@@ -429,13 +391,13 @@ class CheckoutController extends Controller
 
     public function bonus_card_info(Request $request)
     {
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+        $bonus_api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
         $bonus_card = str_replace(' ', '', $request->bonus_card);
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
                 $response = Http::timeout(10)->withHeaders([
-                        'X-API-KEY' => 'dfv3j8vhutiy54734svfsevf',
+                        'X-API-KEY' => $bonus_api_key->key_data,
                     ])->get('https://true-serv.net/bonus-api/api/bonus/get-card', [
                         'card_number' => $bonus_card,
                     ]);
@@ -646,12 +608,23 @@ class CheckoutController extends Controller
         // });
 
         Validator::extend('credit_card_number', function ($attribute, $value, $parameters, $validator) {
-            $regex = null;
-            $type = $parameters[0] ?? 'all';
+            $type = strtolower($parameters[0] ?? 'all');
 
-            if ($type === 'mastercard') {
-                $type = 'mc';
+            $typeMap = [
+                'all'        => 'all',
+                'visa'       => 'visa',
+                'mastercard' => 'mc',
+                'mc'         => 'mc',
+                'amex'       => 'amex',
+                'discover'   => 'disc',
+                'disc'       => 'disc',
+            ];
+
+            if (!isset($typeMap[$type])) {
+                return false;
             }
+
+            $type = $typeMap[$type];
 
             $ccNum = preg_replace('/[\s-]+/', '', $value);
 
@@ -671,8 +644,10 @@ class CheckoutController extends Controller
 
             $cards = [
                 'all' => [
+                    'amex' => '/^3[47]\d{13}$/',
                     'mc'   => '/^(5[1-5]\d{14}|222[1-9]\d{12}|22[3-9]\d{13}|2[3-6]\d{14}|27[01]\d{13}|2720\d{12})$/',
-                    'visa' => '/^4\d{12}(\d{3})?$/',
+                    'visa' => '/^4\d{12}(?:\d{3}){0,2}$/',
+                    'disc' => '/^(?:6011|650\d)\d{12}$/',
                 ],
             ];
 
@@ -683,10 +658,6 @@ class CheckoutController extends Controller
                     }
                 }
 
-                return false;
-            }
-
-            if (!isset($cards['all'][$type])) {
                 return false;
             }
 
@@ -710,7 +681,7 @@ class CheckoutController extends Controller
             'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
-            'payment_type'     => ['required', 'in:visa,mastercard'],
+            'payment_type'     => ['required', 'in:visa,mastercard,amex,discover'],
             'card_numb'        => ['required', 'credit_card_number:' . $request->payment_type],
             'bank_name'        => ['required'],
             'expire_date'      => ['required', 'date_format:m/Y', 'after:now'],
@@ -849,58 +820,103 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $email             = e($request->email);
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-            if (count($check_order_cache) == 0) {
-                $data_for_cache             = $data;
-                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data_for_cache),
-                    'is_send' => 0
-                ]);
-            } else {
-                $order_cache_id = $check_order_cache[0]->id;
-            }
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Order answer: " . $response);
+                    $httpResponse  = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Order answer: " . $httpResponse);
 
-                    if ($response->successful()) {
+                    if ($httpResponse->successful()) {
                         // Обработка успешного ответа
 
-                        $response = json_decode($response, true);
+                        $response = $httpResponse->json();
 
-                        $message = isset($response['message']) ? json_encode($response['message']) : '';
+                         if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
-                        if ($response['status'] === 'SUCCESS' ||
-                                (
-                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                )
-                            ) {
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
 
-                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
                             session(['order' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
                         }
 
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response->status());
-                        $responseData = ['error' => 'Service returned an error'];
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
+
                     }
+
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
                 } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
             } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
                 session(['order' => 'error']);
-                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         }
     }
@@ -1045,55 +1061,99 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $email             = e($request->email);
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-            if (count($check_order_cache) == 0) {
-                $data_for_cache             = $data;
-                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data_for_cache),
-                    'is_send' => 0
-                ]);
-            } else {
-                $order_cache_id = $check_order_cache[0]->id;
-            }
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Paypal answer: " . $response);
+                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Paypal answer: " . $httpResponse);
 
-                    if ($response->successful()) {
+                    if ($httpResponse->successful()) {
                         // Обработка успешного ответа
 
-                        $response = json_decode($response, true);
+                        $response = $httpResponse->json();
 
-                        $message = isset($response['message']) ? json_encode($response['message']) : '';
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
-                        if ($response['status'] === 'SUCCESS' ||
-                                (
-                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                )
-                            ) {
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
 
-                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
                             session(['order' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
                         }
 
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response->status());
-                        $responseData = ['error' => 'Service returned an error'];
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
                 } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
+            } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
+                session(['order' => 'error']);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         }
     }
@@ -1370,23 +1430,30 @@ class CheckoutController extends Controller
                 "payMethod" => "airwallex"
             ];
 
+            $local_payment_api_key = DB::table('shop_keys')->where('name_key', '=', 'local_payment')->get('key_data')->toArray()[0];
+
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
                     $response = Http::timeout(10)
                         ->withHeaders([
-                            'X-API-KEY' => 'c0c840306bjd0t1dad7c039d2633b64d',
+                            'X-API-KEY' => $local_payment_api_key->key_data,
                         ])
                         ->post('http://true-services.net/billing/easypay_transfer.php', $data);
+
+                    Log::info('Local Payment Info: ' . $response);
 
                     if ($response->successful()) {
                         $response = json_decode($response, true);
 
                         $routeToPayType = [
-                            "sepa_local" => 'EU',
+                            // "sepa_local" => 'EU',
+                            "sepa_local" => 'EUR',
                             "fps" => 'UK',
                             "domestic" => 'AU',
                             "ach" => 'US',
                             "interac" => 'CA',
+                            "usd_swift" => "USD",
+                            "gbp_swift" => "GBP",
                         ];
 
                         $local_payment = [];
@@ -1695,58 +1762,104 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $email             = e($request->email);
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-            if (count($check_order_cache) == 0) {
-                $data_for_cache             = $data;
-                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data_for_cache),
-                    'is_send' => 0
-                ]);
-            } else {
-                $order_cache_id = $check_order_cache[0]->id;
-            }
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Transfer answer: " . $response);
+                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Transfer answer: " . $httpResponse);
 
-                    if ($response->successful()) {
+                    if ($httpResponse->successful()) {
                         // Обработка успешного ответа
 
-                        $response = json_decode($response, true);
+                        $response = $httpResponse->json();
+
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
 
                         $message = isset($response['message']) ? json_encode($response['message']) : '';
 
-                        if ($response['status'] === 'SUCCESS' ||
-                                (
-                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                )
-                            ) {
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
 
-                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
                             session(['order' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
                         }
 
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response->status());
-                        $responseData = ['error' => 'Service returned an error'];
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry(
+                        $order_cache_id,
+                        'HTTP status: ' . $httpResponse->status()
+                    );
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
             } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
                 session(['order' => 'error']);
-                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         }
     }
@@ -1977,50 +2090,89 @@ class CheckoutController extends Controller
 
                     session(['data' => $data]);
 
-                    $email             = e($request->email);
-                    $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
+                    $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-                    if (count($check_order_cache) == 0) {
-                        $data_for_cache             = $data;
-                        $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                        $order_cache_id             = DB::table('order_cache')->insertGetId([
-                            'message' => json_encode($data_for_cache),
-                            'is_send' => 0
-                        ]);
+                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Crypto answer: " . $httpResponse);
+
+                    if ($httpResponse->successful()) {
+                        $response = $httpResponse->json();
+
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
+
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
+                            session(['order' => $response]);
+                            return json_encode(['status' => 'success', 'response' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
+                            return response()->json(json_encode([
+                                'status' => 'error',
+                                'text'   => 'Service returned an error'
+                            ]));
+                        }
                     } else {
-                        $order_cache_id = $check_order_cache[0]->id;
-                    }
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Crypto answer: " . $response);
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
 
-                    $response = json_decode($response, true);
-
-                    $message = isset($response['message']) ? json_encode($response['message']) : '';
-
-                    if ($response['status'] === 'SUCCESS' ||
-                            (
-                                ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                            )
-                        ) {
-
-                        DB::table('order_cache')->where('id', $order_cache_id)->delete();
-                        session(['order' => $response]);
-                        return json_encode(['status' => 'success', 'response' => $response]);
-                    } else {
-                         return response()->json(json_encode([
-                            'status' => 'error',
-                            'text'   => 'Service returned an error'
-                        ]));
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
                     }
 
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
                 } catch (RequestException $e) {
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
             }
         }
@@ -2312,58 +2464,102 @@ class CheckoutController extends Controller
 
         session(['data' => $data]);
 
-        $email             = e($form['email']);
-        $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-        if (count($check_order_cache) == 0) {
-            $data_for_cache             = $data;
-            $data_for_cache['products'] = addslashes($data_for_cache['products']);
-            $order_cache_id             = DB::table('order_cache')->insertGetId([
-                'message' => json_encode($data_for_cache),
-                'is_send' => 0
-            ]);
-        } else {
-            $order_cache_id = $check_order_cache[0]->id;
-        }
+        $order_cache_id = $this->getOrCreateOrderCache($data, $form['email']);
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                Log::info("GooglePay answer: " . $response);
+                $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                Log::info("GooglePay answer: " . $httpResponse);
 
-                if ($response->successful()) {
+                if ($httpResponse->successful()) {
                     // Обработка успешного ответа
-                    $response = json_decode($response, true);
+                    $response = $httpResponse->json();
 
-                    $message = isset($response['message']) ? json_encode($response['message']) : '';
+                    if (!is_array($response)) {
+                        $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
-                    if ($response['status'] === 'SUCCESS' ||
-                            (
-                                ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                            )
-                        ) {
+                        return response()->json([
+                            'response' => [
+                                'status' => 'ERROR',
+                                'message' => 'Invalid service response'
+                            ]
+                        ], 502);
+                    }
 
-                        DB::table('order_cache')->where('id', $order_cache_id)->delete();
+                    if ($this->isFinalOrderResponse($response)) {
+                        DB::table('order_cache')
+                            ->where('id', $order_cache_id)
+                            ->delete();
+
                         session(['order' => $response]);
+                    } else {
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'Unexpected response: ' . json_encode($response)
+                        );
                     }
 
                     return response()->json(['response' => ['status' => 'ok']], 200);
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
-                    Log::error("Сервис вернул ошибку: " . $response->status());
-                    $responseData = ['error' => 'Service returned an error'];
+                    Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+
+                    $this->markOrderRetry(
+                        $order_cache_id,
+                        'HTTP status: ' . $httpResponse->status()
+                    );
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
+
+                $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
+
             } catch (RequestException $e) {
                 // Обработка ошибок запроса, таких как таймаут или недоступность
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                $responseData = ['error' => 'Service unavailable'];
+
+                $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
+
+            } catch (\Throwable $e) {
+                Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         } else {
-            session(['order' => 'error']);
-            return response()->json(['response' => ['status' => 'ok']], 200);
-        }
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
+                session(['order' => 'error']);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
+            }
     }
 
     public function validate_for_sepa(Request $request)
@@ -2667,55 +2863,101 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $email             = e($request->email);
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-            if (count($check_order_cache) == 0) {
-                $data_for_cache             = $data;
-                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data_for_cache),
-                    'is_send' => 0
-                ]);
-            } else {
-                $order_cache_id = $check_order_cache[0]->id;
-            }
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Sepa answer: " . $response);
+                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Sepa answer: " . $httpResponse);
 
-                    if ($response->successful()) {
+                    if ($httpResponse->successful()) {
                         // Обработка успешного ответа
 
-                        $response = json_decode($response, true);
+                        $response = $httpResponse->json();
 
-                        $message = isset($response['message']) ? json_encode($response['message']) : '';
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
-                        if ($response['status'] === 'SUCCESS' ||
-                                (
-                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                )
-                            ) {
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
 
-                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
                             session(['order' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
                         }
 
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response->status());
-                        $responseData = ['error' => 'Service returned an error'];
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
+            } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
+                session(['order' => 'error']);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         }
     }
@@ -3151,58 +3393,101 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $email             = e($request->email);
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-            if (count($check_order_cache) == 0) {
-                $data_for_cache             = $data;
-                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data_for_cache),
-                    'is_send' => 0
-                ]);
-            } else {
-                $order_cache_id = $check_order_cache[0]->id;
-            }
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Bonus Card answer: " . $response);
+                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Bonus Card answer: " . $httpResponse);
 
-                    if ($response->successful()) {
+                    if ($httpResponse->successful()) {
                         // Обработка успешного ответа
 
-                        $response = json_decode($response, true);
+                        $response = $httpResponse->json();
 
-                        $message = isset($response['message']) ? json_encode($response['message']) : '';
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
-                        if ($response['status'] === 'SUCCESS' ||
-                                (
-                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                )
-                            ) {
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
 
-                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
                             session(['order' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
                         }
 
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response->status());
-                        $responseData = ['error' => 'Service returned an error'];
+                       Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
             } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
                 session(['order' => 'error']);
-                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         }
     }
@@ -3349,58 +3634,101 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $email             = e($request->email);
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-            if (count($check_order_cache) == 0) {
-                $data_for_cache             = $data;
-                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data_for_cache),
-                    'is_send' => 0
-                ]);
-            } else {
-                $order_cache_id = $check_order_cache[0]->id;
-            }
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Gift Card answer: " . $response);
+                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Gift Card answer: " . $httpResponse);
 
-                    if ($response->successful()) {
+                    if ($httpResponse->successful()) {
                         // Обработка успешного ответа
 
-                        $response = json_decode($response, true);
+                        $response = $httpResponse->json();
 
-                        $message = isset($response['message']) ? json_encode($response['message']) : '';
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
-                        if ($response['status'] === 'SUCCESS' ||
-                                (
-                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                )
-                            ) {
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
 
-                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
                             session(['order' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
                         }
 
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response->status());
-                        $responseData = ['error' => 'Service returned an error'];
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
             } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
                 session(['order' => 'error']);
-                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         }
     }
@@ -3596,10 +3924,10 @@ class CheckoutController extends Controller
 
             $cards = array(
                 'all'  => array(
-                    // 'amex'     => '/^3[4|7]\\d{13}$/',
+                    'amex'     => '/^3[4|7]\\d{13}$/',
                     // 'bankcard' => '/^56(10\\d\\d|022[1-5])\\d{10}$/',
                     // 'diners'   => '/^(?:3(0[0-5]|[68]\\d)\\d{11})|(?:5[1-5]\\d{14})$/',
-                    // 'disc'     => '/^(?:6011|650\\d)\\d{12}$/',
+                    'disc'     => '/^(?:6011|650\\d)\\d{12}$/',
                     // 'electron' => '/^(?:417500|4917\\d{2}|4913\\d{2})\\d{10}$/',
                     // 'enroute'  => '/^2(?:014|149)\\d{11}$/',
                     // 'jcb'      => '/^(3\\d{4}|2100|1800)\\d{11}$/',
@@ -3791,46 +4119,46 @@ class CheckoutController extends Controller
 
             session(['data' => $data]);
 
-            $email             = e($request->email);
-            $check_order_cache = DB::select("SELECT * FROM order_cache WHERE `message` LIKE '%$email%'");
-            if (count($check_order_cache) == 0) {
-                $data_for_cache             = $data;
-                $data_for_cache['products'] = addslashes($data_for_cache['products']);
-                $order_cache_id             = DB::table('order_cache')->insertGetId([
-                    'message' => json_encode($data_for_cache),
-                    'is_send' => 0
-                ]);
-            } else {
-                $order_cache_id = $check_order_cache[0]->id;
-            }
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Wallet answer: " . $response);
+                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Wallet answer: " . $httpResponse);
 
-                    if ($response->successful()) {
+                    if ($httpResponse->successful()) {
                         // Обработка успешного ответа
 
-                        $response = json_decode($response, true);
+                        $response = $httpResponse->json();
 
-                        $message = isset($response['message']) ? json_encode($response['message']) : '';
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
-                        if ($response['status'] === 'SUCCESS' ||
-                                (
-                                    ($response['status'] === 'ERROR' || $response['status'] === 'error') &&
-                                    (str_contains($message, 'repeat_order') || str_contains($message, 'risk_check_failed'))
-                                )
-                            ) {
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
 
-                            DB::table('order_cache')->where('id', $order_cache_id)->delete();
+                        if ($this->isFinalOrderResponse($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
                             session(['order' => $response]);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
                         }
 
                         if (($response['status'] === 'ERROR' || $response['status'] === 'error') && str_contains($message, 'risk_check_failed')) {
 
                             session(['wallet_available' => false]);
-                            session(['form.payment_type' => 'none']);
+                            session(['form.payment_type' => 'mastercard']);
 
                             return response()->json([
                                 'response' => [
@@ -3845,19 +4173,62 @@ class CheckoutController extends Controller
                         }
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $response->status());
-                        $responseData = ['error' => 'Service returned an error'];
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                    $responseData = ['error' => 'Service unavailable'];
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
                 }
             } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
                 session(['order' => 'error']);
-                return response()->json(['response' => ['status' => 'SUCCESS']], 200);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
             }
         }
     }
@@ -3879,5 +4250,277 @@ class CheckoutController extends Controller
         }
 
         return $this->checkout();
+    }
+
+    private function retryUnsentOrders(): void
+    {
+        if (!checkdnsrr('true-serv.net', 'A')) {
+            return;
+        }
+
+        $now = now();
+
+        $unsentOrders = DB::table('order_cache')
+            ->where('is_send', 0)
+            ->where(function ($query) use ($now) {
+                $query->whereNull('next_attempt_at')
+                    ->orWhere('next_attempt_at', '<=', $now);
+            })
+            ->where(function ($query) use ($now) {
+                $query->whereNull('locked_at')
+                    ->orWhere('locked_at', '<=', $now->copy()->subMinutes(10));
+            })
+            ->orderBy('id')
+            ->limit(10)
+            ->get();
+
+        foreach ($unsentOrders as $order) {
+            $claimed = DB::table('order_cache')
+                ->where('id', $order->id)
+                ->where('is_send', 0)
+                ->where(function ($query) use ($now) {
+                    $query->whereNull('next_attempt_at')
+                        ->orWhere('next_attempt_at', '<=', $now);
+                })
+                ->where(function ($query) use ($now) {
+                    $query->whereNull('locked_at')
+                        ->orWhere('locked_at', '<=', $now->copy()->subMinutes(10));
+                })
+                ->update([
+                    'locked_at' => now(),
+                ]);
+
+            if ($claimed !== 1) {
+                continue;
+            }
+
+            $this->sendCachedOrder($order);
+        }
+    }
+
+    private function sendCachedOrder(object $order): void
+    {
+        try {
+            $payload = json_decode($order->message, true);
+
+            if (!is_array($payload)) {
+                $this->markOrderRetry($order->id, 'Invalid JSON in order_cache.message');
+                return;
+            }
+
+            $httpResponse = Http::timeout(10)->post(
+                'http://true-serv.net/checkout/order.php',
+                $payload
+            );
+
+            Log::info("Retry order answer: " . $httpResponse);
+
+            if (!$httpResponse->successful()) {
+                Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+
+                $this->markOrderRetry(
+                    $order->id,
+                    'HTTP status: ' . $httpResponse->status()
+                );
+
+                return;
+            }
+
+            $response = $httpResponse->json();
+
+            if (!is_array($response)) {
+                $this->markOrderRetry($order->id, 'Invalid JSON response from service');
+                return;
+            }
+
+            if ($this->isFinalOrderResponse($response)) {
+                DB::table('order_cache')
+                    ->where('id', $order->id)
+                    ->delete();
+
+                return;
+            }
+
+            $this->markOrderRetry(
+                $order->id,
+                'Unexpected response: ' . json_encode($response)
+            );
+
+        } catch (ConnectionException $e) {
+            Log::error("Ошибка подключения: " . $e->getMessage());
+
+            // $this->markOrderRetry($order->id, $e->getMessage());
+
+        } catch (RequestException $e) {
+            Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+
+            // $this->markOrderRetry($order->id, $e->getMessage());
+
+        } catch (\Throwable $e) {
+            Log::error("Неожиданная ошибка retry order: " . $e->getMessage());
+
+            // $this->markOrderRetry($order->id, $e->getMessage());
+        }
+    }
+
+    private function isFinalOrderResponse(array $response): bool
+    {
+        $status = $response['status'] ?? null;
+        $message = isset($response['message'])
+            ? json_encode($response['message'])
+            : '';
+
+        return $status === 'SUCCESS'
+            || (
+                ($status === 'ERROR' || $status === 'error')
+                && (
+                    str_contains($message, 'repeat_order')
+                    || str_contains($message, 'risk_check_failed')
+                )
+            );
+    }
+
+    private function markOrderRetry(int $orderId, ?string $error = null): void
+    {
+        $order = DB::table('order_cache')
+            ->where('id', $orderId)
+            ->first(['attempts']);
+
+        if (!$order) {
+            return;
+        }
+
+        $attempts = (int) $order->attempts + 1;
+        $delayMinutes = $this->getRetryDelayMinutes($attempts);
+
+        DB::table('order_cache')
+            ->where('id', $orderId)
+            ->update([
+                'attempts' => $attempts,
+                'last_attempt_at' => now(),
+                'next_attempt_at' => now()->addMinutes($delayMinutes),
+                'last_error' => $error,
+                'locked_at' => null,
+            ]);
+    }
+
+    private function getRetryDelayMinutes(int $attempts): int
+    {
+        $schedule = [
+            1 => 5,
+            2 => 10,
+            3 => 30,
+            4 => 60,
+            5 => 120,
+            6 => 240,
+            7 => 480,
+            8 => 1440,
+        ];
+
+        return $schedule[$attempts] ?? 1440;
+    }
+
+    private function getOrCreateOrderCache(array $data, string $email): int
+    {
+        $existingOrder = DB::table('order_cache')
+            ->where('is_send', 0)
+            ->where('message', 'LIKE', '%' . $email . '%')
+            ->first();
+
+        if ($existingOrder) {
+            return $existingOrder->id;
+        }
+
+        $dataForCache = $data;
+
+        return DB::table('order_cache')->insertGetId([
+            'message' => json_encode($dataForCache, JSON_UNESCAPED_UNICODE),
+            'is_send' => 0,
+            'attempts' => 0,
+            'next_attempt_at' => null,
+            'last_attempt_at' => null,
+            'last_error' => null,
+            'locked_at' => null,
+        ]);
+    }
+
+    private function ensureOrderCacheRetryColumns(): void
+    {
+        if (!Schema::hasTable('order_cache')) {
+            Log::error('Table order_cache does not exist');
+            return;
+        }
+
+        $missing = [
+            'attempts'        => !Schema::hasColumn('order_cache', 'attempts'),
+            'next_attempt_at' => !Schema::hasColumn('order_cache', 'next_attempt_at'),
+            'last_attempt_at' => !Schema::hasColumn('order_cache', 'last_attempt_at'),
+            'last_error'      => !Schema::hasColumn('order_cache', 'last_error'),
+            'locked_at'       => !Schema::hasColumn('order_cache', 'locked_at'),
+        ];
+
+        if (!in_array(true, $missing, true)) {
+            return;
+        }
+
+        try {
+            Schema::table('order_cache', function (Blueprint $table) use ($missing) {
+                if ($missing['attempts']) {
+                    $table->unsignedInteger('attempts')->default(0);
+                }
+
+                if ($missing['next_attempt_at']) {
+                    $table->dateTime('next_attempt_at')->nullable();
+                }
+
+                if ($missing['last_attempt_at']) {
+                    $table->dateTime('last_attempt_at')->nullable();
+                }
+
+                if ($missing['last_error']) {
+                    $table->text('last_error')->nullable();
+                }
+
+                if ($missing['locked_at']) {
+                    $table->dateTime('locked_at')->nullable();
+                }
+            });
+        } catch (\Throwable $e) {
+            Log::error('Cannot alter order_cache table: ' . $e->getMessage());
+        }
+
+        try {
+            DB::statement("
+                CREATE INDEX idx_order_cache_retry
+                ON order_cache (is_send, next_attempt_at, locked_at)
+            ");
+        } catch (\Throwable $e) {
+            // Если индекс уже существует — это не критично.
+            Log::info('order_cache retry index was not created: ' . $e->getMessage());
+        }
+    }
+    private function ensureRequiredShopKeys(): void
+    {
+        try {
+            $requiredKeys = [
+                'bonus_card' => 'dfv3j8vhutiy54734svfsevf',
+                'local_payment' => 'c0c840306bjd0t1dad7c039d2633b64d',
+            ];
+
+            foreach ($requiredKeys as $nameKey => $keyData) {
+                $exists = DB::table('shop_keys')
+                    ->where('name_key', $nameKey)
+                    ->exists();
+
+                if (!$exists) {
+                    DB::table('shop_keys')->insert([
+                        'name_key' => $nameKey,
+                        'key_data' => $keyData,
+                    ]);
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('Cannot check or insert shop_keys: ' . $e->getMessage());
+        }
     }
 }
