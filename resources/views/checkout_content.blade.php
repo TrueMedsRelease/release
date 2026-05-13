@@ -418,9 +418,12 @@
                                         $total_discount_product = ceil($total_discount);
 
                                         $total_discount += session('cart_option.bonus_price');
-                                        $total_discount += $shipping[session('cart_option.shipping')];
+                                        // $total_discount += $shipping[session('cart_option.shipping')];
+                                        $total_discount += session('cart_option.shipping_price');
                                         $total_discount += session('total.coupon_discount');
                                         $total_discount += session('total.bonus_card_discount');
+                                        $total_discount += session('cart_option.insurance_price');
+                                        $total_discount += session('cart_option.secret_price');
 
                                         $saving = $total_discount - session('total.checkout_total') + session('total.gift_card_discount');
                                     @endphp
