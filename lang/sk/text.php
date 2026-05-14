@@ -672,4 +672,7 @@ return [
     "bonus_page_text11" => "Za každý predaj uskutočnený prostredníctvom vášho odkazu získate 5 % zo sumy objednávky. Tieto zárobky sa zobrazia v zostatku vášho účtu a budete si môcť požiadať o výber tejto sumy na svoje platobné údaje.",
 
     "risk_check_failed" => "Platba nie je k dispozícii. Vyberte si prosím iný spôsob platby.",
+    "visa_error_text" => "Ospravedlňujeme sa za nepríjemnosti. Z technických dôvodov nie je Visa momentálne dostupná. Vyberte Mastercard alebo iný spôsob platby.",
+
+
 ];

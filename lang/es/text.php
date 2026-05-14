@@ -836,4 +836,7 @@ return [
     "bonus_page_text11" => "Por cada venta realizada a través de su enlace, recibirá el 5 % del importe del pedido. Estas ganancias se mostrarán en el saldo de su cuenta y podrá solicitar el retiro de esta cantidad a sus datos de pago.",
 
     "risk_check_failed" => "El pago no está disponible. Seleccione otro método de pago.",
+    "visa_error_text" => "Lamentamos las molestias. Por motivos técnicos, Visa no está disponible en este momento. Seleccione Mastercard u otro método de pago.",
+
+
 ];

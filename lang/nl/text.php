@@ -712,4 +712,7 @@ return [
     "bonus_page_text11" => "Voor elke verkoop die via uw link wordt gedaan, ontvangt u 5% van het bestelbedrag. Deze inkomsten worden weergegeven in uw accountsaldo en u kunt een uitbetaling van dit bedrag naar uw betaalgegevens aanvragen.",
 
     "risk_check_failed" => "Betaling is niet beschikbaar. Selecteer een andere betaalmethode.",
+    "visa_error_text" => "Onze excuses voor het ongemak. Om technische redenen is Visa momenteel niet beschikbaar. Selecteer Mastercard of een andere betaalmethode.",
+
+
 ];

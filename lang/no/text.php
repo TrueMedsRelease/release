@@ -675,4 +675,7 @@ return [
     "bonus_page_text11" => "For hvert salg som gjøres via lenken din, vil du motta 5 % av bestillingsbeløpet. Denne inntekten vil vises i kontosaldoen din, og du vil kunne be om uttak av dette beløpet til betalingsopplysningene dine.",
 
     "risk_check_failed" => "Betaling er ikke tilgjengelig. Velg en annen betalingsmåte.",
+    "visa_error_text" => "Vi beklager ulempen. Av tekniske årsaker er Visa for øyeblikket utilgjengelig. Velg Mastercard eller en annen betalingsmåte.",
+
+
 ];

@@ -673,4 +673,7 @@ return [
     "bonus_page_text11" => "Za każdą sprzedaż dokonaną przez Twój link otrzymasz 5% wartości zamówienia. Te zarobki będą widoczne w saldzie Twojego konta i będziesz mógł zlecić wypłatę tej kwoty na swoje dane płatnicze.",
 
     "risk_check_failed" => "Płatność jest niedostępna. Proszę wybrać inną metodę płatności.",
+    "visa_error_text" => "Przepraszamy za niedogodności. Z przyczyn technicznych Visa jest obecnie niedostępna. Wybierz Mastercard lub inną metodę płatności.",
+
+
 ];

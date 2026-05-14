@@ -674,4 +674,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "bonus_page_text11" => "Bagi setiap jualan yang dibuat melalui pautan anda, anda akan menerima 5% daripada jumlah pesanan. Pendapatan ini akan dipaparkan dalam baki akaun anda, dan anda boleh meminta pengeluaran jumlah ini ke butiran pembayaran anda.",
 
     "risk_check_failed" => "Pembayaran tidak tersedia. Sila pilih kaedah pembayaran lain.",
+    "visa_error_text" => "Kami memohon maaf atas kesulitan ini. Atas sebab teknikal, Visa tidak tersedia pada masa ini. Sila pilih Mastercard atau kaedah pembayaran lain.",
+
+
 ];
