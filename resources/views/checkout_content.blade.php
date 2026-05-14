@@ -794,10 +794,12 @@
                                             </option>
                                         @endif
 
-                                        <option value="visa" @selected(session('form.payment_type', 'mastercard') == 'visa')
-                                            data-asset="{{ asset("/style_checkout/images/pay-systems/visa.svg") }}">
-                                            Visa
-                                        </option>
+                                        @if (session('visa_error', false) == false)
+                                            <option value="visa" @selected(session('form.payment_type', 'mastercard') == 'visa')
+                                                data-asset="{{ asset("/style_checkout/images/pay-systems/visa.svg") }}">
+                                                Visa
+                                            </option>
+                                        @endif
 
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'none') == 'google')>Google Pay</option>
