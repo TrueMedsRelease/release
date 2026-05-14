@@ -958,4 +958,7 @@ return [
     "bonus_page_text11" => "For every sale made through your link, you will receive 5% of the order amount. These earnings will be displayed in your account balance, and you will be able to request a withdrawal of this amount to your payment details.",
 
     "risk_check_failed" => "Payment is unavailable. Please select another payment method.",
+    "visa_error_text" => "We apologize for the inconvenience due to technical reasons: Visa is currently unavailable. Please select Mastercard or another payment method.",
+
+
 ];

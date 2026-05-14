@@ -807,4 +807,7 @@ return [
     "bonus_page_text11" => "Per ogni vendita effettuata tramite il tuo link, riceverai il 5% dell'importo dell'ordine. Questi guadagni saranno mostrati nel saldo del tuo account e potrai richiedere il prelievo di questo importo sui tuoi dati di pagamento.",
 
     "risk_check_failed" => "Il pagamento non è disponibile. Seleziona un altro metodo di pagamento.",
+    "visa_error_text" => "Ci scusiamo per l'inconveniente. Per motivi tecnici, Visa non è attualmente disponibile. Seleziona Mastercard o un altro metodo di pagamento.",
+
+
 ];

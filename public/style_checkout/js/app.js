@@ -3013,6 +3013,10 @@ function processForm(e) {
             }
             else if (data.response.status == 'SUCCESS') {
                 window.location.replace(checkoutComplete);
+            } else if (data.response.visa_error == true) {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
             }
             else {
                 var error = '';
@@ -3464,6 +3468,10 @@ $("#proccess_apple_pay").click(function (e) {
                 alert(data.response.message);
                 document.body.classList.add('loaded');
                 $('.wrapper').html(data.response.html.original.html);
+            } else if (data.response.visa_error == true) {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
             } else {
                 var error = '';
                 data.response.message.forEach(element => {
@@ -3526,6 +3534,10 @@ $("#proccess_google_pay").click(function (e) {
                     window.location.replace(checkoutComplete);
                 }
             } else if (data.response.status == 'risk_check') {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else if (data.response.visa_error == true) {
                 alert(data.response.message);
                 document.body.classList.add('loaded');
                 $('.wrapper').html(data.response.html.original.html);

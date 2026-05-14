@@ -678,4 +678,7 @@ return [
     "bonus_page_text11" => "Jokaisesta linkkisi kautta tehdystä myynnistä saat 5 % tilauksen summasta. Nämä ansiot näkyvät tilisi saldossa, ja voit pyytää tämän summan nostamista maksutietoihisi.",
 
     "risk_check_failed" => "Maksu ei ole saatavilla. Valitse toinen maksutapa.",
+    "visa_error_text" => "Pahoittelemme häiriötä. Teknisistä syistä Visa ei ole tällä hetkellä käytettävissä. Valitse Mastercard tai muu maksutapa.",
+
+
 ];

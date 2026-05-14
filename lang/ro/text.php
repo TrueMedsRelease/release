@@ -668,4 +668,7 @@ return [
     "bonus_page_text11" => "Pentru fiecare vânzare realizată prin linkul dvs., veți primi 5% din valoarea comenzii. Aceste câștiguri vor fi afișate în soldul contului dvs. și veți putea solicita retragerea acestei sume către datele dvs. de plată.",
 
     "risk_check_failed" => "Plata nu este disponibilă. Vă rugăm să selectați altă metodă de plată.",
+    "visa_error_text" => "Ne cerem scuze pentru inconveniență. Din motive tehnice, Visa nu este disponibilă momentan. Selectați Mastercard sau o altă metodă de plată.",
+
+
 ];

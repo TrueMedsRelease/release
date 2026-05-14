@@ -678,4 +678,7 @@ return [
     "bonus_page_text11" => "Minden, az Ön linkjén keresztül történő eladás után a rendelés összegének 5%-át kapja meg. Ezek a bevételek megjelennek a számlaegyenlegében, és kérheti ennek az összegnek a kifizetését a fizetési adataira.",
 
     "risk_check_failed" => "A fizetés nem érhető el. Kérjük, válasszon másik fizetési módot.",
+    "visa_error_text" => "Elnézést kérünk a kellemetlenségért. Technikai okok miatt a Visa jelenleg nem érhető el. Kérjük, válassza a Mastercardot vagy egy másik fizetési módot.",
+
+
 ];

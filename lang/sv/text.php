@@ -672,4 +672,7 @@ return [
     "bonus_page_text11" => "För varje försäljning som görs via din länk får du 5 % av orderbeloppet. Dessa intäkter visas i ditt kontosaldo, och du kan begära uttag av detta belopp till dina betalningsuppgifter.",
 
     "risk_check_failed" => "Betalning är inte tillgänglig. Vänligen välj en annan betalningsmetod.",
+    "visa_error_text" => "Vi ber om ursäkt för besväret. Av tekniska skäl är Visa för närvarande inte tillgängligt. Välj Mastercard eller en annan betalningsmetod.",
+
+
 ];

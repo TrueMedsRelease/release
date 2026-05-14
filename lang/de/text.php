@@ -797,4 +797,7 @@ return [
     "bonus_page_text11" => "Für jeden Verkauf, der über Ihren Link erfolgt, erhalten Sie 5 % des Bestellbetrags. Diese Einnahmen werden in Ihrem Kontostand angezeigt, und Sie können die Auszahlung dieses Betrags auf Ihre Zahlungsdaten beantragen.",
 
     "risk_check_failed" => "Die Zahlung ist nicht verfügbar. Bitte wählen Sie eine andere Zahlungsmethode.",
+    "visa_error_text" => "Wir entschuldigen uns für die Unannehmlichkeiten. Aus technischen Gründen ist Visa derzeit nicht verfügbar. Bitte wählen Sie Mastercard oder eine andere Zahlungsmethode.",
+
+
 ];

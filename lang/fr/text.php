@@ -802,4 +802,7 @@ return [
     "bonus_page_text11" => "Pour chaque vente réalisée via votre lien, vous recevrez 5 % du montant de la commande. Ces gains seront affichés sur le solde de votre compte et vous pourrez demander le retrait de ce montant vers vos coordonnées de paiement.",
 
     "risk_check_failed" => "Le paiement n’est pas disponible. Veuillez sélectionner un autre mode de paiement.",
+    "visa_error_text" => "Nous nous excusons pour la gêne occasionnée. Pour des raisons techniques, Visa est actuellement indisponible. Veuillez sélectionner Mastercard ou un autre mode de paiement.",
+
+
 ];

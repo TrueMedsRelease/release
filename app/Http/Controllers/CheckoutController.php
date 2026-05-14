@@ -832,7 +832,7 @@ class CheckoutController extends Controller
 
                         $response = $httpResponse->json();
 
-                         if (!is_array($response)) {
+                        if (!is_array($response)) {
                             $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
 
                             return response()->json([
@@ -841,6 +841,29 @@ class CheckoutController extends Controller
                                     'message' => 'Invalid service response'
                                 ]
                             ], 502);
+                        }
+
+                        if ($this->hasVisaError($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
+                            session(['visa_error' => true]);
+                            session(['form.payment_type' => 'mastercard']);
+                            session(['form.card_numb' => '']);
+                            session(['form.bank_name' => '']);
+                            session(['form.card_month' => '']);
+                            session(['form.card_year' => '']);
+                            session(['form.cvc_2' => '']);
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => __('text.visa_error_text'),
+                                    'visa_error' => true,
+                                    'html' => $this->checkout(),
+                                ]
+                            ], 200);
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
@@ -3943,6 +3966,10 @@ class CheckoutController extends Controller
                 //     '/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6011[0-9]{12}|3(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})$/'
             );
 
+            if (session('visa_error', false) === true && preg_match($cards['all']['visa'], $ccNum)) {
+                return false;
+            }
+
             if (is_array($type)) {
                 foreach ($type as $value) {
                     $regex = $cards['all'][strtolower($value)];
@@ -3986,7 +4013,9 @@ class CheckoutController extends Controller
             'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
-            'card_numb'        => ['required', 'credit_card_number'],
+            'card_numb'        => ['required', 'credit_card_number', [
+                'card_number.credit_card_number' => 'Visa card error.',
+            ]],
             'bank_name'        => ['required'],
             'expire_date'      => ['required', 'date_format:m/Y', 'after:now'],
             'cvc_2'            => ['required', 'min:3', 'max:4']
@@ -4140,6 +4169,28 @@ class CheckoutController extends Controller
                                     'message' => 'Invalid service response'
                                 ]
                             ], 502);
+                        }
+
+                        if ($this->hasVisaError($response)) {
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
+                            session(['visa_error' => true]);
+                            session(['form.card_numb' => '']);
+                            session(['form.bank_name' => '']);
+                            session(['form.card_month' => '']);
+                            session(['form.card_year' => '']);
+                            session(['form.cvc_2' => '']);
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => __('text.visa_error_text'),
+                                    'visa_error' => true,
+                                    'html' => $this->checkout(),
+                                ]
+                            ], 200);
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
@@ -4365,19 +4416,26 @@ class CheckoutController extends Controller
 
     private function isFinalOrderResponse(array $response): bool
     {
-        $status = $response['status'] ?? null;
+        $status = strtolower((string) ($response['status'] ?? ''));
+
         $message = isset($response['message'])
             ? json_encode($response['message'])
             : '';
 
-        return $status === 'SUCCESS'
+        return $status === 'success'
             || (
-                ($status === 'ERROR' || $status === 'error')
+                $status === 'error'
                 && (
                     str_contains($message, 'repeat_order')
                     || str_contains($message, 'risk_check_failed')
                 )
             );
+    }
+
+    private function hasVisaError(array $response): bool
+    {
+        return isset($response['visa_error'])
+            && filter_var($response['visa_error'], FILTER_VALIDATE_BOOLEAN) === true;
     }
 
     private function markOrderRetry(int $orderId, ?string $error = null): void
