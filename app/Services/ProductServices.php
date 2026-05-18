@@ -130,6 +130,24 @@ class ProductServices
             }
         }
 
+        if (!in_array(strtoupper(session('location.country')), ['US', 'GB', 'AU'])) {
+            foreach ($products as $key => $product) {
+                if ($product['id'] == 755 || $product['id'] == 491) {
+                    unset($products[$key]);
+                    continue;
+                }
+            }
+        }
+
+        if (!in_array(strtoupper(session('location.country')), ['US'])) {
+            foreach ($products as $key => $product) {
+                if ($product['id'] == 1204) {
+                    unset($products[$key]);
+                    continue;
+                }
+            }
+        }
+
         $dosagesData = static::dosagesList();
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
 
