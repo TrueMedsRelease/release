@@ -293,7 +293,9 @@ class HomeController extends Controller
         }
 
         if (count($products) == 1) {
-            return redirect(route('home.product', $products[0]['url']));
+            foreach($products as $product) {
+                return redirect(route('home.product', $product['url']));
+            }
         }
 
         $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
