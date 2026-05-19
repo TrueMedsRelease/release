@@ -313,7 +313,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if (session('checked_bonus') == 'bonus_card' && session('bonus_card'))
+                                @if (session('checked_bonus', 'discount') == 'bonus_card' && session('bonus_card'))
                                     <div class="bottom_bonuses_block">
                                         <div class="bottom_bonuses_block_body">
                                             <div class="bottom_bonuses_block_head">
@@ -341,7 +341,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if (session('checked_bonus') == 'discount' && session('coupon'))
+                                @if (session('checked_bonus', 'discount') == 'discount' && session('coupon'))
                                     <div class="bottom_bonuses_block">
                                         <div class="bottom_bonuses_block_body">
                                             <div class="bottom_bonuses_block_head">
@@ -362,7 +362,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if (session('checked_bonus') == 'gift_card' && session('gift_card'))
+                                @if (session('checked_bonus', 'discount') == 'gift_card' && session('gift_card'))
                                     <div class="bottom_bonuses_block">
                                         <div class="bottom_bonuses_block_body">
                                             <div class="bottom_bonuses_block_head">
