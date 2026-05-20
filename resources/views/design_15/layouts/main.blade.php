@@ -68,11 +68,10 @@
         @if (env('APP_PWA', 0))
             <link rel="manifest" href="{{ asset($design . '/img/favicon/manifest.webmanifest') }}">
             <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
+            <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script>
         @endif
 
         {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
-
-        {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
         <link href="{{ asset($design . '/fonts/poppins-extralight.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
         <link href="{{ asset($design . '/fonts/poppins-light.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
@@ -550,7 +549,7 @@
                         @endif
                         @if (count($Currency::GetAllCurrency()) > 1)
                             <div class="header-currency header-select-wrapper">
-                                <select class="header-select" name="currency-select" onchange="location.href=this.options[this.selectedIndex].value">
+                                <select class="header-select" name="currency-select" id="curr_select" onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Currency::GetAllCurrency() as $item)
                                         <option value="{{ route('home.currency', $item['code']) }}" @if (session('currency') == $item['code']) selected @endif>{{ Str::upper($item['code']) }}</option>
                                     @endforeach
@@ -1388,6 +1387,7 @@
 
             const routeSavePush = "{{ route('home.save_push_data') }}";
             const routeCart = "{{ route('cart.index') }}";
+            const routePWAInfo = "{{ route('home.pwa_info') }}";
 
             const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
             const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";

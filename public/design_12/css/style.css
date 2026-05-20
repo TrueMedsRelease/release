@@ -4939,8 +4939,11 @@ body.has-scroll{
   .popup_white {
     position: fixed;
     top: 0;
-    left: 39%;
-    z-index: 100;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .popup_white.hide {
@@ -4955,7 +4958,6 @@ body.has-scroll{
     flex-direction: column;
     margin: 0 auto;
     max-width: 300px;
-    border-radius: 20px;
   }
 
   .popup_block {
@@ -4988,7 +4990,6 @@ body.has-scroll{
     color: var(--color-primary);
     border: 1px solid var(--color-primary);
     padding: 10px 20px;
-    border-radius: 12px;
     cursor: pointer;
   }
 
@@ -5001,7 +5002,6 @@ body.has-scroll{
     color: white;
     background-color: var(--color-primary);
     padding: 10px 20px;
-    border-radius: 12px;
     cursor: pointer;
   }
 
@@ -5029,7 +5029,7 @@ body.has-scroll{
     }
   }
 
-  @media (max-width: 510px) {
+  /* @media (max-width: 510px) {
     .popup_white {
       left: 19%;
     }
@@ -5039,7 +5039,7 @@ body.has-scroll{
     .popup_white {
       left: 2%;
     }
-  }
+  } */
 
   .message_sended.hidden{
     display: none;

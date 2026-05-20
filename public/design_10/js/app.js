@@ -777,7 +777,7 @@
             if ($('#print_sprite').val() == 0) {
                 selectOptionDataHTML = selectOptionData.indexOf("images") >= 0 ? `<img loading="lazy" src="${selectOptionData}" alt="">` : selectOptionData;
             }
-            
+
             let selectOptionContentHTML = ``;
             selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectRow}">` : "";
             selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectData}">` : "";
@@ -4419,7 +4419,7 @@ if (getCookie('hide_push') != '' || Notification.permission === 'denied' || getC
     $('.popup_white').hide();
 } else {
     setTimeout(function(){
-        $('.popup_white').show();
+        $('.popup_white').css('display', 'flex');
     }, 5000);
 }
 
@@ -4469,15 +4469,6 @@ $(document).on('click', '.button_sub', function () {
     }
 });
 
-$(document).on('click', '.push_allow', function () {
-    $('.popup_white').hide();
-    let date = new Date;
-    date.setDate(date.getDate() + 900);
-    date = date.toUTCString();
-    document.cookie = 'hide_push=1; path=/; expires=' + date;
-    // enableNotif();
-});
-
 if (location.pathname != '/'){
     $('.main_bestsellers').parent().find('.spollers__title').removeClass('_spoller-active');
     if (document.getElementById('main_bestsellers_body')) {
@@ -4486,21 +4477,39 @@ if (location.pathname != '/'){
 }
 
 
-// if ($('#order_info_session').val()) {
-//     $.ajax({
-//         url: routeSavePush,
-//         type: "POST",
-//         data: {
-//             method: 'update_customer',
-//             user_push: getCookie('user_push') ? getCookie('user_push') : '',
-//             order_info: $('#order_info_session').val(),
-//         },
-//         dataType: "json",
-//         success: function (res) {
-//             console.log('ok');
-//         }
-//     });
-// }
+$(document).on('click', '.push_allow', async function () {
+    $('.popup_white').hide();
+
+    const date = new Date();
+    date.setDate(date.getDate() + 900);
+    document.cookie = 'hide_push=1; path=/; expires=' + date.toUTCString();
+
+    await enableNotif();
+});
+
+$(document).on('click', '.button_close', function () {
+    $('.popup_white').hide();
+    let date = new Date;
+    date.setDate(date.getDate() + 1);
+    date = date.toUTCString();
+    document.cookie = 'hide_push=1; path=/; expires=' + date;
+});
+
+if ($('#order_info_session').val()) {
+    $.ajax({
+        url: routeSavePush,
+        type: "POST",
+        data: {
+            method: 'update_customer',
+            user_push: getCookie('user_push') ? getCookie('user_push') : '',
+            order_info: $('#order_info_session').val(),
+        },
+        dataType: "json",
+        success: function (res) {
+            console.log('ok');
+        }
+    });
+}
 
 $(document).on('click', '.link-button[data-dialog="call"]', function () {
     $('.dialog[data-name="call"]').show();

@@ -248,7 +248,7 @@ if (getCookie('hide_push') != '' || Notification.permission === 'denied' || getC
     $('.popup_white').addClass('hide');
 } else {
     setTimeout(function(){
-        $('.popup_white').show();
+        $('.popup_white').css('display', 'flex');
         $('.popup_white').removeClass('hide');
     }, 5000);
 }
@@ -262,28 +262,36 @@ $(document).on('click', '.push_decline', function () {
     document.cookie = 'hide_push=1; path=/; expires=' + date;
 });
 
-$(document).on('click', '.push_allow', function () {
+$(document).on('click', '.push_allow', async function () {
     $('.popup_white').hide();
-    $('.popup_white').addClass('hide');
-    let date = new Date;
+
+    const date = new Date();
     date.setDate(date.getDate() + 900);
-    date = date.toUTCString();
-    document.cookie = 'hide_push=1; path=/; expires=' + date;
-    // enableNotif();
+    document.cookie = 'hide_push=1; path=/; expires=' + date.toUTCString();
+
+    await enableNotif();
 });
 
-// if ($('#order_info_session').val()) {
-//     $.ajax({
-//         url: routeSavePush,
-//         type: "POST",
-//         data: {
-//             method: 'update_customer',
-//             user_push: getCookie('user_push') ? getCookie('user_push') : '',
-//             order_info: $('#order_info_session').val(),
-//         },
-//         dataType: "json",
-//         success: function (res) {
-//             console.log('ok');
-//         }
-//     });
-// }
+$(document).on('click', '.button_close', function () {
+    $('.popup_white').hide();
+    let date = new Date;
+    date.setDate(date.getDate() + 1);
+    date = date.toUTCString();
+    document.cookie = 'hide_push=1; path=/; expires=' + date;
+});
+
+if ($('#order_info_session').val()) {
+    $.ajax({
+        url: routeSavePush,
+        type: "POST",
+        data: {
+            method: 'update_customer',
+            user_push: getCookie('user_push') ? getCookie('user_push') : '',
+            order_info: $('#order_info_session').val(),
+        },
+        dataType: "json",
+        success: function (res) {
+            console.log('ok');
+        }
+    });
+}

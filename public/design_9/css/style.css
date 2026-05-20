@@ -7287,8 +7287,11 @@ body {
 .popup_white {
   position: fixed;
   top: 0;
-  left: 39%;
-  z-index: 4;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .popup_white.hide {
@@ -7363,7 +7366,7 @@ body {
   }
 }
 
-@media (max-width: 510px) {
+/* @media (max-width: 510px) {
   .popup_white {
     left: 19%;
   }
@@ -7373,7 +7376,7 @@ body {
   .popup_white {
     left: 2%;
   }
-}
+} */
 
 .top_block {
   max-width: 75em;

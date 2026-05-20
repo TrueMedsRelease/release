@@ -55,7 +55,7 @@
 				<button type="button" class="order__remove" onclick="remove({{ $product['pack_id'] }})">
                     @if (env('APP_PRINT_SPRITE', 1) == 1)
                         <svg width="18" height="18">
-                            <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-trash") }}"></use>
+                            <use xlink:href="{{ asset("$design/images/icons/icons2.svg#svg-trash") }}"></use>
                         </svg>
                     @else
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 20" fill="currentColor" width="18" height="18">
@@ -195,7 +195,7 @@
             <span>{{__('text.cart_pay_button')}}</span>
             @if (env('APP_PRINT_SPRITE', 1) == 1)
                 <svg width="16" height="16">
-                    <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-arr-right") }}"></use>
+                    <use xlink:href="{{ asset("$design/images/icons/icons2.svg#svg-arr-right") }}"></use>
                 </svg>
             @else
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 16" fill="currentColor" width="16" height="16">
