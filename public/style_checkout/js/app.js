@@ -2936,6 +2936,8 @@ function CheckPayment()
 
     // console.log(form);
 
+    $('.poopuptext').removeClass("show");
+
     $.ajax({
         url: checkoutCheckPayment,
         type: 'POST',
@@ -2993,6 +2995,8 @@ function processForm(e) {
     document.body.classList.remove('loaded');
 
     form += '&' + $.param({ browser_details: browserInfo });
+
+    $('.poopuptext').removeClass("show");
 
     $.ajax({
         url: checkoutOrder,
@@ -3069,6 +3073,8 @@ $("#proccess_paypal").click(function (e) {
 
     form += '&' + $.param({ browser_details: browserInfo });
 
+    $('.poopuptext').removeClass("show");
+
     $.ajax({
         url: checkoutPaypal,
         type: 'POST',
@@ -3125,6 +3131,8 @@ $("#proccess_sepa").click(function (e) {
 
     form += '&' + $.param({ browser_details: browserInfo });
 
+    $('.poopuptext').removeClass("show");
+
     $.ajax({
         url: checkoutSepa,
         type: 'POST',
@@ -3180,6 +3188,8 @@ $("#proccess_local_payment").click(function (e) {
     document.body.classList.remove('loaded');
 
     form += '&' + $.param({ browser_details: browserInfo });
+
+    $('.poopuptext').removeClass("show");
 
     $.ajax({
         url: checkoutLocalPayment,
@@ -3241,6 +3251,8 @@ $("#get_zelle_data").click(function (e) {
     document.body.classList.remove('loaded');
 
     form += '&' + $.param({ browser_details: browserInfo });
+
+    $('.poopuptext').removeClass("show");
 
     $.ajax({
         url: checkoutZelleData,
@@ -3334,6 +3346,8 @@ $("#proccess_bonus_card").click(function (e) {
 
     form += '&' + $.param({ browser_details: browserInfo });
 
+    $('.poopuptext').removeClass("show");
+
     $.ajax({
         url: checkoutBonusCard,
         type: 'POST',
@@ -3393,6 +3407,8 @@ $("#proccess_gift_card").click(function (e) {
     document.body.classList.remove('loaded');
 
     form += '&' + $.param({ browser_details: browserInfo });
+
+    $('.poopuptext').removeClass("show");
 
     $.ajax({
         url: checkoutGiftCardProcess,
@@ -3455,6 +3471,8 @@ $("#proccess_apple_pay").click(function (e) {
     form += '&' + $.param({ browser_details: browserInfo });
 
     form += '&wallet=apple_pay';
+
+    $('.poopuptext').removeClass("show");
 
     $.ajax({
         url: checkoutWallet,
@@ -3524,6 +3542,8 @@ $("#proccess_google_pay").click(function (e) {
     form += '&' + $.param({ browser_details: browserInfo });
 
     form += '&wallet=google_pay';
+
+    $('.poopuptext').removeClass("show");
 
     $.ajax({
         url: checkoutWallet,
