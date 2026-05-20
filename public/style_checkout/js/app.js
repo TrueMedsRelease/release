@@ -2311,6 +2311,7 @@ $(".card_type .select__option").click(function (e) {
                 error: function (data) {
                     flag = true;
                     var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
                     errors.errors.forEach(function (error, i) {
                         console.log(i + '.' + error.message + ' (' + error.field + ')');
                         var popup = document.getElementById("error_" + error.field);
@@ -2343,6 +2344,7 @@ $(".card_type .select__option").click(function (e) {
             error: function (data) {
                 flag = true;
                 var errors = JSON.parse(data.responseText);
+                $('.poopuptext').removeClass("show");
                 errors.errors.forEach(function (error, i) {
                     console.log(i + '.' + error.message + ' (' + error.field + ')');
                     var popup = document.getElementById("error_" + error.field);
@@ -2374,6 +2376,7 @@ $(".card_type .select__option").click(function (e) {
             error: function (data) {
                 flag = true;
                 var errors = JSON.parse(data.responseText);
+                $('.poopuptext').removeClass("show");
                 errors.errors.forEach(function (error, i) {
                     console.log(i + '.' + error.message + ' (' + error.field + ')');
                     var popup = document.getElementById("error_" + error.field);
@@ -2389,7 +2392,7 @@ $(".card_type .select__option").click(function (e) {
             e.target.selectedIndex = previousIndex;
             return false;
         }
-    } else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac') {
+    } else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
         form += '&local_payment=' + type;
         $.ajax({
             url: checkoutLocalPaymentInfo,
@@ -2410,6 +2413,7 @@ $(".card_type .select__option").click(function (e) {
             error: function (data) {
                 flag = true;
                 var errors = JSON.parse(data.responseText);
+                $('.poopuptext').removeClass("show");
                 errors.errors.forEach(function (error, i) {
                     console.log(i + '.' + error.message + ' (' + error.field + ')');
                     var popup = document.getElementById("error_" + error.field);
@@ -2456,6 +2460,7 @@ $(".card_type .select__option").click(function (e) {
                 }
                 flag = true;
                 var errors = JSON.parse(data.responseText);
+                $('.poopuptext').removeClass("show");
                 errors.errors.forEach(function (error, i) {
                     console.log(i + '.' + error.message + ' (' + error.field + ')');
                     var popup = document.getElementById("error_" + error.field);
@@ -2953,7 +2958,7 @@ function CheckPayment()
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3029,7 +3034,7 @@ function processForm(e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3085,7 +3090,7 @@ $("#proccess_paypal").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3141,7 +3146,7 @@ $("#proccess_sepa").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3202,7 +3207,7 @@ $("#proccess_local_payment").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3269,7 +3274,7 @@ $("#get_zelle_data").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3354,7 +3359,7 @@ $("#proccess_bonus_card").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3414,7 +3419,7 @@ $("#proccess_gift_card").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3483,7 +3488,7 @@ $("#proccess_apple_pay").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
@@ -3552,7 +3557,7 @@ $("#proccess_google_pay").click(function (e) {
         },
         error: function (data) {
             var errors = JSON.parse(data.responseText);
-            // console.log(errors);
+            $('.poopuptext').removeClass("show");
             errors.errors.forEach(function (error, i) {
                 document.body.classList.add('loaded');
                 console.log(i + '.' + error.message + ' (' + error.field + ')');
