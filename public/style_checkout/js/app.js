@@ -2254,6 +2254,8 @@ $(".card_type .select__option").click(function (e) {
     var type = $(this).attr('data-value');
     var form = $('form').serialize();
 
+    $('.poopuptext').removeClass("show");
+
     flag = false;
     if (type == 'crypto') {
         document.getElementById('paid').style.display = "none";
