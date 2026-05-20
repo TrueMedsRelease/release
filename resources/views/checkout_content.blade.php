@@ -1130,7 +1130,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__local_payment-content"  @if (!in_array(session('form.payment_type', 'mastercard'), ['sepa_local', 'fps', 'domestic', 'ach', 'interac'])) hidden @endif>
+                        <div class="enter-info__local_payment-content"  @if (!in_array(session('form.payment_type', 'mastercard'), ['sepa_local', 'fps', 'domestic', 'ach', 'interac', 'usd_swift', 'gbp_swift'])) hidden @endif>
                             <div class="content-local-payment" @if (!session()->has('local_payment')) hidden @endif>
                                 <div class="details-payment__rows">
                                     <div class="details-payment__row details-payment__row--amount">
