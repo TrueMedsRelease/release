@@ -5,12 +5,34 @@
 // }
 
 const DEBUG = true;
-const SW_VERSION = '2026-04-07-8';
+const SW_VERSION = '2026-05-21';
 const SW_URL = `/sw.js?v=${SW_VERSION}`;
 
 let refreshing = false;
 let installPromptEvent = null;
 let periodicSyncRegistered = false;
+let swRegistrationPromise = null;
+
+function sendPushSaveUrlToServiceWorker(reg) {
+    if (typeof routeSavePush === 'undefined' || !routeSavePush) {
+        DEBUG && console.log('[SW] routeSavePush is not defined');
+        return;
+    }
+
+    const message = {
+        type: 'SET_PUSH_SAVE_URL',
+        url: routeSavePush
+    };
+
+    if (reg && reg.active) {
+        reg.active.postMessage(message);
+    }
+
+    if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage(message);
+    }
+}
+
 
 (function initServiceWorker() {
     if (!('serviceWorker' in navigator)) {
@@ -21,6 +43,13 @@ let periodicSyncRegistered = false;
     window.addEventListener('load', async () => {
         try {
             const reg = await navigator.serviceWorker.register(SW_URL, { scope: '/' });
+            swRegistrationPromise = Promise.resolve(reg);
+
+            sendPushSaveUrlToServiceWorker(reg);
+
+            navigator.serviceWorker.ready.then((readyReg) => {
+                sendPushSaveUrlToServiceWorker(readyReg);
+            });
 
             DEBUG && console.log('[SW] registered:', reg.scope);
 
@@ -56,6 +85,10 @@ let periodicSyncRegistered = false;
             const hadControllerOnLoad = !!navigator.serviceWorker.controller;
 
             navigator.serviceWorker.addEventListener('controllerchange', () => {
+                navigator.serviceWorker.ready.then((readyReg) => {
+                    sendPushSaveUrlToServiceWorker(readyReg);
+                });
+                
                 if (!hadControllerOnLoad) {
                     DEBUG && console.log('[SW] first install, skip reload');
                     return;
@@ -74,6 +107,7 @@ let periodicSyncRegistered = false;
                 });
             }, 60 * 1000);
 
+            await syncPushSubscription({ askPermission: false });
         } catch (err) {
             DEBUG && console.error('[SW] registration failed:', err);
         }
@@ -141,7 +175,151 @@ function formatDateTime(date) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-async function enableNotif() {
+function isPwaMode() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        window.navigator.standalone === true;
+}
+
+async function getCurrentPermission(askPermission = false) {
+    if (!('Notification' in window)) {
+        return 'unsupported';
+    }
+
+    if (Notification.permission === 'granted') {
+        return 'granted';
+    }
+
+    if (Notification.permission === 'denied') {
+        return 'denied';
+    }
+
+    if (!askPermission) {
+        return 'default';
+    }
+
+    return await Notification.requestPermission();
+}
+
+async function getReadyServiceWorkerRegistration() {
+    if (swRegistrationPromise) {
+        await swRegistrationPromise;
+    }
+
+    return await navigator.serviceWorker.ready;
+}
+
+async function createPushSubscription(reg) {
+    return await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: getApplicationServerKey()
+    });
+}
+
+async function resubscribePush(reg, oldSubscription) {
+    if (oldSubscription) {
+        try {
+            await oldSubscription.unsubscribe();
+        } catch (e) {
+            DEBUG && console.warn('[PUSH] unsubscribe failed, continue', e);
+        }
+    }
+
+    return await createPushSubscription(reg);
+}
+
+async function savePushSubscription(subscription) {
+    const now = new Date();
+    const timeZone = -now.getTimezoneOffset() / 60;
+    const shopUrl = location.host;
+    const pushInfo = JSON.stringify(subscription);
+    const info = JSON.parse(pushInfo);
+
+    const cookieDate = new Date();
+    cookieDate.setDate(cookieDate.getDate() + 900);
+
+    if (info && info.keys && info.keys.auth) {
+        document.cookie =
+            'user_push=' + encodeURIComponent(info.keys.auth) +
+            '; path=/; expires=' + cookieDate.toUTCString();
+    }
+
+    const langSession = document.getElementById('lang_session');
+    const langSelected = document.querySelector('#lang_select option:checked');
+    const currSelected = document.querySelector('#curr_select option:checked');
+
+    const lang =
+        (langSession && langSession.value) ||
+        (langSelected && (langSelected.getAttribute('data-code') || '').trim()) ||
+        '';
+
+    const curr =
+        (currSelected && (currSelected.textContent || '').trim()) ||
+        '';
+
+    const payload = {
+        shop_url: shopUrl,
+        lang: lang,
+        curr: curr,
+        push_info: pushInfo,
+        date: formatDateTime(now),
+        time_zone: timeZone,
+        customer_id: 0,
+        pwa_mode: isPwaMode() ? 1 : 0,
+    };
+
+    if (window.jQuery && typeof window.jQuery.ajax === 'function') {
+        return await new Promise((resolve, reject) => {
+            window.jQuery.ajax({
+                url: routeSavePush,
+                type: 'POST',
+                data: payload,
+                dataType: 'json',
+                success: function (res) {
+                    if (res && res.status === 'error') {
+                        DEBUG && console.error('[PUSH] save_push returned error:', res.text);
+                    }
+                    resolve(res || null);
+                },
+                error: function (xhr) {
+                    DEBUG && console.error('[PUSH] save_push ajax error:', xhr);
+                    reject(xhr);
+                }
+            });
+        });
+    }
+
+    const formData = new FormData();
+    Object.keys(payload).forEach((key) => {
+        formData.append(key, payload[key]);
+    });
+
+    const response = await fetch(routeSavePush, {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin',
+    });
+
+    if (!response.ok) {
+        throw new Error(`save_push failed with status ${response.status}`);
+    }
+
+    return await response.json().catch(() => null);
+}
+
+function shouldResubscribeByServerResponse(saveResult) {
+    if (!saveResult) return false;
+
+    return saveResult.resubscribe === true ||
+        saveResult.status === 'expired' ||
+        saveResult.status === 'invalid' ||
+        saveResult.status === 'not_found';
+}
+
+async function syncPushSubscription(options = {}) {
+    const askPermission = options.askPermission === true;
+    const forceResubscribe = options.forceResubscribe === true;
+
     try {
         const vapidInput = document.getElementById('vapid_pub');
         if (!vapidInput || !vapidInput.value) {
@@ -149,108 +327,52 @@ async function enableNotif() {
             return null;
         }
 
-        if (!('Notification' in window)) {
-            DEBUG && console.log('[PUSH] Notification API unsupported');
+        if (!('serviceWorker' in navigator)) {
+            DEBUG && console.log('[PUSH] serviceWorker unsupported');
             return null;
         }
 
-        const permission = await Notification.requestPermission();
+        if (!('PushManager' in window)) {
+            DEBUG && console.log('[PUSH] PushManager unsupported');
+            return null;
+        }
+
+        const permission = await getCurrentPermission(askPermission);
         if (permission !== 'granted') {
-            DEBUG && console.log('[PUSH] permission denied');
+            DEBUG && console.log('[PUSH] permission is not granted:', permission);
             return null;
         }
 
-        const reg = await navigator.serviceWorker.ready;
-
+        const reg = await getReadyServiceWorkerRegistration();
         let subscription = await reg.pushManager.getSubscription();
 
-        if (!subscription) {
-            subscription = await reg.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: getApplicationServerKey()
-            });
+        if (!subscription || forceResubscribe) {
+            subscription = await resubscribePush(reg, subscription);
         }
 
-        const now = new Date();
-        const timeZone = -now.getTimezoneOffset() / 60;
-        const shopUrl = location.host;
-        const pushInfo = JSON.stringify(subscription);
-        const info = JSON.parse(pushInfo);
+        let saveResult = await savePushSubscription(subscription);
 
-        const cookieDate = new Date();
-        cookieDate.setDate(cookieDate.getDate() + 900);
+        if (shouldResubscribeByServerResponse(saveResult)) {
+            DEBUG && console.log('[PUSH] server requested resubscribe:', saveResult);
 
-        document.cookie =
-            'user_push=' + encodeURIComponent(info.keys.auth) +
-            '; path=/; expires=' + cookieDate.toUTCString();
-
-        const langSession = document.getElementById('lang_session');
-        const langSelected = document.querySelector('#lang_select option:checked');
-        const currSelected = document.querySelector('#curr_select option:checked');
-
-        const lang =
-            (langSession && langSession.value) ||
-            (langSelected && (langSelected.getAttribute('data-code') || '').trim()) ||
-            '';
-
-        const curr =
-            (currSelected && (currSelected.textContent || '').trim()) ||
-            '';
-
-        const payload = {
-            shop_url: shopUrl,
-            lang: lang,
-            curr: curr,
-            push_info: pushInfo,
-            date: formatDateTime(now),
-            time_zone: timeZone,
-            customer_id: 0,
-        };
-
-        if (window.jQuery && typeof window.jQuery.ajax === 'function') {
-            await new Promise((resolve, reject) => {
-                window.jQuery.ajax({
-                    url: routeSavePush,
-                    type: 'POST',
-                    data: payload,
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res && res.status === 'error') {
-                            DEBUG && console.error('[PUSH] save_push returned error:', res.text);
-                        }
-                        resolve(res);
-                    },
-                    error: function (xhr) {
-                        DEBUG && console.error('[PUSH] save_push ajax error:', xhr);
-                        reject(xhr);
-                    }
-                });
-            });
-        } else {
-            const formData = new FormData();
-            Object.keys(payload).forEach((key) => {
-                formData.append(key, payload[key]);
-            });
-
-            const response = await fetch(routeSavePush, {
-                method: 'POST',
-                body: formData,
-                credentials: 'same-origin',
-            });
-
-            if (!response.ok) {
-                throw new Error(`save_push failed with status ${response.status}`);
-            }
+            subscription = await resubscribePush(reg, subscription);
+            saveResult = await savePushSubscription(subscription);
         }
 
-        DEBUG && console.log('[PUSH] subscribed successfully');
+        DEBUG && console.log('[PUSH] subscription synchronized successfully');
 
         return subscription;
     } catch (err) {
-        DEBUG && console.error('[PUSH] enableNotif error:', err);
+        DEBUG && console.error('[PUSH] syncPushSubscription error:', err);
         return null;
     }
 }
+
+async function enableNotif() {
+    return await syncPushSubscription({ askPermission: true });
+}
+
+window.enableNotif = enableNotif;
 
 async function registerPeriodicSync() {
     const reg = await navigator.serviceWorker.ready;
@@ -346,15 +468,20 @@ function beforeInstall() {
         });
     }
 
-    window.addEventListener('appinstalled', () => {
+    window.addEventListener('appinstalled', async () => {
         installPromptEvent = null;
         document.cookie = 'pwa_installed=true; path=/; max-age=31536000';
+
+        await syncPushSubscription({ askPermission: false });
+
         DEBUG && console.log('[PWA] app installed');
     });
 }
 
 async function main() {
     await periodicReg();
+
+    await syncPushSubscription({ askPermission: false });
 
     const pwaInstalled = await installed();
     if (!pwaInstalled) {

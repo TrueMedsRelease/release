@@ -4489,7 +4489,11 @@ $(document).on('click', '.push_allow', async function () {
     date.setDate(date.getDate() + 900);
     document.cookie = 'hide_push=1; path=/; expires=' + date.toUTCString();
 
-    await enableNotif();
+    if (typeof window.enableNotif === 'function') {
+        await window.enableNotif();
+    } else {
+        console.error('[PUSH] enableNotif is not available');
+    }
 });
 
 $(document).on('click', '.button_close', function () {

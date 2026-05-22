@@ -14,8 +14,9 @@
 //     });
 // });
 
-const SW_VERSION = '2026-04-07-8';
+const SW_VERSION = '2026-05-21';
 const CACHE_PREFIX = 'shop-pwa';
+let PUSH_SAVE_URL = '/push/save_push';
 
 const PAGE_CACHE = `${CACHE_PREFIX}-pages-${SW_VERSION}`;
 const STATIC_CACHE = `${CACHE_PREFIX}-static-${SW_VERSION}`;
@@ -50,8 +51,15 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
+    if (!event.data) return;
+
+    if (event.data.type === 'SKIP_WAITING') {
         self.skipWaiting();
+        return;
+    }
+
+    if (event.data.type === 'SET_PUSH_SAVE_URL' && event.data.url) {
+        PUSH_SAVE_URL = event.data.url;
     }
 });
 
@@ -199,6 +207,35 @@ if (self.workbox) {
         })
     );
 }
+
+self.addEventListener('pushsubscriptionchange', (event) => {
+    event.waitUntil((async () => {
+        try {
+            if (!event.oldSubscription || !event.oldSubscription.options) {
+                return;
+            }
+
+            const newSubscription = await self.registration.pushManager.subscribe(
+                event.oldSubscription.options
+            );
+
+            const formData = new FormData();
+            formData.append('method', 'save');
+            formData.append('shop_url', self.location.host);
+            formData.append('push_info', JSON.stringify(newSubscription));
+            formData.append('old_push_info', JSON.stringify(event.oldSubscription));
+            formData.append('source', 'pushsubscriptionchange');
+
+            await fetch(PUSH_SAVE_URL, {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+            });
+        } catch (err) {
+            // Не роняем service worker из-за ошибки обновления push subscription.
+        }
+    })());
+});
 
 self.addEventListener('push', (event) => {
     let notification = {};
