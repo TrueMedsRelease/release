@@ -68,11 +68,10 @@
         @if (env('APP_PWA', 0))
             <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
             <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
+            <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script>
         @endif
 
         {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
-
-        {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
         <link href="{{ asset($design . '/fonts/rubik-variable.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
 
@@ -479,7 +478,7 @@
                         @endif
                         @if (count($Currency::GetAllCurrency()) > 1)
                             <div class="header-currency header-select-wrapper">
-                                <select class="header-select" name="currency-select" onchange="location.href=this.options[this.selectedIndex].value">
+                                <select class="header-select" name="currency-select" id="curr_select" onchange="location.href=this.options[this.selectedIndex].value">
                                     @foreach ($Currency::GetAllCurrency() as $item)
                                         <option value="{{ route('home.currency', $item['code']) }}" @if (session('currency') == $item['code']) selected @endif>{{ Str::upper($item['code']) }}</option>
                                     @endforeach
@@ -880,7 +879,7 @@
                 <div class="button_close">
                     @if (env('APP_PRINT_SPRITE', 1) == 1)
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset("$design/svg/icons/sprite.svg?pqvdu970#close") }}"></use>
+                            <use href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
                         </svg>
                     @else
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
@@ -939,6 +938,7 @@
 
             const routeSavePush = "{{ route('home.save_push_data') }}";
             const routeCart = "{{ route('cart.index') }}";
+            const routePWAInfo = "{{ route('home.pwa_info') }}";
 
             const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
             const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";

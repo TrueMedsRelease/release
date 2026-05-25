@@ -5663,8 +5663,11 @@ body::after {
 .popup_white {
   position: fixed;
   top: 0;
-  left: 39%;
-  z-index: 4;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .popup_white.hide {
@@ -5678,7 +5681,6 @@ body::after {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 90%;
   max-width: 300px;
   border-radius: 20px;
 }
@@ -5737,7 +5739,7 @@ body::after {
   }
 }
 
-@media (max-width: 510px) {
+/* @media (max-width: 510px) {
   .popup_white {
     left: 19%;
   }
@@ -5747,7 +5749,7 @@ body::after {
   .popup_white {
     left: 2%;
   }
-}
+} */
 
 .pay-index, .ship-index{
   --height: 4.5rem;

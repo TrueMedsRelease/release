@@ -4315,11 +4315,14 @@ input.just-validate-success-field:focus-visible{
   }
 
   .popup_white {
-    position: fixed;
-    top: 0;
-    left: 39%;
-    z-index: 100;
-  }
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
   .popup_white.hide {
     display: none;
@@ -4333,7 +4336,6 @@ input.just-validate-success-field:focus-visible{
     flex-direction: column;
     margin: 0 auto;
     max-width: 300px;
-    border-radius: 20px;
   }
 
   .popup_block {
@@ -4363,28 +4365,58 @@ input.just-validate-success-field:focus-visible{
   }
 
   .push_decline {
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
-    padding: 10px 20px;
-    border-radius: 12px;
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    min-height: 4rem;
+    border: 1px solid var(--color-grey-5);
+    padding: 0.5rem 2rem;
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    background-color: transparent;
+    color: var(--color-text);
+    transition-property: transform, opacity, var(--transition-props-color);
+    transition-timing-function: var(--transition-func-cubic);
+    transition-duration: var(--transition-duration-medium);
     cursor: pointer;
   }
 
   .push_decline:hover{
     color: white;
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
+    border-color: var(--bg-color-hover);
   }
 
   .push_allow {
-    color: white;
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    min-height: 4rem;
+    border: 1px solid var(--color-primary);
+    padding: 0.5rem 2rem;
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
     background-color: var(--color-primary);
-    padding: 10px 20px;
-    border-radius: 12px;
+    color: white;
+    transition-property: transform, opacity, var(--transition-props-color);
+    transition-timing-function: var(--transition-func-cubic);
+    transition-duration: var(--transition-duration-medium);
     cursor: pointer;
   }
 
   .push_allow:hover{
-    background-color: rgba(201, 176, 154, 50%);
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);;
   }
 
   .button_close, .button_close_message{
@@ -4407,7 +4439,7 @@ input.just-validate-success-field:focus-visible{
     }
   }
 
-  @media (max-width: 510px) {
+  /* @media (max-width: 510px) {
     .popup_white {
       left: 19%;
     }
@@ -4417,7 +4449,7 @@ input.just-validate-success-field:focus-visible{
     .popup_white {
       left: 2%;
     }
-  }
+  } */
 
   .cmcmodal{
     animation-name: modalFadeInOut;

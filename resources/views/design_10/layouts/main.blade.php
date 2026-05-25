@@ -71,11 +71,10 @@
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
         <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script>
     @endif
 
     {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
-
-    {{-- <script defer type="text/javascript" src="{{ "vendor/jquery/pwa.js" }}"></script> --}}
 
     <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
@@ -1227,6 +1226,7 @@
 
         const routeSavePush = "{{ route('home.save_push_data') }}";
         const routeCart = "{{ route('cart.index') }}";
+        const routePWAInfo = "{{ route('home.pwa_info') }}";
 
         const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest_v2.png') }}";
         const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big_v2.png') }}";

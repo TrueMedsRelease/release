@@ -4787,8 +4787,11 @@ opacity:0;
 .popup_white {
   position: fixed;
   top: 0;
-  left: 39%;
   z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .popup_white.hide {
@@ -4864,7 +4867,7 @@ opacity:0;
   }
 }
 
-@media (max-width: 510px) {
+/* @media (max-width: 510px) {
   .popup_white {
     left: 19%;
   }
@@ -4874,7 +4877,7 @@ opacity:0;
   .popup_white {
     left: 2%;
   }
-}
+} */
 
 .pay-index, .ship-index{
   --height: 4.5rem;

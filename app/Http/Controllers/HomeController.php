@@ -2139,77 +2139,126 @@ class HomeController extends Controller
     {
         $agent        = new Agent();
         $errors       = [];
+
         $ip           = RequestHelper::GetUserIp();
-        $country_code = strtoupper(session('location.country'));
-        $aff          = session('aff') ? session('aff') : config('app.aff', 0);
-        $aff          = intval($aff);
-        $saff         = intval(session('saff', ''));
+        $country_code = strtoupper(session('location.country', ''));
+        $aff          = intval(session('aff') ? session('aff') : config('app.aff', 0));
+        $saff         = intval(session('saff', 0));
         $user_agent   = $agent->getUserAgent();
+
+        $method       = $request->method ? $request->method : 'save';
+
         $push_info    = $request->push_info;
-        $shop_url     = $request->shop_url;
-        $lang         = $request->lang;
-        $curr         = $request->curr;
-        $push_date    = $request->date;
+        $shop_url     = $request->shop_url ?: $request->getHost();
+        $lang         = $request->lang ?: session('lang', '');
+        $curr         = $request->curr ?: session('curr', '');
+        $push_date    = $request->date ?: date('Y-m-d H:i:s');
         $time_zone    = $request->time_zone;
         $fingerprint  = 'x';
-        $customer_id  = $request->customer_id;
+        $customer_id  = $request->customer_id ?: 0;
 
-        $method     = $request->method ? $request->method : 'save';
-        $order_info = $request->order_info;
-        $user_push  = $request->user_push;
+        $order_info   = $request->order_info;
+        $user_push    = $request->user_push;
 
-        if ($method == 'save') {
-            if (empty($user_agent) || empty($push_info) || empty($shop_url) || empty($lang) || empty($curr) || empty($push_date) || empty($time_zone)) {
+        if ($method === 'save') {
+            if (empty($user_agent) || empty($push_info) || empty($shop_url)) {
                 $errors[] = __('text.errors_empty_field');
             } else {
                 $push_info_decode = json_decode($push_info, true);
-                $user             = $push_info_decode['keys']['auth'];
+
+                if (
+                    !is_array($push_info_decode) ||
+                    empty($push_info_decode['keys']) ||
+                    empty($push_info_decode['keys']['auth'])
+                ) {
+                    $errors[] = 'Invalid push_info';
+                } else {
+                    $user = $push_info_decode['keys']['auth'];
+                }
             }
         } else {
-            if ($user_push) {
-                $order_info = json_decode($order_info);
-                $order_id   = $order_info['order_id'];
+            if ($user_push && $order_info) {
+                $order_info_decode = json_decode($order_info, true);
+
+                if (is_array($order_info_decode) && !empty($order_info_decode['order_id'])) {
+                    $order_id = $order_info_decode['order_id'];
+                } else {
+                    $errors[] = 'Invalid order_info';
+                }
             } else {
                 $errors[] = __('text.errors_empty_field');
             }
         }
 
-        if (!count($errors)) {
-            if ($method == 'save') {
-                $msg = [
-                    'method'       => $method,
-                    'user'         => $user,
-                    'ip'           => $ip,
-                    'country_code' => $country_code,
-                    'user_agent'   => $user_agent,
-                    'shop'         => $shop_url,
-                    'aff'          => $aff,
-                    'saff'         => $saff,
-                    'customer_id'  => $customer_id,
-                    'lang'         => $lang,
-                    'curr'         => $curr,
-                    'push_info'    => $push_info,
-                    'push_date'    => $push_date,
-                    'time_zone'    => $time_zone,
-                    'fingerprint'  => $fingerprint,
-                ];
-            } else {
-                $msg = [
-                    'method'    => $method,
-                    'user_push' => $user_push,
-                    'order_id'  => $order_id
-                ];
-            }
-
-            $response = Http::timeout(3)->post('https://true-serv.net/subscribe/subscribe.php', $msg);
-            $response = json_decode($response, true);
-
-            $result = ['status' => 'success'];
-        } else {
-            $result = ['status' => 'error', 'text' => $errors];
+        if (count($errors)) {
+            return response()->json([
+                'status' => 'error',
+                'text'   => $errors,
+            ]);
         }
 
-        return json_encode($result);
+        if ($method === 'save') {
+            $msg = [
+                'method'       => $method,
+                'user'         => $user,
+                'ip'           => $ip,
+                'country_code' => $country_code,
+                'user_agent'   => $user_agent,
+                'shop'         => $shop_url,
+                'aff'          => $aff,
+                'saff'         => $saff,
+                'customer_id'  => $customer_id,
+                'lang'         => $lang,
+                'curr'         => $curr,
+                'push_info'    => $push_info,
+                'push_date'    => $push_date,
+                'time_zone'    => $time_zone,
+                'fingerprint'  => $fingerprint,
+
+                'pwa_mode'      => $request->pwa_mode ?: 0,
+                'source'        => $request->source ?: '',
+                'old_push_info' => $request->old_push_info ?: '',
+            ];
+        } else {
+            $msg = [
+                'method'    => $method,
+                'user_push' => $user_push,
+                'order_id'  => $order_id,
+            ];
+        }
+
+        try {
+            $serviceResponse = Http::timeout(3)
+                ->asJson()
+                ->post('https://true-serv.net/subscribe/subscribe.php', $msg);
+
+            if (!$serviceResponse->successful()) {
+                return response()->json([
+                    'status' => 'error',
+                    'text'   => 'Subscribe service HTTP error',
+                    'code'   => $serviceResponse->status(),
+                ]);
+            }
+
+            $serviceResult = $serviceResponse->json();
+
+            if (!is_array($serviceResult)) {
+                return response()->json([
+                    'status' => 'error',
+                    'text'   => 'Invalid JSON response from subscribe service',
+                    'raw'    => $serviceResponse->body(),
+                ]);
+            }
+
+            return response()->json($serviceResult);
+
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'text'   => 'Subscribe service request failed',
+                'error'  => $e->getMessage(),
+            ]);
+        }
     }
 
 

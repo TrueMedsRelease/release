@@ -1895,7 +1895,7 @@
                 } else bankCardIconEl.classList.add("hide");
             }
             function formatCardCode(value) {
-                var cardCode = value.replace(/[^\d]/g, "").substring(0, 16);
+                var cardCode = value.replace(/[^\d]/g, "").substring(0, 19);
                 cardCode = cardCode != "" ? cardCode.match(/.{1,4}/g).join(" ") : "";
                 return cardCode;
             }

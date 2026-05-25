@@ -74,6 +74,7 @@
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
         <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
+        <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script>
     @endif
 
     <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">
