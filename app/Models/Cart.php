@@ -168,12 +168,13 @@ class Cart extends Model
     public static function update_cart_total()
     {
         if (!empty(session('cart'))) {
-            $products      = session('cart');
+            $products      = session('cart', []);
             $product_total = 0;
             foreach ($products as $product) {
                 $product_total += $product['price'] * $product['q'];
             }
         } else {
+            $products = [];
             $product_total = 0;
         }
 
@@ -196,6 +197,7 @@ class Cart extends Model
         $sum_card     = 0;
         $is_only_card = 0;
         $count_card   = 0;
+
         foreach ($products as $product) {
             if ($product['product_id'] == 616) {
                 $has_card = 1;
