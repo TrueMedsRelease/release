@@ -14,7 +14,7 @@
 //     });
 // });
 
-const SW_VERSION = '2026-05-21';
+const SW_VERSION = '2026-05-26';
 const CACHE_PREFIX = 'shop-pwa';
 let PUSH_SAVE_URL = '/push/save_push';
 
@@ -209,6 +209,8 @@ if (self.workbox) {
 }
 
 self.addEventListener('pushsubscriptionchange', (event) => {
+    console.log("[PUSH DEBUG] pushsubscriptionchange fired");
+
     event.waitUntil((async () => {
         try {
             if (!event.oldSubscription || !event.oldSubscription.options) {

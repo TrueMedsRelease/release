@@ -5,7 +5,7 @@
 // }
 
 const DEBUG = true;
-const SW_VERSION = '2026-05-21';
+const SW_VERSION = '2026-05-26';
 const SW_URL = `/sw.js?v=${SW_VERSION}`;
 
 let refreshing = false;
@@ -88,7 +88,7 @@ function sendPushSaveUrlToServiceWorker(reg) {
                 navigator.serviceWorker.ready.then((readyReg) => {
                     sendPushSaveUrlToServiceWorker(readyReg);
                 });
-                
+
                 if (!hadControllerOnLoad) {
                     DEBUG && console.log('[SW] first install, skip reload');
                     return;
@@ -107,7 +107,10 @@ function sendPushSaveUrlToServiceWorker(reg) {
                 });
             }, 60 * 1000);
 
-            await syncPushSubscription({ askPermission: false });
+            await syncPushSubscription({
+                askPermission: false,
+                createIfMissing: false
+            });
         } catch (err) {
             DEBUG && console.error('[SW] registration failed:', err);
         }
@@ -319,6 +322,7 @@ function shouldResubscribeByServerResponse(saveResult) {
 async function syncPushSubscription(options = {}) {
     const askPermission = options.askPermission === true;
     const forceResubscribe = options.forceResubscribe === true;
+    const createIfMissing = options.createIfMissing === true;
 
     try {
         const vapidInput = document.getElementById('vapid_pub');
@@ -346,8 +350,15 @@ async function syncPushSubscription(options = {}) {
         const reg = await getReadyServiceWorkerRegistration();
         let subscription = await reg.pushManager.getSubscription();
 
-        if (!subscription || forceResubscribe) {
+        if (forceResubscribe) {
             subscription = await resubscribePush(reg, subscription);
+        } else if (!subscription) {
+            if (!createIfMissing) {
+                DEBUG && console.log("[PUSH] local subscription not found, skip auto subscribe");
+                return null;
+            }
+
+            subscription = await createPushSubscription(reg);
         }
 
         let saveResult = await savePushSubscription(subscription);
@@ -369,7 +380,10 @@ async function syncPushSubscription(options = {}) {
 }
 
 async function enableNotif() {
-    return await syncPushSubscription({ askPermission: true });
+    return await syncPushSubscription({
+        askPermission: true,
+        createIfMissing: true
+    });
 }
 
 window.enableNotif = enableNotif;
@@ -472,7 +486,10 @@ function beforeInstall() {
         installPromptEvent = null;
         document.cookie = 'pwa_installed=true; path=/; max-age=31536000';
 
-        await syncPushSubscription({ askPermission: false });
+        await syncPushSubscription({
+            askPermission: false,
+            createIfMissing: false
+        });
 
         DEBUG && console.log('[PWA] app installed');
     });
@@ -481,7 +498,10 @@ function beforeInstall() {
 async function main() {
     await periodicReg();
 
-    await syncPushSubscription({ askPermission: false });
+    await syncPushSubscription({
+        askPermission: false,
+        createIfMissing: false
+    });
 
     const pwaInstalled = await installed();
     if (!pwaInstalled) {
