@@ -14,9 +14,10 @@
 //     });
 // });
 
-const SW_VERSION = '2026-05-26';
-const CACHE_PREFIX = 'shop-pwa';
 let PUSH_SAVE_URL = '/push/save_push';
+
+const SW_VERSION = '2026-05-27-2';
+const CACHE_PREFIX = 'shop-pwa';
 
 const PAGE_CACHE = `${CACHE_PREFIX}-pages-${SW_VERSION}`;
 const STATIC_CACHE = `${CACHE_PREFIX}-static-${SW_VERSION}`;
@@ -209,34 +210,7 @@ if (self.workbox) {
 }
 
 self.addEventListener('pushsubscriptionchange', (event) => {
-    console.log("[PUSH DEBUG] pushsubscriptionchange fired");
-
-    event.waitUntil((async () => {
-        try {
-            if (!event.oldSubscription || !event.oldSubscription.options) {
-                return;
-            }
-
-            const newSubscription = await self.registration.pushManager.subscribe(
-                event.oldSubscription.options
-            );
-
-            const formData = new FormData();
-            formData.append('method', 'save');
-            formData.append('shop_url', self.location.host);
-            formData.append('push_info', JSON.stringify(newSubscription));
-            formData.append('old_push_info', JSON.stringify(event.oldSubscription));
-            formData.append('source', 'pushsubscriptionchange');
-
-            await fetch(PUSH_SAVE_URL, {
-                method: 'POST',
-                body: formData,
-                credentials: 'same-origin',
-            });
-        } catch (err) {
-            // Не роняем service worker из-за ошибки обновления push subscription.
-        }
-    })());
+    event.waitUntil(Promise.resolve());
 });
 
 self.addEventListener('push', (event) => {
@@ -280,12 +254,10 @@ self.addEventListener('notificationclick', (event) => {
 
         for (const client of clientsList) {
             try {
-                // если уже открыта нужная вкладка — просто фокусируем её
                 if (client.url === targetUrl) {
                     return await client.focus();
                 }
 
-                // иначе пробуем переиспользовать существующую вкладку
                 const navigatedClient = await client.navigate(targetUrl);
 
                 if (navigatedClient) {

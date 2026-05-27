@@ -5,34 +5,14 @@
 // }
 
 const DEBUG = true;
-const SW_VERSION = '2026-05-26';
+
+const SW_VERSION = '2026-05-27-2';
 const SW_URL = `/sw.js?v=${SW_VERSION}`;
 
 let refreshing = false;
 let installPromptEvent = null;
 let periodicSyncRegistered = false;
-let swRegistrationPromise = null;
-
-function sendPushSaveUrlToServiceWorker(reg) {
-    if (typeof routeSavePush === 'undefined' || !routeSavePush) {
-        DEBUG && console.log('[SW] routeSavePush is not defined');
-        return;
-    }
-
-    const message = {
-        type: 'SET_PUSH_SAVE_URL',
-        url: routeSavePush
-    };
-
-    if (reg && reg.active) {
-        reg.active.postMessage(message);
-    }
-
-    if (navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage(message);
-    }
-}
-
+let pushSyncStarted = false;
 
 (function initServiceWorker() {
     if (!('serviceWorker' in navigator)) {
@@ -42,21 +22,17 @@ function sendPushSaveUrlToServiceWorker(reg) {
 
     window.addEventListener('load', async () => {
         try {
-            const reg = await navigator.serviceWorker.register(SW_URL, { scope: '/' });
-            swRegistrationPromise = Promise.resolve(reg);
+            const reg = await navigator.serviceWorker.register(SW_URL, {
+                scope: '/'
+            });
+
+            DEBUG && console.log('[SW] registered:', reg.scope);
 
             sendPushSaveUrlToServiceWorker(reg);
 
             navigator.serviceWorker.ready.then((readyReg) => {
                 sendPushSaveUrlToServiceWorker(readyReg);
             });
-
-            DEBUG && console.log('[SW] registered:', reg.scope);
-
-            if (navigator.serviceWorker.controller) {
-                DEBUG && console.log('[SW] current controller:', navigator.serviceWorker.controller.scriptURL);
-                DEBUG && console.log('[SW] expected url:', new URL(SW_URL, window.location.origin).href);
-            }
 
             if (reg.waiting) {
                 DEBUG && console.log('[SW] waiting worker found, activating');
@@ -107,15 +83,48 @@ function sendPushSaveUrlToServiceWorker(reg) {
                 });
             }, 60 * 1000);
 
+            /*
+             * ВАЖНО:
+             * При обычном открытии магазина НЕ создаём новую подписку.
+             * Только проверяем существующую.
+             */
             await syncPushSubscription({
                 askPermission: false,
-                createIfMissing: false
+                createIfMissing: false,
+                source: 'shop_load'
             });
+
+            await periodicReg();
+
+            const pwaInstalled = await installed();
+            if (!pwaInstalled) {
+                beforeInstall();
+            }
         } catch (err) {
             DEBUG && console.error('[SW] registration failed:', err);
         }
     });
 })();
+
+function sendPushSaveUrlToServiceWorker(reg) {
+    if (typeof routeSavePush === 'undefined' || !routeSavePush) {
+        DEBUG && console.log('[SW] routeSavePush is not defined');
+        return;
+    }
+
+    const message = {
+        type: 'SET_PUSH_SAVE_URL',
+        url: routeSavePush
+    };
+
+    if (reg && reg.active) {
+        reg.active.postMessage(message);
+    }
+
+    if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage(message);
+    }
+}
 
 function base64UrlToUint8Array(base64String) {
     const normalizedInput = String(base64String || '').trim();
@@ -204,14 +213,6 @@ async function getCurrentPermission(askPermission = false) {
     return await Notification.requestPermission();
 }
 
-async function getReadyServiceWorkerRegistration() {
-    if (swRegistrationPromise) {
-        await swRegistrationPromise;
-    }
-
-    return await navigator.serviceWorker.ready;
-}
-
 async function createPushSubscription(reg) {
     return await reg.pushManager.subscribe({
         userVisibleOnly: true,
@@ -231,7 +232,11 @@ async function resubscribePush(reg, oldSubscription) {
     return await createPushSubscription(reg);
 }
 
-async function savePushSubscription(subscription) {
+async function savePushSubscription(subscription, extraData = {}) {
+    if (typeof routeSavePush === 'undefined' || !routeSavePush) {
+        throw new Error('routeSavePush is not defined');
+    }
+
     const now = new Date();
     const timeZone = -now.getTimezoneOffset() / 60;
     const shopUrl = location.host;
@@ -261,6 +266,7 @@ async function savePushSubscription(subscription) {
         '';
 
     const payload = {
+        method: 'save',
         shop_url: shopUrl,
         lang: lang,
         curr: curr,
@@ -269,7 +275,13 @@ async function savePushSubscription(subscription) {
         time_zone: timeZone,
         customer_id: 0,
         pwa_mode: isPwaMode() ? 1 : 0,
+        source: extraData.source || 'shop',
+        debug_reason: extraData.debug_reason || ''
     };
+
+    if (extraData.old_push_info) {
+        payload.old_push_info = extraData.old_push_info;
+    }
 
     if (window.jQuery && typeof window.jQuery.ajax === 'function') {
         return await new Promise((resolve, reject) => {
@@ -279,9 +291,6 @@ async function savePushSubscription(subscription) {
                 data: payload,
                 dataType: 'json',
                 success: function (res) {
-                    if (res && res.status === 'error') {
-                        DEBUG && console.error('[PUSH] save_push returned error:', res.text);
-                    }
                     resolve(res || null);
                 },
                 error: function (xhr) {
@@ -300,7 +309,7 @@ async function savePushSubscription(subscription) {
     const response = await fetch(routeSavePush, {
         method: 'POST',
         body: formData,
-        credentials: 'same-origin',
+        credentials: 'same-origin'
     });
 
     if (!response.ok) {
@@ -320,9 +329,19 @@ function shouldResubscribeByServerResponse(saveResult) {
 }
 
 async function syncPushSubscription(options = {}) {
+    if (pushSyncStarted && options.source === 'shop_load') {
+        DEBUG && console.log('[PUSH] shop_load sync already started, skip duplicate');
+        return null;
+    }
+
+    if (options.source === 'shop_load') {
+        pushSyncStarted = true;
+    }
+
     const askPermission = options.askPermission === true;
-    const forceResubscribe = options.forceResubscribe === true;
     const createIfMissing = options.createIfMissing === true;
+    const forceResubscribe = options.forceResubscribe === true;
+    const source = options.source || 'unknown';
 
     try {
         const vapidInput = document.getElementById('vapid_pub');
@@ -342,35 +361,70 @@ async function syncPushSubscription(options = {}) {
         }
 
         const permission = await getCurrentPermission(askPermission);
+
+        DEBUG && console.log('[PUSH] permission:', permission, 'source:', source);
+
         if (permission !== 'granted') {
-            DEBUG && console.log('[PUSH] permission is not granted:', permission);
             return null;
         }
 
-        const reg = await getReadyServiceWorkerRegistration();
+        const reg = await navigator.serviceWorker.ready;
         let subscription = await reg.pushManager.getSubscription();
 
+        if (subscription) {
+            DEBUG && console.log('[PUSH] existing subscription found, source:', source);
+        } else {
+            DEBUG && console.log('[PUSH] local subscription is NULL, source:', source);
+        }
+
         if (forceResubscribe) {
+            const oldPushInfo = subscription ? JSON.stringify(subscription) : '';
+
             subscription = await resubscribePush(reg, subscription);
-        } else if (!subscription) {
+
+            return await savePushSubscription(subscription, {
+                source: source + '_force_resubscribe',
+                old_push_info: oldPushInfo,
+                debug_reason: 'force_resubscribe'
+            });
+        }
+
+        if (!subscription) {
+            /*
+             * Ключевая защита от дублей:
+             * при обычной загрузке магазина подписку НЕ создаём.
+             */
             if (!createIfMissing) {
-                DEBUG && console.log("[PUSH] local subscription not found, skip auto subscribe");
+                DEBUG && console.log('[PUSH] skip creating subscription on auto load, source:', source);
                 return null;
             }
 
+            /*
+             * Новая подписка создаётся только после пользовательского действия enableNotif().
+             */
             subscription = await createPushSubscription(reg);
         }
 
-        let saveResult = await savePushSubscription(subscription);
+        let saveResult = await savePushSubscription(subscription, {
+            source: source,
+            debug_reason: 'save_existing_or_created'
+        });
+
+        DEBUG && console.log('[PUSH] save result:', saveResult);
 
         if (shouldResubscribeByServerResponse(saveResult)) {
-            DEBUG && console.log('[PUSH] server requested resubscribe:', saveResult);
+            const oldPushInfo = JSON.stringify(subscription);
 
             subscription = await resubscribePush(reg, subscription);
-            saveResult = await savePushSubscription(subscription);
-        }
 
-        DEBUG && console.log('[PUSH] subscription synchronized successfully');
+            saveResult = await savePushSubscription(subscription, {
+                source: source + '_server_resubscribe',
+                old_push_info: oldPushInfo,
+                debug_reason: 'server_requested_resubscribe'
+            });
+
+            DEBUG && console.log('[PUSH] resubscribe save result:', saveResult);
+        }
 
         return subscription;
     } catch (err) {
@@ -382,7 +436,8 @@ async function syncPushSubscription(options = {}) {
 async function enableNotif() {
     return await syncPushSubscription({
         askPermission: true,
-        createIfMissing: true
+        createIfMissing: true,
+        source: 'enableNotif_click'
     });
 }
 
@@ -486,27 +541,15 @@ function beforeInstall() {
         installPromptEvent = null;
         document.cookie = 'pwa_installed=true; path=/; max-age=31536000';
 
+        /*
+         * После установки PWA тоже НЕ создаём подписку автоматически.
+         */
         await syncPushSubscription({
             askPermission: false,
-            createIfMissing: false
+            createIfMissing: false,
+            source: 'appinstalled'
         });
 
         DEBUG && console.log('[PWA] app installed');
     });
 }
-
-async function main() {
-    await periodicReg();
-
-    await syncPushSubscription({
-        askPermission: false,
-        createIfMissing: false
-    });
-
-    const pwaInstalled = await installed();
-    if (!pwaInstalled) {
-        beforeInstall();
-    }
-}
-
-main();

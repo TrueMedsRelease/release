@@ -65,6 +65,10 @@
         <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.svg') }}" type="image/svg+xml">
         <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
 
+        <script>
+            const routeSavePush = "{{ route('home.save_push_data') }}";
+        </script>
+
         @if (env('APP_PWA', 0))
             <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
             <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
@@ -936,7 +940,6 @@
             const routeCheckCode = "{{ route('home.check_code') }}";
             const routeRequestLogin = "{{ route('home.request_login') }}";
 
-            const routeSavePush = "{{ route('home.save_push_data') }}";
             const routeCart = "{{ route('cart.index') }}";
             const routePWAInfo = "{{ route('home.pwa_info') }}";
 
