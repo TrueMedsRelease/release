@@ -54,7 +54,11 @@ $(document).on('click', '.push_allow', async function () {
     date.setDate(date.getDate() + 900);
     document.cookie = 'hide_push=1; path=/; expires=' + date.toUTCString();
 
-    if (typeof window.enableNotif === 'function') {
+    if (
+        typeof window.allowPushSubscribeFromClick === 'function' &&
+        typeof window.enableNotif === 'function'
+    ) {
+        window.allowPushSubscribeFromClick();
         await window.enableNotif();
     } else {
         console.error('[PUSH] enableNotif is not available');

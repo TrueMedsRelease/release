@@ -6,13 +6,14 @@
 
 const DEBUG = true;
 
-const SW_VERSION = '2026-05-27-2';
+const SW_VERSION = '2026-05-27-3';
 const SW_URL = `/sw.js?v=${SW_VERSION}`;
 
 let refreshing = false;
 let installPromptEvent = null;
 let periodicSyncRegistered = false;
 let pushSyncStarted = false;
+let allowCreatePushByUserClick = false;
 
 (function initServiceWorker() {
     if (!('serviceWorker' in navigator)) {
@@ -433,7 +434,23 @@ async function syncPushSubscription(options = {}) {
     }
 }
 
+function allowPushSubscribeFromClick() {
+    allowCreatePushByUserClick = true;
+
+    setTimeout(() => {
+        allowCreatePushByUserClick = false;
+    }, 10000);
+}
+
 async function enableNotif() {
+    if (!allowCreatePushByUserClick) {
+        DEBUG && console.warn('[PUSH] enableNotif blocked: no real user click');
+
+        return null;
+    }
+
+    allowCreatePushByUserClick = false;
+
     return await syncPushSubscription({
         askPermission: true,
         createIfMissing: true,
@@ -442,6 +459,7 @@ async function enableNotif() {
 }
 
 window.enableNotif = enableNotif;
+window.allowPushSubscribeFromClick = allowPushSubscribeFromClick;
 
 async function registerPeriodicSync() {
     const reg = await navigator.serviceWorker.ready;
