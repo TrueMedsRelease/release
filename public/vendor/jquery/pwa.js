@@ -20,13 +20,52 @@ function isPwaMode() {
         window.navigator.standalone === true;
 }
 
+function isIOSDevice() {
+    return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+        (
+            navigator.platform === 'MacIntel' &&
+            navigator.maxTouchPoints > 1
+        );
+}
+
+function isAndroidDevice() {
+    return /android/i.test(navigator.userAgent);
+}
+
+function isDesktopDevice() {
+    return !isIOSDevice() && !isAndroidDevice();
+}
+
+function showOpenAppHint(text) {
+    if (statusBlock) {
+        statusBlock.style.display = 'block';
+        statusBlock.textContent = text;
+    }
+}
+
 function bindOpenAppButton() {
     if (!openButton) {
         return;
     }
 
+    // openButton.onclick = function () {
+    //     window.location.href = 'web+truepharm://open';
+    // };
     openButton.onclick = function () {
+        if (isIOSDevice()) {
+            showOpenAppHint('Open the app from the icon on your Home Screen.');
+            return;
+        }
+
+        if (isAndroidDevice()) {
+            showOpenAppHint('Open the app from the icon on your Home Screen or app drawer.');
+            return;
+        }
+
         window.location.href = 'web+truepharm://open';
+        return;
+
+        showOpenAppHint('Open the app from your desktop app shortcut.');
     };
 }
 
