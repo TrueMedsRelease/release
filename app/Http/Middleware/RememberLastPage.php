@@ -37,9 +37,56 @@ class RememberLastPage
             ! $response->isRedirection() &&
             str_contains($contentType, 'text/html')
         ) {
-            session(['last_page' => $request->fullUrl()]);
+            if ($this->canStoreLastPage($request)) {
+                session(['last_page' => $request->fullUrl()]);
+            }
         }
 
         return $response;
+    }
+
+    private function canStoreLastPage(Request $request): bool
+    {
+        if (!$request->isMethod('GET')) {
+            return false;
+        }
+
+        if ($request->ajax()) {
+            return false;
+        }
+
+        $path = '/' . ltrim($request->path(), '/');
+
+        $blockedParts = [
+            '/lang=',
+            '/curr=',
+            '/design=',
+            '/set_images/',
+
+            '/.well-known/',
+            '/sw.js',
+            '/manifest.json',
+            '/manifest.webmanifest',
+            '/favicon',
+            '/robots.txt',
+            '/sitemap',
+            '/push/save_push',
+            '/pwa/install-event',
+            '/debugbar/',
+            '/vendor/',
+            '/build/',
+            '/assets/',
+            '/css/',
+            '/js/',
+            '/storage/',
+        ];
+
+        foreach ($blockedParts as $part) {
+            if (strpos($path, $part) !== false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

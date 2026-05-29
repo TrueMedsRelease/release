@@ -4695,20 +4695,28 @@ body.has-scroll{
     margin-right: 5px;
   }
 
-  .checkup{
+.checkup {
     width: 100%;
     cursor: pointer;
     margin: 20px auto 0 auto;
     min-width: 32rem;
     max-width: 120rem;
-  }
+}
+
+.install_store {
+    width: 100%;
+    cursor: pointer;
+    margin: 20px auto 0 auto;
+    min-width: 32rem;
+    max-width: 120rem;
+}
 
 .christmas{
     width: 100%;
     cursor: pointer;
 }
 
-  .christmas img, .checkup img {
+  .christmas img, .checkup img, .install img {
     width: 100%;
   }
 

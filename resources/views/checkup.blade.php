@@ -71,10 +71,17 @@
     <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
 
+    <script>
+        const routeSavePush = "{{ route('home.save_push_data') }}";
+        const routePwaInstallEvent = "{{ route('home.pwa_install_event') }}";
+    </script>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
         <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
-        <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script>
+        {{-- <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script> --}}
     @endif
 
     <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">

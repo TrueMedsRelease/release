@@ -7103,7 +7103,15 @@ body {
   margin: 0 auto;
 }
 
-.christmas img, .checkup img {
+.install_store {
+  width: 100%;
+  cursor: pointer;
+  padding-top: 20px;
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+.christmas img, .checkup img, .install_store img {
   width: 100%;
 }
 

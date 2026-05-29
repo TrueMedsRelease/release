@@ -5414,12 +5414,12 @@ strong {
     border-radius:1rem;
     background-color:#d7d7d7;
   }
-  .christmas, .checkup{
+  .christmas, .checkup, .install_store {
     width: 100%;
     cursor: pointer;
   }
 
-  .christmas img, .checkup img {
+  .christmas img, .checkup img, .install_store img {
     width: 100%;
   }
 

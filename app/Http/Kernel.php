@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckForSqlInjection;
+use App\Http\Middleware\DetectPwaMode;
 use App\Http\Middleware\Cors;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
@@ -68,6 +69,7 @@ class Kernel extends HttpKernel
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             SetLocale::class,
+            DetectPwaMode::class,
             SessionParameterHandler::class,
             SetCookiesForStatistics::class,
             RememberLastPage::class,

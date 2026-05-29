@@ -11,6 +11,10 @@
     <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
 </div>
 
+<div class="install_store" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+    <img loading="lazy" src="{{ asset("pub_images/download_white_desktop.png") }}">
+</div>
+
 <input type="hidden" id="error_subject" value="{{ $error_subject }}">
 <div class="text-page mb50" id="scroll">
 	<h2 class="title-page">{{__('text.contact_us_title')}}</h2>

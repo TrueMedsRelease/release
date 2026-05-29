@@ -16,7 +16,7 @@
 
 let PUSH_SAVE_URL = '/push/save_push';
 
-const SW_VERSION = '2026-05-27-3';
+const SW_VERSION = '2026-05-27-4';
 const CACHE_PREFIX = 'shop-pwa';
 
 const PAGE_CACHE = `${CACHE_PREFIX}-pages-${SW_VERSION}`;

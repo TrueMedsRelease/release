@@ -4597,11 +4597,25 @@ opacity:0;
   padding: 0 0.9375rem;
 }
 
+.install_store{
+  cursor: pointer;
+  max-width: 62.5rem;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  margin: 0 auto 10px auto;
+  padding: 0 0.9375rem;
+}
+
 .christmas img{
   width: 100%;
 }
 
 .checkup img {
+  width: 100%;
+  height: 100%;
+}
+
+.install_store img {
   width: 100%;
   height: 100%;
 }

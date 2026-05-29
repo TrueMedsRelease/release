@@ -1577,15 +1577,34 @@ class HomeController extends Controller
             return $homeUrl;
         }
 
+        $path = parse_url($candidate, PHP_URL_PATH) ?: '/';
+
         $blockedParts = [
             '/lang=',
             '/curr=',
             '/design=',
             '/set_images/',
+
+            '/.well-known/',
+            '/sw.js',
+            '/manifest.json',
+            '/manifest.webmanifest',
+            '/favicon',
+            '/robots.txt',
+            '/sitemap',
+            '/push/save_push',
+            '/pwa/install-event',
+            '/debugbar/',
+            '/vendor/',
+            '/build/',
+            '/assets/',
+            '/css/',
+            '/js/',
+            '/storage/',
         ];
 
         foreach ($blockedParts as $part) {
-            if (str_contains($candidate, $part)) {
+            if (strpos($path, $part) !== false || strpos($candidate, $part) !== false) {
                 return $homeUrl;
             }
         }
@@ -2524,5 +2543,183 @@ class HomeController extends Controller
             'web_statistic'   => $web_statistic,
             'codes'           => json_encode($codes),
         ]);
+    }
+
+    public function pwa_install_page()
+    {
+        $design = session('design') ? session('design') : config('app.design');
+
+        if (in_array($design, ['design_7', 'design_8'])) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
+        // $statisticPromise = StatisticService::SendStatistic('moneyback');
+
+        $bestsellers     = ProductServices::GetBestsellers($design);
+        $phone_codes     = PhoneCodes::all()->toArray();
+        $menu            = ProductServices::GetCategoriesWithProducts($design);
+        $page_properties = ProductServices::getPageProperties('bonus_referral_program');
+        $first_letters   = ProductServices::getFirstLetters();
+        $agent           = new Agent();
+
+        $pixels = DB::select("SELECT * FROM `pixel` WHERE `page` = 'shop'");
+        $pixel  = "";
+        foreach ($pixels as $item) {
+            $pixel .= stripcslashes($item->pixel) . "\n\n";
+        }
+
+        $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
+        $last_char = strlen($domain) - 1;
+        if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
+            $domain = substr($domain, 0, -1);
+        }
+
+        $device = ProductServices::getDevice($agent);
+
+        $codes = $this->getAllCountryISO();
+
+        foreach ($codes as $i => $code) {
+            $codes[$i] = strtolower($code->iso);
+        }
+
+        $web_statistic["params_string"] =
+            "aff=" . session('aff', 0) .
+            "&saff=" . session('saff', '') .
+            "&is_uniq=" . session('uniq', 0) .
+            "&keyword=" . session('keyword', '') .
+            "&ref=" . session('referer', '') .
+            "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+            "&store_skin=" . str_replace('design_', '', $design) .
+            "&page=moneyback&device=" . $device .
+            "&timestamp=" . time() .
+            "&user_ip=" . RequestHelper::GetUserIp();
+
+        // if (!is_null($statisticPromise)) {
+        //     $statisticPromise->wait();
+        // }
+
+        return view('install_store', [
+            'design'          => $design,
+            'bestsellers'     => $bestsellers,
+            'menu'            => $menu,
+            'phone_codes'     => $phone_codes,
+            'page_properties' => $page_properties,
+            'cur_category'    => '',
+            'agent'           => $agent,
+            'Language'        => Language::class,
+            'Currency'        => Currency::class,
+            'pixel'           => $pixel,
+            'first_letters'   => $first_letters,
+            'domain'          => $domain,
+            'web_statistic'   => $web_statistic,
+            'codes'           => json_encode($codes),
+        ]);
+    }
+
+    public function pwa_install_event(Request $request)
+    {
+        $design = session('design') ? session('design') : config('app.design');
+
+        $agent = new Agent();
+        $device_type = $device_type = $this->detectDeviceType($agent);
+
+        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+        $data = [
+            'key' => $api_key->key_data,
+            'shop_url' => $request->input('shop_url'),
+            'shop_design' => str_replace('design_', '', $design),
+            'referer' => session('referer', ''),
+            'aff' => session('aff', env('APP_AFF')),
+            'saff' => session('saff', ''),
+            'country' => session('location.country', 'US'),
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'device' => $device_type,
+            'session_id' => session('tm_session_id'),
+            'visit_id' => session('tm_visit_id'),
+            'user_push' => $request->input('user_push', ''),
+            'push_info' => $request->input('push_info', ''),
+        ];
+
+        Log::info('PWA install intent', $data);
+
+        $response = Http::timeout(3)
+            ->asJson()
+            ->post('https://true-serv.net/install_pwa/pwa_install_info.php', $data);
+
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
+    private function detectDeviceType($agent): string
+    {
+        $userAgent = strtolower($agent->getUserAgent());
+
+        $isTablet  = $agent->isTablet();
+        $isMobile  = $agent->isMobile();
+        $isDesktop = $agent->isDesktop();
+
+        $isAndroid = $agent->isAndroidOS();
+
+        $isIphone = $agent->is('iPhone');
+        $isIpad   = $agent->is('iPad');
+        $isIpod   = $agent->is('iPod');
+
+        $isIos = $isIphone || $isIpad || $isIpod;
+
+        $isPossibleIpadOs = str_contains($userAgent, 'macintosh')
+            && str_contains($userAgent, 'mobile');
+
+        if ($isIpad || ($isTablet && $isIos) || $isPossibleIpadOs) {
+            return 'tablet_ios';
+        }
+
+        if ($isTablet && $isAndroid) {
+            return 'tablet_android';
+        }
+
+        if ($isTablet) {
+            return 'tablet_unknown';
+        }
+
+        if (($isMobile && $isAndroid) || str_contains($userAgent, 'android')) {
+            return 'mobile_android';
+        }
+
+        if ($isIphone || $isIpod || ($isMobile && $isIos)) {
+            return 'mobile_ios';
+        }
+
+        if ($isMobile) {
+            return 'mobile_unknown';
+        }
+
+        if ($isDesktop) {
+            if (str_contains($userAgent, 'windows')) {
+                return 'desktop_windows';
+            }
+
+            if (str_contains($userAgent, 'macintosh') || str_contains($userAgent, 'mac os')) {
+                return 'desktop_macos';
+            }
+
+            if (str_contains($userAgent, 'linux')) {
+                return 'desktop_linux';
+            }
+
+            if (str_contains($userAgent, 'cros')) {
+                return 'desktop_chromeos';
+            }
+
+            return 'desktop_unknown';
+        }
+
+        return 'unknown';
     }
 }

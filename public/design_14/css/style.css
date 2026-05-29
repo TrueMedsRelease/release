@@ -4681,13 +4681,13 @@ input.just-validate-success-field:focus-visible{
     text-decoration: none;
 }
 
-.christmas, .checkup{
+.christmas, .checkup, .install_store {
     width: 100%;
     cursor: pointer;
     padding-top: 0 !important;
 }
 
-.christmas img, .checkup img {
+.christmas img, .checkup img, .install_store img {
     width: 100%;
 }
 

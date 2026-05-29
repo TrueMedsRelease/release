@@ -14,6 +14,10 @@
     <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
 </div>
 
+<div class="install_store" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+    <img loading="lazy" src="{{ asset("pub_images/download_white_desktop.png") }}">
+</div>
+
 <div id="shopping_cart">
 
 </div>

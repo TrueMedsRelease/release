@@ -6177,7 +6177,13 @@ textarea.input {
   cursor: pointer;
 }
 
-.christmas img, .checkup img {
+.install_store {
+  padding-top: 30px;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.christmas img, .checkup img, .install_store img {
   width: 100%;
 }
 

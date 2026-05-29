@@ -38,6 +38,30 @@
     <link rel="stylesheet" type="text/css" href="{{ asset_ver('style_checkout/style.css') }}">
 	<link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
+
+    <script>
+        function isPwaMode() {
+            return window.matchMedia('(display-mode: standalone)').matches ||
+                window.matchMedia('(display-mode: fullscreen)').matches ||
+                window.navigator.standalone === true;
+        }
+
+        function setPwaModeCookie() {
+            const isPwa = isPwaMode() ? '1' : '0';
+
+            document.cookie =
+                'is_pwa=' + isPwa +
+                '; path=/' +
+                '; max-age=31536000' +
+                '; SameSite=Lax';
+        }
+
+        setPwaModeCookie();
+
+        window.matchMedia('(display-mode: standalone)').addEventListener?.('change', setPwaModeCookie);
+        window.matchMedia('(display-mode: fullscreen)').addEventListener?.('change', setPwaModeCookie);
+    </script>
+
     <title>{{__('text.checkout_title')}}</title>
 
     {!! isset($pixel) ? $pixel : '' !!}
@@ -76,6 +100,7 @@
         const checkoutGiftCardProcess = "{{ route('checkout.gift_card_process') }}";
         const checkoutValidateWallet = "{{ route('checkout.validate_for_wallet') }}";
         const checkoutWallet = "{{ route('checkout.wallet_process') }}";
+        const checkoutOpenBanking = "{{ route('checkout.open_banking_process') }}";
 
         const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
         const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";
@@ -106,6 +131,9 @@
         const pathImageValentineDayBig = "{{ asset('pub_images/valentine_day_big.png') }}";
         const pathImageValentineDayMiddle = "{{ asset('pub_images/valentine_day_middle.png') }}";
         const pathImageValentineDaySmall = "{{ asset('pub_images/valentine_day_small.png') }}";
+
+        const pathImageDownloadDesktop = "{{ asset('pub_images/download_white_desktop.png') }}";
+        const pathImageDownloadMob = "{{ asset('pub_images/download_white_mob.png') }}";
     </script>
     <script async src="https://true-serv.net/static/statistics/assets/js/v1/main.js"></script>
 </head>

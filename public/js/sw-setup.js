@@ -6,7 +6,7 @@
 
 const DEBUG = true;
 
-const SW_VERSION = '2026-05-27-3';
+const SW_VERSION = '2026-05-27-4';
 const SW_URL = `/sw.js?v=${SW_VERSION}`;
 
 let refreshing = false;
@@ -14,6 +14,7 @@ let installPromptEvent = null;
 let periodicSyncRegistered = false;
 let pushSyncStarted = false;
 let allowCreatePushByUserClick = false;
+let pwaInstallEventSent = false;
 
 (function initServiceWorker() {
     if (!('serviceWorker' in navigator)) {
@@ -28,6 +29,8 @@ let allowCreatePushByUserClick = false;
             });
 
             DEBUG && console.log('[SW] registered:', reg.scope);
+
+            registerPwaInstallTracking();
 
             sendPushSaveUrlToServiceWorker(reg);
 
@@ -320,6 +323,82 @@ async function savePushSubscription(subscription, extraData = {}) {
     return await response.json().catch(() => null);
 }
 
+async function getCurrentPushDataForPwaInstall() {
+    const result = {
+        user_push: '',
+        push_info: ''
+    };
+
+    try {
+        if (!('serviceWorker' in navigator)) {
+            return result;
+        }
+
+        const reg = await navigator.serviceWorker.ready;
+        const subscription = await reg.pushManager.getSubscription();
+
+        if (!subscription) {
+            return result;
+        }
+
+        const pushInfo = JSON.stringify(subscription);
+        const parsed = JSON.parse(pushInfo);
+
+        result.push_info = pushInfo;
+
+        if (parsed && parsed.keys && parsed.keys.auth) {
+            result.user_push = parsed.keys.auth;
+        }
+
+        return result;
+    } catch (e) {
+        return result;
+    }
+}
+
+async function sendPwaInstallEvent(source, outcome = '') {
+    if (pwaInstallEventSent) {
+        return;
+    }
+
+    pwaInstallEventSent = true;
+
+    if (typeof routePwaInstallEvent === 'undefined' || !routePwaInstallEvent) {
+        DEBUG && console.log('[PWA] routePwaInstallEvent is not defined');
+        return;
+    }
+
+    const pushData = await getCurrentPushDataForPwaInstall();
+
+    const formData = new FormData();
+
+    const csrf = document.querySelector('meta[name="csrf-token"]');
+    if (csrf) {
+        formData.append('_token', csrf.getAttribute('content'));
+    }
+
+    formData.append('event', 'pwa_install');
+    formData.append('source', source || 'unknown');
+    formData.append('outcome', outcome || '');
+    formData.append('shop_url', location.host);
+    formData.append('page_url', location.href);
+    formData.append('display_mode', isPwaMode() ? 'standalone' : 'browser');
+
+    formData.append('user_push', pushData.user_push);
+    formData.append('push_info', pushData.push_info);
+
+    if (navigator.sendBeacon) {
+        navigator.sendBeacon(routePwaInstallEvent, formData);
+        return;
+    }
+
+    await fetch(routePwaInstallEvent, {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+    });
+}
+
 function shouldResubscribeByServerResponse(saveResult) {
     if (!saveResult) return false;
 
@@ -521,6 +600,18 @@ async function installed() {
     return pwa;
 }
 
+function registerPwaInstallTracking() {
+    window.addEventListener('appinstalled', async () => {
+        document.cookie = 'pwa_installed=true; path=/; max-age=31536000';
+
+        await sendPwaInstallEvent('appinstalled', 'installed');
+
+        DEBUG && console.log('[PWA] app installed');
+
+        window.location.href = '/';
+    });
+}
+
 function beforeInstall() {
     const btnInstall = document.querySelector('#install__button');
     const installBlock = document.querySelector('#install');
@@ -544,6 +635,9 @@ function beforeInstall() {
 
             if (choice.outcome === 'accepted') {
                 DEBUG && console.log('[PWA] user accepted install');
+
+                await sendPwaInstallEvent('beforeinstallprompt_user_choice', 'accepted');
+
                 if (installBlock) {
                     installBlock.style.display = 'none';
                 }
@@ -555,19 +649,16 @@ function beforeInstall() {
         });
     }
 
-    window.addEventListener('appinstalled', async () => {
-        installPromptEvent = null;
-        document.cookie = 'pwa_installed=true; path=/; max-age=31536000';
+    // window.addEventListener('appinstalled', async () => {
+    //     installPromptEvent = null;
+    //     document.cookie = 'pwa_installed=true; path=/; max-age=31536000';
 
-        /*
-         * После установки PWA тоже НЕ создаём подписку автоматически.
-         */
-        await syncPushSubscription({
-            askPermission: false,
-            createIfMissing: false,
-            source: 'appinstalled'
-        });
+    //     await syncPushSubscription({
+    //         askPermission: false,
+    //         createIfMissing: false,
+    //         source: 'appinstalled'
+    //     });
 
-        DEBUG && console.log('[PWA] app installed');
-    });
+    //     DEBUG && console.log('[PWA] app installed');
+    // });
 }

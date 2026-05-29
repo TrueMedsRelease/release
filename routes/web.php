@@ -76,6 +76,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/gift_card_process', 'gift_card_process')->name('checkout.gift_card_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/validate_for_wallet', 'validate_for_wallet')->name('checkout.validate_for_wallet');
     Route::post('/wallet_process', 'wallet_process')->name('checkout.wallet_process')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/open_banking_process', 'open_banking_process')->name('checkout.open_banking_process')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::get('/redirect', function () {
@@ -121,6 +122,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/sitemap{other_url?}', 'sitemap')->name('home.sitemap');
     Route::get('/error_page', 'errorPage')->name('home.error_page');
     Route::get('/bonus_referral_program', 'bonus_referral_program')->name('home.bonus_referral_program');
+    Route::get('/pwa/intall_page', 'pwa_install_page')->name('home.pwa_install_page');
+    Route::post('/pwa/install_event', 'pwa_install_event')->name('home.pwa_install_event');
 });
 
 Route::controller(AdminController::class)->group(function () {
