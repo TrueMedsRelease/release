@@ -36,11 +36,64 @@ function isDesktopDevice() {
     return !isIOSDevice() && !isAndroidDevice();
 }
 
-function showOpenAppHint(text) {
-    if (statusBlock) {
-        statusBlock.style.display = 'block';
-        statusBlock.textContent = text;
+function getPwaProtocolUrl() {
+    return 'web+truepharm://open';
+}
+
+function getPwaStartUrl() {
+    return '/';
+}
+
+function getOrCreateOpenHintBlock() {
+    if (!installedBlock) {
+        return null;
     }
+
+    let hintBlock = document.getElementById('pwa-open-hint');
+
+    if (!hintBlock) {
+        hintBlock = document.createElement('div');
+        hintBlock.id = 'pwa-open-hint';
+        hintBlock.style.marginTop = '12px';
+        hintBlock.style.fontSize = '14px';
+        hintBlock.style.lineHeight = '1.5';
+        hintBlock.style.color = '#065f46';
+
+        installedBlock.appendChild(hintBlock);
+    }
+
+    return hintBlock;
+}
+
+function showOpenAppHint(text) {
+    const hintBlock = getOrCreateOpenHintBlock();
+
+    if (hintBlock) {
+        hintBlock.style.display = 'block';
+        hintBlock.textContent = text;
+    }
+}
+
+function clearOpenAppHint() {
+    const hintBlock = document.getElementById('pwa-open-hint');
+
+    if (hintBlock) {
+        hintBlock.style.display = 'none';
+        hintBlock.textContent = '';
+    }
+}
+
+function updateOpenButtonText() {
+    if (!openButton) {
+        return;
+    }
+
+    if (isIOSDevice() || isAndroidDevice()) {
+        openButton.textContent = 'How to open App';
+        return;
+    }
+
+    openButton.textContent = 'Open installed App';
 }
 
 function bindOpenAppButton() {
@@ -48,24 +101,26 @@ function bindOpenAppButton() {
         return;
     }
 
-    // openButton.onclick = function () {
-    //     window.location.href = 'web+truepharm://open';
-    // };
     openButton.onclick = function () {
+        clearOpenAppHint();
+
         if (isIOSDevice()) {
-            showOpenAppHint('Open the app from the icon on your Home Screen.');
+            showOpenAppHint('Open the app from the icon on your iPhone Home Screen. Safari cannot open the installed PWA directly from this button.');
             return;
         }
 
         if (isAndroidDevice()) {
-            showOpenAppHint('Open the app from the icon on your Home Screen or app drawer.');
+            showOpenAppHint('Open the app from the icon on your Android Home Screen or app drawer. Chrome may not allow opening the installed PWA directly from this button.');
             return;
         }
 
-        window.location.href = 'web+truepharm://open';
-        return;
+        if (isDesktopDevice()) {
+            window.location.href = getPwaProtocolUrl();
 
-        showOpenAppHint('Open the app from your desktop app shortcut.');
+            setTimeout(function () {
+                showOpenAppHint('If the app did not open, use the “Open in app” button in the browser address bar or open it from your desktop app shortcut.');
+            }, 1200);
+        }
     };
 }
 
@@ -74,10 +129,20 @@ function showInstalledState() {
         installBlock.style.display = 'none';
     }
 
+    if (installButton) {
+        installButton.disabled = true;
+    }
+
+    if (statusBlock) {
+        statusBlock.style.display = 'none';
+        statusBlock.textContent = '';
+    }
+
     if (installedBlock) {
         installedBlock.style.display = 'block';
     }
 
+    updateOpenButtonText();
     bindOpenAppButton();
 }
 
@@ -98,6 +163,8 @@ function showInstallState() {
         statusBlock.style.display = 'none';
         statusBlock.textContent = '';
     }
+
+    clearOpenAppHint();
 }
 
 function showUnavailableState() {
@@ -118,7 +185,14 @@ function showUnavailableState() {
         installedBlock.style.display = 'block';
     }
 
+    updateOpenButtonText();
     bindOpenAppButton();
+
+    if (isIOSDevice()) {
+        showOpenAppHint('If the app is not installed yet, use Safari: Share → Add to Home Screen. If it is already installed, open it from the Home Screen icon.');
+    } else if (isAndroidDevice()) {
+        showOpenAppHint('If the app is already installed, open it from the Home Screen or app drawer. If not installed, use the browser menu → Add to Home screen.');
+    }
 }
 
 async function getCurrentPushDataForPwaInstall() {
@@ -226,7 +300,7 @@ if (installButton) {
         if (choice.outcome === 'accepted') {
             await sendPwaInstallAccepted();
 
-            window.location.href = '/';
+            window.location.href = getPwaStartUrl();
         }
 
         deferredInstallPrompt = null;
