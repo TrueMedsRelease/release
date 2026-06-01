@@ -2547,6 +2547,14 @@ class HomeController extends Controller
 
     public function pwa_install_page()
     {
+        if (env('APP_PWA', 0) == 0) {
+            if (env('APP_ERROR_PAGE')) {
+                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+            } else {
+                return redirect(route('home.index'));
+            }
+        }
+
         $design = session('design') ? session('design') : config('app.design');
 
         if (in_array($design, ['design_7', 'design_8'])) {

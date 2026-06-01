@@ -835,9 +835,11 @@
             <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big_v2.png") }}">
         </div>
 
-        <div class="install_store" onclick="location.href='{{ route('home.pwa_install_page') }}'">
-            <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
-        </div>
+        @if (env('APP_PWA', 0))
+            <div class="install_store" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+                <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
+            </div>
+        @endif
     </div>
 
     @yield('content')

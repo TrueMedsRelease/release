@@ -106,7 +106,7 @@
                                 <div>
                                     <input type="radio" name="default_meta" id="our_meta" value="1" @if (env('APP_DEFAULT_META', '1') == 1) checked @endif />
                                     <label for="our_meta">
-                                        Our Keywords and Description
+                                        Pharmacy Meta
                                     </label>
                                 </div>
                             </td>
@@ -114,7 +114,7 @@
                                 <div>
                                     <input type="radio" name="default_meta" id="default_meta" value="0" @if (env('APP_DEFAULT_META', '1') == 0) checked @endif />
                                     <label for="default_meta">
-                                        Default Keywords and Description
+                                        Default Meta
                                     </label>
                                 </div>
                             </td>
