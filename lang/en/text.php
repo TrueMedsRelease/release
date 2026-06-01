@@ -981,4 +981,19 @@ return [
     "install_page_about_desc4" => "Quick access without searching the site again",
     "install_page_reviews" => "Reviews",
     "install_page_back_to_shop" => "Back to Shop",
+
+    'pwa_install_unavailable' => 'Installation is unavailable, or the application is already installed.',
+    'pwa_app_already_installed' => 'App is already installed.',
+    'pwa_open_installed_app' => 'Open installed App',
+    'pwa_how_to_open_app' => 'How to open App',
+    'pwa_installing_app' => 'Installing app...',
+    'pwa_creating_push' => 'Creating push subscription...',
+    'pwa_saving_install' => 'Saving install information...',
+    'pwa_install_cancelled' => 'Installation was cancelled.',
+
+    'pwa_ios_open_hint' => 'Open the app from the icon on your iPhone Home Screen. Safari cannot open the installed PWA directly from this button.',
+    'pwa_android_open_hint' => 'Open the app from the icon on your Android Home Screen or app drawer. Chrome may not allow opening the installed PWA directly from this button.',
+    'pwa_desktop_open_hint' => 'If the app did not open, use the “Open in app” button in the browser address bar or open it from your desktop app shortcut.',
+    'pwa_ios_unavailable_hint' => 'If the app is not installed yet, use Safari: Share → Add to Home Screen. If it is already installed, open it from the Home Screen icon.',
+    'pwa_android_unavailable_hint' => 'If the app is already installed, open it from the Home Screen or app drawer. If not installed, use the browser menu → Add to Home screen.',
 ];

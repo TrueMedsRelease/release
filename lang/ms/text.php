@@ -697,4 +697,19 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "install_page_about_desc4" => "Akses pantas tanpa perlu mencari laman web semula",
     "install_page_reviews" => "Ulasan",
     "install_page_back_to_shop" => "Kembali ke kedai",
+
+    'pwa_install_unavailable' => 'Pemasangan tidak tersedia, atau aplikasi sudah dipasang.',
+    'pwa_app_already_installed' => 'Aplikasi sudah dipasang.',
+    'pwa_open_installed_app' => 'Buka aplikasi yang dipasang',
+    'pwa_how_to_open_app' => 'Cara membuka aplikasi',
+    'pwa_installing_app' => 'Sedang memasang aplikasi...',
+    'pwa_creating_push' => 'Sedang mencipta langganan push...',
+    'pwa_saving_install' => 'Sedang menyimpan maklumat pemasangan...',
+    'pwa_install_cancelled' => 'Pemasangan telah dibatalkan.',
+
+    'pwa_ios_open_hint' => 'Buka aplikasi daripada ikon pada Skrin Utama iPhone anda. Safari tidak boleh membuka PWA yang telah dipasang terus daripada butang ini.',
+    'pwa_android_open_hint' => 'Buka aplikasi daripada ikon pada Skrin Utama Android atau laci aplikasi. Chrome mungkin tidak membenarkan PWA yang telah dipasang dibuka terus daripada butang ini.',
+    'pwa_desktop_open_hint' => 'Jika aplikasi tidak dibuka, gunakan butang “Open in app” pada bar alamat pelayar atau buka daripada pintasan aplikasi pada desktop anda.',
+    'pwa_ios_unavailable_hint' => 'Jika aplikasi belum dipasang, gunakan Safari: Kongsi → Tambah ke Skrin Utama. Jika sudah dipasang, buka daripada ikon Skrin Utama.',
+    'pwa_android_unavailable_hint' => 'Jika aplikasi sudah dipasang, buka daripada Skrin Utama atau laci aplikasi. Jika belum dipasang, gunakan menu pelayar → Tambah ke Skrin Utama.',
 ];

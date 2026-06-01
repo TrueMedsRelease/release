@@ -820,4 +820,19 @@ return [
     "install_page_about_desc4" => "Schnellzugriff, ohne die Website erneut suchen zu müssen",
     "install_page_reviews" => "Bewertungen",
     "install_page_back_to_shop" => "Zurück zum Shop",
+
+    'pwa_install_unavailable' => 'Die Installation ist nicht verfügbar oder die App ist bereits installiert.',
+    'pwa_app_already_installed' => 'Die App ist bereits installiert.',
+    'pwa_open_installed_app' => 'Installierte App öffnen',
+    'pwa_how_to_open_app' => 'So öffnen Sie die App',
+    'pwa_installing_app' => 'App wird installiert...',
+    'pwa_creating_push' => 'Push-Abonnement wird erstellt...',
+    'pwa_saving_install' => 'Installationsinformationen werden gespeichert...',
+    'pwa_install_cancelled' => 'Die Installation wurde abgebrochen.',
+
+    'pwa_ios_open_hint' => 'Öffnen Sie die App über das Symbol auf dem Home-Bildschirm Ihres iPhones. Safari kann die installierte PWA nicht direkt über diese Schaltfläche öffnen.',
+    'pwa_android_open_hint' => 'Öffnen Sie die App über das Symbol auf dem Android-Startbildschirm oder in der App-Übersicht. Chrome erlaubt möglicherweise nicht, die installierte PWA direkt über diese Schaltfläche zu öffnen.',
+    'pwa_desktop_open_hint' => 'Wenn sich die App nicht geöffnet hat, verwenden Sie die Schaltfläche “Open in app” in der Adressleiste des Browsers oder öffnen Sie sie über die App-Verknüpfung auf dem Desktop.',
+    'pwa_ios_unavailable_hint' => 'Wenn die App noch nicht installiert ist, verwenden Sie Safari: Teilen → Zum Home-Bildschirm hinzufügen. Wenn sie bereits installiert ist, öffnen Sie sie über das Symbol auf dem Home-Bildschirm.',
+    'pwa_android_unavailable_hint' => 'Wenn die App bereits installiert ist, öffnen Sie sie über den Startbildschirm oder die App-Übersicht. Wenn sie nicht installiert ist, verwenden Sie das Browsermenü → Zum Startbildschirm hinzufügen.',
 ];

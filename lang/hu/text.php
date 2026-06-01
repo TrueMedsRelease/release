@@ -701,4 +701,19 @@ return [
     "install_page_about_desc4" => "Gyors hozzáférés anélkül, hogy újra meg kellene keresni a webhelyet",
     "install_page_reviews" => "Vélemények",
     "install_page_back_to_shop" => "Vissza az áruházba",
+
+    'pwa_install_unavailable' => 'A telepítés nem érhető el, vagy az alkalmazás már telepítve van.',
+    'pwa_app_already_installed' => 'Az alkalmazás már telepítve van.',
+    'pwa_open_installed_app' => 'Telepített alkalmazás megnyitása',
+    'pwa_how_to_open_app' => 'Az alkalmazás megnyitása',
+    'pwa_installing_app' => 'Alkalmazás telepítése...',
+    'pwa_creating_push' => 'Push-feliratkozás létrehozása...',
+    'pwa_saving_install' => 'Telepítési információk mentése...',
+    'pwa_install_cancelled' => 'A telepítés megszakítva.',
+
+    'pwa_ios_open_hint' => 'Nyissa meg az alkalmazást az iPhone kezdőképernyőjén lévő ikonról. A Safari nem tudja közvetlenül ezzel a gombbal megnyitni a telepített PWA-t.',
+    'pwa_android_open_hint' => 'Nyissa meg az alkalmazást az Android kezdőképernyőjén lévő ikonról vagy az alkalmazáslistából. A Chrome nem feltétlenül engedi meg a telepített PWA közvetlen megnyitását ezzel a gombbal.',
+    'pwa_desktop_open_hint' => 'Ha az alkalmazás nem nyílt meg, használja a böngésző címsorában található “Open in app” gombot, vagy nyissa meg az asztali alkalmazás parancsikonjával.',
+    'pwa_ios_unavailable_hint' => 'Ha az alkalmazás még nincs telepítve, használja a Safarit: Megosztás → Hozzáadás a főképernyőhöz. Ha már telepítve van, nyissa meg a kezdőképernyő ikonjáról.',
+    'pwa_android_unavailable_hint' => 'Ha az alkalmazás már telepítve van, nyissa meg a kezdőképernyőről vagy az alkalmazáslistából. Ha nincs telepítve, használja a böngésző menüjét → Hozzáadás a kezdőképernyőhöz.',
 ];

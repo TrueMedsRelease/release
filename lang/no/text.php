@@ -698,4 +698,19 @@ return [
     "install_page_about_desc4" => "Rask tilgang uten å måtte søke etter nettstedet på nytt",
     "install_page_reviews" => "Anmeldelser",
     "install_page_back_to_shop" => "Tilbake til butikken",
+
+    'pwa_install_unavailable' => 'Installasjon er ikke tilgjengelig, eller appen er allerede installert.',
+    'pwa_app_already_installed' => 'Appen er allerede installert.',
+    'pwa_open_installed_app' => 'Åpne installert app',
+    'pwa_how_to_open_app' => 'Slik åpner du appen',
+    'pwa_installing_app' => 'Installerer app...',
+    'pwa_creating_push' => 'Oppretter push-abonnement...',
+    'pwa_saving_install' => 'Lagrer installasjonsinformasjon...',
+    'pwa_install_cancelled' => 'Installasjonen ble avbrutt.',
+
+    'pwa_ios_open_hint' => 'Åpne appen fra ikonet på Hjem-skjermen på iPhone. Safari kan ikke åpne den installerte PWA-en direkte fra denne knappen.',
+    'pwa_android_open_hint' => 'Åpne appen fra ikonet på Android-startskjermen eller i appskuffen. Chrome tillater kanskje ikke åpning av den installerte PWA-en direkte fra denne knappen.',
+    'pwa_desktop_open_hint' => 'Hvis appen ikke åpnet, bruker du knappen “Open in app” i nettleserens adresselinje eller åpner den fra appsnarveien på skrivebordet.',
+    'pwa_ios_unavailable_hint' => 'Hvis appen ikke er installert ennå, bruk Safari: Del → Legg til på Hjem-skjermen. Hvis den allerede er installert, åpne den fra ikonet på Hjem-skjermen.',
+    'pwa_android_unavailable_hint' => 'Hvis appen allerede er installert, åpne den fra startskjermen eller appskuffen. Hvis den ikke er installert, bruk nettlesermenyen → Legg til på startskjermen.',
 ];

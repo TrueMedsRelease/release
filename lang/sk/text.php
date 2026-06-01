@@ -695,4 +695,19 @@ return [
     "install_page_about_desc4" => "Rýchly prístup bez opätovného vyhľadávania stránky",
     "install_page_reviews" => "Recenzie",
     "install_page_back_to_shop" => "Späť do obchodu",
+
+    'pwa_install_unavailable' => 'Inštalácia nie je dostupná alebo je aplikácia už nainštalovaná.',
+    'pwa_app_already_installed' => 'Aplikácia je už nainštalovaná.',
+    'pwa_open_installed_app' => 'Otvoriť nainštalovanú aplikáciu',
+    'pwa_how_to_open_app' => 'Ako otvoriť aplikáciu',
+    'pwa_installing_app' => 'Inštalácia aplikácie...',
+    'pwa_creating_push' => 'Vytváranie push odberu...',
+    'pwa_saving_install' => 'Ukladanie informácií o inštalácii...',
+    'pwa_install_cancelled' => 'Inštalácia bola zrušená.',
+
+    'pwa_ios_open_hint' => 'Otvorte aplikáciu pomocou ikony na domovskej obrazovke iPhonu. Safari nedokáže otvoriť nainštalovanú PWA aplikáciu priamo týmto tlačidlom.',
+    'pwa_android_open_hint' => 'Otvorte aplikáciu pomocou ikony na domovskej obrazovke Androidu alebo v zásuvke aplikácií. Chrome nemusí povoliť otvorenie nainštalovanej PWA aplikácie priamo týmto tlačidlom.',
+    'pwa_desktop_open_hint' => 'Ak sa aplikácia neotvorila, použite tlačidlo “Open in app” v paneli s adresou prehliadača alebo ju otvorte zo skratky aplikácie na pracovnej ploche.',
+    'pwa_ios_unavailable_hint' => 'Ak aplikácia ešte nie je nainštalovaná, použite Safari: Zdieľať → Pridať na domovskú obrazovku. Ak je už nainštalovaná, otvorte ju pomocou ikony na domovskej obrazovke.',
+    'pwa_android_unavailable_hint' => 'Ak je aplikácia už nainštalovaná, otvorte ju z domovskej obrazovky alebo zo zásuvky aplikácií. Ak nie je nainštalovaná, použite menu prehliadača → Pridať na domovskú obrazovku.',
 ];

@@ -701,4 +701,19 @@ return [
     "install_page_about_desc4" => "Nopea pääsy ilman sivuston etsimistä uudelleen",
     "install_page_reviews" => "Arvostelut",
     "install_page_back_to_shop" => "Takaisin kauppaan",
+
+    'pwa_install_unavailable' => 'Asennus ei ole saatavilla tai sovellus on jo asennettu.',
+    'pwa_app_already_installed' => 'Sovellus on jo asennettu.',
+    'pwa_open_installed_app' => 'Avaa asennettu sovellus',
+    'pwa_how_to_open_app' => 'Kuinka avata sovellus',
+    'pwa_installing_app' => 'Asennetaan sovellusta...',
+    'pwa_creating_push' => 'Luodaan push-tilausta...',
+    'pwa_saving_install' => 'Tallennetaan asennustietoja...',
+    'pwa_install_cancelled' => 'Asennus peruutettiin.',
+
+    'pwa_ios_open_hint' => 'Avaa sovellus iPhonen aloitusnäytön kuvakkeesta. Safari ei voi avata asennettua PWA-sovellusta suoraan tästä painikkeesta.',
+    'pwa_android_open_hint' => 'Avaa sovellus Androidin aloitusnäytön kuvakkeesta tai sovellusvalikosta. Chrome ei välttämättä salli asennetun PWA-sovelluksen avaamista suoraan tästä painikkeesta.',
+    'pwa_desktop_open_hint' => 'Jos sovellus ei auennut, käytä selaimen osoiterivin “Open in app” -painiketta tai avaa se työpöydän sovelluspikakuvakkeesta.',
+    'pwa_ios_unavailable_hint' => 'Jos sovellusta ei ole vielä asennettu, käytä Safaria: Jaa → Lisää aloitusnäytölle. Jos se on jo asennettu, avaa se aloitusnäytön kuvakkeesta.',
+    'pwa_android_unavailable_hint' => 'Jos sovellus on jo asennettu, avaa se aloitusnäytöltä tai sovellusvalikosta. Jos sitä ei ole asennettu, käytä selaimen valikkoa → Lisää aloitusnäyttöön.',
 ];

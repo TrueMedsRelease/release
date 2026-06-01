@@ -814,4 +814,19 @@ return [
     "install_page_about_desc4" => "Acesso rápido sem precisar procurar o site novamente",
     "install_page_reviews" => "Avaliações",
     "install_page_back_to_shop" => "Voltar à loja",
+
+    'pwa_install_unavailable' => 'A instalação não está disponível ou a aplicação já está instalada.',
+    'pwa_app_already_installed' => 'A aplicação já está instalada.',
+    'pwa_open_installed_app' => 'Abrir aplicação instalada',
+    'pwa_how_to_open_app' => 'Como abrir a aplicação',
+    'pwa_installing_app' => 'A instalar a aplicação...',
+    'pwa_creating_push' => 'A criar subscrição push...',
+    'pwa_saving_install' => 'A guardar informações de instalação...',
+    'pwa_install_cancelled' => 'A instalação foi cancelada.',
+
+    'pwa_ios_open_hint' => 'Abra a aplicação a partir do ícone no ecrã principal do iPhone. O Safari não consegue abrir a PWA instalada diretamente a partir deste botão.',
+    'pwa_android_open_hint' => 'Abra a aplicação a partir do ícone no ecrã principal do Android ou na gaveta de aplicações. O Chrome pode não permitir abrir a PWA instalada diretamente a partir deste botão.',
+    'pwa_desktop_open_hint' => 'Se a aplicação não abriu, use o botão “Open in app” na barra de endereço do navegador ou abra-a a partir do atalho da aplicação no ambiente de trabalho.',
+    'pwa_ios_unavailable_hint' => 'Se a aplicação ainda não estiver instalada, use o Safari: Partilhar → Adicionar ao ecrã principal. Se já estiver instalada, abra-a a partir do ícone no ecrã principal.',
+    'pwa_android_unavailable_hint' => 'Se a aplicação já estiver instalada, abra-a a partir do ecrã principal ou da gaveta de aplicações. Se não estiver instalada, use o menu do navegador → Adicionar ao ecrã principal.',
 ];

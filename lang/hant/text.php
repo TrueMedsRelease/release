@@ -696,4 +696,19 @@ return  [
     "install_page_about_desc4" => "無需再次搜尋網站即可快速存取",
     "install_page_reviews" => "評論",
     "install_page_back_to_shop" => "返回商店",
+
+    'pwa_install_unavailable' => '無法安裝，或應用程式已安裝。',
+    'pwa_app_already_installed' => '應用程式已安裝。',
+    'pwa_open_installed_app' => '開啟已安裝的應用程式',
+    'pwa_how_to_open_app' => '如何開啟應用程式',
+    'pwa_installing_app' => '正在安裝應用程式...',
+    'pwa_creating_push' => '正在建立推播訂閱...',
+    'pwa_saving_install' => '正在儲存安裝資訊...',
+    'pwa_install_cancelled' => '安裝已取消。',
+
+    'pwa_ios_open_hint' => '請從 iPhone 主畫面上的圖示開啟應用程式。Safari 無法透過此按鈕直接開啟已安裝的 PWA。',
+    'pwa_android_open_hint' => '請從 Android 主畫面上的圖示或應用程式抽屜開啟應用程式。Chrome 可能不允許透過此按鈕直接開啟已安裝的 PWA。',
+    'pwa_desktop_open_hint' => '如果應用程式沒有開啟，請使用瀏覽器網址列中的 “Open in app” 按鈕，或從桌面應用程式捷徑開啟。',
+    'pwa_ios_unavailable_hint' => '如果應用程式尚未安裝，請使用 Safari：分享 → 加入主畫面。如果已安裝，請從主畫面圖示開啟。',
+    'pwa_android_unavailable_hint' => '如果應用程式已安裝，請從主畫面或應用程式抽屜開啟。如果尚未安裝，請使用瀏覽器選單 → 加入主畫面。',
 ];
