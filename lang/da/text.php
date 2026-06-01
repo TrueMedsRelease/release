@@ -744,4 +744,19 @@ return [
     "install_page_about_desc4" => "Hurtig adgang uden at søge på siden igen",
     "install_page_reviews" => "Anmeldelser",
     "install_page_back_to_shop" => "Tilbage til butikken",
+
+    'pwa_install_unavailable' => 'Installation er ikke tilgængelig, eller appen er allerede installeret.',
+    'pwa_app_already_installed' => 'Appen er allerede installeret.',
+    'pwa_open_installed_app' => 'Åbn installeret app',
+    'pwa_how_to_open_app' => 'Sådan åbner du appen',
+    'pwa_installing_app' => 'Installerer app...',
+    'pwa_creating_push' => 'Opretter push-abonnement...',
+    'pwa_saving_install' => 'Gemmer installationsoplysninger...',
+    'pwa_install_cancelled' => 'Installationen blev annulleret.',
+
+    'pwa_ios_open_hint' => 'Åbn appen fra ikonet på din iPhones hjemmeskærm. Safari kan ikke åbne den installerede PWA direkte fra denne knap.',
+    'pwa_android_open_hint' => 'Åbn appen fra ikonet på din Android-startskærm eller i appskuffen. Chrome tillader muligvis ikke åbning af den installerede PWA direkte fra denne knap.',
+    'pwa_desktop_open_hint' => 'Hvis appen ikke blev åbnet, skal du bruge knappen “Open in app” i browserens adresselinje eller åbne den fra appgenvejen på skrivebordet.',
+    'pwa_ios_unavailable_hint' => 'Hvis appen endnu ikke er installeret, skal du bruge Safari: Del → Føj til hjemmeskærm. Hvis den allerede er installeret, skal du åbne den fra ikonet på hjemmeskærmen.',
+    'pwa_android_unavailable_hint' => 'Hvis appen allerede er installeret, skal du åbne den fra startskærmen eller appskuffen. Hvis den ikke er installeret, skal du bruge browsermenuen → Føj til startskærm.',
 ];

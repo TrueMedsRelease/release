@@ -825,4 +825,19 @@ return [
     "install_page_about_desc4" => "Accès rapide sans rechercher à nouveau le site",
     "install_page_reviews" => "Avis",
     "install_page_back_to_shop" => "Retour à la boutique",
+
+    'pwa_install_unavailable' => 'L’installation est indisponible ou l’application est déjà installée.',
+    'pwa_app_already_installed' => 'L’application est déjà installée.',
+    'pwa_open_installed_app' => 'Ouvrir l’application installée',
+    'pwa_how_to_open_app' => 'Comment ouvrir l’application',
+    'pwa_installing_app' => 'Installation de l’application...',
+    'pwa_creating_push' => 'Création de l’abonnement push...',
+    'pwa_saving_install' => 'Enregistrement des informations d’installation...',
+    'pwa_install_cancelled' => 'L’installation a été annulée.',
+
+    'pwa_ios_open_hint' => 'Ouvrez l’application depuis l’icône sur l’écran d’accueil de votre iPhone. Safari ne peut pas ouvrir la PWA installée directement depuis ce bouton.',
+    'pwa_android_open_hint' => 'Ouvrez l’application depuis l’icône sur l’écran d’accueil Android ou depuis le tiroir d’applications. Chrome peut ne pas autoriser l’ouverture de la PWA installée directement depuis ce bouton.',
+    'pwa_desktop_open_hint' => 'Si l’application ne s’est pas ouverte, utilisez le bouton “Open in app” dans la barre d’adresse du navigateur ou ouvrez-la depuis le raccourci de l’application sur le bureau.',
+    'pwa_ios_unavailable_hint' => 'Si l’application n’est pas encore installée, utilisez Safari : Partager → Ajouter à l’écran d’accueil. Si elle est déjà installée, ouvrez-la depuis l’icône de l’écran d’accueil.',
+    'pwa_android_unavailable_hint' => 'Si l’application est déjà installée, ouvrez-la depuis l’écran d’accueil ou le tiroir d’applications. Si elle n’est pas installée, utilisez le menu du navigateur → Ajouter à l’écran d’accueil.',
 ];

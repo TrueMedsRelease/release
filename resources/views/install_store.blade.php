@@ -67,11 +67,6 @@
         <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
         <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
 
-        @if (env('APP_PWA', 0))
-            <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
-            <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
-        @endif
-
         <script>
             function isPwaMode() {
                 return window.matchMedia('(display-mode: standalone)').matches ||
@@ -116,6 +111,10 @@
                 ['stars' => '★★★★★', 'text' => __('text.testimonials_t_17')],
             ];
         @endphp
+
+        <input type="hidden" id="vapid_pub" value="{{ base64_encode(env('VAPID_PUBLIC_KEY', '')) }}">
+        <input type="hidden" id="lang_session" value="{{ session('locale', 'en') }}">
+        <input type="hidden" id="currency_session" value="{{ session('currency', 'USD') }}">
 
         <div class="pwa-page">
             <div class="pwa-card">
@@ -234,8 +233,38 @@
             </div>
         </div>
 
+        @php
+            $pwaI18n = [
+                'install_unavailable' => __('text.pwa_install_unavailable'),
+                'app_already_installed' => __('text.pwa_app_already_installed'),
+                'open_installed_app' => __('text.pwa_open_installed_app'),
+                'how_to_open_app' => __('text.pwa_how_to_open_app'),
+                'installing_app' => __('text.pwa_installing_app'),
+                'creating_push' => __('text.pwa_creating_push'),
+                'saving_install' => __('text.pwa_saving_install'),
+                'install_cancelled' => __('text.pwa_install_cancelled'),
+
+                'ios_open_hint' => __('text.pwa_ios_open_hint'),
+                'android_open_hint' => __('text.pwa_android_open_hint'),
+                'desktop_open_hint' => __('text.pwa_desktop_open_hint'),
+                'ios_unavailable_hint' => __('text.pwa_ios_unavailable_hint'),
+                'android_unavailable_hint' => __('text.pwa_android_unavailable_hint'),
+            ];
+        @endphp
+
         <script>
             const routePwaInstallEvent = "{{ route('home.pwa_install_event') }}";
+            const routeSavePush = "{{ route('home.save_push_data') }}";
+
+            window.PWA_I18N = {!! json_encode(
+                $pwaI18n,
+                JSON_UNESCAPED_UNICODE |
+                JSON_UNESCAPED_SLASHES |
+                JSON_HEX_TAG |
+                JSON_HEX_APOS |
+                JSON_HEX_AMP |
+                JSON_HEX_QUOT
+            ) !!};
         </script>
 
         <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script>

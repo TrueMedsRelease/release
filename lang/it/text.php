@@ -830,4 +830,19 @@ return [
     "install_page_about_desc4" => "Accesso rapido senza dover cercare di nuovo il sito",
     "install_page_reviews" => "Recensioni",
     "install_page_back_to_shop" => "Torna al negozio",
+
+    'pwa_install_unavailable' => 'L’installazione non è disponibile oppure l’app è già installata.',
+    'pwa_app_already_installed' => 'L’app è già installata.',
+    'pwa_open_installed_app' => 'Apri app installata',
+    'pwa_how_to_open_app' => 'Come aprire l’app',
+    'pwa_installing_app' => 'Installazione app...',
+    'pwa_creating_push' => 'Creazione abbonamento push...',
+    'pwa_saving_install' => 'Salvataggio informazioni di installazione...',
+    'pwa_install_cancelled' => 'L’installazione è stata annullata.',
+
+    'pwa_ios_open_hint' => 'Apri l’app dall’icona sulla schermata Home del tuo iPhone. Safari non può aprire la PWA installata direttamente da questo pulsante.',
+    'pwa_android_open_hint' => 'Apri l’app dall’icona sulla schermata Home di Android o dal cassetto delle app. Chrome potrebbe non consentire l’apertura della PWA installata direttamente da questo pulsante.',
+    'pwa_desktop_open_hint' => 'Se l’app non si è aperta, usa il pulsante “Open in app” nella barra degli indirizzi del browser oppure aprila dal collegamento dell’app sul desktop.',
+    'pwa_ios_unavailable_hint' => 'Se l’app non è ancora installata, usa Safari: Condividi → Aggiungi alla schermata Home. Se è già installata, aprila dall’icona sulla schermata Home.',
+    'pwa_android_unavailable_hint' => 'Se l’app è già installata, aprila dalla schermata Home o dal cassetto delle app. Se non è installata, usa il menu del browser → Aggiungi alla schermata Home.',
 ];

@@ -735,4 +735,19 @@ return [
     "install_page_about_desc4" => "Snelle toegang zonder de site opnieuw te hoeven zoeken",
     "install_page_reviews" => "Reviews",
     "install_page_back_to_shop" => "Terug naar de winkel",
+
+    'pwa_install_unavailable' => 'Installatie is niet beschikbaar of de app is al geïnstalleerd.',
+    'pwa_app_already_installed' => 'De app is al geïnstalleerd.',
+    'pwa_open_installed_app' => 'Geïnstalleerde app openen',
+    'pwa_how_to_open_app' => 'Hoe de app te openen',
+    'pwa_installing_app' => 'App wordt geïnstalleerd...',
+    'pwa_creating_push' => 'Push-abonnement wordt aangemaakt...',
+    'pwa_saving_install' => 'Installatiegegevens worden opgeslagen...',
+    'pwa_install_cancelled' => 'De installatie is geannuleerd.',
+
+    'pwa_ios_open_hint' => 'Open de app via het pictogram op het beginscherm van je iPhone. Safari kan de geïnstalleerde PWA niet rechtstreeks via deze knop openen.',
+    'pwa_android_open_hint' => 'Open de app via het pictogram op het Android-startscherm of in de app-lade. Chrome staat mogelijk niet toe dat de geïnstalleerde PWA rechtstreeks via deze knop wordt geopend.',
+    'pwa_desktop_open_hint' => 'Als de app niet is geopend, gebruik dan de knop “Open in app” in de adresbalk van de browser of open de app via de snelkoppeling op je bureaublad.',
+    'pwa_ios_unavailable_hint' => 'Als de app nog niet is geïnstalleerd, gebruik Safari: Delen → Zet op beginscherm. Als de app al is geïnstalleerd, open deze via het pictogram op het beginscherm.',
+    'pwa_android_unavailable_hint' => 'Als de app al is geïnstalleerd, open deze dan vanaf het startscherm of de app-lade. Als de app niet is geïnstalleerd, gebruik dan het browsermenu → Toevoegen aan startscherm.',
 ];

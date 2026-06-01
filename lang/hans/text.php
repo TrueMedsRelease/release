@@ -700,4 +700,19 @@ return [
     "install_page_about_desc4" => "无需再次搜索网站即可快速访问",
     "install_page_reviews" => "评论",
     "install_page_back_to_shop" => "返回商店",
+
+    'pwa_install_unavailable' => '无法安装，或应用已安装。',
+    'pwa_app_already_installed' => '应用已安装。',
+    'pwa_open_installed_app' => '打开已安装的应用',
+    'pwa_how_to_open_app' => '如何打开应用',
+    'pwa_installing_app' => '正在安装应用...',
+    'pwa_creating_push' => '正在创建推送订阅...',
+    'pwa_saving_install' => '正在保存安装信息...',
+    'pwa_install_cancelled' => '安装已取消。',
+
+    'pwa_ios_open_hint' => '请从 iPhone 主屏幕上的图标打开应用。Safari 无法通过此按钮直接打开已安装的 PWA。',
+    'pwa_android_open_hint' => '请从 Android 主屏幕上的图标或应用抽屉中打开应用。Chrome 可能不允许通过此按钮直接打开已安装的 PWA。',
+    'pwa_desktop_open_hint' => '如果应用未打开，请使用浏览器地址栏中的 “Open in app” 按钮，或从桌面应用快捷方式打开。',
+    'pwa_ios_unavailable_hint' => '如果应用尚未安装，请使用 Safari：分享 → 添加到主屏幕。如果已安装，请从主屏幕图标打开。',
+    'pwa_android_unavailable_hint' => '如果应用已安装，请从主屏幕或应用抽屉打开。如果未安装，请使用浏览器菜单 → 添加到主屏幕。',
 ];

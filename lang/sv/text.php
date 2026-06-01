@@ -695,4 +695,19 @@ return [
     "install_page_about_desc4" => "Snabb åtkomst utan att behöva söka efter webbplatsen igen",
     "install_page_reviews" => "Recensioner",
     "install_page_back_to_shop" => "Tillbaka till butiken",
+
+    'pwa_install_unavailable' => 'Installationen är inte tillgänglig, eller så är appen redan installerad.',
+    'pwa_app_already_installed' => 'Appen är redan installerad.',
+    'pwa_open_installed_app' => 'Öppna installerad app',
+    'pwa_how_to_open_app' => 'Så öppnar du appen',
+    'pwa_installing_app' => 'Installerar app...',
+    'pwa_creating_push' => 'Skapar push-prenumeration...',
+    'pwa_saving_install' => 'Sparar installationsinformation...',
+    'pwa_install_cancelled' => 'Installationen avbröts.',
+
+    'pwa_ios_open_hint' => 'Öppna appen från ikonen på hemskärmen på din iPhone. Safari kan inte öppna den installerade PWA direkt från den här knappen.',
+    'pwa_android_open_hint' => 'Öppna appen från ikonen på Android-hemskärmen eller i applådan. Chrome kanske inte tillåter att den installerade PWA öppnas direkt från den här knappen.',
+    'pwa_desktop_open_hint' => 'Om appen inte öppnades, använd knappen “Open in app” i webbläsarens adressfält eller öppna den från appgenvägen på skrivbordet.',
+    'pwa_ios_unavailable_hint' => 'Om appen inte är installerad ännu, använd Safari: Dela → Lägg till på hemskärmen. Om den redan är installerad, öppna den från ikonen på hemskärmen.',
+    'pwa_android_unavailable_hint' => 'Om appen redan är installerad, öppna den från hemskärmen eller applådan. Om den inte är installerad, använd webbläsarmenyn → Lägg till på hemskärmen.',
 ];

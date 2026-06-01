@@ -781,4 +781,19 @@ return [
     "install_page_about_desc4" => "Rychlý přístup bez opětovného hledání na webu",
     "install_page_reviews" => "Recenze",
     "install_page_back_to_shop" => "Zpět do obchodu",
+
+    'pwa_install_unavailable' => 'Instalace není dostupná, nebo je aplikace již nainstalována.',
+    'pwa_app_already_installed' => 'Aplikace je již nainstalována.',
+    'pwa_open_installed_app' => 'Otevřít nainstalovanou aplikaci',
+    'pwa_how_to_open_app' => 'Jak otevřít aplikaci',
+    'pwa_installing_app' => 'Instalace aplikace...',
+    'pwa_creating_push' => 'Vytváření odběru oznámení...',
+    'pwa_saving_install' => 'Ukládání informací o instalaci...',
+    'pwa_install_cancelled' => 'Instalace byla zrušena.',
+
+    'pwa_ios_open_hint' => 'Otevřete aplikaci pomocí ikony na domovské obrazovce iPhonu. Safari nemůže otevřít nainstalovanou PWA aplikaci přímo tímto tlačítkem.',
+    'pwa_android_open_hint' => 'Otevřete aplikaci pomocí ikony na domovské obrazovce Androidu nebo v seznamu aplikací. Chrome nemusí povolit otevření nainstalované PWA aplikace přímo tímto tlačítkem.',
+    'pwa_desktop_open_hint' => 'Pokud se aplikace neotevřela, použijte tlačítko “Open in app” v adresním řádku prohlížeče nebo ji otevřete pomocí zástupce aplikace na ploše.',
+    'pwa_ios_unavailable_hint' => 'Pokud aplikace ještě není nainstalována, použijte Safari: Sdílet → Přidat na plochu. Pokud je již nainstalována, otevřete ji pomocí ikony na domovské obrazovce.',
+    'pwa_android_unavailable_hint' => 'Pokud je aplikace již nainstalována, otevřete ji z domovské obrazovky nebo ze seznamu aplikací. Pokud nainstalována není, použijte menu prohlížeče → Přidat na plochu.',
 ];

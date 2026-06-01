@@ -696,4 +696,19 @@ return [
     "install_page_about_desc4" => "Szybki dostęp bez ponownego wyszukiwania strony",
     "install_page_reviews" => "Recenzje",
     "install_page_back_to_shop" => "Wróć do sklepu",
+
+    'pwa_install_unavailable' => 'Instalacja jest niedostępna albo aplikacja jest już zainstalowana.',
+    'pwa_app_already_installed' => 'Aplikacja jest już zainstalowana.',
+    'pwa_open_installed_app' => 'Otwórz zainstalowaną aplikację',
+    'pwa_how_to_open_app' => 'Jak otworzyć aplikację',
+    'pwa_installing_app' => 'Instalowanie aplikacji...',
+    'pwa_creating_push' => 'Tworzenie subskrypcji push...',
+    'pwa_saving_install' => 'Zapisywanie informacji o instalacji...',
+    'pwa_install_cancelled' => 'Instalacja została anulowana.',
+
+    'pwa_ios_open_hint' => 'Otwórz aplikację za pomocą ikony na ekranie początkowym iPhone’a. Safari nie może otworzyć zainstalowanej aplikacji PWA bezpośrednio za pomocą tego przycisku.',
+    'pwa_android_open_hint' => 'Otwórz aplikację za pomocą ikony na ekranie głównym Androida lub w szufladzie aplikacji. Chrome może nie zezwalać na otwarcie zainstalowanej aplikacji PWA bezpośrednio za pomocą tego przycisku.',
+    'pwa_desktop_open_hint' => 'Jeśli aplikacja się nie otworzyła, użyj przycisku “Open in app” na pasku adresu przeglądarki albo otwórz ją za pomocą skrótu aplikacji na pulpicie.',
+    'pwa_ios_unavailable_hint' => 'Jeśli aplikacja nie jest jeszcze zainstalowana, użyj Safari: Udostępnij → Dodaj do ekranu początkowego. Jeśli jest już zainstalowana, otwórz ją za pomocą ikony na ekranie początkowym.',
+    'pwa_android_unavailable_hint' => 'Jeśli aplikacja jest już zainstalowana, otwórz ją z ekranu głównego lub szuflady aplikacji. Jeśli nie jest zainstalowana, użyj menu przeglądarki → Dodaj do ekranu głównego.',
 ];

@@ -813,4 +813,19 @@ return [
     "install_page_about_desc4" => "サイトを再検索せずに素早くアクセスできます",
     "install_page_reviews" => "レビュー",
     "install_page_back_to_shop" => "ショップに戻る",
+
+    'pwa_install_unavailable' => 'インストールできないか、アプリはすでにインストールされています。',
+    'pwa_app_already_installed' => 'アプリはすでにインストールされています。',
+    'pwa_open_installed_app' => 'インストール済みアプリを開く',
+    'pwa_how_to_open_app' => 'アプリの開き方',
+    'pwa_installing_app' => 'アプリをインストール中...',
+    'pwa_creating_push' => 'プッシュ通知の登録を作成中...',
+    'pwa_saving_install' => 'インストール情報を保存中...',
+    'pwa_install_cancelled' => 'インストールはキャンセルされました。',
+
+    'pwa_ios_open_hint' => 'iPhoneのホーム画面にあるアイコンからアプリを開いてください。Safariでは、このボタンからインストール済みのPWAを直接開くことはできません。',
+    'pwa_android_open_hint' => 'Androidのホーム画面またはアプリドロワーのアイコンからアプリを開いてください。Chromeでは、このボタンからインストール済みのPWAを直接開けない場合があります。',
+    'pwa_desktop_open_hint' => 'アプリが開かない場合は、ブラウザのアドレスバーにある “Open in app” ボタンを使用するか、デスクトップのアプリショートカットから開いてください。',
+    'pwa_ios_unavailable_hint' => 'アプリがまだインストールされていない場合は、Safariで「共有」→「ホーム画面に追加」を使用してください。すでにインストールされている場合は、ホーム画面のアイコンから開いてください。',
+    'pwa_android_unavailable_hint' => 'アプリがすでにインストールされている場合は、ホーム画面またはアプリドロワーから開いてください。インストールされていない場合は、ブラウザメニュー → ホーム画面に追加を使用してください。',
 ];

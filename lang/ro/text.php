@@ -691,4 +691,19 @@ return [
     "install_page_about_desc4" => "Acces rapid fără a căuta din nou site-ul",
     "install_page_reviews" => "Recenzii",
     "install_page_back_to_shop" => "Înapoi la magazin",
+
+    'pwa_install_unavailable' => 'Instalarea nu este disponibilă sau aplicația este deja instalată.',
+    'pwa_app_already_installed' => 'Aplicația este deja instalată.',
+    'pwa_open_installed_app' => 'Deschide aplicația instalată',
+    'pwa_how_to_open_app' => 'Cum se deschide aplicația',
+    'pwa_installing_app' => 'Se instalează aplicația...',
+    'pwa_creating_push' => 'Se creează abonamentul push...',
+    'pwa_saving_install' => 'Se salvează informațiile de instalare...',
+    'pwa_install_cancelled' => 'Instalarea a fost anulată.',
+
+    'pwa_ios_open_hint' => 'Deschideți aplicația din pictograma de pe ecranul principal al iPhone-ului. Safari nu poate deschide PWA-ul instalat direct din acest buton.',
+    'pwa_android_open_hint' => 'Deschideți aplicația din pictograma de pe ecranul principal Android sau din sertarul de aplicații. Chrome poate să nu permită deschiderea PWA-ului instalat direct din acest buton.',
+    'pwa_desktop_open_hint' => 'Dacă aplicația nu s-a deschis, folosiți butonul “Open in app” din bara de adrese a browserului sau deschideți-o din scurtătura aplicației de pe desktop.',
+    'pwa_ios_unavailable_hint' => 'Dacă aplicația nu este încă instalată, folosiți Safari: Partajare → Adăugați pe ecranul principal. Dacă este deja instalată, deschideți-o din pictograma de pe ecranul principal.',
+    'pwa_android_unavailable_hint' => 'Dacă aplicația este deja instalată, deschideți-o din ecranul principal sau din sertarul de aplicații. Dacă nu este instalată, folosiți meniul browserului → Adăugați pe ecranul principal.',
 ];
