@@ -10,6 +10,12 @@
     <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
 </div>
 
+@if (env('APP_PWA', 0))
+    <div class="install_store" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+        <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
+    </div>
+@endif
+
 <div class="text-page mb50">
 	<h2 class="title-page">{{__('text.testimonials_title')}}</h2>
 	<p>{!! __('text.testimonials_text') !!}</p>

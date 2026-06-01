@@ -228,6 +228,27 @@ function verifyProfile() {
     }
 }
 
+function isPwaMode() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        window.navigator.standalone === true;
+}
+
+function setPwaModeCookie() {
+    const isPwa = isPwaMode() ? '1' : '0';
+
+    document.cookie =
+        'is_pwa=' + isPwa +
+        '; path=/' +
+        '; max-age=31536000' +
+        '; SameSite=Lax';
+}
+
+setPwaModeCookie();
+
+window.matchMedia('(display-mode: standalone)').addEventListener?.('change', setPwaModeCookie);
+window.matchMedia('(display-mode: fullscreen)').addEventListener?.('change', setPwaModeCookie);
+
 $('#close_verify_block').click(function() {
     $('.popup_verify_profile').hide();
 })
@@ -241,9 +262,12 @@ if (design > 0) {
         // $('.christmas img').attr('src', pathImageChristmasBiggest);
         // $('.christmas img').attr('src', pathImageNewYearBiggest);
         $('.christmas img').attr('src', pathImageValentineDayBiggest);
+
         if (design != 3) {
             $('.checkup img').attr('src', pathImageCheckupBiggest);
         }
+
+        $('.install_store img').attr('src', pathImageDownloadStoreBiggest);
     }
     if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
@@ -253,9 +277,12 @@ if (design > 0) {
         // $('.christmas img').attr('src', pathImageChristmasBig);
         // $('.christmas img').attr('src', pathImageNewYearBig);
         $('.christmas img').attr('src', pathImageValentineDayBig);
+
         if (design != 3) {
             $('.checkup img').attr('src', pathImageCheckupBig);
         }
+
+        $('.install_store img').attr('src', pathImageDownloadStoreBig);
     }
     if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
@@ -265,9 +292,12 @@ if (design > 0) {
         // $('.christmas img').attr('src', pathImageChristmasMiddle);
         // $('.christmas img').attr('src', pathImageNewYearMiddle);
         $('.christmas img').attr('src', pathImageValentineDayMiddle);
+
         if (design != 3) {
             $('.checkup img').attr('src', pathImageCheckupMiddle);
         }
+
+        $('.install_store img').attr('src', pathImageDownloadStoreMiddle);
     }
     if (document.documentElement.clientWidth < 391) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
@@ -277,9 +307,12 @@ if (design > 0) {
         // $('.christmas img').attr('src', pathImageChristmasSmall);
         // $('.christmas img').attr('src', pathImageNewYearSmall);
         $('.christmas img').attr('src', pathImageValentineDaySmall);
+
         if (design != 3) {
             $('.checkup img').attr('src', pathImageCheckupSmall);
         }
+
+        $('.install_store img').attr('src', pathImageDownloadStoreSmall);
     }
 
     window.addEventListener('resize', function (e) {
@@ -291,9 +324,12 @@ if (design > 0) {
             // $('.christmas img').attr('src', pathImageChristmasBiggest);
             // $('.christmas img').attr('src', pathImageNewYearBiggest);
             $('.christmas img').attr('src', pathImageValentineDayBiggest);
+
             if (design != 3) {
                 $('.checkup img').attr('src', pathImageCheckupBiggest);
             }
+
+            $('.install_store img').attr('src', pathImageDownloadStoreBiggest);
         }
         if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
             //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
@@ -303,9 +339,12 @@ if (design > 0) {
             // $('.christmas img').attr('src', pathImageChristmasBig);
             // $('.christmas img').attr('src', pathImageNewYearBig);
             $('.christmas img').attr('src', pathImageValentineDayBig);
+
             if (design != 3) {
                 $('.checkup img').attr('src', pathImageCheckupBig);
             }
+
+            $('.install_store img').attr('src', pathImageDownloadStoreBig);
         }
         if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
             //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
@@ -315,9 +354,12 @@ if (design > 0) {
             // $('.christmas img').attr('src', pathImageChristmasMiddle);
             // $('.christmas img').attr('src', pathImageNewYearMiddle);
             $('.christmas img').attr('src', pathImageValentineDayMiddle);
+
             if (design != 3) {
                 $('.checkup img').attr('src', pathImageCheckupMiddle);
             }
+
+            $('.install_store img').attr('src', pathImageDownloadStoreMiddle);
         }
         if (document.documentElement.clientWidth < 391) {
             //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
@@ -327,9 +369,12 @@ if (design > 0) {
             // $('.christmas img').attr('src', pathImageChristmasSmall);
             // $('.christmas img').attr('src', pathImageNewYearSmall);
             $('.christmas img').attr('src', pathImageValentineDaySmall);
+
             if (design != 3) {
                 $('.checkup img').attr('src', pathImageCheckupSmall);
             }
+
+            $('.install_store img').attr('src', pathImageDownloadStoreSmall);
         }
     });
 }

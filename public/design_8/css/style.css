@@ -7850,7 +7850,15 @@ footer .top-phones-header {
     max-width: 75rem;
 }
 
-.christmas img, .checkup img {
+.install_store.main {
+    width: auto;
+    padding: 0 15px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    max-width: 75rem;
+}
+
+.christmas img, .checkup img, .install_store img {
   width: 100%;
 }
 

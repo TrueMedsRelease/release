@@ -133,7 +133,7 @@ class CartController extends Controller
         unset($item);
 
         $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'] ?? 'US')
+            ->where('country_iso2', '=', session('location.country', 'US'))
             ->get()
             ->toArray();
 
@@ -217,12 +217,12 @@ class CartController extends Controller
             }
         }
 
-        if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+        if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
             $is_only_card = 1;
         }
 
         $is_only_card_with_bonus = 0;
-        if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+        if ($count_card == count($products) && $has_card && (int)session('cart_option.bonus_id', 0) > 0) {
             $is_only_card_with_bonus = 1;
         }
 
@@ -312,11 +312,11 @@ class CartController extends Controller
         }
 
         unset($item);
-        $product_total       += session('cart_option')['bonus_price'];
-        $product_total_check += session('cart_option')['bonus_price'];
+        $product_total       += session('cart_option.bonus_price', 0);
+        $product_total_check += session('cart_option.bonus_price', 0);
 
         $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'])
+            ->where('country_iso2', '=', session('location.country', 'US'))
             ->get()
             ->toArray();
 
@@ -362,12 +362,12 @@ class CartController extends Controller
             }
         }
 
-        if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+        if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
             $is_only_card = 1;
         }
 
         $is_only_card_with_bonus = 0;
-        if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+        if ($count_card == count($products) && $has_card && (int)session('cart_option.bonus_id', 0) > 0) {
             $is_only_card_with_bonus = 1;
         }
 
@@ -445,11 +445,11 @@ class CartController extends Controller
         }
 
         unset($item);
-        $product_total       += session('cart_option')['bonus_price'];
-        $product_total_check += session('cart_option')['bonus_price'];
+        $product_total       += session('cart_option.bonus_price', 0);
+        $product_total_check += session('cart_option.bonus_price', 0);
 
         $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('location')['country'])
+            ->where('country_iso2', '=', session('location.country', 'US'))
             ->get()
             ->toArray();
 
@@ -495,12 +495,12 @@ class CartController extends Controller
             }
         }
 
-        if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+        if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
             $is_only_card = 1;
         }
 
         $is_only_card_with_bonus = 0;
-        if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+        if ($count_card == count($products) && $has_card && (int)session('cart_option.bonus_id', 0) > 0) {
             $is_only_card_with_bonus = 1;
         }
 
@@ -581,11 +581,11 @@ class CartController extends Controller
 
 
             unset($item);
-            $product_total       += session('cart_option')['bonus_price'];
-            $product_total_check += session('cart_option')['bonus_price'];
+            $product_total       += session('cart_option.bonus_price', 0);
+            $product_total_check += session('cart_option.bonus_price', 0);
 
             $country_info = CountryInfoCache::query()
-                ->where('country_iso2', '=', session('location')['country'])
+                ->where('country_iso2', '=', session('location.country', 'US'))
                 ->get()
                 ->toArray();
 
@@ -631,12 +631,12 @@ class CartController extends Controller
                 }
             }
 
-            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+            if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
                 $is_only_card = 1;
             }
 
             $is_only_card_with_bonus = 0;
-            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+            if ($count_card == count($products) && $has_card && (int)session('cart_option.bonus_id', 0) > 0) {
                 $is_only_card_with_bonus = 1;
             }
 
@@ -720,11 +720,11 @@ class CartController extends Controller
             }
 
             unset($item);
-            $product_total       += session('cart_option')['bonus_price'];
-            $product_total_check += session('cart_option')['bonus_price'];
+            $product_total       += session('cart_option.bonus_price', 0);
+            $product_total_check += session('cart_option.bonus_price', 0);
 
             $country_info = CountryInfoCache::query()
-                ->where('country_iso2', '=', session('location')['country'])
+                ->where('country_iso2', '=', session('location.country', 'US'))
                 ->get()
                 ->toArray();
 
@@ -770,12 +770,12 @@ class CartController extends Controller
                 }
             }
 
-            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+            if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
                 $is_only_card = 1;
             }
 
             $is_only_card_with_bonus = 0;
-            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+            if ($count_card == count($products) && $has_card && (int)session('cart_option.bonus_id', 0) > 0) {
                 $is_only_card_with_bonus = 1;
             }
 
@@ -867,11 +867,11 @@ class CartController extends Controller
             }
 
             unset($item);
-            $product_total       += session('cart_option')['bonus_price'];
-            $product_total_check += session('cart_option')['bonus_price'];
+            $product_total       += session('cart_option.bonus_price', 0);
+            $product_total_check += session('cart_option.bonus_price', 0);
 
             $country_info = CountryInfoCache::query()
-                ->where('country_iso2', '=', session('location')['country'])
+                ->where('country_iso2', '=', session('location.country', 'US'))
                 ->get()
                 ->toArray();
 
@@ -917,12 +917,12 @@ class CartController extends Controller
                 }
             }
 
-            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+            if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
                 $is_only_card = 1;
             }
 
             $is_only_card_with_bonus = 0;
-            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+            if ($count_card == count($products) && $has_card && (int)session('cart_option.bonus_id', 0) > 0) {
                 $is_only_card_with_bonus = 1;
             }
 
@@ -1020,7 +1020,7 @@ class CartController extends Controller
             $product_total_check += $bonus_price;
 
             $country_info = CountryInfoCache::query()
-                ->where('country_iso2', '=', session('location')['country'])
+                ->where('country_iso2', '=', session('location.country', 'US'))
                 ->get()
                 ->toArray();
 
@@ -1066,12 +1066,12 @@ class CartController extends Controller
                 }
             }
 
-            if ($has_card && $count_card == count($products) && (int)session('cart_option')['bonus_id'] == 0) {
+            if ($has_card && $count_card == count($products) && (int)session('cart_option.bonus_id', 0) == 0) {
                 $is_only_card = 1;
             }
 
             $is_only_card_with_bonus = 0;
-            if ($count_card == count($products) && $has_card && (int)session('cart_option')['bonus_id'] > 0) {
+            if ($count_card == count($products) && $has_card && (int)session('cart_option.bonus_id', 0) > 0) {
                 $is_only_card_with_bonus = 1;
             }
 

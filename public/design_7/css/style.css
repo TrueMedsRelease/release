@@ -7550,18 +7550,26 @@ textarea.input {
   cursor: pointer;
 }
 
-.checkup{
+.checkup {
   width: 100%;
   cursor: pointer;
   max-width: 75rem;
   margin: 0 auto;
 }
 
+.install_store {
+  width: 100%;
+  cursor: pointer;
+  max-width: 75rem;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
 .christmas.main {
     width: auto;
 }
 
-.christmas img, .checkup img {
+.christmas img, .checkup img, .install_store img {
   width: 100%;
 }
 

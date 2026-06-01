@@ -67,10 +67,17 @@
     <link rel="icon" href="{{ asset($design . '/images/favicon/favicon.ico') }}" sizes="any">
     <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
 
+    <script>
+        const routeSavePush = "{{ route('home.save_push_data') }}";
+        const routePwaInstallEvent = "{{ route('home.pwa_install_event') }}";
+    </script>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
         <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
-        <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script>
+        {{-- <script defer type="text/javascript" src="{{ asset_ver("vendor/jquery/pwa.js") }}"></script> --}}
     @endif
 
     {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
@@ -631,6 +638,10 @@
                 <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_middle.png") }}">
                 <div></div>
             </div>
+            <div class="install_store top" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+                <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
+                <div></div>
+            </div>
             @yield('title_3', '')
             <h2 class="page__title title" data-da=".page__products, 1150, first">@yield('title_2', '')</h2>
             <div class="page__inner">
@@ -829,6 +840,11 @@
 
             <div class="checkup bottom" onclick="location.href='{{ route('home.checkup') }}'">
                 <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
+                <div></div>
+            </div>
+
+            <div class="install_store bottom" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+                <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
                 <div></div>
             </div>
         @yield('content')
@@ -1383,7 +1399,6 @@
     const routeCheckCode = "{{ route('home.check_code') }}";
     const routeRequestLogin = "{{ route('home.request_login') }}";
 
-    const routeSavePush = "{{ route('home.save_push_data') }}";
     const routeCart = "{{ route('cart.index') }}";
     const routePWAInfo = "{{ route('home.pwa_info') }}";
 
@@ -1416,6 +1431,11 @@
     const pathImageValentineDayBig = "{{ asset('pub_images/valentine_day_big.png') }}";
     const pathImageValentineDayMiddle = "{{ asset('pub_images/valentine_day_middle.png') }}";
     const pathImageValentineDaySmall = "{{ asset('pub_images/valentine_day_small.png') }}";
+    
+    const pathImageDownloadStoreBiggest = "{{ asset('pub_images/download_banners/white/download_banner_biggest.png') }}";
+    const pathImageDownloadStoreBig = "{{ asset('pub_images/download_banners/white/download_banner_big.png') }}";
+    const pathImageDownloadStoreMiddle = "{{ asset('pub_images/download_banners/white/download_banner_middle.png') }}";
+    const pathImageDownloadStoreSmall = "{{ asset('pub_images/download_banners/white/download_banner_small.png') }}";
 </script>
 
 <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>

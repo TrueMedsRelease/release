@@ -3354,7 +3354,13 @@ input[type=number] {
     margin: 15px 0;
 }
 
-.christmas img, .checkup img {
+.install_store {
+    width: 100%;
+    cursor: pointer;
+    margin: 15px 0;
+}
+
+.christmas img, .checkup img, .install_store img {
     width: 100%;
 }
 

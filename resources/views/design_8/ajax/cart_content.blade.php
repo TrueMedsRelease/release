@@ -81,7 +81,7 @@
 	<div class="order__line delivery-line">
         <div class="delivery-line__item">
             <div class="checkbox">
-                <input class="checkbox__input" id="delivery-1" data-delivery type="radio" name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif
+                <input class="checkbox__input" id="delivery-1" data-delivery type="radio" name="delivery" value="ems" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'ems') checked @endif
                 onchange="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
                 <label for="delivery-1" class="checkbox__label">
                     <span class="checkbox__delivery delivery-item">
@@ -111,7 +111,7 @@
         </div>
         <div class="delivery-line__item">
             <div class="checkbox">
-                <input class="checkbox__input" id="delivery-2" data-delivery type="radio" name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif
+                <input class="checkbox__input" id="delivery-2" data-delivery type="radio" name="delivery" value="regular" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'regular') checked @endif
                 onchange="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                 <label for="delivery-2" class="checkbox__label">
                     <span class="checkbox__delivery delivery-item">
@@ -156,18 +156,18 @@
 
         $total_discount_product = ceil($total_discount);
 
-        $total_discount += session('cart_option')['bonus_price'];
+        $total_discount += session('cart_option.bonus_price', 0);
         if (!$is_only_card) {
-            $total_discount += $shipping[session('cart_option')['shipping']];
+            $total_discount += $shipping[session('cart_option.shipping', env('APP_DEFAULT_SHIPPING'))];
         }
 
-        $discount = ceil(100 - (session('total')['all'] / $total_discount) * 100);
+        $discount = ceil(100 - (session('total.all') / $total_discount) * 100);
 
         if ($is_only_card_with_bonus) {
             $saving = 0;
             $discount = 0;
         } else {
-            $saving = $total_discount - session('total')['all'];
+            $saving = $total_discount - session('total.all');
         }
 
     @endphp
@@ -180,10 +180,10 @@
                     <span style="color: var(--red)"><span style="text-decoration: line-through">{{ $Currency::convert($total_discount) }}</span> -{{ $discount }}%</span>
                     <div class="price_with_save">
                         <span style="color: var(--green); text-align: center">{{__('text.cart_saving')}} {{ $Currency::convert($saving) }}</span>
-                        <span>{{__('text.cart_only')}} {{ session('total')['all_in_currency'] }}</span>
+                        <span>{{__('text.cart_only')}} {{ session('total.all_in_currency') }}</span>
                     </div>
                 @else
-                    <span>{{ session('total')['all_in_currency'] }}</span>
+                    <span>{{ session('total.all_in_currency') }}</span>
                 @endif
             </div>
 		</div>

@@ -26,6 +26,13 @@
                 </div>
             </div>
         </div>
+
+        @if (env('APP_PWA', 0))
+            <div class="install_store" style="margin: 1rem 0;" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+                <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
+            </div>
+        @endif
+
         <div class="product-cards">
             <div class="cards">
                 <article class="card">

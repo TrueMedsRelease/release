@@ -89,24 +89,34 @@ class SetCookiesForStatistics
         return config('app.aff');
     }
 
-    private function getDesignId(Request $request)
+    private function getDesignId(Request $request): string
     {
-        $designId = (int)$request->query('design');
-        if (in_array($designId, DesignHelper::GetAvailableDesigns(), true)) {
-            return $designId;
+        $isPwa = $this->isPwaRequest($request);
+
+        $designId = $request->query('design');
+
+        if ($designId !== null && $designId !== '') {
+            $baseDesignId = $this->normalizeDesignId($designId);
+
+            if ($this->isAvailableDesign($baseDesignId)) {
+                return $this->applyPwaSuffix($baseDesignId, $isPwa);
+            }
         }
 
         $designId = $request->cookie('js_stat_design_id');
-        if ($designId) {
-            return $designId;
+
+        if ($designId !== null && $designId !== '') {
+            $baseDesignId = $this->normalizeDesignId($designId);
+
+            if ($this->isAvailableDesign($baseDesignId)) {
+                return $this->applyPwaSuffix($baseDesignId, $isPwa);
+            }
         }
 
         $designId = config('app.design');
-        if (is_string($designId)) {
-            return str_replace('design_', '', $designId);
-        }
+        $baseDesignId = $this->normalizeDesignId($designId);
 
-        return config('app.design');
+        return $this->applyPwaSuffix($baseDesignId, $isPwa);
     }
 
     private function getCookieLifetime(string $cookieName): int
@@ -120,5 +130,44 @@ class SetCookiesForStatistics
     private function isCookieNeeded(Request $request): bool
     {
         return !Str::is(['7-pills.com', '*.7-pills.com', '7-pills.net', '*.7-pills.net', '7-pill.com', '*.7-pill.com', '77-pills.com', '*.77-pills.com', '7-pillz.com', '*.7-pillz.com', '77-pillz.com', '*.77-pillz.com', '777-pills.com', '*.777-pills.com', '777pills.com', '*.777pills.com', '77pillz.com', '*.77pillz.com', '777pillz.com', '*.777pillz.com'], $request->getHost());
+    }
+
+    private function isPwaRequest(Request $request): bool
+    {
+        return $request->query('source') === 'pwa'
+            || $request->cookie('is_pwa') === '1'
+            || $request->header('X-PWA-Mode') === '1'
+            || $request->input('pwa_mode') === '1'
+            || $request->input('pwa_mode') === 1;
+    }
+
+    private function normalizeDesignId($designId): string
+    {
+        $designId = trim((string)$designId);
+
+        if (str_starts_with($designId, 'design_')) {
+            $designId = substr($designId, strlen('design_'));
+        }
+
+        if (str_ends_with($designId, '_pwa')) {
+            $designId = substr($designId, 0, -4);
+        }
+
+        return $designId;
+    }
+
+    private function applyPwaSuffix(string $baseDesignId, bool $isPwa): string
+    {
+        if ($isPwa) {
+            return $baseDesignId . '_pwa';
+        }
+
+        return $baseDesignId;
+    }
+
+    private function isAvailableDesign(string $designId): bool
+    {
+        $availableDesigns = array_map('strval', DesignHelper::GetAvailableDesigns());
+        return in_array($designId, $availableDesigns, true);
     }
 }

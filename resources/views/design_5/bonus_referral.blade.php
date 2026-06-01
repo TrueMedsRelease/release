@@ -11,6 +11,12 @@
     <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
 </div>
 
+@if (env('APP_PWA', 0))
+    <div class="install_store" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+        <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
+    </div>
+@endif
+
 <div class="text-page">
 	<h2 class="title-page">{{__('text.bonus_ref_menu')}}</h2>
     <h3>{{__('text.bonus_page_bonus')}}</h3>

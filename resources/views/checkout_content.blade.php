@@ -801,6 +801,12 @@
                                             </option>
                                         @endif
 
+                                        @if (env('APP_OPEN_BANKING_ON', 0))
+                                            <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')>
+                                                Open Banking
+                                            </option>
+                                        @endif
+
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'none') == 'google')>Google Pay</option>
                                         @endif --}}
@@ -1544,6 +1550,17 @@
 
                         <div class="enter-info__gift-card-content" @if (session('form.payment_type', 'mastercard') != 'gift_card') hidden @endif>
                             <button id="proccess_gift_card" name="proccess" class="enter-info__button button">
+                                <span>{{ __('text.checkout_place') }}</span>
+                                <svg width="18" height="18">
+                                    <use
+                                        xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                    </use>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="enter-info__open-banking-content" @if (session('form.payment_type', 'mastercard') != 'open_banking') hidden @endif>
+                            <button id="proccess_open_banking" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_place') }}</span>
                                 <svg width="18" height="18">
                                     <use

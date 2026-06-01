@@ -3304,6 +3304,13 @@ body::after {
     gap: 2.0625rem;
 }
 
+.install_store {
+    display: grid;
+    -ms-grid-columns: auto 17.3125rem;
+    grid-template-columns: auto 17.3125rem;
+    gap: 2.0625rem;
+}
+
 }
 
 @media (min-width: 74.99875em) {
@@ -5446,7 +5453,7 @@ body::after {
   margin-bottom: 10px;
 }
 
-.christmas img, .checkup img {
+.christmas img, .checkup img, .install_store img {
   width: 100%;
   cursor: pointer;
 }
@@ -6204,6 +6211,10 @@ body::after {
     display: none;
   }
 
+  .install_store.bottom{
+    display: none;
+  }
+
   .site_info_link:hover{
     color: var(--yellow);
   }
@@ -6253,4 +6264,8 @@ body::after {
 
 .bonus_image img {
     width: 120px;
+}
+
+.install_store {
+    margin-top: 20px;
 }

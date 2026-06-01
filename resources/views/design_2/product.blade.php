@@ -259,6 +259,10 @@
         <img loading="lazy" src="{{ asset("pub_images/checkup_img/white/checkup_big.png") }}">
     </div>
 
+    <div class="install_store img__container" onclick="location.href='{{ route('home.pwa_install_page') }}'">
+        <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
+    </div>
+
     <div class="product__container">
         <div class="product__body">
             <aside class="product__aside">

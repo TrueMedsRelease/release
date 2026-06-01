@@ -4354,42 +4354,72 @@ $(document).on('click', '.button_sub', function () {
 if (document.documentElement.clientWidth > 1150) {
     $('.checkup.top').show();
     $('.checkup.bottom').hide();
+
+    $('.install_store.top').show();
+    $('.install_store.bottom').hide();
 }
 if (document.documentElement.clientWidth > 795 && document.documentElement.clientWidth < 1151) {
     $('.checkup.top').hide();
     $('.checkup.bottom').show();
     $('.checkup.bottom img').attr('src', pathImageCheckupBig);
+
+    $('.install_store.top').hide();
+    $('.install_store.bottom').show();
+    $('.install_store.bottom img').attr('src', pathImageDownloadStoreBig);
 }
 if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 795) {
     $('.checkup.top').hide();
     $('.checkup.bottom').show();
     $('.checkup.bottom img').attr('src', pathImageCheckupMiddle);
+
+    $('.install_store.top').hide();
+    $('.install_store.bottom').show();
+    $('.install_store.bottom img').attr('src', pathImageDownloadStoreMiddle);
 }
 if (document.documentElement.clientWidth < 391) {
     $('.checkup.top').hide();
     $('.checkup.bottom').show();
     $('.checkup.bottom img').attr('src', pathImageCheckupSmall);
+
+    $('.install_store.top').hide();
+    $('.install_store.bottom').show();
+    $('.install_store.bottom img').attr('src', pathImageDownloadStoreSmall);
 }
 
 window.addEventListener('resize', function (e) {
     if (document.documentElement.clientWidth > 1150) {
         $('.checkup.top').show();
         $('.checkup.bottom').hide();
+
+        $('.install_store.top').show();
+        $('.install_store.bottom').hide();
     }
     if (document.documentElement.clientWidth > 795 && document.documentElement.clientWidth < 1151) {
         $('.checkup.top').hide();
         $('.checkup.bottom').show();
         $('.checkup.bottom img').attr('src', pathImageCheckupBig);
+
+        $('.install_store.top').hide();
+        $('.install_store.bottom').show();
+        $('.install_store.bottom img').attr('src', pathImageDownloadStoreBig);
     }
     if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 795) {
         $('.checkup.top').hide();
         $('.checkup.bottom').show();
         $('.checkup.bottom img').attr('src', pathImageCheckupMiddle);
+
+        $('.install_store.top').hide();
+        $('.install_store.bottom').show();
+        $('.install_store.bottom img').attr('src', pathImageDownloadStoreMiddle);
     }
     if (document.documentElement.clientWidth < 391) {
         $('.checkup.top').hide();
         $('.checkup.bottom').show();
         $('.checkup.bottom img').attr('src', pathImageCheckupSmall);
+
+        $('.install_store.top').hide();
+        $('.install_store.bottom').show();
+        $('.install_store.bottom img').attr('src', pathImageDownloadStoreSmall);
     }
 });
 
