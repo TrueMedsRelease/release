@@ -132,8 +132,10 @@
         const pathImageValentineDayMiddle = "{{ asset('pub_images/valentine_day_middle.png') }}";
         const pathImageValentineDaySmall = "{{ asset('pub_images/valentine_day_small.png') }}";
 
-        const pathImageDownloadDesktop = "{{ asset('pub_images/download_white_desktop.png') }}";
-        const pathImageDownloadMob = "{{ asset('pub_images/download_white_mob.png') }}";
+        const pathImageDownloadStoreBiggest = "{{ asset('pub_images/download_banners/white/download_banner_biggest.png') }}";
+        const pathImageDownloadStoreBig = "{{ asset('pub_images/download_banners/white/download_banner_big.png') }}";
+        const pathImageDownloadStoreMiddle = "{{ asset('pub_images/download_banners/white/download_banner_middle.png') }}";
+        const pathImageDownloadStoreSmall = "{{ asset('pub_images/download_banners/white/download_banner_small.png') }}";
     </script>
     <script async src="https://true-serv.net/static/statistics/assets/js/v1/main.js"></script>
 </head>

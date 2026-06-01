@@ -267,7 +267,7 @@ if (design > 0) {
             $('.checkup img').attr('src', pathImageCheckupBiggest);
         }
 
-        $('.install_store img').attr('src', pathImageDownloadDesktop);
+        $('.install_store img').attr('src', pathImageDownloadStoreBiggest);
     }
     if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
@@ -282,7 +282,7 @@ if (design > 0) {
             $('.checkup img').attr('src', pathImageCheckupBig);
         }
 
-        $('.install_store img').attr('src', pathImageDownloadDesktop);
+        $('.install_store img').attr('src', pathImageDownloadStoreBig);
     }
     if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
@@ -297,7 +297,7 @@ if (design > 0) {
             $('.checkup img').attr('src', pathImageCheckupMiddle);
         }
 
-        $('.install_store img').attr('src', pathImageDownloadDesktop);
+        $('.install_store img').attr('src', pathImageDownloadStoreMiddle);
     }
     if (document.documentElement.clientWidth < 391) {
         //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
@@ -312,7 +312,7 @@ if (design > 0) {
             $('.checkup img').attr('src', pathImageCheckupSmall);
         }
 
-        $('.install_store img').attr('src', pathImageDownloadMob);
+        $('.install_store img').attr('src', pathImageDownloadStoreSmall);
     }
 
     window.addEventListener('resize', function (e) {
@@ -329,7 +329,7 @@ if (design > 0) {
                 $('.checkup img').attr('src', pathImageCheckupBiggest);
             }
 
-            $('.install_store img').attr('src', pathImageDownloadDesktop);
+            $('.install_store img').attr('src', pathImageDownloadStoreBiggest);
         }
         if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
             //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
@@ -344,7 +344,7 @@ if (design > 0) {
                 $('.checkup img').attr('src', pathImageCheckupBig);
             }
 
-            $('.install_store img').attr('src', pathImageDownloadDesktop);
+            $('.install_store img').attr('src', pathImageDownloadStoreBig);
         }
         if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
             //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
@@ -359,7 +359,7 @@ if (design > 0) {
                 $('.checkup img').attr('src', pathImageCheckupMiddle);
             }
 
-            $('.install_store img').attr('src', pathImageDownloadDesktop);
+            $('.install_store img').attr('src', pathImageDownloadStoreMiddle);
         }
         if (document.documentElement.clientWidth < 391) {
             //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
@@ -374,7 +374,7 @@ if (design > 0) {
                 $('.checkup img').attr('src', pathImageCheckupSmall);
             }
 
-            $('.install_store img').attr('src', pathImageDownloadMob);
+            $('.install_store img').attr('src', pathImageDownloadStoreSmall);
         }
     });
 }

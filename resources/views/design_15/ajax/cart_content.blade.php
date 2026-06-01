@@ -160,7 +160,7 @@
                         <div class="delivery-radios alt-panel">
                             @if ($shipping['ems'] != 0)
                                 <div class="form-radio-wrapper">
-                                    <input class="form-radio-input" id="delivery-2" type="radio" name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif onchange="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
+                                    <input class="form-radio-input" id="delivery-2" type="radio" name="delivery" value="ems" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'ems') checked @endif onchange="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
                                     <label class="form-radio" for="delivery-2">
                                         <div class="form-radio__title">
                                             {{__('text.shipping_ems')}}
@@ -193,7 +193,7 @@
                             @endif
                             @if ($shipping['regular'] != 0)
                                 <div class="form-radio-wrapper">
-                                    <input class="form-radio-input" id="delivery-1" type="radio" name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif onchange="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
+                                    <input class="form-radio-input" id="delivery-1" type="radio" name="delivery" value="regular" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'regular') checked @endif onchange="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                                     <label class="form-radio" for="delivery-1">
                                         <div class="form-radio__title">
                                             {{__('text.shipping_regular')}}
@@ -233,7 +233,7 @@
                 <div class="form__field custom-field">
                     <div class="pack-radios alt-panel">
                         <div class="form-radio-wrapper">
-                            <input class="form-radio-input" id="pack-0" type="radio" name="pack" @checked(session('cart_option')['bonus_id'] == 0) onchange="change_bonus(0, 0)" value="0">
+                            <input class="form-radio-input" id="pack-0" type="radio" name="pack" @checked(session('cart_option.bonus_id', 0) == 0) onchange="change_bonus(0, 0)" value="0">
                             <label class="form-radio" for="pack-0">
                                 <div class="form-radio__title">No Bonus</div>
                                 <div class="form-radio__text"></div>
@@ -242,7 +242,7 @@
                         </div>
                         @foreach ($bonus as $product)
                             <div class="form-radio-wrapper">
-                                <input class="form-radio-input" id="pack-{{ $loop->iteration + 1 }}" type="radio" name="pack" @checked(session('cart_option')['bonus_id'] == $product->pack_id) onchange="change_bonus({{ $product->pack_id }}, {{ $product->price }})" value="{{ $product->pack_id }}">
+                                <input class="form-radio-input" id="pack-{{ $loop->iteration + 1 }}" type="radio" name="pack" @checked(session('cart_option.bonus_id', 0) == $product->pack_id) onchange="change_bonus({{ $product->pack_id }}, {{ $product->price }})" value="{{ $product->pack_id }}">
                                 <label class="form-radio" for="pack-{{ $loop->iteration + 1 }}">
                                     <div class="form-radio__title">{{ $product->name }}</div>
                                     <div class="form-radio__text">{{ $product->desc }}</div>
@@ -329,18 +329,18 @@
 
                         $total_discount_product = ceil($total_discount);
 
-                        $total_discount += session('cart_option')['bonus_price'];
+                        $total_discount += session('cart_option.bonus_price', 0);
                         if (!$is_only_card) {
-                            $total_discount += $shipping[session('cart_option')['shipping']];
+                            $total_discount += $shipping[session('cart_option.shipping', env('APP_DEFAULT_SHIPPING'))];
                         }
 
-                        $discount = ceil(100 - (session('total')['all'] / $total_discount) * 100);
+                        $discount = ceil(100 - (session('total.all') / $total_discount) * 100);
 
                         if ($is_only_card_with_bonus) {
                             $saving = 0;
                             $discount = 0;
                         } else {
-                            $saving = $total_discount - session('total')['all'];
+                            $saving = $total_discount - session('total.all');
                         }
 
                     @endphp
@@ -359,13 +359,13 @@
                                             {{__('text.cart_saving')}}{{ $Currency::convert($saving) }}
                                         </div>
                                     </div>
-                                    <div class="cart-total__price">{{__('text.cart_only')}} {{ session('total')['all_in_currency'] }} </div>
+                                    <div class="cart-total__price">{{__('text.cart_only')}} {{ session('total.all_in_currency') }} </div>
                                 </div>
                             @endif
                             @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                                 <div class="cart-total__title">{{__('text.cart_total_price_text')}}</div>
                                 <div class="cart-total__wrapper">
-                                    <div class="cart-total__price">{{ session('total')['all_in_currency'] }}</div>
+                                    <div class="cart-total__price">{{ session('total.all_in_currency') }}</div>
                                 </div>
                             @endif
                         </div>

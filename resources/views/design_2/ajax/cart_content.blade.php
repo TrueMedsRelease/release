@@ -138,7 +138,7 @@
                     <div class="order__line delivery-line">
                         <div class="delivery-line__item">
                             <div class="checkbox">
-                                <input class="checkbox__input" id="delivery-1" data-delivery type="radio" name="delivery" value="ems" @if (session('cart_option')['shipping'] == 'ems') checked @endif
+                                <input class="checkbox__input" id="delivery-1" data-delivery type="radio" name="delivery" value="ems" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'ems') checked @endif
                                 onchange="change_shipping('ems', {{ $product_total_check >= 300 ? 0 : $shipping['ems'] }})">
                                 <label for="delivery-1" class="checkbox__label">
                                     <span class="checkbox__delivery delivery-item">
@@ -174,7 +174,7 @@
                         </div>
                         <div class="delivery-line__item">
                             <div class="checkbox">
-                                <input {{--onclick = "Ship()"--}} class="checkbox__input" id="delivery-2" data-delivery type="radio" name="delivery" value="regular" @if (session('cart_option')['shipping'] == 'regular') checked @endif
+                                <input {{--onclick = "Ship()"--}} class="checkbox__input" id="delivery-2" data-delivery type="radio" name="delivery" value="regular" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'regular') checked @endif
                                 onchange="change_shipping('regular', {{ $product_total_check >= 200 ? 0 : $shipping['regular'] }})">
                                 <label for="delivery-2" class="checkbox__label">
                                     <span class="checkbox__delivery delivery-item">
@@ -216,7 +216,7 @@
 						<div class="bonus-line__items"  style="justify-content: left;">
                             <div class="bonus-line__item">
                                 <div class="checkbox">
-                                    <input data-bonus  id="pack-0" class="checkbox__input" type="radio" value="0" name="bonus" @checked(session('cart_option')['bonus_id'] == 0)
+                                    <input data-bonus  id="pack-0" class="checkbox__input" type="radio" value="0" name="bonus" @checked(session('cart_option.bonus_id', 0) == 0)
                                     onchange="change_bonus(0, 0)">
                                     <label for="pack-0" class="checkbox__label bonus">
                                         <span class="checkbox__text">
@@ -236,7 +236,7 @@
                             @foreach ($bonus as $product)
                                 <div class="bonus-line__item">
                                     <div class="checkbox">
-                                        <input data-bonus  id="pack-{{ $loop->iteration + 1 }}" class="checkbox__input" type="radio" value="{{ $product->pack_id }}" name="bonus" @checked(session('cart_option')['bonus_id'] == $product->pack_id)
+                                        <input data-bonus  id="pack-{{ $loop->iteration + 1 }}" class="checkbox__input" type="radio" value="{{ $product->pack_id }}" name="bonus" @checked(session('cart_option.bonus_id', 0) == $product->pack_id)
                                         onchange="change_bonus({{ $product->pack_id }}, {{ $product->price }})">
                                         <label for="pack-{{ $loop->iteration + 1 }}" class="checkbox__label bonus">
                                             <span class="checkbox__text">
@@ -308,18 +308,18 @@
 
                     $total_discount_product = ceil($total_discount);
 
-                    $total_discount += session('cart_option')['bonus_price'];
+                    $total_discount += session('cart_option.bonus_price', 0);
                     if (!$is_only_card) {
-                        $total_discount += $shipping[session('cart_option')['shipping']];
+                        $total_discount += $shipping[session('cart_option.shipping', env('APP_DEFAULT_SHIPPING'))];
                     }
 
-                    $discount = ceil(100 - (session('total')['all'] / $total_discount) * 100);
+                    $discount = ceil(100 - (session('total.all') / $total_discount) * 100);
 
                     if ($is_only_card_with_bonus) {
                         $saving = 0;
                         $discount = 0;
                     } else {
-                        $saving = $total_discount - session('total')['all'];
+                        $saving = $total_discount - session('total.all');
                     }
 
                 @endphp
@@ -330,11 +330,11 @@
                             <div class="total-line__old-price"><span>{{ $Currency::convert($total_discount) }}</span> -{{ $discount }}%</div>
                             <div class="total-line__new-price">
                                 <div class="total-line__savings">{{__('text.cart_saving')}} {{ $Currency::convert($saving) }}</div>
-                                <div class="total-line__digits">{{__('text.cart_only')}} {{ session('total')['all_in_currency'] }}</div>
+                                <div class="total-line__digits">{{__('text.cart_only')}} {{ session('total.all_in_currency') }}</div>
                             </div>
                         @endif
                         @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
-                            <div class="total-line__digits">{{ session('total')['all_in_currency'] }}</div>
+                            <div class="total-line__digits">{{ session('total.all_in_currency') }}</div>
                         @endif
 					</div>
 				</div>

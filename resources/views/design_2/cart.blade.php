@@ -259,7 +259,7 @@
 </div>
 
 <div class="install_store img__container" onclick="location.href='{{ route('home.pwa_install_page') }}'">
-    <img loading="lazy" src="{{ asset("pub_images/download_white_desktop.png") }}">
+    <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
 </div>
 
 <main class="basket" id="shopping_cart">

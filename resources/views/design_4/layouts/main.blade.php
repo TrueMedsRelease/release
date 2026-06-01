@@ -868,7 +868,7 @@
             </div>
 
             <div class="install_store img__container" onclick="location.href='{{ route('home.pwa_install_page') }}'">
-                <img loading="lazy" src="{{ asset("pub_images/download_white_desktop.png") }}">
+                <img loading="lazy" src="{{ asset("pub_images/download_banners/white/download_banner_big.png") }}">
             </div>
         </header>
 
@@ -1480,8 +1480,10 @@
         const pathImageValentineDayMiddle = "{{ asset('pub_images/valentine_day_middle.png') }}";
         const pathImageValentineDaySmall = "{{ asset('pub_images/valentine_day_small.png') }}";
 
-        const pathImageDownloadDesktop = "{{ asset('pub_images/download_white_desktop.png') }}";
-        const pathImageDownloadMob = "{{ asset('pub_images/download_white_mob.png') }}";
+        const pathImageDownloadStoreBiggest = "{{ asset('pub_images/download_banners/white/download_banner_biggest.png') }}";
+        const pathImageDownloadStoreBig = "{{ asset('pub_images/download_banners/white/download_banner_big.png') }}";
+        const pathImageDownloadStoreMiddle = "{{ asset('pub_images/download_banners/white/download_banner_middle.png') }}";
+        const pathImageDownloadStoreSmall = "{{ asset('pub_images/download_banners/white/download_banner_small.png') }}";
     </script>
 
     <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>

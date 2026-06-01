@@ -4365,7 +4365,7 @@ if (document.documentElement.clientWidth > 795 && document.documentElement.clien
 
     $('.install_store.top').hide();
     $('.install_store.bottom').show();
-    $('.install_store.bottom img').attr('src', pathImageDownloadDesktop);
+    $('.install_store.bottom img').attr('src', pathImageDownloadStoreBig);
 }
 if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 795) {
     $('.checkup.top').hide();
@@ -4374,7 +4374,7 @@ if (document.documentElement.clientWidth > 391 && document.documentElement.clien
 
     $('.install_store.top').hide();
     $('.install_store.bottom').show();
-    $('.install_store.bottom img').attr('src', pathImageDownloadMob);
+    $('.install_store.bottom img').attr('src', pathImageDownloadStoreMiddle);
 }
 if (document.documentElement.clientWidth < 391) {
     $('.checkup.top').hide();
@@ -4383,7 +4383,7 @@ if (document.documentElement.clientWidth < 391) {
 
     $('.install_store.top').hide();
     $('.install_store.bottom').show();
-    $('.install_store.bottom img').attr('src', pathImageDownloadMob);
+    $('.install_store.bottom img').attr('src', pathImageDownloadStoreSmall);
 }
 
 window.addEventListener('resize', function (e) {
@@ -4401,7 +4401,7 @@ window.addEventListener('resize', function (e) {
 
         $('.install_store.top').hide();
         $('.install_store.bottom').show();
-        $('.install_store.bottom img').attr('src', pathImageDownloadDesktop);
+        $('.install_store.bottom img').attr('src', pathImageDownloadStoreBig);
     }
     if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 795) {
         $('.checkup.top').hide();
@@ -4410,7 +4410,7 @@ window.addEventListener('resize', function (e) {
 
         $('.install_store.top').hide();
         $('.install_store.bottom').show();
-        $('.install_store.bottom img').attr('src', pathImageDownloadMob);
+        $('.install_store.bottom img').attr('src', pathImageDownloadStoreMiddle);
     }
     if (document.documentElement.clientWidth < 391) {
         $('.checkup.top').hide();
@@ -4419,7 +4419,7 @@ window.addEventListener('resize', function (e) {
 
         $('.install_store.top').hide();
         $('.install_store.bottom').show();
-        $('.install_store.bottom img').attr('src', pathImageDownloadMob);
+        $('.install_store.bottom img').attr('src', pathImageDownloadStoreSmall);
     }
 });
 
