@@ -67,6 +67,11 @@
         <link rel="apple-touch-icon" href="{{ asset($design . '/images/favicon/apple-touch-icon-180x180.png') }}">
         <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
 
+        @if (env('APP_PWA', 0))
+            <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
+            <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>
+        @endif
+
         <script>
             function isPwaMode() {
                 return window.matchMedia('(display-mode: standalone)').matches ||
