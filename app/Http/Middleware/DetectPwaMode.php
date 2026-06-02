@@ -24,10 +24,10 @@ class DetectPwaMode
         }
 
         if ((isset($cookies['is_pwa']) && $cookies['is_pwa'] == '1') || $request->query('source') === 'pwa') {
-            session(['is_pwa' => true]);
+            session(['is_pwa' => 1]);
             $isPwa = true;
         } else {
-            session(['is_pwa' => false]);
+            session(['is_pwa' => 0]);
         }
 
         view()->share('isPwa', $isPwa);

@@ -216,9 +216,9 @@
 
     <script src="{{ asset_ver('style_checkout/js/app_success.js') }}"></script>
 
-    @if (session()->has('order.is_payvmc_enabled') && session('order.is_payvmc_enabled') == true)
+    {{-- @if (session()->has('order.is_payvmc_enabled') && session('order.is_payvmc_enabled') == true)
         <script src="https://true-serv.net/checkout/payvmc.js?v=2"></script>
-    @endif
+    @endif --}}
 
     <script>
         $(".succes__button").click(function() {
