@@ -816,7 +816,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
@@ -1081,7 +1081,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
@@ -1369,7 +1369,7 @@ class CheckoutController extends Controller
             'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
             'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
             'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-            'is_pwa' => session('is_pwa', false),
+            'is_pwa' => session('is_pwa', 0),
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
@@ -1621,7 +1621,7 @@ class CheckoutController extends Controller
             'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
             'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
             'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-            'is_pwa' => session('is_pwa', false),
+            'is_pwa' => session('is_pwa', 0),
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
@@ -1785,7 +1785,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
@@ -2342,7 +2342,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -2489,7 +2489,7 @@ class CheckoutController extends Controller
             'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
             'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
             'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-            'is_pwa' => session('is_pwa', false),
+            'is_pwa' => session('is_pwa', 0),
         ];
 
         session(['data' => $data]);
@@ -2728,7 +2728,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -2890,7 +2890,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
@@ -3183,7 +3183,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -3422,7 +3422,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
@@ -3664,7 +3664,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
@@ -3905,7 +3905,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             if (checkdnsrr('true-serv.net', 'A')) {
@@ -4157,7 +4157,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
@@ -4436,7 +4436,7 @@ class CheckoutController extends Controller
                 'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
                 'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
                 'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', false),
+                'is_pwa' => session('is_pwa', 0),
             ];
 
             session(['data' => $data]);
