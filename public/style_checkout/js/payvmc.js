@@ -41,28 +41,28 @@
     iframe.width = 0;iframe.height = 0;iframe.style = 'border: 0;';iframe.setAttribute('referrerpolicy', 'no-referrer');
     document.body.appendChild(iframe);
 
-    // fetch("send_payvmc_ids", {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         'fl_sid': cookie_id,
-    //         'wauuid': uuid
-    //     }),
-    // })
-    // .then(response => {
-    //     if (!response.ok) {
-    //         throw new Error('Service error: ' + response.status);
-    //     }
-    //     return response.json();
-    // })
-    // .then(data => {
-    //     if (data.response && data.response.status === 'ERROR') {
-    //         throw new Error('Server return false: ' + JSON.stringify(data.response));
-    //     }
-    // })
-    // .catch(error => {
-    //     console.error('Error:', error);
-    // });
+    fetch(routeSendPayvmcIds, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'fl_sid': cookie_id,
+            'wauuid': uuid
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Service error: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.response && data.response.status === 'ERROR') {
+            throw new Error('Server return false: ' + JSON.stringify(data.response));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 })()

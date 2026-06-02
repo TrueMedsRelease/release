@@ -849,6 +849,8 @@ class CheckoutController extends Controller
                                 ->where('id', $order_cache_id)
                                 ->delete();
 
+                            $this->sendPayvmcIdsFromSession($response['order_id'] ?? null);
+
                             session(['visa_error' => true]);
                             session(['form.payment_type' => 'mastercard']);
                             session(['form.card_numb' => '']);
@@ -856,6 +858,8 @@ class CheckoutController extends Controller
                             session(['form.card_month' => '']);
                             session(['form.card_year' => '']);
                             session(['form.cvc_2' => '']);
+
+
 
                             return response()->json([
                                 'response' => [
@@ -868,11 +872,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -1110,11 +1112,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -1816,11 +1816,9 @@ class CheckoutController extends Controller
                         $message = isset($response['message']) ? json_encode($response['message']) : '';
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -2138,11 +2136,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                             return json_encode(['status' => 'success', 'response' => $response]);
                         } else {
                             $this->markOrderRetry(
@@ -2517,11 +2513,9 @@ class CheckoutController extends Controller
                     }
 
                     if ($this->isFinalOrderResponse($response)) {
-                        DB::table('order_cache')
-                            ->where('id', $order_cache_id)
-                            ->delete();
 
-                        session(['order' => $response]);
+                        $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                     } else {
                         $this->markOrderRetry(
                             $order_cache_id,
@@ -2919,11 +2913,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -3240,50 +3232,68 @@ class CheckoutController extends Controller
         }
     }
 
-    public function send_payvmc_ids(Request $request) {
-        $fl_sid = $request->fl_sid;
-        $wauuid = $request->wauuid;
-        $sessid = session()->getId();
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+    // public function send_payvmc_ids(Request $request) {
+    //     $fl_sid = $request->fl_sid;
+    //     $wauuid = $request->wauuid;
+    //     $sessid = session()->getId();
+    //     $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
-        $data = [
-            'method' => 'send_payvmc_ids',
-            'api_key' => $api_key->key_data,
-            'order_id' => session('order.order_id'),
-            'aff_id' => session('aff'),
-            'fl_sid' => $fl_sid,
-            'wauuid' => $wauuid,
-            'sessid' => $sessid
-        ];
+    //     $data = [
+    //         'method' => 'send_payvmc_ids',
+    //         'api_key' => $api_key->key_data,
+    //         'order_id' => session('order.order_id'),
+    //         'aff_id' => session('aff'),
+    //         'fl_sid' => $fl_sid,
+    //         'wauuid' => $wauuid,
+    //         'sessid' => $sessid
+    //     ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
-            try {
-                Log::info("PayVMC data answer: " . json_encode($data));
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
-                Log::info("PayVMC answer: " . $response);
+    //     if (checkdnsrr('true-serv.net', 'A')) {
+    //         try {
+    //             Log::info("PayVMC data answer: " . json_encode($data));
+    //             $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+    //             Log::info("PayVMC answer: " . $response);
 
-                if ($response->successful()) {
-                    $response = json_decode($response, true);
+    //             if ($response->successful()) {
+    //                 $response = json_decode($response, true);
 
-                    if ($response['status'] == 'ERROR') {
-                        return response()->json(['response' => $response], 400);
-                    } else {
-                        return response()->json(['response' => $response], 200);
-                    }
-                } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
-                    Log::error("Сервис вернул ошибку: " . $response->status());
-                    $responseData = ['error' => 'Service returned an error'];
-                }
-            } catch (ConnectionException $e) {
-                Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
-                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                $responseData = ['error' => 'Service unavailable'];
-            }
-        }
+    //                 if ($response['status'] == 'ERROR') {
+    //                     return response()->json(['response' => $response], 400);
+    //                 } else {
+    //                     return response()->json(['response' => $response], 200);
+    //                 }
+    //             } else {
+    //                 // Обработка ответа с ошибкой (4xx или 5xx)
+    //                 Log::error("Сервис вернул ошибку: " . $response->status());
+    //                 $responseData = ['error' => 'Service returned an error'];
+    //             }
+    //         } catch (ConnectionException $e) {
+    //             Log::error("Ошибка подключения: " . $e->getMessage());
+    //         } catch (RequestException $e) {
+    //             // Обработка ошибок запроса, таких как таймаут или недоступность
+    //             Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+    //             $responseData = ['error' => 'Service unavailable'];
+    //         }
+    //     }
+    // }
+
+    public function send_payvmc_ids(Request $request)
+    {
+        $this->rememberPayvmcIds(
+            $request->input('fl_sid'),
+            $request->input('wauuid')
+        );
+
+        $orderId = $request->input('order_id') ?: session('order.order_id');
+
+        $result = $this->sendPayvmcIdsFromSession($orderId);
+
+        return response()->json(
+            ['response' => $result['response']],
+            $result['code']
+        );
     }
+
     public function bonus_card_process(Request $request)
     {
         $request->request->add(['expire_date' => $request->card_month . '/' . $request->card_year]);
@@ -3451,11 +3461,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -3693,11 +3701,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -4190,6 +4196,8 @@ class CheckoutController extends Controller
                                 ->where('id', $order_cache_id)
                                 ->delete();
 
+                            $this->sendPayvmcIdsFromSession($response['order_id'] ?? null);
+
                             session(['visa_error' => true]);
                             session(['form.card_numb' => '']);
                             session(['form.bank_name' => '']);
@@ -4208,11 +4216,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -4465,11 +4471,9 @@ class CheckoutController extends Controller
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-                            DB::table('order_cache')
-                                ->where('id', $order_cache_id)
-                                ->delete();
 
-                            session(['order' => $response]);
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
@@ -4836,5 +4840,127 @@ class CheckoutController extends Controller
         } catch (\Throwable $e) {
             Log::error('Cannot check or insert shop_keys: ' . $e->getMessage());
         }
+    }
+
+    private function rememberPayvmcIds($flSid, $wauuid): void
+    {
+        $flSid = is_string($flSid) ? trim($flSid) : '';
+        $wauuid = is_string($wauuid) ? trim($wauuid) : '';
+
+        if ($flSid !== '') {
+            // Session::put('payvmc.fl_sid', $flSid);
+            session(['payvmc.fl_sid' => $flSid]);
+        }
+
+        if ($wauuid !== '') {
+            // Session::put('payvmc.wauuid', $wauuid);
+            session(['payvmc.wauuid' => $wauuid]);
+        }
+    }
+
+    private function finalizeSuccessfulOrder(int $orderCacheId, array $response): void
+    {
+        DB::table('order_cache')
+            ->where('id', $orderCacheId)
+            ->delete();
+
+        session(['order' => $response]);
+
+        $this->sendPayvmcIdsFromSession();
+    }
+
+    private function sendPayvmcIdsFromSession($orderId = null): array
+    {
+        $flSid = session('payvmc.fl_sid');
+        $wauuid = session('payvmc.wauuid');
+
+        $orderId = $orderId ?: session('order.order_id');
+
+        if (empty($flSid) || empty($wauuid)) {
+            Log::warning('PayVMC ids are empty', [
+                'fl_sid' => $flSid,
+                'wauuid' => $wauuid,
+                'order_id' => $orderId,
+            ]);
+
+            return [
+                'code' => 422,
+                'response' => [
+                    'status' => 'ERROR',
+                    'message' => 'PayVMC ids are empty',
+                ],
+            ];
+        }
+
+        if (empty($orderId)) {
+            return [
+                'code' => 200,
+                'response' => [
+                    'status' => 'SAVED',
+                    'message' => 'PayVMC ids saved, order_id is empty',
+                ],
+            ];
+        }
+
+        $api_key = DB::table('shop_keys')
+            ->where('name_key', '=', 'api_key')
+            ->get('key_data')
+            ->toArray()[0];
+
+        $data = [
+            'method'   => 'send_payvmc_ids',
+            'api_key'  => $api_key->key_data,
+            'order_id' => $orderId,
+            'aff_id'   => session('aff'),
+            'fl_sid'   => $flSid,
+            'wauuid'   => $wauuid,
+            'sessid'   => session()->getId(),
+        ];
+
+        if (checkdnsrr('true-serv.net', 'A')) {
+            try {
+                Log::info("PayVMC data answer: " . json_encode($data));
+
+                $response = Http::timeout(10)
+                    ->post('http://true-serv.net/checkout/order.php', $data);
+
+                Log::info("PayVMC answer: " . $response);
+
+                if ($response->successful()) {
+                    $responseData = json_decode($response, true);
+
+                    if (isset($responseData['status']) && $responseData['status'] == 'ERROR') {
+                        return [
+                            'code' => 400,
+                            'response' => $responseData,
+                        ];
+                    }
+
+                    Session::forget('payvmc');
+
+                    return [
+                        'code' => 200,
+                        'response' => $responseData,
+                    ];
+                }
+
+                Log::error("PayVMC service returned error: " . $response->status());
+
+            } catch (ConnectionException $e) {
+                Log::error("PayVMC connection error: " . $e->getMessage());
+            } catch (RequestException $e) {
+                Log::error("PayVMC request error: " . $e->getMessage());
+            } catch (\Throwable $e) {
+                Log::error("PayVMC unexpected error: " . $e->getMessage());
+            }
+        }
+
+        return [
+            'code' => 500,
+            'response' => [
+                'status' => 'ERROR',
+                'message' => 'PayVMC request failed',
+            ],
+        ];
     }
 }
