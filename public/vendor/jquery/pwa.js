@@ -6,6 +6,11 @@ const installBlock = document.getElementById('pwa-install-block');
 const installedBlock = document.getElementById('pwa-installed-block');
 const openButton = document.getElementById('pwa-open-button');
 const statusBlock = document.getElementById('pwa-install-status');
+const instructionBlock = document.getElementById('pwa-instruction-block');
+const instructionTitle = document.getElementById('pwa-instruction-title');
+const instructionSubtitle = document.getElementById('pwa-instruction-subtitle');
+const instructionSteps = document.getElementById('pwa-instruction-steps');
+const instructionNote = document.getElementById('pwa-instruction-note');
 
 function pwaText(key, fallback) {
     if (
@@ -17,6 +22,323 @@ function pwaText(key, fallback) {
     }
 
     return fallback || key;
+}
+
+function getBrowserName() {
+    const ua = navigator.userAgent.toLowerCase();
+
+    if (ua.includes('opr/') || ua.includes('opera')) {
+        return 'opera';
+    }
+
+    if (ua.includes('firefox') || ua.includes('fxios')) {
+        return 'firefox';
+    }
+
+    if (ua.includes('crios')) {
+        return 'chrome_ios';
+    }
+
+    if (ua.includes('safari') && !ua.includes('chrome') && !ua.includes('crios') && !ua.includes('fxios') && !ua.includes('opr/')) {
+        return 'safari';
+    }
+
+    if (ua.includes('chrome') || ua.includes('chromium') || ua.includes('edg/')) {
+        return 'chromium';
+    }
+
+    return 'unknown';
+}
+
+function isMacOSDevice() {
+    return /macintosh|mac os x/i.test(navigator.userAgent) && !isIOSDevice();
+}
+
+function getInstallInstructionText() {
+    const browser = getBrowserName();
+
+    if (browser === 'safari' && isMacOSDevice()) {
+        return pwaText(
+            'pwa_instruction_safari_macos',
+            'Installation through the button is not available in Safari on macOS.\n\nTo add the app:\n1. Open this page in Safari.\n2. Click the Share button in the toolbar.\n3. Choose “Add to Dock”.\n4. Click “Add”.\n\nAfter that, open the app from the Dock or Spotlight.'
+        );
+    }
+
+    if (browser === 'safari' && isIOSDevice()) {
+        return pwaText(
+            'pwa_instruction_safari_ios',
+            'Installation through the button is not available in Safari on iPhone or iPad.\n\nTo add the app:\n1. Open this page in Safari.\n2. Tap the Share button.\n3. Scroll down and tap “Add to Home Screen”.\n4. Enable “Open as Web App” if this option is shown.\n5. Tap “Add”.\n\nAfter that, open the app from the icon on your Home Screen.'
+        );
+    }
+
+    if (browser === 'chrome_ios') {
+        return pwaText(
+            'pwa_instruction_chrome_ios',
+            'Installation through the button is not available in Chrome on iPhone or iPad.\n\nTo add the app:\n1. Open this page in Chrome.\n2. Tap the Share button near the address bar.\n3. Tap “Add to Home Screen”.\n4. Confirm the app name.\n5. Tap “Add”.\n\nAfter that, open the app from the icon on your Home Screen.'
+        );
+    }
+
+    if (browser === 'firefox') {
+        if (isAndroidDevice()) {
+            return pwaText(
+                'pwa_instruction_firefox_android',
+                'Installation through the button is not available in Firefox.\n\nTo add the site shortcut:\n1. Open this page in Firefox.\n2. Tap the menu button.\n3. Tap “Add to Home Screen”.\n4. Tap “Add”.\n\nAfter that, open the site from the icon on your Home Screen.'
+            );
+        }
+
+        if (isIOSDevice()) {
+            return pwaText(
+                'pwa_instruction_firefox_ios',
+                'Installation through the button is not available in Firefox on iPhone or iPad.\n\nTo add the site shortcut:\n1. Open this page in Firefox.\n2. Tap the Share button.\n3. Tap “Add to Home Screen”.\n4. Tap “Add”.\n\nAfter that, open the site from the icon on your Home Screen.'
+            );
+        }
+
+        return pwaText(
+            'pwa_instruction_firefox_desktop',
+            'Installation through the button is not available in Firefox on desktop.\n\nYou can bookmark this site or open it in Chrome, Edge, or Safari on macOS to install it as an app.'
+        );
+    }
+
+    if (browser === 'opera') {
+        if (isAndroidDevice()) {
+            return pwaText(
+                'pwa_instruction_opera_android',
+                'Installation through the button is not available in Opera.\n\nTo add the site shortcut:\n1. Open this page in Opera.\n2. Tap the menu button.\n3. Choose “Add to” or “Add to Home screen”.\n4. Confirm adding the shortcut.\n\nAfter that, open the site from the icon on your Home Screen.'
+            );
+        }
+
+        if (isIOSDevice()) {
+            return pwaText(
+                'pwa_instruction_opera_ios',
+                'Installation through the button is not available in Opera on iPhone or iPad.\n\nIf “Add to Home Screen” is available in the Share menu, use it. If it is not shown, open this page in Safari and use Share → Add to Home Screen.'
+            );
+        }
+
+        return pwaText(
+            'pwa_instruction_opera_desktop',
+            'Installation through the button is not available in Opera on desktop.\n\nUse Chrome, Edge, or Safari on macOS if you want app-style installation.'
+        );
+    }
+
+    return pwaText(
+        'pwa_instruction_default',
+        'Installation through the button is unavailable in this browser. Use Chrome or Edge, or add this site to your Home Screen from the browser menu.'
+    );
+}
+
+function showInstructionBlock(title, text) {
+    if (instructionBlock) {
+        instructionBlock.style.display = 'block';
+    }
+
+    if (instructionTitle) {
+        instructionTitle.textContent = title;
+    }
+
+    if (instructionText) {
+        instructionText.textContent = text;
+    }
+}
+
+function hideInstructionBlock() {
+    if (instructionBlock) {
+        instructionBlock.style.display = 'none';
+    }
+
+    if (instructionTitle) {
+        instructionTitle.textContent = '';
+    }
+
+    if (instructionText) {
+        instructionText.textContent = '';
+    }
+}
+
+function escapeHtml(text) {
+    return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function hideInstructionBlock() {
+    if (instructionBlock) instructionBlock.style.display = 'none';
+    if (instructionTitle) instructionTitle.textContent = '';
+    if (instructionSubtitle) instructionSubtitle.textContent = '';
+    if (instructionSteps) instructionSteps.innerHTML = '';
+    if (instructionNote) instructionNote.textContent = '';
+}
+
+function renderInstructionSteps(steps) {
+    if (!instructionSteps) return;
+
+    instructionSteps.innerHTML = (steps || []).map((step) => {
+        return `
+            <div class="pwa-instruction-step">
+                <div class="pwa-instruction-step-icon">${escapeHtml(step.icon || '•')}</div>
+                <div class="pwa-instruction-step-text">${step.text}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function showInstructionCard(data) {
+    if (!instructionBlock) return;
+
+    instructionBlock.style.display = 'block';
+
+    if (instructionTitle) {
+        instructionTitle.textContent = data.title || '';
+    }
+
+    if (instructionSubtitle) {
+        instructionSubtitle.textContent = data.subtitle || '';
+    }
+
+    renderInstructionSteps(data.steps || []);
+
+    if (instructionNote) {
+        instructionNote.textContent = data.note || '';
+    }
+}
+
+function getInstallInstructionData() {
+    const browser = getBrowserName();
+
+    if (browser === 'safari' && isMacOSDevice()) {
+        return {
+            title: 'Add the app in Safari',
+            subtitle: 'Installation through the button is not available in Safari on macOS.',
+            steps: [
+                { icon: '1', text: 'Open this page in <strong>Safari</strong>.' },
+                { icon: '2', text: 'Click the <strong>Share</strong> button in the toolbar.' },
+                { icon: '3', text: 'Choose <strong>Add to Dock</strong>.' },
+                { icon: '4', text: 'Click <strong>Add</strong>.' }
+            ],
+            note: 'After that, launch the app from the Dock or Spotlight.'
+        };
+    }
+
+    if (browser === 'safari' && isIOSDevice()) {
+        return {
+            title: 'Add the app on iPhone / iPad',
+            subtitle: 'Installation through the button is not available in Safari on iPhone or iPad.',
+            steps: [
+                { icon: '1', text: 'Open this page in <strong>Safari</strong>.' },
+                { icon: '2', text: 'Tap the <strong>Share</strong> button.' },
+                { icon: '3', text: 'Select <strong>Add to Home Screen</strong>.' },
+                { icon: '4', text: 'If available, enable <strong>Open as Web App</strong>.' },
+                { icon: '5', text: 'Tap <strong>Add</strong>.' }
+            ],
+            note: 'After that, open the app from the Home Screen icon.'
+        };
+    }
+
+    if (browser === 'chrome_ios') {
+        return {
+            title: 'Add the app in Chrome for iPhone',
+            subtitle: 'The install button is not available in Chrome on iPhone or iPad.',
+            steps: [
+                { icon: '1', text: 'Open this page in <strong>Chrome</strong>.' },
+                { icon: '2', text: 'Tap the <strong>Share</strong> button near the address bar.' },
+                { icon: '3', text: 'Choose <strong>Add to Home Screen</strong>.' },
+                { icon: '4', text: 'Confirm the app name and tap <strong>Add</strong>.' }
+            ],
+            note: 'Then open the app from the Home Screen icon.'
+        };
+    }
+
+    if (browser === 'firefox') {
+        if (isAndroidDevice()) {
+            return {
+                title: 'Add shortcut in Firefox',
+                subtitle: 'Firefox does not support the install button here.',
+                steps: [
+                    { icon: '1', text: 'Open this page in <strong>Firefox</strong>.' },
+                    { icon: '2', text: 'Open the <strong>browser menu</strong>.' },
+                    { icon: '3', text: 'Tap <strong>Add to Home Screen</strong>.' },
+                    { icon: '4', text: 'Confirm adding the shortcut.' }
+                ],
+                note: 'After that, open the shortcut from your Home Screen.'
+            };
+        }
+
+        if (isIOSDevice()) {
+            return {
+                title: 'Add shortcut in Firefox',
+                subtitle: 'Firefox on iPhone/iPad does not support the install button.',
+                steps: [
+                    { icon: '1', text: 'Open this page in <strong>Firefox</strong>.' },
+                    { icon: '2', text: 'Tap the <strong>Share</strong> button.' },
+                    { icon: '3', text: 'Choose <strong>Add to Home Screen</strong>.' },
+                    { icon: '4', text: 'Tap <strong>Add</strong>.' }
+                ],
+                note: 'Then launch it from the Home Screen.'
+            };
+        }
+
+        return {
+            title: 'Install is not available in Firefox',
+            subtitle: 'Firefox desktop does not support this install button.',
+            steps: [
+                { icon: '★', text: 'You can <strong>bookmark</strong> this site.' },
+                { icon: '↗', text: 'Or open it in <strong>Chrome</strong>, <strong>Edge</strong>, or <strong>Safari on macOS</strong>.' }
+            ],
+            note: 'Use another supported browser if you want app-style installation.'
+        };
+    }
+
+    if (browser === 'opera') {
+        if (isAndroidDevice()) {
+            return {
+                title: 'Add shortcut in Opera',
+                subtitle: 'Opera does not support the install button here.',
+                steps: [
+                    { icon: '1', text: 'Open this page in <strong>Opera</strong>.' },
+                    { icon: '2', text: 'Open the <strong>browser menu</strong>.' },
+                    { icon: '3', text: 'Choose <strong>Add to Home screen</strong>.' },
+                    { icon: '4', text: 'Confirm adding the shortcut.' }
+                ],
+                note: 'After that, open the shortcut from your Home Screen.'
+            };
+        }
+
+        if (isIOSDevice()) {
+            return {
+                title: 'Add shortcut in Opera',
+                subtitle: 'Opera on iPhone/iPad does not support the install button here.',
+                steps: [
+                    { icon: '1', text: 'Try the <strong>Share</strong> menu in Opera.' },
+                    { icon: '2', text: 'If <strong>Add to Home Screen</strong> is available, use it.' },
+                    { icon: '3', text: 'If not, open this page in <strong>Safari</strong>.' },
+                    { icon: '4', text: 'Then use <strong>Share → Add to Home Screen</strong>.' }
+                ],
+                note: 'After that, open it from the Home Screen.'
+            };
+        }
+
+        return {
+            title: 'Install is not available in Opera',
+            subtitle: 'Opera desktop does not support this install button.',
+            steps: [
+                { icon: '↗', text: 'Open this page in <strong>Chrome</strong>, <strong>Edge</strong>, or <strong>Safari on macOS</strong>.' },
+                { icon: '★', text: 'Or save the page as a regular bookmark.' }
+            ],
+            note: 'Use a supported browser if you want app-style installation.'
+        };
+    }
+
+    return {
+        title: 'Manual installation',
+        subtitle: 'The install button is unavailable in this browser.',
+        steps: [
+            { icon: '↗', text: 'Try opening this page in <strong>Chrome</strong> or <strong>Edge</strong>.' },
+            { icon: '★', text: 'Or add the site from your browser menu if that option is available.' }
+        ],
+        note: 'Supported installation methods depend on browser and device.'
+    };
 }
 
 function getCookieValue(name) {
@@ -197,6 +519,7 @@ function showInstalledState() {
     }
 
     hideStatus();
+    hideInstructionBlock();
 
     if (installedBlock) {
         installedBlock.style.display = 'block';
@@ -211,6 +534,8 @@ function showInstallState() {
         installedBlock.style.display = 'none';
     }
 
+    hideInstructionBlock();
+
     if (installBlock) {
         installBlock.style.display = 'block';
     }
@@ -224,38 +549,24 @@ function showInstallState() {
 }
 
 function showUnavailableState() {
+    if (installedBlock) {
+        installedBlock.style.display = 'none';
+    }
+
     if (installBlock) {
-        installBlock.style.display = 'none';
+        installBlock.style.display = 'block';
     }
 
     if (installButton) {
         installButton.disabled = true;
     }
 
-    hideStatus();
-
-    if (installedBlock) {
-        installedBlock.style.display = 'block';
+    if (statusBlock) {
+        statusBlock.style.display = 'none';
+        statusBlock.textContent = '';
     }
 
-    updateOpenButtonText();
-    bindOpenAppButton();
-
-    if (isIOSDevice()) {
-        showOpenAppHint(
-            pwaText(
-                'ios_unavailable_hint',
-                'If the app is not installed yet, use Safari: Share → Add to Home Screen. If it is already installed, open it from the Home Screen icon.'
-            )
-        );
-    } else if (isAndroidDevice()) {
-        showOpenAppHint(
-            pwaText(
-                'android_unavailable_hint',
-                'If the app is already installed, open it from the Home Screen or app drawer. If not installed, use the browser menu → Add to Home screen.'
-            )
-        );
-    }
+    showInstructionCard(getInstallInstructionData());
 }
 
 function base64UrlToUint8Array(base64String) {
@@ -643,14 +954,28 @@ if (installButton) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const installedByCookie = getCookieValue('pwa_installed') === 'true';
 
     if (isPwaMode()) {
         showInstalledState();
         return;
     }
 
-    if (installedByCookie) {
+    const ua = navigator.userAgent.toLowerCase();
+    const isChromeLike =
+        ua.includes('chrome') ||
+        ua.includes('chromium') ||
+        ua.includes('edg/');
+
+    const isOpera =
+        ua.includes('opr/') ||
+        ua.includes('opera');
+
+    const isFirefox =
+        ua.includes('firefox');
+
+    const installedByCookie = getCookieValue('pwa_installed') === 'true';
+
+    if (installedByCookie && isChromeLike && !isOpera && !isFirefox) {
         showInstalledState();
         return;
     }

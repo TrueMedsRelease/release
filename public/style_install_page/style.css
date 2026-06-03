@@ -551,3 +551,192 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+.pwa-instruction-block {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 20px;
+    padding: 18px 20px;
+    color: #7c2d12;
+    text-align: left;
+}
+
+.pwa-instruction-title {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    color: #9a3412;
+}
+
+.pwa-instruction-text {
+    font-size: 15px;
+    line-height: 1.65;
+    white-space: pre-line;
+    color: #431407;
+}
+
+.pwa-instruction-text strong {
+    font-weight: 800;
+}
+
+@media (max-width: 760px) {
+    .pwa-instruction-block {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .pwa-instruction-title {
+        font-size: 16px;
+    }
+
+    .pwa-instruction-text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+}
+
+.pwa-instruction-card {
+    display: none;
+    background: linear-gradient(180deg, #eef7ff 0%, #f8fbff 100%);
+    border: 1px solid #dbeafe;
+    border-radius: 24px;
+    padding: 18px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.pwa-instruction-top {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.pwa-instruction-appicon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    overflow: hidden;
+    flex: 0 0 64px;
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.pwa-instruction-appicon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.pwa-instruction-head {
+    min-width: 0;
+}
+
+.pwa-instruction-title {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.pwa-instruction-subtitle {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #475569;
+}
+
+.pwa-instruction-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.pwa-instruction-step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 12px 14px;
+}
+
+.pwa-instruction-step-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.pwa-instruction-step-text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #0f172a;
+}
+
+.pwa-instruction-step-text strong {
+    font-weight: 800;
+}
+
+.pwa-instruction-note {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #475569;
+}
+
+@media (max-width: 760px) {
+    .pwa-instruction-card {
+        padding: 16px;
+        border-radius: 20px;
+    }
+
+    .pwa-instruction-top {
+        align-items: flex-start;
+    }
+
+    .pwa-instruction-appicon {
+        width: 56px;
+        height: 56px;
+        flex-basis: 56px;
+    }
+
+    .pwa-instruction-title {
+        font-size: 16px;
+    }
+
+    .pwa-instruction-subtitle,
+    .pwa-instruction-step-text,
+    .pwa-instruction-note {
+        font-size: 13px;
+    }
+
+    .pwa-instruction-step {
+        grid-template-columns: 32px 1fr;
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .pwa-instruction-step-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+}
