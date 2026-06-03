@@ -715,4 +715,16 @@ return [
     'pwa_desktop_open_hint' => '如果应用未打开，请使用浏览器地址栏中的 “Open in app” 按钮，或从桌面应用快捷方式打开。',
     'pwa_ios_unavailable_hint' => '如果应用尚未安装，请使用 Safari：分享 → 添加到主屏幕。如果已安装，请从主屏幕图标打开。',
     'pwa_android_unavailable_hint' => '如果应用已安装，请从主屏幕或应用抽屉打开。如果未安装，请使用浏览器菜单 → 添加到主屏幕。',
+
+    'pwa_manual_install_title' => '手动安装',
+    'pwa_instruction_safari_macos' => "无法在 MacOS 的 Safari 中通过按钮安装。\n\n要添加 App：\n1. 在 Safari 中打开此页面。\n2. 点击工具栏中的分享按钮。\n3. 选择 “Add to Dock”。\n4. 点击 “Add”。\n\n之后，请从 Dock 或 Spotlight 打开 App。",
+    'pwa_instruction_safari_ios' => "无法在 iPhone 或 iPad 的 Safari 中通过按钮安装。\n\n要添加 App：\n1. 在 Safari 中打开此页面。\n2. 点击分享按钮。\n3. 向下滚动并点击 “Add to Home Screen”。\n4. 如果显示 “Open as Web App” 选项，请启用它。\n5. 点击 “Add”。\n\n之后，请从主屏幕上的图标打开 App。",
+    'pwa_instruction_chrome_ios' => "无法在 iPhone 或 iPad 的 Chrome 中通过按钮安装。\n\n要添加 App：\n1. 在 Chrome 中打开此页面。\n2. 点击地址栏附近的分享按钮。\n3. 点击 “Add to Home Screen”。\n4. 确认 App 名称。\n5. 点击 “Add”。\n\n之后，请从主屏幕上的图标打开 App。",
+    'pwa_instruction_firefox_android' => "无法在 Firefox 中通过按钮安装。\n\n要添加网站快捷方式：\n1. 在 Firefox 中打开此页面。\n2. 点击菜单按钮。\n3. 点击 “Add to Home Screen”。\n4. 点击 “Add”。\n\n之后，请从主屏幕上的图标打开网站。",
+    'pwa_instruction_firefox_ios' => "无法在 iPhone 或 iPad 的 Firefox 中通过按钮安装。\n\n要添加网站快捷方式：\n1. 在 Firefox 中打开此页面。\n2. 点击分享按钮。\n3. 点击 “Add to Home Screen”。\n4. 点击 “Add”。\n\n之后，请从主屏幕上的图标打开网站。",
+    'pwa_instruction_firefox_desktop' => "无法在桌面版 Firefox 中通过按钮安装。\n\n你可以将此网站加入书签，或在 MacOS 上使用 Chrome、Edge 或 Safari 打开它，并将其安装为 App。",
+    'pwa_instruction_opera_android' => "无法在 Opera 中通过按钮安装。\n\n要添加网站快捷方式：\n1. 在 Opera 中打开此页面。\n2. 点击菜单按钮。\n3. 选择 “Add to” 或 “Add to Home screen”。\n4. 确认添加快捷方式。\n\n之后，请从主屏幕上的图标打开网站。",
+    'pwa_instruction_opera_ios' => "无法在 iPhone 或 iPad 的 Opera 中通过按钮安装。\n\n如果分享菜单中有 “Add to Home Screen”，请使用它。如果没有显示，请在 Safari 中打开此页面，并使用 Share → Add to Home Screen。",
+    'pwa_instruction_opera_desktop' => "无法在桌面版 Opera 中通过按钮安装。\n\n如果你想使用 App 样式安装，请使用 MacOS 上的 Chrome、Edge 或 Safari。",
+    'pwa_instruction_default' => "此浏览器无法通过按钮安装。请使用 Chrome 或 Edge，或从浏览器菜单将此网站添加到主屏幕。",
 ];

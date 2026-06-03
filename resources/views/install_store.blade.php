@@ -160,9 +160,9 @@
 
                         <div id="pwa-instruction-block" class="pwa-instruction-card" style="display:none;">
                             <div class="pwa-instruction-top">
-                                <div class="pwa-instruction-appicon">
+                                {{-- <div class="pwa-instruction-appicon">
                                     <img src="{{ asset($design . '/images/favicon/android-chrome-192x192.png') }}" alt="{{ $appName }}">
-                                </div>
+                                </div> --}}
 
                                 <div class="pwa-instruction-head">
                                     <div id="pwa-instruction-title" class="pwa-instruction-title"></div>

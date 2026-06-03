@@ -828,4 +828,16 @@ return [
     'pwa_desktop_open_hint' => 'アプリが開かない場合は、ブラウザのアドレスバーにある “Open in app” ボタンを使用するか、デスクトップのアプリショートカットから開いてください。',
     'pwa_ios_unavailable_hint' => 'アプリがまだインストールされていない場合は、Safariで「共有」→「ホーム画面に追加」を使用してください。すでにインストールされている場合は、ホーム画面のアイコンから開いてください。',
     'pwa_android_unavailable_hint' => 'アプリがすでにインストールされている場合は、ホーム画面またはアプリドロワーから開いてください。インストールされていない場合は、ブラウザメニュー → ホーム画面に追加を使用してください。',
+
+    'pwa_manual_install_title' => '手動インストール',
+    'pwa_instruction_safari_macos' => "MacOS の Safari では、ボタンからのインストールは利用できません。\n\nApp を追加するには：\n1. Safari でこのページを開きます。\n2. ツールバーの共有ボタンをクリックします。\n3. “Add to Dock” を選択します。\n4. “Add” をクリックします。\n\nその後、Dock または Spotlight から App を開いてください。",
+    'pwa_instruction_safari_ios' => "iPhone または iPad の Safari では、ボタンからのインストールは利用できません。\n\nApp を追加するには：\n1. Safari でこのページを開きます。\n2. 共有ボタンをタップします。\n3. 下にスクロールして “Add to Home Screen” をタップします。\n4. “Open as Web App” が表示されている場合は有効にします。\n5. “Add” をタップします。\n\nその後、ホーム画面のアイコンから App を開いてください。",
+    'pwa_instruction_chrome_ios' => "iPhone または iPad の Chrome では、ボタンからのインストールは利用できません。\n\nApp を追加するには：\n1. Chrome でこのページを開きます。\n2. アドレスバー付近の共有ボタンをタップします。\n3. “Add to Home Screen” をタップします。\n4. App 名を確認します。\n5. “Add” をタップします。\n\nその後、ホーム画面のアイコンから App を開いてください。",
+    'pwa_instruction_firefox_android' => "Firefox では、ボタンからのインストールは利用できません。\n\nサイトのショートカットを追加するには：\n1. Firefox でこのページを開きます。\n2. メニューボタンをタップします。\n3. “Add to Home Screen” をタップします。\n4. “Add” をタップします。\n\nその後、ホーム画面のアイコンからサイトを開いてください。",
+    'pwa_instruction_firefox_ios' => "iPhone または iPad の Firefox では、ボタンからのインストールは利用できません。\n\nサイトのショートカットを追加するには：\n1. Firefox でこのページを開きます。\n2. 共有ボタンをタップします。\n3. “Add to Home Screen” をタップします。\n4. “Add” をタップします。\n\nその後、ホーム画面のアイコンからサイトを開いてください。",
+    'pwa_instruction_firefox_desktop' => "デスクトップ版 Firefox では、ボタンからのインストールは利用できません。\n\nこのサイトをブックマークするか、MacOS の Chrome、Edge、Safari で開いて App としてインストールできます。",
+    'pwa_instruction_opera_android' => "Opera では、ボタンからのインストールは利用できません。\n\nサイトのショートカットを追加するには：\n1. Opera でこのページを開きます。\n2. メニューボタンをタップします。\n3. “Add to” または “Add to Home screen” を選択します。\n4. ショートカットの追加を確認します。\n\nその後、ホーム画面のアイコンからサイトを開いてください。",
+    'pwa_instruction_opera_ios' => "iPhone または iPad の Opera では、ボタンからのインストールは利用できません。\n\n共有メニューに “Add to Home Screen” がある場合は、それを使用してください。表示されない場合は、このページを Safari で開き、Share → Add to Home Screen を使用してください。",
+    'pwa_instruction_opera_desktop' => "デスクトップ版 Opera では、ボタンからのインストールは利用できません。\n\nApp 形式でインストールしたい場合は、MacOS の Chrome、Edge、Safari を使用してください。",
+    'pwa_instruction_default' => "このブラウザでは、ボタンからのインストールは利用できません。Chrome または Edge を使用するか、ブラウザメニューからこのサイトをホーム画面に追加してください。",
 ];
