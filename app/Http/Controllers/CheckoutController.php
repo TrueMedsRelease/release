@@ -171,7 +171,9 @@ class CheckoutController extends Controller
             $shipping['regular'] = 12.99;
         }
 
-        $cart_option = session('cart_option', []);
+        $cart_option = session('cart_option', [
+            'shipping' => env('APP_DEFAULT_SHIPPING')
+        ]);
 
         $cart_option['insurance_price'] = Cart::CalcInsurance();
         $cart_option['secret_price']    = $shipping['secret_package'];

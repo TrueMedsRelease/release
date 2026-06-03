@@ -1031,7 +1031,9 @@ class CartController extends Controller
                 $shipping['regular'] = 12.99;
             }
 
-            $cart_option = session('cart_option');
+            $cart_option = session('cart_option', [
+                'shipping' => env('APP_DEFAULT_SHIPPING')
+            ]);
 
             if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
                 $cart_option['shipping_price'] = 0;

@@ -122,7 +122,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/sitemap{other_url?}', 'sitemap')->name('home.sitemap');
     Route::get('/error_page', 'errorPage')->name('home.error_page');
     Route::get('/bonus_referral_program', 'bonus_referral_program')->name('home.bonus_referral_program');
-    Route::get('/pwa/intall_page', 'pwa_install_page')->name('home.pwa_install_page');
+    Route::get('/pwa/install_page', 'pwa_install_page')->name('home.pwa_install_page');
     Route::post('/pwa/install_event', 'pwa_install_event')->name('home.pwa_install_event');
 });
 
