@@ -711,4 +711,16 @@ return  [
     'pwa_desktop_open_hint' => '如果應用程式沒有開啟，請使用瀏覽器網址列中的 “Open in app” 按鈕，或從桌面應用程式捷徑開啟。',
     'pwa_ios_unavailable_hint' => '如果應用程式尚未安裝，請使用 Safari：分享 → 加入主畫面。如果已安裝，請從主畫面圖示開啟。',
     'pwa_android_unavailable_hint' => '如果應用程式已安裝，請從主畫面或應用程式抽屜開啟。如果尚未安裝，請使用瀏覽器選單 → 加入主畫面。',
+
+    'pwa_manual_install_title' => '手動安裝',
+    'pwa_instruction_safari_macos' => "無法在 MacOS 的 Safari 中透過按鈕安裝。\n\n若要新增 App：\n1. 在 Safari 中開啟此頁面。\n2. 點擊工具列中的分享按鈕。\n3. 選擇 “Add to Dock”。\n4. 點擊 “Add”。\n\n之後，請從 Dock 或 Spotlight 開啟 App。",
+    'pwa_instruction_safari_ios' => "無法在 iPhone 或 iPad 的 Safari 中透過按鈕安裝。\n\n若要新增 App：\n1. 在 Safari 中開啟此頁面。\n2. 點一下分享按鈕。\n3. 向下捲動並點一下 “Add to Home Screen”。\n4. 如果顯示 “Open as Web App” 選項，請啟用它。\n5. 點一下 “Add”。\n\n之後，請從主畫面上的圖示開啟 App。",
+    'pwa_instruction_chrome_ios' => "無法在 iPhone 或 iPad 的 Chrome 中透過按鈕安裝。\n\n若要新增 App：\n1. 在 Chrome 中開啟此頁面。\n2. 點一下網址列附近的分享按鈕。\n3. 點一下 “Add to Home Screen”。\n4. 確認 App 名稱。\n5. 點一下 “Add”。\n\n之後，請從主畫面上的圖示開啟 App。",
+    'pwa_instruction_firefox_android' => "無法在 Firefox 中透過按鈕安裝。\n\n若要新增網站捷徑：\n1. 在 Firefox 中開啟此頁面。\n2. 點一下選單按鈕。\n3. 點一下 “Add to Home Screen”。\n4. 點一下 “Add”。\n\n之後，請從主畫面上的圖示開啟網站。",
+    'pwa_instruction_firefox_ios' => "無法在 iPhone 或 iPad 的 Firefox 中透過按鈕安裝。\n\n若要新增網站捷徑：\n1. 在 Firefox 中開啟此頁面。\n2. 點一下分享按鈕。\n3. 點一下 “Add to Home Screen”。\n4. 點一下 “Add”。\n\n之後，請從主畫面上的圖示開啟網站。",
+    'pwa_instruction_firefox_desktop' => "無法在桌面版 Firefox 中透過按鈕安裝。\n\n你可以將此網站加入書籤，或在 MacOS 上使用 Chrome、Edge 或 Safari 開啟它，並將其安裝為 App。",
+    'pwa_instruction_opera_android' => "無法在 Opera 中透過按鈕安裝。\n\n若要新增網站捷徑：\n1. 在 Opera 中開啟此頁面。\n2. 點一下選單按鈕。\n3. 選擇 “Add to” 或 “Add to Home screen”。\n4. 確認新增捷徑。\n\n之後，請從主畫面上的圖示開啟網站。",
+    'pwa_instruction_opera_ios' => "無法在 iPhone 或 iPad 的 Opera 中透過按鈕安裝。\n\n如果分享選單中有 “Add to Home Screen”，請使用它。如果沒有顯示，請在 Safari 中開啟此頁面，並使用 Share → Add to Home Screen。",
+    'pwa_instruction_opera_desktop' => "無法在桌面版 Opera 中透過按鈕安裝。\n\n如果你想使用 App 樣式安裝，請使用 MacOS 上的 Chrome、Edge 或 Safari。",
+    'pwa_instruction_default' => "此瀏覽器無法透過按鈕安裝。請使用 Chrome 或 Edge，或從瀏覽器選單將此網站新增到主畫面。",
 ];

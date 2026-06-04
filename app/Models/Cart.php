@@ -178,10 +178,10 @@ class Cart extends Model
             $product_total = 0;
         }
 
-        if (!empty(session("cart_option"))) {
+        if (!empty(session("cart_option", []))) {
             $options        = session('cart_option');
             $shipping_total = $options['shipping_price'];
-            $bonus_total    = $options['bonus_price'];
+            $bonus_total    = isset($options['bonus_price']) ? $options['bonus_price'] : 0;
             $insurance      = $options['insurance'] ? $options['insurance_price'] : 0;
             $secret_package = $options['secret_package'] ? $options['secret_price'] : 0;
         } else {

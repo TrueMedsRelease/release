@@ -158,9 +158,25 @@
                             </div>
                         </div>
 
+                        <div id="pwa-instruction-block" class="pwa-instruction-card" style="display:none;">
+                            <div class="pwa-instruction-top">
+                                {{-- <div class="pwa-instruction-appicon">
+                                    <img src="{{ asset($design . '/images/favicon/android-chrome-192x192.png') }}" alt="{{ $appName }}">
+                                </div> --}}
+
+                                <div class="pwa-instruction-head">
+                                    <div id="pwa-instruction-title" class="pwa-instruction-title"></div>
+                                    <div id="pwa-instruction-subtitle" class="pwa-instruction-subtitle"></div>
+                                </div>
+                            </div>
+
+                            <div id="pwa-instruction-steps" class="pwa-instruction-steps"></div>
+
+                            <div id="pwa-instruction-note" class="pwa-instruction-note"></div>
+                        </div>
+
                         <div id="pwa-installed-block" class="pwa-installed-block">
                             <p><strong>{{ __('text.install_page_already_install') }}</strong></p>
-                            {{-- <p>On desktop, Chrome may also show “Open in App” in the address bar.</p> --}}
 
                             <button id="pwa-open-button" class="pwa-button pwa-button-secondary" type="button">
                                 {{ __('text.install_page_open_app') }}
@@ -172,7 +188,6 @@
                         </a>
                     </div>
                 </section>
-
                 <main class="pwa-content">
                     <section class="pwa-section">
                         <h2 class="pwa-section-title">{{ __('text.install_page_screenshots') }}</h2>
@@ -249,6 +264,22 @@
                 'desktop_open_hint' => __('text.pwa_desktop_open_hint'),
                 'ios_unavailable_hint' => __('text.pwa_ios_unavailable_hint'),
                 'android_unavailable_hint' => __('text.pwa_android_unavailable_hint'),
+
+                'manual_install_title' => __('text.pwa_manual_install_title'),
+
+                'pwa_instruction_safari_macos' => __('text.pwa_instruction_safari_macos'),
+                'pwa_instruction_safari_ios' => __('text.pwa_instruction_safari_ios'),
+                'pwa_instruction_chrome_ios' => __('text.pwa_instruction_chrome_ios'),
+
+                'pwa_instruction_firefox_android' => __('text.pwa_instruction_firefox_android'),
+                'pwa_instruction_firefox_ios' => __('text.pwa_instruction_firefox_ios'),
+                'pwa_instruction_firefox_desktop' => __('text.pwa_instruction_firefox_desktop'),
+
+                'pwa_instruction_opera_android' => __('text.pwa_instruction_opera_android'),
+                'pwa_instruction_opera_ios' => __('text.pwa_instruction_opera_ios'),
+                'pwa_instruction_opera_desktop' => __('text.pwa_instruction_opera_desktop'),
+
+                'pwa_instruction_default' => __('text.pwa_instruction_default'),
             ];
         @endphp
 
