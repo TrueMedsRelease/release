@@ -3652,6 +3652,10 @@ $("#proccess_open_banking").click(function (e) {
 
     form += '&' + $.param({ browser_details: browserInfo });
 
+    if ($('[name="payment_type"]').val() === 'revolut') {
+        form += "&is_revolut=1";
+    }
+
     $('.poopuptext').removeClass("show");
 
     $.ajax({
