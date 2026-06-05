@@ -718,4 +718,6 @@ return [
     'pwa_instruction_opera_ios' => "Instalarea prin buton nu este disponibilă în Opera pe iPhone sau iPad.\n\nDacă “Add to Home Screen” este disponibil în meniul Partajare, folosește această opțiune. Dacă nu este afișată, deschide această pagină în Safari și folosește Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Instalarea prin buton nu este disponibilă în Opera pe desktop.\n\nFolosește Chrome, Edge sau Safari pe MacOS dacă vrei instalare în stil App.",
     'pwa_instruction_default' => "Instalarea prin buton nu este disponibilă în acest browser. Folosește Chrome sau Edge, sau adaugă acest site pe ecranul principal din meniul browserului.",
+
+    "checkout_open_banking_subtext" => "Adăugați fonduri în siguranță și direct din contul dvs. bancar.",
 ];

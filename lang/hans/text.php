@@ -727,4 +727,6 @@ return [
     'pwa_instruction_opera_ios' => "无法在 iPhone 或 iPad 的 Opera 中通过按钮安装。\n\n如果分享菜单中有 “Add to Home Screen”，请使用它。如果没有显示，请在 Safari 中打开此页面，并使用 Share → Add to Home Screen。",
     'pwa_instruction_opera_desktop' => "无法在桌面版 Opera 中通过按钮安装。\n\n如果你想使用 App 样式安装，请使用 MacOS 上的 Chrome、Edge 或 Safari。",
     'pwa_instruction_default' => "此浏览器无法通过按钮安装。请使用 Chrome 或 Edge，或从浏览器菜单将此网站添加到主屏幕。",
+
+    "checkout_open_banking_subtext" => "从您的银行账户安全并直接添加资金。",
 ];

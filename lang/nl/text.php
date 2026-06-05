@@ -762,4 +762,6 @@ return [
     'pwa_instruction_opera_ios' => "Installatie via de knop is niet beschikbaar in Opera op iPhone of iPad.\n\nAls “Add to Home Screen” beschikbaar is in het Deel-menu, gebruik die optie. Als deze niet wordt weergegeven, open deze pagina dan in Safari en gebruik Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Installatie via de knop is niet beschikbaar in Opera op desktop.\n\nGebruik Chrome, Edge of Safari op MacOS als je installatie in App-stijl wilt.",
     'pwa_instruction_default' => "Installatie via de knop is niet beschikbaar in deze browser. Gebruik Chrome of Edge, of voeg deze site toe aan je beginscherm via het browsermenu.",
+
+    "checkout_open_banking_subtext" => "Voeg veilig en rechtstreeks geld toe vanaf uw bankrekening.",
 ];

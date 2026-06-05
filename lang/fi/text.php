@@ -728,4 +728,6 @@ return [
     'pwa_instruction_opera_ios' => "Asennus painikkeen kautta ei ole käytettävissä Operassa iPhonella tai iPadilla.\n\nJos “Add to Home Screen” on käytettävissä Jaa-valikossa, käytä sitä. Jos sitä ei näy, avaa tämä sivu Safarissa ja käytä Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Asennus painikkeen kautta ei ole käytettävissä Operassa työpöydällä.\n\nKäytä Chromea, Edgeä tai Safaria MacOS-laitteella, jos haluat App-tyylisen asennuksen.",
     'pwa_instruction_default' => "Asennus painikkeen kautta ei ole käytettävissä tässä selaimessa. Käytä Chromea tai Edgeä, tai lisää tämä sivusto aloitusnäyttöön selaimen valikosta.",
+
+    "checkout_open_banking_subtext" => "Lisää varoja turvallisesti ja suoraan pankkitililtäsi.",
 ];
