@@ -722,4 +722,6 @@ return [
     'pwa_instruction_opera_ios' => "Inštalácia cez tlačidlo nie je v Opere na iPhone alebo iPade dostupná.\n\nAk je v ponuke Zdieľať dostupné “Add to Home Screen”, použite túto možnosť. Ak sa nezobrazuje, otvorte túto stránku v Safari a použite Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Inštalácia cez tlačidlo nie je v Opere na desktope dostupná.\n\nAk chcete inštaláciu v štýle App, použite Chrome, Edge alebo Safari na MacOS.",
     'pwa_instruction_default' => "Inštalácia cez tlačidlo nie je v tomto prehliadači dostupná. Použite Chrome alebo Edge, prípadne pridajte túto stránku na domovskú obrazovku z ponuky prehliadača.",
+
+    "checkout_open_banking_subtext" => "Pridajte prostriedky bezpečne a priamo zo svojho bankového účtu.",
 ];

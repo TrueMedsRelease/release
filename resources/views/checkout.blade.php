@@ -218,10 +218,10 @@
             };
         })();
     </script>
-    <script>
+    {{-- <script>
         const routeSendPayvmcIds = "{{ route('checkout.send_payvmc_ids') }}";
-    </script>
-    <script src="{{ asset_ver('style_checkout/js/payvmc.js') }}"></script>
+    </script> --}}
+    {{-- <script src="{{ asset_ver('style_checkout/js/payvmc.js') }}"></script> --}}
     <div id="insur_popup">
 		<div class="popup_block_insur">
 			<button type="button" class="close_popup">

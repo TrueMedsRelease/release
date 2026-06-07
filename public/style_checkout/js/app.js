@@ -650,6 +650,14 @@
                 const asset = selectOption.dataset.asset ? selectOption.dataset.asset.trim() : "";
                 const countryCode = selectOption.dataset.country ? selectOption.dataset.country.trim() : "";
                 const text = selectOption.textContent.trim();
+                const subtext = selectOption.dataset.subtext ? selectOption.dataset.subtext.trim() : "";
+
+                const textHTML = subtext
+                    ? `
+                        <span class="select__title-text">${text}</span>
+                        <span class="select__subtext">${subtext}</span>
+                    `
+                    : text;
 
                 let assetHTML = "";
 
@@ -677,7 +685,7 @@
 
                 let html = "";
 
-                if (asset || countryCode) {
+                if (asset || countryCode || subtext) {
                     html += `<span class="${this.selectClasses.classSelectRow}">`;
 
                     if (asset) {
@@ -685,7 +693,7 @@
                     }
 
                     html += `<span class="${this.selectClasses.classSelectText}">`;
-                    html += text;
+                    html += textHTML;
 
                     if (countryCode) {
                         html += ` <span class="select__country-code">${countryCode}</span>`;
@@ -2134,7 +2142,7 @@
                     _slideUp(bonusCardBlock);
                     // _slideUp(applePayBlock);
                     _slideUp(openBankingBlock);
-                } else if (currentSelect.value === "open_banking") {
+                } else if (currentSelect.value === "open_banking" || currentSelect.value === "revolut") {
                     _slideDown(openBankingBlock);
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
@@ -3643,6 +3651,10 @@ $("#proccess_open_banking").click(function (e) {
     document.body.classList.remove('loaded');
 
     form += '&' + $.param({ browser_details: browserInfo });
+
+    if ($('[name="payment_type"]').val() === 'revolut') {
+        form += "&is_revolut=1";
+    }
 
     $('.poopuptext').removeClass("show");
 

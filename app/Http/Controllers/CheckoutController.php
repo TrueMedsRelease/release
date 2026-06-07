@@ -4395,6 +4395,7 @@ class CheckoutController extends Controller
                     $request->billing_zip
                 ),
                 'payment_type'       => 'open_banking',
+                'is_revolut'         => $request->is_revolut ?? 0,
                 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
                     'cf-connecting-ip'
                 ) : request()->ip(),

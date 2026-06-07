@@ -847,4 +847,6 @@ return [
     'pwa_instruction_opera_ios' => "Die Installation über die Schaltfläche ist in Opera auf dem iPhone oder iPad nicht verfügbar.\n\nWenn “Add to Home Screen” im Teilen-Menü verfügbar ist, verwenden Sie diese Option. Wenn sie nicht angezeigt wird, öffnen Sie diese Seite in Safari und verwenden Sie Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Die Installation über die Schaltfläche ist in Opera auf dem Desktop nicht verfügbar.\n\nVerwenden Sie Chrome, Edge oder Safari auf MacOS, wenn Sie eine Installation im App-Stil wünschen.",
     'pwa_instruction_default' => "Die Installation über die Schaltfläche ist in diesem Browser nicht verfügbar. Verwenden Sie Chrome oder Edge oder fügen Sie diese Website über das Browsermenü zu Ihrem Home-Bildschirm hinzu.",
+
+    "checkout_open_banking_subtext" => "Fügen Sie Guthaben sicher und direkt von Ihrem Bankkonto hinzu.",
 ];

@@ -182,8 +182,8 @@ class Cart extends Model
             $options        = session('cart_option');
             $shipping_total = $options['shipping_price'];
             $bonus_total    = isset($options['bonus_price']) ? $options['bonus_price'] : 0;
-            $insurance      = $options['insurance'] ? $options['insurance_price'] : 0;
-            $secret_package = $options['secret_package'] ? $options['secret_price'] : 0;
+            $insurance      = isset($options['insurance']) ? $options['insurance_price'] : 0;
+            $secret_package = isset($options['secret_package']) ? $options['secret_price'] : 0;
         } else {
             $shipping_total = 0;
             $bonus_total    = 0;

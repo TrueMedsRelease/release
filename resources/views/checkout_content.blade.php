@@ -703,6 +703,21 @@
                                             </option>
                                         @endif
 
+                                        @if (env('APP_OPEN_BANKING_ON', 0))
+                                            <option value="revolut" @selected(session('form.payment_type', 'mastercard') == 'revolut')
+                                                data-asset="{{ asset("/style_checkout/images/icons/revolut.svg") }}">
+                                                Revolut
+                                            </option>
+                                        @endif
+
+                                        @if (env('APP_OPEN_BANKING_ON', 0))
+                                            <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')
+                                                data-asset="{{ asset("/style_checkout/images/icons/de_rotating_40x40.gif") }}"
+                                                data-subtext="{{ __('text.checkout_open_banking_subtext') }}">
+                                                Instant Bank Transfer
+                                            </option>
+                                        @endif
+
                                         @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
                                             <option value="zelle" @selected(session('form.payment_type', 'mastercard') == 'zelle')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/zelle.svg") }}">
@@ -798,12 +813,6 @@
                                             <option value="visa" @selected(session('form.payment_type', 'mastercard') == 'visa')
                                                 data-asset="{{ asset("/style_checkout/images/pay-systems/visa.svg") }}">
                                                 Visa
-                                            </option>
-                                        @endif
-
-                                        @if (env('APP_OPEN_BANKING_ON', 0))
-                                            <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')>
-                                                Open Banking
                                             </option>
                                         @endif
 
@@ -1559,7 +1568,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__open-banking-content" @if (session('form.payment_type', 'mastercard') != 'open_banking') hidden @endif>
+                        <div class="enter-info__open-banking-content" @if (session('form.payment_type', 'mastercard') != 'open_banking' || session('form.payment_type', 'mastercard') != 'revolut') hidden @endif>
                             <button id="proccess_open_banking" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_place') }}</span>
                                 <svg width="18" height="18">
