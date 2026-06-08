@@ -3664,15 +3664,18 @@ $("#proccess_open_banking").click(function (e) {
         data: form,
         success: function (data) {
             var data = JSON.parse(data);
-            // console.log(data);
+            console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
                     window.location.replace(data.response.url);
                 } else {
                     window.location.replace(checkoutComplete);
                 }
-            }
-            else {
+            } else if (data.response.status == 'risk_check') {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else {
                 var error = '';
                 data.response.message.forEach(element => {
                     error += element + "\n";

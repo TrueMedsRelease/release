@@ -4483,6 +4483,33 @@ class CheckoutController extends Controller
                             ], 502);
                         }
 
+                        $message = $response['message'] ?? null;
+
+                        $hasRiskCheckFailed = false;
+
+                        if (is_array($message)) {
+                            $hasRiskCheckFailed = in_array('risk_check_failed', $message, true);
+                        } elseif (is_string($message)) {
+                            $hasRiskCheckFailed = str_contains($message, 'risk_check_failed');
+                        }
+
+                        if (($response['status'] === 'ERROR' || $response['status'] === 'error') && $hasRiskCheckFailed) {
+
+                            session(['open_banking_available' => false]);
+                            session(['form.payment_type' => 'mastercard']);
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'risk_check',
+                                    'message' => __('text.risk_check_failed'),
+                                    'html' => $this->checkout(),
+                                ]
+                            ], 200);
+                        } else {
+                            session(['open_banking_available' => true]);
+                            return response()->json(['response' => $response], 200);
+                        }
+
                         if ($this->isFinalOrderResponse($response)) {
 
                             $this->finalizeSuccessfulOrder($order_cache_id, $response);
