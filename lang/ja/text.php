@@ -840,4 +840,6 @@ return [
     'pwa_instruction_opera_ios' => "iPhone または iPad の Opera では、ボタンからのインストールは利用できません。\n\n共有メニューに “Add to Home Screen” がある場合は、それを使用してください。表示されない場合は、このページを Safari で開き、Share → Add to Home Screen を使用してください。",
     'pwa_instruction_opera_desktop' => "デスクトップ版 Opera では、ボタンからのインストールは利用できません。\n\nApp 形式でインストールしたい場合は、MacOS の Chrome、Edge、Safari を使用してください。",
     'pwa_instruction_default' => "このブラウザでは、ボタンからのインストールは利用できません。Chrome または Edge を使用するか、ブラウザメニューからこのサイトをホーム画面に追加してください。",
+
+    "checkout_open_banking_subtext" => "銀行口座から安全かつ直接資金を追加できます。",
 ];

@@ -857,4 +857,6 @@ return [
     'pwa_instruction_opera_ios' => "L’installazione tramite pulsante non è disponibile in Opera su iPhone o iPad.\n\nSe “Add to Home Screen” è disponibile nel menu Condividi, usalo. Se non viene mostrato, apri questa pagina in Safari e usa Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "L’installazione tramite pulsante non è disponibile in Opera su desktop.\n\nUsa Chrome, Edge o Safari su MacOS se vuoi un’installazione in stile App.",
     'pwa_instruction_default' => "L’installazione tramite pulsante non è disponibile in questo browser. Usa Chrome o Edge, oppure aggiungi questo sito alla schermata Home dal menu del browser.",
+
+    "checkout_open_banking_subtext" => "Aggiungi fondi in modo sicuro e direttamente dal tuo conto bancario.",
 ];

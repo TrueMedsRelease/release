@@ -728,4 +728,6 @@ return [
     'pwa_instruction_opera_ios' => "A gombbal történő telepítés nem érhető el Operában iPhone-on vagy iPaden.\n\nHa az “Add to Home Screen” elérhető a Megosztás menüben, használja azt. Ha nem jelenik meg, nyissa meg ezt az oldalt Safariban, és használja a Share → Add to Home Screen lehetőséget.",
     'pwa_instruction_opera_desktop' => "A gombbal történő telepítés nem érhető el Operában asztali gépen.\n\nHasználjon Chrome-ot, Edge-et vagy Safarit MacOS rendszeren, ha App-szerű telepítést szeretne.",
     'pwa_instruction_default' => "A gombbal történő telepítés ebben a böngészőben nem érhető el. Használjon Chrome-ot vagy Edge-et, vagy adja hozzá ezt a webhelyet a kezdőképernyőhöz a böngésző menüjéből.",
+
+    "checkout_open_banking_subtext" => "Adjon hozzá pénzt biztonságosan és közvetlenül a bankszámlájáról.",
 ];

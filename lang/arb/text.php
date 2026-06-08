@@ -726,4 +726,6 @@ return [
     'pwa_instruction_opera_ios' => "التثبيت عبر الزر غير متاح في Opera على iPhone أو iPad.\n\nإذا كان خيار “Add to Home Screen” متاحًا في قائمة المشاركة، فاستخدمه. إذا لم يظهر، افتح هذه الصفحة في Safari واستخدم Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "التثبيت عبر الزر غير متاح في Opera على سطح المكتب.\n\nاستخدم Chrome أو Edge أو Safari على MacOS إذا كنت تريد التثبيت بأسلوب التطبيق.",
     'pwa_instruction_default' => "التثبيت عبر الزر غير متاح في هذا المتصفح. استخدم Chrome أو Edge، أو أضف هذا الموقع إلى الشاشة الرئيسية من قائمة المتصفح.",
+
+    "checkout_open_banking_subtext" => "أضف الأموال بأمان ومباشرة من حسابك البنكي.",
 ];

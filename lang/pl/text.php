@@ -723,4 +723,6 @@ return [
     'pwa_instruction_opera_ios' => "Instalacja za pomocą przycisku nie jest dostępna w Opera na iPhonie lub iPadzie.\n\nJeśli “Add to Home Screen” jest dostępne w menu Udostępnij, użyj tej opcji. Jeśli się nie wyświetla, otwórz tę stronę w Safari i użyj Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Instalacja za pomocą przycisku nie jest dostępna w Opera na komputerze.\n\nUżyj Chrome, Edge lub Safari na MacOS, jeśli chcesz instalacji w stylu App.",
     'pwa_instruction_default' => "Instalacja za pomocą przycisku nie jest dostępna w tej przeglądarce. Użyj Chrome lub Edge albo dodaj tę witrynę do ekranu początkowego z menu przeglądarki.",
+
+    "checkout_open_banking_subtext" => "Dodaj środki bezpiecznie i bezpośrednio ze swojego konta bankowego.",
 ];

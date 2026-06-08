@@ -703,6 +703,21 @@
                                             </option>
                                         @endif
 
+                                        @if (env('APP_OPEN_BANKING_ON', 0))
+                                            <option value="revolut" @selected(session('form.payment_type', 'mastercard') == 'revolut')
+                                                data-asset="{{ asset("/style_checkout/images/icons/revolut.svg") }}">
+                                                Revolut
+                                            </option>
+                                        @endif
+
+                                        @if (env('APP_OPEN_BANKING_ON', 0))
+                                            <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')
+                                                data-asset="{{ asset("/style_checkout/images/icons/de_rotating_40x40.gif") }}"
+                                                data-subtext="{{ __('text.checkout_open_banking_subtext') }}">
+                                                Instant Bank Transfer
+                                            </option>
+                                        @endif
+
                                         @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
                                             <option value="zelle" @selected(session('form.payment_type', 'mastercard') == 'zelle')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/zelle.svg") }}">
@@ -801,12 +816,6 @@
                                             </option>
                                         @endif
 
-                                        @if (env('APP_OPEN_BANKING_ON', 0))
-                                            <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')>
-                                                Open Banking
-                                            </option>
-                                        @endif
-
                                         {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
                                             <option value="google" @selected(session('form.payment_type', 'none') == 'google')>Google Pay</option>
                                         @endif --}}
@@ -857,8 +866,7 @@
                                 </div>
                             {{-- </div> --}}
                         </div>
-                        {{-- <div class="enter-info__card-content" @if (session('form.payment_type', 'none') != 'card' && session('form.payment_type', 'none') != 'google_pay' && session('form.payment_type', 'none') != 'apple_pay') hidden @endif> --}}
-                        <div class="enter-info__card-content" @if (session('form.payment_type', 'mastercard') != 'visa' && session('form.payment_type', 'mastercard') != 'mastercard' && session('form.payment_type', 'mastercard') != 'google_pay' && session('form.payment_type', 'mastercard') != 'apple_pay') hidden @endif>
+                        <div class="enter-info__card-content" @if (session('form.payment_type', 'mastercard') != 'visa' && session('form.payment_type', 'mastercard') != 'mastercard') hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>
@@ -912,22 +920,22 @@
                                     </use>
                                 </svg>
                             </button>
-                            <button id="proccess_google_pay" name="proccess" class="enter-info__button button" style="display: none">
+                            {{-- <button id="proccess_google_pay" name="proccess" class="enter-info__button button" style="display: none">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
                                     </use>
                                 </svg>
-                            </button>
-                            <button id="proccess_apple_pay" name="proccess" class="enter-info__button button" style="display: none">
+                            </button> --}}
+                            {{-- <button id="proccess_apple_pay" name="proccess" class="enter-info__button button" style="display: none">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
                                     </use>
                                 </svg>
-                            </button>
+                            </button> --}}
                         </div>
                         <div class="enter-info__crypto-content"  @if (session('form.payment_type', 'mastercard') != 'crypto') hidden @endif>
                             <div class="content-crypto">
@@ -1559,7 +1567,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__open-banking-content" @if (session('form.payment_type', 'mastercard') != 'open_banking') hidden @endif>
+                        <div class="enter-info__open-banking-content" @if (session('form.payment_type', 'mastercard') != 'open_banking' || session('form.payment_type', 'mastercard') != 'revolut') hidden @endif>
                             <button id="proccess_open_banking" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_place') }}</span>
                                 <svg width="18" height="18">
@@ -1570,7 +1578,7 @@
                             </button>
                         </div>
 
-                        {{-- <div class="enter-info__apple_pay-content" @if (session('form.payment_type', 'mastercard') != 'apple_pay') hidden @endif>
+                        <div class="enter-info__apple_pay-content" @if (session('form.payment_type', 'mastercard') != 'apple_pay') hidden @endif>
                             <button id="proccess_apple_pay" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
@@ -1579,9 +1587,9 @@
                                     </use>
                                 </svg>
                             </button>
-                        </div> --}}
+                        </div>
 
-                        {{-- <div class="enter-info__google_pay-content" @if (session('form.payment_type', 'mastercard') != 'google_pay') hidden @endif>
+                        <div class="enter-info__google_pay-content" @if (session('form.payment_type', 'mastercard') != 'google_pay') hidden @endif>
                             <button id="proccess_google_pay" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
@@ -1590,7 +1598,7 @@
                                     </use>
                                 </svg>
                             </button>
-                        </div> --}}
+                        </div>
                     </div>
                 </section>
             </div>

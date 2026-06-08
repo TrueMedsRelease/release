@@ -724,4 +724,6 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     'pwa_instruction_opera_ios' => "Pemasangan melalui butang tidak tersedia dalam Opera pada iPhone atau iPad.\n\nJika “Add to Home Screen” tersedia dalam menu Kongsi, gunakannya. Jika tidak dipaparkan, buka halaman ini dalam Safari dan gunakan Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Pemasangan melalui butang tidak tersedia dalam Opera pada desktop.\n\nGunakan Chrome, Edge atau Safari pada MacOS jika anda mahu pemasangan gaya App.",
     'pwa_instruction_default' => "Pemasangan melalui butang tidak tersedia dalam pelayar ini. Gunakan Chrome atau Edge, atau tambahkan laman ini ke Skrin Utama anda daripada menu pelayar.",
+
+    "checkout_open_banking_subtext" => "Tambah dana dengan selamat dan terus daripada akaun bank anda.",
 ];

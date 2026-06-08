@@ -722,4 +722,6 @@ return [
     'pwa_instruction_opera_ios' => "Installation via knappen är inte tillgänglig i Opera på iPhone eller iPad.\n\nOm “Add to Home Screen” är tillgängligt i delningsmenyn, använd det. Om det inte visas, öppna den här sidan i Safari och använd Share → Add to Home Screen.",
     'pwa_instruction_opera_desktop' => "Installation via knappen är inte tillgänglig i Opera på desktop.\n\nAnvänd Chrome, Edge eller Safari på MacOS om du vill ha installation i App-stil.",
     'pwa_instruction_default' => "Installation via knappen är inte tillgänglig i den här webbläsaren. Använd Chrome eller Edge, eller lägg till den här webbplatsen på hemskärmen från webbläsarmenyn.",
+
+    "checkout_open_banking_subtext" => "Lägg till pengar säkert och direkt från ditt bankkonto.",
 ];
