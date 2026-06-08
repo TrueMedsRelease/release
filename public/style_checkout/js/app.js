@@ -1952,8 +1952,8 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                     cryptoCurrencySelect.hidden = false;
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other" || currentSelect.value === "visa" || currentSelect.value === "mastercard" || currentSelect.value === "amex" || currentSelect.value === "discover") {
@@ -1972,8 +1972,8 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "sepa") {
                     _slideDown(sepaBlock);
@@ -1989,8 +1989,8 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
@@ -2008,8 +2008,8 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === 'gift_card') {
                     _slideDown(giftCardBlock);
@@ -2027,8 +2027,8 @@
                     }
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "google") {
                     _slideDown(googleBlock);
@@ -2044,8 +2044,8 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "zelle") {
                     _slideDown(zelleBlock);
@@ -2061,8 +2061,8 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac" || currentSelect.value === "usd_swift" || currentSelect.value === "gbp_swift"){
                     _slideDown(localPaymentBlock);
@@ -2080,8 +2080,8 @@
                     _slideUp(paypalBlock);
                     _slideUp(giftCardBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "bonus_card") {
                     _slideDown(bonusCardBlock);
@@ -2099,12 +2099,12 @@
                     _slideUp(paypalBlock);
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "apple_pay") {
-                    // _slideDown(applePayBlock);
-                    _slideDown(cardBlock);
+                    _slideDown(applePayBlock);
+                    // _slideDown(cardBlock);
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
@@ -2112,7 +2112,7 @@
                         _slideUp(googleBlock);
                     }
                     _slideUp(cryptoBlock);
-                    // _slideUp(cardBlock);
+                    _slideUp(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
                        _slideUp(sepaBlock);
                     }
@@ -2120,11 +2120,11 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "google_pay") {
-                    // _slideDown(googlePayBlock);
-                    _slideDown(cardBlock);
+                    _slideDown(googlePayBlock);
+                    // _slideDown(cardBlock);
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
                     }
@@ -2132,7 +2132,7 @@
                         _slideUp(googleBlock);
                     }
                     _slideUp(cryptoBlock);
-                    // _slideUp(cardBlock);
+                    _slideUp(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
                        _slideUp(sepaBlock);
                     }
@@ -2140,7 +2140,7 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
+                    _slideUp(applePayBlock);
                     _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "open_banking" || currentSelect.value === "revolut") {
                     _slideDown(openBankingBlock);
@@ -2159,8 +2159,8 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                 } else if (currentSelect.value === "none") {
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
@@ -2177,8 +2177,8 @@
                     _slideUp(giftCardBlock);
                     _slideUp(localPaymentBlock);
                     _slideUp(bonusCardBlock);
-                    // _slideUp(applePayBlock);
-                    // _slideUp(googlePayBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
                 }
 
@@ -2482,24 +2482,24 @@ $(".card_type .select__option").click(function (e) {
             data: form,
             async: false,
             success: function (data) {
-                if (type == 'apple_pay') {
-                    $('#proccess_apple_pay').show();
-                    $('#proccess_google_pay').hide();
-                    $('#proccess').hide();
-                }
-                if (type == 'google_pay') {
-                    $('#proccess_google_pay').show();
-                    $('#proccess_apple_pay').hide();
-                    $('#proccess').hide();
-                }
+                // if (type == 'apple_pay') {
+                //     $('#proccess_apple_pay').show();
+                //     $('#proccess_google_pay').hide();
+                //     $('#proccess').hide();
+                // }
+                // if (type == 'google_pay') {
+                //     $('#proccess_google_pay').show();
+                //     $('#proccess_apple_pay').hide();
+                //     $('#proccess').hide();
+                // }
             },
             error: function (data) {
-                if (type == 'apple_pay') {
-                    $('#proccess_apple_pay').hide();
-                }
-                if (type == 'google_pay') {
-                    $('#proccess_google_pay').hide();
-                }
+                // if (type == 'apple_pay') {
+                //     $('#proccess_apple_pay').hide();
+                // }
+                // if (type == 'google_pay') {
+                //     $('#proccess_google_pay').hide();
+                // }
                 flag = true;
                 var errors = JSON.parse(data.responseText);
                 $('.poopuptext').removeClass("show");
@@ -2521,12 +2521,11 @@ $(".card_type .select__option").click(function (e) {
         // }
     }
 
-    // if (type == 'card') {
-    if (type == 'visa' || type == 'mastercard' || type == 'amex' || type == 'discover') {
-        $('#proccess').show();
-        $('#proccess_google_pay').hide();
-        $('#proccess_apple_pay').hide();
-    }
+    // if (type == 'visa' || type == 'mastercard' || type == 'amex' || type == 'discover') {
+    //     $('#proccess').show();
+    //     $('#proccess_google_pay').hide();
+    //     $('#proccess_apple_pay').hide();
+    // }
 
     if (type != 'crypto') {
         PollingManager.stopAll();
@@ -2535,20 +2534,19 @@ $(".card_type .select__option").click(function (e) {
     }
 });
 
-if ($('#payment_type_select').val() == 'google_pay') {
-    $('#proccess').hide();
-    $('#proccess_google_pay').show();
-    $('#proccess_apple_pay').hide();
-} else if ($('#payment_type_select').val() == 'apple_pay') {
-    $('#proccess').hide();
-    $('#proccess_google_pay').hide();
-    $('#proccess_apple_pay').show();
-// } else if ($('#payment_type_select').val() == 'card') {
-} else if ($('#payment_type_select').val() == 'visa' || $('#payment_type_select').val() == 'mastercard' || $('#payment_type_select').val() == 'amex' || $('#payment_type_select').val() == 'discover') {
-    $('#proccess').show();
-    $('#proccess_google_pay').hide();
-    $('#proccess_apple_pay').hide();
-}
+// if ($('#payment_type_select').val() == 'google_pay') {
+//     $('#proccess').hide();
+//     $('#proccess_google_pay').show();
+//     $('#proccess_apple_pay').hide();
+// } else if ($('#payment_type_select').val() == 'apple_pay') {
+//     $('#proccess').hide();
+//     $('#proccess_google_pay').hide();
+//     $('#proccess_apple_pay').show();
+// } else if ($('#payment_type_select').val() == 'visa' || $('#payment_type_select').val() == 'mastercard' || $('#payment_type_select').val() == 'amex' || $('#payment_type_select').val() == 'discover') {
+//     $('#proccess').show();
+//     $('#proccess_google_pay').hide();
+//     $('#proccess_apple_pay').hide();
+// }
 
 if ($('#app_google_on').val() == '1') {
     window.addEventListener('message', (event) => {
