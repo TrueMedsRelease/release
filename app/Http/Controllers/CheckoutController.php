@@ -4227,7 +4227,13 @@ class CheckoutController extends Controller
                             $hasRiskCheckFailed = str_contains($message, 'risk_check_failed');
                         }
 
-                        if (($response['status'] === 'ERROR' || $response['status'] === 'error') && $hasRiskCheckFailed) {
+                        $status = strtolower((string) ($response['status'] ?? ''));
+
+                        if ($status === 'error' && $hasRiskCheckFailed) {
+
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
 
                             session(['wallet_available' => false]);
                             session(['form.payment_type' => 'mastercard']);
@@ -4239,14 +4245,11 @@ class CheckoutController extends Controller
                                     'html' => $this->checkout(),
                                 ]
                             ], 200);
-                        } else {
-                            session(['wallet_available' => true]);
-                            return response()->json(['response' => $response], 200);
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-
                             $this->finalizeSuccessfulOrder($order_cache_id, $response);
+                            session(['wallet_available' => true]);
 
                         } else {
                             $this->markOrderRetry(
@@ -4493,7 +4496,13 @@ class CheckoutController extends Controller
                             $hasRiskCheckFailed = str_contains($message, 'risk_check_failed');
                         }
 
-                        if (($response['status'] === 'ERROR' || $response['status'] === 'error') && $hasRiskCheckFailed) {
+                        $status = strtolower((string) ($response['status'] ?? ''));
+
+                        if ($status === 'error' && $hasRiskCheckFailed) {
+
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
 
                             session(['open_banking_available' => false]);
                             session(['form.payment_type' => 'mastercard']);
@@ -4505,15 +4514,11 @@ class CheckoutController extends Controller
                                     'html' => $this->checkout(),
                                 ]
                             ], 200);
-                        } else {
-                            session(['open_banking_available' => true]);
-                            return response()->json(['response' => $response], 200);
                         }
 
                         if ($this->isFinalOrderResponse($response)) {
-
                             $this->finalizeSuccessfulOrder($order_cache_id, $response);
-
+                            session(['open_banking_available' => true]);
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
