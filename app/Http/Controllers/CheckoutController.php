@@ -827,7 +827,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse  = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse  = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Order answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -1094,7 +1094,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Paypal answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -1199,7 +1199,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Crypto info answer: " . $response);
 
                 if ($response->successful()) {
@@ -1376,7 +1376,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1628,7 +1628,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -1796,7 +1796,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Transfer answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -2120,7 +2120,7 @@ class CheckoutController extends Controller
 
                     $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Crypto answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -2345,7 +2345,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -2496,7 +2496,7 @@ class CheckoutController extends Controller
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
-                $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("GooglePay answer: " . $httpResponse);
 
                 if ($httpResponse->successful()) {
@@ -2729,7 +2729,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -2895,7 +2895,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Sepa answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -3182,7 +3182,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Zelle Data answer: " . $response);
 
                     if ($response->successful()) {
@@ -3443,7 +3443,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Bonus Card answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -3683,7 +3683,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Gift Card answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -3918,7 +3918,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -4174,7 +4174,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Wallet answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -4467,7 +4467,7 @@ class CheckoutController extends Controller
 
             if (checkdnsrr('true-serv.net', 'A')) {
                 try {
-                    $httpResponse = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Open Banking answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
@@ -4664,7 +4664,7 @@ class CheckoutController extends Controller
                 return;
             }
 
-            $httpResponse = Http::timeout(10)->post(
+            $httpResponse = Http::timeout(30)->post(
                 'http://true-serv.net/checkout/order.php',
                 $payload
             );
@@ -4966,7 +4966,7 @@ class CheckoutController extends Controller
             try {
                 Log::info("PayVMC data answer: " . json_encode($data));
 
-                $response = Http::timeout(10)
+                $response = Http::timeout(30)
                     ->post('http://true-serv.net/checkout/order.php', $data);
 
                 Log::info("PayVMC answer: " . $response);
