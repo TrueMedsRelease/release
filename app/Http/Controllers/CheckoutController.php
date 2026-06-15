@@ -4589,6 +4589,43 @@ class CheckoutController extends Controller
         }
     }
 
+    public function recalculation(Request $request)
+    {
+        $form = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            'phone'            => ['required', 'min:5', 'max:16'],
+            'email'            => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
+            'firstname'        => ['required', 'max:255'],
+            'lastname'         => ['required', 'max:255'],
+            'billing_country'  => ['required', 'max:2'],
+            'billing_city'     => ['required', 'max:255'],
+            'billing_address'  => ['required', 'max:255'],
+            'billing_zip'      => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        } else {
+            session(['bonus_checkout_payment' => $form['bonus_checkout_payment']]);
+            session(['form.payment_type' => $form['bonus_checkout_payment']]);
+
+            return $this->checkout();
+        }
+    }
+
     public function forget_bonuses(Request $request)
     {
         $witch_forget = $request->witch_forget;

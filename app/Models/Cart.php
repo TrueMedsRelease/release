@@ -213,9 +213,27 @@ class Cart extends Model
         $coupon_discount = 0;
         $gift_card_discount = 0;
         $bonus_card_discount = 0;
+        $bonus_checkout = 0;
 
         $checkoutTotal = $product_total + $shipping_total + $insurance + $secret_package - $sum_card;
         $productTotal = $product_total - $sum_card;
+
+        $payment_with_bonus = [
+            // 'mastercard',
+            // 'sepa_local',
+            // 'fps',
+            // 'domestic',
+            // 'ach',
+            // 'interac',
+            // 'usd_swift',
+            // 'gbp_swift'
+            'revolut',
+            'open_banking',
+        ];
+
+        if (in_array(session('bonus_checkout_payment', 'mastercard'), $payment_with_bonus)) {
+            $bonus_checkout = ceil($checkoutTotal * 0.05);
+        }
 
         if (session()->has('coupon')) {
             $coupon_discount = ceil($productTotal * (session('coupon.percent') / 100));
@@ -324,13 +342,14 @@ class Cart extends Model
                 Currency::Convert($coupon_discount * (-1)),
                 Currency::Convert($gift_card_discount * (-1)),
                 Currency::Convert($bonus_card_discount * (-1)),
+                Currency::Convert($bonus_checkout * (-1)),
             ], true);
         }
 
         if ($is_only_card) {
             $checkout_total = $all;
         } else {
-            $checkout_total = $all + $insurance + $secret_package - $coupon_discount - $bonus_card_discount;
+            $checkout_total = $all + $insurance + $secret_package - $coupon_discount - $bonus_card_discount - $bonus_checkout;
         }
 
         $can_bonus_card = 0;

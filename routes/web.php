@@ -76,6 +76,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/gift_card_process', 'gift_card_process')->name('checkout.gift_card_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/validate_for_wallet', 'validate_for_wallet')->name('checkout.validate_for_wallet');
     Route::post('/wallet_process', 'wallet_process')->name('checkout.wallet_process')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/checkout/recalculation', 'recalculation')->name('checkout.recalculation')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/open_banking_process', 'open_banking_process')->name('checkout.open_banking_process')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
