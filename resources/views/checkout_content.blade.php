@@ -703,10 +703,10 @@
                                             </option>
                                         @endif
 
-                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
+                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "CZ", "DK", "EE", "FI", "FR", "DE", "HU", "IE", "IT", "LV", "LT", "LU", "NL", "PL", "PT", "RO", "SK", "ES", "SE", "NO", "CH", "GB"]))
                                             <option value="revolut" @selected(session('form.payment_type', 'mastercard') == 'revolut')
                                                 data-asset="{{ asset("/style_checkout/images/icons/revolut.svg") }}">
-                                                Revolut
+                                                Revolut -5% extra off
                                             </option>
                                         @endif
 
@@ -714,7 +714,7 @@
                                             <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')
                                                 data-asset="{{ asset("/style_checkout/images/icons/de_rotating_40x40.gif") }}"
                                                 data-subtext="{{ __('text.checkout_open_banking_subtext') }}">
-                                                Instant Bank Transfer
+                                                Instant Bank Transfer -5% extra off
                                             </option>
                                         @endif
 
@@ -1567,7 +1567,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__open-banking-content" @if (session('form.payment_type', 'mastercard') != 'open_banking' || session('form.payment_type', 'mastercard') != 'revolut') hidden @endif>
+                        <div class="enter-info__open-banking-content" @if (!in_array(session('form.payment_type', 'mastercard'), ['open_banking', 'revolut'])) hidden @endif>
                             <button id="proccess_open_banking" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_place') }}</span>
                                 <svg width="18" height="18">

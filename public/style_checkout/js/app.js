@@ -2532,6 +2532,38 @@ $(".card_type .select__option").click(function (e) {
         document.getElementById('paid').disabled = true;
         // document.getElementById('waiting').style.display = "none";
     }
+
+    form += '&bonus_checkout_payment=' + type;
+
+    $.ajax({
+        url: checkoutRecalculation,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        async: false,
+        success: function (data) {
+            data = JSON.parse(data);
+            if (data.success == true) {
+                $('.wrapper').html(data.html);
+            } else {
+                alert(data.text);
+            }
+        },
+        error: function (data) {
+            flag = true;
+            var errors = JSON.parse(data.responseText);
+            $('.poopuptext').removeClass("show");
+            errors.errors.forEach(function (error, i) {
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
 });
 
 // if ($('#payment_type_select').val() == 'google_pay') {

@@ -100,6 +100,7 @@
         const checkoutGiftCardProcess = "{{ route('checkout.gift_card_process') }}";
         const checkoutValidateWallet = "{{ route('checkout.validate_for_wallet') }}";
         const checkoutWallet = "{{ route('checkout.wallet_process') }}";
+        const checkoutRecalculation = "{{ route('checkout.recalculation') }}";
         const checkoutOpenBanking = "{{ route('checkout.open_banking_process') }}";
 
         const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
