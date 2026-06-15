@@ -1579,12 +1579,36 @@ class HomeController extends Controller
 
         $path = parse_url($candidate, PHP_URL_PATH) ?: '/';
 
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        $blockedExtensions = [
+            'svg',
+            'png',
+            'jpg',
+            'jpeg',
+            'webp',
+            'gif',
+            'ico',
+            'css',
+            'js',
+            'map',
+            'json',
+            'xml',
+            'txt',
+        ];
+
+        if (in_array($extension, $blockedExtensions, true)) {
+            return $homeUrl;
+        }
+
         $blockedParts = [
             '/lang=',
             '/curr=',
             '/design=',
             '/set_images/',
 
+            '/login',
+            '/svg/',
             '/.well-known/',
             '/sw.js',
             '/manifest.json',
