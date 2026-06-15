@@ -749,14 +749,14 @@
                                         @if (env('APP_USD_SWIFT_ON', 0))
                                             <option value="usd_swift" @selected(session('form.payment_type', 'mastercard') == 'usd_swift')
                                                 data-asset="{{ asset("style_checkout/images/icons/payment_type/swift.svg") }}">
-                                                USD (SWIFT)
+                                                SWIFT USD
                                             </option>
                                         @endif
 
                                         @if (env('APP_GBP_SWIFT_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
                                             <option value="gbp_swift" @selected(session('form.payment_type', 'mastercard') == 'gbp_swift')
                                                 data-asset="{{ asset("style_checkout/images/icons/payment_type/swift.svg") }}">
-                                                GBP (SWIFT)
+                                                SWIFT GBP
                                             </option>
                                         @endif
 

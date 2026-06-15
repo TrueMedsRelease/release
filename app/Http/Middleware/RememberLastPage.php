@@ -63,6 +63,8 @@ class RememberLastPage
             '/design=',
             '/set_images/',
 
+            '/svg/',
+            '/login',
             '/.well-known/',
             '/sw.js',
             '/manifest.json',
@@ -85,6 +87,28 @@ class RememberLastPage
             if (strpos($path, $part) !== false) {
                 return false;
             }
+        }
+
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        $blockedExtensions = [
+            'svg',
+            'png',
+            'jpg',
+            'jpeg',
+            'webp',
+            'gif',
+            'ico',
+            'css',
+            'js',
+            'map',
+            'json',
+            'xml',
+            'txt',
+        ];
+
+        if (in_array($extension, $blockedExtensions, true)) {
+            return false;
         }
 
         return true;
