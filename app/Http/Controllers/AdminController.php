@@ -69,7 +69,7 @@ class AdminController extends Controller
             $result = [
                 'status' => 'error',
                 'text' => __('text.admin_login_form_invalid_log_in'),
-                'new_captcha' => captcha_img()
+                'new_captcha' => captcha_src()
             ];
         }
 
