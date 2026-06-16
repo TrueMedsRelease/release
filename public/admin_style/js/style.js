@@ -45,6 +45,8 @@ function logIn() {
                         success: function (data) {
                             if (data['status'] == 'error') {
                                 alert(data['text']);
+                                $('#captcha_image').attr('src', data['new_captcha']);
+                                $('#login_messages').hide();
                             } else {
                                 window.location.href = data['url'];
                             }
