@@ -179,11 +179,16 @@ class Cart extends Model
         }
 
         if (!empty(session("cart_option", []))) {
-            $options        = session('cart_option');
-            $shipping_total = $options['shipping_price'];
-            $bonus_total    = isset($options['bonus_price']) ? $options['bonus_price'] : 0;
-            $insurance      = isset($options['insurance']) && $options['insurance'] != 0 ? $options['insurance_price'] : 0;
-            $secret_package = isset($options['secret_package']) && $options['secret_package'] != 0 ? $options['secret_price'] : 0;
+            $options        = session('cart_option', []);
+
+            if (!is_array($options)) {
+                $options = [];
+            }
+
+            $shipping_total = $options['shipping_price'] ?? 0;
+            $bonus_total    = $options['bonus_price'] ?? 0;
+            $insurance = !empty($options['insurance']) ? ($options['insurance_price'] ?? 0) : 0;
+            $secret_package = !empty($options['secret_package']) ? ($options['secret_price'] ?? 0) : 0;
         } else {
             $shipping_total = 0;
             $bonus_total    = 0;
