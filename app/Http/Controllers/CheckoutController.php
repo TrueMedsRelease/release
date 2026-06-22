@@ -4776,8 +4776,8 @@ class CheckoutController extends Controller
 
     private function hasVisaError(array $response): bool
     {
-        return isset($response['visa_error'])
-            && filter_var($response['visa_error'], FILTER_VALIDATE_BOOLEAN) === true;
+        return isset($response['paymethod_error'])
+            && filter_var($response['paymethod_error'], FILTER_VALIDATE_BOOLEAN) === true;
     }
 
     private function markOrderRetry(int $orderId, ?string $error = null): void
