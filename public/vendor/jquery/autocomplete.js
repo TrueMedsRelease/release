@@ -16,7 +16,12 @@ jQuery.autocomplete = function(input, options) {
 	if( options.width > 0 ) $results.css("width", options.width);
 
 	// Add to body element
-	$(".search-bar").append(results);
+	// $(".search-bar").append(results);
+    if (design == 17) {
+        $("body").append(results);
+    } else {
+        $(".search-bar").append(results);
+    }
 
 	input.autocompleter = me;
 
@@ -125,29 +130,73 @@ jQuery.autocomplete = function(input, options) {
 		}
 	};
 
- 	function moveSelect(step) {
+    function scrollResultToActive(li) {
+        var container = $results.get(0);
 
-		var lis = $("li", results);
-		if (!lis) return;
+        if (!li || !container) {
+            return;
+        }
 
-		active += step;
+        var liTop = li.offsetTop;
+        var liBottom = liTop + li.offsetHeight;
 
-		if (active < 0) {
-			active = 0;
-		} else if (active >= lis.length) {
-			active = lis.length- 1;
-		}
+        var visibleTop = container.scrollTop;
+        var visibleBottom = visibleTop + container.clientHeight;
 
-		lis.removeClass("ac_over");
+        if (liTop < visibleTop) {
+            container.scrollTop = liTop;
+        } else if (liBottom > visibleBottom) {
+            container.scrollTop = liBottom - container.clientHeight;
+        }
+    }
 
-		$(lis[active]).addClass("ac_over");
+ 	// function moveSelect(step) {
 
-		// Weird behaviour in IE
-		// if (lis[active] && lis[active].scrollIntoView) {
-		// 	lis[active].scrollIntoView(false);
-		// }
+	// 	var lis = $("li", results);
+	// 	if (!lis) return;
 
-	};
+	// 	active += step;
+
+	// 	if (active < 0) {
+	// 		active = 0;
+	// 	} else if (active >= lis.length) {
+	// 		active = lis.length- 1;
+	// 	}
+
+	// 	lis.removeClass("ac_over");
+
+	// 	$(lis[active]).addClass("ac_over");
+
+	// 	// Weird behaviour in IE
+	// 	// if (lis[active] && lis[active].scrollIntoView) {
+	// 	// 	lis[active].scrollIntoView(false);
+	// 	// }
+
+	// };
+
+    function moveSelect(step) {
+        var lis = $("li", results);
+
+        if (!lis.length) {
+            return;
+        }
+
+        active += step;
+
+        if (active < 0) {
+            active = 0;
+        } else if (active >= lis.length) {
+            active = lis.length - 1;
+        }
+
+        lis.removeClass("ac_over");
+
+        var activeLi = lis[active];
+
+        $(activeLi).addClass("ac_over");
+
+        scrollResultToActive(activeLi);
+    }
 
 	function selectCurrent() {
 		var li = $("li.ac_over", results)[0];
@@ -311,8 +360,81 @@ jQuery.autocomplete = function(input, options) {
 				}).show();
 			}
 		}
-};
+    };
 
+    function showResultsNew() {
+        var inputEl = $input.get(0);
+
+        if (!inputEl) {
+            return;
+        }
+
+        var rect = inputEl.getBoundingClientRect();
+        var searchBarRect = $(".search-bar").get(0).getBoundingClientRect();
+        var gap = 8;
+
+        // var iWidth = (options.width > 0) ? options.width : $input.outerWidth();
+        var iWidth = searchBarRect.width;
+
+        if (design == 6) {
+            iWidth += 60;
+        }
+
+        $results.css({
+            position: "fixed",
+            width: parseInt(iWidth) + "px",
+            left: searchBarRect.left + "px",
+            boxSizing: "border-box",
+            top: "auto",
+            bottom: "auto",
+            // height: "auto",
+            // maxHeight: "none",
+            overflowY: "visible",
+            visibility: "hidden",
+            display: "block"
+        });
+
+        var resultsHeight = $results.outerHeight();
+
+        var spaceBelow = window.innerHeight - rect.bottom - gap;
+        var spaceAbove = rect.top - gap;
+
+        var showAbove = resultsHeight > spaceBelow && spaceAbove > spaceBelow;
+
+        var availableHeight = showAbove ? spaceAbove : spaceBelow;
+        var finalHeight = Math.min(resultsHeight, availableHeight);
+
+        if (showAbove) {
+            $results.css({
+                top: Math.max(gap, rect.top - finalHeight - gap) - 5 + "px",
+                bottom: "auto",
+                // maxHeight: Math.max(80, availableHeight) + "px",
+                overflowY: "scroll",
+                visibility: "visible",
+                display: "block"
+            });
+        } else {
+            $results.css({
+                top: rect.bottom + gap + 5 + "px",
+                bottom: "auto",
+                // maxHeight: Math.max(80, availableHeight) + "px",
+                overflowY: "scroll",
+                visibility: "visible",
+                display: "block"
+            });
+        }
+    };
+
+    function repositionResults() {
+        if (design == 17 && $results.is(":visible") && hasFocus) {
+            showResultsNew();
+        }
+    }
+
+    $(window).on("scroll resize", repositionResults);
+
+    // Для вложенных scroll-контейнеров нужен native addEventListener
+    document.addEventListener("scroll", repositionResults, true);
 
 	function hideResults() {
 		if (timeout) clearTimeout(timeout);
@@ -348,7 +470,23 @@ jQuery.autocomplete = function(input, options) {
 			results.appendChild(dataToDom(data));
 			// autofill in the complete box w/the first match as long as the user hasn't entered in more data
 			if( options.autoFill && ($input.val().toLowerCase() == q.toLowerCase()) ) autoFill(data[0][0]);
-			showResults();
+
+            if (design == 17) {
+                showResultsNew();
+
+                // function repositionResults() {
+                //     if ($results.is(":visible") && hasFocus) {
+                //         showResultsNew();
+                //     }
+                // }
+
+                // $(window).on("scroll resize", repositionResults);
+
+                // $(document).on("scroll", repositionResults, true);
+            } else {
+                showResults();
+            }
+
 		} else {
 			hideResultsNow();
 		}
