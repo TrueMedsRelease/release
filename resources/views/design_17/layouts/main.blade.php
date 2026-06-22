@@ -294,7 +294,7 @@
                                 @csrf
                                 <label class="thread-box__label textarea-field">
                                     {{-- <textarea class="thread-box__input input-textarea ac_input input-text" rows="1" id="autocomplete" placeholder="Enter a drug name" name="search_text"></textarea> --}}
-                                    <input class="search-form__input form__text-input input-text ac_input" id="autocomplete" type="text" placeholder="{{ __('text.common_search') }}" name="search_text" required>
+                                    <input class="search-form__input form__text-input input-text ac_input search-form__input" id="autocomplete" type="text" placeholder="{{ __('text.common_search') }}" name="search_text" required>
                                     {{-- <span class="thread-box__placeholder">{{ __('text.common_search') }}</span> --}}
                                 </label>
                                 <button class="thread-box__submit button search-form__button" aria-label="Thred box submit">
