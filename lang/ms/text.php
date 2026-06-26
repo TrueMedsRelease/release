@@ -726,4 +726,5 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     'pwa_instruction_default' => "Pemasangan melalui butang tidak tersedia dalam pelayar ini. Gunakan Chrome atau Edge, atau tambahkan laman ini ke Skrin Utama anda daripada menu pelayar.",
 
     "checkout_open_banking_subtext" => "Tambah dana dengan selamat dan terus daripada akaun bank anda.",
+    "complete_new_order" => "Saya ingin membuat pesanan lain",
 ];

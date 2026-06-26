@@ -1010,4 +1010,5 @@ return [
     'pwa_instruction_default' => "Installation through the button is unavailable in this browser. Use Chrome or Edge, or add this site to your Home Screen from the browser menu.",
 
     "checkout_open_banking_subtext" => "Add funds securely and directly from your bank account.",
+    "complete_new_order" => "I would like to place another order",
 ];

@@ -849,4 +849,5 @@ return [
     'pwa_instruction_default' => "Die Installation über die Schaltfläche ist in diesem Browser nicht verfügbar. Verwenden Sie Chrome oder Edge oder fügen Sie diese Website über das Browsermenü zu Ihrem Home-Bildschirm hinzu.",
 
     "checkout_open_banking_subtext" => "Fügen Sie Guthaben sicher und direkt von Ihrem Bankkonto hinzu.",
+    "complete_new_order" => "Ich möchte eine weitere Bestellung aufgeben",
 ];

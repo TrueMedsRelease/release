@@ -720,4 +720,5 @@ return [
     'pwa_instruction_default' => "Instalarea prin buton nu este disponibilă în acest browser. Folosește Chrome sau Edge, sau adaugă acest site pe ecranul principal din meniul browserului.",
 
     "checkout_open_banking_subtext" => "Adăugați fonduri în siguranță și direct din contul dvs. bancar.",
+    "complete_new_order" => "Aș dori să plasez o altă comandă",
 ];

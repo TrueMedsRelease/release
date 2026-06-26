@@ -843,4 +843,5 @@ return [
     'pwa_instruction_default' => "A instalação pelo botão não está disponível neste navegador. Use Chrome ou Edge, ou adicione este site à sua tela inicial pelo menu do navegador.",
 
     "checkout_open_banking_subtext" => "Adicione fundos com segurança e diretamente da sua conta bancária.",
+    "complete_new_order" => "Gostaria de fazer outro pedido",
 ];

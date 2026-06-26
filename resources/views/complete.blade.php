@@ -139,22 +139,28 @@
                 </div>
             </div>
         </header>
+
+        @php
+            $successOrderPage = session('success_order_page', []);
+            $successOrder = $successOrderPage['order'] ?? [];
+        @endphp
+
         <main class="succes">
             <div class="succes__container">
                 {{-- <h1 class="succes__title"></h1> --}}
-                <h2 class="succes__subtitle">{{ __('text.success_complete') }} {{ __('text.success_congrat') }} {{ session('form.firstname') . ' ' . session('form.lastname') }}{{ __('text.success_choice') }}
+                <h2 class="succes__subtitle">{{ __('text.success_complete') }} {{ __('text.success_congrat') }} {{ ($successOrderPage['firstname'] ?? '') . ' ' . ($successOrderPage['lastname'] ?? '') }}{{ __('text.success_choice') }}
                 </h2>
-                @if(session('order') != 'error')
+                @if(($successOrderPage['order'] ?? null) !== 'error')
                 <div class="succes__block">
-                    <b>{{ __('text.success_order_number') }}<span> {{ session('order.order_id') }}</span></b>
+                    <b>{{ __('text.success_order_number') }}<span> {{ $successOrder['order_id'] ?? '' }}</span></b>
                 </div>
                 @endif
                 <div class="succes__block succes__block--transparent">
-                    {{ __('text.success_charge') }}<b>{{ $Currency::convert(session('total.checkout_total')) }}</b>, {{ __('text.success_amount') }}
+                    {{ __('text.success_charge') }}<b>{{ $Currency::convert($successOrderPage['checkout_total'] ?? 0) }}</b>, {{ __('text.success_amount') }}
                 </div>
-                @if (session('order.gift_card'))
+                @if (!empty($successOrder['gift_card']))
 					<div class="gift_block">
-						@foreach (session('order.gift_card') as $card)
+						@foreach ($successOrder['gift_card'] as $card)
 							<div class="gift">
 								<div class="gift_text">{{ __('text.common_gift_card') }} {{ $Currency::convert($card['price']) }}</div>
 								<img loading="lazy" src="{{ asset("style_checkout/images/gift_card_img.svg") }}" class="gift_img">
@@ -197,6 +203,13 @@
                         <a class="succes__link" href="mailto:support@true-client-support.com">support@true-client-support.com</a>
                     </div>
                 </div>
+                @if (!empty($fromCookie))
+                    <div class="succes__block">
+                        <a href="{{ route('checkout.new_order') }}" class="succes__button button" style="max-width: 500px;">
+                            <span>{{ __('text.complete_new_order') }}</span>
+                        </a>
+                    </div>
+                @endif
                 <div class="succes__last-words">
                     {{-- <p>{{ __('text.common_receive') }}</p>
                     <p>{{ __('text.success_sms') }}</p> --}}

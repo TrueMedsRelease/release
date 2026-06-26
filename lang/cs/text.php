@@ -810,4 +810,5 @@ return [
     'pwa_instruction_default' => "Instalace pomocí tlačítka není v tomto prohlížeči dostupná. Použijte Chrome nebo Edge, případně přidejte tento web na domovskou obrazovku z nabídky prohlížeče.",
 
     "checkout_open_banking_subtext" => "Přidejte prostředky bezpečně a přímo ze svého bankovního účtu.",
+    "complete_new_order" => "Chtěla bych zadat další objednávku",
 ];

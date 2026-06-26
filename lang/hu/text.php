@@ -730,4 +730,5 @@ return [
     'pwa_instruction_default' => "A gombbal történő telepítés ebben a böngészőben nem érhető el. Használjon Chrome-ot vagy Edge-et, vagy adja hozzá ezt a webhelyet a kezdőképernyőhöz a böngésző menüjéből.",
 
     "checkout_open_banking_subtext" => "Adjon hozzá pénzt biztonságosan és közvetlenül a bankszámlájáról.",
+    "complete_new_order" => "Szeretnék leadni egy újabb rendelést",
 ];

@@ -724,4 +724,5 @@ return [
     'pwa_instruction_default' => "Inštalácia cez tlačidlo nie je v tomto prehliadači dostupná. Použite Chrome alebo Edge, prípadne pridajte túto stránku na domovskú obrazovku z ponuky prehliadača.",
 
     "checkout_open_banking_subtext" => "Pridajte prostriedky bezpečne a priamo zo svojho bankového účtu.",
+    "complete_new_order" => "Chcela by som zadať ďalšiu objednávku",
 ];

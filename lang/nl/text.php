@@ -764,4 +764,5 @@ return [
     'pwa_instruction_default' => "Installatie via de knop is niet beschikbaar in deze browser. Gebruik Chrome of Edge, of voeg deze site toe aan je beginscherm via het browsermenu.",
 
     "checkout_open_banking_subtext" => "Voeg veilig en rechtstreeks geld toe vanaf uw bankrekening.",
+    "complete_new_order" => "Ik wil graag nog een bestelling plaatsen",
 ];
