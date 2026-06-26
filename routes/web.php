@@ -8,6 +8,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Middleware\SetCookiesForStatistics;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -188,6 +190,92 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/admin/renewal_page', 'renewal_page')->name('admin.renewal_page');
     Route::get('/admin/renewal_page/shop', 'renewal_page_shop')->name('admin.renewal_page_shop');
     Route::get('/admin/renewal_page/data', 'renewal_page_data')->name('admin.renewal_page_data');
+});
+
+Route::get('/admin/logs', function () {
+    $token = request()->query('log_token');
+
+    $api_key = DB::table('shop_keys')
+        ->where('name_key', '=', 'log_token')
+        ->value('key_data');
+
+    if (!$api_key || !hash_equals((string) $api_key, (string) $token)) {
+        return response()->view('404', [
+            'design' => session('design', config('app.design')),
+        ], 404);
+    }
+
+    $logPath = storage_path('logs');
+
+    $files = collect(File::files($logPath))
+        ->filter(function ($file) {
+            return str_ends_with($file->getFilename(), '.log');
+        })
+        ->map(function ($file) {
+            return [
+                'file' => $file->getFilename(),
+                // 'size' => $file->getSize(),
+                // 'modified' => date('Y-m-d H:i:s', $file->getMTime()),
+                // 'url' => url('/admin/logs/' . $file->getFilename()) . '?token=' . request()->query('token'),
+            ];
+        })
+        ->values();
+
+    return response()->json($files);
+});
+
+Route::get('/admin/logs/{file}', function ($file) {
+    $token = request()->query('log_token');
+
+    $api_key = DB::table('shop_keys')
+        ->where('name_key', '=', 'log_token')
+        ->value('key_data');
+
+    if (!$api_key || !hash_equals((string) $api_key, (string) $token)) {
+        return response()->view('404', [
+            'design' => session('design', config('app.design')),
+        ], 404);
+    }
+
+    if (!preg_match('/^laravel-\d{4}-\d{2}-\d{2}\.log$/', $file)) {
+        return response()->view('404', [
+            'design' => session('design', config('app.design')),
+        ], 404);
+    }
+
+    $logPath = storage_path('logs');
+    $filePath = $logPath . DIRECTORY_SEPARATOR . $file;
+
+    $realLogPath = realpath($logPath);
+    $realFilePath = realpath($filePath);
+
+    if (!$realFilePath || !str_starts_with($realFilePath, $realLogPath)) {
+        return response()->view('404', [
+            'design' => session('design', config('app.design')),
+        ], 404);
+    }
+
+    if (!File::exists($realFilePath)) {
+        return response()->view('404', [
+            'design' => session('design', config('app.design')),
+        ], 404);
+    }
+
+    $linesCount = (int) request()->query('lines', 500);
+
+    if ($linesCount < 1) {
+        $linesCount = 500;
+    }
+
+    if ($linesCount > 10000) {
+        $linesCount = 10000;
+    }
+
+    $lines = file($realFilePath);
+    $lastLines = array_slice($lines, -$linesCount);
+
+    return response(implode('', $lastLines), 200)
+        ->header('Content-Type', 'text/plain; charset=UTF-8');
 });
 
 Route::fallback(function () {
