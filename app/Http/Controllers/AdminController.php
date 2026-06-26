@@ -7,7 +7,6 @@ use Illuminate\View\View;
 use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Product;
 use App\Services\AdminServices;
 use App\Models\Language;
 use App\Models\Currency;
@@ -129,7 +128,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "design_17") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
@@ -380,7 +379,7 @@ class AdminController extends Controller
             ];
         } else {
             foreach ($selected_products_id as $cur_product_id) {
-                DB::update("UPDATE product SET is_showed_on_main = 1 WHERE `id` = $cur_product_id");
+                AdminServices::setMainPageProductShowed((int) $cur_product_id, 1);
             }
 
             $not_showed_product = AdminServices::getNotShowedOnMainProduct();
@@ -412,7 +411,7 @@ class AdminController extends Controller
             ];
         } else {
             foreach ($selected_products_id as $cur_product_id) {
-                DB::update("UPDATE product SET is_showed_on_main = 0 WHERE `id` = $cur_product_id");
+                AdminServices::setMainPageProductShowed((int) $cur_product_id, 0);
             }
 
             $not_showed_product = AdminServices::getNotShowedOnMainProduct();
@@ -446,16 +445,11 @@ class AdminController extends Controller
             $showed_product_old = AdminServices::getShowedOnMainProduct();
 
             for($i = count($selected_products_id) - 1; $i >= 0;  $i--) {
-                $cur_product_id = $selected_products_id[$i];
-                $cur_product_order = Product::query()
-                    ->where('id', '=', $cur_product_id)
-                    ->where('is_showed', '=', 1)
-                    ->get(['main_order'])
-                    ->toArray();
+                $cur_product_id = (int) $selected_products_id[$i];
 
                 $prev_product_index = -1;
                 foreach ($showed_product_old as $key => $value) {
-                    if ($value['id'] == $cur_product_id) {
+                    if ((int) $value['id'] === $cur_product_id) {
                         $prev_product_index = $key - 1;
                         break;
                     }
@@ -464,35 +458,17 @@ class AdminController extends Controller
                 if($prev_product_index < 0) {
                     continue;
                 } else {
-                    $prev_product_id = $showed_product_old[$prev_product_index]['id'];
-                    $prev_product_order = Product::query()
-                        ->where('id', '=', $prev_product_id)
-                        ->where('is_showed', '=', 1)
-                        ->get(['main_order'])
-                        ->toArray();
+                    $prev_product_id = (int) $showed_product_old[$prev_product_index]['id'];
 
-                    $cur_order = (int) $cur_product_order[0]['main_order'];
-                    $prev_order = (int) $prev_product_order[0]['main_order'];
+                    $cur_order = AdminServices::getMainPageOrderValue($cur_product_id);
+                    $prev_order = AdminServices::getMainPageOrderValue($prev_product_id);
 
                     if ($cur_order == $prev_order) {
-                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
-                            $cur_order - 1,
-                            $cur_product_id
-                        ]);
+                        AdminServices::setMainPageOrderValue($cur_product_id, $cur_order - 1);
                     } else {
-                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
-                            $cur_order,
-                            $prev_product_id
-                        ]);
-
-                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
-                            $prev_order,
-                            $cur_product_id
-                        ]);
+                        AdminServices::setMainPageOrderValue($prev_product_id, $cur_order);
+                        AdminServices::setMainPageOrderValue($cur_product_id, $prev_order);
                     }
-
-                    // DB::update("UPDATE product SET main_order = '{$cur_product_order[0]['main_order']}' WHERE `id` = '$prev_product_id'");
-                    // DB::update("UPDATE product SET main_order = '{$prev_product_order[0]['main_order']}' WHERE `id` = '$cur_product_id'");
                 }
 
             }
@@ -528,16 +504,11 @@ class AdminController extends Controller
             $showed_product_old = AdminServices::getShowedOnMainProduct();
 
             for($i = count($selected_products_id) - 1; $i >= 0;  $i--) {
-                $cur_product_id = $selected_products_id[$i];
-                $cur_product_order = Product::query()
-                    ->where('id', '=', $cur_product_id)
-                    ->where('is_showed', '=', 1)
-                    ->get(['main_order'])
-                    ->toArray();
+                $cur_product_id = (int) $selected_products_id[$i];
 
                 $next_product_index = 0;
                 foreach ($showed_product_old as $key => $value) {
-                    if ($value['id'] == $cur_product_id) {
+                    if ((int) $value['id'] === $cur_product_id) {
                         $next_product_index = $key + 1;
                         break;
                     }
@@ -546,35 +517,17 @@ class AdminController extends Controller
                 if($next_product_index > count($showed_product_old) - 1) {
                     continue;
                 } else {
-                    $next_product_id = $showed_product_old[$next_product_index]['id'];
-                    $next_product_order = Product::query()
-                        ->where('id', '=', $next_product_id)
-                        ->where('is_showed', '=', 1)
-                        ->get(['main_order'])
-                        ->toArray();
+                    $next_product_id = (int) $showed_product_old[$next_product_index]['id'];
 
-                    $cur_order = (int) $cur_product_order[0]['main_order'];
-                    $next_order = (int) $next_product_order[0]['main_order'];
+                    $cur_order = AdminServices::getMainPageOrderValue($cur_product_id);
+                    $next_order = AdminServices::getMainPageOrderValue($next_product_id);
 
                     if ($cur_order == $next_order) {
-                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
-                            $cur_order + 1,
-                            $cur_product_id
-                        ]);
+                        AdminServices::setMainPageOrderValue($cur_product_id, $cur_order + 1);
                     } else {
-                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
-                            $cur_order,
-                            $next_product_id
-                        ]);
-
-                        DB::update("UPDATE product SET main_order = ? WHERE `id` = ?", [
-                            $next_order,
-                            $cur_product_id
-                        ]);
+                        AdminServices::setMainPageOrderValue($next_product_id, $cur_order);
+                        AdminServices::setMainPageOrderValue($cur_product_id, $next_order);
                     }
-
-                    // DB::update("UPDATE product SET main_order = '{$cur_product_order[0]['main_order']}' WHERE `id` = '$next_product_id'");
-                    // DB::update("UPDATE product SET main_order = '{$next_product_order[0]['main_order']}' WHERE `id` = '$cur_product_id'");
                 }
 
             }

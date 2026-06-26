@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
 
 class CheckoutController extends Controller
 {
@@ -174,6 +175,10 @@ class CheckoutController extends Controller
         $cart_option = session('cart_option', [
             'shipping' => env('APP_DEFAULT_SHIPPING')
         ]);
+
+        if (isset($cart_option['shipping'])) {
+            $cart_option['shipping'] = env('APP_DEFAULT_SHIPPING');
+        }
 
         $cart_option['insurance_price'] = Cart::CalcInsurance();
         $cart_option['secret_price']    = $shipping['secret_package'];
@@ -496,17 +501,71 @@ class CheckoutController extends Controller
     public function auth(Request $request)
     {
         $email   = $request->email;
+
+        $ip = request()->headers->get('cf-connecting-ip') ?: request()->ip();
+        $ip = trim(explode(',', $ip)[0]);
+
+        $banKey    = 'auth_ban_' . md5($ip);
+        $emailsKey = 'auth_emails_' . md5($ip);
+        $countKey  = 'auth_count_' . md5($ip);
+
+        if (Cache::has($banKey)) {
+            abort(429, 'Too many requests.');
+        }
+
+        // Бан, если с одного IP было больше 5 разных email за сутки
+        $emails = Cache::get($emailsKey, []);
+
+        $emails[] = (string) $email;
+        $emails = array_values(array_unique($emails));
+
+        Cache::put($emailsKey, $emails, now()->addDay());
+
+        if (count($emails) > 5) {
+            Cache::put($banKey, true, now()->addDay());
+
+            Log::warning('IP banned: too many different email values', [
+                'ip' => $ip,
+                'emails' => $emails,
+            ]);
+
+            abort(429, 'Too many requests.');
+        }
+
+        // Дополнительно: бан, если больше 5 запросов в минуту даже с одним email
+        // $count = Cache::increment($countKey);
+
+        // if ($count === 1) {
+        //     Cache::put($countKey, 1, now()->addMinute());
+        // }
+
+        // if ($count > 5) {
+        //     Cache::put($banKey, true, now()->addDay());
+
+        //     Log::warning('IP banned: too many auth requests', [
+        //         'ip' => $ip,
+        //         'email' => $email,
+        //         'count' => $count,
+        //     ]);
+
+        //     abort(429, 'Too many requests.');
+        // }
+
+        Log::info('AUTH: ' . $ip . ' ' . $email);
+
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
         $data = [
             'method'  => 'auth',
             'api_key' => $api_key->key_data,
-            'email'   => $email
+            'email'   => $email,
+            'ip'      => $ip
         ];
 
         if (checkdnsrr('true-serv.net', 'A')) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                Log::info('Response AUTH: ' . $response);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа

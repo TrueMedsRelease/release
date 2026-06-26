@@ -20,6 +20,53 @@ use Illuminate\Support\Facades\Schema;
 
 class ProductServices
 {
+    private static function hasMainPageOrderTable(): bool
+    {
+        static $hasTable = null;
+
+        if ($hasTable === null) {
+            $hasTable = Schema::hasTable('main_page_order');
+        }
+
+        return $hasTable;
+    }
+
+    private static function joinMainPageOrderIfExists($query, bool $hasMainPageOrderTable)
+    {
+        if ($hasMainPageOrderTable) {
+            $query->leftJoin('main_page_order as mpo', 'product.id', '=', 'mpo.product_id');
+        }
+
+        return $query;
+    }
+
+    private static function applyShowedOnMainFallback($query, bool $hasMainPageOrderTable)
+    {
+        if ($hasMainPageOrderTable) {
+            $query->whereRaw('COALESCE(mpo.is_showed_on_main, product.is_showed_on_main) = ?', [1]);
+        } else {
+            $query->where('product.is_showed_on_main', '=', 1);
+        }
+
+        return $query;
+    }
+
+    private static function applyMainOrderFallback($query, bool $hasMainPageOrderTable)
+    {
+        if ($hasMainPageOrderTable) {
+            $query->orderByRaw('COALESCE(mpo.main_order, product.main_order) ASC');
+        } else {
+            $query->orderBy('product.main_order', 'asc');
+        }
+
+        return $query;
+    }
+
+    private static function getMainPageProductColumns(): array
+    {
+        return ['product.id', 'product.image', 'product.aktiv'];
+    }
+
     public static function GetBestsellers($design): array
     {
         $products_desc = Cache::remember(App::currentLocale() . "_products_desc", 180, function () {
@@ -31,42 +78,61 @@ class ProductServices
             return self::GetAllProductPillPrice();
         });
 
+        $hasMainPageOrderTable = self::hasMainPageOrderTable();
+
+        $getGiftCard = function () use ($hasMainPageOrderTable): array {
+            $cardQuery = Product::query();
+            self::joinMainPageOrderIfExists($cardQuery, $hasMainPageOrderTable);
+
+            $cardQuery
+                ->where('product.id', '=', 616)
+                ->where('product.is_showed', '=', 1);
+
+            self::applyShowedOnMainFallback($cardQuery, $hasMainPageOrderTable);
+
+            return $cardQuery
+                ->get(self::getMainPageProductColumns())
+                ->toArray();
+        };
+
         if ($design == 'design_5') {
-            $products = Product::query()
-                ->where('product.is_showed_on_main', '=', 1)
-                ->where('product.is_showed', '=', 1)
-                ->where('product_category.category_id', '=', 14)
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.is_showed', '=', 1)
+                ->where('product_category.category_id', '=', 14);
+
+            self::applyShowedOnMainFallback($query, $hasMainPageOrderTable);
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
 
-            $card = Product::query()
-                ->where('id', '=', 616)
-                ->where('is_showed_on_main', '=', 1)
-                ->where('is_showed', '=', 1)
-                ->get(['product.id', 'product.image', 'product.aktiv'])
-                ->toArray();
+            $card = $getGiftCard();
 
             if ($card) {
                 array_unshift($products, $card[0]);
             }
         } else if ($design == 'design_15') {
-            $products = Product::query()
-                // ->where('product.is_showed_on_main', '=', 1)
-                ->where('product.is_showed', '=', 1)
-                ->where('product_category.category_id', '=', 44)
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.is_showed', '=', 1)
+                ->where('product_category.category_id', '=', 44);
+
+            self::applyShowedOnMainFallback($query, $hasMainPageOrderTable);
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
 
-            $card = Product::query()
-                ->where('id', '=', 616)
-                ->where('is_showed_on_main', '=', 1)
-                ->where('is_showed', '=', 1)
-                ->get(['product.id', 'product.image', 'product.aktiv'])
-                ->toArray();
+            $card = $getGiftCard();
 
             if ($card) {
                 array_unshift($products, $card[0]);
@@ -84,40 +150,42 @@ class ProductServices
             //     ->get(['product.id', 'product.image', 'product.aktiv'])
             //     ->toArray();
 
-            $query = Product::query()
-                ->where('product.is_showed', 1)
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->join('category', 'category.id', '=', 'product_category.category_id')
+                ->where('product.is_showed', '=', 1)
                 ->whereIn('category.category_parent_id', [47]);
 
             if (Schema::hasColumn('product', 'sport_order')) {
                 $query->orderBy('product.sport_order');
-                $query->orderBy('product.main_order');
-            } else {
-                $query->orderBy('product.main_order');
             }
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
 
             $products = $query
                 ->limit(31)
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
 
-            $card = Product::query()
-                ->where('id', '=', 616)
-                ->where('is_showed_on_main', '=', 1)
-                ->where('is_showed', '=', 1)
-                ->get(['product.id', 'product.image', 'product.aktiv'])
-                ->toArray();
+            $card = $getGiftCard();
 
             if ($card) {
                 array_unshift($products, $card[0]);
             }
         } else {
-            $products = Product::query()
-                ->where('is_showed_on_main', '=', 1)
-                ->where('is_showed', '=', 1)
-                ->orderBy('main_order')
-                ->get(['id', 'image', 'aktiv'])
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query->where('product.is_showed', '=', 1);
+
+            self::applyShowedOnMainFallback($query, $hasMainPageOrderTable);
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         }
 
@@ -712,40 +780,66 @@ class ProductServices
             return self::GetAllProductPillPrice();
         });
 
+        $hasMainPageOrderTable = self::hasMainPageOrderTable();
+
         if ($design == 'design_5') {
-            $products = Product::query()
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [13, 14])
                 ->where('product.is_showed', '=', 1)
-                ->where('product.first_letter', '=', $letter)
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.first_letter', '=', $letter);
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         } else if ($design == 'design_15') {
-            $products = Product::query()
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [44])
                 ->where('product.is_showed', '=', 1)
-                ->where('product.first_letter', '=', $letter)
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.first_letter', '=', $letter);
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         } else if ($design == 'design_16') {
-            $products = Product::query()
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->join('category', 'category.id', '=', 'product_category.category_id')
                 ->whereIn('category.category_parent_id', [47])
                 ->where('product.is_showed', '=', 1)
-                ->where('product.first_letter', '=', $letter)
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.first_letter', '=', $letter);
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         } else {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->where('first_letter', '=', $letter)
-                ->orderBy('main_order', 'asc')
-                ->get(['id', 'image', 'aktiv'])
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
+                ->where('product.is_showed', '=', 1)
+                ->where('product.first_letter', '=', $letter);
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         }
 
@@ -885,13 +979,20 @@ class ProductServices
             $product_id[] = $item->product_id;
         }
 
-        $products = Product::query()
-            ->where('is_showed', '=', 1)
-            ->whereIn('id', $product_id)
-            ->orderBy('main_order', 'asc')
-            ->get(['id', 'image', 'aktiv'])
-            ->toArray();
+        $hasMainPageOrderTable = self::hasMainPageOrderTable();
 
+        $query = Product::query();
+        self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+        $query
+            ->where('product.is_showed', '=', 1)
+            ->whereIn('product.id', $product_id);
+
+        self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+        $products = $query
+            ->get(self::getMainPageProductColumns())
+            ->toArray();
 
         $dosagesData = static::dosagesList();
         $domainWithoutZone = preg_replace('/\.[^.]+$/', '', request()->getHost());
@@ -1001,41 +1102,66 @@ class ProductServices
         });
 
         $active = str_replace('-', ' ', $active);
+        $hasMainPageOrderTable = self::hasMainPageOrderTable();
 
         if ($design == 'design_5') {
-            $products = Product::query()
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [13, 14])
                 ->where('product.is_showed', '=', 1)
-                ->where('product.aktiv', 'LIKE', "%$active%")
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.aktiv', 'LIKE', "%$active%");
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         } else if ($design == 'design_15') {
-            $products = Product::query()
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->whereIn('product_category.category_id', [44])
                 ->where('product.is_showed', '=', 1)
-                ->where('product.aktiv', 'LIKE', "%$active%")
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.aktiv', 'LIKE', "%$active%");
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         } else if ($design == 'design_16') {
-            $products = Product::query()
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
                 ->join('product_category', 'product.id', '=', 'product_category.product_id')
                 ->join('category', 'category.id', '=', 'product_category.category_id')
                 ->whereIn('category.category_parent_id', [47])
                 ->where('product.is_showed', '=', 1)
-                ->where('product.aktiv', 'LIKE', "%$active%")
-                ->orderBy('product.main_order')
-                ->get(['product.id', 'product.image', 'product.aktiv'])
+                ->where('product.aktiv', 'LIKE', "%$active%");
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         } else {
-            $products = Product::query()
-                ->where('is_showed', '=', 1)
-                ->where('aktiv', 'LIKE', "%$active%")
-                ->orderBy('main_order')
-                ->get(['id', 'image', 'aktiv'])
+            $query = Product::query();
+            self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
+
+            $query
+                ->where('product.is_showed', '=', 1)
+                ->where('product.aktiv', 'LIKE', "%$active%");
+
+            self::applyMainOrderFallback($query, $hasMainPageOrderTable);
+
+            $products = $query
+                ->get(self::getMainPageProductColumns())
                 ->toArray();
         }
 

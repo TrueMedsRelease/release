@@ -6,49 +6,204 @@ use App\Models\Product;
 use App\Services\ProductServices;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 class AdminServices
 {
+
+    public static function hasMainPageOrderTable(): bool
+    {
+        static $hasTable = null;
+
+        if ($hasTable !== null) {
+            return $hasTable;
+        }
+
+        if (Schema::hasTable('main_page_order')) {
+            $hasTable = true;
+            return true;
+        }
+
+        try {
+            Schema::create('main_page_order', function (Blueprint $table) {
+                $table->increments('id');
+                $table->unsignedInteger('product_id')->unique();
+                $table->tinyInteger('is_showed_on_main')->default(0);
+                $table->unsignedInteger('main_order')->default(0);
+
+                $table->index(['is_showed_on_main', 'main_order']);
+            });
+        } catch (\Throwable $e) {
+            // Если таблицу уже создал другой запрос или у пользователя БД нет прав CREATE,
+            // повторно проверяем наличие таблицы. Если её всё равно нет, код ниже
+            // продолжит работать по старой логике через product.
+        }
+
+        $hasTable = Schema::hasTable('main_page_order');
+
+        return $hasTable;
+    }
+
+    protected static function getProductMainPageBaseValues(int $productId)
+    {
+        return DB::table('product')
+            ->where('id', '=', $productId)
+            ->first(['is_showed_on_main', 'main_order']);
+    }
+
+    public static function setMainPageProductShowed(int $productId, int $isShowedOnMain): void
+    {
+        $isShowedOnMain = $isShowedOnMain ? 1 : 0;
+
+        if (static::hasMainPageOrderTable()) {
+            $product = static::getProductMainPageBaseValues($productId);
+
+            if (!$product) {
+                return;
+            }
+
+            $mainPageOrder = DB::table('main_page_order')
+                ->where('product_id', '=', $productId)
+                ->first(['main_order']);
+
+            DB::table('main_page_order')->updateOrInsert(
+                ['product_id' => $productId],
+                [
+                    'is_showed_on_main' => $isShowedOnMain,
+                    'main_order' => $mainPageOrder
+                        ? (int) $mainPageOrder->main_order
+                        : (int) $product->main_order,
+                ]
+            );
+
+            return;
+        }
+
+        DB::table('product')
+            ->where('id', '=', $productId)
+            ->update(['is_showed_on_main' => $isShowedOnMain]);
+    }
+
+    public static function getMainPageOrderValue(int $productId): int
+    {
+        if (static::hasMainPageOrderTable()) {
+            $product = DB::table('product')
+                ->leftJoin('main_page_order as mpo', 'product.id', '=', 'mpo.product_id')
+                ->where('product.id', '=', $productId)
+                ->where('product.is_showed', '=', 1)
+                ->selectRaw('COALESCE(mpo.main_order, product.main_order) as main_order')
+                ->first();
+
+            return $product ? (int) $product->main_order : 0;
+        }
+
+        $product = DB::table('product')
+            ->where('id', '=', $productId)
+            ->where('is_showed', '=', 1)
+            ->first(['main_order']);
+
+        return $product ? (int) $product->main_order : 0;
+    }
+
+    public static function setMainPageOrderValue(int $productId, int $mainOrder): void
+    {
+        if (static::hasMainPageOrderTable()) {
+            $product = static::getProductMainPageBaseValues($productId);
+
+            if (!$product) {
+                return;
+            }
+
+            $mainPageOrder = DB::table('main_page_order')
+                ->where('product_id', '=', $productId)
+                ->first(['is_showed_on_main']);
+
+            DB::table('main_page_order')->updateOrInsert(
+                ['product_id' => $productId],
+                [
+                    'is_showed_on_main' => $mainPageOrder
+                        ? (int) $mainPageOrder->is_showed_on_main
+                        : (int) $product->is_showed_on_main,
+                    'main_order' => $mainOrder,
+                ]
+            );
+
+            return;
+        }
+
+        DB::table('product')
+            ->where('id', '=', $productId)
+            ->update(['main_order' => $mainOrder]);
+    }
+
     public static function getNotShowedOnMainProduct() {
         $products_desc = ProductServices::GetProductDesc(1);
 
-        $not_showed_product = Product::query()
-            ->where('is_showed_on_main', '=', 0)
-            ->where('is_showed', '=', 1)
-            ->when(Schema::hasColumn('products', 'ban'), function ($q) {
-                $q->where('ban', '=', 0);
-            })
-            ->orderBy('main_order', 'asc')
-            ->get(['id'])
-            ->toArray();
+        $query = Product::query()
+            ->where('product.is_showed', '=', 1)
+            ->when(Schema::hasColumn('product', 'ban'), function ($q) {
+                $q->where('product.ban', '=', 0);
+            });
+
+        if (static::hasMainPageOrderTable()) {
+            $query->leftJoin('main_page_order as mpo', 'product.id', '=', 'mpo.product_id')
+                ->whereRaw('COALESCE(mpo.is_showed_on_main, product.is_showed_on_main) = ?', [0])
+                ->orderByRaw('COALESCE(mpo.main_order, product.main_order) ASC')
+                ->select('product.id');
+        } else {
+            $query->where('product.is_showed_on_main', '=', 0)
+                ->orderBy('product.main_order', 'asc')
+                ->select('product.id');
+        }
+
+        $not_showed_product = $query->get()->toArray();
 
         for ($i = 0; $i < count($not_showed_product); $i++) {
+            if (!isset($products_desc[$not_showed_product[$i]['id']])) {
+                unset($not_showed_product[$i]);
+                continue;
+            }
+
             $not_showed_product[$i]['name'] = $products_desc[$not_showed_product[$i]['id']]['name'];
             $not_showed_product[$i]['url'] = $products_desc[$not_showed_product[$i]['id']]['url'];
         }
 
-        return $not_showed_product;
+        return array_values($not_showed_product);
     }
 
     public static function getShowedOnMainProduct() {
         $products_desc = ProductServices::GetProductDesc(1);
 
-        $showed_product = Product::query()
-            ->where('is_showed_on_main', '=', 1)
-            ->where('is_showed', '=', 1)
-            ->when(Schema::hasColumn('products', 'ban'), function ($q) {
-                $q->where('ban', '=', 0);
-            })
-            ->orderBy('main_order', 'asc')
-            ->get(['id'])
-            ->toArray();
+        $query = Product::query()
+            ->where('product.is_showed', '=', 1)
+            ->when(Schema::hasColumn('product', 'ban'), function ($q) {
+                $q->where('product.ban', '=', 0);
+            });
+
+        if (static::hasMainPageOrderTable()) {
+            $query->leftJoin('main_page_order as mpo', 'product.id', '=', 'mpo.product_id')
+                ->whereRaw('COALESCE(mpo.is_showed_on_main, product.is_showed_on_main) = ?', [1])
+                ->orderByRaw('COALESCE(mpo.main_order, product.main_order) ASC')
+                ->select('product.id');
+        } else {
+            $query->where('product.is_showed_on_main', '=', 1)
+                ->orderBy('product.main_order', 'asc')
+                ->select('product.id');
+        }
+
+        $showed_product = $query->get()->toArray();
 
         for ($i = 0; $i < count($showed_product); $i++) {
+            if (!isset($products_desc[$showed_product[$i]['id']])) {
+                unset($showed_product[$i]);
+                continue;
+            }
+
             $showed_product[$i]['name'] = $products_desc[$showed_product[$i]['id']]['name'];
             $showed_product[$i]['url'] = $products_desc[$showed_product[$i]['id']]['url'];
         }
 
-        return $showed_product;
+        return array_values($showed_product);
     }
 
     public static function getCategoriesWithUnavailableProducts() {
@@ -178,7 +333,7 @@ class AdminServices
 
             $product = DB::table('product')
                 ->where('id', '=', $product_id)
-                ->when(Schema::hasColumn('products', 'ban'), function ($q) {
+                ->when(Schema::hasColumn('product', 'ban'), function ($q) {
                     $q->where('ban', '=', 0);
                 })
                 ->get(['is_showed', 'sinonim'])
