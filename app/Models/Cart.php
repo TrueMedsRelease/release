@@ -16,10 +16,12 @@ class Cart extends Model
 
     public static function add($pack_id)
     {
+        $design = session('design') ? session('design') : config('app.design');
         $product_pack   = ProductPackaging::query()->find($pack_id);
         $array          = [];
         $upgrade_pack   = ProductServices::GetUpgradePack($pack_id);
         $max_pill_price = ProductServices::GetMaxPriceForPill($product_pack->product_id, $product_pack->dosage);
+        $product_info   = ProductServices::getProductData([$product_pack->product_id], $design);
         $product        = [
             'cart_id'        => SessionHelper::getSessionId(request()),
             'pack_id'        => $product_pack->id,
@@ -30,7 +32,8 @@ class Cart extends Model
             'q'              => 1,
             'price'          => $product_pack->price,
             'max_pill_price' => $max_pill_price,
-            'upgrade_pack'   => $upgrade_pack
+            'upgrade_pack'   => $upgrade_pack,
+            'product_info'   => array_values($product_info)[0] ?? null
         ];
 
         if (session()->has('cart')) {
@@ -123,8 +126,10 @@ class Cart extends Model
         $product_pack = $product_pack[0];
 
         $array          = [];
+        $design = session('design') ? session('design') : config('app.design');
         $upgrade_pack   = ProductServices::GetUpgradePack($product_pack['id']);
         $max_pill_price = ProductServices::GetMaxPriceForPill($product_pack['product_id'], $product_pack['dosage']);
+        $product_info   = ProductServices::getProductData([$product_pack['product_id']], $design);
         $product        = [
             'cart_id'        => SessionHelper::getSessionId(request()),
             'pack_id'        => $product_pack['id'],
@@ -135,7 +140,8 @@ class Cart extends Model
             'q'              => $count,
             'price'          => $product_pack['price'],
             'max_pill_price' => $max_pill_price,
-            'upgrade_pack'   => $upgrade_pack
+            'upgrade_pack'   => $upgrade_pack,
+            'product_info'   => array_values($product_info)[0] ?? null
         ];
 
         for ($i = 0; $i < count($products); $i++) {
@@ -387,4 +393,9 @@ class Cart extends Model
         session(['total' => $cart_total]);
     }
 
+    public function getCartProductInfo() {
+        $cart = session('cart', []);
+
+
+    }
 }

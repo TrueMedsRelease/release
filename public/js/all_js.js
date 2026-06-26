@@ -135,6 +135,22 @@ function addCard() {
     });
 }
 
+function addCardNew() {
+    let value_card = $('select[name=gift_card_select]').val();;
+    
+    $.ajax({
+        url: routeCartUp,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: {'pack_id':value_card},
+        success: function (data) {
+            data = JSON.parse(data);
+            $('#shopping_cart').html(data.html);
+        }
+    });
+}
+
 function enterProfile() {
     let email = $('[name="form[email]"]').val();
     let captcha = $('[name="form[code]"]').val();
