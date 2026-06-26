@@ -773,4 +773,5 @@ return [
     'pwa_instruction_default' => "Installation via knappen er ikke tilgængelig i denne browser. Brug Chrome eller Edge, eller tilføj dette websted til din hjemmeskærm fra browsermenuen.",
 
     "checkout_open_banking_subtext" => "Tilføj penge sikkert og direkte fra din bankkonto.",
+    "complete_new_order" => "Jeg vil gerne afgive en ny ordre",
 ];

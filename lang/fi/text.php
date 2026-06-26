@@ -730,4 +730,5 @@ return [
     'pwa_instruction_default' => "Asennus painikkeen kautta ei ole käytettävissä tässä selaimessa. Käytä Chromea tai Edgeä, tai lisää tämä sivusto aloitusnäyttöön selaimen valikosta.",
 
     "checkout_open_banking_subtext" => "Lisää varoja turvallisesti ja suoraan pankkitililtäsi.",
+    "complete_new_order" => "Haluaisin tehdä uuden tilauksen",
 ];

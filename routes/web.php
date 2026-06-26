@@ -80,6 +80,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/wallet_process', 'wallet_process')->name('checkout.wallet_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/recalculation', 'recalculation')->name('checkout.recalculation')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/open_banking_process', 'open_banking_process')->name('checkout.open_banking_process')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/checkout/new_order', 'new_order')->name('checkout.new_order');
 });
 
 Route::get('/redirect', function () {

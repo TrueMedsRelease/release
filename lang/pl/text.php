@@ -725,4 +725,5 @@ return [
     'pwa_instruction_default' => "Instalacja za pomocą przycisku nie jest dostępna w tej przeglądarce. Użyj Chrome lub Edge albo dodaj tę witrynę do ekranu początkowego z menu przeglądarki.",
 
     "checkout_open_banking_subtext" => "Dodaj środki bezpiecznie i bezpośrednio ze swojego konta bankowego.",
+    "complete_new_order" => "Chciałabym złożyć kolejne zamówienie",
 ];

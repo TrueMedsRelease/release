@@ -729,4 +729,5 @@ return [
     'pwa_instruction_default' => "此浏览器无法通过按钮安装。请使用 Chrome 或 Edge，或从浏览器菜单将此网站添加到主屏幕。",
 
     "checkout_open_banking_subtext" => "从您的银行账户安全并直接添加资金。",
+    "complete_new_order" => "我想再下一个订单",
 ];

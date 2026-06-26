@@ -842,4 +842,5 @@ return [
     'pwa_instruction_default' => "このブラウザでは、ボタンからのインストールは利用できません。Chrome または Edge を使用するか、ブラウザメニューからこのサイトをホーム画面に追加してください。",
 
     "checkout_open_banking_subtext" => "銀行口座から安全かつ直接資金を追加できます。",
+    "complete_new_order" => "別の注文をしたいです",
 ];

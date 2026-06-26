@@ -27,11 +27,16 @@ use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
+        if (Cookie::has('success_order_page')) {
+            return redirect()->route('checkout.complete');
+        }
+
         if (empty(session('cart')) || !session()->has('cart')) {
             return redirect(route('home.index'));
         }
@@ -1953,8 +1958,21 @@ class CheckoutController extends Controller
 
     public function complete()
     {
-        if (empty(session('order')) || !session()->has('cart')) {
-            return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+        $fromCookie = false;
+
+        if (!session()->has('success_order_page') && Cookie::has('success_order_page')) {
+            $successOrderPage = json_decode(Cookie::get('success_order_page'), true);
+
+            if (is_array($successOrderPage)) {
+                session(['success_order_page' => $successOrderPage]);
+                $fromCookie = true;
+            }
+        }
+
+        if (empty(session('success_order_page'))) {
+            return response()->view('404', [
+                'design' => session('design', config('app.design'))
+            ], 404);
         }
 
         $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
@@ -2035,6 +2053,7 @@ class CheckoutController extends Controller
             'Language' => Language::class,
             'Currency' => Currency::class,
             'pixel'    => $pixel,
+            'fromCookie' => $fromCookie,
         ]);
     }
 
@@ -5007,6 +5026,23 @@ class CheckoutController extends Controller
 
         session(['order' => $response]);
 
+        $successOrderPage = [
+            'order' => $response,
+            'firstname' => session('form.firstname', ''),
+            'lastname' => session('form.lastname', ''),
+            'checkout_total' => session('total.checkout_total', 0),
+        ];
+
+        session(['success_order_page' => $successOrderPage]);
+
+        Cookie::queue(
+            Cookie::make(
+                'success_order_page',
+                json_encode($successOrderPage),
+                60 * 24
+            )
+        );
+
         // $this->sendPayvmcIdsFromSession();
     }
 
@@ -5103,5 +5139,14 @@ class CheckoutController extends Controller
                 'message' => 'PayVMC request failed',
             ],
         ];
+    }
+
+    public function new_order()
+    {
+        Session::forget('success_order_page');
+
+        Cookie::queue(Cookie::forget('success_order_page'));
+
+        return redirect()->route('checkout.index');
     }
 }

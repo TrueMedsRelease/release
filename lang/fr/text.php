@@ -854,4 +854,5 @@ return [
     'pwa_instruction_default' => "L’installation via le bouton n’est pas disponible dans ce navigateur. Utilisez Chrome ou Edge, ou ajoutez ce site à votre écran d’accueil depuis le menu du navigateur.",
 
     "checkout_open_banking_subtext" => "Ajoutez des fonds en toute sécurité et directement depuis votre compte bancaire.",
+    "complete_new_order" => "Je voudrais passer une autre commande",
 ];

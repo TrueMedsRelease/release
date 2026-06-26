@@ -725,4 +725,5 @@ return  [
     'pwa_instruction_default' => "此瀏覽器無法透過按鈕安裝。請使用 Chrome 或 Edge，或從瀏覽器選單將此網站新增到主畫面。",
 
     "checkout_open_banking_subtext" => "從您的銀行帳戶安全並直接新增資金。",
+    "complete_new_order" => "我想再下一個訂單",
 ];

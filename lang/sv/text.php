@@ -724,4 +724,5 @@ return [
     'pwa_instruction_default' => "Installation via knappen är inte tillgänglig i den här webbläsaren. Använd Chrome eller Edge, eller lägg till den här webbplatsen på hemskärmen från webbläsarmenyn.",
 
     "checkout_open_banking_subtext" => "Lägg till pengar säkert och direkt från ditt bankkonto.",
+    "complete_new_order" => "Jag vill gärna göra en ny beställning",
 ];
