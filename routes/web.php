@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\SetCookiesForStatistics;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Models\Currency;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::controller(SearchController::class)->group(function () {
+    Route::post('/search_chat', 'search_chat')->name('search.search_chat');
+    Route::get('/search_chat_suggest', 'search_chat_suggest')->name('search.search_chat_suggest');
     Route::post('/search', 'search_product')->name('search.search_product')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/search_autocomplete', 'search_autocomplete')->name('search.search_autocomplete');
     Route::get('/search/{search_text}', 'search_result')->name('search.search_result');
@@ -41,6 +44,37 @@ Route::controller(CartController::class)->group(function () {
     Route::post('/cart/change-bonus', 'change_bonus')->name('cart.bonus')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/cart/add_pack/{pack_id}', 'add_pack')->name('cart.add_pack');
 });
+
+
+Route::get('/cart_state', function () {
+    $design = session('design') ? session('design') : config('app.design');
+
+    $cart_count = 0;
+    $cart_total = 0;
+
+    foreach (session('cart', []) as $value) {
+        $cart_count += (int) ($value['q'] ?? 0);
+        $cart_total += (float) ($value['price'] ?? 0) * (int) ($value['q'] ?? 0);
+    }
+
+    $items_html = '';
+    $items_view = $design . '.ajax.cart_drawer_items';
+
+    if (view()->exists($items_view)) {
+        $items_html = view($items_view, [
+            'design'   => $design,
+            'Currency' => Currency::class,
+        ])->render();
+    }
+
+    return response()->json([
+        'status'     => 'success',
+        'count'      => $cart_count,
+        'total'      => $cart_total,
+        'total_html' => Currency::Convert($cart_total, true),
+        'items_html' => $items_html,
+    ]);
+})->name('cart.state')->withoutMiddleware(VerifyCsrfToken::class);
 
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'index')->name('checkout.index');

@@ -175,7 +175,9 @@ class CartController extends Controller
 
             session(['cart_option' => $option]);
         } else {
-            $cart_option = session('cart_option');
+            $cart_option = session('cart_option', [
+                'shipping' => env('APP_DEFAULT_SHIPPING')
+            ]);
 
             $bonus_price = isset($cart_option['bonus_price']) ? $cart_option['bonus_price'] : 0;
 

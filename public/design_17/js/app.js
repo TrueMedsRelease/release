@@ -609,3 +609,1008 @@ function changeBonusFromSelect(select) {
         });
     });
 })();
+(function ($) {
+    if (!$) {
+        return;
+    }
+
+    const chatPendingMinDuration = 850;
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function getChatMessagesBox() {
+        let $thread = $('.js-chat-search-thread').first();
+
+        if (!$thread.length) {
+            $thread = $(
+                '<div class="thread-chat js-chat-search-thread">' +
+                    '<div class="thread-chat__container">' +
+                        '<div class="thread-chat__messages js-chat-search-messages"></div>' +
+                    '</div>' +
+                '</div>'
+            );
+
+            const $threadBox = $('.thread-box').first();
+            if ($threadBox.length) {
+                $thread.insertBefore($threadBox);
+            } else {
+                $('.thread').first().append($thread);
+            }
+        }
+
+        $thread.removeAttr('hidden');
+        return $thread.find('.js-chat-search-messages').first();
+    }
+
+    function appendUserMessage($messages, text) {
+        const html =
+            '<div class="chat-row chat-row--user">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble">' + escapeHtml(text) + '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        $messages.append(html);
+    }
+
+    function appendPendingMessage($messages) {
+        const $pending = $(
+            '<div class="chat-row chat-row--agent js-chat-search-pending">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble">' +
+                            '<svg class="chat-message__pending" width="34" height="8" viewBox="0 0 34 8" aria-hidden="true">' +
+                                '<circle cx="4" cy="4" r="4" fill="currentColor"></circle>' +
+                                '<circle cx="17" cy="4" r="4" fill="currentColor"></circle>' +
+                                '<circle cx="30" cy="4" r="4" fill="currentColor"></circle>' +
+                            '</svg>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+
+        $messages.append($pending);
+        return $pending;
+    }
+
+    function replaceWithError($pending) {
+        $pending.replaceWith(
+            '<div class="chat-row chat-row--agent">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble chat-message__bubble--agent">Search request failed. Please try again.</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+    }
+
+    function runAfterPendingDelay(startedAt, callback) {
+        const delay = Math.max(0, chatPendingMinDuration - (Date.now() - startedAt));
+        window.setTimeout(callback, delay);
+    }
+
+    function scrollToSearchForm() {
+        const $form = $('.js-chat-search-form').first();
+        if (!$form.length) {
+            return;
+        }
+
+        window.setTimeout(function () {
+            $form[0].scrollIntoView({behavior: 'smooth', block: 'end'});
+        }, 50);
+    }
+
+    $(document).on('submit', '.js-chat-search-form', function (event) {
+        if (typeof routeSearchChat === 'undefined') {
+            return true;
+        }
+
+        event.preventDefault();
+
+        const $form = $(this);
+        const $input = $form.find('[name="search_text"]').first();
+        const searchText = $.trim($input.val());
+
+        if (!searchText || $form.hasClass('is-loading')) {
+            return false;
+        }
+
+        const $messages = getChatMessagesBox();
+        $('.js-chat-start-heading').hide();
+
+        appendUserMessage($messages, searchText);
+        const $pending = appendPendingMessage($messages);
+        const pendingStartedAt = Date.now();
+        scrollToSearchForm();
+
+        $form.addClass('is-loading');
+        $input.prop('disabled', true);
+
+        $.ajax({
+            url: routeSearchChat,
+            type: 'POST',
+            cache: false,
+            dataType: 'json',
+            data: {
+                search_text: searchText,
+                _token: $form.find('[name="_token"]').val()
+            },
+            success: function (response) {
+                if (response.status === 'redirect' && response.redirect) {
+                    location.href = response.redirect;
+                    return;
+                }
+
+                runAfterPendingDelay(pendingStartedAt, function () {
+                    if (response.status === 'success' && response.html) {
+                        $pending.replaceWith(response.html);
+                    } else {
+                        replaceWithError($pending);
+                    }
+                });
+            },
+            error: function () {
+                runAfterPendingDelay(pendingStartedAt, function () {
+                    replaceWithError($pending);
+                });
+            },
+            complete: function () {
+                $form.removeClass('is-loading');
+                $input.prop('disabled', false).val('').trigger('focus');
+                scrollToSearchForm();
+            }
+        });
+
+        return false;
+    });
+})(window.jQuery);
+(function ($) {
+    if (!$) {
+        return;
+    }
+
+    const productPendingMinDuration = 850;
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function getChatMessagesBox() {
+        let $thread = $('.js-chat-search-thread').first();
+
+        if (!$thread.length) {
+            $thread = $(
+                '<div class="thread-chat js-chat-search-thread">' +
+                    '<div class="thread-chat__container">' +
+                        '<div class="thread-chat__messages js-chat-search-messages"></div>' +
+                    '</div>' +
+                '</div>'
+            );
+
+            const $threadBox = $('.thread-box').first();
+            if ($threadBox.length) {
+                $thread.insertBefore($threadBox);
+            } else {
+                $('.thread').first().append($thread);
+            }
+        }
+
+        $thread.removeAttr('hidden');
+        return $thread.find('.js-chat-search-messages').first();
+    }
+
+    function appendUserMessage($messages, text) {
+        const html =
+            '<div class="chat-row chat-row--user">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble">' + escapeHtml(text) + '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        $messages.append(html);
+    }
+
+    function appendPendingMessage($messages) {
+        const $pending = $(
+            '<div class="chat-row chat-row--agent js-chat-product-pending">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble">' +
+                            '<svg class="chat-message__pending" width="34" height="8" viewBox="0 0 34 8" aria-hidden="true">' +
+                                '<circle cx="4" cy="4" r="4" fill="currentColor"></circle>' +
+                                '<circle cx="17" cy="4" r="4" fill="currentColor"></circle>' +
+                                '<circle cx="30" cy="4" r="4" fill="currentColor"></circle>' +
+                            '</svg>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+
+        $messages.append($pending);
+        return $pending;
+    }
+
+    function replaceWithBotMessage($pending, message) {
+        $pending.replaceWith(
+            '<div class="chat-row chat-row--agent">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble chat-message__bubble--agent">' + escapeHtml(message) + '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+    }
+
+    function runAfterProductPendingDelay(startedAt, callback) {
+        const delay = Math.max(0, productPendingMinDuration - (Date.now() - startedAt));
+        window.setTimeout(callback, delay);
+    }
+
+    function scrollToSearchForm() {
+        const $form = $('.js-chat-search-form').first();
+        if (!$form.length) {
+            return;
+        }
+
+        window.setTimeout(function () {
+            $form[0].scrollIntoView({behavior: 'smooth', block: 'end'});
+        }, 50);
+    }
+
+    function extractProductContent(html) {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        let $source = $(doc).find('main .thread').first().clone();
+
+        if (!$source.length) {
+            $source = $(doc).find('main').first().clone();
+        }
+
+        if (!$source.length) {
+            return '';
+        }
+
+        $source.find('script, style, link[rel="stylesheet"]').remove();
+        $source.find('.thread-box, .search-bar, .js-chat-search-thread').remove();
+
+        const htmlContent = $.trim($source.html());
+
+        if (!htmlContent) {
+            return '';
+        }
+
+        return htmlContent;
+    }
+
+    function makeAbsoluteUrl(url) {
+        try {
+            return new URL(url, window.location.href).toString();
+        } catch (e) {
+            return url;
+        }
+    }
+
+    function updateCartCounters(data) {
+        if (!data || data.status !== 'success') {
+            return;
+        }
+
+        if (typeof data.count !== 'undefined') {
+            $('.cart__counter').text(data.count);
+            $('.footer-buttons__cart').attr('data-counter', data.count);
+        }
+
+        if (typeof data.total_html !== 'undefined') {
+            $('.cart__total-price').text(data.total_html);
+            $('.footer-buttons__cart .button__price').text(data.total_html);
+        }
+
+        if (typeof data.items_html !== 'undefined') {
+            $('.cart__body .cart-items').html(data.items_html);
+        }
+    }
+
+    function refreshCartState() {
+        if (typeof routeCartState === 'undefined') {
+            return $.Deferred().resolve().promise();
+        }
+
+        return $.ajax({
+            url: routeCartState,
+            type: 'GET',
+            cache: false,
+            dataType: 'json',
+            success: updateCartCounters
+        });
+    }
+
+    function getPackIdFromRemoveButton(button) {
+        const dataPackId = button.getAttribute('data-cart-remove-pack');
+
+        if (dataPackId) {
+            return dataPackId;
+        }
+
+        const onclickValue = button.getAttribute('onclick') || '';
+        const match = onclickValue.match(/remove\(([^)]+)\)/);
+
+        if (!match) {
+            return '';
+        }
+
+        return match[1].replace(/['"\s]/g, '');
+    }
+
+    function sendCartRemoveRequest($button, packId) {
+        if (!packId || typeof routeCartRemove === 'undefined') {
+            return;
+        }
+
+        if ($button.data('cart-remove-busy')) {
+            return;
+        }
+
+        $button.data('cart-remove-busy', true).addClass('is-loading').prop('disabled', true);
+
+        $.ajax({
+            url: routeCartRemove,
+            type: 'POST',
+            cache: false,
+            data: {
+                pack_id: packId,
+                id: packId,
+                packaging_id: packId,
+            },
+            success: function () {
+                refreshCartState();
+            },
+            error: function () {
+                alert('Could not remove this product from cart. Please try again.');
+            },
+            complete: function () {
+                $button.removeData('cart-remove-busy').removeClass('is-loading').prop('disabled', false);
+            }
+        });
+    }
+
+    if (document.addEventListener) {
+        document.addEventListener('click', function (event) {
+            const button = event.target.closest('.cart-item__remove-button, [data-cart-remove-pack]');
+
+            if (!button) {
+                return;
+            }
+
+            const packId = getPackIdFromRemoveButton(button);
+
+            if (!packId) {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (typeof event.stopImmediatePropagation === 'function') {
+                event.stopImmediatePropagation();
+            }
+
+            sendCartRemoveRequest($(button), packId);
+        }, true);
+    }
+
+    function isCartAddUrl(url) {
+        const absoluteUrl = makeAbsoluteUrl(url);
+        return /\/cart\/add_pack\/[^/?#]+/.test(absoluteUrl) || /\/cart\/add\/[^/?#]+/.test(absoluteUrl);
+    }
+
+    function resolveMethod($form, fallback) {
+        const method = String($form.attr('method') || fallback || 'GET').toUpperCase();
+        return method === 'POST' ? 'POST' : 'GET';
+    }
+
+    function sendCartRequest(url, method, data, $trigger) {
+        if (!url || !isCartAddUrl(url)) {
+            return;
+        }
+
+        if ($trigger && $trigger.data('chat-cart-busy')) {
+            return;
+        }
+
+        if ($trigger) {
+            $trigger.data('chat-cart-busy', true).addClass('is-loading').prop('disabled', true);
+        }
+
+        const $messages = getChatMessagesBox();
+        const $pending = appendPendingMessage($messages);
+        const pendingStartedAt = Date.now();
+        scrollToSearchForm();
+
+        $.ajax({
+            url: url,
+            type: method || 'GET',
+            cache: false,
+            data: data || {},
+            success: function () {
+                refreshCartState().always(function () {
+                    runAfterProductPendingDelay(pendingStartedAt, function () {
+                        replaceWithBotMessage($pending, 'Added to cart. Cart counter has been updated.');
+                        scrollToSearchForm();
+                    });
+                });
+            },
+            error: function () {
+                runAfterProductPendingDelay(pendingStartedAt, function () {
+                    replaceWithBotMessage($pending, 'Could not add this pack to cart. Please try again.');
+                    scrollToSearchForm();
+                });
+            },
+            complete: function () {
+                if ($trigger) {
+                    $trigger.removeData('chat-cart-busy').removeClass('is-loading').prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    function prepareInjectedProduct($productBox) {
+        $productBox.find('a[href]').each(function () {
+            const $link = $(this);
+            const href = $link.attr('href') || '';
+
+            if (isCartAddUrl(href)) {
+                $link.addClass('js-chat-cart-add-link');
+                return;
+            }
+
+            if (/\.html(?:[/?#]|$)/.test(href)) {
+                $link.addClass('js-chat-product-link');
+            }
+        });
+
+        if (typeof window.refreshCustomSelectImages === 'function') {
+            window.refreshCustomSelectImages($productBox[0]);
+        }
+    }
+
+    $(document).on('click', '.js-chat-product-link', function (event) {
+        const href = $(this).attr('href');
+
+        if (!href) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const $link = $(this);
+        const productTitle = $link.data('product-title') || $.trim($link.text()) || 'Open product';
+        const $messages = getChatMessagesBox();
+
+        $('.js-chat-live-suggest').remove();
+        $('.js-chat-start-heading').hide();
+
+        appendUserMessage($messages, productTitle);
+        const $pending = appendPendingMessage($messages);
+        const pendingStartedAt = Date.now();
+        scrollToSearchForm();
+
+        $.ajax({
+            url: href,
+            type: 'GET',
+            cache: false,
+            dataType: 'html',
+            success: function (responseHtml) {
+                runAfterProductPendingDelay(pendingStartedAt, function () {
+                    const productHtml = extractProductContent(responseHtml);
+
+                    if (!productHtml) {
+                        replaceWithBotMessage($pending, 'Could not load product information.');
+                        return;
+                    }
+
+                    $pending.replaceWith(
+                        '<div class="chat-row chat-row--page chat-row--product">' +
+                            '<div class="chat-message">' +
+                                '<div class="chat-message__content content"></div>' +
+                                '<div class="chat-message__page chat-product-detail js-chat-product-detail" data-product-url="' + escapeHtml(makeAbsoluteUrl(href)) + '">' +
+                                    productHtml +
+                                '</div>' +
+                            '</div>' +
+                        '</div>'
+                    );
+
+                    prepareInjectedProduct($('.js-chat-product-detail').last());
+                    scrollToSearchForm();
+                });
+            },
+            error: function () {
+                runAfterProductPendingDelay(pendingStartedAt, function () {
+                    replaceWithBotMessage($pending, 'Could not load product information.');
+                    scrollToSearchForm();
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '.js-chat-product-detail a[href]', function (event) {
+        const href = $(this).attr('href') || '';
+
+        if (!isCartAddUrl(href)) {
+            return;
+        }
+
+        event.preventDefault();
+        sendCartRequest(href, 'GET', {}, $(this));
+    });
+
+    $(document).on('submit', '.js-chat-product-detail form', function (event) {
+        const $form = $(this);
+        const action = $form.attr('action') || '';
+
+        if (!isCartAddUrl(action)) {
+            return;
+        }
+
+        event.preventDefault();
+        sendCartRequest(action, resolveMethod($form, 'POST'), $form.serialize(), $form.find('[type="submit"]').first());
+    });
+})(window.jQuery);
+
+(function ($) {
+    if (!$) {
+        return;
+    }
+
+    const suggestTypingDelay = 350;
+    const suggestPendingMinDuration = 850;
+
+    let suggestTimer = null;
+    let suggestRequest = null;
+    let latestSuggestQuery = '';
+    let suggestPendingStartedAt = 0;
+
+    function getChatMessagesBoxForSuggest() {
+        let $thread = $('.js-chat-search-thread').first();
+
+        if (!$thread.length) {
+            $thread = $(
+                '<div class="thread-chat js-chat-search-thread">' +
+                    '<div class="thread-chat__container">' +
+                        '<div class="thread-chat__messages js-chat-search-messages"></div>' +
+                    '</div>' +
+                '</div>'
+            );
+
+            const $threadBox = $('.thread-box').first();
+            if ($threadBox.length) {
+                $thread.insertBefore($threadBox);
+            } else {
+                $('.thread').first().append($thread);
+            }
+        }
+
+        $thread.removeAttr('hidden');
+        return $thread.find('.js-chat-search-messages').first();
+    }
+
+    function renderSuggestLoading($messages) {
+        $('.js-chat-live-suggest').remove();
+        suggestPendingStartedAt = Date.now();
+
+        $messages.append(
+            '<div class="chat-row chat-row--agent js-chat-live-suggest">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble chat-message__bubble--agent chat-message__bubble--suggest">' +
+                            '<svg class="chat-message__pending" width="34" height="8" viewBox="0 0 34 8" aria-hidden="true">' +
+                                '<circle cx="4" cy="4" r="4" fill="currentColor"></circle>' +
+                                '<circle cx="17" cy="4" r="4" fill="currentColor"></circle>' +
+                                '<circle cx="30" cy="4" r="4" fill="currentColor"></circle>' +
+                            '</svg>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+    }
+
+    function runAfterSuggestPendingDelay(callback) {
+        const delay = Math.max(0, suggestPendingMinDuration - (Date.now() - suggestPendingStartedAt));
+        window.setTimeout(callback, delay);
+    }
+
+    function abortSuggestRequest() {
+        if (suggestRequest && suggestRequest.readyState !== 4) {
+            suggestRequest.abort();
+        }
+    }
+
+    $(document).on('input', '.js-chat-search-input', function () {
+        if (typeof routeSearchChatSuggest === 'undefined') {
+            return;
+        }
+
+        const $input = $(this);
+        const query = $.trim($input.val());
+
+        latestSuggestQuery = query;
+        clearTimeout(suggestTimer);
+        abortSuggestRequest();
+
+        if (query.length < 2) {
+            $('.js-chat-live-suggest').remove();
+            return;
+        }
+
+        suggestTimer = window.setTimeout(function () {
+            const currentQuery = $.trim($input.val());
+
+            if (currentQuery.length < 2) {
+                $('.js-chat-live-suggest').remove();
+                return;
+            }
+
+            latestSuggestQuery = currentQuery;
+            $('.js-chat-start-heading').hide();
+
+            const $messages = getChatMessagesBoxForSuggest();
+            renderSuggestLoading($messages);
+
+            suggestRequest = $.ajax({
+                url: routeSearchChatSuggest,
+                type: 'GET',
+                cache: false,
+                dataType: 'json',
+                data: {
+                    q: currentQuery
+                },
+                success: function (response) {
+                    runAfterSuggestPendingDelay(function () {
+                        if (currentQuery !== latestSuggestQuery) {
+                            return;
+                        }
+
+                        if (response.status === 'success' && response.html) {
+                            $('.js-chat-live-suggest').replaceWith(response.html);
+                        } else {
+                            $('.js-chat-live-suggest').remove();
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    if (xhr.statusText !== 'abort') {
+                        runAfterSuggestPendingDelay(function () {
+                            if (currentQuery === latestSuggestQuery) {
+                                $('.js-chat-live-suggest').remove();
+                            }
+                        });
+                    }
+                }
+            });
+        }, suggestTypingDelay);
+    });
+
+    $(document).on('click', '.js-chat-suggest-item', function (event) {
+        event.preventDefault();
+
+        const title = $(this).data('title') || $.trim($(this).text());
+        const $form = $('.js-chat-search-form').first();
+        const $input = $form.find('[name="search_text"]').first();
+
+        if (!$form.length || !$input.length || !title) {
+            return;
+        }
+
+        clearTimeout(suggestTimer);
+        abortSuggestRequest();
+        $('.js-chat-live-suggest').remove();
+
+        $input.val(title);
+        $form.trigger('submit');
+    });
+
+    $(document).on('submit', '.js-chat-search-form', function () {
+        clearTimeout(suggestTimer);
+        abortSuggestRequest();
+        $('.js-chat-live-suggest').remove();
+    });
+})(window.jQuery);
+
+(function () {
+    const scrollButtonSelector = '.js-chat-scroll-down';
+    const messagesSelector = '.js-chat-search-messages';
+    const nearBottomOffset = 180;
+    const temporaryButtonDuration = 2600;
+    const newAnswerClassDuration = 2400;
+
+    let hasUnreadAnswer = false;
+    let hideTimer = null;
+    let observer = null;
+
+    function getScrollButton() {
+        return document.querySelector(scrollButtonSelector);
+    }
+
+    function isNearPageBottom() {
+        const doc = document.documentElement;
+        const body = document.body;
+        const scrollTop = window.pageYOffset || doc.scrollTop || body.scrollTop || 0;
+        const viewportHeight = window.innerHeight || doc.clientHeight || 0;
+        const pageHeight = Math.max(
+            body.scrollHeight,
+            body.offsetHeight,
+            doc.clientHeight,
+            doc.scrollHeight,
+            doc.offsetHeight
+        );
+
+        return scrollTop + viewportHeight >= pageHeight - nearBottomOffset;
+    }
+
+    function showScrollButton(isNewAnswer) {
+        const button = getScrollButton();
+
+        if (!button) {
+            return;
+        }
+
+        const textNode = button.querySelector('.chat-scroll-down__text');
+
+        if (textNode) {
+            textNode.textContent = isNewAnswer ? 'New answer' : 'Scroll down';
+        }
+
+        button.hidden = false;
+        button.classList.add('is-visible');
+
+        if (isNewAnswer) {
+            button.classList.add('has-new-answer');
+        } else {
+            button.classList.remove('has-new-answer');
+        }
+    }
+
+    function hideScrollButton() {
+        const button = getScrollButton();
+
+        if (!button) {
+            return;
+        }
+
+        button.classList.remove('is-visible', 'has-new-answer');
+        window.setTimeout(function () {
+            if (!button.classList.contains('is-visible')) {
+                button.hidden = true;
+            }
+        }, 220);
+    }
+
+    function updateScrollButtonVisibility() {
+        if (isNearPageBottom()) {
+            hasUnreadAnswer = false;
+            hideScrollButton();
+            return;
+        }
+
+        showScrollButton(hasUnreadAnswer);
+    }
+
+    function getPageBottomScrollTop() {
+        const doc = document.documentElement;
+        const body = document.body;
+        const scrollingElement = document.scrollingElement || doc || body;
+        const viewportHeight = window.innerHeight || doc.clientHeight || 0;
+        const scrollHeight = Math.max(
+            scrollingElement ? scrollingElement.scrollHeight : 0,
+            body ? body.scrollHeight : 0,
+            doc ? doc.scrollHeight : 0
+        );
+
+        return Math.max(0, scrollHeight - viewportHeight);
+    }
+
+    function scrollWindowToBottom(behavior) {
+        const scrollBehavior = behavior || 'smooth';
+        const scrollOptions = {
+            top: getPageBottomScrollTop(),
+            left: 0,
+            behavior: scrollBehavior
+        };
+
+        try {
+            window.scrollTo(scrollOptions);
+        } catch (e) {
+            window.scrollTo(0, scrollOptions.top);
+        }
+    }
+
+    function scrollToLatestAnswer(behavior) {
+        if (!document.querySelector(messagesSelector) && !document.querySelector('.js-chat-search-form')) {
+            return;
+        }
+
+        hasUnreadAnswer = false;
+
+        window.requestAnimationFrame(function () {
+            scrollWindowToBottom(behavior);
+        });
+
+        window.setTimeout(function () {
+            scrollWindowToBottom('auto');
+            updateScrollButtonVisibility();
+        }, 520);
+    }
+
+    function isPendingRow(row) {
+        return row.classList.contains('js-chat-search-pending') ||
+            row.classList.contains('js-chat-product-pending') ||
+            row.querySelector('.chat-message__pending');
+    }
+
+    function isAnswerRow(row) {
+        return row.classList.contains('chat-row') &&
+            !isPendingRow(row) &&
+            (
+                row.classList.contains('chat-row--agent') ||
+                row.classList.contains('chat-row--page') ||
+                row.classList.contains('chat-row--results') ||
+                row.classList.contains('chat-row--product') ||
+                row.classList.contains('js-chat-live-suggest') ||
+                row.classList.contains('js-chat-search-answer')
+            );
+    }
+
+    function collectAddedAnswerRows(node, rows) {
+        if (!node || node.nodeType !== 1) {
+            return;
+        }
+
+        if (isAnswerRow(node)) {
+            rows.push(node);
+            return;
+        }
+
+        node.querySelectorAll('.chat-row').forEach(function (row) {
+            if (isAnswerRow(row)) {
+                rows.push(row);
+            }
+        });
+    }
+
+    function markNewAnswerRows(rows) {
+        let firstLabeledRow = null;
+
+        rows.forEach(function (row) {
+            if (row.dataset.chatNewAnswerHandled === '1') {
+                return;
+            }
+
+            row.dataset.chatNewAnswerHandled = '1';
+            row.classList.add('is-chat-new-answer');
+
+            if (!firstLabeledRow) {
+                firstLabeledRow = row;
+                row.classList.add('is-chat-new-answer-label');
+            }
+
+            window.setTimeout(function () {
+                row.classList.remove('is-chat-new-answer', 'is-chat-new-answer-label');
+            }, newAnswerClassDuration);
+        });
+
+        if (!rows.length) {
+            return;
+        }
+
+        hasUnreadAnswer = true;
+        showScrollButton(true);
+
+        clearTimeout(hideTimer);
+        hideTimer = window.setTimeout(function () {
+            if (isNearPageBottom()) {
+                hasUnreadAnswer = false;
+                updateScrollButtonVisibility();
+            }
+        }, temporaryButtonDuration);
+    }
+
+    function watchMessagesBox(messagesBox) {
+        if (!messagesBox || observer) {
+            return;
+        }
+
+        observer = new MutationObserver(function (mutations) {
+            const rows = [];
+
+            mutations.forEach(function (mutation) {
+                mutation.addedNodes.forEach(function (node) {
+                    collectAddedAnswerRows(node, rows);
+                });
+            });
+
+            markNewAnswerRows(rows);
+        });
+
+        observer.observe(messagesBox, {
+            childList: true,
+            subtree: false
+        });
+    }
+
+    function ensureObserver() {
+        const messagesBox = document.querySelector(messagesSelector);
+
+        if (messagesBox) {
+            watchMessagesBox(messagesBox);
+            return;
+        }
+
+        const thread = document.querySelector('.thread');
+
+        if (!thread) {
+            return;
+        }
+
+        const threadObserver = new MutationObserver(function () {
+            const createdMessagesBox = document.querySelector(messagesSelector);
+
+            if (!createdMessagesBox) {
+                return;
+            }
+
+            watchMessagesBox(createdMessagesBox);
+            threadObserver.disconnect();
+        });
+
+        threadObserver.observe(thread, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    window.design17ChatScrollToBottom = scrollToLatestAnswer;
+    window.design17ChatShowScrollButton = showScrollButton;
+
+    document.addEventListener('click', function (event) {
+        const button = event.target.closest(scrollButtonSelector);
+
+        if (!button) {
+            return;
+        }
+
+        event.preventDefault();
+        scrollToLatestAnswer('smooth');
+    });
+
+    window.addEventListener('scroll', updateScrollButtonVisibility, {passive: true});
+    window.addEventListener('resize', updateScrollButtonVisibility);
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            ensureObserver();
+            updateScrollButtonVisibility();
+        });
+    } else {
+        ensureObserver();
+        updateScrollButtonVisibility();
+    }
+})();

@@ -20,14 +20,14 @@
             <div class="chat-row chat-row--user">
                 <div class="chat-message">
                     <div class="chat-message__content content" style="flex-direction: row; gap: 10px;">
-                        @foreach ($product['categories'] as $category)
+                        {{-- @foreach ($product['categories'] as $category) --}}
                             {{-- <div class="chat-message__bubble">
                                 <a class="product-info__use" href="{{ route('home.category', $category['url']) }} ">{{ $category['name'] }}</a>
                             </div> --}}
-                            <div class="chat-message__bubble">
+                            {{-- <div class="chat-message__bubble">
                                 {{ $category['name'] }}
-                            </div>
-                        @endforeach
+                            </div> --}}
+                        {{-- @endforeach --}}
                     </div>
                 </div>
             </div>
