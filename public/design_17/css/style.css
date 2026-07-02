@@ -4720,3 +4720,236 @@ article.content{
         padding: 2rem;
     }
 }
+/*! Design 17 chat search */
+.js-chat-search-thread[hidden]{
+  display:none;
+}
+
+.chat-row--results{
+  width:100%;
+  max-width:100%;
+}
+
+.chat-row--results .chat-message,
+.chat-row--results .chat-message__page{
+  width:100%;
+}
+
+.chat-message__bubble--agent{
+  max-width:78rem;
+  font-weight:500;
+}
+
+.chat-search-results{
+  display:flex;
+  flex-direction:column;
+  gap:2rem;
+  width:100%;
+}
+
+.chat-search-results__cards{
+  align-items:stretch;
+  width:100%;
+}
+
+.chat-search-results__cards .cards{
+  max-width:100%;
+  justify-items:stretch;
+}
+
+.chat-search-card{
+  max-width:none;
+}
+
+.chat-search-card .card__button{
+  text-decoration:none;
+}
+
+.chat-search-results__empty-actions{
+  display:flex;
+  justify-content:flex-start;
+}
+
+.chat-search-results__title{
+  margin:0;
+}
+
+.js-chat-search-form.is-loading .js-chat-search-submit{
+  opacity:0.65;
+  pointer-events:none;
+}
+
+@media (max-width: 767px){
+  .chat-message__bubble--agent{
+    max-width:100%;
+  }
+
+  .chat-search-results__cards .cards{
+    grid-template-columns:1fr;
+  }
+}
+
+/*! Design 17 bot-like autocomplete */
+.chat-message__bubble--suggest{
+  max-width:64rem;
+}
+
+.chat-suggest{
+  display:flex;
+  flex-direction:column;
+  gap:1.2rem;
+}
+
+.chat-suggest__title{
+  font-weight:500;
+}
+
+.chat-suggest__items{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.8rem;
+}
+
+.chat-suggest__item{
+  display:inline-flex;
+  align-items:center;
+  border:0.1rem solid currentColor;
+  border-radius:2rem;
+  padding:0.7rem 1.2rem;
+  text-decoration:none;
+  line-height:1.2;
+}
+
+.chat-suggest__item:hover,
+.chat-suggest__item:focus{
+  text-decoration:none;
+}
+
+/*! Design 17 chat product AJAX */
+.chat-row--product .chat-message,
+.chat-row--product .chat-message__page{
+  width:100%;
+}
+
+.chat-product-detail{
+  width:100%;
+  max-width:96rem;
+  margin-inline:auto;
+}
+
+.chat-product-detail .thread-box,
+.chat-product-detail .search-bar,
+.chat-product-detail .js-chat-search-thread{
+  display:none !important;
+}
+
+.js-chat-product-link,
+.js-chat-cart-add-link{
+  cursor:pointer;
+}
+
+.js-chat-cart-add-link.is-loading,
+.js-chat-product-detail .is-loading{
+  pointer-events:none;
+  opacity:0.65;
+}
+
+/*! Design 17 new-answer visibility and scroll-down button */
+.chat-scroll-down{
+  position:fixed;
+  left:50%;
+  bottom:15.5rem;
+  z-index:40;
+  display:inline-flex;
+  align-items:center;
+  gap:0.8rem;
+  min-height:4.4rem;
+  border:0.1rem solid rgba(20, 21, 26, 0.12);
+  border-radius:999px;
+  padding:0.9rem 1.2rem 0.9rem 1.6rem;
+  background-color:var(--color-white);
+  box-shadow:0 1rem 3rem rgba(20, 21, 26, 0.18);
+  color:var(--color-primary);
+  font-family:var(--font-inter);
+  font-size:1.3rem;
+  font-weight:600;
+  line-height:1;
+  cursor:pointer;
+  opacity:0;
+  pointer-events:none;
+  transform:translateX(-50%) translateY(1rem);
+  transition:opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-scroll-down:not([hidden]){
+  display:inline-flex;
+}
+
+.chat-scroll-down.is-visible{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+
+.chat-scroll-down:hover,
+.chat-scroll-down:focus{
+  box-shadow:0 1.2rem 3.6rem rgba(20, 21, 26, 0.24);
+}
+
+.chat-scroll-down__icon{
+  display:inline-flex;
+  width:2.4rem;
+  height:2.4rem;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background-color:var(--color-primary);
+  color:var(--color-white);
+  transform:rotate(180deg);
+}
+
+.chat-scroll-down__text{
+  white-space:nowrap;
+}
+
+.chat-row.is-chat-new-answer-label::before{
+  content:"New answer";
+  align-self:center;
+  margin-bottom:0.8rem;
+  border:0.1rem solid rgba(20, 21, 26, 0.12);
+  border-radius:999px;
+  padding:0.4rem 0.9rem;
+  background-color:var(--color-white);
+  box-shadow:0 0.8rem 2rem rgba(20, 21, 26, 0.12);
+  color:var(--color-primary);
+  font-size:1.2rem;
+  font-weight:600;
+  line-height:1;
+}
+
+.chat-row.is-chat-new-answer .chat-message__bubble--agent,
+.chat-row.is-chat-new-answer .chat-message__page{
+  animation:chatNewAnswerPulse 1.8s ease-out;
+}
+
+@keyframes chatNewAnswerPulse{
+  0%{
+    box-shadow:0 0 0 0 rgba(20, 21, 26, 0.24);
+    transform:translateY(0.4rem);
+  }
+  45%{
+    box-shadow:0 0 0 0.6rem rgba(20, 21, 26, 0.08);
+  }
+  100%{
+    box-shadow:none;
+    transform:translateY(0);
+  }
+}
+
+@media (max-width: 767px){
+  .chat-scroll-down{
+    bottom:14rem;
+    min-height:4rem;
+    padding:0.8rem 1rem 0.8rem 1.3rem;
+  }
+}

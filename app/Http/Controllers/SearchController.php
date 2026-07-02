@@ -21,6 +21,75 @@ class SearchController extends Controller
         return redirect(route('search.search_result', [$search_text]));
     }
 
+    public function search_chat(Request $request)
+    {
+        $search_text = trim((string) $request->input('search_text', ''));
+        $design      = session('design') ? session('design') : config('app.design');
+
+        if ($search_text === '') {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Empty search text',
+            ], 422);
+        }
+
+        if ($design !== 'design_17') {
+            return response()->json([
+                'status'   => 'redirect',
+                'redirect' => route('search.search_result', [$search_text]),
+            ]);
+        }
+
+        self::rememberSearchHistory($search_text);
+
+        $products    = ProductServices::SearchProduct($search_text, false, $design);
+        $bestsellers = count($products) === 0 ? ProductServices::GetBestsellers($design) : [];
+
+        return response()->json([
+            'status' => 'success',
+            'count'  => count($products),
+            'html'   => view($design . '.ajax.chat_search_result', [
+                'design'      => $design,
+                'search_text' => $search_text,
+                'products'    => $products,
+                'bestsellers' => $bestsellers,
+                'Currency'    => Currency::class,
+            ])->render(),
+        ]);
+    }
+
+    public function search_chat_suggest(Request $request)
+    {
+        $search_text = trim((string) $request->query('q', ''));
+        $design      = session('design') ? session('design') : config('app.design');
+
+        if ($design !== 'design_17') {
+            return response()->json([
+                'status' => 'disabled',
+            ]);
+        }
+
+        if (mb_strlen($search_text) < 2) {
+            return response()->json([
+                'status' => 'empty',
+                'html'   => '',
+                'count'  => 0,
+            ]);
+        }
+
+        $tips  = self::buildAutocompleteTips($search_text, $design);
+        $items = self::parseAutocompleteTips($tips, $search_text, 7);
+
+        return response()->json([
+            'status' => 'success',
+            'count'  => count($items),
+            'html'   => view($design . '.ajax.chat_search_suggest', [
+                'search_text' => $search_text,
+                'items'       => $items,
+            ])->render(),
+        ]);
+    }
+
     public static function search_result($search_text)
     {
         $design      = session('design') ? session('design') : config('app.design');
@@ -35,35 +104,7 @@ class SearchController extends Controller
 
         // $statisticPromise = StatisticService::SendStatistic('search');
 
-        $keywords = ['plavix', 'avapro', 'stilnox', 'ambien', 'zolpidem', 'plaquenil'];
-
-        $matched_keywords = [];
-        foreach ($keywords as $keyword) {
-            if (stripos(strtolower($search_text), $keyword) !== false) {
-                $matched_keywords[] = $keyword;
-            }
-        }
-
-        $history = session()->get('search_history', []);
-
-        foreach ($matched_keywords as $word) {
-            $history[$word] = true;
-        }
-
-        session()->put('search_history', $history);
-
-        if (count($history) >= 2) {
-            $ip = request()->headers->get('cf-connecting-ip') ?? request()->ip();
-            $domain = request()->getHost();
-            $userAgent = request()->userAgent();
-            $log_data = "[" . now() . "] || Domain: $domain || IP: $ip || Keywords: $search_text || User Agent: $userAgent" . PHP_EOL;
-
-            if (@!is_writable('/var/www')) {
-                Log::error("Directory {/var/www} is not writable.");
-            } else {
-                file_put_contents('/var/www/search_audit.log', $log_data, FILE_APPEND);
-            }
-        }
+        self::rememberSearchHistory((string) $search_text);
 
         $bestsellers = ProductServices::GetBestsellers($design);
         $menu        = ProductServices::GetCategoriesWithProducts($design);
@@ -73,7 +114,7 @@ class SearchController extends Controller
         //     $statisticPromise->wait();
         // }
 
-        if (count($products) == 1) {
+        if (count($products) == 1 && $design !== 'design_17') {
             return redirect(route('home.product', $products[0]['url']));
         }
 
@@ -149,46 +190,109 @@ class SearchController extends Controller
         }
     }
 
-    public function search_autocomplete(Request $request)
+    private static function rememberSearchHistory(string $search_text): void
     {
-        $search_text = $request->query('q');
-        $design      = session('design') ? session('design') : config('app.design');
-        $products    = ProductServices::SearchProductAutocomplete($search_text, $design);
-        $sinonim     = ProductServices::SearchSinonim($search_text, $design);
-        $page        = ProductServices::SearchPageTitle($search_text);
-        $category    = ProductServices::SearchCategory($search_text, $design);
-        $disease     = ProductServices::SearchDisease($search_text, $design);
-        $active      = ProductServices::SearchActive($search_text, $design);
+        $keywords = ['plavix', 'avapro', 'stilnox', 'ambien', 'zolpidem', 'plaquenil'];
+
+        $matched_keywords = [];
+        foreach ($keywords as $keyword) {
+            if (stripos(strtolower($search_text), $keyword) !== false) {
+                $matched_keywords[] = $keyword;
+            }
+        }
+
+        $history = session()->get('search_history', []);
+
+        foreach ($matched_keywords as $word) {
+            $history[$word] = true;
+        }
+
+        session()->put('search_history', $history);
+
+        if (count($history) < 2) {
+            return;
+        }
+
+        $ip        = request()->headers->get('cf-connecting-ip') ?? request()->ip();
+        $domain    = request()->getHost();
+        $userAgent = request()->userAgent();
+        $log_data  = "[" . now() . "] || Domain: $domain || IP: $ip || Keywords: $search_text || User Agent: $userAgent" . PHP_EOL;
+
+        if (!@is_writable('/var/www')) {
+            Log::error("Directory {/var/www} is not writable.");
+            return;
+        }
+
+        file_put_contents('/var/www/search_audit.log', $log_data, FILE_APPEND);
+    }
+
+    private static function buildAutocompleteTips(string $search_text, string $design): string
+    {
+        $products = ProductServices::SearchProductAutocomplete($search_text, $design);
+        $page     = ProductServices::SearchPageTitle($search_text);
+        $category = ProductServices::SearchCategory($search_text, $design);
+        $disease  = ProductServices::SearchDisease($search_text, $design);
+        $active   = ProductServices::SearchActive($search_text, $design);
+        $sinonim  = ProductServices::SearchSinonim($search_text, $design);
 
         $tips = '';
-        // foreach($products as $product)
-        // {
-        //     $tips .= $product['name'] . '||' . $product['url'] . "\n";
-        // }
 
-        if (!empty($products)) {
-            $tips .= $products;
+        foreach ([$products, $page, $category, $disease, $active, $sinonim] as $part) {
+            if (!empty($part)) {
+                $tips .= $part;
+            }
         }
 
-        if (!empty($page)) {
-            $tips .= $page;
+        return $tips;
+    }
+
+    private static function parseAutocompleteTips(string $tips, string $search_text, int $limit = 7): array
+    {
+        $items   = [];
+        $used    = [];
+        $nothing = mb_strtolower((string) __('text.search_nothing'));
+
+        foreach (preg_split('/\r\n|\r|\n/', $tips) as $line) {
+            $line = trim($line);
+
+            if ($line === '') {
+                continue;
+            }
+
+            [$title, $url] = array_pad(explode('||', $line, 2), 2, '');
+
+            $title = trim(strip_tags($title));
+            $url   = trim($url);
+
+            if ($title === '' || mb_strtolower($title) === $nothing) {
+                continue;
+            }
+
+            $key = mb_strtolower($title);
+
+            if (isset($used[$key])) {
+                continue;
+            }
+
+            $used[$key] = true;
+            $items[]    = [
+                'title' => $title,
+                'url'   => ltrim($url !== '' ? $url : 'search/' . $search_text, '/'),
+            ];
+
+            if (count($items) >= $limit) {
+                break;
+            }
         }
 
-        if (!empty($category)) {
-            $tips .= $category;
-        }
+        return $items;
+    }
 
-        if (!empty($disease)) {
-            $tips .= $disease;
-        }
-
-        if (!empty($active)) {
-            $tips .= $active;
-        }
-
-        if (!empty($sinonim)) {
-            $tips .= $sinonim;
-        }
+    public function search_autocomplete(Request $request)
+    {
+        $search_text = (string) $request->query('q', '');
+        $design      = session('design') ? session('design') : config('app.design');
+        $tips        = self::buildAutocompleteTips($search_text, $design);
 
         if (!$tips) {
             $tips = __('text.search_nothing') . "||search/" . $search_text;

@@ -96,7 +96,10 @@
 
         <script>
             const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
+            const routeSearchChat = "{{ route('search.search_chat') }}";
+            const routeSearchChatSuggest = "{{ route('search.search_chat_suggest') }}";
             const routeCartContent = "{{ route('cart.content') }}";
+            const routeCartState = "{{ route('cart.state') }}";
         </script>
 
         <script defer src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
@@ -289,15 +292,24 @@
 
                         @yield('content')
 
+                        <button class="chat-scroll-down js-chat-scroll-down" type="button" hidden aria-label="Scroll to latest answer">
+                            <span class="chat-scroll-down__text">New answer</span>
+                            <span class="icon chat-scroll-down__icon">
+                                <svg width="1em" height="1em" fill="currentColor">
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
+                                </svg>
+                            </span>
+                        </button>
+
                         <div class="thread-box search search-bar">
-                            <form class="search-form form" action="{{ route('search.search_product') }}" method="post" style="width: 100%;">
+                            <form class="search-form form js-chat-search-form" action="{{ route('search.search_product') }}" method="post" style="width: 100%;">
                                 @csrf
                                 <label class="thread-box__label textarea-field">
                                     {{-- <textarea class="thread-box__input input-textarea ac_input input-text" rows="1" id="autocomplete" placeholder="Enter a drug name" name="search_text"></textarea> --}}
-                                    <input class="search-form__input form__text-input input-text ac_input search-form__input" id="autocomplete" type="text" placeholder="{{ __('text.common_search') }}" name="search_text" required>
+                                    <input class="search-form__input form__text-input input-text search-form__input js-chat-search-input" id="chat-search-input" autocomplete="off" type="text" placeholder="{{ __('text.common_search') }}" name="search_text" required>
                                     {{-- <span class="thread-box__placeholder">{{ __('text.common_search') }}</span> --}}
                                 </label>
-                                <button class="thread-box__submit button search-form__button" aria-label="Thred box submit">
+                                <button class="thread-box__submit button search-form__button js-chat-search-submit" aria-label="Thred box submit">
                                     <span class="icon">
                                         <svg width="1em" height="1em" fill="currentColor">
                                             <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
@@ -372,7 +384,7 @@
                                 </div>
                                 <div class="cart-item__price">{{ $product['q'] }} x {{ $Currency::convert($product['price'], true) }}</div>
                                 <div class="cart-item__price">{{ $Currency::convert($product['q'] * $product['price'], true) }}</div>
-                                <button class="cart-item__remove-button" onclick="remove({{ $product['pack_id'] }})">
+                                <button class="cart-item__remove-button js-cart-remove-button" type="button" data-cart-remove-pack="{{ $product['pack_id'] }}">
                                     <span class="icon">
                                         <svg width="1em" height="1em" fill="currentColor">
                                             <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#trash-round') }}"></use>
