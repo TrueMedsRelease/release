@@ -602,6 +602,10 @@ class HomeController extends Controller
         $phone_codes = PhoneCodes::all()->toArray();
         $product     = ProductServices::GetProductInfoByUrl($product, $design);
 
+        if (in_array($design, ['design_7', 'design_8'])) {
+            return redirect(route('home.index'));
+        }
+
         if (empty($product['packs'])) {
             if (env('APP_ERROR_PAGE')) {
                 return response()->view('404', ['design' => session('design', config('app.design'))], 404);

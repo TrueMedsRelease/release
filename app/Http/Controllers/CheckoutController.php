@@ -28,6 +28,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
+use App\Helpers\RequestHelper;
 
 class CheckoutController extends Controller
 {
@@ -111,11 +112,49 @@ class CheckoutController extends Controller
 
         session(['device' => $device]);
 
-        return view('checkout', [
-            'pixel'    => $pixel,
-            'Language' => Language::class,
-            'Currency' => Currency::class,
-        ]);
+        if ($design == 'design_17') {
+            $codes = HomeController::getAllCountryISO();
+            $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
+
+            foreach ($codes as $i => $code) {
+                $codes[$i] = strtolower($code->iso);
+            }
+
+            $domain    = str_replace(['http://', 'https://'], '', env('APP_URL'));
+            $last_char = strlen($domain) - 1;
+            if (isset($domain[$last_char]) && $domain[$last_char] == '/') {
+                $domain = substr($domain, 0, -1);
+            }
+
+            $web_statistic["params_string"] =
+                "aff=" . session('aff', 0) .
+                "&saff=" . session('saff', '') .
+                "&is_uniq=" . session('uniq', 0) .
+                "&keyword=" . session('keyword', '') .
+                "&ref=" . session('referer', '') .
+                "&domain_from=" . parse_url(config('app.url'), PHP_URL_HOST) .
+                "&store_skin=" . str_replace('design_', '', $design) .
+                "&page=main&device=" . $device .
+                "&timestamp=" . time() .
+                "&user_ip=" . RequestHelper::GetUserIp();
+
+            return view($design . '.checkout', [
+                'pixel'    => $pixel,
+                'Language' => Language::class,
+                'Currency' => Currency::class,
+                'design' => $design,
+                'codes' => json_encode($codes),
+                'domain' => $domain,
+                'web_statistic' => $web_statistic,
+
+            ]);
+        } else {
+            return view('checkout', [
+                'pixel'    => $pixel,
+                'Language' => Language::class,
+                'Currency' => Currency::class,
+            ]);
+        }
     }
 
     public function checkout()
@@ -235,22 +274,42 @@ class CheckoutController extends Controller
 
         $states = State::$states;
 
-        $returnHTML = view('checkout_content')->with([
-            'Language'            => Language::class,
-            'Currency'            => Currency::class,
-            'products'            => $products,
-            'card_only'           => $card_only,
-            'bonus'               => $bonus,
-            'design'              => $design,
-            'shipping'            => $shipping,
-            'product_total'       => $product_total,
-            'product_total_check' => $product_total_check,
-            'phone_codes'         => $phone_codes,
-            'countries'           => $countries,
-            'states'              => $states,
-            'service_enable'      => $service_enable,
+        if ($design == 'design_17') {
+            $returnHTML = view($design . '.ajax.checkout_content')->with([
+                'Language'            => Language::class,
+                'Currency'            => Currency::class,
+                'products'            => $products,
+                'card_only'           => $card_only,
+                'bonus'               => $bonus,
+                'design'              => $design,
+                'shipping'            => $shipping,
+                'product_total'       => $product_total,
+                'product_total_check' => $product_total_check,
+                'phone_codes'         => $phone_codes,
+                'countries'           => $countries,
+                'states'              => $states,
+                'service_enable'      => $service_enable,
 
-        ])->render();
+            ])->render();
+        } else {
+            $returnHTML = view('checkout_content')->with([
+                'Language'            => Language::class,
+                'Currency'            => Currency::class,
+                'products'            => $products,
+                'card_only'           => $card_only,
+                'bonus'               => $bonus,
+                'design'              => $design,
+                'shipping'            => $shipping,
+                'product_total'       => $product_total,
+                'product_total_check' => $product_total_check,
+                'phone_codes'         => $phone_codes,
+                'countries'           => $countries,
+                'states'              => $states,
+                'service_enable'      => $service_enable,
+
+            ])->render();
+        }
+
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
     }
 
