@@ -2532,7 +2532,7 @@ iframe{
   z-index:100;
   display:none;
   width:max-content;
-  max-width:28rem;
+  /* max-width:28rem; */
   border-radius:0.8rem;
   padding:1.2rem 2rem;
   font-size:1.2rem;
@@ -2556,7 +2556,7 @@ iframe{
   transform:translateX(50%) rotate(45deg);
 }
 [data-tooltip]:hover::after, [data-tooltip]:focus::after, [data-tooltip]:hover::before, [data-tooltip]:focus::before{
-  display:block;
+  display:flex;
 }
 
 @keyframes tooltip-show{

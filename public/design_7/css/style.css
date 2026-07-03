@@ -7888,7 +7888,12 @@ textarea.input {
 }
 
 .bonus_block_info {
-    margin: 20px 0 10px 0;
+    width: 100%;
+    cursor: pointer;
+    max-width: 75rem;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 .bonus_block_info img {
