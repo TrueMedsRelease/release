@@ -566,7 +566,12 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (is_dir($catalog_templates_path . "/" . $cur_template) 
+                && $cur_template != "." 
+                && $cur_template != ".." 
+                && $cur_template != "admin" 
+                && $cur_template != "design_17"
+            ) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {

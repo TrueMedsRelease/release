@@ -218,7 +218,7 @@ return [
 
 
     //Design
-    'design' => env('APP_DESIGN', 'design_10'),
+    'design' => env('APP_DESIGN' != 'design_17' ?: null, 'design_10'),
 
     //Currency
     'currency' => env('APP_CURRENCY', 'usd'),
