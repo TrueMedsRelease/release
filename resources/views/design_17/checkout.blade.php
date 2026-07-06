@@ -1,9 +1,93 @@
 @extends($design . '.layouts.main')
 
+@php
+    if (!function_exists('asset_ver')) {
+        function asset_ver(string $path): string {
+            static $mtimes = [];
+            $full = public_path($path);
+            if (!isset($mtimes[$path])) {
+                $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+            }
+            $url = asset($path);
+            $v = $mtimes[$path] ?? time();
+            return $url . '?v=' . $v;
+        }
+    }
+@endphp
+
 @section('content')
+<style>
+    .checkout_wrapper { position: relative; min-height: 200px; }
+    .checkout-preloader { position: absolute; inset: 0; z-index: 9; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.9); border-radius: 12px; }
+    .checkout-preloader__spinner { width: 52px; height: 52px; border: 5px solid #e5e5e5; border-top-color: #14151a; border-radius: 50%; animation: cs-spin 0.8s linear infinite; }
+    @keyframes cs-spin { to { transform: rotate(360deg); } }
+    .checkout-ajax-loader { position: fixed; top: 16px; right: 16px; z-index: 9998; display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: #fff; border-radius: 999px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); font-size: 13px; color: #14151a; }
+    .checkout-ajax-loader__spinner { width: 16px; height: 16px; border: 2px solid #e5e5e5; border-top-color: #14151a; border-radius: 50%; animation: cs-spin 0.8s linear infinite; display: inline-block; }
+    .checkout-ajax-loader[hidden] { display: none; }
+    .checkout-fatal { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9997; max-width: 92%; padding: 14px 22px; background: #ed4c54; color: #fff; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.18); font-size: 14px; text-align: center; }
+    .checkout-fatal[hidden] { display: none; }
+    .checkout_wrapper .poopuptext { display: none; }
+    .checkout_wrapper .poopuptext.show { display: block; position: absolute; top: -1.8rem; right: 0; padding: 0.2rem 0.8rem; background: #C53030; color: #fff; font-size: 1rem; line-height: 1.4; border-radius: 0.6rem; white-space: nowrap; z-index: 1; }
+    .checkout_wrapper .poopuptext.show::after { content: ''; position: absolute; bottom: -0.4rem; right: 1rem; width: 0; height: 0; border-left: 0.4rem solid transparent; border-right: 0.4rem solid transparent; border-top: 0.4rem solid #C53030; }
+    .checkout_wrapper .form__field.has-error .form__text-input,
+    .checkout_wrapper .form__field.has-error select,
+    .checkout_wrapper .form__field.has-error .select-wrapper { border-color: #C53030 !important; box-shadow: 0 0 0 1px #C53030 inset; border-radius: 6px; }
+
+    dialog[data-dialog="payment-error"]::backdrop { background: rgba(15,23,42,0.45); backdrop-filter: blur(6px); }
+    @keyframes pem-enter { from { opacity: 0; transform: scale(0.96) translateY(-6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    dialog[data-dialog="payment-error"][open] .dialog { animation: pem-enter 0.2s ease-out; }
+
+    .pem-overlay { position: fixed; inset: 0; z-index: 999; display: flex; align-items: center; justify-content: center; background: rgba(15,23,42,0.45); backdrop-filter: blur(6px); padding: 16px; }
+    .pem-overlay[hidden] { display: none !important; }
+    .pem { background: #fff; border-radius: 16px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    .pem-close { position: absolute; top: 12px; right: 12px; z-index: 2; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #F1F5F9; border: none; border-radius: 50%; cursor: pointer; color: #64748B; transition: all 0.2s; }
+    .pem-close:hover { background: #E2E8F0; color: #0F172A; }
+    .pem-body { padding: 32px 28px 24px; text-align: center; }
+    .pem-icon-wrap { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; margin-bottom: 16px; }
+    .pem-icon-wrap svg { width: 28px; height: 28px; }
+    .pem-icon--danger { background: #FEF2F2; color: #DC2626; }
+    .pem-icon--banking { background: #EFF6FF; color: #2563EB; }
+    .pem-icon--transfer { background: #F0FDF4; color: #16A34A; }
+    .pem-icon--crypto { background: #FEFCE8; color: #CA8A04; }
+    .pem-icon--neutral { background: #F1F5F9; color: #64748B; }
+    .pem-title { font-size: 16px; font-weight: 600; color: #0F172A; margin-bottom: 8px; line-height: 1.3; }
+    .pem-desc { font-size: 13px; color: #64748B; line-height: 1.5; margin-bottom: 0; }
+    .pem-recommend { font-size: 14px; color: #475569; margin: 16px 0 0; }
+    .pem-recommend strong { color: #0F172A; }
+
+    .pem-benefits { list-style: none; margin: 18px 0 0; padding: 0; text-align: left; }
+    .pem-benefits li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 13px; color: #475569; line-height: 1.4; border-bottom: 1px solid #F1F5F9; }
+    .pem-benefits li:last-child { border-bottom: none; }
+    .pem-benefit-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 14px; }
+
+    .pem-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+    .pem-btn { width: 100%; padding: 12px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .pem-btn--primary { background: var(--main-color, #2563EB); color: #fff; box-shadow: 0 1px 3px rgba(37,99,235,0.2); }
+    .pem-btn--primary:hover { background: var(--main-color, #1D4ED8); box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
+    .pem-btn--primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pem-btn--secondary { background: #F1F5F9; color: #475569; }
+    .pem-btn--secondary:hover { background: #E2E8F0; }
+    .pem-link { background: none; border: none; color: #94A3B8; font-size: 13px; cursor: pointer; padding: 4px 0; transition: color 0.2s; }
+    .pem-link:hover { color: #64748B; }
+    .btn-loader { display: inline-flex; align-items: center; gap: 8px; }
+
+    .pem-card-tiles { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+    .pem-card-tile { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: left; width: 100%; }
+    .pem-card-tile:hover { border-color: var(--main-color, #2563EB); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+    .pem-card-tile-icon { width: 36px; height: 36px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .pem-card-tile-icon svg { width: 22px; height: 22px; }
+    .pem-card-tile-label { font-size: 14px; font-weight: 500; color: #0F172A; }
+
+
+</style>
+<div class="checkout-ajax-loader" id="checkout-ajax-loader" hidden>
+    <span class="checkout-ajax-loader__spinner"></span>
+    <span class="checkout-ajax-loader__text">{{ __('text.checkout_order') }}</span>
+</div>
+<div class="checkout-fatal" id="checkout-fatal" hidden></div>
 <div class="main__content">
     <div class="main__heading">
-        <h1 class="h1"></h1>
+        <h1 class="h1">{{ __('text.checkout_order') }}</h1>
         <a class="button button--white button--return" href="{{ route('cart.index') }}">
             <span class="icon">
                 <svg width="1em" height="1em" fill="currentColor">
@@ -14,257 +98,151 @@
         </a>
     </div>
     <div class="checkout_wrapper">
-
-	</div>
+        <div class="checkout-preloader" id="checkout-preloader">
+            <div class="checkout-preloader__spinner"></div>
+        </div>
+    </div>
     <script>
-        const checkoutIntlTelUtilsScript = "{{ asset($design . '/vendor/intl-tel/js/utils.js') }}";
-
-        $(document).ready(function() {
-            $(".ploader").hide();
-
-            $.ajax({
-                method: 'GET',
-                data: {},
-                url: "{{ route('checkout.content') }}",
-                dataType: 'html',
-                success: function(data) {
-                    data = JSON.parse(data);
-
-                    $('.checkout_wrapper').html(data.html);
-
-                    initCheckoutAjaxContent(document.querySelector('.checkout_wrapper'));
-
-                    document.body.classList.add('loaded_hiding');
-
-                    window.setTimeout(function () {
-                        document.body.classList.add('loaded');
-                        document.body.classList.remove('loaded_hiding');
-                    }, 500);
-                }
-            });
-        });
-
-        function initCheckoutAjaxContent(root) {
-            if (!root) {
-                return;
+        window.checkoutRoutes = {
+            content: {!! json_encode(route('checkout.content')) !!},
+            insurance: {!! json_encode(route('checkout.insurance')) !!},
+            secretPackage: {!! json_encode(route('checkout.secret_package')) !!},
+            shipping: {!! json_encode(route('checkout.shipping')) !!},
+            country: {!! json_encode(route('checkout.country')) !!},
+            coupon: {!! json_encode(route('checkout.coupon')) !!},
+            giftCard: {!! json_encode(route('checkout.gift_card')) !!},
+            bonusCardInfo: {!! json_encode(route('checkout.bonus_card_info')) !!},
+            changeBonus: {!! json_encode(route('checkout.change_checkount_bonus')) !!},
+            forgetBonuses: {!! json_encode(route('checkout.forget_bonuses')) !!},
+            auth: {!! json_encode(route('checkout.auth')) !!},
+            order: {!! json_encode(route('checkout.order')) !!},
+            paypal: {!! json_encode(route('checkout.paypal')) !!},
+            sendSepa: {!! json_encode(route('checkout.sendSepa')) !!},
+            localPaymentInfo: {!! json_encode(route('checkout.local_payment_info')) !!},
+            dataForLocalPayment: {!! json_encode(route('checkout.data_for_local_payment')) !!},
+            localPayment: {!! json_encode(route('checkout.local_payment')) !!},
+            validateForCrypt: {!! json_encode(route('checkout.validate_for_crypt')) !!},
+            dataForCrypt: {!! json_encode(route('checkout.data_for_crypt')) !!},
+            cryptoInfo: {!! json_encode(route('checkout.crypto_info')) !!},
+            checkPayment: {!! json_encode(route('checkout.check_payment')) !!},
+            validateForGoogle: {!! json_encode(route('checkout.validate_for_google')) !!},
+            validateForSepa: {!! json_encode(route('checkout.validate_for_sepa')) !!},
+            validateForWallet: {!! json_encode(route('checkout.validate_for_wallet')) !!},
+            walletProcess: {!! json_encode(route('checkout.wallet_process')) !!},
+            sendGoogle: {!! json_encode(route('checkout.send_google')) !!},
+            logGoogle: {!! json_encode(route('checkout.log_google')) !!},
+            zelleData: {!! json_encode(route('checkout.zelleData')) !!},
+            zelle: {!! json_encode(route('checkout.zelle')) !!},
+            bonusCardProcess: {!! json_encode(route('checkout.bonus_card_process')) !!},
+            giftCardProcess: {!! json_encode(route('checkout.gift_card_process')) !!},
+            openBanking: {!! json_encode(route('checkout.open_banking_process')) !!},
+            recalculation: {!! json_encode(route('checkout.recalculation')) !!},
+            complete: {!! json_encode(route('checkout.complete')) !!},
+            sendCheckoutPhoneEmail: {!! json_encode(route('checkout.send_checkout_phone_email')) !!}
+        };
+        window.checkoutConfig = {
+            intlTelUtils: {!! json_encode(asset($design . '/vendor/intl-tel/js/utils.js')) !!},
+            design: {!! json_encode($design) !!},
+            selectorLocale: {
+                placeholder: {!! json_encode(__('text.checkout_placeholder')) !!},
+                search: {!! json_encode(__('text.checkout_search')) !!},
+                clear: {!! json_encode(__('text.checkout_clear')) !!},
+                remove: {!! json_encode(__('text.checkout_remove')) !!},
+                noResults: {!! json_encode(__('text.checkout_no_results')) !!},
+                loading: {!! json_encode(__('text.checkout_loading_data')) !!},
             }
-
-            initCheckoutCustomSelects(root);
-            initCheckoutTabs(root);
-            initCheckoutIntlTel(root);
-            initCheckoutPaymentSwitcher(root);
-            initCheckoutCopyButtons(root);
-        }
-
-        function initCheckoutCustomSelects(root) {
-            if (typeof customSelect === 'undefined') {
-                return;
-            }
-
-            const selects = root.querySelectorAll('select.select:not([data-checkout-select-ready])');
-
-            selects.forEach(function(select, index) {
-                if (select.customSelect) {
-                    select.dataset.checkoutSelectReady = '1';
-                    return;
-                }
-
-                const validChildren = Array.from(select.children).every(function(child) {
-                    return child.tagName === 'OPTION' || child.tagName === 'OPTGROUP';
-                });
-
-                if (!validChildren) {
-                    return;
-                }
-
-                select.dataset.checkoutSelectReady = '1';
-
-                const uid = 'checkout-select-' + Date.now() + '-' + index + '-' + Math.random().toString(16).slice(2);
-
-                select.classList.add(uid);
-
-                customSelect('select.' + uid);
-
-                select.classList.remove(uid);
-            });
-        }
-
-        function initCheckoutTabs(root) {
-            const tabsBlocks = root.querySelectorAll('[data-tabs]:not([data-checkout-tabs-ready])');
-
-            tabsBlocks.forEach(function(tabsBlock) {
-                tabsBlock.dataset.checkoutTabsReady = '1';
-
-                const buttons = Array.from(tabsBlock.querySelectorAll('[data-tabs-button]'));
-                const items = Array.from(tabsBlock.querySelectorAll('[data-tabs-item]'));
-
-                function activateTab(index) {
-                    buttons.forEach(function(button, buttonIndex) {
-                        const isActive = buttonIndex === index;
-
-                        button.classList.toggle('is-active', isActive);
-                        button.setAttribute('aria-selected', isActive ? 'true' : 'false');
-                    });
-
-                    items.forEach(function(item, itemIndex) {
-                        const isActive = itemIndex === index;
-
-                        item.classList.toggle('is-active', isActive);
-
-                        const panel = item.querySelector('[data-tabs-panel]');
-
-                        if (panel) {
-                            panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-                        }
-                    });
-                }
-
-                buttons.forEach(function(button, index) {
-                    button.addEventListener('click', function() {
-                        activateTab(index);
-                    });
-                });
-
-                const activeIndex = buttons.findIndex(function(button) {
-                    return button.classList.contains('is-active');
-                });
-
-                activateTab(activeIndex >= 0 ? activeIndex : 0);
-            });
-        }
-
-        function initCheckoutIntlTel(root) {
-            if (typeof intlTelInput === 'undefined') {
-                return;
-            }
-
-            const countryIsoInput = document.querySelector('#country_iso');
-            const initialCountryInput = document.querySelector('#initial_country');
-
-            let onlyCountries = [];
-
-            try {
-                onlyCountries = JSON.parse(countryIsoInput ? countryIsoInput.value : '[]');
-            } catch (e) {
-                onlyCountries = [];
-            }
-
-            const initialCountry = initialCountryInput ? initialCountryInput.value : 'us';
-
-            const inputs = root.querySelectorAll('.intl-phone:not([data-checkout-intl-ready])');
-
-            inputs.forEach(function(input) {
-                input.dataset.checkoutIntlReady = '1';
-
-                intlTelInput(input, {
-                    utilsScript: checkoutIntlTelUtilsScript,
-                    useFullscreenPopup: false,
-                    showSelectedDialCode: true,
-                    initialCountry: initialCountry,
-                    onlyCountries: onlyCountries
-                });
-            });
-        }
-
-        function initCheckoutPaymentSwitcher(root) {
-            const paymentSelect = root.querySelector('.payment-select');
-
-            if (!paymentSelect || paymentSelect.dataset.checkoutPaymentReady === '1') {
-                return;
-            }
-
-            paymentSelect.dataset.checkoutPaymentReady = '1';
-
-            function switchPaymentMethod(hiddenSelector, shownSelector, submitText) {
-                const parent = paymentSelect.closest('.payment-information');
-
-                if (!parent) {
-                    return;
-                }
-
-                parent.querySelectorAll(hiddenSelector).forEach(function(field) {
-                    field.classList.add('hidden-field');
-
-                    field.querySelectorAll('input, select, textarea').forEach(function(input) {
-                        input.setAttribute('disabled', '');
-                    });
-                });
-
-                parent.querySelectorAll(shownSelector).forEach(function(field) {
-                    field.classList.remove('hidden-field');
-
-                    field.querySelectorAll('input, select, textarea').forEach(function(input) {
-                        input.removeAttribute('disabled');
-                    });
-                });
-
-                const submitButtonText = root.querySelector('.submit-button .button-text');
-
-                if (submitButtonText) {
-                    submitButtonText.textContent = submitText;
-                }
-            }
-
-            function updatePaymentMethod() {
-                if (paymentSelect.value === 'crypto') {
-                    switchPaymentMethod(
-                        '.payment-information__card-field',
-                        '.payment-information__crypto-field',
-                        'I have paid'
-                    );
-                }
-
-                if (paymentSelect.value === 'card') {
-                    switchPaymentMethod(
-                        '.payment-information__crypto-field',
-                        '.payment-information__card-field',
-                        'Place the order'
-                    );
-                }
-            }
-
-            paymentSelect.addEventListener('change', updatePaymentMethod);
-
-            updatePaymentMethod();
-        }
-
-        function initCheckoutCopyButtons(root) {
-            const copyButtons = root.querySelectorAll('.copy-button:not([data-checkout-copy-ready])');
-
-            copyButtons.forEach(function(button) {
-                button.dataset.checkoutCopyReady = '1';
-
-                button.addEventListener('click', function() {
-                    const field = button.closest('.copy-field');
-
-                    if (!field) {
-                        return;
-                    }
-
-                    const textElement = field.querySelector('.copy-text');
-
-                    if (!textElement) {
-                        return;
-                    }
-
-                    const text = textElement.textContent.trim();
-
-                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                        navigator.clipboard.writeText(text);
-
-                        const buttonText = button.querySelector('.button-text');
-
-                        if (buttonText) {
-                            buttonText.classList.add('is-visible');
-
-                            setTimeout(function() {
-                                buttonText.classList.remove('is-visible');
-                            }, 1500);
-                        }
-                    }
-                });
-            });
-        }
+        };
+        window.checkoutTexts = {
+            fatalError: {!! json_encode(__('text.checkout_error')) !!},
+            loaderMessages: {
+                insurance: {!! json_encode(__('text.loader_insurance')) !!},
+                secretPackage: {!! json_encode(__('text.loader_secret_package')) !!},
+                shipping: {!! json_encode(__('text.loader_shipping')) !!},
+                country: {!! json_encode(__('text.loader_country')) !!},
+                coupon: {!! json_encode(__('text.loader_coupon')) !!},
+                giftCard: {!! json_encode(__('text.loader_gift_card')) !!},
+                bonusCardInfo: {!! json_encode(__('text.loader_bonus_card')) !!},
+                changeBonus: {!! json_encode(__('text.loader_bonus')) !!},
+                forgetBonuses: {!! json_encode(__('text.loader_bonuses')) !!},
+                auth: {!! json_encode(__('text.loader_auth')) !!},
+                recalculation: {!! json_encode(__('text.loader_recalculation')) !!},
+                localPaymentInfo: {!! json_encode(__('text.loader_payment_info')) !!},
+                cryptoInfo: {!! json_encode(__('text.loader_crypto')) !!},
+                walletProcess: {!! json_encode(__('text.loader_wallet')) !!},
+                sendGoogle: {!! json_encode(__('text.loader_google_pay')) !!},
+                sendSepa: {!! json_encode(__('text.loader_sepa')) !!},
+                zelle: {!! json_encode(__('text.loader_zelle')) !!},
+                openBanking: {!! json_encode(__('text.loader_open_banking')) !!},
+                order: {!! json_encode(__('text.loader_order')) !!},
+            },
+            paymentErrorVisaMessage: {!! json_encode(__('text.payment_error_visa_message') ?? 'Visa is temporarily unavailable for this order') !!},
+            paymentErrorRiskCheckMessage: {!! json_encode(__('text.payment_error_risk_check_message') ?? "Payment didn't pass security check. Please try another method.") !!},
+            paymethodUnavailable: {!! json_encode(__('text.paymethod_unavailable') ?? 'Unfortunately, this payment method is currently unavailable') !!},
+            paymethodRecommend: {!! json_encode(__('text.paymethod_recommend') ?? 'We recommend') !!},
+            paymethodPayWith: {!! json_encode(__('text.paymethod_pay_with') ?? 'Pay with') !!},
+            paymethodShowOther: {!! json_encode(__('text.paymethod_show_other') ?? 'Show other options') !!},
+            paymethodTryDifferentCard: {!! json_encode(__('text.paymethod_try_different_card') ?? 'Try a different card') !!},
+            paymethodCardDesc: {!! json_encode(__('text.paymethod_card_desc') ?? 'Select a card type. Previous card details will be cleared.') !!},
+            paymethodSkipOther: {!! json_encode(__('text.paymethod_skip_other') ?? 'Skip, show other options') !!},
+            paymethodExhaustedTitle: {!! json_encode(__('text.paymethod_exhausted_title') ?? 'Unfortunately, no payment methods worked') !!},
+            paymethodExhaustedDesc: {!! json_encode(__('text.paymethod_exhausted_desc') ?? 'Please contact support to complete your order. Include this order ID:') !!},
+            paymethodExhaustedClose: {!! json_encode(__('text.paymethod_exhausted_close') ?? 'Close') !!},
+            paymethodBenefitExpress: {!! json_encode(__('text.paymethod_benefit_express') ?? 'Express checkout \u2014 pay with your saved cards in one tap') !!},
+            paymethodBenefitSecureBiometric: {!! json_encode(__('text.paymethod_benefit_secure_biometric') ?? 'Secure \u2014 authenticated with Face ID, Touch ID, or fingerprint') !!},
+            paymethodBenefitSimpleWallet: {!! json_encode(__('text.paymethod_benefit_simple_wallet') ?? 'Simple \u2014 no need to enter card number, expiry date, or CVV') !!},
+            paymethodBenefitInstant: {!! json_encode(__('text.paymethod_benefit_instant') ?? 'Instant processing \u2014 your order is processed seconds after payment') !!},
+            paymethodBenefitSecureBank: {!! json_encode(__('text.paymethod_benefit_secure_bank') ?? 'Secure \u2014 payment through your bank, no card details involved') !!},
+            paymethodBenefitSimpleBank: {!! json_encode(__('text.paymethod_benefit_simple_bank') ?? 'Simple \u2014 no card number, expiry date, or CVV needed') !!},
+            paymethodBenefitReliable: {!! json_encode(__('text.paymethod_benefit_reliable') ?? 'Reliable \u2014 direct transfer between banks') !!},
+            paymethodBenefitTransparent: {!! json_encode(__('text.paymethod_benefit_transparent') ?? 'Transparent \u2014 all payment details will be shown') !!},
+            paymethodBenefitUniversal: {!! json_encode(__('text.paymethod_benefit_universal') ?? 'Universal \u2014 works from any country') !!},
+            paymethodBenefitInstantConfirm: {!! json_encode(__('text.paymethod_benefit_instant_confirm') ?? 'Instant transaction confirmation on the blockchain') !!},
+        };
     </script>
+    <link href="{{ asset_ver($design . '/js/custom-selector/CustomSelector.css') }}" rel="stylesheet">
+    <script src="{{ asset_ver($design . '/vendor/floating-ui/core@1.6.9.min.js') }}"></script>
+    <script src="{{ asset_ver($design . '/vendor/floating-ui/dom@1.6.13.min.js') }}"></script>
+    <script type="module">
+        import CustomSelector from '{{ asset($design . '/js/custom-selector/CustomSelector.js') }}';
+        window.CustomSelector = CustomSelector;
+        document.dispatchEvent(new CustomEvent('custom-selector-ready', { detail: { CustomSelector } }));
+    </script>
+    <script defer src="{{ asset_ver($design . '/js/checkout.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.Checkout17 && typeof window.Checkout17.loadCheckoutContent === 'function') {
+                window.Checkout17.loadCheckoutContent();
+            } else {
+                console.error('[checkout17] module not loaded — checkout.js failed');
+            }
+        });
+    </script>
+
+    <div class="pem-overlay" id="pem-overlay" hidden>
+        <div class="pem" id="pem-modal">
+            <button class="pem-close" id="pem-btn-close" type="button" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+
+            <div class="pem-body" id="pem-body">
+                <div class="pem-icon-wrap pem-icon--danger" id="pem-icon">
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg>
+                </div>
+                <div class="pem-title" id="pem-title"></div>
+                <p class="pem-desc" id="pem-desc"></p>
+                <p class="pem-recommend" id="pem-recommend">
+                    <span id="pem-recommend-label"></span> <strong id="pem-recommend-method"></strong>
+                </p>
+                <ul class="pem-benefits" id="pem-benefits" hidden></ul>
+                <div class="pem-card-tiles" id="pem-card-tiles" hidden></div>
+
+                <div class="pem-actions" id="pem-actions">
+                    <button class="pem-btn pem-btn--primary" id="pem-btn-primary" type="button"></button>
+                    <button class="pem-btn pem-btn--secondary" id="pem-btn-secondary" type="button"></button>
+                    <button class="pem-link" id="pem-btn-link" type="button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

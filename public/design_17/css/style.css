@@ -713,9 +713,7 @@ iframe{
   display:none;
 }
 
-.order-option__checkbox:has(.form__checkbox:checked){
-  margin-bottom:0.6rem;
-}
+
 
 /*! Radio field */
 .radio-fieldset{
@@ -3661,9 +3659,6 @@ article.content{
   .order-option__checkbox .form__label--checkbox{
     gap:0.4rem;
     min-height:3.4rem;
-  }
-  .order-option__checkbox:has(.form__checkbox:checked){
-    margin-bottom:1rem;
   }
   .form-panel + .content{
     margin-top:2.4rem;

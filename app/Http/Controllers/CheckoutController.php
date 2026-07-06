@@ -88,7 +88,7 @@ class CheckoutController extends Controller
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -163,6 +163,13 @@ class CheckoutController extends Controller
             return redirect(route('home.index'));
         }
 
+        $returnHTML = $this->getCheckoutHtml();
+
+        return response()->json(['success' => true, 'html' => "$returnHTML"]);
+    }
+
+    private function getCheckoutHtml(): string
+    {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design      = session('design') ? session('design') : config('app.design');
         $desc        = ProductServices::GetProductDesc($language_id);
@@ -205,7 +212,7 @@ class CheckoutController extends Controller
         $product_total_check += session('cart_option.bonus_price');
 
         $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('form.billing_country', session('location.country')))
+            ->where('country_iso2', '=', session('form.billing_country') ?? session('location.country'))
             ->get()
             ->toArray();
 
@@ -220,7 +227,7 @@ class CheckoutController extends Controller
             'shipping' => env('APP_DEFAULT_SHIPPING')
         ]);
 
-        if (isset($cart_option['shipping'])) {
+        if (!isset($cart_option['shipping'])) {
             $cart_option['shipping'] = env('APP_DEFAULT_SHIPPING');
         }
 
@@ -274,43 +281,52 @@ class CheckoutController extends Controller
 
         $states = State::$states;
 
-        if ($design == 'design_17') {
-            $returnHTML = view($design . '.ajax.checkout_content')->with([
-                'Language'            => Language::class,
-                'Currency'            => Currency::class,
-                'products'            => $products,
-                'card_only'           => $card_only,
-                'bonus'               => $bonus,
-                'design'              => $design,
-                'shipping'            => $shipping,
-                'product_total'       => $product_total,
-                'product_total_check' => $product_total_check,
-                'phone_codes'         => $phone_codes,
-                'countries'           => $countries,
-                'states'              => $states,
-                'service_enable'      => $service_enable,
+        try {
+            if ($design == 'design_17') {
+                $returnHTML = view($design . '.ajax.checkout_content')->with([
+                    'Language'            => Language::class,
+                    'Currency'            => Currency::class,
+                    'products'            => $products,
+                    'card_only'           => $card_only,
+                    'bonus'               => $bonus,
+                    'design'              => $design,
+                    'shipping'            => $shipping,
+                    'product_total'       => $product_total,
+                    'product_total_check' => $product_total_check,
+                    'phone_codes'         => $phone_codes,
+                    'countries'           => $countries,
+                    'states'              => $states,
+                    'service_enable'      => $service_enable,
 
-            ])->render();
-        } else {
-            $returnHTML = view('checkout_content')->with([
-                'Language'            => Language::class,
-                'Currency'            => Currency::class,
-                'products'            => $products,
-                'card_only'           => $card_only,
-                'bonus'               => $bonus,
-                'design'              => $design,
-                'shipping'            => $shipping,
-                'product_total'       => $product_total,
-                'product_total_check' => $product_total_check,
-                'phone_codes'         => $phone_codes,
-                'countries'           => $countries,
-                'states'              => $states,
-                'service_enable'      => $service_enable,
+                ])->render();
+            } else {
+                $returnHTML = view('checkout_content')->with([
+                    'Language'            => Language::class,
+                    'Currency'            => Currency::class,
+                    'products'            => $products,
+                    'card_only'           => $card_only,
+                    'bonus'               => $bonus,
+                    'design'              => $design,
+                    'shipping'            => $shipping,
+                    'product_total'       => $product_total,
+                    'product_total_check' => $product_total_check,
+                    'phone_codes'         => $phone_codes,
+                    'countries'           => $countries,
+                    'states'              => $states,
+                    'service_enable'      => $service_enable,
 
-            ])->render();
+                ])->render();
+            }
+        } catch (\Throwable $e) {
+            Log::error('[CheckoutController.getCheckoutHtml] view render failed', [
+                'design' => $design,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return '';
         }
 
-        return response()->json(array('success' => true, 'html' => "$returnHTML"));
+        return $returnHTML;
     }
 
     public function insurance(Request $request)
@@ -388,7 +404,7 @@ class CheckoutController extends Controller
                 Log::info("Coupon answer: " . $response);
 
                 if ($response->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
 
                     $response = json_decode($response, true);
 
@@ -400,14 +416,14 @@ class CheckoutController extends Controller
                         session(['coupon' => $result]);
                     }
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -433,7 +449,7 @@ class CheckoutController extends Controller
                 Log::info("Gift Card answer: " . $response);
 
                 if ($response->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
 
                     $response = json_decode($response, true);
 
@@ -444,14 +460,14 @@ class CheckoutController extends Controller
                         session(['gift_card' => $result]);
                     }
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -513,14 +529,14 @@ class CheckoutController extends Controller
                         session()->forget('crypto');
                     }
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -577,7 +593,7 @@ class CheckoutController extends Controller
             abort(429, 'Too many requests.');
         }
 
-        // Бан, если с одного IP было больше 5 разных email за сутки
+        // Ban if 5+ different emails from the same IP in 24h
         $emails = Cache::get($emailsKey, []);
 
         $emails[] = (string) $email;
@@ -596,7 +612,7 @@ class CheckoutController extends Controller
             abort(429, 'Too many requests.');
         }
 
-        // Дополнительно: бан, если больше 5 запросов в минуту даже с одним email
+        // Additionally: ban if 5+ requests per minute even with one email
         // $count = Cache::increment($countKey);
 
         // if ($count === 1) {
@@ -632,7 +648,7 @@ class CheckoutController extends Controller
                 Log::info('Response AUTH: ' . $response);
 
                 if ($response->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
 
                     $response          = json_decode($response, true);
                     $response['email'] = $email;
@@ -644,14 +660,14 @@ class CheckoutController extends Controller
                         Session::put('form.email', $email);
                     }
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -954,7 +970,7 @@ class CheckoutController extends Controller
                     Log::info("Order answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -1009,7 +1025,7 @@ class CheckoutController extends Controller
 
                         return response()->json(['response' => $response], 200);
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $httpResponse->status());
                         $this->markOrderRetry(
                             $order_cache_id,
@@ -1036,7 +1052,7 @@ class CheckoutController extends Controller
                     ], 200);
 
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
 
                     $this->markOrderRetry($order_cache_id, $e->getMessage());
@@ -1221,7 +1237,7 @@ class CheckoutController extends Controller
                     Log::info("Paypal answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -1249,7 +1265,7 @@ class CheckoutController extends Controller
 
                         return response()->json(['response' => $response], 200);
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $httpResponse->status());
                         $this->markOrderRetry(
                             $order_cache_id,
@@ -1273,7 +1289,7 @@ class CheckoutController extends Controller
                     ], 200);
 
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $this->markOrderRetry($order_cache_id, $e->getMessage());
 
@@ -1326,7 +1342,7 @@ class CheckoutController extends Controller
                 Log::info("Crypto info answer: " . $response);
 
                 if ($response->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
 
                     $response = json_decode($response, true);
 
@@ -1343,14 +1359,14 @@ class CheckoutController extends Controller
                         return response()->json(json_encode($response));
                     }
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -1502,17 +1518,17 @@ class CheckoutController extends Controller
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
 
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -1627,7 +1643,7 @@ class CheckoutController extends Controller
                             return json_encode(['success' => false, 'text' => 'Sorry, this payment method is currently unavailable']);
                         }
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         Log::error($response);
                         $responseData = ['error' => 'Service returned an error'];
@@ -1636,7 +1652,7 @@ class CheckoutController extends Controller
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
                 }
@@ -1754,17 +1770,17 @@ class CheckoutController extends Controller
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
 
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -1923,7 +1939,7 @@ class CheckoutController extends Controller
                     Log::info("Transfer answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -1953,7 +1969,7 @@ class CheckoutController extends Controller
 
                         return response()->json(['response' => $response], 200);
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $httpResponse->status());
                         $this->markOrderRetry(
                             $order_cache_id,
@@ -1980,7 +1996,7 @@ class CheckoutController extends Controller
                         ]
                     ], 200);
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
 
                     $this->markOrderRetry($order_cache_id, $e->getMessage());
@@ -2056,17 +2072,17 @@ class CheckoutController extends Controller
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
                 }
@@ -2090,17 +2106,17 @@ class CheckoutController extends Controller
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
                 }
@@ -2135,7 +2151,7 @@ class CheckoutController extends Controller
                     // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                     // if ($response_payment->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
 
                     // $response_payment = json_decode($response_payment, true);
 
@@ -2316,7 +2332,7 @@ class CheckoutController extends Controller
                     ], 200);
 
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
 
                     $this->markOrderRetry($order_cache_id, $e->getMessage());
@@ -2485,17 +2501,17 @@ class CheckoutController extends Controller
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
                 }
@@ -2637,7 +2653,7 @@ class CheckoutController extends Controller
                 Log::info("GooglePay answer: " . $httpResponse);
 
                 if ($httpResponse->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
                     $response = $httpResponse->json();
 
                     if (!is_array($response)) {
@@ -2664,7 +2680,7 @@ class CheckoutController extends Controller
 
                     return response()->json(['response' => ['status' => 'ok']], 200);
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                     $this->markOrderRetry(
@@ -2690,7 +2706,7 @@ class CheckoutController extends Controller
                 ], 200);
 
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
 
                 $this->markOrderRetry($order_cache_id, $e->getMessage());
@@ -2869,17 +2885,17 @@ class CheckoutController extends Controller
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
                 }
@@ -3036,7 +3052,7 @@ class CheckoutController extends Controller
                     Log::info("Sepa answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -3064,7 +3080,7 @@ class CheckoutController extends Controller
 
                         return response()->json(['response' => $response], 200);
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                         $this->markOrderRetry(
@@ -3156,19 +3172,19 @@ class CheckoutController extends Controller
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
-                    // Обработка успешного ответа
+                    // Handle successful response
                     $response = json_decode($response, true);
                     // return response()->json(['response' => ['status' => 'ok']], 200);
 
                 } else {
-                    // Обработка ответа с ошибкой (4xx или 5xx)
+                    // Handle error response (4xx or 5xx)
                     Log::error("Сервис вернул ошибку: " . $response->status());
                     $responseData = ['error' => 'Service returned an error'];
                 }
             } catch (ConnectionException $e) {
                 Log::error("Ошибка подключения: " . $e->getMessage());
             } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
+                // Handle request errors (timeout or unavailable)
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
@@ -3339,14 +3355,14 @@ class CheckoutController extends Controller
                             return response()->json(['response' => $response], 200);
                         }
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
                 }
@@ -3402,14 +3418,14 @@ class CheckoutController extends Controller
     //                     return response()->json(['response' => $response], 200);
     //                 }
     //             } else {
-    //                 // Обработка ответа с ошибкой (4xx или 5xx)
+    //                 // Handle error response (4xx or 5xx)
     //                 Log::error("Сервис вернул ошибку: " . $response->status());
     //                 $responseData = ['error' => 'Service returned an error'];
     //             }
     //         } catch (ConnectionException $e) {
     //             Log::error("Ошибка подключения: " . $e->getMessage());
     //         } catch (RequestException $e) {
-    //             // Обработка ошибок запроса, таких как таймаут или недоступность
+    //             // Handle request errors (timeout or unavailable)
     //             Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
     //             $responseData = ['error' => 'Service unavailable'];
     //         }
@@ -3584,7 +3600,7 @@ class CheckoutController extends Controller
                     Log::info("Bonus Card answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -3612,7 +3628,7 @@ class CheckoutController extends Controller
 
                         return response()->json(['response' => $response], 200);
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                         $this->markOrderRetry(
@@ -3824,7 +3840,7 @@ class CheckoutController extends Controller
                     Log::info("Gift Card answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -3852,7 +3868,7 @@ class CheckoutController extends Controller
 
                         return response()->json(['response' => $response], 200);
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                         $this->markOrderRetry(
@@ -4058,17 +4074,17 @@ class CheckoutController extends Controller
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $response->status());
                         $responseData = ['error' => 'Service returned an error'];
                     }
                 } catch (ConnectionException $e) {
                     Log::error("Ошибка подключения: " . $e->getMessage());
                 } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
+                    // Handle request errors (timeout or unavailable)
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $responseData = ['error' => 'Service unavailable'];
                 }
@@ -4315,7 +4331,7 @@ class CheckoutController extends Controller
                     Log::info("Wallet answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -4395,7 +4411,7 @@ class CheckoutController extends Controller
                             );
                         }
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                         Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                         $this->markOrderRetry(
@@ -4608,7 +4624,7 @@ class CheckoutController extends Controller
                     Log::info("Open Banking answer: " . $httpResponse);
 
                     if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
+                        // Handle successful response
 
                         $response = $httpResponse->json();
 
@@ -4665,7 +4681,7 @@ class CheckoutController extends Controller
 
                         return response()->json(['response' => $response], 200);
                     } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
+                        // Handle error response (4xx or 5xx)
                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                         $this->markOrderRetry(
@@ -5032,7 +5048,7 @@ class CheckoutController extends Controller
                 ON order_cache (is_send, next_attempt_at, locked_at)
             ");
         } catch (\Throwable $e) {
-            // Если индекс уже существует — это не критично.
+            // If index already exists — this is not critical.
             Log::info('order_cache retry index was not created: ' . $e->getMessage());
         }
     }
