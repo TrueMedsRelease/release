@@ -33,50 +33,24 @@
     .checkout_wrapper .form__field.has-error select,
     .checkout_wrapper .form__field.has-error .select-wrapper { border-color: #C53030 !important; box-shadow: 0 0 0 1px #C53030 inset; border-radius: 6px; }
 
-    dialog[data-dialog="payment-error"]::backdrop { background: rgba(15,23,42,0.45); backdrop-filter: blur(6px); }
-    @keyframes pem-enter { from { opacity: 0; transform: scale(0.96) translateY(-6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    dialog[data-dialog="payment-error"][open] .dialog { animation: pem-enter 0.2s ease-out; }
+    #legacy-alert-container { position: fixed; top: 16px; right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; min-width: 280px; max-width: 400px; pointer-events: none; }
+    #legacy-alert-container .legacy-alert { pointer-events: auto; }
+    .legacy-alert { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; border-radius: 12px; box-shadow: 0 4px 16px rgba(19,22,63,0.08); font-family: var(--font-inter, Inter, sans-serif); font-size: 1.3rem; line-height: 1.5; opacity: 0; transform: translateX(20px); transition: opacity 0.3s cubic-bezier(0.4,0.8,0.4,1), transform 0.3s cubic-bezier(0.4,0.8,0.4,1); }
+    .legacy-alert.is-visible { opacity: 1; transform: translateX(0); }
+    .legacy-alert.is-hiding { opacity: 0; transform: translateX(20px); }
+    .legacy-alert--info { background: #fff; color: var(--color-primary, #13163f); border: 1px solid var(--color-gray-3, #d5d9de); }
+    .legacy-alert--info .legacy-alert__icon { color: var(--color-primary, #13163f); }
+    .legacy-alert--success { background: #fff; color: #262d38; border: 1px solid var(--color-green, #81c61c); }
+    .legacy-alert--success .legacy-alert__icon { color: var(--color-green, #81c61c); }
+    .legacy-alert--warning { background: #fff; color: #262d38; border: 1px solid #e5c84c; }
+    .legacy-alert--warning .legacy-alert__icon { color: #b8960f; }
+    .legacy-alert--error { background: #fff; color: #262d38; border: 1px solid var(--color-red, #e14c4c); }
+    .legacy-alert--error .legacy-alert__icon { color: var(--color-red, #e14c4c); }
+    .legacy-alert__icon { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-top: 1px; }
+    .legacy-alert__text { flex: 1; min-width: 0; word-break: break-word; color: var(--color-text-2, #262d38); }
+    .legacy-alert__close { flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: none; background: var(--color-gray-1, #f0f5fa); color: var(--color-gray-4, #797c80); cursor: pointer; border-radius: 6px; font-size: 14px; line-height: 1; padding: 0; transition: background 0.2s cubic-bezier(0.4,0.8,0.4,1), color 0.2s; margin-top: 0; }
+    .legacy-alert__close:hover { background: var(--color-gray-2, #e6ebf0); color: var(--color-primary, #13163f); }
 
-    .pem-overlay { position: fixed; inset: 0; z-index: 999; display: flex; align-items: center; justify-content: center; background: rgba(15,23,42,0.45); backdrop-filter: blur(6px); padding: 16px; }
-    .pem-overlay[hidden] { display: none !important; }
-    .pem { background: #fff; border-radius: 16px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-    .pem-close { position: absolute; top: 12px; right: 12px; z-index: 2; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #F1F5F9; border: none; border-radius: 50%; cursor: pointer; color: #64748B; transition: all 0.2s; }
-    .pem-close:hover { background: #E2E8F0; color: #0F172A; }
-    .pem-body { padding: 32px 28px 24px; text-align: center; }
-    .pem-icon-wrap { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; margin-bottom: 16px; }
-    .pem-icon-wrap svg { width: 28px; height: 28px; }
-    .pem-icon--danger { background: #FEF2F2; color: #DC2626; }
-    .pem-icon--banking { background: #EFF6FF; color: #2563EB; }
-    .pem-icon--transfer { background: #F0FDF4; color: #16A34A; }
-    .pem-icon--crypto { background: #FEFCE8; color: #CA8A04; }
-    .pem-icon--neutral { background: #F1F5F9; color: #64748B; }
-    .pem-title { font-size: 16px; font-weight: 600; color: #0F172A; margin-bottom: 8px; line-height: 1.3; }
-    .pem-desc { font-size: 13px; color: #64748B; line-height: 1.5; margin-bottom: 0; }
-    .pem-recommend { font-size: 14px; color: #475569; margin: 16px 0 0; }
-    .pem-recommend strong { color: #0F172A; }
-
-    .pem-benefits { list-style: none; margin: 18px 0 0; padding: 0; text-align: left; }
-    .pem-benefits li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 13px; color: #475569; line-height: 1.4; border-bottom: 1px solid #F1F5F9; }
-    .pem-benefits li:last-child { border-bottom: none; }
-    .pem-benefit-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 14px; }
-
-    .pem-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
-    .pem-btn { width: 100%; padding: 12px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .pem-btn--primary { background: var(--main-color, #2563EB); color: #fff; box-shadow: 0 1px 3px rgba(37,99,235,0.2); }
-    .pem-btn--primary:hover { background: var(--main-color, #1D4ED8); box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
-    .pem-btn--primary:disabled { opacity: 0.5; cursor: not-allowed; }
-    .pem-btn--secondary { background: #F1F5F9; color: #475569; }
-    .pem-btn--secondary:hover { background: #E2E8F0; }
-    .pem-link { background: none; border: none; color: #94A3B8; font-size: 13px; cursor: pointer; padding: 4px 0; transition: color 0.2s; }
-    .pem-link:hover { color: #64748B; }
-    .btn-loader { display: inline-flex; align-items: center; gap: 8px; }
-
-    .pem-card-tiles { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
-    .pem-card-tile { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: left; width: 100%; }
-    .pem-card-tile:hover { border-color: var(--main-color, #2563EB); background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
-    .pem-card-tile-icon { width: 36px; height: 36px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .pem-card-tile-icon svg { width: 22px; height: 22px; }
-    .pem-card-tile-label { font-size: 14px; font-weight: 500; color: #0F172A; }
 
 
 </style>
@@ -208,6 +182,7 @@
         document.dispatchEvent(new CustomEvent('custom-selector-ready', { detail: { CustomSelector } }));
     </script>
     <script defer src="{{ asset_ver($design . '/js/checkout.js') }}"></script>
+    <script defer src="{{ asset_ver($design . '/js/alert.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (window.Checkout17 && typeof window.Checkout17.loadCheckoutContent === 'function') {
@@ -218,31 +193,6 @@
         });
     </script>
 
-    <div class="pem-overlay" id="pem-overlay" hidden>
-        <div class="pem" id="pem-modal">
-            <button class="pem-close" id="pem-btn-close" type="button" aria-label="Close">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
 
-            <div class="pem-body" id="pem-body">
-                <div class="pem-icon-wrap pem-icon--danger" id="pem-icon">
-                    <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg>
-                </div>
-                <div class="pem-title" id="pem-title"></div>
-                <p class="pem-desc" id="pem-desc"></p>
-                <p class="pem-recommend" id="pem-recommend">
-                    <span id="pem-recommend-label"></span> <strong id="pem-recommend-method"></strong>
-                </p>
-                <ul class="pem-benefits" id="pem-benefits" hidden></ul>
-                <div class="pem-card-tiles" id="pem-card-tiles" hidden></div>
-
-                <div class="pem-actions" id="pem-actions">
-                    <button class="pem-btn pem-btn--primary" id="pem-btn-primary" type="button"></button>
-                    <button class="pem-btn pem-btn--secondary" id="pem-btn-secondary" type="button"></button>
-                    <button class="pem-link" id="pem-btn-link" type="button"></button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 @endsection
