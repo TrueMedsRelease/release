@@ -27,7 +27,7 @@
         <div class="form__field custom-field">
             <div class="panel">
                 <div class="panel__header">
-                    <h2 class="panel__title">{{ __('text.checkout_sale_title') }}</h2>
+                    <h2 class="panel__title">{{ __('text.cart_order_title_1') }}</h2>
                 </div>
                 <table class="table cart-table order-table">
                     <thead>
