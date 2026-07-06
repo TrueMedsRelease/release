@@ -33,7 +33,7 @@
     .checkout_wrapper .form__field.has-error select,
     .checkout_wrapper .form__field.has-error .select-wrapper { border-color: #C53030 !important; box-shadow: 0 0 0 1px #C53030 inset; border-radius: 6px; }
 
-    #legacy-alert-container { position: fixed; top: 16px; right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; min-width: 280px; max-width: 400px; pointer-events: none; }
+    #legacy-alert-container { position: fixed; bottom: 16px; right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; min-width: 280px; max-width: 400px; pointer-events: none; }
     #legacy-alert-container .legacy-alert { pointer-events: auto; }
     .legacy-alert { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; border-radius: 12px; box-shadow: 0 4px 16px rgba(19,22,63,0.08); font-family: var(--font-inter, Inter, sans-serif); font-size: 1.3rem; line-height: 1.5; opacity: 0; transform: translateX(20px); transition: opacity 0.3s cubic-bezier(0.4,0.8,0.4,1), transform 0.3s cubic-bezier(0.4,0.8,0.4,1); }
     .legacy-alert.is-visible { opacity: 1; transform: translateX(0); }

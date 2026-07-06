@@ -80,13 +80,7 @@
 
         {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
 
-        <link href="{{ asset($design . '/fonts/inter-regular.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/inter-medium.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/inter-semibold.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/inter-bold.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/poppins-regular.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/poppins-medium.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/poppins-semibold.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
+
 
         <link href="{{ asset($design . '/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
         <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
