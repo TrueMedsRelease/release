@@ -164,12 +164,12 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/pwa/install_event', 'pwa_install_event')->name('home.pwa_install_event');
 });
 
-Route::controller(AdminController::class)->group(function () {
-    Route::get('/admin/logout', 'admin_logout')->name('admin.admin_logout');
+Route::controller(AdminController::class)->middleware('admin_auth')->group(function () {
+    Route::get('/admin/logout', 'admin_logout')->name('admin.admin_logout')->withoutMiddleware('admin_auth');
 
     Route::get('/admin', 'admin_enter')->name('admin.admin_enter');
-    Route::get('/admin/login', 'admin_login')->name('admin.admin_login');
-    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/admin/login', 'admin_login')->name('admin.admin_login')->withoutMiddleware('admin_auth');
+    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth']);
 
     Route::get('/admin/main_page', 'index')->name('admin.index');
     Route::get('/admin/admin_main_page', 'admin_main_content')->name('admin.admin_main_content')->withoutMiddleware(VerifyCsrfToken::class);

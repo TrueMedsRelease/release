@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CheckForSqlInjection;
 use App\Http\Middleware\DetectPwaMode;
@@ -102,5 +103,6 @@ class Kernel extends HttpKernel
         'throttle'         => ThrottleRequests::class,
         'verified'         => EnsureEmailIsVerified::class,
         'set_locale'       => SetLocale::class,
+        'admin_auth'       => AdminAuth::class,
     ];
 }

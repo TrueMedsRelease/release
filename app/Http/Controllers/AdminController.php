@@ -89,10 +89,6 @@ class AdminController extends Controller
 
     public function index()
     {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $design = session('design') ? session('design') : config('app.design');
         $title = $this->pageAdminTitle('main_page');
         $agent = new Agent();
@@ -107,10 +103,6 @@ class AdminController extends Controller
     }
 
     public function admin_seo() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('seo');
         $agent = new Agent();
 
@@ -351,10 +343,6 @@ class AdminController extends Controller
     }
 
     public function main_properties() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('main_properties');
         $agent = new Agent();
 
@@ -564,6 +552,10 @@ class AdminController extends Controller
     }
 
     public function save_template(Request $request) {
+        // if (!session()->has('logged_in') || !session('logged_in')) {
+        //     return redirect()->route('admin.admin_login');
+        // }
+
         $selected_template = $request->selected_template;
 
         $this->envUpdate('APP_DESIGN', $selected_template);
@@ -678,10 +670,6 @@ class AdminController extends Controller
     }
 
     public function available_products() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('available_product');
         $agent = new Agent();
 
@@ -773,10 +761,6 @@ class AdminController extends Controller
     }
 
     public function available_packagings() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('available_packagings');
         $agent = new Agent();
 
@@ -1021,10 +1005,6 @@ class AdminController extends Controller
     }
 
     public function products() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('products');
         $agent = new Agent();
 
@@ -1173,10 +1153,6 @@ class AdminController extends Controller
     }
 
     public function admin_languages() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('languages');
         $agent = new Agent();
 
@@ -1255,10 +1231,6 @@ class AdminController extends Controller
     }
 
     public function admin_currencies() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('currencies');
         $agent = new Agent();
 
@@ -1375,10 +1347,6 @@ class AdminController extends Controller
     }
 
     public function admin_checkout() {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $title = $this->pageAdminTitle('checkout');
         $agent = new Agent();
 
@@ -1430,10 +1398,6 @@ class AdminController extends Controller
 
     public function renewal_page()
     {
-        if (!session()->has('logged_in') || !session('logged_in')) {
-            return redirect()->route('admin.admin_login');
-        }
-
         $design = session('design') ? session('design') : config('app.design');
         $title = $this->pageAdminTitle('update_shop');
         $agent = new Agent();
