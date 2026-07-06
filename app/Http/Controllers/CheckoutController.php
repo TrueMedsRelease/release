@@ -593,7 +593,7 @@ class CheckoutController extends Controller
             abort(429, 'Too many requests.');
         }
 
-        // Ban if 5+ different emails from the same IP in 24h
+        // Бан, если с одного IP было больше 5 разных email за сутки
         $emails = Cache::get($emailsKey, []);
 
         $emails[] = (string) $email;
@@ -612,7 +612,7 @@ class CheckoutController extends Controller
             abort(429, 'Too many requests.');
         }
 
-        // Additionally: ban if 5+ requests per minute even with one email
+        // Дополнительно: бан, если больше 5 запросов в минуту даже с одним email
         // $count = Cache::increment($countKey);
 
         // if ($count === 1) {
@@ -5048,7 +5048,7 @@ class CheckoutController extends Controller
                 ON order_cache (is_send, next_attempt_at, locked_at)
             ");
         } catch (\Throwable $e) {
-            // If index already exists — this is not critical.
+            // Если индекс уже существует — это не критично.
             Log::info('order_cache retry index was not created: ' . $e->getMessage());
         }
     }
