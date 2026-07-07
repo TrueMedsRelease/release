@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.ai-factory
+/.opencode
+/.agents
+/AGENTS.md
+/opencode.json
+/skills-lock.json
+/.ai-factory.json
