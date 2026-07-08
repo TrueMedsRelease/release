@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Casella vuota",
@@ -860,4 +860,18 @@ return [
 
     "checkout_open_banking_subtext" => "Aggiungi fondi in modo sicuro e direttamente dal tuo conto bancario.",
     "complete_new_order" => "Vorrei effettuare un altro ordine",
+
+    'payment_redirect_title' => 'Reindirizzamento al pagamento...',
+    'payment_redirect_heading' => 'Verrai reindirizzato',
+    'payment_redirect_text_1' => 'Tra un momento verrai portato a una pagina di pagamento sicura per completare l\'acquisto.',
+    'payment_redirect_text_2' => 'Una volta confermato il pagamento, verrai automaticamente riportato al nostro sito.',
+    'payment_redirect_warning' => 'Per favore non chiudere questa scheda — verrai reindirizzato al fornitore di pagamento.',
+    'payment_redirect_button' => 'Continua al pagamento',
+    'payment_redirect_form_title' => 'Elaborazione del pagamento...',
+    'payment_redirect_form_button' => 'Continua',
+    'payment_redirect_error_title' => 'Link scaduto',
+    'payment_redirect_error_heading' => 'Questo link non è più valido',
+    'payment_redirect_error_expired' => 'Il link di pagamento è scaduto. Per favore torna al carrello e riavvia il processo di acquisto.',
+    'payment_redirect_error_invalid' => 'Il link di pagamento non è valido. Per favore torna al carrello e riprova.',
+    'payment_redirect_error_button' => 'Torna al carrello',
 ];

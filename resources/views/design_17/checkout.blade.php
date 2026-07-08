@@ -1,5 +1,7 @@
 @extends($design . '.layouts.main')
 
+@section('body_data_page', 'checkout')
+
 @section('content')
 <div class="main__content">
     <div class="main__heading">
@@ -17,6 +19,7 @@
 
 	</div>
     <script>
+        const paymentRedirectCreate = "{{ route('payment.redirect.create') }}";
         const checkoutIntlTelUtilsScript = "{{ asset($design . '/vendor/intl-tel/js/utils.js') }}";
 
         $(document).ready(function() {

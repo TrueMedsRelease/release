@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentRedirectController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\SetCookiesForStatistics;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -115,6 +116,34 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/checkout/recalculation', 'recalculation')->name('checkout.recalculation')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/open_banking_process', 'open_banking_process')->name('checkout.open_banking_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/checkout/new_order', 'new_order')->name('checkout.new_order');
+});
+
+Route::controller(PaymentRedirectController::class)->group(function () {
+    Route::post('/checkout/payment-redirect/create', 'create')->name('payment.redirect.create')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/payment-redirect', 'show')->name('payment.redirect.show');
+    Route::get('/payment-redirect/go', 'go')->name('payment.redirect.go');
+});
+
+Route::get('/payment-redirect/debug', function () {
+    return view('payment_redirect', [
+        'goUrl' => route('home.index'),
+        'design' => session('design', config('app.design')),
+    ]);
+})->name('payment.redirect.debug');
+
+Route::get('/payment-redirect/debug/error', function () {
+    return view('payment_redirect_error', [
+        'errorMessage' => 'expired',
+        'design' => session('design', config('app.design')),
+    ]);
+});
+
+Route::get('/payment-redirect/debug/form', function () {
+    $formHtml = '<form id="form3d" action="' . route('home.index') . '" method="GET"><button type="submit">Submit</button></form>';
+
+    return view('payment_redirect_form', [
+        'formHtml' => $formHtml,
+    ]);
 });
 
 Route::get('/redirect', function () {

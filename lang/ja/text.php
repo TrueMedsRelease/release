@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "空のフィールド",
@@ -843,4 +843,19 @@ return [
 
     "checkout_open_banking_subtext" => "銀行口座から安全かつ直接資金を追加できます。",
     "complete_new_order" => "別の注文をしたいです",
+
+    'payment_redirect_title' => 'お支払いページにリダイレクト中...',
+    'payment_redirect_heading' => 'リダイレクトしています',
+    'payment_redirect_text_1' => 'まもなく安全な支払いページに移動し、購入を完了します。',
+    'payment_redirect_text_2' => 'お支払いが確認されると、自動的に当サイトに戻ります。',
+    'payment_redirect_warning' => 'このタブを閉じないでください - 支払いプロバイダーにリダイレクトしています。',
+    'payment_redirect_button' => 'お支払いに進む',
+    'payment_redirect_form_title' => 'お支払いを処理中...',
+    'payment_redirect_form_button' => '続行',
+    'payment_redirect_error_title' => 'リンクの有効期限切れ',
+    'payment_redirect_error_heading' => 'このリンクは無効です',
+    'payment_redirect_error_expired' => '支払いリンクの有効期限が切れました。カートに戻り、チェックアウトをやり直してください。',
+    'payment_redirect_error_invalid' => '支払いリンクが無効です。カートに戻り、もう一度お試しください。',
+    'payment_redirect_error_button' => 'カートに戻る',
 ];
+

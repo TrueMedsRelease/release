@@ -73,6 +73,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
+        <script defer src="{{ asset_ver('js/payment-redirect.js') }}"></script>
 
         @if (env('APP_PWA', 0))
             <link rel="manifest" href="{{ asset($design . '/img/favicon/manifest.webmanifest') }}">
@@ -119,7 +120,7 @@
         {!! isset($pixel) ? $pixel : '' !!}
     </head>
 
-    <body class="@yield('page_name')">
+    <body class="@yield('page_name')" data-page="@yield('body_data_page')">
         <script>
             let flagc = false;
             let flagp = false;
