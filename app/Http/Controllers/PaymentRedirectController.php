@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class PaymentRedirectController extends Controller
 {
@@ -23,7 +25,7 @@ class PaymentRedirectController extends Controller
         }
 
         $tokenPrefix = substr($token, 0, 8);
-        $payload = Cache::get(self::CACHE_PREFIX.$token);
+        $payload = Cache::store('payment_redirects')->get(self::CACHE_PREFIX.$token);
 
         if ($payload === null) {
             Log::info('[PaymentRedirectController.resolveToken] token lookup {token_prefix: '.$tokenPrefix.', found: false}');
@@ -104,11 +106,13 @@ class PaymentRedirectController extends Controller
 
         $token = Str::random(64);
 
-        Cache::put(self::CACHE_PREFIX.$token, [
+        Cache::store('payment_redirects')->put(self::CACHE_PREFIX.$token, [
             'type' => $type,
             'target' => $target,
             'session_id' => $request->session()->getId(),
         ], now()->addMinutes(self::CACHE_TTL_MINUTES));
+
+        $this->cleanExpired();
 
         $tokenPrefix = substr($token, 0, 8);
         Log::info('[PaymentRedirectController.create] token cached {token_prefix: '.$tokenPrefix.'}');
@@ -165,5 +169,47 @@ class PaymentRedirectController extends Controller
         return view('payment_redirect_form', [
             'formHtml' => $payload['target'],
         ]);
+    }
+
+    private function cleanExpired(): void
+    {
+        $store = Cache::store('payment_redirects');
+        $driver = $store->getStore();
+
+        $reflection = new \ReflectionClass($driver);
+        $directory = $reflection->getProperty('directory')->getValue($driver);
+
+        if (! is_dir($directory)) {
+            return;
+        }
+
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        );
+
+        $cleaned = 0;
+        foreach ($iterator as $file) {
+            if ($cleaned >= 50) {
+                break;
+            }
+
+            $contents = file_get_contents($file->getRealPath());
+
+            if ($contents === false || strlen($contents) < 10) {
+                continue;
+            }
+
+            $expiresAt = (int) substr($contents, 0, 10);
+
+            if ($expiresAt < time()) {
+                unlink($file->getRealPath());
+                $cleaned++;
+            }
+        }
+
+        if ($cleaned > 0) {
+            Log::info('[PaymentRedirectController.cleanExpired] cleaned {count} expired entries', ['count' => $cleaned]);
+        }
     }
 }
