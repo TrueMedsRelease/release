@@ -3724,7 +3724,7 @@ $("#proccess_open_banking").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url);
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
