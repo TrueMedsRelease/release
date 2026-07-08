@@ -220,7 +220,7 @@ class CheckoutController extends Controller
             'shipping' => env('APP_DEFAULT_SHIPPING')
         ]);
 
-        if (isset($cart_option['shipping'])) {
+        if (!isset($cart_option['shipping'])) {
             $cart_option['shipping'] = env('APP_DEFAULT_SHIPPING');
         }
 
