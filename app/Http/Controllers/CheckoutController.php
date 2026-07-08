@@ -4388,6 +4388,12 @@ class CheckoutController extends Controller
                             $this->finalizeSuccessfulOrder($order_cache_id, $response);
                             session(['wallet_available' => true]);
 
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'SUCCESS',
+                                    'url' => $response['url'] ?? null,
+                                ]
+                            ], 200);
                         } else {
                             $this->markOrderRetry(
                                 $order_cache_id,
