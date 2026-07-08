@@ -3555,7 +3555,14 @@ $("#proccess_apple_pay").click(function (e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            var data = JSON.parse(data);
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
@@ -3626,7 +3633,14 @@ $("#proccess_google_pay").click(function (e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            var data = JSON.parse(data);
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
@@ -3699,11 +3713,18 @@ $("#proccess_open_banking").click(function (e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            var data = JSON.parse(data);
-            console.log(data);
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
+            // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url);
                 } else {
                     window.location.replace(checkoutComplete);
                 }
