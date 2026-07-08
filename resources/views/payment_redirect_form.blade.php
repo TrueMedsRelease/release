@@ -5,14 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>{{ __('text.payment_redirect_form_title') }}</title>
+    <style>
+        .pr-form-wrapper { display: none; }
+    </style>
 </head>
 <body>
-    {!! $formHtml !!}
+    <div class="pr-form-wrapper">{!! $formHtml !!}</div>
 
     <noscript>
-        <form id="noscript-submit" method="post" style="text-align:center; margin-top: 40px;">
-            <button type="submit">{{ __('text.payment_redirect_form_button') }}</button>
-        </form>
+        <div style="text-align:center;margin-top:40px;font-family:sans-serif;">
+            <p>{{ __('text.payment_redirect_form_title') }}</p>
+            <form id="noscript-submit" method="post">
+                <button type="submit">{{ __('text.payment_redirect_form_button') }}</button>
+            </form>
+        </div>
     </noscript>
 
     <script>

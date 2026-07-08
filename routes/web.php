@@ -125,10 +125,15 @@ Route::controller(PaymentRedirectController::class)->group(function () {
 });
 
 Route::get('/payment-redirect/debug', function () {
-    return view('payment_redirect', [
-        'goUrl' => route('home.index'),
-        'design' => session('design', config('app.design')),
-    ]);
+    $token = \Illuminate\Support\Str::random(64);
+
+    \Illuminate\Support\Facades\Cache::store('payment_redirects')->put('payment_redirect:' . $token, [
+        'type' => 'url',
+        'target' => route('home.index'),
+        'session_id' => session()->getId(),
+    ], now()->addMinutes(60));
+
+    return redirect()->route('payment.redirect.show', ['token' => $token]);
 })->name('payment.redirect.debug');
 
 Route::get('/payment-redirect/debug/error', function () {
@@ -139,11 +144,15 @@ Route::get('/payment-redirect/debug/error', function () {
 });
 
 Route::get('/payment-redirect/debug/form', function () {
-    $formHtml = '<form id="form3d" action="' . route('home.index') . '" method="GET"><button type="submit">Submit</button></form>';
+    $token = \Illuminate\Support\Str::random(64);
 
-    return view('payment_redirect_form', [
-        'formHtml' => $formHtml,
-    ]);
+    \Illuminate\Support\Facades\Cache::store('payment_redirects')->put('payment_redirect:' . $token, [
+        'type' => 'form',
+        'target' => '<form id="form3d" action="' . route('home.index') . '" method="GET"><button type="submit">Submit</button></form>',
+        'session_id' => session()->getId(),
+    ], now()->addMinutes(60));
+
+    return redirect()->route('payment.redirect.show', ['token' => $token]);
 });
 
 Route::get('/redirect', function () {

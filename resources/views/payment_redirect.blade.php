@@ -66,14 +66,6 @@
             border-radius: 50%;
             animation: pr-spin 0.75s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
         }
-        .pr-loader-check {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 28px;
-            height: 28px;
-        }
         @keyframes pr-spin {
             to { transform: rotate(360deg); }
         }
@@ -134,7 +126,6 @@
         .pr-progress {
             margin-top: 28px;
             width: 100%;
-            max-width: 200px;
             height: 3px;
             background: #e8eaed;
             border-radius: 2px;
@@ -158,10 +149,6 @@
             <div class="pr-loader">
                 <div class="pr-loader-ring"></div>
                 <div class="pr-loader-spin"></div>
-                <svg class="pr-loader-check" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color, #508111)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
             </div>
 
             <h1 class="pr-heading">{{ __('text.payment_redirect_heading') }}</h1>

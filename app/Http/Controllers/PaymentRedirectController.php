@@ -130,10 +130,7 @@ class PaymentRedirectController extends Controller
         if ($payload === null) {
             Log::info('[PaymentRedirectController.show] token invalid {reason: not_found_or_wrong_session}');
 
-            return view('payment_redirect_error', [
-                'errorMessage' => 'not_found',
-                'design' => session('design', config('app.design')),
-            ]);
+            return redirect()->route('cart.index');
         }
 
         $tokenPrefix = substr($token, 0, 8);
@@ -153,14 +150,13 @@ class PaymentRedirectController extends Controller
         if ($payload === null) {
             Log::info('[PaymentRedirectController.go] token invalid {reason: not_found_or_wrong_session}');
 
-            return view('payment_redirect_error', [
-                'errorMessage' => 'not_found',
-                'design' => session('design', config('app.design')),
-            ]);
+            return redirect()->route('cart.index');
         }
 
         $tokenPrefix = substr($token, 0, 8);
-        Log::info('[PaymentRedirectController.go] performing redirect {type: '.$payload['type'].', token_prefix: '.$tokenPrefix.'}');
+
+        Cache::store('payment_redirects')->forget(self::CACHE_PREFIX.$token);
+        Log::info('[PaymentRedirectController.go] token consumed {token_prefix: '.$tokenPrefix.'}');
 
         if ($payload['type'] === 'url') {
             return redirect()->away($payload['target']);
