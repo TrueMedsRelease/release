@@ -34,8 +34,18 @@
 
         logError('no redirect_url provided, falling back to direct redirect');
         if (type === 'url') {
-            window.location.replace(target);
+            if (target) {
+                window.location.replace(target);
+            } else {
+                logError('target url is also empty');
+                alert('Something went wrong, please reload the page and try again.');
+            }
         } else {
+            if (!target) {
+                logError('no target provided for form submission');
+                alert('Something went wrong, please reload the page and try again.');
+                return;
+            }
             var container = document.createElement('div');
             container.innerHTML = target;
             document.body.appendChild(container);
