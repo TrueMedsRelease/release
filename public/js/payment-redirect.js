@@ -18,47 +18,34 @@
     function openPaymentRedirect(target, type, redirectUrl) {
         log('opening redirect tab', { type: type, hasPrebuiltToken: !!redirectUrl });
 
-        var newTab = window.open('about:blank', '_blank');
+        if (redirectUrl) {
+            log('using pre-built token', { url: redirectUrl });
+            var newTab = window.open('about:blank', '_blank');
 
-        if (!newTab) {
-            logError('popup blocked, falling back to same-tab redirect');
-            if (type === 'url') {
-                window.location.replace(target);
-            } else {
-                var formContainer = document.createElement('div');
-                formContainer.innerHTML = target;
-                document.body.appendChild(formContainer);
-                var form3d = document.getElementById('form3d');
-                if (form3d) {
-                    form3d.submit();
-                } else if (document.forms.length > 0) {
-                    document.forms[document.forms.length - 1].submit();
-                }
+            if (!newTab) {
+                logError('popup blocked, same-tab redirect');
+                window.location.replace(redirectUrl);
+                return;
             }
+
+            newTab.location.href = redirectUrl;
             return;
         }
 
-        if (!redirectUrl) {
-            logError('no redirect_url provided, falling back to direct redirect');
-            newTab.close();
-            if (type === 'url') {
-                window.location.replace(target);
-            } else {
-                var container = document.createElement('div');
-                container.innerHTML = target;
-                document.body.appendChild(container);
-                var form = document.getElementById('form3d');
-                if (form) {
-                    form.submit();
-                } else if (document.forms.length > 0) {
-                    document.forms[document.forms.length - 1].submit();
-                }
+        logError('no redirect_url provided, falling back to direct redirect');
+        if (type === 'url') {
+            window.location.replace(target);
+        } else {
+            var container = document.createElement('div');
+            container.innerHTML = target;
+            document.body.appendChild(container);
+            var form = document.getElementById('form3d');
+            if (form) {
+                form.submit();
+            } else if (document.forms.length > 0) {
+                document.forms[document.forms.length - 1].submit();
             }
-            return;
         }
-
-        log('using pre-built token', { url: redirectUrl });
-        newTab.location.href = redirectUrl;
     }
 
     function initCheckoutListener() {

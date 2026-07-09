@@ -1252,11 +1252,6 @@ class CheckoutController extends Controller
                             );
                         }
 
-                        $redirectUrl = $this->createPaymentRedirectToken($response);
-                        if ($redirectUrl !== null) {
-                            $response['redirect_url'] = $redirectUrl;
-                        }
-
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
@@ -1961,11 +1956,6 @@ class CheckoutController extends Controller
                             );
                         }
 
-                        $redirectUrl = $this->createPaymentRedirectToken($response);
-                        if ($redirectUrl !== null) {
-                            $response['redirect_url'] = $redirectUrl;
-                        }
-
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
@@ -2295,9 +2285,6 @@ class CheckoutController extends Controller
                         if ($this->isFinalOrderResponse($response)) {
 
                             $this->finalizeSuccessfulOrder($order_cache_id, $response);
-
-                            $redirectUrl = $this->createPaymentRedirectToken($response);
-                            $response['redirect_url'] = $redirectUrl;
 
                             return json_encode(['status' => 'success', 'response' => $response]);
                         } else {
@@ -3088,11 +3075,6 @@ class CheckoutController extends Controller
                             );
                         }
 
-                        $redirectUrl = $this->createPaymentRedirectToken($response);
-                        if ($redirectUrl !== null) {
-                            $response['redirect_url'] = $redirectUrl;
-                        }
-
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
@@ -3641,11 +3623,6 @@ class CheckoutController extends Controller
                             );
                         }
 
-                        $redirectUrl = $this->createPaymentRedirectToken($response);
-                        if ($redirectUrl !== null) {
-                            $response['redirect_url'] = $redirectUrl;
-                        }
-
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
@@ -3884,11 +3861,6 @@ class CheckoutController extends Controller
                                 $order_cache_id,
                                 'Unexpected response: ' . json_encode($response)
                             );
-                        }
-
-                        $redirectUrl = $this->createPaymentRedirectToken($response);
-                        if ($redirectUrl !== null) {
-                            $response['redirect_url'] = $redirectUrl;
                         }
 
                         return response()->json(['response' => $response], 200);
@@ -4711,6 +4683,11 @@ class CheckoutController extends Controller
                                 $order_cache_id,
                                 'Unexpected response: ' . json_encode($response)
                             );
+                        }
+
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
                         }
 
                         return response()->json(['response' => $response], 200);
