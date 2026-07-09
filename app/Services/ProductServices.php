@@ -125,7 +125,6 @@ class ProductServices
                 ->where('product.is_showed', '=', 1)
                 ->where('product_category.category_id', '=', 44);
 
-            self::applyShowedOnMainFallback($query, $hasMainPageOrderTable);
             self::applyMainOrderFallback($query, $hasMainPageOrderTable);
 
             $products = $query
