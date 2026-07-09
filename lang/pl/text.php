@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Puste pole",
@@ -726,4 +726,18 @@ return [
 
     "checkout_open_banking_subtext" => "Dodaj środki bezpiecznie i bezpośrednio ze swojego konta bankowego.",
     "complete_new_order" => "Chciałabym złożyć kolejne zamówienie",
+
+    'payment_redirect_title' => 'Przekierowanie do płatności...',
+    'payment_redirect_heading' => 'Zostaniesz przekierowany',
+    'payment_redirect_text_1' => 'Za chwilę zostaniesz przeniesiony na bezpieczną stronę płatności, aby dokończyć zakup.',
+    'payment_redirect_text_2' => 'Po potwierdzeniu płatności zostaniesz automatycznie przekierowany z powrotem do naszego serwisu.',
+    'payment_redirect_warning' => 'Nie zamykaj tej karty — zostaniesz przekierowany do dostawcy płatności.',
+    'payment_redirect_button' => 'Przejdź do płatności',
+    'payment_redirect_form_title' => 'Przetwarzanie płatności...',
+    'payment_redirect_form_button' => 'Kontynuuj',
+    'payment_redirect_error_title' => 'Link wygasł',
+    'payment_redirect_error_heading' => 'Ten link nie jest już ważny',
+    'payment_redirect_error_expired' => 'Link do płatności wygasł. Wróć do koszyka i rozpocznij proces realizacji zamówienia ponownie.',
+    'payment_redirect_error_invalid' => 'Link do płatności jest nieprawidłowy. Wróć do koszyka i spróbuj ponownie.',
+    'payment_redirect_error_button' => 'Wróć do koszyka',
 ];

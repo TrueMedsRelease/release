@@ -1,5 +1,7 @@
 @extends($design . '.layouts.main')
 
+@section('body_data_page', 'checkout')
+
 @section('content')
 <div class="main__content">
     <div class="main__heading">

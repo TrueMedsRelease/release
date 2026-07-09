@@ -56,6 +56,12 @@ return [
             'lock_path' => storage_path('framework/cache/data'),
         ],
 
+        'payment_redirects' => [
+            'driver'    => 'file',
+            'path'      => storage_path('framework/cache/payment-redirects'),
+            'lock_path' => storage_path('framework/cache/payment-redirects'),
+        ],
+
         'memcached' => [
             'driver'        => 'memcached',
             'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),

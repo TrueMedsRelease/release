@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Empty Field",
@@ -1011,4 +1011,18 @@ return [
 
     "checkout_open_banking_subtext" => "Add funds securely and directly from your bank account.",
     "complete_new_order" => "I would like to place another order",
+
+    'payment_redirect_title' => 'Redirecting to payment...',
+    'payment_redirect_heading' => "You're being redirected",
+    'payment_redirect_text_1' => "In just a moment, you'll be taken to a secure payment page to complete your purchase.",
+    'payment_redirect_text_2' => "Once the payment is confirmed, you'll be automatically returned to our site.",
+    'payment_redirect_warning' => "Please don't close this tab — you're being redirected to the payment provider.",
+    'payment_redirect_button' => 'Continue to payment',
+    'payment_redirect_form_title' => 'Processing payment...',
+    'payment_redirect_form_button' => 'Continue',
+    'payment_redirect_error_title' => 'Link expired',
+    'payment_redirect_error_heading' => 'This link is no longer valid',
+    'payment_redirect_error_expired' => 'The payment link has expired. Please return to your cart and start the checkout process again.',
+    'payment_redirect_error_invalid' => 'The payment link is invalid. Please return to your cart and try again.',
+    'payment_redirect_error_button' => 'Back to cart',
 ];

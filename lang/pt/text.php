@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Campo vazio",
@@ -844,4 +844,18 @@ return [
 
     "checkout_open_banking_subtext" => "Adicione fundos com segurança e diretamente da sua conta bancária.",
     "complete_new_order" => "Gostaria de fazer outro pedido",
+
+    'payment_redirect_title' => 'Redirecionando para o pagamento...',
+    'payment_redirect_heading' => 'Você está sendo redirecionado',
+    'payment_redirect_text_1' => 'Em apenas um momento, você será levado a uma página de pagamento segura para concluir sua compra.',
+    'payment_redirect_text_2' => 'Assim que o pagamento for confirmado, você será automaticamente retornado ao nosso site.',
+    'payment_redirect_warning' => 'Por favor, não feche esta guia — você está sendo redirecionado ao provedor de pagamento.',
+    'payment_redirect_button' => 'Continuar para o pagamento',
+    'payment_redirect_form_title' => 'Processando pagamento...',
+    'payment_redirect_form_button' => 'Continuar',
+    'payment_redirect_error_title' => 'Link expirado',
+    'payment_redirect_error_heading' => 'Este link não é mais válido',
+    'payment_redirect_error_expired' => 'O link de pagamento expirou. Por favor, volte ao seu carrinho e inicie o processo de checkout novamente.',
+    'payment_redirect_error_invalid' => 'O link de pagamento é inválido. Por favor, volte ao seu carrinho e tente novamente.',
+    'payment_redirect_error_button' => 'Voltar ao carrinho',
 ];

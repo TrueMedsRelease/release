@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return  [
     "errors_empty_field" => "空場",
@@ -726,4 +726,19 @@ return  [
 
     "checkout_open_banking_subtext" => "從您的銀行帳戶安全並直接新增資金。",
     "complete_new_order" => "我想再下一個訂單",
+
+    'payment_redirect_title' => '正在跳轉到付款頁面...',
+    'payment_redirect_heading' => '正在為您跳轉',
+    'payment_redirect_text_1' => '即將跳轉到安全付款頁面以完成您的購買。',
+    'payment_redirect_text_2' => '付款確認後，您將被自動返回我們的網站。',
+    'payment_redirect_warning' => '請不要關閉此標籤頁 - 正在將您跳轉到付款提供商。',
+    'payment_redirect_button' => '繼續付款',
+    'payment_redirect_form_title' => '正在處理付款...',
+    'payment_redirect_form_button' => '繼續',
+    'payment_redirect_error_title' => '鏈接已過期',
+    'payment_redirect_error_heading' => '此鏈接已失效',
+    'payment_redirect_error_expired' => '付款鏈接已過期。請返回購物車重新開始結帳。',
+    'payment_redirect_error_invalid' => '付款鏈接無效。請返回購物車重試。',
+    'payment_redirect_error_button' => '返回購物車',
 ];
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Campo vacío",
@@ -889,4 +889,18 @@ return [
 
     "checkout_open_banking_subtext" => "Añade fondos de forma segura y directamente desde tu cuenta bancaria.",
     "complete_new_order" => "Me gustaría hacer otro pedido",
+
+    'payment_redirect_title' => 'Redirigiendo al pago...',
+    'payment_redirect_heading' => 'Está siendo redirigido',
+    'payment_redirect_text_1' => 'En un momento será llevado a una página de pago segura para completar su compra.',
+    'payment_redirect_text_2' => 'Una vez que se confirme el pago, será devuelto automáticamente a nuestro sitio.',
+    'payment_redirect_warning' => 'No cierre esta pestaña — está siendo redirigido al proveedor de pago.',
+    'payment_redirect_button' => 'Continuar al pago',
+    'payment_redirect_form_title' => 'Procesando pago...',
+    'payment_redirect_form_button' => 'Continuar',
+    'payment_redirect_error_title' => 'Enlace caducado',
+    'payment_redirect_error_heading' => 'Este enlace ya no es válido',
+    'payment_redirect_error_expired' => 'El enlace de pago ha caducado. Vuelva a su carrito e inicie el proceso de pago nuevamente.',
+    'payment_redirect_error_invalid' => 'El enlace de pago no es válido. Vuelva a su carrito e inténtelo de nuevo.',
+    'payment_redirect_error_button' => 'Volver al carrito',
 ];

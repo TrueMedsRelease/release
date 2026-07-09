@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Tomt felt",
@@ -774,4 +774,18 @@ return [
 
     "checkout_open_banking_subtext" => "Tilføj penge sikkert og direkte fra din bankkonto.",
     "complete_new_order" => "Jeg vil gerne afgive en ny ordre",
+
+    'payment_redirect_title' => 'Viderestilling til betaling...',
+    'payment_redirect_heading' => 'Du bliver viderestillet',
+    'payment_redirect_text_1' => 'Om et øjeblik bliver du sendt til en sikker betalingsside for at gennemføre dit køb.',
+    'payment_redirect_text_2' => 'Når betalingen er bekræftet, bliver du automatisk returneret til vores side.',
+    'payment_redirect_warning' => 'Luk ikke denne fane — du bliver viderestillet til betalingsudbyderen.',
+    'payment_redirect_button' => 'Fortsæt til betaling',
+    'payment_redirect_form_title' => 'Behandler betaling...',
+    'payment_redirect_form_button' => 'Fortsæt',
+    'payment_redirect_error_title' => 'Link udløbet',
+    'payment_redirect_error_heading' => 'Dette link er ikke længere gyldigt',
+    'payment_redirect_error_expired' => 'Betalingslinket er udløbet. Gå tilbage til din indkøbskurv og start betalingsprocessen igen.',
+    'payment_redirect_error_invalid' => 'Betalingslinket er ugyldigt. Gå tilbage til din indkøbskurv og prøv igen.',
+    'payment_redirect_error_button' => 'Tilbage til indkøbskurv',
 ];

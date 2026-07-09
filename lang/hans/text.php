@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "空字段",
@@ -730,4 +730,19 @@ return [
 
     "checkout_open_banking_subtext" => "从您的银行账户安全并直接添加资金。",
     "complete_new_order" => "我想再下一个订单",
+
+    'payment_redirect_title' => '正在跳转到支付页面...',
+    'payment_redirect_heading' => '正在为您跳转',
+    'payment_redirect_text_1' => '即将跳转到安全支付页面以完成您的购买。',
+    'payment_redirect_text_2' => '支付确认后，您将被自动返回我们的网站。',
+    'payment_redirect_warning' => '请不要关闭此标签页 - 正在将您跳转到支付提供商。',
+    'payment_redirect_button' => '继续支付',
+    'payment_redirect_form_title' => '正在处理支付...',
+    'payment_redirect_form_button' => '继续',
+    'payment_redirect_error_title' => '链接已过期',
+    'payment_redirect_error_heading' => '此链接已失效',
+    'payment_redirect_error_expired' => '支付链接已过期。请返回购物车重新开始结账。',
+    'payment_redirect_error_invalid' => '支付链接无效。请返回购物车重试。',
+    'payment_redirect_error_button' => '返回购物车',
 ];
+
