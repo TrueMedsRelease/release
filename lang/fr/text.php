@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Champ vide",
@@ -855,4 +855,19 @@ return [
 
     "checkout_open_banking_subtext" => "Ajoutez des fonds en toute sécurité et directement depuis votre compte bancaire.",
     "complete_new_order" => "Je voudrais passer une autre commande",
+
+    'payment_redirect_title' => 'Redirection vers le paiement...',
+    'payment_redirect_heading' => 'Vous êtes redirigé',
+    'payment_redirect_text_1' => 'Dans un instant, vous serez conduit vers une page de paiement sécurisée pour finaliser votre achat.',
+    'payment_redirect_text_2' => 'Une fois le paiement confirmé, vous serez automatiquement redirigé vers notre site.',
+    'payment_redirect_warning' => 'Veuillez ne pas fermer cet onglet - vous êtes redirigé vers le prestataire de paiement.',
+    'payment_redirect_button' => 'Continuer vers le paiement',
+    'payment_redirect_form_title' => 'Traitement du paiement...',
+    'payment_redirect_form_button' => 'Continuer',
+    'payment_redirect_error_title' => 'Lien expiré',
+    'payment_redirect_error_heading' => 'Ce lien n\'est plus valide',
+    'payment_redirect_error_expired' => 'Le lien de paiement a expiré. Veuillez retourner à votre panier et recommencer le processus de commande.',
+    'payment_redirect_error_invalid' => 'Le lien de paiement est invalide. Veuillez retourner à votre panier et réessayer.',
+    'payment_redirect_error_button' => 'Retour au panier',
 ];
+

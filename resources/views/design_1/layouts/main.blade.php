@@ -76,6 +76,8 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
+
     @if (env('APP_PWA', 0))
         <link rel="manifest" href="{{ asset($design . '/images/favicon/manifest.webmanifest') }}">
         <script defer type="text/javascript" src="{{ asset_ver("js/sw-setup.js") }}"></script>

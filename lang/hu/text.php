@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Üres mező",
@@ -731,4 +731,18 @@ return [
 
     "checkout_open_banking_subtext" => "Adjon hozzá pénzt biztonságosan és közvetlenül a bankszámlájáról.",
     "complete_new_order" => "Szeretnék leadni egy újabb rendelést",
+
+    'payment_redirect_title' => 'Átirányítás fizetésre...',
+    'payment_redirect_heading' => 'Ön átirányításra kerül',
+    'payment_redirect_text_1' => 'Egy pillanat múlva egy biztonságos fizetési oldalra kerül a vásárlás befejezéséhez.',
+    'payment_redirect_text_2' => 'A fizetés visszaigazolása után automatikusan visszairányítjuk oldalunkra.',
+    'payment_redirect_warning' => 'Kérjük, ne zárja be ezt a lapot — Önt a fizetési szolgáltatóhoz irányítjuk át.',
+    'payment_redirect_button' => 'Tovább a fizetéshez',
+    'payment_redirect_form_title' => 'Fizetés feldolgozása...',
+    'payment_redirect_form_button' => 'Tovább',
+    'payment_redirect_error_title' => 'A link lejárt',
+    'payment_redirect_error_heading' => 'Ez a link már nem érvényes',
+    'payment_redirect_error_expired' => 'A fizetési link lejárt. Kérjük, térjen vissza a kosarához és kezdje el újra a fizetési folyamatot.',
+    'payment_redirect_error_invalid' => 'A fizetési link érvénytelen. Kérjük, térjen vissza a kosarához és próbálja újra.',
+    'payment_redirect_error_button' => 'Vissza a kosárhoz',
 ];

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Câmp gol",
@@ -721,4 +721,18 @@ return [
 
     "checkout_open_banking_subtext" => "Adăugați fonduri în siguranță și direct din contul dvs. bancar.",
     "complete_new_order" => "Aș dori să plasez o altă comandă",
+
+    'payment_redirect_title' => 'Redirecționare către plată...',
+    'payment_redirect_heading' => 'Sunteți redirecționat',
+    'payment_redirect_text_1' => 'În doar un moment, veți fi dus la o pagină de plată securizată pentru a finaliza achiziția.',
+    'payment_redirect_text_2' => 'Odată ce plata este confirmată, veți fi returnat automat pe site-ul nostru.',
+    'payment_redirect_warning' => 'Vă rugăm să nu închideți această filă — sunteți redirecționat către furnizorul de plată.',
+    'payment_redirect_button' => 'Continuați către plată',
+    'payment_redirect_form_title' => 'Procesare plată...',
+    'payment_redirect_form_button' => 'Continuați',
+    'payment_redirect_error_title' => 'Link expirat',
+    'payment_redirect_error_heading' => 'Acest link nu mai este valid',
+    'payment_redirect_error_expired' => 'Linkul de plată a expirat. Vă rugăm să reveniți la coș și să începeți din nou procesul de checkout.',
+    'payment_redirect_error_invalid' => 'Linkul de plată este invalid. Vă rugăm să reveniți la coș și să încercați din nou.',
+    'payment_redirect_error_button' => 'Înapoi la coș',
 ];
