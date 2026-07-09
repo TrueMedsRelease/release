@@ -2024,8 +2024,11 @@ class CheckoutController extends Controller
 
             if (is_array($successOrderPage)) {
                 session(['success_order_page' => $successOrderPage]);
-                $fromCookie = true;
             }
+        }
+
+        if (Cookie::has('success_order_page')) {
+            $fromCookie = true;
         }
 
         if (empty(session('success_order_page'))) {
