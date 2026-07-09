@@ -591,8 +591,22 @@
         if (!r) { log.warn('payment empty response', resp); return; }
         log.debug('payment response', { status: r.status, hasUrl: !!r.url, hasForm3d: !!r.form3d_html, visaError: !!r.visa_error, riskCheck: !!r.risk_check });
 
-        if (r.form3d_html) { appendForm3d(r.form3d_html); return; }
-        if (r.url) { window.location.replace(r.url); return; }
+        if (r.form3d_html) {
+            if (typeof window.openPaymentRedirect === 'function') {
+                window.openPaymentRedirect(r.form3d_html, 'form', r.redirect_url);
+            } else {
+                appendForm3d(r.form3d_html);
+            }
+            return;
+        }
+        if (r.url) {
+            if (typeof window.openPaymentRedirect === 'function') {
+                window.openPaymentRedirect(r.url, 'url', r.redirect_url);
+            } else {
+                window.location.replace(r.url);
+            }
+            return;
+        }
         if (r.status === 'SUCCESS') { window.location.href = routes().complete; return; }
 
         var html = r.html;
