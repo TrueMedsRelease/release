@@ -1007,6 +1007,11 @@ class CheckoutController extends Controller
                             );
                         }
 
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
+                        }
+
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
@@ -1245,6 +1250,11 @@ class CheckoutController extends Controller
                                 $order_cache_id,
                                 'Unexpected response: ' . json_encode($response)
                             );
+                        }
+
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
                         }
 
                         return response()->json(['response' => $response], 200);
@@ -1951,6 +1961,11 @@ class CheckoutController extends Controller
                             );
                         }
 
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
+                        }
+
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
@@ -2280,6 +2295,9 @@ class CheckoutController extends Controller
                         if ($this->isFinalOrderResponse($response)) {
 
                             $this->finalizeSuccessfulOrder($order_cache_id, $response);
+
+                            $redirectUrl = $this->createPaymentRedirectToken($response);
+                            $response['redirect_url'] = $redirectUrl;
 
                             return json_encode(['status' => 'success', 'response' => $response]);
                         } else {
@@ -2665,7 +2683,12 @@ class CheckoutController extends Controller
                         );
                     }
 
-                    return response()->json(['response' => ['status' => 'ok']], 200);
+                    return response()->json([
+                        'response' => [
+                            'status' => 'ok',
+                            'redirect_url' => $this->createPaymentRedirectToken($response),
+                        ]
+                    ], 200);
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
                     Log::error("Сервис вернул ошибку: " . $httpResponse->status());
@@ -3063,6 +3086,11 @@ class CheckoutController extends Controller
                                 $order_cache_id,
                                 'Unexpected response: ' . json_encode($response)
                             );
+                        }
+
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
                         }
 
                         return response()->json(['response' => $response], 200);
@@ -3613,10 +3641,15 @@ class CheckoutController extends Controller
                             );
                         }
 
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
+                        }
+
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                       Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                         $this->markOrderRetry(
                             $order_cache_id,
@@ -3851,6 +3884,11 @@ class CheckoutController extends Controller
                                 $order_cache_id,
                                 'Unexpected response: ' . json_encode($response)
                             );
+                        }
+
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
                         }
 
                         return response()->json(['response' => $response], 200);
@@ -4391,10 +4429,13 @@ class CheckoutController extends Controller
                             $this->finalizeSuccessfulOrder($order_cache_id, $response);
                             session(['wallet_available' => true]);
 
+                            $redirectUrl = $this->createPaymentRedirectToken($response);
+
                             return response()->json([
                                 'response' => [
                                     'status' => 'SUCCESS',
                                     'url' => $response['url'] ?? null,
+                                    'redirect_url' => $redirectUrl,
                                 ]
                             ], 200);
                         } else {
@@ -5112,6 +5153,34 @@ class CheckoutController extends Controller
         );
 
         // $this->sendPayvmcIdsFromSession();
+    }
+
+    private function createPaymentRedirectToken(array $gatewayResponse): ?string
+    {
+        $target = null;
+        $type = null;
+
+        if (!empty($gatewayResponse['url'])) {
+            $target = $gatewayResponse['url'];
+            $type = 'url';
+        } elseif (!empty($gatewayResponse['form3d_html'])) {
+            $target = $gatewayResponse['form3d_html'];
+            $type = 'form';
+        }
+
+        if ($target === null || $type === null) {
+            return null;
+        }
+
+        $token = Str::random(64);
+
+        Cache::store('payment_redirects')->put('payment_redirect:' . $token, [
+            'type' => $type,
+            'target' => $target,
+            'session_id' => session()->getId(),
+        ], now()->addMinutes(60));
+
+        return route('payment.redirect.show', ['token' => $token]);
     }
 
     private function sendPayvmcIdsFromSession($orderId = null): array

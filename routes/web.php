@@ -119,7 +119,6 @@ Route::controller(CheckoutController::class)->group(function () {
 });
 
 Route::controller(PaymentRedirectController::class)->group(function () {
-    Route::post('/checkout/payment-redirect/create', 'create')->name('payment.redirect.create')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/payment-redirect', 'show')->name('payment.redirect.show');
     Route::get('/payment-redirect/go', 'go')->name('payment.redirect.go');
 });

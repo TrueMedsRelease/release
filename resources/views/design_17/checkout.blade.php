@@ -19,7 +19,6 @@
 
 	</div>
     <script>
-        const paymentRedirectCreate = "{{ route('payment.redirect.create') }}";
         const checkoutIntlTelUtilsScript = "{{ asset($design . '/vendor/intl-tel/js/utils.js') }}";
 
         $(document).ready(function() {

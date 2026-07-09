@@ -181,26 +181,42 @@ class PaymentRedirectController extends Controller
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::LEAVES_ONLY
+            RecursiveIteratorIterator::CHILD_FIRST
         );
 
         $cleaned = 0;
-        foreach ($iterator as $file) {
+        $directories = [];
+
+        foreach ($iterator as $item) {
             if ($cleaned >= 50) {
                 break;
             }
 
-            $contents = file_get_contents($file->getRealPath());
+            if ($item->isFile()) {
+                $contents = file_get_contents($item->getRealPath());
 
-            if ($contents === false || strlen($contents) < 10) {
+                if ($contents === false || strlen($contents) < 10) {
+                    continue;
+                }
+
+                $expiresAt = (int) substr($contents, 0, 10);
+
+                if ($expiresAt < time()) {
+                    unlink($item->getRealPath());
+                    $cleaned++;
+                }
+            } elseif ($item->isDir()) {
+                $directories[] = $item->getRealPath();
+            }
+        }
+
+        foreach ($directories as $dirPath) {
+            if ($dirPath === $directory) {
                 continue;
             }
 
-            $expiresAt = (int) substr($contents, 0, 10);
-
-            if ($expiresAt < time()) {
-                unlink($file->getRealPath());
-                $cleaned++;
+            if (is_dir($dirPath) && count(scandir($dirPath)) === 2) {
+                rmdir($dirPath);
             }
         }
 

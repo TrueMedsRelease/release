@@ -29,27 +29,40 @@ class ClearExpiredPaymentRedirects extends Command
         }
 
         $deleted = 0;
+        $directories = [];
+
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::LEAVES_ONLY
+            RecursiveIteratorIterator::CHILD_FIRST
         );
 
-        foreach ($iterator as $file) {
-            if (! $file->isFile()) {
+        foreach ($iterator as $item) {
+            if ($item->isFile()) {
+                $contents = file_get_contents($item->getRealPath());
+
+                if ($contents === false || strlen($contents) < 10) {
+                    continue;
+                }
+
+                $expiresAt = (int) substr($contents, 0, 10);
+
+                if ($expiresAt < time()) {
+                    unlink($item->getRealPath());
+                    $deleted++;
+                }
+            } elseif ($item->isDir()) {
+                $directories[] = $item->getRealPath();
+            }
+        }
+
+        // Clean up empty directories (leaf directories first, thanks to CHILD_FIRST)
+        foreach ($directories as $dirPath) {
+            if ($dirPath === $directory) {
                 continue;
             }
 
-            $contents = file_get_contents($file->getRealPath());
-
-            if ($contents === false || strlen($contents) < 10) {
-                continue;
-            }
-
-            $expiresAt = (int) substr($contents, 0, 10);
-
-            if ($expiresAt < time()) {
-                unlink($file->getRealPath());
-                $deleted++;
+            if (is_dir($dirPath) && count(scandir($dirPath)) === 2) {
+                rmdir($dirPath);
             }
         }
 

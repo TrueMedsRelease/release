@@ -3079,7 +3079,7 @@ function processForm(e) {
 
             if (data.response && data.response.form3d_html) {
                 if (typeof window.openPaymentRedirect === 'function') {
-                    window.openPaymentRedirect(data.response.form3d_html, 'form');
+                    window.openPaymentRedirect(data.response.form3d_html, 'form', data.response.redirect_url);
                 } else {
                     $('body').append(data.response.form3d_html);
 
@@ -3094,7 +3094,7 @@ function processForm(e) {
 
             if(typeof data.response.url !== 'undefined')
             {
-                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
             }
             else if (data.response.status == 'SUCCESS') {
                 window.location.replace(checkoutComplete);
@@ -3159,7 +3159,7 @@ $("#proccess_paypal").click(function (e) {
             var data = JSON.parse(data);
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
-                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
             }
             else {
                 var error = '';
@@ -3277,7 +3277,7 @@ $("#proccess_local_payment").click(function (e) {
 
             if(typeof data.response.url !== 'undefined')
             {
-                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
             }
             else if (data.response.status == 'SUCCESS') {
                 window.location.replace(checkoutComplete);
@@ -3433,7 +3433,7 @@ $("#proccess_bonus_card").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3495,7 +3495,7 @@ $("#proccess_gift_card").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3566,7 +3566,7 @@ $("#proccess_apple_pay").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3644,7 +3644,7 @@ $("#proccess_google_pay").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3724,7 +3724,7 @@ $("#proccess_open_banking").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url'); } else { window.location.replace(data.response.url); }
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }

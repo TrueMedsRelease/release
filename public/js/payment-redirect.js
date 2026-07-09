@@ -15,8 +15,8 @@
         }
     }
 
-    function openPaymentRedirect(target, type) {
-        log('opening redirect tab', { type: type });
+    function openPaymentRedirect(target, type, redirectUrl) {
+        log('opening redirect tab', { type: type, hasPrebuiltToken: !!redirectUrl });
 
         var newTab = window.open('about:blank', '_blank');
 
@@ -38,56 +38,27 @@
             return;
         }
 
-        var endpoint = (typeof paymentRedirectCreate !== 'undefined') ? paymentRedirectCreate : null;
-
-        if (!endpoint) {
-            logError('paymentRedirectCreate endpoint not defined');
+        if (!redirectUrl) {
+            logError('no redirect_url provided, falling back to direct redirect');
             newTab.close();
             if (type === 'url') {
                 window.location.replace(target);
+            } else {
+                var container = document.createElement('div');
+                container.innerHTML = target;
+                document.body.appendChild(container);
+                var form = document.getElementById('form3d');
+                if (form) {
+                    form.submit();
+                } else if (document.forms.length > 0) {
+                    document.forms[document.forms.length - 1].submit();
+                }
             }
             return;
         }
 
-        var formData = new FormData();
-        formData.append('type', type);
-        formData.append('target', target);
-
-        fetch(endpoint, {
-            method: 'POST',
-            body: formData
-        })
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error('HTTP ' + response.status);
-                }
-                return response.json();
-            })
-            .then(function (data) {
-                if (data && data.redirect_url) {
-                    log('token created, redirecting new tab', { url: data.redirect_url });
-                    newTab.location.href = data.redirect_url;
-                } else {
-                    throw new Error('No redirect_url in response');
-                }
-            })
-            .catch(function (error) {
-                logError('failed to create token, falling back', { error: error.message });
-                newTab.close();
-                if (type === 'url') {
-                    window.location.replace(target);
-                } else {
-                    var container = document.createElement('div');
-                    container.innerHTML = target;
-                    document.body.appendChild(container);
-                    var form = document.getElementById('form3d');
-                    if (form) {
-                        form.submit();
-                    } else if (document.forms.length > 0) {
-                        document.forms[document.forms.length - 1].submit();
-                    }
-                }
-            });
+        log('using pre-built token', { url: redirectUrl });
+        newTab.location.href = redirectUrl;
     }
 
     function initCheckoutListener() {

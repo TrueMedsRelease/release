@@ -90,7 +90,7 @@
         const checkoutCheckPayment = "{{ route('checkout.check_payment') }}";
         const checkoutComplete = "{{ route('checkout.complete') }}";
         const checkoutRedirect = "{{ route('redirect_url') }}";
-        const paymentRedirectCreate = "{{ route('payment.redirect.create') }}";
+
         const checkoutOrder = "{{ route('checkout.order') }}";
         const checkoutPaypal = "{{ route('checkout.paypal') }}";
         const checkoutSepa = "{{ route('checkout.sendSepa') }}";
