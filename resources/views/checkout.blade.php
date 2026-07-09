@@ -37,6 +37,8 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset_ver('style_checkout/style.css') }}">
 	<link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
+    <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
+    <script defer src="{{ asset_ver('js/payment-redirect.js') }}"></script>
     <script src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
 
     <script>
@@ -88,6 +90,7 @@
         const checkoutCheckPayment = "{{ route('checkout.check_payment') }}";
         const checkoutComplete = "{{ route('checkout.complete') }}";
         const checkoutRedirect = "{{ route('redirect_url') }}";
+
         const checkoutOrder = "{{ route('checkout.order') }}";
         const checkoutPaypal = "{{ route('checkout.paypal') }}";
         const checkoutSepa = "{{ route('checkout.sendSepa') }}";
@@ -140,7 +143,7 @@
     </script>
     <script async src="https://true-serv.net/static/statistics/assets/js/v1/main.js"></script>
 </head>
-<body>
+<body data-page="checkout">
     <div class="preloader">
 		<div class="preloader__row">
 			<div class="preloader__item"></div>

@@ -24,6 +24,8 @@
 
     <link rel="stylesheet" href="{{ asset_ver('style_checkout/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
+    <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
+    <script defer src="{{ asset_ver('js/payment-redirect.js') }}"></script>
     <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -63,7 +65,7 @@
     }
 @endphp
 
-<body>
+<body data-page="payment-result" data-payment-status="success">
     <div class="wrapper">
         <header class="header">
             <div class="header__phones-top top-phones-header">

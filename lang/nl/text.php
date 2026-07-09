@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Leeg veld",
@@ -765,4 +765,18 @@ return [
 
     "checkout_open_banking_subtext" => "Voeg veilig en rechtstreeks geld toe vanaf uw bankrekening.",
     "complete_new_order" => "Ik wil graag nog een bestelling plaatsen",
+
+    'payment_redirect_title' => 'Doorverwijzen naar betaling...',
+    'payment_redirect_heading' => 'U wordt doorgestuurd',
+    'payment_redirect_text_1' => 'Over een ogenblik wordt u naar een beveiligde betalingspagina gebracht om uw aankoop te voltooien.',
+    'payment_redirect_text_2' => 'Zodra de betaling is bevestigd, wordt u automatisch teruggestuurd naar onze site.',
+    'payment_redirect_warning' => 'Sluit dit tabblad niet — u wordt doorgestuurd naar de betalingsprovider.',
+    'payment_redirect_button' => 'Doorgaan naar betaling',
+    'payment_redirect_form_title' => 'Betaling verwerken...',
+    'payment_redirect_form_button' => 'Doorgaan',
+    'payment_redirect_error_title' => 'Link verlopen',
+    'payment_redirect_error_heading' => 'Deze link is niet langer geldig',
+    'payment_redirect_error_expired' => 'De betalingslink is verlopen. Ga terug naar uw winkelwagen en start het afrekenproces opnieuw.',
+    'payment_redirect_error_invalid' => 'De betalingslink is ongeldig. Ga terug naar uw winkelwagen en probeer het opnieuw.',
+    'payment_redirect_error_button' => 'Terug naar winkelwagen',
 ];

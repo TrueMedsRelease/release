@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Κενό Πεδίο",
@@ -724,4 +724,18 @@ return [
 
     "checkout_open_banking_subtext" => "Προσθέστε χρήματα με ασφάλεια και απευθείας από τον τραπεζικό σας λογαριασμό.",
     "complete_new_order" => "Θα ήθελα να κάνω άλλη μία παραγγελία",
+
+    'payment_redirect_title' => 'Ανακατεύθυνση στην πληρωμή...',
+    'payment_redirect_heading' => 'Θα ανακατευθυνθείτε',
+    'payment_redirect_text_1' => 'Σε λίγο θα μεταφερθείτε σε μια ασφαλή σελίδα πληρωμής για να ολοκληρώσετε την αγορά σας.',
+    'payment_redirect_text_2' => 'Μόλις επιβεβαιωθεί η πληρωμή, θα επιστρέψετε αυτόματα στον ιστότοπό μας.',
+    'payment_redirect_warning' => 'Παρακαλώ μην κλείσετε αυτήν την καρτέλα — ανακατευθύνεστε στον πάροχο πληρωμής.',
+    'payment_redirect_button' => 'Συνέχεια στην πληρωμή',
+    'payment_redirect_form_title' => 'Επεξεργασία πληρωμής...',
+    'payment_redirect_form_button' => 'Συνέχεια',
+    'payment_redirect_error_title' => 'Ο σύνδεσμος έληξε',
+    'payment_redirect_error_heading' => 'Αυτός ο σύνδεσμος δεν είναι πλέον έγκυρος',
+    'payment_redirect_error_expired' => 'Ο σύνδεσμος πληρωμής έχει λήξει. Επιστρέψτε στο καλάθι σας και ξεκινήστε ξανά τη διαδικασία ολοκλήρωσης αγοράς.',
+    'payment_redirect_error_invalid' => 'Ο σύνδεσμος πληρωμής δεν είναι έγκυρος. Επιστρέψτε στο καλάθι σας και δοκιμάστε ξανά.',
+    'payment_redirect_error_button' => 'Επιστροφή στο καλάθι',
 ];

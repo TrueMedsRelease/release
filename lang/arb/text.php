@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "حقل فارغ",
@@ -729,4 +729,19 @@ return [
 
     "checkout_open_banking_subtext" => "أضف الأموال بأمان ومباشرة من حسابك البنكي.",
     "complete_new_order" => "أود تقديم طلب آخر",
+
+    'payment_redirect_title' => 'جاري التحويل إلى صفحة الدفع...',
+    'payment_redirect_heading' => 'جاري تحويلك',
+    'payment_redirect_text_1' => 'سيتم تحويلك إلى صفحة دفع آمنة لإكمال الشراء.',
+    'payment_redirect_text_2' => 'بعد تأكيد الدفع، سنعيدك تلقائياً لموقعنا.',
+    'payment_redirect_warning' => 'لا تغلق هذه النافذة - جاري التحويل لمزود الدفع.',
+    'payment_redirect_button' => 'متابعة للدفع',
+    'payment_redirect_form_title' => 'معالجة الدفع...',
+    'payment_redirect_form_button' => 'متابعة',
+    'payment_redirect_error_title' => 'انتهت صلاحية الرابط',
+    'payment_redirect_error_heading' => 'الرابط لم يعد صالحاً',
+    'payment_redirect_error_expired' => 'انتهت صلاحية رابط الدفع. عد لسلة التسوق وابدأ مجدداً.',
+    'payment_redirect_error_invalid' => 'رابط الدفع غير صالح. عد لسلة التسوق وحاول مجدداً.',
+    'payment_redirect_error_button' => 'عودة لسلة التسوق',
 ];
+

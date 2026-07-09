@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Prázdne pole",
@@ -725,4 +725,18 @@ return [
 
     "checkout_open_banking_subtext" => "Pridajte prostriedky bezpečne a priamo zo svojho bankového účtu.",
     "complete_new_order" => "Chcela by som zadať ďalšiu objednávku",
+
+    'payment_redirect_title' => 'Presmerovanie na platbu...',
+    'payment_redirect_heading' => 'Budete presmerovaní',
+    'payment_redirect_text_1' => 'O chvíľu budete presmerovaní na bezpečnú platobnú stránku na dokončenie nákupu.',
+    'payment_redirect_text_2' => 'Po potvrdení platby budete automaticky vrátení na našu stránku.',
+    'payment_redirect_warning' => 'Prosím, nezatvárajte túto kartu — budete presmerovaní k poskytovateľovi platby.',
+    'payment_redirect_button' => 'Pokračovať k platbe',
+    'payment_redirect_form_title' => 'Spracovanie platby...',
+    'payment_redirect_form_button' => 'Pokračovať',
+    'payment_redirect_error_title' => 'Platnosť odkazu vypršala',
+    'payment_redirect_error_heading' => 'Tento odkaz už nie je platný',
+    'payment_redirect_error_expired' => 'Platobný odkaz vypršal. Vráťte sa prosím do košíka a spustite proces platby znova.',
+    'payment_redirect_error_invalid' => 'Platobný odkaz je neplatný. Vráťte sa prosím do košíka a skúste to znova.',
+    'payment_redirect_error_button' => 'Späť do košíka',
 ];

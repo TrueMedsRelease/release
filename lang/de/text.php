@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "leeres Feld",
@@ -850,4 +850,18 @@ return [
 
     "checkout_open_banking_subtext" => "Fügen Sie Guthaben sicher und direkt von Ihrem Bankkonto hinzu.",
     "complete_new_order" => "Ich möchte eine weitere Bestellung aufgeben",
+
+    'payment_redirect_title' => 'Weiterleitung zur Zahlung...',
+    'payment_redirect_heading' => 'Sie werden weitergeleitet',
+    'payment_redirect_text_1' => 'In einem Augenblick werden Sie zu einer sicheren Zahlungsseite weitergeleitet, um Ihren Kauf abzuschließen.',
+    'payment_redirect_text_2' => 'Sobald die Zahlung bestätigt ist, werden Sie automatisch zu unserer Website zurückgeleitet.',
+    'payment_redirect_warning' => 'Bitte schließen Sie diesen Tab nicht — Sie werden zum Zahlungsanbieter weitergeleitet.',
+    'payment_redirect_button' => 'Weiter zur Zahlung',
+    'payment_redirect_form_title' => 'Zahlung wird verarbeitet...',
+    'payment_redirect_form_button' => 'Weiter',
+    'payment_redirect_error_title' => 'Link abgelaufen',
+    'payment_redirect_error_heading' => 'Dieser Link ist nicht mehr gültig',
+    'payment_redirect_error_expired' => 'Der Zahlungslink ist abgelaufen. Bitte kehren Sie zu Ihrem Warenkorb zurück und beginnen Sie den Bestellvorgang erneut.',
+    'payment_redirect_error_invalid' => 'Der Zahlungslink ist ungültig. Bitte kehren Sie zu Ihrem Warenkorb zurück und versuchen Sie es erneut.',
+    'payment_redirect_error_button' => 'Zurück zum Warenkorb',
 ];

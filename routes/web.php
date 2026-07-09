@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentRedirectController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\SetCookiesForStatistics;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -117,6 +118,13 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout/new_order', 'new_order')->name('checkout.new_order');
 });
 
+Route::controller(PaymentRedirectController::class)->group(function () {
+    Route::get('/payment-redirect', 'show')->name('payment.redirect.show');
+    Route::get('/payment-redirect/go', 'go')->name('payment.redirect.go');
+});
+
+
+
 Route::get('/redirect', function () {
     if (!empty(session('order.url'))) {
         return redirect()->to(session('order.url'));
@@ -164,12 +172,12 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/pwa/install_event', 'pwa_install_event')->name('home.pwa_install_event');
 });
 
-Route::controller(AdminController::class)->group(function () {
-    Route::get('/admin/logout', 'admin_logout')->name('admin.admin_logout');
+Route::controller(AdminController::class)->middleware('admin_auth')->group(function () {
+    Route::get('/admin/logout', 'admin_logout')->name('admin.admin_logout')->withoutMiddleware('admin_auth');
 
     Route::get('/admin', 'admin_enter')->name('admin.admin_enter');
-    Route::get('/admin/login', 'admin_login')->name('admin.admin_login');
-    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/admin/login', 'admin_login')->name('admin.admin_login')->withoutMiddleware('admin_auth');
+    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth']);
 
     Route::get('/admin/main_page', 'index')->name('admin.index');
     Route::get('/admin/admin_main_page', 'admin_main_content')->name('admin.admin_main_content')->withoutMiddleware(VerifyCsrfToken::class);

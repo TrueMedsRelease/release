@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Tyhjä kenttä",
@@ -731,4 +731,18 @@ return [
 
     "checkout_open_banking_subtext" => "Lisää varoja turvallisesti ja suoraan pankkitililtäsi.",
     "complete_new_order" => "Haluaisin tehdä uuden tilauksen",
+
+    'payment_redirect_title' => 'Ohjataan maksuun...',
+    'payment_redirect_heading' => 'Sinut ohjataan edelleen',
+    'payment_redirect_text_1' => 'Hetken kuluttua sinut ohjataan turvalliselle maksusivulle suorittamaan ostoksesi.',
+    'payment_redirect_text_2' => 'Kun maksu on vahvistettu, palaat automaattisesti takaisin sivustollemme.',
+    'payment_redirect_warning' => 'Älä sulje tätä välilehteä — sinut ohjataan maksupalveluntarjoajalle.',
+    'payment_redirect_button' => 'Jatka maksuun',
+    'payment_redirect_form_title' => 'Käsitellään maksua...',
+    'payment_redirect_form_button' => 'Jatka',
+    'payment_redirect_error_title' => 'Linkki vanhentunut',
+    'payment_redirect_error_heading' => 'Tämä linkki ei ole enää voimassa',
+    'payment_redirect_error_expired' => 'Maksulinkki on vanhentunut. Palaa ostoskoriin ja aloita kassaprosessi uudelleen.',
+    'payment_redirect_error_invalid' => 'Maksulinkki on virheellinen. Palaa ostoskoriin ja yritä uudelleen.',
+    'payment_redirect_error_button' => 'Takaisin ostoskoriin',
 ];
