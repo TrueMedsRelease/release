@@ -2642,14 +2642,18 @@ if ($('#app_google_on').val() == '1') {
                 success: function (data) {
                     // console.log(data);
                     if (data.response.status === 'ok') {
-                        if (data.response.redirect_url && typeof window.openPaymentRedirect === 'function') {
+                        if (typeof window.openPaymentRedirect === 'function') {
                             window.openPaymentRedirect(
-                                data.response.url || checkoutComplete,
+                                data.response.url,
                                 data.response.url ? 'url' : null,
                                 data.response.redirect_url
                             );
                         } else {
-                            window.location.replace(checkoutComplete);
+                            if (data.response.url) {
+                                window.location.replace(data.response.url);
+                            } else {
+                                alert('Something went wrong, please reload the page and try again.');
+                            }
                         }
                     }
                 },
