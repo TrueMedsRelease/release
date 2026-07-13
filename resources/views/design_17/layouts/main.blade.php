@@ -93,10 +93,16 @@
 
         <script>
             const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
-            const routeSearchChat = "{{ route('search.search_chat') }}";
-            const routeSearchChatSuggest = "{{ route('search.search_chat_suggest') }}";
             const routeCartContent = "{{ route('cart.content') }}";
             const routeCartState = "{{ route('cart.state') }}";
+            const routeChatSend = "{{ route('chat.send') }}";
+            const routeChatPoll = "{{ route('chat.poll', ['message_id' => '__MSGID__']) }}";
+            window.routeChatSend = routeChatSend;
+            window.routeChatPoll = routeChatPoll;
+            window.routeChatHistory = "{{ route('chat.history') }}";
+            window.routeCartState = routeCartState;
+            window.design17ChatV2 = true;
+            window.design17SvgSprite = "{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}";
         </script>
 
         <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
@@ -285,36 +291,26 @@
 
             <div class="page-wrapper container">
                 <main class="main">
-                    <div class="thread">
-
+                    <div class="thread js-chat-container">
                         @yield('content')
 
-                        <button class="chat-scroll-down js-chat-scroll-down" type="button" hidden aria-label="Scroll to latest answer">
-                            <span class="chat-scroll-down__text">New answer</span>
-                            <span class="icon chat-scroll-down__icon">
-                                <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
-                                </svg>
-                            </span>
-                        </button>
-
-                        <div class="thread-box search search-bar">
-                            <form class="search-form form js-chat-search-form" action="{{ route('search.search_product') }}" method="post" style="width: 100%;">
-                                @csrf
-                                <label class="thread-box__label textarea-field">
-                                    {{-- <textarea class="thread-box__input input-textarea ac_input input-text" rows="1" id="autocomplete" placeholder="Enter a drug name" name="search_text"></textarea> --}}
-                                    <input class="search-form__input form__text-input input-text search-form__input js-chat-search-input" id="chat-search-input" autocomplete="off" type="text" placeholder="{{ __('text.common_search') }}" name="search_text" required>
-                                    {{-- <span class="thread-box__placeholder">{{ __('text.common_search') }}</span> --}}
-                                </label>
-                                <button class="thread-box__submit button search-form__button js-chat-search-submit" aria-label="Thred box submit">
-                                    <span class="icon">
-                                        <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
-                                        </svg>
-                                    </span>
-                                </button>
-                            </form>
+                        <div class="thread-box js-chat-form">
+                            <label class="thread-box__label textarea-field">
+                                <textarea class="thread-box__input input-textarea js-chat-input"
+                                          rows="1" placeholder=" " autocomplete="off"
+                                          maxlength="512" required></textarea>
+                                <span class="thread-box__placeholder">{{ __('text.common_search') }}</span>
+                            </label>
+                            <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
+                                <span class="icon">
+                                    <svg width="1em" height="1em" fill="currentColor">
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
+                                    </svg>
+                                </span>
+                            </button>
                         </div>
+
+                        @yield('thread_footer')
                     </div>
                 </main>
             </div>
@@ -402,6 +398,19 @@
                         </span>
                     </a>
                 </div>
+            </aside>
+            <aside class="drawer drawer--rtl drawer--product js-product-drawer">
+                <div class="drawer__header">
+                    <h2 class="drawer__title"></h2>
+                    <button class="drawer__close-button js-product-drawer-close" aria-label="Close">
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor">
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#close') }}"></use>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+                <div class="drawer__body js-product-drawer-body"></div>
             </aside>
             <footer class="footer">
                 <div class="sup-footer container">
@@ -763,6 +772,7 @@
 
         <script defer src="{{ asset_ver("$design/js/main.5b1e354c.js") }}"></script>
         <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>
+        <script defer src="{{ asset_ver("$design/js/chat.js") }}"></script>
         <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 
         @if ($web_statistic)

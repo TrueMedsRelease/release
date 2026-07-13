@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentRedirectController;
@@ -25,12 +26,18 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::controller(SearchController::class)->group(function () {
-    Route::post('/search_chat', 'search_chat')->name('search.search_chat');
-    Route::get('/search_chat_suggest', 'search_chat_suggest')->name('search.search_chat_suggest');
+    // Route::post('/search_chat', 'search_chat')->name('search.search_chat');
+    // Route::get('/search_chat_suggest', 'search_chat_suggest')->name('search.search_chat_suggest');
     Route::post('/search', 'search_product')->name('search.search_product')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/search_autocomplete', 'search_autocomplete')->name('search.search_autocomplete');
     Route::get('/search/{search_text}', 'search_result')->name('search.search_result');
     Route::get('/app/search.php', 'search_for_aff')->name('search.searh_for_aff');
+});
+
+Route::controller(ChatController::class)->group(function () {
+    Route::post('/chat/send', 'sendMessage')->name('chat.send')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/chat/poll/{message_id}', 'pollMessage')->name('chat.poll');
+    Route::get('/chat/history', 'getHistory')->name('chat.history');
 });
 
 Route::controller(CartController::class)->group(function () {
