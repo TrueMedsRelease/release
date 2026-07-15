@@ -24,6 +24,7 @@
                 if ($minPack && !empty($minPack['quantity']) && $minPack['quantity'] > 0) {
                     $perPillPrice = round($minPack['price'] / $minPack['quantity'], 2);
                 }
+                $productType = $product['product_type'] ?? '';
                 $productSlug = $product['slug'] ?? '';
                 $productUrl = $productSlug ? route('home.product', $productSlug) : '#';
             @endphp
@@ -56,7 +57,8 @@
                         <div class="card__price-wrapper">
                             <span class="card__price">
                                 @if ($perPillPrice > 0)
-                                    {{ $Currency::Convert($perPillPrice) }} {{ __('text.common_per_pill') }}
+                                    @php $unitLabel = $productType ? strtolower($productType) : 'pill'; @endphp
+                                    {{ $Currency::Convert($perPillPrice) }} {{ __('text.common_per_unit', ['unit' => $unitLabel]) }}
                                 @else
                                     {{ __('text.chat_from') }} {{ $Currency::Convert($minPack['price'] ?? $product['min_price'] ?? 0) }}
                                 @endif

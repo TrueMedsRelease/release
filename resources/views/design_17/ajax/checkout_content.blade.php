@@ -342,7 +342,6 @@
                 <div class="form__label">{{ __('text.checkout_country') }}</div>
                 <div class="select-wrapper" data-placeholder="{{ __('text.checkout_select_country') }}">
                     <select class="select" id="billing_country" name="billing_country" data-component="custom-selector" data-action="change-country">
-                        <option value="">{{ __('text.checkout_select_country') }}</option>
                         @foreach ($countries as $country)
                             <option value="{{ $country['country_iso2'] }}" @selected($country['country_iso2'] == $billing_country_current)>{{ $country['country_name'] }}</option>
                         @endforeach
@@ -360,7 +359,6 @@
                 <div class="form__label">{{ __('text.checkout_state') }}</div>
                 <div class="select-wrapper" data-placeholder="{{ __('text.checkout_select_state') }}">
                     <select class="select" id="billing_state" name="billing_state" data-component="custom-selector" data-search>
-                        <option value="">{{ __('text.checkout_select_state') }}</option>
                         @foreach ($states[$billing_country_current] as $key => $state)
                             <option value="{{ $key }}" @selected($key == session('form.billing_state', session('location.state', '')))>{{ $state }}</option>
                         @endforeach
@@ -420,7 +418,6 @@
                     <div class="form__label">{{ __('text.checkout_state') }}</div>
                     <div class="select-wrapper" data-placeholder="{{ __('text.checkout_select_state') }}">
                         <select class="select" id="shipping_state" name="shipping_state" data-component="custom-selector" data-search>
-                            <option value="">{{ __('text.checkout_select_state') }}</option>
                             @foreach ($states[$shipping_country_current] as $key => $state)
                                 <option value="{{ $key }}" @selected($key == session('form.shipping_state', session('location.state', '')))>{{ $state }}</option>
                             @endforeach

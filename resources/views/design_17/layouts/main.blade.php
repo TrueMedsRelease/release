@@ -29,6 +29,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="theme-color" content="#14151a" />
         <link rel="canonical" href="{{ url()->current() }}">
+        <link rel="preconnect" href="{{ config('app.url') }}">
 
         @php
             if (!function_exists('asset_ver')) {
@@ -103,6 +104,40 @@
             window.routeCartState = routeCartState;
             window.design17ChatV2 = true;
             window.design17SvgSprite = "{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}";
+            window.design17ChatTexts = {
+                status_queued: "{{ __('text.chat_status_queued') }}",
+                status_processing: "{{ __('text.chat_status_processing') }}",
+                status_done: "{{ __('text.chat_status_done') }}",
+                status_error: "{{ __('text.chat_status_error') }}",
+                error_timeout: "{{ __('text.chat_error_timeout') }}",
+                error_network: "{{ __('text.chat_error_network') }}",
+                error_server: "{{ __('text.chat_error_server') }}",
+                error_history: "{{ __('text.chat_error_history') }}",
+                error_unknown: "{{ __('text.chat_error_unknown') }}",
+                error_too_long: "{{ __('text.chat_error_too_long') }}",
+                show_more: "{{ __('text.chat_show_more') }}",
+                show_less: "{{ __('text.chat_show_less') }}",
+                read_more: "{{ __('text.chat_read_more') }}",
+                from: "{{ __('text.chat_from') }}",
+                select: "{{ __('text.chat_select') }}",
+                add_to_cart: "{{ __('text.chat_add_to_cart') }}",
+                adding: "{{ __('text.chat_adding') }}",
+                added_to_cart: "{{ __('text.chat_added_to_cart') }}",
+                cart_error: "{{ __('text.chat_cart_error') }}",
+                close: "{{ __('text.chat_close') }}",
+                package: "{{ __('text.chat_package') }}",
+                per_item: "{{ __('text.chat_per_item') }}",
+                price: "{{ __('text.chat_price') }}",
+                new_messages: "{{ __('text.chat_new_messages') }}",
+                loading_chat: "{{ __('text.chat_loading') }}",
+                select_product: "{{ __('text.chat_select_product') }}",
+                chat_waiting: "{{ __('text.chat_waiting') }}",
+                chat_busy: "{{ __('text.chat_busy') }}",
+                chat_placeholder: "{{ __('text.common_search') }}",
+                captcha_title: "{{ __('text.captcha_title') }}",
+                captcha_placeholder: "{{ __('text.captcha_placeholder') }}",
+                captcha_submit: "{{ __('text.captcha_submit') }}",
+            };
         </script>
 
         <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
@@ -189,7 +224,7 @@
             <header class="header" data-sticky="header" data-sticky-on-top>
                 <div class="container">
                     <a class="logo header__logo" href="{{ route("home.index") }}">
-                        <img src="{{ asset($design . '/svg/logo.svg') }}" width="160" height="30" alt="Site logo">
+                        <img src="{{ asset($design . '/svg/logo.svg') }}" width="160" height="30" alt="Site logo" fetchpriority="high">
                     </a>
                     <button class="navbar-toggler" data-drawer-toggle="navbar" aria-label="Toggle Main Menu" aria-controls="main-nav" aria-expanded="false">
                         <span class="navbar-burger"></span>
@@ -291,6 +326,7 @@
 
             <div class="page-wrapper container">
                 <main class="main">
+                    @if (request()->route()->getName() === 'home.index')
                     <div class="thread js-chat-container">
                         @yield('content')
 
@@ -304,14 +340,15 @@
                             <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}#arrow-up"></use>
                                     </svg>
                                 </span>
                             </button>
                         </div>
-
-                        @yield('thread_footer')
                     </div>
+                    @else
+                        @yield('content')
+                    @endif
                 </main>
             </div>
 
@@ -389,6 +426,7 @@
                     </div>
                 </div>
                 <div class="cart__footer">
+                    @if (request()->route()->getName() !== 'checkout.index')
                     <a class="cart__checkout-button button" href="{{ route('checkout.index') }}">
                         {{ __('text.cart_checkout_text') }}
                         <span class="icon">
@@ -397,6 +435,7 @@
                             </svg>
                         </span>
                     </a>
+                    @endif
                 </div>
             </aside>
             <aside class="drawer drawer--rtl drawer--product js-product-drawer">
@@ -723,7 +762,7 @@
 
             const routeCartUp = "{{ route('cart.up') }}";
             const routeCartDown = "{{ route('cart.down') }}";
-            const routeCartRemove = "{{ route('cart.remove') }}";
+            window.routeCartRemove = "{{ route('cart.remove') }}";
             const routeCartUpgrade = "{{ route('cart.upgrade') }}";
             const routeCartShipping = "{{ route('cart.shipping') }}";
             const routeCartBonus = "{{ route('cart.bonus') }}";
@@ -772,6 +811,8 @@
 
         <script defer src="{{ asset_ver("$design/js/main.5b1e354c.js") }}"></script>
         <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>
+        <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
+        <script defer src="{{ asset_ver("$design/js/cart-aside.js") }}"></script>
         <script defer src="{{ asset_ver("$design/js/chat.js") }}"></script>
         <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 

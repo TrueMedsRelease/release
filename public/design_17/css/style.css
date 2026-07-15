@@ -2378,6 +2378,7 @@ iframe{
   text-decoration:none;
   color:inherit;
   border-radius:2rem;
+  cursor:pointer;
   transition:box-shadow var(--transition-medium-cubic);
 }
 .card-link:hover, .card-link:focus-visible{
@@ -4909,6 +4910,165 @@ article.content{
   margin:0;
 }
 
+.dc17-chat-products__pagination{
+  display:flex;
+  justify-content:center;
+  margin-top:2.4rem;
+  padding-bottom:0.8rem;
+}
+
+.thread.js-chat-container:has(.thread-chat){
+  min-height:60vh;
+}
+
+.dc17-chat-loader{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1.6rem;
+  padding:4rem 2rem;
+  position:absolute;
+  inset:0;
+  background:var(--color-white);
+  z-index:1;
+  transition:opacity 0.3s;
+}
+
+.thread-chat__messages > .chat-row{
+  animation:chatRowFadeIn 0.3s ease;
+}
+
+@keyframes chatRowFadeIn{
+  from{ opacity:0; transform:translateY(0.8rem); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.dc17-chat-loader__spinner{
+  width:48px;
+  height:48px;
+  border:4px solid #e5e5e5;
+  border-top-color:#14151a;
+  border-radius:50%;
+  animation:dc17-spin 0.8s linear infinite;
+}
+
+@keyframes dc17-spin{
+  to{ transform:rotate(360deg); }
+}
+
+.dc17-chat-loader__text{
+  font-size:1.4rem;
+  color:var(--color-text-gray);
+}
+
+.dc17-chat-new-msgs{
+  position:absolute;
+  bottom:8rem;
+  left:50%;
+  z-index:10;
+  display:none;
+  transform:translateX(-50%);
+  min-height:4rem;
+  border:none;
+  border-radius:20rem;
+  padding:0.8rem 2rem;
+  font-size:1.3rem;
+  font-weight:600;
+  background-color:var(--color-primary);
+  color:var(--color-white);
+  box-shadow:0 2px 12px rgba(0,0,0,0.15);
+  cursor:pointer;
+  transition:opacity 0.2s, transform 0.2s;
+}
+
+.dc17-chat-new-msgs:hover,
+.dc17-chat-new-msgs:focus-visible{
+  opacity:0.85;
+}
+
+.dc17-chat-new-msgs.is-visible{
+  display:block;
+  animation:newMsgsFadeIn 0.2s ease;
+}
+
+.dc17-captcha-overlay{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.5);
+}
+
+.dc17-captcha-modal{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1.6rem;
+  width:min(34rem, 90vw);
+  padding:2.4rem;
+  border-radius:2rem;
+  background:var(--color-white);
+  text-align:center;
+}
+
+.dc17-captcha-title{
+  font-size:1.6rem;
+  font-weight:600;
+}
+
+.dc17-captcha-error{
+  font-size:1.3rem;
+  color:#C53030;
+}
+
+.dc17-captcha-img{
+  display:block;
+  border-radius:0.8rem;
+  border:1px solid var(--color-gray-3);
+}
+
+.dc17-captcha-img-wrap{
+  position:relative;
+  width:100%;
+  min-height:5rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.dc17-captcha-spinner{
+  position:absolute;
+  width:2.8rem;
+  height:2.8rem;
+  border:3px solid #e5e5e5;
+  border-top-color:#14151a;
+  border-radius:50%;
+  animation:dc17-spin 0.8s linear infinite;
+}
+
+.dc17-captcha-input{
+  width:100%;
+  min-height:4.4rem;
+  border:1px solid var(--color-gray-3);
+  border-radius:1rem;
+  padding:0 1.4rem;
+  font-size:1.6rem;
+  text-align:center;
+  letter-spacing:0.3em;
+}
+
+.dc17-captcha-submit{
+  width:100%;
+}
+
+@keyframes newMsgsFadeIn{
+  from{ opacity:0; transform:translateX(-50%) translateY(0.8rem); }
+  to{ opacity:1; transform:translateX(-50%) translateY(0); }
+}
+
 .js-chat-search-form.is-loading .js-chat-search-submit{
   opacity:0.65;
   pointer-events:none;
@@ -5290,8 +5450,55 @@ article.content{
 
 /* ── Card overrides inside chat ── */
 
+.thread.js-chat-container .product__button{
+  width:auto;
+  padding:0 1.6rem;
+  white-space:nowrap;
+}
+
+.thread.js-chat-container .product__button .button__text{
+  display:inline;
+}
+
+.thread.js-chat-container .product__button .icon{
+  font-size:2rem;
+}
+
+.thread.js-chat-container .thread-chat{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.thread.js-chat-container .thread-chat .thread-chat__container{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.thread.js-chat-container .thread-chat__messages{
+  flex:1;
+}
+
+.thread.js-chat-container .thread-box{
+  margin-top:auto;
+}
+
 .thread.js-chat-container .card-link {
-  cursor: pointer;
+  cursor: default;
+  box-shadow: none;
+}
+
+.thread.js-chat-container .card-link:hover {
+  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.08);
+}
+
+.thread.js-chat-container .card-link:hover .card {
+  border-color: transparent;
+}
+
+.thread.js-chat-container .card-link:focus-visible {
+  outline: none;
 }
 
 .thread.js-chat-container .card__button {

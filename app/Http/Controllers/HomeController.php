@@ -27,7 +27,6 @@ class HomeController extends Controller
         $design          = session('design') ? session('design') : config('app.design');
         $phone_codes     = PhoneCodes::all()->toArray();
         $page_properties = ProductServices::getPageProperties('main');
-        $first_letters   = ProductServices::getFirstLetters();
         $agent           = new Agent();
 
         $codes = $this->getAllCountryISO();
@@ -68,7 +67,8 @@ class HomeController extends Controller
         //     $statisticPromise->wait();
         // }
 
-        if (!in_array($design, ['design_7', 'design_8'])) {
+        if (!in_array($design, ['design_7', 'design_8', 'design_17'])) {
+            $first_letters = ProductServices::getFirstLetters();
             $bestsellers = ProductServices::GetBestsellers($design);
             $menu        = ProductServices::GetCategoriesWithProducts($design);
 
@@ -86,6 +86,22 @@ class HomeController extends Controller
                     'Currency'        => Currency::class,
                     'pixel'           => $pixel,
                     'first_letters'   => $first_letters,
+                    'domain'          => $domain,
+                    'web_statistic'   => $web_statistic,
+                    'codes'           => json_encode($codes),
+                ]
+            );
+        } elseif ($design == 'design_17') {
+            return view(
+                $design . '.index',
+                [
+                    'design'          => $design,
+                    'phone_codes'     => $phone_codes,
+                    'page_properties' => $page_properties,
+                    'agent'           => $agent,
+                    'Language'        => Language::class,
+                    'Currency'        => Currency::class,
+                    'pixel'           => $pixel,
                     'domain'          => $domain,
                     'web_statistic'   => $web_statistic,
                     'codes'           => json_encode($codes),

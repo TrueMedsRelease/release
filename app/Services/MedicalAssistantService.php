@@ -82,6 +82,12 @@ class MedicalAssistantService
                 'error' => $e->getMessage(),
             ]);
             return $this->error('request_failed', 0);
+
+        } catch (\JsonException $e) {
+            Log::error('[MedicalAssistantService.sendQuery] invalid JSON response', [
+                'error' => $e->getMessage(),
+            ]);
+            return $this->error('server_error', 502);
         }
     }
 
@@ -126,6 +132,13 @@ class MedicalAssistantService
                 'error' => $e->getMessage(),
             ]);
             return $this->error('request_failed', 0);
+
+        } catch (\JsonException $e) {
+            Log::error('[MedicalAssistantService.pollStatus] invalid JSON response', [
+                'msg_id' => $messageId,
+                'error' => $e->getMessage(),
+            ]);
+            return $this->error('server_error', 502);
         }
     }
 
@@ -165,6 +178,13 @@ class MedicalAssistantService
                 'error' => $e->getMessage(),
             ]);
             return $this->error('request_failed', 0);
+
+        } catch (\JsonException $e) {
+            Log::error('[MedicalAssistantService.getProductDetails] invalid JSON response', [
+                'product_id' => $productId,
+                'error' => $e->getMessage(),
+            ]);
+            return $this->error('server_error', 502);
         }
     }
 

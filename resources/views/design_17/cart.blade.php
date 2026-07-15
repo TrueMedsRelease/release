@@ -14,6 +14,9 @@
     flagc = true;
 </script>
 <div class="main__content" id="shopping_cart">
-
+    <div class="cart-loader">
+        <div class="cart-loader__spinner"></div>
+        <p class="cart-loader__text">{{ __('text.cart_loading') }}</p>
+    </div>
 </div>
 @endsection
