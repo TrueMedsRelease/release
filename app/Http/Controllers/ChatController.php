@@ -245,13 +245,28 @@ class ChatController extends Controller
             $data = $result['data'];
             $status = $data['status'] ?? 'unknown';
 
-            $knownStatuses = ['queued', 'processing', 'done', 'error', 'unknown'];
+            $knownStatuses = ['queued', 'processing', 'done', 'error', 'expired', 'abandoned', 'unknown'];
             if (!in_array($status, $knownStatuses, true)) {
                 Log::warning('[ChatController.pollMessage] unknown status from API', [
                     'msg_id' => $messageId,
                     'status' => $status,
                 ]);
                 $status = 'processing';
+            }
+
+            if (in_array($status, ['expired', 'abandoned'], true)) {
+                Log::warning('[ChatController.pollMessage] terminal error status', [
+                    'msg_id' => $messageId,
+                    'status' => $status,
+                ]);
+                $query = Cache::get("chat_query:{$localId}", '');
+                if ($query !== '') {
+                    $products = $this->performFallbackSearch($query);
+                    $response = $this->buildFallbackResponse($query, $products);
+                    $this->appendToHistory('assistant', $response->getData(true)['answer'] ?? '', $products);
+                    return $response;
+                }
+                return $this->buildErrorResponse('server_error', 500);
             }
 
             $response = [

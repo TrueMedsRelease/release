@@ -10,27 +10,20 @@ use Illuminate\Support\Facades\Log;
 class MedicalAssistantService
 {
     private string $baseUrl;
-    private ?string $apiKey;
 
     public function __construct()
     {
-        $this->baseUrl = env('MEDICAL_API_URL', 'http://localhost:8999');
-        $this->apiKey = env('MEDICAL_API_KEY') ?: '04zluwny9top43g6mocz9m4ik09a70aw';
+        $this->baseUrl = config('medbot.base_url', 'http://pills-22.com');
 
         Log::debug('[MedicalAssistantService.__construct] initialized', [
             'base_url' => $this->baseUrl,
-            'has_api_key' => !empty($this->apiKey),
         ]);
     }
 
     private function http(): \Illuminate\Http\Client\PendingRequest
     {
-        $client = Http::timeout(env('MEDICAL_API_TIMEOUT', 15))
-            ->connectTimeout(3);
-        if ($this->apiKey) {
-            $client->withHeader('X-API-KEY', $this->apiKey);
-        }
-        return $client;
+        return Http::timeout(config('medbot.timeout', 15))
+            ->connectTimeout(config('medbot.connect_timeout', 3));
     }
 
     public function sendQuery(string $query, string $language = 'en', array $filters = []): array
@@ -51,7 +44,7 @@ class MedicalAssistantService
 
         try {
             $response = $this->http()
-                ->post("{$this->baseUrl}/v1/ask/async", $payload);
+                ->post("{$this->baseUrl}/medbot/v1/ask/async", $payload);
 
             $statusCode = $response->status();
             $body = $response->body();
@@ -99,7 +92,7 @@ class MedicalAssistantService
 
         try {
             $response = $this->http()
-                ->get("{$this->baseUrl}/v1/ask/async/{$messageId}");
+                ->get("{$this->baseUrl}/medbot/v1/ask/async/{$messageId}");
 
             $statusCode = $response->status();
 
@@ -150,7 +143,7 @@ class MedicalAssistantService
 
         try {
             $response = $this->http()
-                ->get("{$this->baseUrl}/v1/products/{$productId}");
+                ->get("{$this->baseUrl}/medbot/v1/products/{$productId}");
 
             $statusCode = $response->status();
 

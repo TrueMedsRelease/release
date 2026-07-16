@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var POLL_INTERVAL = 5000;
+    var POLL_INTERVAL = 15000;
     var POLL_MAX_RETRIES = 24;
     var POLL_NETWORK_MAX_RETRIES = 10;
     var pollNetworkErrors = 0;
