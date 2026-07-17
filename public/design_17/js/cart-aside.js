@@ -26,7 +26,9 @@
 
     function applyCartState(data) {
         if (typeof data.count !== 'undefined') {
-            if (data.count === 0 || data.count === '0') {
+            var hasItems = data.count > 0;
+
+            if (!hasItems) {
                 var onCheckout = document.querySelector('.checkout_wrapper');
                 if (onCheckout) {
                     window.location.href = '/';
@@ -39,6 +41,10 @@
             });
             $$('.footer-buttons__cart').forEach(function (el) {
                 el.setAttribute('data-counter', data.count);
+            });
+
+            $$('.cart__checkout-button').forEach(function (el) {
+                el.style.display = hasItems ? '' : 'none';
             });
         }
 
