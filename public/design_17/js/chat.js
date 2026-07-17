@@ -891,9 +891,20 @@
         }, 100);
     }
 
-    function buildProductDetailHtml(product) {
-        var packs = product.packs || [];
-        var packsHtml = '';
+    function groupPacksByDosage(packs) {
+        var groups = {};
+        packs.forEach(function (pack) {
+            var key = pack.dosage || '';
+            if (!groups[key]) {
+                groups[key] = [];
+            }
+            groups[key].push(pack);
+        });
+        return groups;
+    }
+
+    function buildPackTableHtml(packs, productName) {
+        if (!packs.length) return '';
 
         var maxPillPrice = 0;
         packs.forEach(function (pack) {
@@ -903,7 +914,8 @@
             }
         });
 
-        packs.forEach(function (pack) {
+        var rowsHtml = '';
+        packs.forEach(function (pack, idx) {
             var discountHtml = '';
             if (maxPillPrice > 0 && pack.quantity > 0 && pack.price > 0) {
                 var oldPrice = maxPillPrice * pack.quantity;
@@ -924,7 +936,7 @@
                 perPillHtml = formatPrice(pack.price / pack.quantity);
             }
 
-            packsHtml +=
+            rowsHtml +=
                 '<tr class="product">' +
                     '<td class="product__info-wrapper">' +
                         '<div class="product__info' + (discountHtml ? ' product__info--sale' : '') + '">' +
@@ -948,6 +960,38 @@
                         '</button>' +
                     '</td>' +
                 '</tr>';
+        });
+
+        var dosageLabel = packs[0].dosage || '';
+        var headerHtml = dosageLabel
+            ? '<div class="panel__header"><h2 class="h2">' + escapeHtml(productName || '') + ' ' + escapeHtml(dosageLabel) + '</h2></div>'
+            : '';
+
+        return '' +
+            '<div class="panel">' +
+                headerHtml +
+                '<table class="table product-table">' +
+                    '<thead>' +
+                        '<tr>' +
+                            '<th>' + getText('package') + '</th>' +
+                            '<th>' + getText('per_item') + '</th>' +
+                            '<th>' + getText('price') + '</th>' +
+                            '<th></th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + rowsHtml + '</tbody>' +
+                '</table>' +
+            '</div>';
+    }
+
+    function buildProductDetailHtml(product) {
+        var packs = product.packs || [];
+        var packsByDosage = groupPacksByDosage(packs);
+        var dosageKeys = Object.keys(packsByDosage);
+
+        var packsHtml = '';
+        dosageKeys.forEach(function (dosage) {
+            packsHtml += buildPackTableHtml(packsByDosage[dosage], product.name || '');
         });
 
         var imageHtml = '';
@@ -985,19 +1029,7 @@
                     descriptionHtml +
                 '</div>' +
             '</div>' +
-            '<div class="panel">' +
-                '<table class="table product-table">' +
-                    '<thead>' +
-                        '<tr>' +
-                            '<th>' + getText('package') + '</th>' +
-                            '<th>' + getText('per_item') + '</th>' +
-                            '<th>' + getText('price') + '</th>' +
-                            '<th></th>' +
-                        '</tr>' +
-                    '</thead>' +
-                    '<tbody>' + packsHtml + '</tbody>' +
-                '</table>' +
-            '</div>' +
+            packsHtml +
             descHtml;
     }
 
@@ -1007,45 +1039,12 @@
         var body = getProductDrawerBody();
 
         var packs = product.packs || [];
+        var packsByDosage = groupPacksByDosage(packs);
+        var dosageKeys = Object.keys(packsByDosage);
+
         var packsHtml = '';
-
-        packs.forEach(function (pack) {
-            var discountHtml = '';
-            if (pack.old_price > 0 && pack.old_price > pack.price) {
-                var discount = Math.round((1 - pack.price / pack.old_price) * 100);
-                discountHtml =
-                    '<div class="product__discount"><s>' + formatPrice(pack.old_price) + '</s> ' +
-                    '<span>-' + discount + '%</span></div>';
-            }
-
-            var deliveryHtml = pack.delivery
-                ? '<div class="product__delivery">' + escapeHtml(pack.delivery) + '</div>'
-                : '';
-
-            packsHtml +=
-                '<tr class="product">' +
-                    '<td class="product__info-wrapper">' +
-                        '<div class="product__info">' +
-                            '<div class="product__quantity">' + escapeHtml(String(pack.quantity)) +
-                                (pack.unit ? ' ' + escapeHtml(pack.unit) : '') +
-                            '</div>' +
-                            deliveryHtml +
-                        '</div>' +
-                    '</td>' +
-                    '<td class="product__price-per-pill"></td>' +
-                    '<td>' +
-                        '<div class="product__price-wrapper">' +
-                            discountHtml +
-                            '<div class="product__price">' + formatPrice(pack.price) + '</div>' +
-                        '</div>' +
-                    '</td>' +
-                    '<td class="product__button-wrapper">' +
-                        '<button class="button product__button" type="button" data-pack-url="' + escapeHtml(pack.add_url || '') + '">' +
-                            svgIcon('cart-white') +
-                            '<span class="button__text">' + getText('add_to_cart') + '</span>' +
-                        '</button>' +
-                    '</td>' +
-                '</tr>';
+        dosageKeys.forEach(function (dosage) {
+            packsHtml += buildPackTableHtml(packsByDosage[dosage], product.name || '');
         });
 
         var imageHtml = '';
@@ -1071,19 +1070,7 @@
                         descriptionHtml +
                     '</div>' +
                 '</div>' +
-                '<div class="panel">' +
-                    '<table class="table product-table">' +
-                        '<thead>' +
-                            '<tr>' +
-                                '<th>' + getText('package') + '</th>' +
-                                '<th>' + getText('per_item') + '</th>' +
-                                '<th>' + getText('price') + '</th>' +
-                                '<th></th>' +
-                            '</tr>' +
-                        '</thead>' +
-                        '<tbody>' + packsHtml + '</tbody>' +
-                    '</table>' +
-                '</div>' +
+                packsHtml +
             '</div>';
 
         if (body) {
