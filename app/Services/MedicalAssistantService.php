@@ -35,7 +35,7 @@ class MedicalAssistantService
 
         $payload = [
             'query' => $query,
-            'max_results' => $filters['max_results'] ?? 5,
+            'max_results' => $filters['max_results'] ?? config('medbot.max_results', 5),
         ];
 
         if (!empty($language)) {

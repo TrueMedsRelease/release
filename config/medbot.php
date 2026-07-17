@@ -12,12 +12,14 @@ return [
     |
     */
 
-    'base_url' => 'http://pills-22.com',
+    'enabled' => env('MEDBOT_ENABLED', true),
+
+    'base_url' => env('MEDBOT_BASE_URL', 'http://pills-22.com'),
 
     'timeout' => 15,
 
     'connect_timeout' => 3,
 
-    'max_results' => 5,
+    'max_results' => 30,
 
 ];

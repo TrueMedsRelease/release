@@ -107,6 +107,17 @@ class ChatController extends Controller
             $pending['resolving'] = true;
             Cache::put($pendingKey, $pending, 120);
 
+            if (!config('medbot.enabled', true)) {
+                Cache::forget($pendingKey);
+                Log::info('[ChatController.pollMessage] fallback activated (medbot disabled)', [
+                    'query' => $pending['query'] ?? '',
+                ]);
+                return $this->buildFallbackResponse(
+                    $pending['query'] ?? '',
+                    $this->performFallbackSearch($pending['query'] ?? '')
+                );
+            }
+
             try {
                 $result = $this->medicalAssistant->sendQuery(
                     $pending['query'],
