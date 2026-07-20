@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Medan Kosong",
@@ -727,4 +727,18 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
 
     "checkout_open_banking_subtext" => "Tambah dana dengan selamat dan terus daripada akaun bank anda.",
     "complete_new_order" => "Saya ingin membuat pesanan lain",
+
+    'payment_redirect_title' => 'Dialihkan ke pembayaran...',
+    'payment_redirect_heading' => 'Anda sedang dialihkan',
+    'payment_redirect_text_1' => 'Sebentar lagi, anda akan dibawa ke halaman pembayaran yang selamat untuk menyelesaikan pembelian anda.',
+    'payment_redirect_text_2' => 'Setelah pembayaran disahkan, anda akan secara automatik dikembalikan ke laman kami.',
+    'payment_redirect_warning' => 'Jangan tutup tab ini — anda sedang dialihkan ke penyedia pembayaran.',
+    'payment_redirect_button' => 'Teruskan ke pembayaran',
+    'payment_redirect_form_title' => 'Memproses pembayaran...',
+    'payment_redirect_form_button' => 'Teruskan',
+    'payment_redirect_error_title' => 'Pautan telah tamat tempoh',
+    'payment_redirect_error_heading' => 'Pautan ini tidak lagi sah',
+    'payment_redirect_error_expired' => 'Pautan pembayaran telah tamat tempoh. Sila kembali ke troli anda dan mulakan proses pembayaran semula.',
+    'payment_redirect_error_invalid' => 'Pautan pembayaran tidak sah. Sila kembali ke troli anda dan cuba lagi.',
+    'payment_redirect_error_button' => 'Kembali ke troli',
 ];

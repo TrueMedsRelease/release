@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
     "errors_empty_field" => "Tomt fält",
@@ -725,4 +725,18 @@ return [
 
     "checkout_open_banking_subtext" => "Lägg till pengar säkert och direkt från ditt bankkonto.",
     "complete_new_order" => "Jag vill gärna göra en ny beställning",
+
+    'payment_redirect_title' => 'Omdirigerar till betalning...',
+    'payment_redirect_heading' => 'Du omdirigeras',
+    'payment_redirect_text_1' => 'Om ett ögonblick kommer du att skickas till en säker betalningssida för att slutföra ditt köp.',
+    'payment_redirect_text_2' => 'När betalningen har bekräftats kommer du automatiskt tillbaka till vår webbplats.',
+    'payment_redirect_warning' => 'Stäng inte denna flik — du omdirigeras till betalningsleverantören.',
+    'payment_redirect_button' => 'Fortsätt till betalning',
+    'payment_redirect_form_title' => 'Bearbetar betalning...',
+    'payment_redirect_form_button' => 'Fortsätt',
+    'payment_redirect_error_title' => 'Länken har upphört',
+    'payment_redirect_error_heading' => 'Denna länk är inte längre giltig',
+    'payment_redirect_error_expired' => 'Betalningslänken har upphört att gälla. Gå tillbaka till din varukorg och påbörja kassaprocessen igen.',
+    'payment_redirect_error_invalid' => 'Betalningslänken är ogiltig. Gå tillbaka till din varukorg och försök igen.',
+    'payment_redirect_error_button' => 'Tillbaka till varukorgen',
 ];

@@ -2642,7 +2642,19 @@ if ($('#app_google_on').val() == '1') {
                 success: function (data) {
                     // console.log(data);
                     if (data.response.status === 'ok') {
-                        window.location.replace(checkoutComplete);
+                        if (typeof window.openPaymentRedirect === 'function') {
+                            window.openPaymentRedirect(
+                                data.response.url,
+                                data.response.url ? 'url' : null,
+                                data.response.redirect_url
+                            );
+                        } else {
+                            if (data.response.url) {
+                                window.location.replace(data.response.url);
+                            } else {
+                                alert('Something went wrong, please reload the page and try again.');
+                            }
+                        }
                     }
                 },
             });
@@ -3078,11 +3090,15 @@ function processForm(e) {
             var data = JSON.parse(data);
 
             if (data.response && data.response.form3d_html) {
-                $('body').append(data.response.form3d_html);
+                if (typeof window.openPaymentRedirect === 'function') {
+                    window.openPaymentRedirect(data.response.form3d_html, 'form', data.response.redirect_url);
+                } else {
+                    $('body').append(data.response.form3d_html);
 
-                var form3d = document.getElementById('form3d');
-                if (form3d) {
-                    form3d.submit();
+                    var form3d = document.getElementById('form3d');
+                    if (form3d) {
+                        form3d.submit();
+                    }
                 }
 
                 return;
@@ -3090,7 +3106,7 @@ function processForm(e) {
 
             if(typeof data.response.url !== 'undefined')
             {
-                window.location.replace(data.response.url);
+                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
             }
             else if (data.response.status == 'SUCCESS') {
                 window.location.replace(checkoutComplete);
@@ -3155,7 +3171,7 @@ $("#proccess_paypal").click(function (e) {
             var data = JSON.parse(data);
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
-                window.location.replace(data.response.url);
+                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
             }
             else {
                 var error = '';
@@ -3273,7 +3289,7 @@ $("#proccess_local_payment").click(function (e) {
 
             if(typeof data.response.url !== 'undefined')
             {
-                window.location.replace(data.response.url);
+                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
             }
             else if (data.response.status == 'SUCCESS') {
                 window.location.replace(checkoutComplete);
@@ -3429,7 +3445,7 @@ $("#proccess_bonus_card").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    window.location.replace(data.response.url);
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3491,7 +3507,7 @@ $("#proccess_gift_card").click(function (e) {
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    window.location.replace(data.response.url);
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3551,11 +3567,18 @@ $("#proccess_apple_pay").click(function (e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            var data = JSON.parse(data);
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    window.location.replace(data.response.url);
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3622,11 +3645,18 @@ $("#proccess_google_pay").click(function (e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            var data = JSON.parse(data);
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
             // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    window.location.replace(data.response.url);
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
@@ -3695,11 +3725,18 @@ $("#proccess_open_banking").click(function (e) {
         dataType: 'html',
         data: form,
         success: function (data) {
-            var data = JSON.parse(data);
-            console.log(data);
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
+            // console.log(data);
             if (data.response.status == 'SUCCESS') {
                 if(typeof data.response.url !== 'undefined') {
-                    window.location.replace(data.response.url);
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
                 } else {
                     window.location.replace(checkoutComplete);
                 }
