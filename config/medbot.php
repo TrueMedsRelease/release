@@ -14,7 +14,7 @@ return [
 
     'enabled' => env('MEDBOT_ENABLED', true),
 
-    'base_url' => env('MEDBOT_BASE_URL', 'http://pills-22.com'),
+    'base_url' => env('MEDBOT_BASE_URL', 'http://pills-333.com'),
 
     'timeout' => 15,
 
