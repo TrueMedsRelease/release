@@ -426,7 +426,7 @@
                     </div>
                 </div>
                 <div class="cart__footer">
-                    @if (request()->route()->getName() !== 'checkout.index' && $cart_count > 0)
+                    @if (request()->route()->getName() !== 'checkout.index')
                     <a class="cart__checkout-button button" href="{{ route('checkout.index') }}">
                         {{ __('text.cart_checkout_text') }}
                         <span class="icon">
