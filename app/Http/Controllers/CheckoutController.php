@@ -921,7 +921,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -1193,7 +1193,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -1354,8 +1354,7 @@ class CheckoutController extends Controller
                     if (isset($response['status']) && $response['status'] == 'error') {
                         return response()->json(json_encode(['status' => 'error', 'text' => 'Service unavailable']));
                     } else {
-                        $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c',
-                                    1), 2);
+                        $response['crypto_total'] = Currency::$prefix[session('currency', 'usd')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
                         $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
                         $response['currency']     = $request->currency;
 
@@ -1895,7 +1894,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -2254,7 +2253,7 @@ class CheckoutController extends Controller
                         'products'            => $products_str,
                         'saff'                => session('saff', ''),
                         'language'            => App::currentLocale(),
-                        'currency'            => session('currency'),
+                        'currency'            => session('currency', 'usd'),
                         'user_agent'          => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                                 'Accept-Language'
                             ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -2467,7 +2466,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -2612,7 +2611,7 @@ class CheckoutController extends Controller
             'products'           => $products_str,
             'saff'               => session('saff', ''),
             'language'           => App::currentLocale(),
-            'currency'           => session('currency'),
+            'currency'           => session('currency', 'usd'),
             'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                     'Accept-Language'
                 ) . '&screen_resolution=' . $form['screen_resolution'] . '&customer_date=' . $request->customer_date,
@@ -2856,7 +2855,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -3016,7 +3015,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -3309,7 +3308,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -3564,7 +3563,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -3804,7 +3803,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -4045,7 +4044,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -4295,7 +4294,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -4597,7 +4596,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,

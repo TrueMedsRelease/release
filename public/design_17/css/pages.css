@@ -1065,6 +1065,10 @@ td.product__button-wrapper{
   font-size:1.4rem;
   line-height:1;
   color:var(--color-green-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .order-option__price p{
@@ -1345,7 +1349,7 @@ td.product__button-wrapper{
   padding:1.6rem;
   border-radius:1.2rem;
   background:var(--color-white, #fff);
-  border:1px solid var(--color-stroke, #e2e8f0);
+  /* border:1px solid var(--color-stroke, #e2e8f0); */
   transition:box-shadow 0.2s, border-color 0.2s;
 }
 .details-payment__row:hover {
@@ -2472,4 +2476,25 @@ td.product__button-wrapper{
 .cart-loader__text{
   font-size:1.4rem;
   color:var(--color-text-gray);
+}
+
+.shipping-address-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.payment-information__card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.order-option__price .red_price {
+    color: var(--color-red);
+    text-decoration: line-through;
 }

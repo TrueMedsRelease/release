@@ -44,6 +44,16 @@
         try {
             var inst = new window.CustomSelector(container, options);
             container.__customSelector = inst;
+
+            if (select.disabled) {
+                container.classList.add('is-disabled');
+                container.setAttribute('aria-disabled', 'true');
+
+                if (typeof inst.disable === 'function') {
+                    inst.disable();
+                }
+            }
+
             log.debug('initCustomSelector', {
                 selectName: select.name || select.id,
                 optionsCount: select.options.length,
@@ -64,31 +74,447 @@
         }
     }
 
-    function initIntlTel(input) {
-        if (typeof intlTelInput === 'undefined') return;
-        if (input.__intlTel) return;
-        var countryIsoInput = document.getElementById('country_iso');
-        var initialCountryInput = document.getElementById('initial_country');
-        var onlyCountries = [];
+    function getPhoneCountryField(input) {
+        if (!input) {
+            return null;
+        }
+
+        if (input.id === 'phone') {
+            return document.getElementById('phone_code');
+        }
+
+        if (input.id === 'alt_phone') {
+            return document.getElementById('alt_phone_code');
+        }
+
+        return null;
+    }
+
+    function normalizeCountryIso(value, fallback) {
+        var iso2 = String(value || '')
+            .trim()
+            .toLowerCase();
+
+        if (/^[a-z]{2}$/.test(iso2)) {
+            return iso2;
+        }
+
+        return fallback || 'us';
+    }
+
+    function getSelectedCountryCompat(iti) {
+        if (!iti) {
+            return null;
+        }
+
+        if (typeof iti.getSelectedCountry === 'function') {
+            return iti.getSelectedCountry();
+        }
+
+        if (typeof iti.getSelectedCountryData === 'function') {
+            return iti.getSelectedCountryData();
+        }
+
+        return null;
+    }
+
+    function setSelectedCountryCompat(iti, iso2) {
+        if (!iti || !iso2) {
+            return;
+        }
+
+        iso2 = normalizeCountryIso(iso2);
+
+        if (typeof iti.setSelectedCountry === 'function') {
+            iti.setSelectedCountry(iso2);
+            return;
+        }
+
+        if (typeof iti.setCountry === 'function') {
+            iti.setCountry(iso2);
+        }
+    }
+
+    function syncPhoneCountry(input) {
+        if (!input || !input.__intlTel) {
+            return;
+        }
+
+        var countryField = getPhoneCountryField(input);
+
+        if (!countryField) {
+            return;
+        }
+
+        var country = getSelectedCountryCompat(input.__intlTel);
+
+        countryField.value = country && country.iso2
+            ? normalizeCountryIso(country.iso2)
+            : '';
+    }
+
+    function getPhoneNumberWithoutDialCode(input) {
+        if (!input || !input.__intlTel) {
+            return null;
+        }
+
+        var iti = input.__intlTel;
+        var country = getSelectedCountryCompat(iti);
+
+        if (!country || !country.dialCode) {
+            return null;
+        }
+
+        if (
+            typeof iti.isValidNumber === 'function' &&
+            window.intlTelInput &&
+            window.intlTelInput.utils &&
+            !iti.isValidNumber()
+        ) {
+            return null;
+        }
+
+        var internationalNumber = '';
+
         try {
-            onlyCountries = JSON.parse(countryIsoInput ? countryIsoInput.value : '[]');
-        } catch (e) { onlyCountries = []; }
-        var initialCountry = initialCountryInput ? initialCountryInput.value : 'us';
-        var utils = config().intlTelUtils || '';
-        var iti = intlTelInput(input, {
-            utilsScript: utils,
+            internationalNumber = typeof iti.getNumber === 'function'
+                ? iti.getNumber()
+                : '';
+        } catch (error) {
+            internationalNumber = '';
+        }
+
+        if (
+            !internationalNumber ||
+            internationalNumber.charAt(0) !== '+'
+        ) {
+            return null;
+        }
+
+        var completeDigits = internationalNumber.replace(/\D/g, '');
+        var dialCode = String(country.dialCode).replace(/\D/g, '');
+
+        if (
+            !dialCode ||
+            completeDigits.indexOf(dialCode) !== 0
+        ) {
+            return null;
+        }
+
+        var numberWithoutDialCode = completeDigits.slice(
+            dialCode.length
+        );
+
+        return numberWithoutDialCode || null;
+    }
+
+    function getSelectedCountryDataCompat(iti) {
+        if (typeof iti.getSelectedCountryData === 'function') {
+            return iti.getSelectedCountryData();
+        }
+
+        if (typeof iti.getSelectedCountry === 'function') {
+            return iti.getSelectedCountry();
+        }
+
+        return null;
+    }
+
+    function normalizePhoneInput(input) {
+        if (!input || !input.value.trim()) {
+            return;
+        }
+
+        var normalizedNumber = getPhoneNumberWithoutDialCode(input);
+
+        if (!normalizedNumber) {
+            return;
+        }
+
+        input.value = normalizedNumber;
+    }
+
+    function initIntlTel(input) {
+        if (typeof window.intlTelInput === 'undefined') {
+            return;
+        }
+
+        if (!input || input.__intlTel) {
+            return;
+        }
+
+        var countryIsoInput =
+            document.getElementById('country_iso');
+
+        var initialCountryInput =
+            document.getElementById('initial_country');
+
+        var countryField = getPhoneCountryField(input);
+
+        var onlyCountries = [];
+
+        try {
+            onlyCountries = JSON.parse(
+                countryIsoInput
+                    ? countryIsoInput.value
+                    : '[]'
+            );
+        } catch (error) {
+            onlyCountries = [];
+        }
+
+        onlyCountries = onlyCountries
+            .map(function (iso2) {
+                return normalizeCountryIso(iso2, '');
+            })
+            .filter(Boolean);
+
+        var defaultCountry = initialCountryInput
+            ? initialCountryInput.value
+            : 'us';
+
+        var selectedCountry = normalizeCountryIso(
+            countryField && countryField.value
+                ? countryField.value
+                : (
+                    input.dataset.country ||
+                    defaultCountry ||
+                    'us'
+                ),
+            'us'
+        );
+
+        var initialPhoneValue = String(
+            input.value || ''
+        ).trim();
+
+        var options = {
+            utilsScript: config().intlTelUtils || '',
             useFullscreenPopup: false,
             showSelectedDialCode: true,
-            initialCountry: initialCountry,
-            onlyCountries: onlyCountries
-        });
+            separateDialCode: true,
+            initialCountry: selectedCountry,
+            onlyCountries: onlyCountries,
+            numberDisplayFormat: 'INTERNATIONAL',
+            nationalMode: false,
+            formatOnDisplay: true
+        };
+
+        var iti = window.intlTelInput(input, options);
+
         input.__intlTel = iti;
+
+        function applyInitialPhone() {
+            if (
+                initialPhoneValue &&
+                initialPhoneValue.charAt(0) === '+' &&
+                typeof iti.setNumber === 'function'
+            ) {
+                iti.setNumber(initialPhoneValue);
+            } else {
+                setSelectedCountryCompat(
+                    iti,
+                    selectedCountry
+                );
+
+                if (
+                    initialPhoneValue &&
+                    typeof iti.setNumber === 'function'
+                ) {
+                    iti.setNumber(initialPhoneValue);
+                }
+            }
+
+            syncPhoneCountry(input);
+            normalizePhoneInput(input);
+        }
+
+        if (
+            iti.promise &&
+            typeof iti.promise.then === 'function'
+        ) {
+            iti.promise
+                .then(applyInitialPhone)
+                .catch(function () {
+                    setSelectedCountryCompat(
+                        iti,
+                        selectedCountry
+                    );
+
+                    syncPhoneCountry(input);
+                });
+        } else {
+            window.setTimeout(
+                applyInitialPhone,
+                0
+            );
+        }
+
+        input.__intlTelCountryHandler = function () {
+            syncPhoneCountry(input);
+
+            window.setTimeout(function () {
+                normalizePhoneInput(input);
+            }, 0);
+        };
+
+        input.addEventListener(
+            'countrychange',
+            input.__intlTelCountryHandler
+        );
+
+        input.__intlTelBlurHandler = function () {
+            syncPhoneCountry(input);
+            normalizePhoneInput(input);
+        };
+
+        input.addEventListener(
+            'blur',
+            input.__intlTelBlurHandler
+        );
     }
 
     function destroyIntlTel(input) {
+        if (!input) {
+            return;
+        }
+
+        if (input.__intlTelCountryHandler) {
+            input.removeEventListener(
+                'countrychange',
+                input.__intlTelCountryHandler
+            );
+
+            input.__intlTelCountryHandler = null;
+        }
+
+        if (input.__intlTelBlurHandler) {
+            input.removeEventListener(
+                'blur',
+                input.__intlTelBlurHandler
+            );
+
+            input.__intlTelBlurHandler = null;
+        }
+
         if (input.__intlTel) {
-            try { if (typeof input.__intlTel.destroy === 'function') input.__intlTel.destroy(); } catch (e) {}
+            try {
+                if (
+                    typeof input.__intlTel.destroy ===
+                    'function'
+                ) {
+                    input.__intlTel.destroy();
+                }
+            } catch (error) {
+                log.warn(
+                    'destroyIntlTel error',
+                    {
+                        input: input.id,
+                        error: error.message
+                    }
+                );
+            }
+
             input.__intlTel = null;
+        }
+    }
+
+    function preparePhoneFields() {
+        var phone =
+            document.getElementById('phone');
+
+        var altPhone =
+            document.getElementById('alt_phone');
+
+        if (phone) {
+            syncPhoneCountry(phone);
+            normalizePhoneInput(phone);
+        }
+
+        if (altPhone) {
+            syncPhoneCountry(altPhone);
+            normalizePhoneInput(altPhone);
+        }
+    }
+
+    function serializeOrderForm() {
+        var form = $('#order_form');
+
+        if (!form.length) {
+            return '';
+        }
+
+        preparePhoneFields();
+
+        return form.serialize();
+    }
+
+    function setUserPhone(inputId, iso2, phoneNumber) {
+        var input =
+            document.getElementById(inputId);
+
+        if (!input) {
+            return;
+        }
+
+        var countryField =
+            getPhoneCountryField(input);
+
+        var country = normalizeCountryIso(
+            iso2,
+            'us'
+        );
+
+        if (countryField) {
+            countryField.value = country;
+        }
+
+        input.dataset.country = country;
+
+        if (!input.__intlTel) {
+            initIntlTel(input);
+        }
+
+        var iti = input.__intlTel;
+
+        if (!iti) {
+            input.value = phoneNumber || '';
+            return;
+        }
+
+        function applyUserPhone() {
+            setSelectedCountryCompat(
+                iti,
+                country
+            );
+
+            input.value = phoneNumber || '';
+
+            if (
+                phoneNumber &&
+                typeof iti.setNumber === 'function'
+            ) {
+                iti.setNumber(
+                    String(phoneNumber)
+                );
+            }
+
+            syncPhoneCountry(input);
+            normalizePhoneInput(input);
+        }
+
+        if (
+            iti.promise &&
+            typeof iti.promise.then === 'function'
+        ) {
+            iti.promise
+                .then(applyUserPhone)
+                .catch(function () {
+                    input.value = phoneNumber || '';
+                    syncPhoneCountry(input);
+                });
+        } else {
+            applyUserPhone();
         }
     }
 
@@ -190,19 +616,110 @@
         for (var j = 0; j < popups.length; j++) popups[j].classList.remove('show');
         var popups2 = document.querySelectorAll('.poopuptext');
         for (var k = 0; k < popups2.length; k++) popups2[k].classList.remove('show');
+
+        var invalidFields = document.querySelectorAll('[aria-invalid="true"]');
+        for (var n = 0; n < invalidFields.length; n++) {
+            invalidFields[n].removeAttribute('aria-invalid');
+        }
+    }
+
+    function findErrorPopup(field) {
+        var popups = document.querySelectorAll('[data-error-for]');
+
+        for (var i = 0; i < popups.length; i++) {
+            if (popups[i].getAttribute('data-error-for') === field) {
+                return popups[i];
+            }
+        }
+
+        return null;
+    }
+
+    function findFormField(field) {
+        var input = document.getElementById(field);
+
+        if (input) {
+            return input;
+        }
+
+        var form = document.getElementById('order_form');
+
+        if (
+            form &&
+            form.elements &&
+            typeof form.elements.namedItem === 'function'
+        ) {
+            return form.elements.namedItem(field);
+        }
+
+        return null;
     }
 
     function showFieldErrors(errors) {
         clearFieldErrors();
+
+        var firstTarget = null;
+        var firstInput = null;
+
         (errors || []).forEach(function (e) {
             var field = e.field || e.key;
-            var popup = document.querySelector('[data-error-for="' + field + '"]');
+
+            if (!field) {
+                return;
+            }
+
+            var popup = findErrorPopup(field);
+            var input = findFormField(field);
+            var wrap = null;
+
             if (popup) {
+                if (e.message) {
+                    popup.textContent = e.message;
+                }
+
                 popup.classList.add('show');
-                var wrap = popup.closest('.form__field') || popup.closest('.text-field');
-                if (wrap) wrap.classList.add('has-error');
+                wrap = popup.closest('.form__field') || popup.closest('.text-field');
+            }
+
+            if (!wrap && input && input.closest) {
+                wrap = input.closest('.form__field') || input.closest('.text-field');
+            }
+
+            if (wrap) {
+                wrap.classList.add('has-error');
+            }
+
+            if (input && input.setAttribute) {
+                input.setAttribute('aria-invalid', 'true');
+            }
+
+            if (!firstTarget) {
+                firstTarget = wrap || input || popup;
+                firstInput = input;
             }
         });
+
+        if (firstTarget && firstTarget.scrollIntoView) {
+            window.setTimeout(function () {
+                firstTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+                if (
+                    firstInput &&
+                    typeof firstInput.focus === 'function' &&
+                    !firstInput.disabled
+                ) {
+                    try {
+                        firstInput.focus({ preventScroll: true });
+                    } catch (error) {
+                        firstInput.focus();
+                    }
+                }
+            }, 0);
+        }
+
         log.warn('field errors', { count: (errors || []).length, fields: (errors || []).map(function (e) { return e.field; }) });
     }
 
@@ -275,23 +792,29 @@
     function clearFatalError() { var el = document.getElementById('checkout-fatal'); if (el) el.setAttribute('hidden', ''); }
 
     var PAYMENT_BLOCK_MAP = {
-        visa: 'card', mastercard: 'card', amex: 'card', discover: 'card',
-        crypto: 'crypto',
-        sepa_local: 'local', fps: 'local', domestic: 'local', ach: 'local', interac: 'local', usd_swift: 'local', gbp_swift: 'local',
-        paypal: 'paypal', sepa: 'sepa', google: 'google', zelle: 'zelle',
-        bonus_card: 'bonus-card', gift_card: 'gift-card',
-        revolut: 'open-banking', open_banking: 'open-banking',
-        google_pay: 'google', apple_pay: 'google'
+        visa: ['card'], mastercard: ['card'], amex: ['card'], discover: ['card'],
+        crypto: ['crypto'],
+        sepa_local: ['local'], fps: ['local'], domestic: ['local'], ach: ['local'], interac: ['local'], usd_swift: ['local'], gbp_swift: ['local'],
+        paypal: ['paypal'], sepa: ['sepa'], zelle: ['zelle'],
+        bonus_card: ['bonus-card'], gift_card: ['gift-card'],
+        revolut: ['open-banking'], open_banking: ['open-banking'],
+        google: ['google-pay', 'google'],
+        google_pay: ['google-pay', 'google'],
+        apple_pay: ['apple-pay', 'google']
     };
+
     function showPaymentBlock(type) {
-        var wanted = PAYMENT_BLOCK_MAP[type] || 'card';
-        var blocks = document.querySelectorAll('.payment-information__card-content, .payment-information__crypto-content, .payment-information__local-content, .payment-information__paypal-content, .payment-information__sepa-content, .payment-information__google-content, .payment-information__zelle-content, .payment-information__bonus-card-content, .payment-information__gift-card-content, .payment-information__open-banking-content');
+        var wanted = PAYMENT_BLOCK_MAP[type] || ['card'];
+        var blocks = document.querySelectorAll('.payment-information__card-content, .payment-information__crypto-content, .payment-information__local-content, .payment-information__paypal-content, .payment-information__sepa-content, .payment-information__google-content, .payment-information__google-pay-content, .payment-information__apple-pay-content, .payment-information__zelle-content, .payment-information__bonus-card-content, .payment-information__gift-card-content, .payment-information__open-banking-content');
+
         for (var i = 0; i < blocks.length; i++) {
             var m = blocks[i].className.match(/payment-information__([a-z-]+)-content/);
             var name = m ? m[1] : '';
-            if (name === wanted) blocks[i].removeAttribute('hidden');
+
+            if (wanted.indexOf(name) !== -1) blocks[i].removeAttribute('hidden');
             else blocks[i].setAttribute('hidden', '');
         }
+
         log.debug('showPaymentBlock', { type: type, wanted: wanted });
     }
 
@@ -313,6 +836,73 @@
         }
     }
 
+    function getResponsePayload(resp) {
+        return resp && (resp.response || resp);
+    }
+
+    function getResponseErrors(resp) {
+        var payload = getResponsePayload(resp);
+
+        if (payload && Array.isArray(payload.errors)) {
+            return payload.errors;
+        }
+
+        if (resp && Array.isArray(resp.errors)) {
+            return resp.errors;
+        }
+
+        return [];
+    }
+
+    function getResponseHtml(resp) {
+        var payload = getResponsePayload(resp);
+        var html = payload && payload.html;
+
+        if (
+            html &&
+            typeof html === 'object' &&
+            html.original
+        ) {
+            html = html.original.html;
+        }
+
+        return typeof html === 'string' ? html : '';
+    }
+
+    function handleResponseValidationErrors(resp) {
+        var errors = getResponseErrors(resp);
+
+        if (!errors.length) {
+            return false;
+        }
+
+        showFieldErrors(errors);
+        return true;
+    }
+
+    function getSelectedPaymentType(fallback) {
+        var paymentType = document.getElementById('payment_type');
+
+        if (paymentType && paymentType.value) {
+            return paymentType.value;
+        }
+
+        return fallback || '';
+    }
+
+    function syncPhoneCountryCodes() {
+        var phone = document.getElementById('phone');
+        var altPhone = document.getElementById('alt_phone');
+
+        if (phone) {
+            syncPhoneCountry(phone);
+        }
+
+        if (altPhone) {
+            syncPhoneCountry(altPhone);
+        }
+    }
+
     function requestCheckout(routeKey, payload, opts) {
         opts = opts || {};
         var method = opts.method || 'POST';
@@ -323,7 +913,7 @@
         }
         var skipForm = opts.skipForm;
         var form = skipForm ? null : $('#order_form');
-        var formData = form && form.length ? form.serialize() : '';
+        var formData = form && form.length ? serializeOrderForm() : '';
         var extra = $.param(payload || {});
         var data = extra ? (formData ? (formData + '&' + extra) : extra) : formData;
         var t0 = (window.performance && performance.now) ? performance.now() : Date.now();
@@ -344,16 +934,31 @@
             clearFatalError();
             if (opts.raw) return parsed;
             if (parsed && parsed.html) {
-                renderCheckout(parsed.html);
+                if (routeKey == 'walletProcess') {
+                    renderCheckout(parsed.html.original.html);
+                } else {
+                    renderCheckout(parsed.html);
+                }
             }
             return parsed;
         }, function (xhr) {
             var ms = Math.round(((window.performance && performance.now) ? performance.now() : Date.now()) - t0);
             hideAjaxLoader();
-            if (xhr.status === 422) {
-                var err = parseResponse(xhr.responseText);
-                log.warn('validation 422', { routeKey: routeKey, ms: ms, errors: err && err.errors });
-                if (!opts.silentValidation && err && err.errors) showFieldErrors(err.errors);
+
+            var err = parseResponse(xhr.responseText);
+            var validationErrors = getResponseErrors(err);
+
+            if (validationErrors.length) {
+                log.warn('validation response', {
+                    routeKey: routeKey,
+                    ms: ms,
+                    status: xhr.status,
+                    errors: validationErrors
+                });
+
+                if (!opts.silentValidation) {
+                    showFieldErrors(validationErrors);
+                }
             } else {
                 log.error('request failed', { routeKey: routeKey, method: method, ms: ms, status: xhr.status, statusText: xhr.statusText });
                 showFatalError();
@@ -496,7 +1101,7 @@
         log.debug('action change-payment', { type: type });
 
         function recalc() {
-            return requestCheckout('recalculation', { bonus_checkout_payment: type }, { raw: true, silentValidation: true }).then(function (resp) {
+            return requestCheckout('recalculation', { bonus_checkout_payment: type }, { raw: true }).then(function (resp) {
                 if (resp && resp.html) renderCheckout(resp.html);
             }, function () {});
         }
@@ -504,7 +1109,7 @@
         function savePaymentType() {
             var loaderMsgs = getLoaderMessages();
             showAjaxLoader(loaderMsgs.recalculation || 'Saving...');
-            $.ajax({ url: routes().recalculation, method: 'POST', data: $('#order_form').serialize() + '&bonus_checkout_payment=' + encodeURIComponent(type) }).always(function () {
+            $.ajax({ url: routes().recalculation, method: 'POST', data: serializeOrderForm() + '&bonus_checkout_payment=' + encodeURIComponent(type) }).always(function () {
                 hideAjaxLoader();
             });
         }
@@ -512,7 +1117,7 @@
         if (type === 'crypto') {
             var valid = validateCheckoutForm();
             if (!valid) { log.warn('crypto: form invalid, reverting'); return; }
-            disableCheckoutFields(true);
+            // disableCheckoutFields(true);
             showPaymentBlock(type);
             savePaymentType();
             return;
@@ -526,7 +1131,7 @@
         if (localTypes.indexOf(type) !== -1) {
             requestCheckout('localPaymentInfo', { local_payment: type }, { raw: true, silentValidation: true }).then(function (resp) {
                 if (resp && resp.success) {
-                    $.ajax({ url: routes().dataForLocalPayment, method: 'POST', data: { form: $('#order_form').serialize() } });
+                    $.ajax({ url: routes().dataForLocalPayment, method: 'POST', data: { form: serializeOrderForm() } });
                     renderCheckout(resp.html);
                 } else {
                     recalc();
@@ -558,20 +1163,26 @@
         var now = new Date();
         var nav = navigator || {};
         var scr = window.screen || {};
+
+        const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const d = new Date();
+        var minutes = d.getMinutes().toString().padStart(2, '0');
+        var seconds = d.getSeconds().toString().padStart(2, '0');
+        var day = weekday[d.getDay()];
+        var date = `${day} ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()} ${d.getHours()}:${minutes}:${seconds}`;
+
         return {
             screen_resolution: (scr.width || 0) + 'x' + (scr.height || 0),
-            customer_date: now.toString(),
+            customer_date: date,
             browser_details: {
-                browser_accept_header: '',
-                browser_language: nav.language || '',
-                browser_color_depth: scr.colorDepth || '',
-                browser_screen_height: scr.height || '',
-                browser_screen_width: scr.width || '',
-                browser_timezone: now.getTimezoneOffset(),
-                browser_user_agent: nav.userAgent || '',
-                browser_java_enable: typeof nav.javaEnabled === 'function' ? nav.javaEnabled() : false,
-                window_height: window.innerHeight || '',
-                window_width: window.innerWidth || ''
+                browser_color_depth: window.screen.colorDepth,
+                browser_language: (navigator.language || '').toLowerCase(),
+                browser_screen_height: window.screen.height,
+                browser_screen_width: window.screen.width,
+                browser_timezone: -1 * (new Date()).getTimezoneOffset(),
+                browser_java_enabled: typeof navigator.javaEnabled === 'function' && navigator.javaEnabled() ? navigator.javaEnabled() : false,
+                window_height: window.innerHeight,
+                window_width: window.innerWidth
             }
         };
     }
@@ -587,9 +1198,24 @@
     }
 
     function handlePaymentResponse(resp) {
-        var r = resp && (resp.response || resp);
+        var r = getResponsePayload(resp);
         if (!r) { log.warn('payment empty response', resp); return; }
-        log.debug('payment response', { status: r.status, hasUrl: !!r.url, hasForm3d: !!r.form3d_html, visaError: !!r.visa_error, riskCheck: !!r.risk_check });
+
+        var status = String(r.status || '').toLowerCase();
+        var isVisaError = r.visa_error === true || status === 'visa_error';
+        var isRiskCheck = r.risk_check === true || status === 'risk_check';
+
+        log.debug('payment response', {
+            status: r.status,
+            hasUrl: !!r.url,
+            hasForm3d: !!r.form3d_html,
+            visaError: isVisaError,
+            riskCheck: isRiskCheck
+        });
+
+        if (handleResponseValidationErrors(resp)) {
+            return;
+        }
 
         if (r.form3d_html) {
             if (typeof window.openPaymentRedirect === 'function') {
@@ -607,10 +1233,9 @@
             }
             return;
         }
-        if (r.status === 'SUCCESS') { window.location.href = routes().complete; return; }
+        if (status === 'success') { window.location.href = routes().complete; return; }
 
-        var html = r.html;
-        if (html && typeof html === 'object' && html.original) html = html.original.html;
+        var html = getResponseHtml(resp);
         var msg = typeof r.message === 'string' ? r.message : (r.message && r.message[0]) || '';
 
         if (r.paymethod_error) {
@@ -620,17 +1245,17 @@
             return;
         }
 
-        if (r.visa_error) {
-            log.warn('visa_error — alert shown', { message: msg });
-            window.LegacyUI.alert({ type: 'error', message: msg || 'Visa is temporarily unavailable. Please try another card.', duration: 6000 });
+        if (isVisaError) {
+            log.warn('visa_error — checkout rendered', { message: msg });
             if (html) renderCheckout(html);
+            window.LegacyUI.alert({ type: 'error', message: msg || 'Visa is temporarily unavailable. Please try another card.', duration: 6000 });
             return;
         }
 
-        if (r.risk_check) {
-            log.warn('risk_check — alert shown', { message: msg });
-            window.LegacyUI.alert({ type: 'warning', message: msg || 'Payment did not pass security check. Please try another method.', duration: 6000 });
+        if (isRiskCheck) {
+            log.warn('risk_check — checkout rendered', { message: msg });
             if (html) renderCheckout(html);
+            window.LegacyUI.alert({ type: 'warning', message: msg || 'Payment did not pass security check. Please try another method.', duration: 6000 });
             return;
         }
 
@@ -772,17 +1397,31 @@
 
     $(document).on('click', '[data-action="process-open-banking"]', function (e) {
         e.preventDefault();
-        var pt = $(this).data('payment-type');
+        var pt = getSelectedPaymentType($(this).data('payment-type') || 'open_banking');
         processPayment('openBanking', pt === 'revolut' ? { is_revolut: 1 } : {});
     });
 
     $(document).on('click', '[data-action="process-wallet"]', function (e) {
         e.preventDefault();
-        var type = $(this).data('wallet') || 'google_pay';
+        var type = getSelectedPaymentType($(this).data('wallet') || 'google_pay');
         log.debug('process-wallet', { wallet: type });
         requestCheckout('validateForWallet', { wallet: type }, { raw: true }).then(function (resp) {
-            var ok = !resp || resp.success === undefined || resp.success === true;
-            if (!ok) { window.LegacyUI.alert({ type: 'error', message: (resp && (resp.text || resp.message)) || 'Validation failed', duration: 5000 }); if (resp && resp.errors) showFieldErrors(resp.errors); return; }
+            if (handleResponseValidationErrors(resp)) {
+                return;
+            }
+
+            var validation = getResponsePayload(resp);
+            var ok = !validation || validation.success === undefined || validation.success === true;
+
+            if (!ok) {
+                window.LegacyUI.alert({
+                    type: 'error',
+                    message: (validation && (validation.text || validation.message)) || 'Validation failed',
+                    duration: 5000
+                });
+                return;
+            }
+
             processPayment('walletProcess', { wallet: type });
         }, function () { log.error('validate_for_wallet rejected'); });
     });

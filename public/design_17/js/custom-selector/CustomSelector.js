@@ -7,7 +7,7 @@ function log(level, message, data) {
   const levels = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 };
   if (levels[level] >= (levels[LOG_LEVEL] || 0)) {
     const fn = level === 'ERROR' ? console.error : level === 'WARN' ? console.warn : console.log;
-    fn(`${LOG_PREFIX} ${message}`, data || '');
+    // fn(`${LOG_PREFIX} ${message}`, data || '');
   }
 }
 
