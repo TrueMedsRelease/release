@@ -462,7 +462,7 @@ class CheckoutController extends Controller
 
     public function bonus_card_info(Request $request)
     {
-        $bonus_api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+        $bonus_api_key = DB::table('shop_keys')->where('name_key', '=', 'bonus_card')->get('key_data')->toArray()[0];
         $bonus_card = str_replace(' ', '', $request->bonus_card);
 
         if (checkdnsrr('true-serv.net', 'A')) {
