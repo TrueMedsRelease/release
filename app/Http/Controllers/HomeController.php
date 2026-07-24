@@ -1633,6 +1633,8 @@ class HomeController extends Controller
             '/css/',
             '/js/',
             '/storage/',
+            '/pwa/install_page',
+            '/checkup'
         ];
 
         foreach ($blockedParts as $part) {
