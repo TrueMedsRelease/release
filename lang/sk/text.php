@@ -419,6 +419,7 @@ return [
     "search_result_title_page" => "Výsledky vyhľadávania pre",
     "search_result_nothing_found1" => "Žiadne produkty v košíku.",
     "search_result_nothing_found2" => " dotaz",
+    "search_result_nothing_found3" => "Zopakujte, prosím, svoju požiadavku podrobnejšie.",
     "search_result_best_for_search" => "Môžete si však pozrieť naše bestsellery",
     "login_title" => "Prihlásiť sa",
     "login_login" => "Prihlásiť sa",

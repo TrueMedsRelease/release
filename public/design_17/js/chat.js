@@ -640,7 +640,8 @@
                 if (minPack.quantity && minPack.quantity > 0) {
                     var perUnitPrice = minPack.price / minPack.quantity;
                     var unitLabel = (product.product_type || 'pill').toLowerCase();
-                    priceHtml = formatPrice(perUnitPrice) + ' per ' + unitLabel;
+                    // priceHtml = formatPrice(perUnitPrice) + ' per ' + unitLabel;
+                    priceHtml = formatPrice(perUnitPrice);
                 }
             }
 
@@ -650,19 +651,16 @@
                         imageHtml +
                         '<div class="card__header">' +
                             '<h2 class="card__title"><span>' + escapeHtml(product.name || '') + '</span></h2>' +
-                            (product.dosage
-                                ? '<div class="card__description">' + escapeHtml(product.dosage) + '</div>'
-                                : '') +
+                            variantsHtml +
                         '</div>' +
-                        variantsHtml +
+                        // variantsHtml +
                         '<div class="card__footer">' +
                             '<div class="card__price-wrapper">' +
                                 '<span class="card__price">' + priceHtml + '</span>' +
                                 discountHtml +
                             '</div>' +
-                            '<button class="card__button button" type="button" title="' + escapeHtml(getText('select_product') + ' ' + (product.name || '')) + '">' +
-                                svgIcon('cart-white') + ' ' +
-                                svgIcon('arrow-right') +
+                            '<button class="card__button button" type="button">' +
+                                svgIcon('cart-white') +
                             '</button>' +
                         '</div>' +
                     '</article>' +

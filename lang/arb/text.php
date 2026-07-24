@@ -424,6 +424,7 @@ return [
     "search_result_title_page" => "نتائج البحث عن",
     "search_result_nothing_found1" => "لم يتم العثور على منتجات ل",
     "search_result_nothing_found2" => " الاستعلام",
+    "search_result_nothing_found3" => "يرجى إعادة صياغة طلبك بمزيد من التفاصيل.",
     "search_result_best_for_search" => "ولكن يمكنك التحقق من أكثر الكتب مبيعا لدينا",
     "login_login" => "تسجيل الدخول",
     "login_email" => "البريد الإلكتروني:",

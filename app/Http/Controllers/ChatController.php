@@ -417,7 +417,7 @@ class ChatController extends Controller
     private function buildFallbackResponse(string $query, array $products): JsonResponse
     {
         if (empty($products)) {
-            $answer = __('text.search_result_nothing_found1') . ' «' . $query . '» ' . __('text.search_result_nothing_found2');
+            $answer = __('text.search_result_nothing_found1') . ' «' . $query . '» ' . __('text.search_result_nothing_found2') . '. ' . __('text.search_result_nothing_found3');
         } else {
             $answer = __('text.search_result_title_page') . ' «' . $query . '».';
         }

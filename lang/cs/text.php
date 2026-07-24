@@ -505,6 +505,7 @@ return [
     "search_result_title_page" => "Výsledky hledání pro ",
     "search_result_nothing_found1" => "Nebyly nalezeny žádné produkty ",
     "search_result_nothing_found2" => " dotaz",
+    "search_result_nothing_found3" => "Zopakujte prosím svůj požadavek podrobněji.",
     "search_result_best_for_search" => "Ale můžete se podívat na naše bestsellery",
     "login_title" => "Přihlášení",
     "login_login" => "Přihlásit",

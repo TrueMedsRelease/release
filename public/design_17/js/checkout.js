@@ -997,10 +997,95 @@
         });
     }
 
-    $(document).on('change', '[data-action="toggle-insurance"]', function () {
-        log.debug('action toggle-insurance', { val: this.checked ? 1 : 0 });
-        requestCheckout('insurance', { val: this.checked ? 1 : 0 });
+    function getInsuranceCheckbox() {
+        return document.querySelector(
+            '[data-action="toggle-insurance"]'
+        );
+    }
+
+    function showInsurancePopup() {
+        var popup = document.getElementById('insur_popup');
+
+        if (!popup) {
+            log.warn('insurance popup not found');
+            return;
+        }
+
+        popup.removeAttribute('hidden');
+        popup.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideInsurancePopup() {
+        var popup = document.getElementById('insur_popup');
+
+        if (!popup) {
+            return;
+        }
+
+        popup.setAttribute('hidden', '');
+        popup.setAttribute('aria-hidden', 'true');
+    }
+
+    $(document).on(
+        'change',
+        '[data-action="toggle-insurance"]',
+        function () {
+            var checkbox = this;
+
+            if (checkbox.checked) {
+                hideInsurancePopup();
+
+                log.debug('insurance enabled');
+
+                requestCheckout('insurance', {
+                    val: 1
+                }).fail(function () {
+                    checkbox.checked = false;
+                });
+
+                return;
+            }
+
+            checkbox.checked = true;
+
+            log.debug('insurance disable confirmation requested');
+
+            showInsurancePopup();
+        }
+    );
+
+    $(document).on('click', '#change_insur', function (event) {
+        event.preventDefault();
+
+        var checkbox = getInsuranceCheckbox();
+
+        if (!checkbox) {
+            log.warn('insurance checkbox not found');
+            hideInsurancePopup();
+            return;
+        }
+
+        checkbox.checked = false;
+        hideInsurancePopup();
+
+        log.debug('insurance disable confirmed');
+
+        requestCheckout('insurance', {
+            val: 0
+        }).fail(function () {
+            checkbox.checked = true;
+        });
     });
+
+    $(document).on(
+        'click',
+        '[data-action="close-insurance-popup"]',
+        function (event) {
+            event.preventDefault();
+
+            hideInsurancePopup();
+        }
+    );
 
     $(document).on('change', '[data-action="toggle-secret"]', function () {
         log.debug('action toggle-secret', { checked: this.checked });

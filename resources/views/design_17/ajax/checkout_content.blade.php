@@ -262,40 +262,50 @@
                                     $total_discount += $product['price'];
                                 }
                             }
+
                             $total_discount_product = ceil($total_discount);
+
                             $total_discount += session('cart_option.bonus_price');
+                            // $total_discount += $shipping[session('cart_option.shipping')];
                             $total_discount += session('cart_option.shipping_price');
                             $total_discount += session('total.coupon_discount');
                             $total_discount += session('total.bonus_card_discount');
                             $total_discount += session('cart_option.insurance_price');
                             $total_discount += session('cart_option.secret_price');
+
                             $saving = $total_discount - session('total.checkout_total') + session('total.gift_card_discount');
                         @endphp
-                        <div class="order-total__title">{{ __('text.checkout_total') }}</div>
+                        <div class="order-total__title">{{ __('text.checkout_total') }}:</div>
                         <div class="order-total__price-wrapper">
                             @if (session('checked_bonus', 'discount') == 'gift_card' && session()->has('gift_card') && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
                                 <div class="order-total__price" style="color: var(--green);">
                                     <span class="price">{{ $Currency::convert(0, true) }}</span>
                                 </div>
                             @else
-                                <div class="discount-price__wrapper">
-                                    <div class="discount-price">
-                                        <s id="total_old">{{ $Currency::convert($total_discount) }}</s>
-                                        <span class="discount-label" id="discount_text">
-                                            @if (ceil(100 - (session('total.checkout_total') / $total_discount) * 100) < 0)
-                                                {{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
-                                            @else
-                                                -{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
-                                            @endif
-                                        </span>
+                                @if ((int)$total_discount_product == ((int)session('total.product_total') - (int)session('total.bonus_total')))
+                                    <div class="order-total__price">
+                                        <span class="price">{{ session('total.checkout_total_in_currency') }}</span>
                                     </div>
-                                    @if ($saving > 0)
-                                    <div class="order-total__savings">{{ __('text.checkout_savings') }}: <span id="saving">{{ $Currency::convert($saving) }}</span></div>
-                                    @endif
-                                </div>
-                                <div class="order-total__price">
-                                    <span class="price">{{ session('total.checkout_total_in_currency') }}</span>
-                                </div>
+                                @else
+                                    <div class="discount-price__wrapper">
+                                        <div class="discount-price">
+                                            <s id="total_old">{{ $Currency::convert($total_discount) }}</s>
+                                            <span class="discount-label" id="discount_text">
+                                                @if (ceil(100 - (session('total.checkout_total') / $total_discount) * 100) < 0)
+                                                    {{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
+                                                @else
+                                                    -{{ ceil(100 - (session('total.checkout_total') / $total_discount) * 100) }}%
+                                                @endif
+                                            </span>
+                                        </div>
+                                        @if ($saving > 0)
+                                        <div class="order-total__savings">{{ __('text.checkout_savings') }}: <span id="saving">{{ $Currency::convert($saving) }}</span></div>
+                                        @endif
+                                    </div>
+                                    <div class="order-total__price">
+                                        <span class="price">{{ session('total.checkout_total_in_currency') }}</span>
+                                    </div>
+                                @endif
                             @endif
                         </div>
                     </div>

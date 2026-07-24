@@ -426,6 +426,7 @@ return [
     "search_result_title_page" => "Hakutulokset: ",
     "search_result_nothing_found1" => "Tuotteita ei löytynyt ",
     "search_result_nothing_found2" => " kysely",
+    "search_result_nothing_found3" => "Toista pyyntösi ja anna lisätietoja.",
     "search_result_best_for_search" => "Mutta voit tarkistaa meidän Bestsellerit",
     "login_title" => "Kirjautuminen",
     "login_login" => "Kirjautunut",

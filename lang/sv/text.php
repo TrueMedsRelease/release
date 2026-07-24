@@ -419,6 +419,7 @@ return [
     "search_result_title_page" => "Sökresultat för",
     "search_result_nothing_found1" => "Inga produkter hittades för ",
     "search_result_nothing_found2" => " fråga",
+    "search_result_nothing_found3" => "Upprepa din förfrågan med fler detaljer.",
     "search_result_best_for_search" => "Men du kan kolla in våra bästsäljare",
     "login_title" => "Logga in",
     "login_login" => "Logga in",

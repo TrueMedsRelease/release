@@ -42,23 +42,31 @@
                         <h2 class="card__title">
                             <span>{{ $productName }}</span>
                         </h2>
-                        @if (!empty($product['dosage']))
+                        {{-- @if (!empty($product['dosage']))
                             <div class="card__description">{{ $product['dosage'] }}</div>
-                        @endif
-                    </div>
-                    @if (!empty($variantDosages))
+                        @endif --}}
+                        @if (!empty($variantDosages))
                         <div class="card__variants">
                             @foreach ($variantDosages as $dosage)
                                 <div class="card__variant">{{ $dosage }}</div>
                             @endforeach
                         </div>
                     @endif
+                    </div>
+                    {{-- @if (!empty($variantDosages))
+                        <div class="card__variants">
+                            @foreach ($variantDosages as $dosage)
+                                <div class="card__variant">{{ $dosage }}</div>
+                            @endforeach
+                        </div>
+                    @endif --}}
                     <div class="card__footer">
                         <div class="card__price-wrapper">
                             <span class="card__price">
                                 @if ($perPillPrice > 0)
                                     @php $unitLabel = $productType ? strtolower($productType) : 'pill'; @endphp
-                                    {{ $Currency::Convert($perPillPrice) }} {{ __('text.common_per_unit', ['unit' => $unitLabel]) }}
+                                    {{-- {{ $Currency::Convert($perPillPrice) }} {{ __('text.common_per_unit', ['unit' => $unitLabel]) }} --}}
+                                    {{ $Currency::Convert($perPillPrice) }}
                                 @else
                                     {{ __('text.chat_from') }} {{ $Currency::Convert($minPack['price'] ?? $product['min_price'] ?? 0) }}
                                 @endif
@@ -73,11 +81,11 @@
                                     <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#cart-white') }}"></use>
                                 </svg>
                             </span>
-                            <span class="icon">
+                            {{-- <span class="icon">
                                 <svg width="1em" height="1em" fill="currentColor">
                                     <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
                                 </svg>
-                            </span>
+                            </span> --}}
                         </button>
                     </div>
                 </article>

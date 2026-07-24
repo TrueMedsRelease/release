@@ -424,6 +424,7 @@ return [
     "search_result_title_page" => "的搜索结果 ",
     "search_result_nothing_found1" => "未找到 ",
     "search_result_nothing_found2" => " 查询",
+    "search_result_nothing_found3" => "请更详细地重新说明您的请求。",
     "search_result_best_for_search" => "但您可以查看我们的畅销书",
     "login_title" => "登录",
     "login_login" => "登录",

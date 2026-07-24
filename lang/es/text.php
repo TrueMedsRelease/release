@@ -569,6 +569,7 @@ return [
     "search_result_title_page" => "Resultados de la búsqueda para ",
     "search_result_nothing_found1" => "No se han encontrado productos para el ",
     "search_result_nothing_found2" => " consulta",
+    "search_result_nothing_found3" => "Por favor, repita su solicitud con más detalles.",
     "search_result_best_for_search" => "Pero puedes ver nuestros best sellers",
     "checkout_title" => "Página de pago - Pago verdaderamente seguro",
     "login_title" => "Iniciar Sesión",

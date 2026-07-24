@@ -420,6 +420,7 @@ return  [
     "search_result_title_page" => "的搜尋結果 ",
     "search_result_nothing_found1" => "未找到 ",
     "search_result_nothing_found2" => " 查詢的產品",
+    "search_result_nothing_found3" => "請更詳細地重新說明您的請求。",
     "search_result_best_for_search" => "但您可以查看我們的暢銷書",
     "login_title" => "登錄",
     "login_login" => "登錄",

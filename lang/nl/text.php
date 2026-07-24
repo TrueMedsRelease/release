@@ -459,6 +459,7 @@ return [
     "search_result_title_page" => "Zoekresultaten voor ",
     "search_result_nothing_found1" => "Er zijn geen producten gevonden voor de ",
     "search_result_nothing_found2" => " query",
+    "search_result_nothing_found3" => "Herhaal uw verzoek met meer details.",
     "search_result_best_for_search" => "Maar u kunt onze bestsellers bekijken",
     "login_title" => "Login",
     "login_login" => "Log in",

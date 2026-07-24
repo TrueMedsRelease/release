@@ -418,6 +418,7 @@ return [
     "search_result_title_page" => "Αποτελέσματα αναζήτησης για ",
     "search_result_nothing_found1" => "Δεν βρέθηκαν προϊόντα για το ",
     "search_result_nothing_found2" => " ερώτημα",
+    "search_result_nothing_found3" => "Παρακαλώ επαναλάβετε το αίτημά σας με περισσότερες λεπτομέρειες.",
     "search_result_best_for_search" => "Αλλά μπορείτε να δείτε τα μπεστ σέλερ μας",
     "login_title" => "Σύνδεση",
     "login_login" => "Συνδεθείτε",

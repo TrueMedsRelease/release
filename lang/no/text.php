@@ -419,6 +419,7 @@ return [
     "search_result_title_page" => "Søkeresultater for ",
     "search_result_nothing_found1" => "Ingen produkter ble funnet for ",
     "search_result_nothing_found2" => " spørsmål",
+    "search_result_nothing_found3" => "Gjenta forespørselen din med flere detaljer.",
     "search_result_best_for_search" => "Men du kan sjekke ut våre bestselgere",
     "login_title" => "Logge",
     "login_login" => "Pålogging",

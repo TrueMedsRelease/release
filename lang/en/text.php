@@ -473,6 +473,7 @@ return [
     "search_result_title_page" => "Search results for ",
     "search_result_nothing_found1" => "No products were found for the ",
     "search_result_nothing_found2" => " query",
+    "search_result_nothing_found3" => "Please repeat your request with more details.",
     "search_result_best_for_search" => "But you can check out our bestsellers",
     "login_title" => "Login",
     "login_login" => "Log in",

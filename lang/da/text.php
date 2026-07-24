@@ -468,6 +468,7 @@ return [
     "search_result_title_page" => "Søgeresultater for ",
     "search_result_nothing_found1" => "Der blev ikke fundet produkter til ",
     "search_result_nothing_found2" => " forespørgsel",
+    "search_result_nothing_found3" => "Gentag venligst din anmodning med flere detaljer.",
     "search_result_best_for_search" => "Men du kan tjekke vores bestsellere",
     "login_title" => "Login",
     "login_login" => "Login",

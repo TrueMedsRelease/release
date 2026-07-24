@@ -425,6 +425,7 @@ return [
     "search_result_title_page" => "Keresési eredmények ",
     "search_result_nothing_found1" => "Nem találtak termékeket a ",
     "search_result_nothing_found2" => " lekérdezés",
+    "search_result_nothing_found3" => "Kérjük, ismételje meg kérését részletesebben.",
     "search_result_best_for_search" => "De akkor nézd meg a bestsellerek",
     "login_title" => "Bejelentkezés",
     "login_login" => "Bejelentkezés",

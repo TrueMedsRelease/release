@@ -45,11 +45,7 @@
 
     <div class="card__footer">
         <div class="card__price-wrapper">
-            @if ($product['id'] != 616)
-                <span class="card__price">{{ $Currency::convert($product['price'], false, true) }} {{ strtolower(__('text.common_per_pill')) }}</span>
-            @else
-                <span class="card__price">{{ $Currency::convert($product['price'], false, true) }}</span>
-            @endif
+            <span class="card__price">{{ $Currency::convert($product['price'], false, true) }}</span>
         </div>
         <a class="card__button button button--outlined js-chat-product-link" href="{{ route('home.product', $product['url']) }}" data-product-title="{{ $product['name'] }}">
             {{ __('text.product_add_to_cart_text') }}

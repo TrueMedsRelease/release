@@ -415,6 +415,7 @@ return [
     "search_result_title_page" => "Rezultatele cautarii pentru ",
     "search_result_nothing_found1" => "Nu au fost găsite produse pentru ",
     "search_result_nothing_found2" => " interogare",
+    "search_result_nothing_found3" => "Vă rugăm să repetați solicitarea, oferind mai multe detalii.",
     "search_result_best_for_search" => "Dar puteți verifica bestsellerurile noastre",
     "login_title" => "Log in",
     "login_login" => "Log in",

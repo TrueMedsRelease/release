@@ -553,6 +553,7 @@ return [
     "search_result_title_page" => "Risultati della ricerca per",
     "search_result_nothing_found1" => "Nessun prodotto trovato per il",
     "search_result_nothing_found2" => " query",
+    "search_result_nothing_found3" => "Ripeta la sua richiesta fornendo maggiori dettagli.",
     "search_result_best_for_search" => "Ma puoi controllare i nostri best seller",
     "checkout_title" => "Pagina di pagamento: pagamento sicuro",
     "login_title" => "Login",

@@ -420,6 +420,7 @@ return [
     "search_result_title_page" => "Wyniki wyszukiwania dla",
     "search_result_nothing_found1" => "Nie znaleziono produktów dla ",
     "search_result_nothing_found2" => " zapytanie",
+    "search_result_nothing_found3" => "Proszę powtórzyć swoją prośbę, podając więcej szczegółów.",
     "search_result_best_for_search" => "Ale możesz sprawdzić nasze Bestsellery",
     "login_title" => "Zaloguj sie",
     "login_login" => "Zaloguj sie",

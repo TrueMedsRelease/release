@@ -79,6 +79,22 @@
             <div class="checkout-preloader__spinner"></div>
         </div>
     </div>
+    <div id="insur_popup" hidden>
+		<div class="popup_block_insur">
+			<button type="button" class="close_popup" data-action="close-insurance-popup">
+				<svg width="20" height="20">
+					<use xlink:href="{{ asset('style_checkout/images/icons/icons.svg#svg-close') }}"></use>
+				</svg>
+			</button>
+			<h3 class="popup_head">{{__('text.checkout_notice')}}</h3>
+			<div class="popup_text">
+				<p>{{__('text.checkout_insurance_popup')}}</p>
+			</div>
+			<button id="change_insur" class="button form__submit submit-button">
+				{{__('text.checkout_ok')}}
+			</button>
+		</div>
+	</div>
     <script>
         window.checkoutRoutes = {
             content: {!! json_encode(route('checkout.content')) !!},
