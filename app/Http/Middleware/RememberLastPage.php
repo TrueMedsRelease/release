@@ -25,6 +25,8 @@ class RememberLastPage
             'cart.content',
             'checkout.content',
             'redirect_url',
+            'home.checkup',
+            'home.pwa_install_page'
         ];
 
         $contentType = (string) $response->headers->get('Content-Type');

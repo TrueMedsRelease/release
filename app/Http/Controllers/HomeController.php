@@ -1649,6 +1649,8 @@ class HomeController extends Controller
             '/css/',
             '/js/',
             '/storage/',
+            '/pwa/install_page',
+            '/checkup'
         ];
 
         foreach ($blockedParts as $part) {
@@ -2605,13 +2607,13 @@ class HomeController extends Controller
 
         $design = session('design') ? session('design') : config('app.design');
 
-        if (in_array($design, ['design_7', 'design_8'])) {
-            if (env('APP_ERROR_PAGE')) {
-                return response()->view('404', ['design' => session('design', config('app.design'))], 404);
-            } else {
-                return redirect(route('home.index'));
-            }
-        }
+        // if (in_array($design, ['design_7', 'design_8'])) {
+        //     if (env('APP_ERROR_PAGE')) {
+        //         return response()->view('404', ['design' => session('design', config('app.design'))], 404);
+        //     } else {
+        //         return redirect(route('home.index'));
+        //     }
+        // }
 
         // $statisticPromise = StatisticService::SendStatistic('moneyback');
 
