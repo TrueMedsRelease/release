@@ -1,7 +1,40 @@
 @php
 $type = $type ?? 'agent';
-$status = $status ?? null;
 $hasProducts = !empty($products);
+
+if (!isset($status)) {
+    $status = match ($type) {
+        'skeleton' => 'queued',
+        'error' => 'error',
+        default => null,
+    };
+}
+
+$statusMessage = null;
+$allowedStatuses = ['queued', 'processing', 'done', 'error'];
+
+if ($status && in_array($status, $allowedStatuses, true)) {
+    $translator = app('translator');
+    $locale = app()->getLocale();
+    $variantsKey = 'text.chat_status_' . $status . '_variants';
+    $fallbackKey = 'text.chat_status_' . $status;
+
+    if ($translator->hasForLocale($variantsKey, $locale)) {
+        $variants = $translator->get($variantsKey, [], $locale);
+    } else {
+        $variants = [$translator->get($fallbackKey, [], $locale)];
+    }
+
+    $variants = is_array($variants)
+        ? array_values(array_filter($variants, static fn ($value) => is_string($value) && trim($value) !== ''))
+        : [];
+
+    if (!$variants) {
+        $variants = [$translator->get($fallbackKey, [], $locale)];
+    }
+
+    $statusMessage = $variants[array_rand($variants)];
+}
 @endphp
 
 @if ($type === 'user')
@@ -18,7 +51,7 @@ $hasProducts = !empty($products);
 <div class="chat-row chat-row--agent dc17-chat-row--skeleton">
     <div class="dc17-chat-status-badge dc17-chat-status-badge--{{ $status ?? 'queued' }}">
         <span class="dc17-chat-status-badge__text">
-            {{ $status === 'processing' ? __('text.chat_status_processing') : __('text.chat_status_queued') }}
+            {{ $statusMessage ?? __('text.chat_status_queued') }}
         </span>
     </div>
     <div class="chat-message">
@@ -41,6 +74,14 @@ $hasProducts = !empty($products);
 </div>
 @elseif ($type === 'agent')
 <div class="chat-row chat-row--agent{{ $hasProducts ? ' chat-row--product' : '' }} chat-message--appear">
+    @if ($status === 'done')
+        <div class="dc17-chat-status-badge dc17-chat-status-badge--done">
+            <span class="dc17-chat-status-badge__text">
+                {{ $statusMessage ?? __('text.chat_status_done') }}
+            </span>
+        </div>
+    @endif
+
     <div class="chat-message">
         <div class="chat-message__content content">
             <div class="chat-message__bubble{{ $hasProducts ? ' chat-message__bubble--agent' : '' }}">
@@ -56,6 +97,12 @@ $hasProducts = !empty($products);
 </div>
 @elseif ($type === 'error')
 <div class="chat-row chat-row--agent dc17-chat-row--error">
+    <div class="dc17-chat-status-badge dc17-chat-status-badge--error">
+        <span class="dc17-chat-status-badge__text">
+            {{ $statusMessage ?? __('text.chat_status_error') }}
+        </span>
+    </div>
+
     <div class="chat-message">
         <div class="chat-message__content content">
             <div class="chat-message__bubble dc17-chat-message__bubble--error">

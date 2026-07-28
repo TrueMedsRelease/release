@@ -46,12 +46,12 @@
                             <div class="card__description">{{ $product['dosage'] }}</div>
                         @endif --}}
                         @if (!empty($variantDosages))
-                        <div class="card__variants">
-                            @foreach ($variantDosages as $dosage)
-                                <div class="card__variant">{{ $dosage }}</div>
-                            @endforeach
-                        </div>
-                    @endif
+                            <div class="card__variants">
+                                @foreach ($variantDosages as $dosage)
+                                    <div class="card__variant">{{ $dosage }}</div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                     {{-- @if (!empty($variantDosages))
                         <div class="card__variants">

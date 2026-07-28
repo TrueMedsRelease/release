@@ -1029,8 +1029,6 @@ return [
     'payment_redirect_error_invalid' => 'The payment link is invalid. Please return to your cart and try again.',
     'payment_redirect_error_button' => 'Back to cart',
 
-
-    // Design 17 checkout translations
     "checkout_sale_title" => "Sale",
     "checkout_placeholder" => "Search...",
     "checkout_search" => "Search",
@@ -1091,6 +1089,58 @@ return [
     "chat_status_processing" => "Processing...",
     "chat_status_done" => "Done",
     "chat_status_error" => "Error",
+
+    "chat_status_queued_variants" => [
+        "Your request is on the pharmacy counter",
+        "Opening the digital medicine cabinet",
+        "Getting the catalogue ready",
+        "Your search is next in line",
+        "Preparing the pharmacy shelves",
+        "Warming up the product finder",
+        "Getting the ingredient index ready",
+        "Setting up a catalogue check",
+        "The pharmacy assistant is getting ready",
+        "One moment — arranging the search desk",
+    ],
+
+    "chat_status_processing_variants" => [
+        "Scanning the pharmacy shelves",
+        "Matching names and active ingredients",
+        "Comparing dosages and pack sizes",
+        "Checking available product options",
+        "Reading labels across the catalogue",
+        "Sorting the closest matches",
+        "Checking prices and packages",
+        "Narrowing down the medicine cabinet",
+        "Double-checking the product cards",
+        "Almost there — arranging the results",
+    ],
+
+    "chat_status_done_variants" => [
+        "The pharmacy shelf is ready",
+        "Your product shortlist is ready",
+        "The catalogue check is complete",
+        "Matching products are on the counter",
+        "The search basket is ready",
+        "The best catalogue matches are below",
+        "Shelf check complete",
+        "Your options are ready to review",
+        "Products found and organised",
+        "The digital medicine cabinet is open",
+    ],
+
+    "chat_status_error_variants" => [
+        "The pharmacy shelf did not load",
+        "The catalogue check hit a snag",
+        "The product finder needs another try",
+        "The digital medicine cabinet is temporarily closed",
+        "The shelf scan could not finish",
+        "The catalogue did not answer in time",
+        "The product cards could not be prepared",
+        "The search basket was not filled",
+        "The pharmacy assistant lost the connection",
+        "Please send the request once more",
+    ],
     "chat_error_connection" => "Unable to connect to AI service. Please check your connection and try again.",
     "chat_error_unauthorized" => "AI service authentication failed. Please contact support.",
     "chat_error_rate_limit" => "Too many requests. Please wait a moment and try again.",

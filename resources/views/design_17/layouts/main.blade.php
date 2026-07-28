@@ -92,6 +92,29 @@
         <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">
         <link href="{{ asset_ver($design . '/css/pages.css') }}" rel="stylesheet">
 
+        @php
+            $chatStatusVariants = [];
+            $chatTranslator = app('translator');
+            $chatLocale = app()->getLocale();
+
+            foreach (['queued', 'processing', 'done', 'error'] as $chatStatusName) {
+                $variantsKey = 'text.chat_status_' . $chatStatusName . '_variants';
+                $fallbackKey = 'text.chat_status_' . $chatStatusName;
+
+                if ($chatTranslator->hasForLocale($variantsKey, $chatLocale)) {
+                    $variants = $chatTranslator->get($variantsKey, [], $chatLocale);
+                } else {
+                    $variants = [$chatTranslator->get($fallbackKey, [], $chatLocale)];
+                }
+
+                $variants = is_array($variants)
+                    ? array_values(array_filter($variants, static fn ($value) => is_string($value) && trim($value) !== ''))
+                    : [];
+
+                $chatStatusVariants[$chatStatusName] = $variants ?: [$chatTranslator->get($fallbackKey, [], $chatLocale)];
+            }
+        @endphp
+
         <script>
             const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
             const routeCartContent = "{{ route('cart.content') }}";
@@ -105,10 +128,10 @@
             window.design17ChatV2 = true;
             window.design17SvgSprite = "{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}";
             window.design17ChatTexts = {
-                status_queued: "{{ __('text.chat_status_queued') }}",
-                status_processing: "{{ __('text.chat_status_processing') }}",
-                status_done: "{{ __('text.chat_status_done') }}",
-                status_error: "{{ __('text.chat_status_error') }}",
+                status_queued: @json($chatStatusVariants['queued']),
+                status_processing: @json($chatStatusVariants['processing']),
+                status_done: @json($chatStatusVariants['done']),
+                status_error: @json($chatStatusVariants['error']),
                 error_timeout: "{{ __('text.chat_error_timeout') }}",
                 error_network: "{{ __('text.chat_error_network') }}",
                 error_server: "{{ __('text.chat_error_server') }}",

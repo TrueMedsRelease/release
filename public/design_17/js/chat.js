@@ -6,6 +6,7 @@
     var POLL_NETWORK_MAX_RETRIES = 10;
     var pollNetworkErrors = 0;
     var BADGE_HIDE_DELAY = 3000;
+    var STATUS_TEXT_ROTATE_INTERVAL = 3000;
 
     var TAG = '[Design17Chat]';
     var State = { IDLE: 'idle', SENDING: 'sending', POLLING: 'polling', DONE: 'done', ERROR: 'error' };
@@ -28,6 +29,8 @@
     var remoteSkeletonRow = null;
     var crossBus = null;
     var currentQuery = '';
+    var statusTextTimer = null;
+    var activeStatusName = null;
 
     function initCrossTabSync() {
         if (typeof CrossTabBus === 'undefined') return;
@@ -212,13 +215,29 @@
         return $('.js-chat-input');
     }
 
-    function scrollToBottom() {
+    function scrollToLastUserRequest(targetRow, behavior) {
         var thread = getChatThread();
-        if (thread) {
-            requestAnimationFrame(function () {
-                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
-            });
+        if (!thread) return;
+
+        var row = targetRow;
+
+        if (!row) {
+            var userRows = thread.querySelectorAll('.chat-row--user');
+            row = userRows.length ? userRows[userRows.length - 1] : null;
         }
+
+        if (!row) return;
+
+        requestAnimationFrame(function () {
+            var header = document.querySelector('.header, .site-header, header');
+            var headerHeight = header ? header.getBoundingClientRect().height : 0;
+            var top = window.scrollY + row.getBoundingClientRect().top - headerHeight - 16;
+
+            window.scrollTo({
+                top: Math.max(0, top),
+                behavior: behavior || 'smooth',
+            });
+        });
     }
 
     function isAtBottom() {
@@ -389,7 +408,7 @@
         );
 
         thread.appendChild(row);
-        scrollToBottom();
+        scrollToLastUserRequest(row, 'smooth');
         return row;
     }
 
@@ -436,8 +455,88 @@
 
         thread.appendChild(row);
         activeSkeletonRow = row;
-        scrollToBottom();
+
+        if (loadingDots) {
+            startStatusTextRotation('queued');
+        }
+
         return row;
+    }
+
+    function stopStatusTextRotation() {
+        if (statusTextTimer) {
+            clearInterval(statusTextTimer);
+            statusTextTimer = null;
+        }
+
+        activeStatusName = null;
+    }
+
+    function rotateActiveStatusText() {
+        if (!activeSkeletonRow || !activeStatusName) {
+            stopStatusTextRotation();
+            return;
+        }
+
+        var badge = activeSkeletonRow.querySelector('.dc17-chat-status-badge');
+        var text = activeSkeletonRow.querySelector('.dc17-chat-status-badge__text');
+
+        if (!badge || !text) {
+            stopStatusTextRotation();
+            return;
+        }
+
+        text.textContent = getText('status_' + activeStatusName);
+    }
+
+    function startStatusTextRotation(status) {
+        stopStatusTextRotation();
+
+        if (status !== 'queued' && status !== 'processing') {
+            return;
+        }
+
+        activeStatusName = status;
+        statusTextTimer = setInterval(
+            rotateActiveStatusText,
+            STATUS_TEXT_ROTATE_INTERVAL
+        );
+    }
+
+    function scheduleStatusBadgeRemoval(badge) {
+        if (!badge) return;
+
+        setTimeout(function () {
+            if (!badge.parentNode) return;
+
+            badge.classList.add('dc17-chat-status-badge--fade-out');
+
+            setTimeout(function () {
+                if (badge.parentNode) {
+                    badge.parentNode.removeChild(badge);
+                }
+            }, 500);
+        }, BADGE_HIDE_DELAY);
+    }
+
+    function getActiveStatusText(status) {
+        var className = 'dc17-chat-status-badge--' + status;
+
+        if (activeSkeletonRow) {
+            var badge = activeSkeletonRow.querySelector('.dc17-chat-status-badge');
+            var text = activeSkeletonRow.querySelector('.dc17-chat-status-badge__text');
+
+            if (
+                badge &&
+                text &&
+                badge.classList.contains(className) &&
+                text.textContent.trim()
+            ) {
+                return text.textContent.trim();
+            }
+        }
+
+        return getText('status_' + status);
     }
 
     function updateSkeletonStatus(status) {
@@ -469,30 +568,31 @@
                 badge.className = 'dc17-chat-status-badge dc17-chat-status-badge--error';
                 text.textContent = getText('status_error');
                 break;
+            default:
+                return;
+        }
+
+        if (status === 'queued' || status === 'processing') {
+            startStatusTextRotation(status);
+        } else {
+            stopStatusTextRotation();
         }
 
         if (status === 'done' || status === 'error') {
-            setTimeout(function () {
-                if (badge && badge.parentNode) {
-                    badge.classList.add('dc17-chat-status-badge--fade-out');
-                    setTimeout(function () {
-                        if (badge.parentNode) {
-                            badge.parentNode.removeChild(badge);
-                        }
-                    }, 500);
-                }
-            }, BADGE_HIDE_DELAY);
+            scheduleStatusBadgeRemoval(badge);
         }
     }
 
     function renderAgentAnswer(answer, products) {
         if (!activeSkeletonRow) return;
 
+        stopStatusTextRotation();
         selectedProductIds = {};
 
         var thread = getChatThread();
         if (!thread) return;
 
+        var doneStatusText = getActiveStatusText('done');
         var hasProducts = products && products.length > 0;
         var totalProducts = hasProducts ? products.length : 0;
         var needsPagination = totalProducts > 6;
@@ -525,6 +625,9 @@
 
         var row = createElement(
             '<div class="' + rowClass + '">' +
+                '<div class="dc17-chat-status-badge dc17-chat-status-badge--done">' +
+                    '<span class="dc17-chat-status-badge__text">' + escapeHtml(doneStatusText) + '</span>' +
+                '</div>' +
                 '<div class="chat-message">' +
                     '<div class="chat-message__content content">' +
                         '<div class="' + bubbleClass + '">' +
@@ -540,6 +643,10 @@
         activeSkeletonRow = null;
         activeMessageId = null;
 
+        scheduleStatusBadgeRemoval(
+            row.querySelector('.dc17-chat-status-badge--done')
+        );
+
         if (hasProducts) {
             bindProductCardClicks(row, products);
             if (needsPagination) {
@@ -549,11 +656,18 @@
     }
 
     function renderAgentError(message) {
+        stopStatusTextRotation();
+
         var thread = getChatThread();
         if (!thread) return;
 
+        var errorStatusText = getActiveStatusText('error');
+
         var row = createElement(
             '<div class="chat-row chat-row--agent dc17-chat-row--error">' +
+                '<div class="dc17-chat-status-badge dc17-chat-status-badge--error">' +
+                    '<span class="dc17-chat-status-badge__text">' + escapeHtml(errorStatusText) + '</span>' +
+                '</div>' +
                 '<div class="chat-message">' +
                     '<div class="chat-message__content content">' +
                         '<div class="chat-message__bubble dc17-chat-message__bubble--error">' +
@@ -571,7 +685,12 @@
         } else {
             thread.appendChild(row);
         }
-        scrollToBottom();
+
+        scheduleStatusBadgeRemoval(
+            row.querySelector('.dc17-chat-status-badge--error')
+        );
+
+        scrollToLastUserRequest(null, 'smooth');
     }
 
     // ── Product cards ──
@@ -839,8 +958,27 @@
         );
         thread.appendChild(userRow);
 
-        var agentText = product.dosage
-            ? escapeHtml(userName) + ' - ' + escapeHtml(product.dosage)
+        var packs = product.packs || [];
+        var variantsHtml = '';
+
+        if (packs.length > 0) {
+            var seenDosages = {};
+            var variants = [];
+
+            packs.forEach(function (pack) {
+                if (pack.dosage && !seenDosages[pack.dosage]) {
+                    seenDosages[pack.dosage] = true;
+                    variants.push(escapeHtml(pack.dosage));
+                }
+            });
+
+            if (variants.length > 0) {
+                variantsHtml = variants.join(' | ');
+            }
+        }
+
+        var agentText = variantsHtml
+            ? escapeHtml(userName) + ' - ' + variantsHtml
             : escapeHtml(userName);
         var agentRow = createElement(
             '<div class="chat-row chat-row--agent chat-message--appear">' +
@@ -885,7 +1023,7 @@
         }
 
         setTimeout(function () {
-            pageRow.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            scrollToLastUserRequest(userRow, 'smooth');
         }, 100);
     }
 
@@ -1002,13 +1140,40 @@
                 '</div>';
         }
 
+        var variantsHtml = '';
+        if (packs.length > 0) {
+            var seenDosages = {};
+            var variants = '';
+            packs.forEach(function (pack) {
+                if (pack.dosage && !seenDosages[pack.dosage]) {
+                    seenDosages[pack.dosage] = true;
+                    variants += '<div class="card__variant">' + escapeHtml(pack.dosage) + '</div>';
+                }
+            });
+            if (variants) {
+                variantsHtml = '<div class="card__variants">' + variants + '</div>';
+            }
+        }
+
+        var descHTML = '';
+        if (product.desc) {
+            descHTML =
+            '<div class="chat-row chat-row--agent">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<span>' + product.desc + '</span>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
         var descriptionHtml = product.dosage
             ? '<div class="product-card__description">' + escapeHtml(product.dosage) + '</div>'
             : '';
 
-        var descHtml = '';
+        var fullDescHtml = '';
         if (product.full_desc) {
-            descHtml =
+            fullDescHtml =
                 '<div class="content js-product-desc">' +
                     '<div class="js-product-desc-body" style="max-height:16rem;overflow:hidden">' +
                         product.full_desc +
@@ -1024,11 +1189,12 @@
                 imageHtml +
                 '<div class="product-card__content">' +
                     '<div class="product-card__name h1">' + escapeHtml(product.name || '') + '</div>' +
-                    descriptionHtml +
+                    variantsHtml +
+                    descHTML +
                 '</div>' +
             '</div>' +
             packsHtml +
-            descHtml;
+            fullDescHtml;
     }
 
     function renderProductDetail(product) {
@@ -1088,7 +1254,7 @@
 
             thread.appendChild(row);
             bindProductDetailAddButtons(row);
-            scrollToBottom();
+            scrollToLastUserRequest(null, 'smooth');
         }
 
         log('debug', 'renderProductDetail: ' + (product.name || ''));
@@ -1318,7 +1484,7 @@
 
         if (!isLeader && crossBus && leaderTabId) {
             renderAgentSkeleton();
-            scrollToBottom();
+            scrollToLastUserRequest(null, 'smooth');
             setState(State.POLLING);
             remoteSkeletonRow = activeSkeletonRow;
             crossBus.emit('chat:query', { message: cleanText, tabId: crossBus.getTabId() });
@@ -1350,7 +1516,7 @@
             }
 
             renderAgentSkeleton();
-            scrollToBottom();
+            scrollToLastUserRequest(null, 'smooth');
 
             if (!data.success || !data.message_id) {
                 setState(State.ERROR);
@@ -1371,10 +1537,54 @@
     // ── Internationalization ──
 
     var texts = {
-        status_queued: 'Queued',
-        status_processing: 'Processing...',
-        status_done: 'Done',
-        status_error: 'Error',
+        status_queued: [
+            'Your request is on the pharmacy counter',
+            'Opening the digital medicine cabinet',
+            'Getting the catalogue ready',
+            'Your search is next in line',
+            'Preparing the pharmacy shelves',
+            'Warming up the product finder',
+            'Getting the ingredient index ready',
+            'Setting up a catalogue check',
+            'The pharmacy assistant is getting ready',
+            'One moment — arranging the search desk',
+        ],
+        status_processing: [
+            'Scanning the pharmacy shelves',
+            'Matching names and active ingredients',
+            'Comparing dosages and pack sizes',
+            'Checking available product options',
+            'Reading labels across the catalogue',
+            'Sorting the closest matches',
+            'Checking prices and packages',
+            'Narrowing down the medicine cabinet',
+            'Double-checking the product cards',
+            'Almost there — arranging the results',
+        ],
+        status_done: [
+            'The pharmacy shelf is ready',
+            'Your product shortlist is ready',
+            'The catalogue check is complete',
+            'Matching products are on the counter',
+            'The search basket is ready',
+            'The best catalogue matches are below',
+            'Shelf check complete',
+            'Your options are ready to review',
+            'Products found and organised',
+            'The digital medicine cabinet is open',
+        ],
+        status_error: [
+            'The pharmacy shelf did not load',
+            'The catalogue check hit a snag',
+            'The product finder needs another try',
+            'The digital medicine cabinet is temporarily closed',
+            'The shelf scan could not finish',
+            'The catalogue did not answer in time',
+            'The product cards could not be prepared',
+            'The search basket was not filled',
+            'The pharmacy assistant lost the connection',
+            'Please send the request once more',
+        ],
         error_timeout: 'Request timed out. Please try again.',
         error_network: 'Network error. Please check your connection and try again.',
         error_server: 'Server error. Please try again later.',
@@ -1405,14 +1615,66 @@
         captcha_submit: 'Continue',
     };
 
-    function getText(key) {
-        if (window.design17ChatTexts && window.design17ChatTexts[key]) {
-            var val = window.design17ChatTexts[key];
-            if (typeof val === 'string' && val.indexOf('text.') !== 0) {
-                return val;
+    var previousTextSelections = {};
+
+    function pickRandomText(key, values) {
+        var available = (values || []).filter(function (value) {
+            return (
+                typeof value === 'string' &&
+                value.trim() !== '' &&
+                value.indexOf('text.') !== 0
+            );
+        });
+
+        if (!available.length) {
+            return key;
+        }
+
+        if (available.length > 1 && previousTextSelections[key]) {
+            var withoutPrevious = available.filter(function (value) {
+                return value !== previousTextSelections[key];
+            });
+
+            if (withoutPrevious.length) {
+                available = withoutPrevious;
             }
         }
-        return texts[key] || key;
+
+        var selected = available[
+            Math.floor(Math.random() * available.length)
+        ];
+
+        previousTextSelections[key] = selected;
+        return selected;
+    }
+
+    function getText(key) {
+        var value = null;
+
+        if (window.design17ChatTexts) {
+            value = window.design17ChatTexts[key];
+        }
+
+        if (
+            typeof value === 'string' &&
+            value.indexOf('text.') === 0
+        ) {
+            value = null;
+        }
+
+        if (value == null) {
+            value = texts[key];
+        }
+
+        if (Array.isArray(value)) {
+            return pickRandomText(key, value);
+        }
+
+        if (typeof value === 'string' && value.trim() !== '') {
+            return value;
+        }
+
+        return key;
     }
 
     // ── History ──
@@ -1493,7 +1755,7 @@
                 }
             });
 
-            scrollToBottom();
+            scrollToLastUserRequest(null, 'smooth');
             log('debug', 'loadHistory: ' + data.messages.length + ' messages restored');
         })
         .catch(function (err) {
@@ -1646,7 +1908,7 @@
         setState(State.SENDING);
         activateChat();
         renderAgentSkeleton();
-        scrollToBottom();
+        scrollToLastUserRequest(null, 'smooth');
         setState(State.POLLING);
         currentQuery = text;
 
@@ -1674,6 +1936,7 @@
             if (data.captcha_required) {
                 setState(State.IDLE);
                 if (activeSkeletonRow) {
+                    stopStatusTextRotation();
                     activeSkeletonRow.parentNode.removeChild(activeSkeletonRow);
                     activeSkeletonRow = null;
                     activeMessageId = null;
@@ -1747,7 +2010,7 @@
             ));
         }
 
-        scrollToBottom();
+        scrollToLastUserRequest(null, 'smooth');
     }
 
     // ── Public API ──

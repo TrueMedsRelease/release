@@ -18,8 +18,15 @@ $packsByDosage = collect($packs)->groupBy('dosage');
                 @endif
                 <div class="product-card__content">
                     <div class="product-card__name h1">{{ $product['name'] ?? '' }}</div>
-                    @if (!empty($product['dosage']))
+                    {{-- @if (!empty($product['dosage']))
                         <div class="product-card__description">{{ $product['dosage'] }}</div>
+                    @endif --}}
+                    @if (!empty($variantDosages))
+                        <div class="card__variants">
+                            @foreach ($variantDosages as $dosage)
+                                <div class="card__variant">{{ $dosage }}</div>
+                            @endforeach
+                        </div>
                     @endif
                 </div>
             </div>
