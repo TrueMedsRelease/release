@@ -10,6 +10,8 @@ return [
 
     'enabled' => env('MEDBOT_ENABLED', true),
 
+    'api_key' => env('APP_BOT_KEY'),
+
     'base_url' => env('MEDBOT_BASE_URL', 'http://pills-333.com'),
 
     'timeout' => 15,

@@ -107,15 +107,34 @@ class ChatController extends Controller
             $pending['resolving'] = true;
             Cache::put($pendingKey, $pending, 120);
 
-            if (!config('medbot.enabled', true)) {
+            $medbotEnabled = (bool) config('medbot.enabled', true);
+            $hasApiKey = $this->medicalAssistant->hasApiKey();
+
+            if (!$medbotEnabled || !$hasApiKey) {
                 Cache::forget($pendingKey);
-                Log::info('[ChatController.pollMessage] fallback activated (medbot disabled)', [
+
+                $fallbackReason = !$medbotEnabled
+                    ? 'medbot disabled'
+                    : 'APP_BOT_KEY is empty';
+
+                Log::info('[ChatController.pollMessage] fallback activated', [
                     'query' => $pending['query'] ?? '',
+                    'reason' => $fallbackReason,
                 ]);
-                return $this->buildFallbackResponse(
+
+                $products = $this->performFallbackSearch($pending['query'] ?? '');
+                $response = $this->buildFallbackResponse(
                     $pending['query'] ?? '',
-                    $this->performFallbackSearch($pending['query'] ?? '')
+                    $products
                 );
+
+                $this->appendToHistory(
+                    'assistant',
+                    $response->getData(true)['answer'] ?? '',
+                    $products
+                );
+
+                return $response;
             }
 
             try {
@@ -375,7 +394,13 @@ class ChatController extends Controller
 
     private function isFallbackError(string $errorCode): bool
     {
-        return in_array($errorCode, ['connection_refused', 'request_failed', 'server_error'], true);
+        return in_array($errorCode, [
+            'missing_api_key',
+            'access_denied',
+            'connection_refused',
+            'request_failed',
+            'server_error',
+        ], true);
     }
 
     private function performFallbackSearch(string $query): array
