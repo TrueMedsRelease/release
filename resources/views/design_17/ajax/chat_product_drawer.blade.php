@@ -2,6 +2,40 @@
 $product = $product ?? [];
 $packs = $product['packs'] ?? [];
 $packsByDosage = collect($packs)->groupBy('dosage');
+
+$dosageToNumber = static function (string $dosage): float {
+    if (!preg_match('/(-?\d+(?:[.,]\d+)?)\s*(mcg|μg|µg|ug|mg|g|kg)?/iu', $dosage, $match)) {
+        return 0;
+    }
+
+    $value = (float) str_replace(',', '.', $match[1]);
+    $unit = strtolower($match[2] ?? '');
+
+    return match ($unit) {
+        'mcg', 'μg', 'µg', 'ug' => $value / 1000,
+        'g' => $value * 1000,
+        'kg' => $value * 1000000,
+        default => $value,
+    };
+};
+
+$compareDosages = static function (string $left, string $right) use ($dosageToNumber): int {
+    $comparison = $dosageToNumber($left) <=> $dosageToNumber($right);
+
+    return $comparison !== 0
+        ? $comparison
+        : strnatcasecmp($left, $right);
+};
+
+$variantDosages = $packsByDosage->keys()
+    ->filter(static fn ($dosage) => trim((string) $dosage) !== '')
+    ->values()
+    ->all();
+
+usort($variantDosages, $compareDosages);
+
+$dosageKeys = $variantDosages;
+usort($dosageKeys, static fn (string $left, string $right): int => -$compareDosages($left, $right));
 @endphp
 
 <div class="chat-row chat-row--page chat-message--appear js-chat-product-detail">
@@ -32,7 +66,8 @@ $packsByDosage = collect($packs)->groupBy('dosage');
             </div>
 
             @if ($packsByDosage->isNotEmpty())
-                @foreach ($packsByDosage as $dosage => $dosagePacks)
+                @foreach ($dosageKeys as $dosage)
+                    @php $dosagePacks = $packsByDosage->get($dosage, collect()); @endphp
                     <div class="panel">
                         <div class="panel__header">
                             <h2 class="h2">{{ $product['name'] ?? '' }} {{ $dosage }}</h2>

@@ -693,6 +693,195 @@
         scrollToLastUserRequest(null, 'smooth');
     }
 
+    // ── Dosage sorting ──
+
+    function normalizeDosageUnit(unit) {
+        unit = String(unit || '')
+            .toLowerCase()
+            .replace(/\s+/g, '');
+
+        var aliases = {
+            'μg': 'mcg',
+            'µg': 'mcg',
+            'ug': 'mcg',
+            'microgram': 'mcg',
+            'micrograms': 'mcg',
+            'milligram': 'mg',
+            'milligrams': 'mg',
+            'gram': 'g',
+            'grams': 'g',
+            'kilogram': 'kg',
+            'kilograms': 'kg',
+            'milliliter': 'ml',
+            'milliliters': 'ml',
+            'millilitre': 'ml',
+            'millilitres': 'ml',
+            'liter': 'l',
+            'liters': 'l',
+            'litre': 'l',
+            'litres': 'l',
+            'unit': 'iu',
+            'units': 'iu',
+        };
+
+        return aliases[unit] || unit;
+    }
+
+    function normalizeDosagePart(value, unit) {
+        var normalizedUnit = normalizeDosageUnit(unit);
+        var group = normalizedUnit || 'number';
+        var normalizedValue = value;
+
+        switch (normalizedUnit) {
+            case 'mcg':
+                group = 'mass';
+                normalizedValue = value / 1000;
+                break;
+            case 'mg':
+                group = 'mass';
+                break;
+            case 'g':
+                group = 'mass';
+                normalizedValue = value * 1000;
+                break;
+            case 'kg':
+                group = 'mass';
+                normalizedValue = value * 1000000;
+                break;
+            case 'ml':
+                group = 'volume';
+                break;
+            case 'l':
+                group = 'volume';
+                normalizedValue = value * 1000;
+                break;
+            case '%':
+                group = 'percent';
+                break;
+            case 'iu':
+                group = 'iu';
+                break;
+            default:
+                group = normalizedUnit || 'number';
+                break;
+        }
+
+        return {
+            group: group,
+            value: normalizedValue,
+            rawValue: value,
+        };
+    }
+
+    function getDosageSortParts(dosage) {
+        var text = String(dosage || '')
+            .replace(/,/g, '.');
+
+        var parts = [];
+        var pattern = /(-?\d+(?:\.\d+)?)\s*(mcg|μg|µg|ug|mg|g|kg|ml|l|%|iu|units?|micrograms?|milligrams?|grams?|kilograms?|millilit(?:er|re)s?|lit(?:er|re)s?)?/gi;
+        var match;
+
+        while ((match = pattern.exec(text)) !== null) {
+            var value = parseFloat(match[1]);
+
+            if (!isNaN(value)) {
+                parts.push(
+                    normalizeDosagePart(value, match[2] || '')
+                );
+            }
+        }
+
+        return parts;
+    }
+
+    function compareDosages(a, b) {
+        var aParts = getDosageSortParts(a);
+        var bParts = getDosageSortParts(b);
+        var length = Math.max(aParts.length, bParts.length);
+
+        for (var i = 0; i < length; i++) {
+            var aPart = aParts[i];
+            var bPart = bParts[i];
+
+            if (!aPart && bPart) return -1;
+            if (aPart && !bPart) return 1;
+            if (!aPart && !bPart) break;
+
+            /*
+             * Если единицы относятся к одной группе, сравниваем уже
+             * нормализованные значения: 500 mcg < 1 mg < 2 g.
+             */
+            if (
+                aPart.group === bPart.group &&
+                aPart.value !== bPart.value
+            ) {
+                return aPart.value - bPart.value;
+            }
+
+            /*
+             * Для редких смешанных обозначений сравниваем числовую часть,
+             * чтобы сортировка оставалась предсказуемой.
+             */
+            if (aPart.rawValue !== bPart.rawValue) {
+                return aPart.rawValue - bPart.rawValue;
+            }
+
+            if (aPart.group !== bPart.group) {
+                return aPart.group.localeCompare(bPart.group);
+            }
+        }
+
+        return String(a || '').localeCompare(
+            String(b || ''),
+            undefined,
+            {
+                numeric: true,
+                sensitivity: 'base',
+            }
+        );
+    }
+
+    function sortDosages(dosages, direction) {
+        var multiplier = direction === 'desc' ? -1 : 1;
+
+        return dosages.slice().sort(function (a, b) {
+            return compareDosages(a, b) * multiplier;
+        });
+    }
+
+    function getUniqueDosages(packs, direction) {
+        var seen = {};
+        var dosages = [];
+
+        (packs || []).forEach(function (pack) {
+            var dosage = String(pack.dosage || '').trim();
+            var key = dosage.toLowerCase();
+
+            if (dosage && !seen[key]) {
+                seen[key] = true;
+                dosages.push(dosage);
+            }
+        });
+
+        return sortDosages(dosages, direction || 'asc');
+    }
+
+    function buildDosageVariantsHtml(packs) {
+        var dosages = getUniqueDosages(packs, 'asc');
+
+        if (!dosages.length) {
+            return '';
+        }
+
+        return '<div class="card__variants">' +
+            dosages.map(function (dosage) {
+                return '<div class="card__variant">' +
+                    escapeHtml(dosage) +
+                '</div>';
+            }).join('') +
+        '</div>';
+    }
+
     // ── Product cards ──
 
     function renderProductCards(products) {
@@ -713,20 +902,7 @@
                     '</div>';
             }
 
-            var variantsHtml = '';
-            if (packs.length > 0) {
-                var seenDosages = {};
-                var variants = '';
-                packs.forEach(function (pack) {
-                    if (pack.dosage && !seenDosages[pack.dosage]) {
-                        seenDosages[pack.dosage] = true;
-                        variants += '<div class="card__variant">' + escapeHtml(pack.dosage) + '</div>';
-                    }
-                });
-                if (variants) {
-                    variantsHtml = '<div class="card__variants">' + variants + '</div>';
-                }
-            }
+            var variantsHtml = buildDosageVariantsHtml(packs);
 
             var discountHtml = '';
             var maxDiscount = 0;
@@ -959,23 +1135,12 @@
         thread.appendChild(userRow);
 
         var packs = product.packs || [];
-        var variantsHtml = '';
 
-        if (packs.length > 0) {
-            var seenDosages = {};
-            var variants = [];
-
-            packs.forEach(function (pack) {
-                if (pack.dosage && !seenDosages[pack.dosage]) {
-                    seenDosages[pack.dosage] = true;
-                    variants.push(escapeHtml(pack.dosage));
-                }
-            });
-
-            if (variants.length > 0) {
-                variantsHtml = variants.join(' | ');
-            }
-        }
+        var variantsHtml = getUniqueDosages(packs, 'asc')
+            .map(function (dosage) {
+                return escapeHtml(dosage);
+            })
+            .join(' | ');
 
         var agentText = variantsHtml
             ? escapeHtml(userName) + ' - ' + variantsHtml
@@ -1123,7 +1288,11 @@
     function buildProductDetailHtml(product) {
         var packs = product.packs || [];
         var packsByDosage = groupPacksByDosage(packs);
-        var dosageKeys = Object.keys(packsByDosage);
+
+        var dosageKeys = sortDosages(
+            Object.keys(packsByDosage),
+            'desc'
+        );
 
         var packsHtml = '';
         dosageKeys.forEach(function (dosage) {
@@ -1140,20 +1309,7 @@
                 '</div>';
         }
 
-        var variantsHtml = '';
-        if (packs.length > 0) {
-            var seenDosages = {};
-            var variants = '';
-            packs.forEach(function (pack) {
-                if (pack.dosage && !seenDosages[pack.dosage]) {
-                    seenDosages[pack.dosage] = true;
-                    variants += '<div class="card__variant">' + escapeHtml(pack.dosage) + '</div>';
-                }
-            });
-            if (variants) {
-                variantsHtml = '<div class="card__variants">' + variants + '</div>';
-            }
-        }
+        var variantsHtml = buildDosageVariantsHtml(packs);
 
         var descHTML = '';
         if (product.desc) {
@@ -1167,9 +1323,7 @@
             '</div>';
         }
 
-        var descriptionHtml = product.dosage
-            ? '<div class="product-card__description">' + escapeHtml(product.dosage) + '</div>'
-            : '';
+        var descriptionHtml = buildDosageVariantsHtml(packs);
 
         var fullDescHtml = '';
         if (product.full_desc) {
@@ -1204,7 +1358,11 @@
 
         var packs = product.packs || [];
         var packsByDosage = groupPacksByDosage(packs);
-        var dosageKeys = Object.keys(packsByDosage);
+        
+        var dosageKeys = sortDosages(
+            Object.keys(packsByDosage),
+            'desc'
+        );
 
         var packsHtml = '';
         dosageKeys.forEach(function (dosage) {
@@ -1221,9 +1379,7 @@
                 '</div>';
         }
 
-        var descriptionHtml = product.dosage
-            ? '<div class="product-card__description">' + escapeHtml(product.dosage) + '</div>'
-            : '';
+        var descriptionHtml = buildDosageVariantsHtml(packs);
 
         var contentHtml =
             '<div class="chat-message__page">' +

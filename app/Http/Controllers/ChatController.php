@@ -68,7 +68,7 @@ class ChatController extends Controller
 
         session(['chat_msg_count' => $msgCount + 1]);
         session()->save();
-        $language = session('language') ?? config('app.language', 'en');
+        $language = $this->resolveCurrentLocale();
         $localId = (string) Str::uuid();
 
         Log::info('[ChatController.sendMessage] new query', [
@@ -466,13 +466,35 @@ class ChatController extends Controller
         ]);
     }
 
+    private function resolveCurrentLocale(): string
+    {
+        $locale = strtolower(trim((string) session(
+            'locale',
+            app()->getLocale() ?: config('app.language', 'en')
+        )));
+
+        if (!isset(Language::$languages[$locale])) {
+            $locale = strtolower(trim((string) config('app.language', 'en')));
+        }
+
+        if (!isset(Language::$languages[$locale])) {
+            $locale = 'en';
+        }
+
+        app()->setLocale($locale);
+
+        return $locale;
+    }
+
     private function fetchShopProducts(array $productIds): array
     {
         $products = [];
-        $languageId = Language::$languages[app()->getLocale()] ?? Language::$languages['en'];
+        $locale = $this->resolveCurrentLocale();
+        $englishLanguageId = Language::$languages['en'];
+        $languageId = Language::$languages[$locale] ?? $englishLanguageId;
 
         $productDescs = ProductDesc::query()
-            ->whereIn('language_id', array_unique([$languageId, Language::$languages['en']]))
+            ->whereIn('language_id', array_unique([$languageId, $englishLanguageId]))
             ->whereIn('product_id', $productIds)
             ->get(['product_id', 'language_id', 'name', 'url', 'desc'])
             ->groupBy('product_id')
@@ -503,14 +525,23 @@ class ChatController extends Controller
 
             $productDescList = $productDescs[$product->id] ?? [];
             $productDesc = null;
+            $englishProductDesc = null;
+
             foreach ($productDescList as $desc) {
-                if ((int) $desc['language_id'] === (int) $languageId) {
+                $descLanguageId = (int) ($desc['language_id'] ?? 0);
+
+                if ($descLanguageId === (int) $languageId) {
                     $productDesc = $desc;
                     break;
                 }
+
+                if ($descLanguageId === (int) $englishLanguageId) {
+                    $englishProductDesc = $desc;
+                }
             }
-            if (!$productDesc && !empty($productDescList)) {
-                $productDesc = $productDescList[0];
+
+            if (!$productDesc) {
+                $productDesc = $englishProductDesc;
             }
             $productName = (!empty($productDesc['name']) ? $productDesc['name'] : null) ?? $apiProductId;
             $productSlug = $productDesc['url'] ?? '';
@@ -518,7 +549,6 @@ class ChatController extends Controller
             $productFullDesc = '';
 
             if ($product->image) {
-                $locale = app()->getLocale();
                 $descPath = public_path("language_codes/{$locale}/{$product->image}.html");
                 $descPathEn = public_path("language_codes/en/{$product->image}.html");
 
@@ -633,8 +663,53 @@ class ChatController extends Controller
         $history = session('chat_history', []);
         $history = array_slice($history, -20);
 
+        $productIds = [];
+
+        foreach ($history as $message) {
+            foreach (($message['products'] ?? []) as $product) {
+                $productId = (int) ($product['id'] ?? 0);
+
+                if ($productId > 0) {
+                    $productIds[] = $productId;
+                }
+            }
+        }
+
+        $localizedProductsById = [];
+
+        if (!empty($productIds)) {
+            $localizedProducts = $this->fetchShopProducts(
+                array_values(array_unique($productIds))
+            );
+
+            foreach ($localizedProducts as $product) {
+                $localizedProductsById[(int) $product['id']] = $product;
+            }
+
+            foreach ($history as &$message) {
+                if (empty($message['products']) || !is_array($message['products'])) {
+                    continue;
+                }
+
+                $message['products'] = array_values(array_map(
+                    static function (array $product) use ($localizedProductsById): array {
+                        $productId = (int) ($product['id'] ?? 0);
+
+                        return $localizedProductsById[$productId] ?? $product;
+                    },
+                    $message['products']
+                ));
+            }
+            unset($message);
+
+            session(['chat_history' => $history]);
+            session()->save();
+        }
+
         Log::debug('[ChatController.getHistory]', [
             'count' => count($history),
+            'locale' => $this->resolveCurrentLocale(),
+            'localized_product_ids' => array_values(array_unique($productIds)),
         ]);
 
         return response()->json([
