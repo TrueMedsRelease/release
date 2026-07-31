@@ -137,7 +137,7 @@ function addCard() {
 
 function addCardNew() {
     let value_card = $('select[name=gift_card_select]').val();;
-    
+
     $.ajax({
         url: routeCartUp,
         type: 'POST',
@@ -394,3 +394,41 @@ if (design > 0) {
         }
     });
 }
+
+(function initCallbackPhoneSanitizer() {
+    const selector = '.callback-form input[type="tel"], .callback-form .intl-phone';
+
+    function sanitizeCallbackPhone(input) {
+        const originalValue = String(input.value || '');
+        let sanitizedValue = originalValue.replace(/[^0-9+()\s-]/g, '');
+
+        if (sanitizedValue.charAt(0) === '+') {
+            sanitizedValue = '+' + sanitizedValue.slice(1).replace(/\+/g, '');
+        } else {
+            sanitizedValue = sanitizedValue.replace(/\+/g, '');
+        }
+
+        if (sanitizedValue !== originalValue) {
+            input.value = sanitizedValue;
+        }
+    }
+
+    document.addEventListener('beforeinput', function (event) {
+        const input = event.target;
+        if (!input || !input.matches || !input.matches(selector)) return;
+
+        if (
+            event.inputType === 'insertText' &&
+            event.data &&
+            /[^0-9+()\s-]/.test(event.data)
+        ) {
+            event.preventDefault();
+        }
+    });
+
+    document.addEventListener('input', function (event) {
+        const input = event.target;
+        if (!input || !input.matches || !input.matches(selector)) return;
+        sanitizeCallbackPhone(input);
+    });
+})();

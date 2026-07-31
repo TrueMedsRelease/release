@@ -805,11 +805,18 @@
         }
         getSelectedOptionsData(originalSelect, type) {
             let selectedOptions = [];
-            if (originalSelect.multiple) selectedOptions = Array.from(originalSelect.options).filter((option => option.value)).filter((option => option.selected)); else selectedOptions.push(originalSelect.options[originalSelect.selectedIndex]);
+            if (originalSelect.multiple) {
+                selectedOptions = Array.from(originalSelect.options)
+                    .filter((option => option.value))
+                    .filter((option => option.selected));
+            } else {
+                const selectedOption = originalSelect.options[originalSelect.selectedIndex];
+                if (selectedOption) selectedOptions.push(selectedOption);
+            }
             return {
-                elements: selectedOptions.map((option => option)),
-                values: selectedOptions.filter((option => option.value)).map((option => option.value)),
-                html: selectedOptions.map((option => this.getSelectElementContent(option)))
+                elements: selectedOptions.slice(),
+                values: selectedOptions.filter((option => option && option.value)).map((option => option.value)),
+                html: selectedOptions.filter(Boolean).map((option => this.getSelectElementContent(option)))
             };
         }
         getOptions(originalSelect) {
@@ -836,7 +843,7 @@
             let selectOptionHTML = ``;
 
             if (originalSelect.name == 'phone_code') {
-                selectOptionHTML += selectOptionLink ? `<a ${selectOptionLinkTarget} ${selectOptionHide} href="${selectOptionLink}" data-value="${selectOption.value}" class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}">` : `<button ${selectOptionHide} ${selectOptionHide} class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}" type="button">`;
+                selectOptionHTML += selectOptionLink ? `<a ${selectOptionLinkTarget} ${selectOptionHide} href="${selectOptionLink}" data-value="${selectOption.value}" class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}">` : `<button ${selectOptionHide} data-value="${selectOption.value}" class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}" type="button">`;
             } else {
                 selectOptionHTML += selectOptionLink ? `<a ${selectOptionLinkTarget} ${selectOptionHide} href="${selectOptionLink}" data-value="${selectOption.value}" class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}">` : `<button ${selectOptionHide} ${selectOptionHide} class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}" onclick="location.href='${selectOption.value}'" type="button">`;
             }
