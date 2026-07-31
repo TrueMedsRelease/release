@@ -142,3 +142,65 @@
     initCartRemove();
     initCartSync();
 })();
+
+(function () {
+    'use strict';
+
+    function updateCheckoutButtonVisibility() {
+        var cartDrawer = document.querySelector(
+            '[data-drawer="cart"]'
+        );
+
+        if (!cartDrawer) {
+            return;
+        }
+
+        var checkoutFooter = cartDrawer.querySelector(
+            '.js-cart-checkout-footer'
+        );
+
+        if (!checkoutFooter) {
+            return;
+        }
+
+        var hasCartItems = Boolean(
+            cartDrawer.querySelector('.cart-items .cart-item')
+        );
+
+        if (hasCartItems) {
+            checkoutFooter.removeAttribute('hidden');
+        } else {
+            checkoutFooter.setAttribute('hidden', '');
+        }
+    }
+
+    function initCheckoutButtonVisibility() {
+        var cartDrawer = document.querySelector(
+            '[data-drawer="cart"]'
+        );
+
+        if (!cartDrawer) {
+            return;
+        }
+
+        updateCheckoutButtonVisibility();
+
+        var observer = new MutationObserver(function () {
+            updateCheckoutButtonVisibility();
+        });
+
+        observer.observe(cartDrawer, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener(
+            'DOMContentLoaded',
+            initCheckoutButtonVisibility
+        );
+    } else {
+        initCheckoutButtonVisibility();
+    }
+})();

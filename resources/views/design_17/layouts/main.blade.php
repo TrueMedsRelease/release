@@ -448,18 +448,18 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="cart__footer">
-                    @if (request()->route()->getName() !== 'checkout.index')
-                    <a class="cart__checkout-button button" href="{{ route('checkout.index') }}">
-                        {{ __('text.cart_checkout_text') }}
-                        <span class="icon">
-                            <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
-                            </svg>
-                        </span>
-                    </a>
-                    @endif
-                </div>
+                @if (request()->route()->getName() !== 'checkout.index')
+                    <div class="cart__footer js-cart-checkout-footer" @if ($cart_count <= 0) hidden @endif >
+                        <a class="cart__checkout-button button" href="{{ route('checkout.index') }}">
+                            {{ __('text.cart_checkout_text') }}
+                            <span class="icon">
+                                <svg width="1em" height="1em" fill="currentColor">
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                @endif
             </aside>
             <aside class="drawer drawer--rtl drawer--product js-product-drawer">
                 <div class="drawer__header">
