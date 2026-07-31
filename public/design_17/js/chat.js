@@ -966,15 +966,71 @@
         return html;
     }
 
+    // function bindProductCardClicks(root, products) {
+    //     var buttons = $$('.card__button', root || document);
+    //     buttons.forEach(function (btn) {
+    //         btn.addEventListener('click', function (e) {
+    //             e.preventDefault();
+    //             e.stopPropagation();
+    //             var cardLink = btn.closest('.card-link');
+    //             if (!cardLink) return;
+    //             var index = parseInt(cardLink.getAttribute('data-product-index'), 10);
+    //             if (!isNaN(index) && products && products[index]) {
+    //                 showProductInChat(products[index]);
+    //             }
+    //         });
+    //     });
+    // }
+
     function bindProductCardClicks(root, products) {
+        var cards = $$('.card-link', root || document);
+
+        cards.forEach(function (card) {
+
+            if (card.dataset.chatBound) {
+                return;
+            }
+
+            card.dataset.chatBound = '1';
+
+            card.addEventListener('click', function (e) {
+                if (e.target.closest('.card__button')) {
+                    return;
+                }
+
+                e.preventDefault();
+
+                var button = card.querySelector('.card__button');
+
+                if (button) {
+                    button.click();
+                }
+            });
+        });
+
         var buttons = $$('.card__button', root || document);
+
         buttons.forEach(function (btn) {
+
+            if (btn.dataset.chatBound) {
+                return;
+            }
+
+            btn.dataset.chatBound = '1';
+
             btn.addEventListener('click', function (e) {
+
                 e.preventDefault();
                 e.stopPropagation();
+
                 var cardLink = btn.closest('.card-link');
-                if (!cardLink) return;
-                var index = parseInt(cardLink.getAttribute('data-product-index'), 10);
+
+                if (!cardLink) {
+                    return;
+                }
+
+                var index = parseInt(cardLink.dataset.productIndex, 10);
+
                 if (!isNaN(index) && products && products[index]) {
                     showProductInChat(products[index]);
                 }
@@ -1358,7 +1414,7 @@
 
         var packs = product.packs || [];
         var packsByDosage = groupPacksByDosage(packs);
-        
+
         var dosageKeys = sortDosages(
             Object.keys(packsByDosage),
             'desc'

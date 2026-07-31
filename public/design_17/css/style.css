@@ -2400,6 +2400,7 @@ iframe{
   background-color:var(--color-white);
   border:0.1rem solid transparent;
   transition:border-color var(--transition-short);
+  cursor: pointer;
 }
 .card-link:hover .card{
   border-color:var(--color-primary);
