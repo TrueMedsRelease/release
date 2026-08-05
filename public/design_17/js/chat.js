@@ -327,19 +327,18 @@
             return false;
         }
 
-        var heading = container.querySelector('.js-chat-start-heading');
-        if (!heading) {
-            var existingMessages = container.querySelector('.thread-chat__messages');
-            if (existingMessages && existingMessages.children.length > 0) {
-                return false;
-            }
+        var form = getChatForm();
+
+        var existingChat = container.querySelector('.thread-chat');
+        if (existingChat) {
+            return true;
         }
 
+        var heading = container.querySelector('.js-chat-start-heading');
         if (heading && heading.parentNode) {
             heading.parentNode.removeChild(heading);
         }
 
-        var form = getChatForm();
         var chat = createElement(
             '<div class="thread-chat js-chat-thread-wrap">' +
                 '<div class="thread-chat__container">' +
@@ -356,7 +355,7 @@
 
         setTimeout(initScrollTracking, 100);
 
-        log('debug', 'activateChat: heading removed, thread-chat created');
+        log('debug', 'activateChat: thread-chat created');
         return true;
     }
 
@@ -1685,12 +1684,18 @@
         }
 
         setState(State.SENDING);
+
         var activated = activateChat();
         if (!activated) {
             setState(State.IDLE);
             log('warn', 'sendMessage: could not activate chat thread');
+
+            if (typeof window.LegacyUI !== 'undefined' && window.LegacyUI.alert) {
+                window.LegacyUI.alert('Could not start chat. Please refresh the page.');
+            }
             return;
         }
+
         renderUserMessage(cleanText);
         currentQuery = cleanText;
 
@@ -1894,6 +1899,7 @@
     function showChatLoader() {
         var container = getChatContainer();
         if (!container) return;
+
         var existing = container.querySelector('.dc17-chat-loader');
         if (existing) return;
 
@@ -1908,6 +1914,7 @@
                 '<div class="dc17-chat-loader__text">' + getText('loading_chat') + '</div>' +
             '</div>'
         );
+
         var form = getChatForm();
         if (form && form.parentNode === container) {
             container.insertBefore(loader, form);
@@ -1930,14 +1937,23 @@
 
     function loadHistory() {
         var container = getChatContainer();
-        if (container) {
-            var existingMessages = container.querySelector('.thread-chat__messages');
-            if (existingMessages && existingMessages.children.length > 0) {
-                return;
-            }
+        if (!container) return;
+
+        var existingMessages = container.querySelector('.thread-chat__messages');
+        if (existingMessages && existingMessages.children.length > 0) {
+            return;
         }
 
-        showChatLoader();
+        var heading = container.querySelector('.js-chat-start-heading');
+
+        if (!heading && !existingMessages) {
+            restoreHeading();
+            return;
+        }
+
+        if (heading) {
+            showChatLoader();
+        }
 
         var historyRoute = window.routeChatHistory || '/chat/history';
         log('debug', 'loadHistory');
@@ -1949,15 +1965,29 @@
         .then(function (r) { return r.json(); })
         .then(function (data) {
             hideChatLoader();
-            if (!data.success || !data.messages) return;
-            if (!data.messages.length) return;
+
+            if (!data.success || !data.messages || !data.messages.length) {
+                restoreHeading();
+                return;
+            }
 
             if (data.currency && data.currency.prefix) {
                 currencyPrefix = data.currency.prefix;
                 currencyCoef = data.currency.coef || 1;
             }
 
+            var headingEl = container.querySelector('.js-chat-start-heading');
+            if (headingEl && headingEl.parentNode) {
+                headingEl.parentNode.removeChild(headingEl);
+            }
+
             activateChat();
+
+            var thread = getChatThread();
+            if (!thread) {
+                log('warn', 'loadHistory: thread not found after activation');
+                return;
+            }
 
             data.messages.forEach(function (msg) {
                 if (msg.role === 'user') {
@@ -1973,23 +2003,38 @@
         .catch(function (err) {
             hideChatLoader();
             log('warn', 'loadHistory error: ' + err.message);
-            activateChat();
-            var thread = getChatThread();
-            if (thread) {
-                var row = createElement(
-                    '<div class="chat-row chat-row--agent dc17-chat-row--error">' +
-                        '<div class="chat-message">' +
-                            '<div class="chat-message__content content">' +
-                                '<div class="chat-message__bubble dc17-chat-message__bubble--error">' +
-                                    escapeHtml(getText('error_history')) +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>'
-                );
-                thread.appendChild(row);
-            }
+            restoreHeading();
         });
+    }
+
+    function restoreHeading() {
+        var container = getChatContainer();
+        if (!container) return;
+
+        var existingHeading = container.querySelector('.js-chat-start-heading');
+        if (existingHeading) return;
+
+        var thread = container.querySelector('.thread-chat__messages');
+        if (thread && thread.children.length > 0) return;
+
+        var chatWrap = container.querySelector('.thread-chat');
+        if (chatWrap && chatWrap.parentNode) {
+            chatWrap.parentNode.removeChild(chatWrap);
+        }
+
+        var heading = createElement(
+            '<h1 class="main-heading js-chat-start-heading">' +
+                '<span class="main-heading__title">Its\' True Meds Bot for buying Drugs</span>' +
+                '<span class="main-heading__caption">Easier, Safer, Faster</span>' +
+            '</h1>'
+        );
+
+        var form = getChatForm();
+        if (form && form.parentNode === container) {
+            container.insertBefore(heading, form);
+        } else {
+            container.appendChild(heading);
+        }
     }
 
     function renderHistoryUserMessage(text) {
