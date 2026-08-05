@@ -2151,7 +2151,7 @@
             var code = input.value.trim();
             if (!code) return;
             overlay.parentNode.removeChild(overlay);
-            sendMessageWithCaptcha(savedText, code);
+            // sendMessageWithCaptcha(savedText, code);
         }
 
         submit.addEventListener('click', doSend);

@@ -43,31 +43,31 @@ class ChatController extends Controller
         }
 
         $message = trim($request->input('message'));
-        $msgCount = (int) session('chat_msg_count', 0);
-        $needsCaptcha = $msgCount === 0
-            || (!app()->environment('production') ? false : $msgCount % 5 === 4);
+        // $msgCount = (int) session('chat_msg_count', 0);
+        // $needsCaptcha = $msgCount === 0
+        //     || (!app()->environment('production') ? false : $msgCount % 5 === 4);
 
-        if ($needsCaptcha) {
-            $captchaCode = $request->input('captcha_code', '');
-            if ($captchaCode === '') {
-                return response()->json([
-                    'success' => false,
-                    'captcha_required' => true,
-                    'captcha_src' => captcha_src(),
-                ]);
-            }
-            if (!captcha_check($captchaCode)) {
-                return response()->json([
-                    'success' => false,
-                    'captcha_required' => true,
-                    'captcha_src' => captcha_src(),
-                    'message' => __('text.errors_wrong_captcha_value'),
-                ]);
-            }
-        }
+        // if ($needsCaptcha) {
+        //     $captchaCode = $request->input('captcha_code', '');
+        //     if ($captchaCode === '') {
+        //         return response()->json([
+        //             'success' => false,
+        //             'captcha_required' => true,
+        //             'captcha_src' => captcha_src(),
+        //         ]);
+        //     }
+        //     if (!captcha_check($captchaCode)) {
+        //         return response()->json([
+        //             'success' => false,
+        //             'captcha_required' => true,
+        //             'captcha_src' => captcha_src(),
+        //             'message' => __('text.errors_wrong_captcha_value'),
+        //         ]);
+        //     }
+        // }
 
-        session(['chat_msg_count' => $msgCount + 1]);
-        session()->save();
+        // session(['chat_msg_count' => $msgCount + 1]);
+        // session()->save();
         $language = $this->resolveCurrentLocale();
         $localId = (string) Str::uuid();
 
