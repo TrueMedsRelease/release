@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 return [
     "errors_empty_field" => "Champ vide",
