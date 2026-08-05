@@ -156,7 +156,7 @@
                 select_product: "{{ __('text.chat_select_product') }}",
                 chat_waiting: "{{ __('text.chat_waiting') }}",
                 chat_busy: "{{ __('text.chat_busy') }}",
-                chat_placeholder: "{{ __('text.common_search') }}",
+                chat_placeholder: "{{ __('text.common_search_medbot') }}",
                 captcha_title: "{{ __('text.captcha_title') }}",
                 captcha_placeholder: "{{ __('text.captcha_placeholder') }}",
                 captcha_submit: "{{ __('text.captcha_submit') }}",
@@ -358,7 +358,7 @@
                                 <textarea class="thread-box__input input-textarea js-chat-input"
                                           rows="1" placeholder=" " autocomplete="off"
                                           maxlength="512" required></textarea>
-                                <span class="thread-box__placeholder">{{ __('text.common_search') }}</span>
+                                <span class="thread-box__placeholder">{{ __('text.common_search_medbot') }}</span>
                             </label>
                             <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
                                 <span class="icon">

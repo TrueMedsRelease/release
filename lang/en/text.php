@@ -1176,4 +1176,6 @@ return [
     "captcha_title" => "Verify you are human",
     "captcha_placeholder" => "Enter code",
     "captcha_submit" => "Continue",
+
+    "common_search_medbot" => "Enter your search query, symptoms, or product name...",
 ];

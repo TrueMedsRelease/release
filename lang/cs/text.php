@@ -975,4 +975,6 @@ return [
     "captcha_title" => "Ověřte, že jste člověk",
     "captcha_placeholder" => "Zadejte kód",
     "captcha_submit" => "Pokračovat",
+
+    "common_search_medbot" => "Zadejte svůj vyhledávací dotaz, příznaky nebo název produktu...",
 ];

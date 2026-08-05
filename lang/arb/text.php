@@ -893,4 +893,6 @@ return [
     "captcha_title" => "تحقق من أنك إنسان",
     "captcha_placeholder" => "أدخل الرمز",
     "captcha_submit" => "متابعة",
+
+    "common_search_medbot" => "أدخل استعلام البحث أو الأعراض أو اسم المنتج...",
 ];

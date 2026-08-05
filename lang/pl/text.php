@@ -890,4 +890,6 @@ return [
     "captcha_title" => "Potwierdź, że jesteś człowiekiem",
     "captcha_placeholder" => "Wprowadź kod",
     "captcha_submit" => "Kontynuuj",
+
+    "common_search_medbot" => "Wpisz wyszukiwane hasło, objawy lub nazwę produktu...",
 ];

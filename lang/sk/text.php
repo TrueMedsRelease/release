@@ -889,4 +889,6 @@ return [
     "captcha_title" => "Potvrďte, že ste človek",
     "captcha_placeholder" => "Zadajte kód",
     "captcha_submit" => "Pokračovať",
+
+    "common_search_medbot" => "Zadajte vyhľadávací dopyt, príznaky alebo názov produktu...",
 ];

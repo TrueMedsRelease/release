@@ -929,4 +929,6 @@ return [
     "captcha_title" => "Bevestig dat u een mens bent",
     "captcha_placeholder" => "Voer de code in",
     "captcha_submit" => "Doorgaan",
+
+    "common_search_medbot" => "Voer uw zoekopdracht, symptomen of productnaam in...",
 ];

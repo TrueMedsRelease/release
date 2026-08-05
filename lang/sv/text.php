@@ -889,4 +889,6 @@ return [
     "captcha_title" => "Bekräfta att du är en människa",
     "captcha_placeholder" => "Ange koden",
     "captcha_submit" => "Fortsätt",
+
+    "common_search_medbot" => "Ange din sökning, symtom eller produktnamn...",
 ];

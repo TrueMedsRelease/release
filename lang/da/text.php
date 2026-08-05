@@ -938,4 +938,6 @@ return [
     "captcha_title" => "Bekræft, at du er et menneske",
     "captcha_placeholder" => "Indtast kode",
     "captcha_submit" => "Fortsæt",
+
+    "common_search_medbot" => "Indtast din søgeforespørgsel, symptomer eller produktnavn...",
 ];

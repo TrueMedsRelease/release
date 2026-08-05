@@ -1053,4 +1053,6 @@ return [
     "captcha_title" => "Verifica que eres una persona",
     "captcha_placeholder" => "Introduce el código",
     "captcha_submit" => "Continuar",
+
+    "common_search_medbot" => "Introduce tu búsqueda, los síntomas o el nombre del producto...",
 ];

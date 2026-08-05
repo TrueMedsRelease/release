@@ -1007,5 +1007,7 @@ return [
     "captcha_title" => "人間であることを確認してください",
     "captcha_placeholder" => "コードを入力",
     "captcha_submit" => "続行",
+
+    "common_search_medbot" => "検索キーワード、症状、または商品名を入力してください...",
 ];
 

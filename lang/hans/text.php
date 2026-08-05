@@ -894,4 +894,6 @@ return [
     "captcha_title" => "验证您是真人",
     "captcha_placeholder" => "输入验证码",
     "captcha_submit" => "继续",
+
+    "common_search_medbot" => "输入搜索内容、症状或产品名称...",
 ];

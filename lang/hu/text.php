@@ -895,4 +895,6 @@ return [
     "captcha_title" => "Erősítse meg, hogy Ön ember",
     "captcha_placeholder" => "Adja meg a kódot",
     "captcha_submit" => "Folytatás",
+
+    "common_search_medbot" => "Adja meg a keresési kifejezést, a tüneteket vagy a termék nevét...",
 ];

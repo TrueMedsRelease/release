@@ -885,4 +885,6 @@ return [
     "captcha_title" => "Confirmă că ești o persoană",
     "captcha_placeholder" => "Introdu codul",
     "captcha_submit" => "Continuă",
+
+    "common_search_medbot" => "Introduceți căutarea, simptomele sau numele produsului...",
 ];

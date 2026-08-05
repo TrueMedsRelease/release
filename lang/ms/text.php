@@ -891,4 +891,6 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "captcha_title" => "Sahkan bahawa anda manusia",
     "captcha_placeholder" => "Masukkan kod",
     "captcha_submit" => "Teruskan",
+
+    "common_search_medbot" => "Masukkan carian, simptom atau nama produk...",
 ];

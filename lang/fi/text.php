@@ -895,4 +895,6 @@ return [
     "captcha_title" => "Vahvista, että olet ihminen",
     "captcha_placeholder" => "Syötä koodi",
     "captcha_submit" => "Jatka",
+
+    "common_search_medbot" => "Kirjoita hakusi, oireet tai tuotteen nimi...",
 ];

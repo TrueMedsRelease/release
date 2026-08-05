@@ -892,4 +892,6 @@ return [
     "captcha_title" => "Bekreft at du er et menneske",
     "captcha_placeholder" => "Skriv inn koden",
     "captcha_submit" => "Fortsett",
+
+    "common_search_medbot" => "Skriv inn søket ditt, symptomer eller produktnavn...",
 ];
