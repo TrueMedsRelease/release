@@ -243,7 +243,13 @@
     function isAtBottom() {
         var thread = getChatThread();
         if (!thread) return true;
-        return thread.scrollHeight - thread.scrollTop - thread.clientHeight < 60;
+
+        if (thread.scrollHeight > thread.clientHeight + 10) {
+            return thread.scrollHeight - thread.scrollTop - thread.clientHeight < 60;
+        }
+
+        var rect = thread.getBoundingClientRect();
+        return rect.bottom - window.innerHeight < 60;
     }
 
     var newMessagesBtn = null;
@@ -258,8 +264,9 @@
         newMessagesBtn.textContent = getText('new_messages');
         newMessagesBtn.addEventListener('click', function () {
             var thread = getChatThread();
-            if (thread) {
-                thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
+            if (thread && thread.lastElementChild) {
+                // работает и для внутреннего скролла, и для оконного
+                thread.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
             }
             hideNewMessagesIndicator();
         });
@@ -282,11 +289,19 @@
     function initScrollTracking() {
         var thread = getChatThread();
         if (!thread) return;
-        thread.addEventListener('scroll', function () {
+
+        var onScroll = function () {
             if (isAtBottom()) {
                 hideNewMessagesIndicator();
+            } else {
+                showNewMessagesIndicator();   // ← пользователь уехал вверх
             }
-        });
+        };
+
+        thread.addEventListener('scroll', onScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        onScroll();
     }
 
     function setState(newState) {
@@ -365,6 +380,34 @@
         return div.innerHTML;
     }
 
+    function escapeAttr(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+    function routeBrowse(type, slug) {
+        var tpl = window.routeChatBrowse || '/chat/browse/__TYPE__/__SLUG__';
+
+        return tpl
+            .replace('__TYPE__', encodeURIComponent(type))
+            .replace('__SLUG__', encodeURIComponent(slug));
+    }
+
+    function slugFromBrowseUrl(url) {
+        if (!url) {
+            return '';
+        }
+
+        var clean = String(url).split('?')[0];
+        var parts = clean.split('/');
+
+        return decodeURIComponent(parts[parts.length - 1] || '');
+    }
+
     function route(url, messageId) {
         return url.replace('__MSGID__', encodeURIComponent(messageId));
     }
@@ -407,6 +450,7 @@
         );
 
         thread.appendChild(row);
+        scrollThreadToBottom();
         scrollToLastUserRequest(row, 'smooth');
         return row;
     }
@@ -458,6 +502,8 @@
         if (loadingDots) {
             startStatusTextRotation('queued');
         }
+
+        scrollThreadToBottom();
 
         return row;
     }
@@ -648,10 +694,15 @@
 
         if (hasProducts) {
             bindProductCardClicks(row, products);
+
             if (needsPagination) {
                 initPagination(row, products);
             }
+
+            bindBrowseChips(row);
         }
+
+        scrollThreadToBottom();
     }
 
     function renderAgentError(message) {
@@ -690,6 +741,7 @@
         );
 
         scrollToLastUserRequest(null, 'smooth');
+        scrollThreadToBottom();
     }
 
     // ── Dosage sorting ──
@@ -902,6 +954,7 @@
             }
 
             var variantsHtml = buildDosageVariantsHtml(packs);
+            var browseHtml = buildBrowseChipsHtml(product);
 
             var discountHtml = '';
             var maxDiscount = 0;
@@ -946,6 +999,7 @@
                         '<div class="card__header">' +
                             '<h2 class="card__title"><span>' + escapeHtml(product.name || '') + '</span></h2>' +
                             variantsHtml +
+                            browseHtml +
                         '</div>' +
                         // variantsHtml +
                         '<div class="card__footer">' +
@@ -1153,6 +1207,7 @@
         }
 
         bindProductDetailAddButtons(body);
+        bindBrowseChips(body);
         openProductDrawer();
     }
 
@@ -1165,64 +1220,89 @@
         }
     });
 
-    var selectedProductIds = {};
+    function normalizeAutoProduct(product) {
+        var p = Object.assign({}, product);
+        var flat = [];
 
-    function showProductInChat(product) {
-        if (!product) return;
+        function pushRow(row, dosageFallback) {
+            flat.push({
+                id: row.id,
+                quantity: row.num != null ? row.num : row.quantity,
+                dosage: row.dosage || dosageFallback || '',
+                price: parseFloat(row.price) || 0,
+                old_price: parseFloat(row.old_price) || 0,
+                delivery: row.delivery_info || row.delivery || '',
+                add_url: row.add_url || (row.id != null ? '/cart/add_pack/' + row.id : ''),
+                unit: row.unit || '',
+                type_id: row.type_id,
+            });
+        }
 
-        if (selectedProductIds[product.id]) return;
-        selectedProductIds[product.id] = true;
+        function walk(node, dosageFallback) {
+            if (Array.isArray(node)) {
+                node.forEach(function (child) { walk(child, dosageFallback); });
+                return;
+            }
+            if (!node || typeof node !== 'object') return; // числа/строки (max_pill_price) — мимо
 
+            // это строка пака
+            if (node.id != null || node.num != null || node.quantity != null) {
+                pushRow(node, dosageFallback);
+                return;
+            }
+            // это группа: recurse; нечисловой ключ считаем дозировкой
+            Object.keys(node).forEach(function (k) {
+                walk(node[k], isNaN(Number(k)) ? k : dosageFallback);
+            });
+        }
+
+        walk(p.packs || [], '');
+        p.packs = flat;
+
+        if (!p.active && p.aktiv) p.active = p.aktiv;
+        return p;
+    }
+
+    function renderProductExchange(product) {
         var thread = getChatThread();
         if (!thread) return;
 
-        var userName = product.name || '';
+        selectedProductIds[product.id] = true;
 
+        var userName = product.name || '';
         var userRow = createElement(
             '<div class="chat-row chat-row--user chat-message--appear">' +
-                '<div class="chat-message">' +
-                    '<div class="chat-message__content content">' +
-                        '<div class="chat-message__bubble">' + escapeHtml(userName) + '</div>' +
-                    '</div>' +
-                '</div>' +
+                '<div class="chat-message"><div class="chat-message__content content">' +
+                    '<div class="chat-message__bubble">' + escapeHtml(userName) + '</div>' +
+                '</div></div>' +
             '</div>'
         );
         thread.appendChild(userRow);
 
         var packs = product.packs || [];
-
         var variantsHtml = getUniqueDosages(packs, 'asc')
-            .map(function (dosage) {
-                return escapeHtml(dosage);
-            })
+            .map(function (d) { return escapeHtml(d); })
             .join(' | ');
-
-        var agentText = variantsHtml
-            ? escapeHtml(userName) + ' - ' + variantsHtml
-            : escapeHtml(userName);
-        var agentRow = createElement(
+        var agentText = variantsHtml ? escapeHtml(userName) + ' - ' + variantsHtml : escapeHtml(userName);
+        thread.appendChild(createElement(
             '<div class="chat-row chat-row--agent chat-message--appear">' +
-                '<div class="chat-message">' +
-                    '<div class="chat-message__content content">' +
-                        '<div class="chat-message__bubble chat-message__bubble--agent">' + agentText + '</div>' +
-                    '</div>' +
-                '</div>' +
+                '<div class="chat-message"><div class="chat-message__content content">' +
+                    '<div class="chat-message__bubble chat-message__bubble--agent">' + agentText + '</div>' +
+                '</div></div>' +
             '</div>'
-        );
-        thread.appendChild(agentRow);
+        ));
 
-        var detailHtml = buildProductDetailHtml(product);
         var pageRow = createElement(
             '<div class="chat-row chat-row--page chat-message--appear">' +
-                '<div class="chat-message">' +
-                    '<div class="chat-message__content content"></div>' +
-                    '<div class="chat-message__page">' + detailHtml + '</div>' +
+                '<div class="chat-message"><div class="chat-message__content content"></div>' +
+                    '<div class="chat-message__page">' + buildProductDetailHtml(product) + '</div>' +
                 '</div>' +
             '</div>'
         );
         thread.appendChild(pageRow);
 
         bindProductDetailAddButtons(pageRow);
+        bindBrowseChips(pageRow);
 
         var descBody = pageRow.querySelector('.js-product-desc-body');
         var descToggle = pageRow.querySelector('.js-product-desc-toggle');
@@ -1230,21 +1310,22 @@
             var descExpanded = false;
             descToggle.addEventListener('click', function () {
                 descExpanded = !descExpanded;
-                if (descExpanded) {
-                    descBody.style.maxHeight = 'none';
-                    descBody.style.overflow = 'visible';
-                    descToggle.textContent = getText('show_less');
-                } else {
-                    descBody.style.maxHeight = '16rem';
-                    descBody.style.overflow = 'hidden';
-                    descToggle.textContent = getText('read_more');
-                }
+                descBody.style.maxHeight = descExpanded ? 'none' : '16rem';
+                descBody.style.overflow = descExpanded ? 'visible' : 'hidden';
+                descToggle.textContent = descExpanded ? getText('show_less') : getText('read_more');
             });
         }
 
-        setTimeout(function () {
-            scrollToLastUserRequest(userRow, 'smooth');
-        }, 100);
+        scrollThreadToBottom();
+        setTimeout(function () { scrollToLastUserRequest(userRow, 'smooth'); }, 100);
+    }
+
+    var selectedProductIds = {};
+
+    function showProductInChat(product) {
+        if (!product) return;
+        if (selectedProductIds[product.id]) return;
+        renderProductExchange(product);
     }
 
     function groupPacksByDosage(packs) {
@@ -1365,6 +1446,7 @@
         }
 
         var variantsHtml = buildDosageVariantsHtml(packs);
+        var browseHtml = buildBrowseChipsHtml(product);
 
         var descHTML = '';
         if (product.desc) {
@@ -1399,6 +1481,7 @@
                 '<div class="product-card__content">' +
                     '<div class="product-card__name h1">' + escapeHtml(product.name || '') + '</div>' +
                     variantsHtml +
+                    browseHtml +
                     descHTML +
                 '</div>' +
             '</div>' +
@@ -1465,6 +1548,7 @@
 
             thread.appendChild(row);
             bindProductDetailAddButtons(row);
+            bindBrowseChips(row);
             scrollToLastUserRequest(null, 'smooth');
         }
 
@@ -1532,81 +1616,107 @@
 
     // ── Polling ──
 
-    function startPolling(messageId) {
-        if (pollTimer) {
-            clearInterval(pollTimer);
-        }
+    // ── Polling (строго 1 запрос одновременно) ──
+    var POLL_REQUEST_TIMEOUT = 60000; // максимум ждём ответ одного poll
+    var pollTimer = null;       // id setTimeout для СЛЕДУЮЩЕГО poll
+    var pollActive = false;     // идёт ли поллинг вообще
+    var pollInFlight = false;   // летит ли сейчас запрос (защита от параллельных)
 
+    function startPolling(messageId) {
+        stopPolling();
+        pollActive = true;
         activeMessageId = messageId;
         pollRetries = 0;
         pollNetworkErrors = 0;
-
-        pollTimer = setInterval(function () {
-            pollMessage(messageId);
-        }, POLL_INTERVAL);
-
-        pollMessage(messageId);
+        pollMessage(messageId); // первый запрос уходит сразу
     }
 
     function stopPolling() {
+        pollActive = false;
         if (pollTimer) {
-            clearInterval(pollTimer);
+            clearTimeout(pollTimer);
             pollTimer = null;
         }
     }
 
-    function pollMessage(messageId) {
-        pollRetries++;
+    function scheduleNextPoll(messageId) {
+        if (!pollActive || pollTimer) return;
+        pollTimer = setTimeout(function () {
+            pollTimer = null;
+            pollMessage(messageId);
+        }, POLL_INTERVAL);
+    }
 
-        if (pollRetries > POLL_MAX_RETRIES) {
-            stopPolling();
+    function fetchWithTimeout(url, options, timeoutMs) {
+        var opts = options || {};
+        if (typeof AbortController !== 'undefined') {
+            var controller = new AbortController();
+            opts.signal = controller.signal;
+            setTimeout(function () { controller.abort(); }, timeoutMs);
+        }
+        return fetch(url, opts);
+    }
+
+    // Ошибка → останавливаем поллинг и уводим пользователя в обычный поиск
+    function fallbackToRegularSearch(message) {
+        stopPolling();
+        pollInFlight = false;
+
+        if (isLeader && crossBus) {
+            crossBus.emit('chat:response', { status: 'error', message: message || '' });
+        }
+
+        var query = (currentQuery || '').trim();
+        if (!query) {
             setState(State.ERROR);
             updateSkeletonStatus('error');
-            renderAgentError(getText('error_timeout'));
+            renderAgentError(message || getText('error_unknown'));
+            return;
+        }
+
+        window.location.href = '/search/' + encodeURIComponent(query);
+    }
+
+    function pollMessage(messageId) {
+        if (!pollActive || pollInFlight) return; // ← никогда не летит 2 запроса сразу
+        pollInFlight = true;
+
+        pollRetries++;
+        if (pollRetries > POLL_MAX_RETRIES) {
+            fallbackToRegularSearch(getText('error_timeout'));
             return;
         }
 
         var pollRoute = window.routeChatPoll || '/chat/poll/__MSGID__';
         var url = route(pollRoute, messageId);
 
-        fetch(url, {
+        fetchWithTimeout(url, {
             credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-            },
-        })
+            headers: { 'Accept': 'application/json' },
+        }, POLL_REQUEST_TIMEOUT)
         .then(function (response) {
             if (!response.ok) {
                 if (response.status >= 500) {
                     throw new Error('SERVER:' + response.status);
                 }
                 return response.json().then(function (errData) {
-                    return { _httpError: true, message: errData.message, httpStatus: response.status };
+                    return { _httpError: true, message: errData.message };
                 }).catch(function () {
-                    return { _httpError: true, message: null, httpStatus: response.status };
+                    return { _httpError: true, message: null };
                 });
             }
             return response.json();
         })
         .then(function (data) {
-            if (data._httpError) {
-                stopPolling();
-                setState(State.ERROR);
-                updateSkeletonStatus('error');
-                renderAgentError(data.message || getText('error_unknown'));
-                return;
-            }
+            pollInFlight = false;
 
-            if (!data.success) {
-                stopPolling();
-                setState(State.ERROR);
-                updateSkeletonStatus('error');
-                renderAgentError(data.message || getText('error_unknown'));
+            // Любая ошибка от сервера → обычный поиск
+            if (data._httpError || !data.success) {
+                fallbackToRegularSearch(data.message || getText('error_unknown'));
                 return;
             }
 
             pollNetworkErrors = 0;
-
             updateSkeletonStatus(data.status);
 
             if (data.status === 'done') {
@@ -1617,7 +1727,6 @@
                     currencyCoef = data.currency.coef || 1;
                 }
                 renderAgentAnswer(data.answer || '', data.products);
-
                 if (isLeader && crossBus) {
                     crossBus.emit('chat:response', {
                         status: 'done',
@@ -1628,37 +1737,27 @@
                     });
                 }
             } else if (data.status === 'error') {
-                stopPolling();
-                setState(State.ERROR);
-                renderAgentError(data.message || getText('error_unknown'));
-
-                if (isLeader && crossBus) {
-                    crossBus.emit('chat:response', {
-                        status: 'error',
-                        query: currentQuery,
-                        message: data.message || getText('error_unknown'),
-                    });
-                }
+                fallbackToRegularSearch(data.message || getText('error_unknown'));
+            } else {
+                // queued/processing: СЛЕДУЮЩИЙ запрос уйдёт только после завершения этого
+                scheduleNextPoll(messageId);
             }
         })
         .catch(function (err) {
+            pollInFlight = false;
             log('error', 'pollMessage: fetch error - ' + err.message);
 
-            var isServerError = String(err.message).indexOf('SERVER:') === 0;
-            if (isServerError) {
-                stopPolling();
-                setState(State.ERROR);
-                updateSkeletonStatus('error');
-                renderAgentError(getText('error_server'));
+            // 500 с сервера или таймаут запроса → сразу в обычный поиск
+            if (String(err.message).indexOf('SERVER:') === 0 || err.name === 'AbortError') {
+                fallbackToRegularSearch(getText('error_server'));
                 return;
             }
 
             pollNetworkErrors++;
-            if (pollNetworkErrors >= POLL_NETWORK_MAX_RETRIES || pollRetries >= POLL_MAX_RETRIES) {
-                stopPolling();
-                setState(State.ERROR);
-                updateSkeletonStatus('error');
-                renderAgentError(getText('error_network'));
+            if (pollNetworkErrors >= POLL_NETWORK_MAX_RETRIES) {
+                fallbackToRegularSearch(getText('error_network'));
+            } else {
+                scheduleNextPoll(messageId);
             }
         });
     }
@@ -1751,6 +1850,173 @@
         });
     }
 
+    function sendBrowseQuery(type, slug, label) {
+        if (state === State.SENDING || state === State.POLLING) {
+            log('warn', 'sendBrowseQuery: blocked, current state=' + state);
+            return;
+        }
+
+        slug = String(slug || '').trim();
+        label = String(label || slug || '').trim();
+
+        if (!slug) {
+            return;
+        }
+
+        setState(State.SENDING);
+
+        var activated = activateChat();
+
+        if (!activated) {
+            setState(State.IDLE);
+            log('warn', 'sendBrowseQuery: could not activate chat thread');
+            return;
+        }
+
+        renderUserMessage(label);
+        currentQuery = label;
+
+        renderAgentSkeleton();
+        scrollToLastUserRequest(null, 'smooth');
+
+        setState(State.POLLING);
+
+        fetch(routeBrowse(type, slug), {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': getCSRFToken(),
+            },
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            if (!data.success) {
+                setState(State.ERROR);
+                updateSkeletonStatus('error');
+                renderAgentError(data.message || getText('error_unknown'));
+                return;
+            }
+
+            if (data.currency && data.currency.prefix) {
+                currencyPrefix = data.currency.prefix;
+                currencyCoef = data.currency.coef || 1;
+            }
+
+            updateSkeletonStatus('done');
+            setState(State.DONE);
+
+            renderAgentAnswer(data.answer || '', data.products || []);
+        })
+        .catch(function (err) {
+            log('error', 'sendBrowseQuery error: ' + err.message);
+
+            setState(State.ERROR);
+            updateSkeletonStatus('error');
+            renderAgentError(err.message || getText('error_network'));
+        });
+    }
+
+    function buildBrowseChipsHtml(product) {
+        if (!product) {
+            return '';
+        }
+
+        var links = [];
+        var seen = {};
+
+        function addLink(type, name, slug) {
+            type = String(type || '').trim();
+            name = String(name || '').trim();
+            slug = String(slug || '').trim();
+
+            if (!type || !name || !slug) {
+                return;
+            }
+
+            var key = type + ':' + slug.toLowerCase();
+
+            if (seen[key]) {
+                return;
+            }
+
+            seen[key] = true;
+
+            links.push({
+                type: type,
+                name: name,
+                slug: slug,
+            });
+        }
+
+        if (product.active && product.active.length) {
+            product.active.forEach(function (item) {
+                addLink(
+                    item.type || 'active',
+                    item.name,
+                    item.slug || slugFromBrowseUrl(item.url)
+                );
+            });
+        }
+
+        if (product.browse_links && product.browse_links.length) {
+            product.browse_links.forEach(function (item) {
+                addLink(
+                    item.type || 'active',
+                    item.name,
+                    item.slug || slugFromBrowseUrl(item.url)
+                );
+            });
+        }
+
+        if (!links.length) {
+            return '';
+        }
+
+        var html = '<div class="chat-product__browse-links">';
+
+        links.forEach(function (link) {
+            html +=
+                '<button ' +
+                    'type="button" ' +
+                    'class="chat-chip js-chat-browse" ' +
+                    'data-browse-type="' + escapeAttr(link.type) + '" ' +
+                    'data-browse-slug="' + escapeAttr(link.slug) + '" ' +
+                    'data-browse-label="' + escapeAttr(link.name) + '">' +
+                    escapeHtml(link.name) +
+                '</button>';
+        });
+
+        html += '</div>';
+
+        return html;
+    }
+
+    function bindBrowseChips(root) {
+        var chips = $$('.js-chat-browse', root || document);
+
+        chips.forEach(function (chip) {
+            if (chip.dataset.chatBound) {
+                return;
+            }
+
+            chip.dataset.chatBound = '1';
+
+            chip.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var type = chip.dataset.browseType || 'active';
+                var slug = chip.dataset.browseSlug || '';
+                var label = chip.dataset.browseLabel || chip.textContent || '';
+
+                sendBrowseQuery(type, slug, label);
+            });
+        });
+    }
+
     // ── Internationalization ──
 
     var texts = {
@@ -1820,7 +2086,7 @@
         price: 'Price',
         show_more: 'Show more',
         show_less: 'Collapse',
-        new_messages: '↓ New messages',
+        new_messages: '↓',
         read_more: 'Read more',
         loading_chat: 'Loading chat...',
         select_product: 'Select',
@@ -1945,8 +2211,10 @@
         }
 
         var heading = container.querySelector('.js-chat-start-heading');
+        var serverChat = container.querySelector('.thread-chat');
 
-        if (!heading && !existingMessages) {
+        // Страницы без чат-контента (product, about и т.д.) — старое поведение
+        if (!heading && !serverChat && !window.design17AutoBrowse && !window.design17AutoProduct) {
             restoreHeading();
             return;
         }
@@ -1968,6 +2236,8 @@
 
             if (!data.success || !data.messages || !data.messages.length) {
                 restoreHeading();
+                runAutoBrowse([]);
+                runAutoProduct([]);
                 return;
             }
 
@@ -1981,11 +2251,20 @@
                 headingEl.parentNode.removeChild(headingEl);
             }
 
+            // ВАЖНО: убираем серверный .thread-chat ДО activateChat(),
+            // иначе activateChat() увидит его и не создаст .js-chat-thread
+            var serverChatEl = container.querySelector('.thread-chat');
+            if (serverChatEl && serverChatEl.parentNode) {
+                serverChatEl.parentNode.removeChild(serverChatEl);
+            }
+
             activateChat();
 
             var thread = getChatThread();
             if (!thread) {
                 log('warn', 'loadHistory: thread not found after activation');
+                runAutoBrowse(data.messages);
+                runAutoProduct(data.messages);
                 return;
             }
 
@@ -1998,12 +2277,18 @@
             });
 
             scrollToLastUserRequest(null, 'smooth');
+            scrollThreadToBottom();
             log('debug', 'loadHistory: ' + data.messages.length + ' messages restored');
+
+            runAutoBrowse(data.messages);
+            runAutoProduct(data.messages);
         })
         .catch(function (err) {
             hideChatLoader();
             log('warn', 'loadHistory error: ' + err.message);
             restoreHeading();
+            runAutoBrowse([]);
+            runAutoProduct([]);
         });
     }
 
@@ -2056,18 +2341,29 @@
         var thread = getChatThread();
         if (!thread) return;
         var hasProducts = products && products.length;
+        var totalProducts = hasProducts ? products.length : 0;
+        var needsPagination = totalProducts > 6;
         var productCardsHtml = hasProducts ? renderProductCards(products) : '';
+
+        var paginationHtml = '';
+        if (needsPagination) {
+            paginationHtml =
+                '<div class="dc17-chat-products__pagination">' +
+                    '<button class="button button--secondary js-chat-show-more" type="button">' +
+                        '<span class="js-chat-pagination-label">' + getText('show_more') + ' (' + (totalProducts - 6) + ')</span>' +
+                    '</button>' +
+                '</div>';
+        }
+
         var textHtml = '<div class="dc17-chat-answer-text">' + formatAnswerText(text) + '</div>';
-        var pageContent = hasProducts ? '<div class="chat-message__page">' + productCardsHtml + '</div>' : '';
+        var pageContent = hasProducts ? '<div class="chat-message__page">' + productCardsHtml + paginationHtml + '</div>' : '';
         var bubbleClass = hasProducts ? 'chat-message__bubble chat-message__bubble--agent' : 'chat-message__bubble';
 
         var row = createElement(
             '<div class="chat-row chat-row--agent">' +
                 '<div class="chat-message">' +
                     '<div class="chat-message__content content">' +
-                        '<div class="' + bubbleClass + '">' +
-                            textHtml +
-                        '</div>' +
+                        '<div class="' + bubbleClass + '">' + textHtml + '</div>' +
                     '</div>' +
                     pageContent +
                 '</div>' +
@@ -2076,6 +2372,8 @@
         thread.appendChild(row);
         if (hasProducts) {
             bindProductCardClicks(row, products);
+            if (needsPagination) initPagination(row, products);   // ← добавлено
+            bindBrowseChips(row);
         }
     }
 
@@ -2270,6 +2568,77 @@
         scrollToLastUserRequest(null, 'smooth');
     }
 
+    function runAutoBrowse(historyMessages) {
+        var cfg = window.design17AutoBrowse;
+        if (!cfg || !cfg.type || !cfg.slug) return;
+
+        window.design17AutoBrowse = null;
+
+        var label = String(cfg.label || cfg.slug).trim();
+        var messages = historyMessages || [];
+
+        for (var i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === 'user') {
+                if ((messages[i].content || '').trim().toLowerCase() === label.toLowerCase()) {
+                    log('debug', 'runAutoBrowse: already in history, skip');
+                    return;
+                }
+                break;
+            }
+        }
+
+        log('debug', 'runAutoBrowse: ' + cfg.type + ' / ' + cfg.slug);
+        setTimeout(function () {
+            sendBrowseQuery(cfg.type, cfg.slug, label);
+        }, 200);
+    }
+
+    function scrollThreadToBottom(behavior) {
+        var thread = getChatThread();
+        if (!thread) return;
+        if (thread.scrollHeight > thread.clientHeight + 10) {
+            try {
+                thread.scrollTo({ top: thread.scrollHeight, behavior: behavior || 'smooth' });
+            } catch (e) {
+                thread.scrollTop = thread.scrollHeight;
+            }
+        } else if (thread.lastElementChild) {
+            thread.lastElementChild.scrollIntoView({ behavior: behavior || 'smooth', block: 'end' });
+        }
+    }
+
+    function runAutoProduct(historyMessages) {
+        var raw = window.design17AutoProduct;
+        if (!raw || !raw.id) return;
+        window.design17AutoProduct = null;
+
+        if (raw.currency_prefix) currencyPrefix = raw.currency_prefix;
+        if (raw.currency_coef) currencyCoef = parseFloat(raw.currency_coef) || 1;
+
+        var product = normalizeAutoProduct(raw);
+
+        // не дублируем, если в истории уже есть такое user-сообщение
+        var messages = historyMessages || [];
+        var name = String(product.name || '').trim().toLowerCase();
+        for (var i = messages.length - 1; i >= 0; i--) {
+            if (messages[i].role === 'user') {
+                if ((messages[i].content || '').trim().toLowerCase() === name) {
+                    log('debug', 'runAutoProduct: already in history, skip');
+                    return;
+                }
+                break;
+            }
+        }
+
+        var serverContent = document.querySelector('.js-product-server-content');
+        if (serverContent) serverContent.style.display = 'none';
+
+        setTimeout(function () {
+            activateChat();
+            renderProductExchange(product);
+        }, 200);
+    }
+
     // ── Public API ──
 
     window.Design17Chat = {
@@ -2285,6 +2654,7 @@
         closeProductDrawer: closeProductDrawer,
         setProductDrawerContent: setProductDrawerContent,
         getState: function () { return state; },
+        sendBrowseQuery: sendBrowseQuery,
     };
 
     // ── Auto-init ──

@@ -5,6 +5,28 @@
 @section('description', $page_properties->description)
 
 @section('content')
+    @php
+        $chatProduct = [
+            'id'        => $product['id'] ?? 0,
+            'name'      => $product['name'] ?? '',
+            'desc'      => $product['desc'] ?? '',
+            'full_desc' => $product['full_desc'] ?? '',
+            'image'     => !empty($product['image']) ? route('home.set_images', $product['image']) : '',
+            'aktiv'     => $product['aktiv'] ?? [],
+            'packs'     => $product['packs'] ?? [],   // приходит сгруппированным по dosage — нормализуем в JS
+            'currency_prefix' => $Currency::$prefix[session('currency', 'usd')] ?? '$',
+            'currency_coef'   => (float) session('currency_c', 1),
+        ];
+    @endphp
+    <script>
+        window.design17AutoProduct = @json($chatProduct);
+    </script>
+    <div class="js-product-server-content">
+
+    </div>
+@endsection
+
+{{-- @section('content')
 <script>
     flagp = true;
 </script>
@@ -20,14 +42,11 @@
             <div class="chat-row chat-row--user">
                 <div class="chat-message">
                     <div class="chat-message__content content" style="flex-direction: row; gap: 10px;">
-                        {{-- @foreach ($product['categories'] as $category) --}}
-                            {{-- <div class="chat-message__bubble">
+                        @foreach ($product['categories'] as $category)
+                            <div class="chat-message__bubble">
                                 <a class="product-info__use" href="{{ route('home.category', $category['url']) }} ">{{ $category['name'] }}</a>
-                            </div> --}}
-                            {{-- <div class="chat-message__bubble">
-                                {{ $category['name'] }}
-                            </div> --}}
-                        {{-- @endforeach --}}
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -192,52 +211,10 @@
                                 </p>
                             </div>
                         @endif
-
-                        {{-- <div class="related-products">
-                            <h2 class="related-products__title">{{ __('text.recc_text') }}</h2>
-                            <div class="cards">
-                                @foreach ($recommendation as $product_data)
-                                    @if ($loop->iteration == 7)
-                                        @break
-                                    @endif
-                                    <article class="card">
-                                        <div class="card__header">
-                                            <h2 class="card__title"><a href="{{ route('home.product', $product_data['url']) }}">{{ $product_data['name'] }}</a></h2>
-                                            <div class="card__ingredients">
-                                                <span class="card__ingredient">
-                                                    @foreach ($product_data['aktiv'] as $aktiv)
-                                                        {{ $aktiv['name'] }}
-                                                    @endforeach
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="card__img">
-                                            <picture style="max-height: 126px; max-width: 126px;">
-                                                <source srcset="{{ route('home.set_images', $product_data['image']) }}" type="image/webp">
-                                                <img loading="lazy" src="{{ route('home.set_images', $product_data['image']) }}" alt="{{ $product_data['alt'] }}" style="max-height: 126px; max-width: 126px;">
-                                            </picture>
-                                        </div>
-                                        <div class="card__variants">
-                                            @foreach ($product_data['product_dosages'] as $dosage)
-                                                <span class="card__variant">{{ $dosage }}</span>
-                                            @endforeach
-                                        </div>
-                                        <div class="card__footer">
-                                            <div class="card__price-wrapper">
-                                                <span class="card__price">{{ $Currency::convert($product_data['price'], false, true) }} {{ strtolower(__("text.common_per_pill")) }}</span>
-                                            </div>
-                                            <button class="card__button button button--outlined" onclick="location.href = '{{ route('home.product', $product_data['url']) }}'">
-                                                {{ __('text.product_add_to_cart_text') }}
-                                            </button>
-                                        </div>
-                                    </article>
-                                @endforeach
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
+@endsection --}}

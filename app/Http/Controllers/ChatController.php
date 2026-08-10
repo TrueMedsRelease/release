@@ -122,19 +122,7 @@ class ChatController extends Controller
                     'reason' => $fallbackReason,
                 ]);
 
-                $products = $this->performFallbackSearch($pending['query'] ?? '');
-                $response = $this->buildFallbackResponse(
-                    $pending['query'] ?? '',
-                    $products
-                );
-
-                $this->appendToHistory(
-                    'assistant',
-                    $response->getData(true)['answer'] ?? '',
-                    $products
-                );
-
-                return $response;
+                return $this->fallbackToSearch($pending['query'] ?? '');
             }
 
             try {
@@ -148,23 +136,14 @@ class ChatController extends Controller
                     'error' => $e->getMessage(),
                 ]);
 
-                if ($e instanceof ConnectionException) {
-                    Cache::forget($pendingKey);
-                    Log::info('[ChatController.pollMessage] fallback activated (sendQuery ConnectionException)', [
-                        'query' => $pending['query'] ?? '',
-                    ]);
-                    return $this->buildFallbackResponse(
-                        $pending['query'] ?? '',
-                        $this->performFallbackSearch($pending['query'] ?? '')
-                    );
-                }
+                Cache::forget($pendingKey);
 
-                $pending['resolving'] = false;
-                Cache::put($pendingKey, $pending, 120);
-                return response()->json([
-                    'success' => true,
-                    'status' => 'queued',
+                Log::info('[ChatController.pollMessage] fallback activated (exception)', [
+                    'query' => $pending['query'] ?? '',
+                    'error' => $e->getMessage(),
                 ]);
+
+                return $this->fallbackToSearch($pending['query'] ?? '');
             }
 
             if (!$result['ok']) {
@@ -173,24 +152,14 @@ class ChatController extends Controller
                     'error' => $result['error'],
                 ]);
 
-                if ($this->isFallbackError($result['error'])) {
-                    Cache::forget($pendingKey);
-                    Log::info('[ChatController.pollMessage] fallback activated (sendQuery error)', [
-                        'query' => $pending['query'] ?? '',
-                        'error' => $result['error'],
-                    ]);
-                    $products = $this->performFallbackSearch($pending['query'] ?? '');
-                    $response = $this->buildFallbackResponse($pending['query'] ?? '', $products);
-                    $this->appendToHistory('assistant', $response->getData(true)['answer'] ?? '', $products);
-                    return $response;
-                }
+                Cache::forget($pendingKey);
 
-                $pending['resolving'] = false;
-                Cache::put($pendingKey, $pending, 120);
-                return response()->json([
-                    'success' => true,
-                    'status' => 'queued',
+                Log::info('[ChatController.pollMessage] fallback activated', [
+                    'query' => $pending['query'] ?? '',
+                    'error' => $result['error'],
                 ]);
+
+                return $this->fallbackToSearch($pending['query'] ?? '');
             }
 
             $realId = $result['data']['id'] ?? null;
@@ -198,12 +167,14 @@ class ChatController extends Controller
                 Log::error('[ChatController.pollMessage] no id in response', [
                     'local_id' => $messageId,
                 ]);
-                $pending['resolving'] = false;
-                Cache::put($pendingKey, $pending, 120);
-                return response()->json([
-                    'success' => true,
-                    'status' => 'queued',
+
+                Cache::forget($pendingKey);
+
+                Log::info('[ChatController.pollMessage] fallback activated (missing id)', [
+                    'query' => $pending['query'] ?? '',
                 ]);
+
+                return $this->fallbackToSearch($pending['query'] ?? '');
             }
 
             Cache::forget($pendingKey);
@@ -263,10 +234,7 @@ class ChatController extends Controller
                         'query' => $query,
                         'error' => $result['error'],
                     ]);
-                    $products = $this->performFallbackSearch($query);
-                    $response = $this->buildFallbackResponse($query, $products);
-                    $this->appendToHistory('assistant', $response->getData(true)['answer'] ?? '', $products);
-                    return $response;
+                    return $this->fallbackToSearch($query);
                 }
 
                 return $this->buildErrorResponse($result['error'], $result['http_status']);
@@ -291,10 +259,7 @@ class ChatController extends Controller
                 ]);
                 $query = Cache::get("chat_query:{$localId}", '');
                 if ($query !== '') {
-                    $products = $this->performFallbackSearch($query);
-                    $response = $this->buildFallbackResponse($query, $products);
-                    $this->appendToHistory('assistant', $response->getData(true)['answer'] ?? '', $products);
-                    return $response;
+                    return $this->fallbackToSearch($query);
                 }
                 return $this->buildErrorResponse('server_error', 500);
             }
@@ -356,10 +321,7 @@ class ChatController extends Controller
                 Log::info('[ChatController.pollMessage] fallback activated (exception in polling)', [
                     'query' => $query,
                 ]);
-                $products = $this->performFallbackSearch($query);
-                $response = $this->buildFallbackResponse($query, $products);
-                $this->appendToHistory('assistant', $response->getData(true)['answer'] ?? '', $products);
-                return $response;
+                return $this->fallbackToSearch($query);
             }
 
             return $this->buildErrorResponse('server_error', 500);
@@ -616,6 +578,19 @@ class ChatController extends Controller
             $productTypeId = $firstPack['type_id'] ?? 1;
             $productTypeName = $typeNames[$productTypeId] ?? '';
 
+            $productActive = explode(',', ucwords(trim(str_replace("\r\n", '', trim($product->aktiv)))));
+
+            foreach ($productActive as $key => $value) {
+                $activeUrl = str_replace('&', '-', str_replace(' ', '-', strtolower(trim($value))));
+
+                $productActive[$key] = [
+                    'type' => 'active',
+                    'name' => trim($value),
+                    'slug' => $activeUrl,
+                    'url'  => route('home.active', $activeUrl, false),
+                ];
+            }
+
             $products[] = [
                 'id' => $product->id,
                 'name' => $productName,
@@ -627,6 +602,7 @@ class ChatController extends Controller
                 'min_price' => $minPrice,
                 'packs' => $packData,
                 'product_type' => $productTypeName,
+                'active' => $productActive,
             ];
         }
 
@@ -721,5 +697,243 @@ class ChatController extends Controller
                 'coef' => (float) session('currency_c', 1),
             ],
         ]);
+    }
+
+    private function fallbackToSearch(string $query): JsonResponse
+    {
+        $products = $this->performFallbackSearch($query);
+
+        $response = $this->buildFallbackResponse($query, $products);
+
+        $this->appendToHistory(
+            'assistant',
+            $response->getData(true)['answer'] ?? '',
+            $products
+        );
+
+        return $response;
+    }
+
+    public function browseCollection(Request $request, string $type, string $slug): JsonResponse
+    {
+        $allowedTypes = ['active', 'category', 'disease', 'first_letter', 'search'];
+
+        if (!in_array($type, $allowedTypes, true)) {
+            return response()->json([
+                'success' => false,
+                'message' => __('text.chat_error_unknown'),
+            ], 422);
+        }
+
+        $slug = $this->normalizeBrowseSlug($slug);
+
+        if ($slug === '') {
+            return response()->json([
+                'success' => false,
+                'message' => __('text.chat_error_bad_request'),
+            ], 422);
+        }
+
+        $language = $this->resolveCurrentLocale();
+
+        Log::info('[ChatController.browseCollection] new browse query', [
+            'type' => $type,
+            'slug' => $slug,
+            'language' => $language,
+            'ip' => $request->ip(),
+        ]);
+
+        $design = 'design_17';
+        $products = [];
+
+        try {
+            $rawProducts = match ($type) {
+                'active' => ProductServices::GetProductByActive($slug, $design),
+                'category' => ProductServices::GetCategoriesWithProducts($design, $slug),
+                'disease' => ProductServices::GetProductByDisease($slug, $design),
+                'first_letter' => ProductServices::GetProductByFirstLetter($slug, $design),
+                'search' => ProductServices::SearchProduct($slug, false, $design),
+                default => [],
+            };
+
+            $productIds = $this->extractProductIds($rawProducts);
+            $productIds = array_slice($productIds, 0, 30);
+
+            if (!empty($productIds)) {
+                $products = $this->fetchShopProducts($productIds);
+            }
+        } catch (\Throwable $e) {
+            Log::error('[ChatController.browseCollection] exception', [
+                'type' => $type,
+                'slug' => $slug,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            $products = [];
+        }
+
+        $label = $this->makeBrowseLabel($slug);
+
+        $userMessage = $this->buildBrowseUserMessage($type, $label);
+
+        if (empty($products)) {
+            $answer =
+                __('text.search_result_nothing_found1')
+                . ' «' . $label . '» '
+                . __('text.search_result_nothing_found2') . '. '
+                . __('text.search_result_nothing_found3');
+        } else {
+            $answer = __('text.search_result_title_page') . ' «' . $label . '».';
+        }
+
+        $this->appendToHistory('user', $userMessage);
+        $this->appendToHistory('assistant', $answer, $products);
+
+        Log::info('[ChatController.browseCollection] response prepared', [
+            'type' => $type,
+            'slug' => $slug,
+            'products_count' => count($products),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'status' => 'done',
+            'answer' => $answer,
+            'products' => $products,
+            'steps' => [],
+            'currency' => [
+                'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
+                'code' => session('currency', 'usd'),
+                'coef' => (float) session('currency_c', 1),
+            ],
+        ]);
+    }
+
+    private function normalizeBrowseSlug(string $slug): string
+    {
+        $slug = rawurldecode($slug);
+
+        $locale = $this->resolveCurrentLocale();
+
+        if (in_array($locale, ['hant', 'hans', 'gr', 'arb', 'ja'], true)) {
+            $text1 = __('text.text_aff_domain_1', [], 'en');
+            $text2 = __('text.text_aff_domain_2', [], 'en');
+        } else {
+            $text1 = __('text.text_aff_domain_1');
+            $text2 = __('text.text_aff_domain_2');
+        }
+
+        $slug = str_replace(
+            [
+                $text1 . '_',
+                '_' . $text2,
+            ],
+            '',
+            $slug
+        );
+
+        $slug = trim($slug);
+        $slug = trim($slug, '/');
+
+        return $slug;
+    }
+
+    private function makeBrowseLabel(string $slug): string
+    {
+        $label = str_replace(['-', '_'], ' ', $slug);
+        $label = trim($label);
+
+        if ($label === '') {
+            return $slug;
+        }
+
+        if (function_exists('mb_convert_case')) {
+            return mb_convert_case($label, MB_CASE_TITLE, 'UTF-8');
+        }
+
+        return ucwords($label);
+    }
+
+    private function buildBrowseUserMessage(string $type, string $label): string
+    {
+        $prefix = match ($type) {
+            'active' => $this->translateOrDefault('text.chat_browse_active', 'Show products with active ingredient'),
+            'category' => $this->translateOrDefault('text.chat_browse_category', 'Show products from category'),
+            'disease' => $this->translateOrDefault('text.chat_browse_disease', 'Show products for'),
+            'first_letter' => $this->translateOrDefault('text.chat_browse_first_letter', 'Products starting with'),
+            'search' => $this->translateOrDefault('text.chat_browse_search', 'Search'),
+            default => $this->translateOrDefault('text.chat_browse_default', 'Show'),
+        };
+
+        return trim($prefix . ' ' . $label);
+    }
+
+    private function translateOrDefault(string $key, string $default): string
+    {
+        $value = __($key);
+
+        return $value === $key ? $default : $value;
+    }
+
+    private function extractProductIds($data): array
+    {
+        $ids = [];
+
+        $this->collectProductIds($data, $ids);
+
+        $ids = array_map('intval', $ids);
+        $ids = array_filter($ids, function ($id) {
+            return $id > 0;
+        });
+
+        $ids = array_unique($ids);
+
+        return array_values($ids);
+    }
+
+    private function collectProductIds($data, array &$ids): void
+    {
+        if (is_object($data)) {
+            if (method_exists($data, 'toArray')) {
+                $data = $data->toArray();
+            } else {
+                $data = get_object_vars($data);
+            }
+        }
+
+        if (!is_array($data)) {
+            return;
+        }
+
+        if (isset($data['product_id']) && is_numeric($data['product_id'])) {
+            $ids[] = (int) $data['product_id'];
+        }
+
+        if (isset($data['id']) && is_numeric($data['id'])) {
+            $looksLikeProduct =
+                isset($data['url'])
+                || isset($data['name'])
+                || isset($data['packs'])
+                || isset($data['product_id']);
+
+            if ($looksLikeProduct) {
+                $ids[] = (int) $data['id'];
+            }
+        }
+
+        if (isset($data['product_ids']) && is_array($data['product_ids'])) {
+            foreach ($data['product_ids'] as $id) {
+                if (is_numeric($id)) {
+                    $ids[] = (int) $id;
+                }
+            }
+        }
+
+        foreach ($data as $value) {
+            if (is_array($value) || is_object($value)) {
+                $this->collectProductIds($value, $ids);
+            }
+        }
     }
 }

@@ -4964,23 +4964,37 @@ article.content{
 }
 
 .dc17-chat-new-msgs{
-  position:absolute;
-  bottom:8rem;
-  left:50%;
-  z-index:10;
-  display:none;
-  transform:translateX(-50%);
-  min-height:4rem;
-  border:none;
-  border-radius:20rem;
-  padding:0.8rem 2rem;
-  font-size:1.3rem;
-  font-weight:600;
-  background-color:var(--color-primary);
-  color:var(--color-white);
-  box-shadow:0 2px 12px rgba(0,0,0,0.15);
-  cursor:pointer;
-  transition:opacity 0.2s, transform 0.2s;
+    position:fixed;
+    bottom:15rem;
+    left:58%;
+    z-index:10;
+    display:none;
+    transform:translateX(-50%);
+    min-height:4rem;
+    border:none;
+    border-radius:20rem;
+    padding:0.8rem 2rem;
+    font-size:1.3rem;
+    font-weight:600;
+    background-color:var(--color-primary);
+    color:var(--color-white);
+    box-shadow:0 2px 12px rgba(0,0,0,0.15);
+    cursor:pointer;
+    transition:opacity 0.2s, transform 0.2s;
+}
+
+@media (max-width: 1799px) {
+    .dc17-chat-new-msgs {
+        bottom: 12rem;
+        left: 60%;
+    }
+}
+
+@media (max-width: 1279px) {
+    .dc17-chat-new-msgs {
+        bottom: 16rem;
+        left: 50%;
+    }
 }
 
 .dc17-chat-new-msgs:hover,
@@ -4989,8 +5003,11 @@ article.content{
 }
 
 .dc17-chat-new-msgs.is-visible{
-  display:block;
-  animation:newMsgsFadeIn 0.2s ease;
+    display:block;
+    animation:newMsgsFadeIn 0.2s ease;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .dc17-captcha-overlay{
@@ -5737,3 +5754,34 @@ article.content{
 .popup_text p {
     margin: 0;
 }
+
+.chat-product__browse-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.chat-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d7dceb;
+    background: #ffffff;
+    color: #13163f;
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.chat-chip:hover {
+    background: #f2f5ff;
+    border-color: #b9c4ea;
+}
+
+.js-chat-container { display: flex; flex-direction: column; }
+.thread-chat { margin-top: auto; }

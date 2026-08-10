@@ -1178,4 +1178,11 @@ return [
     "captcha_submit" => "Continue",
 
     "common_search_medbot" => "Enter your search query, symptoms, or product name...",
+
+    'chat_browse_active' => 'Show products with active ingredient',
+    'chat_browse_category' => 'Show products from category',
+    'chat_browse_disease' => 'Show products for',
+    'chat_browse_first_letter' => 'Products starting with',
+    'chat_browse_search' => 'Search',
+    'chat_browse_default' => 'Show',
 ];

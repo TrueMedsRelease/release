@@ -151,7 +151,7 @@
                 package: "{{ __('text.chat_package') }}",
                 per_item: "{{ __('text.chat_per_item') }}",
                 price: "{{ __('text.chat_price') }}",
-                new_messages: "{{ __('text.chat_new_messages') }}",
+                new_messages: "↓",
                 loading_chat: "{{ __('text.chat_loading') }}",
                 select_product: "{{ __('text.chat_select_product') }}",
                 chat_waiting: "{{ __('text.chat_waiting') }}",
@@ -161,6 +161,8 @@
                 captcha_placeholder: "{{ __('text.captcha_placeholder') }}",
                 captcha_submit: "{{ __('text.captcha_submit') }}",
             };
+
+            window.routeChatBrowse = @json(url('/chat/browse/__TYPE__/__SLUG__'));
         </script>
 
         <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
@@ -349,11 +351,11 @@
 
             <div class="page-wrapper container">
                 <main class="main">
-                    @if (request()->route()->getName() === 'home.index')
+                    {{-- @if (request()->route()->getName() === 'home.index') --}}
                     <div class="thread js-chat-container">
                         @yield('content')
 
-                        <div class="thread-box js-chat-form">
+                        {{-- <div class="thread-box js-chat-form">
                             <label class="thread-box__label textarea-field">
                                 <textarea class="thread-box__input input-textarea js-chat-input"
                                           rows="1" placeholder=" " autocomplete="off"
@@ -367,11 +369,26 @@
                                     </svg>
                                 </span>
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
-                    @else
+                    <div class="thread-box js-chat-form">
+                        <label class="thread-box__label textarea-field">
+                            <textarea class="thread-box__input input-textarea js-chat-input"
+                                        rows="1" placeholder=" " autocomplete="off"
+                                        maxlength="512" required></textarea>
+                            <span class="thread-box__placeholder">{{ __('text.common_search_medbot') }}</span>
+                        </label>
+                        <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
+                            <span class="icon">
+                                <svg width="1em" height="1em" fill="currentColor">
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}#arrow-up"></use>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                    {{-- @else
                         @yield('content')
-                    @endif
+                    @endif --}}
                 </main>
             </div>
 

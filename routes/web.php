@@ -38,6 +38,12 @@ Route::controller(ChatController::class)->group(function () {
     Route::post('/chat/send', 'sendMessage')->name('chat.send')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/chat/poll/{message_id}', 'pollMessage')->name('chat.poll');
     Route::get('/chat/history', 'getHistory')->name('chat.history');
+
+    Route::post('/chat/browse/{type}/{slug}', 'browseCollection')
+        ->name('chat.browse')
+        ->where('type', 'active|category|disease|first_letter|search')
+        ->where('slug', '.*')
+        ->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::controller(CartController::class)->group(function () {
