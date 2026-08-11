@@ -779,6 +779,11 @@ class HomeController extends Controller
         //     $page_properties->description = $product_properties_new->description;
         // }
 
+        $queryParams = request()->only([
+            'aff', 'saff', 'lang', 'curr', 'design',
+            'keyword', 'refc', 'coupon', 'utm_source', 'utm_medium', 'utm_campaign', 'referer'
+        ]);
+
         return response()
             ->view($design . '.landing', [
                 'design'   => $design,
@@ -786,7 +791,8 @@ class HomeController extends Controller
                 'agent'    => $agent,
                 'Currency' => Currency::class,
                 'pixel'    => $pixel,
-                'host'     => $_SERVER['SERVER_NAME']
+                'host'     => $_SERVER['SERVER_NAME'],
+                'queryParams' => $queryParams,
             ])
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
