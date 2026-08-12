@@ -371,6 +371,7 @@
                             </button>
                         </div> --}}
                     </div>
+                    @if (!request()->routeIs('catalog.index'))
                     <div class="thread-box js-chat-form">
                         <label class="thread-box__label textarea-field">
                             <textarea class="thread-box__input input-textarea js-chat-input"
@@ -386,6 +387,7 @@
                             </span>
                         </button>
                     </div>
+                    @endif
                     {{-- @else
                         @yield('content')
                     @endif --}}
@@ -597,6 +599,11 @@
                             <nav class="nav footer-nav">
                                 <div class="nav-container">
                                     <ul class="nav__list">
+                                        <li class="nav__item">
+                                            <a class="nav__link" href="{{ route("catalog.index") }}">
+                                                <span class="button-text">{{ __('text.common_catalog') }}</span>
+                                            </a>
+                                        </li>
                                         <li class="nav__item">
                                             <a class="nav__link" href="{{ route("home.about") }}">
                                                 <span class="button-text">{{ __('text.common_about_us_main_menu_item') }}</span>
