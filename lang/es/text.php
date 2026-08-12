@@ -264,6 +264,7 @@ return [
     "cart_tabs_text" => "tapas",
     "cart_total_price_text" => "Total:",
     "cart_checkout_text" => "Pagar",
+    "cart_go_to_text" => "Ir a la cesta",
     "cart_products_title" => "Producto(s)",
     "cart_quantity_title" => "Cantidad",
     "cart_price_title" => "Precio",

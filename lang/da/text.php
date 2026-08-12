@@ -189,6 +189,7 @@ return [
     "cart_back_to_shop" => "Fortsæt med at shoppe",
     "cart_total_price_text" => "Total:",
     "cart_checkout_text" => "Checkout",
+    "cart_go_to_text" => "Gå til kurv",
     "cart_products_title" => "Product(s)",
     "cart_quantity_title" => "Quantity",
     "cart_price_title" => "Price",

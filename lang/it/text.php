@@ -268,6 +268,7 @@ return [
     "cart_tabs_text" => "Compresse",
     "cart_total_price_text" => "Totale:",
     "cart_checkout_text" => "Cassa",
+    "cart_go_to_text" => "Vai al carrello",
     "cart_products_title" => "Prodotti",
     "cart_quantity_title" => "Quantity",
     "cart_price_title" => "Prezzo",

@@ -1568,6 +1568,52 @@
         });
     }
 
+    function showAddToast(message, isError) {
+        var toast = document.getElementById('design17-toast');
+        if (!toast) return;
+
+        var textEl = toast.querySelector('.design17-toast__text');
+        if (textEl && message) textEl.textContent = message;
+
+        toast.classList.toggle('design17-toast--error', !!isError);
+        toast.removeAttribute('hidden');
+        toast.classList.remove('is-visible');
+        void toast.offsetWidth;
+        toast.classList.add('is-visible');
+
+        clearTimeout(showAddToast._timer);
+        showAddToast._timer = setTimeout(function () {
+            toast.classList.remove('is-visible');
+            setTimeout(function () {
+                toast.setAttribute('hidden', '');
+            }, 300);
+        }, 2600);
+    }
+
+    function getPackIdFromAddUrl(url) {
+        var m = String(url || '').match(/\/cart\/add(?:_pack)?\/([^/?#]+)/);
+        return m ? m[1] : '';
+    }
+
+    function highlightAddedCartItem(packId) {
+        if (!packId) return;
+
+        var drawer = document.querySelector('[data-drawer="cart"]');
+        if (!drawer) return;
+
+        var btn = drawer.querySelector('[data-cart-remove-pack="' + packId + '"]');
+        var item = btn ? btn.closest('.cart-item') : null;
+        if (!item) return;
+
+        item.classList.remove('is-added-highlight');
+        void item.offsetWidth;
+        item.classList.add('is-added-highlight');
+
+        setTimeout(function () {
+            item.classList.remove('is-added-highlight');
+        }, 3000);
+    }
+
     function addToCart(btn, allButtons, packUrl) {
         if (!packUrl) {
             log('error', 'addToCart: no URL');
@@ -1595,16 +1641,12 @@
         })
         .then(function () {
             log('debug', 'addToCart: success');
-
-            if (typeof window.LegacyUI !== 'undefined' && window.LegacyUI.alert) {
-                window.LegacyUI.alert(getText('added_to_cart'));
-            }
+            showAddToast(getText('added_to_cart'));
+            highlightAddedCartItem(getPackIdFromAddUrl(packUrl));
         })
         .catch(function (err) {
             log('error', 'addToCart error: ' + err.message);
-            if (typeof window.LegacyUI !== 'undefined' && window.LegacyUI.alert) {
-                window.LegacyUI.alert(getText('cart_error'));
-            }
+            showAddToast(getText('cart_error'), true);
         })
         .then(function () {
             allButtons.forEach(function (b) { b.disabled = false; });

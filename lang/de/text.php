@@ -257,6 +257,7 @@ return [
     "cart_tabs_text" => "caps",
     "cart_total_price_text" => "Gesamt:",
     "cart_checkout_text" => "Checkout",
+    "cart_go_to_text" => "Zum Warenkorb",
     "cart_products_title" => "Produkte",
     "cart_quantity_title" => "Menge",
     "cart_price_title" => "Preis",

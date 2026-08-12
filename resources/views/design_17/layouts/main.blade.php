@@ -479,8 +479,8 @@
                 </div>
                 @if (request()->route()->getName() !== 'checkout.index')
                     <div class="cart__footer js-cart-checkout-footer" @if ($cart_count <= 0) hidden @endif >
-                        <a class="cart__checkout-button button" href="{{ route('checkout.index') }}">
-                            {{ __('text.cart_checkout_text') }}
+                        <a class="cart__checkout-button button" href="{{ route('cart.index') }}">
+                            {{ __('text.cart_go_to_text') }}
                             <span class="icon">
                                 <svg width="1em" height="1em" fill="currentColor">
                                     <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#arrow-right') }}"></use>
@@ -704,6 +704,15 @@
                     </div>
                 </div>
             </footer>
+        </div>
+
+        <div class="design17-toast" id="design17-toast" hidden role="status">
+            <span class="design17-toast__icon">
+                <svg width="1.8em" height="1.8em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="design17-toast__text"></span>
         </div>
 
         <dialog class="dialog-container" data-dialog="call" data-modal>

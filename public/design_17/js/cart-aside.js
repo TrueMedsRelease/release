@@ -89,6 +89,32 @@
         });
     }
 
+    function refreshCartPage() {
+        var el = document.getElementById('shopping_cart');
+        if (!el || typeof routeCartContent === 'undefined') return;
+
+        fetch(routeCartContent, {
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' },
+        })
+        .then(function (r) { return r.text(); })
+        .then(function (text) {
+            try {
+                var data = JSON.parse(text);
+                if (data && data.html) {
+                    el.innerHTML = data.html;
+                } else {
+                    window.location.reload();
+                }
+            } catch (e) {
+                window.location.reload();
+            }
+        })
+        .catch(function () {
+            window.location.reload();
+        });
+    }
+
     function initCartRemove() {
         document.addEventListener('click', function (e) {
             var btn = e.target.closest('.cart-item__remove-button, [data-cart-remove-pack]');
@@ -122,6 +148,9 @@
             })
             .then(function () {
                 return refreshCartState();
+            })
+            .then(function () {
+                refreshCartPage();
             })
             .catch(function () {
                 if (typeof window.LegacyUI !== 'undefined' && window.LegacyUI.alert) {

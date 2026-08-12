@@ -265,6 +265,7 @@ return [
     "cart_tabs_text" => "étiquettes",
     "cart_total_price_text" => "Total: ",
     "cart_checkout_text" => "Payer",
+    "cart_go_to_text" => "Aller au panier",
     "cart_products_title" => "Produit(s)",
     "cart_quantity_title" => "Quantité",
     "cart_shipping_cost_text" => "Coût:",
