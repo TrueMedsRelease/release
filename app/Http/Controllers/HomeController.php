@@ -776,7 +776,7 @@ class HomeController extends Controller
                 'Currency' => Currency::class,
                 'pixel'    => $pixel,
                 'host'     => $_SERVER['SERVER_NAME'],
-                'queryParams' => $queryParams,
+                'queryParams' => $queryParams ?? [],
             ])
             ->header('Access-Control-Allow-Origin', '*')
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
