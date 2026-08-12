@@ -27,7 +27,7 @@
                     </select>
                     <span class="icon select-wrapper__chevron">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use>
+                            <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use>
                         </svg>
                     </span>
                 </div>

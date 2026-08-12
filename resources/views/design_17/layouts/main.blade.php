@@ -126,7 +126,7 @@
             window.routeChatHistory = "{{ route('chat.history') }}";
             window.routeCartState = routeCartState;
             window.design17ChatV2 = true;
-            window.design17SvgSprite = "{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}";
+            window.design17SvgSprite = "{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}";
             window.design17ChatTexts = {
                 status_queued: @json($chatStatusVariants['queued']),
                 status_processing: @json($chatStatusVariants['processing']),
@@ -259,19 +259,29 @@
                             <a class="navbar__auth-link link" href="{{ route("home.login") }}" target="_blank">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#user-round') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>
                                     </svg>
                                 </span>
                                 {{ __('text.common_profile') }}
                             </a>
                             <ul class="nav__list">
+                                <li class="nav__item">
+                                    <a class="nav__link nav__link--catalog" href="{{ route("catalog.index") }}">
+                                        <span class="icon">
+                                            <svg width="1em" height="1em" fill="none">
+                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#grid') }}"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="button-text">{{ __('text.common_catalog') }}</span>
+                                    </a>
+                                </li>
                                 @if (count($Language::GetAllLanuages()) > 1)
                                     <li class="nav__item" data-dropdown data-dropdown-hover="toggler" data-dropdown-select>
                                         <a class="nav__link sublist-toggler sublist-toggler--level-1" href="{{ route('home.language', session('locale', 'en')) }}" data-dropdown-button aria-expanded="false">
                                             <span class="button-text">{{ $Language::$languages_name[session('locale', 'en')] }}</span>
                                             <span class="icon">
                                                 <svg width="1em" height="1em" fill="currentColor">
-                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                                                 </svg>
                                             </span>
                                         </a>
@@ -296,7 +306,7 @@
                                             <span class="button-text">{{ $Currency::GetAllCurrency()[0]['code'] }}</span>
                                             <span class="icon">
                                                 <svg width="1em" height="1em" fill="currentColor">
-                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                                                 </svg>
                                             </span>
                                         </a>
@@ -320,7 +330,7 @@
                                         <span class="button-text">{{ __('text.phones_title_phone_' . array_key_first($phone_arr)) }}</span>
                                         <span class="icon">
                                             <svg width="1em" height="1em" fill="currentColor">
-                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                                             </svg>
                                         </span>
                                     </a>
@@ -365,7 +375,7 @@
                             <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}#arrow-up"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}#arrow-up"></use>
                                     </svg>
                                 </span>
                             </button>
@@ -382,7 +392,7 @@
                         <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
                             <span class="icon">
                                 <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego') }}#arrow-up"></use>
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}#arrow-up"></use>
                                 </svg>
                             </span>
                         </button>
@@ -409,7 +419,7 @@
                     <div class="cart__hgroup">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#cart') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#cart') }}"></use>
                             </svg>
                         </span>
                         <h2 class="cart__title">
@@ -421,7 +431,7 @@
                     <button class="cart__close-button navbar-toggler" data-drawer-close="cart" aria-label="Close cart">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#close') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#close') }}"></use>
                             </svg>
                         </span>
                     </button>
@@ -459,7 +469,7 @@
                                 <button class="cart-item__remove-button js-cart-remove-button" type="button" data-cart-remove-pack="{{ $product['pack_id'] }}">
                                     <span class="icon">
                                         <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#trash-round') }}"></use>
+                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#trash-round') }}"></use>
                                         </svg>
                                     </span>
                                 </button>
@@ -473,7 +483,7 @@
                             {{ __('text.cart_checkout_text') }}
                             <span class="icon">
                                 <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#arrow-right') }}"></use>
                                 </svg>
                             </span>
                         </a>
@@ -486,7 +496,7 @@
                     <button class="drawer__close-button js-product-drawer-close" aria-label="Close">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#close') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#close') }}"></use>
                             </svg>
                         </span>
                     </button>
@@ -655,7 +665,7 @@
                                 <div class="subscribe__header">
                                     <span class="icon subscribe__icon">
                                         <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#subscribe') }}"></use>
+                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#subscribe') }}"></use>
                                         </svg>
                                     </span>
                                     <div class="subscribe__title">{{ __('text.common_subscribe') }}</div>
@@ -676,7 +686,7 @@
                             <button class="button button--tapbar footer-buttons__cart" data-drawer-toggle="cart" data-counter="{{ $cart_count }}">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#cart') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#cart') }}"></use>
                                     </svg>
                                 </span>
                                 <span class="button__text">{{ __('text.common_cart_text_d2') }}</span>
@@ -685,7 +695,7 @@
                             <a class="button button--tapbar" href="{{ route("home.login") }}" target="_blank">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#user-round') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>
                                     </svg>
                                 </span>
                                 <span class="button__text">{{ __('text.common_profile') }}</span>
@@ -714,7 +724,7 @@
                 <button class="dialog__close-button link" data-dialog-close="call" aria-label="Close dialog">
                     <span class="icon">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#close') }}"></use>
+                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#close') }}"></use>
                         </svg>
                     </span>
                 </button>
@@ -748,7 +758,7 @@
                 <button class="dialog__close-button link" data-dialog-close="call-push" aria-label="Close dialog">
                     <span class="icon">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="svg/icons/sprite.svg?vmxkaego#close"></use>
+                            <use href="svg/icons/sprite.svg?vmxkaego2#close"></use>
                         </svg>
                     </span>
                 </button>

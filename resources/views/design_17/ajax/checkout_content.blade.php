@@ -165,7 +165,7 @@
                                     {{ __('text.checkout_bonus_card') }}
                                     <span class="icon" data-tooltip="{{ __('text.bonus_card_info') }}">
                                         <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#question-circle") }}"></use>
+                                            <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#question-circle") }}"></use>
                                         </svg>
                                     </span>
                                 </button>
@@ -372,7 +372,7 @@
                         @endforeach
                     </select>
                     <span class="icon select-wrapper__chevron">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use></svg>
                     </span>
                 </div>
             </div>
@@ -389,7 +389,7 @@
                         @endforeach
                     </select>
                     <span class="icon select-wrapper__chevron">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use></svg>
                     </span>
                 </div>
             </div>
@@ -433,7 +433,7 @@
                             @endforeach
                         </select>
                         <span class="icon select-wrapper__chevron">
-                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use></svg>
+                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use></svg>
                         </span>
                     </div>
                 </div>
@@ -448,7 +448,7 @@
                             @endforeach
                         </select>
                         <span class="icon select-wrapper__chevron">
-                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use></svg>
+                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use></svg>
                         </span>
                     </div>
                 </div>
@@ -556,7 +556,7 @@
                     @endif
                 </select>
                 <span class="icon select-wrapper__chevron">
-                    <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use></svg>
+                    <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use></svg>
                 </span>
             </div>
         </div>
@@ -585,7 +585,7 @@
                                 @endforeach
                             </select>
                             <span class="icon select-wrapper__chevron">
-                                <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use></svg>
+                                <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use></svg>
                             </span>
                         </div>
                         <div class="select-wrapper" data-placeholder="{{ __('text.checkout_year') }}">
@@ -595,7 +595,7 @@
                                 @endforeach
                             </select>
                             <span class="icon select-wrapper__chevron">
-                                <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use></svg>
+                                <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use></svg>
                             </span>
                         </div>
                     </div>
@@ -610,7 +610,7 @@
                 <button class="button form__submit submit-button" type="submit" data-action="submit-order">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>
                     <span class="icon">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#arrow-right") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
                     </span>
                 </button>
             </div>
@@ -665,7 +665,7 @@
                 </div>
                 <div class="crypto-loading" id="crypto-loading" hidden><div class="crypto-loading__spinner"></div></div>
                 <div class="warning-field">
-                    <div class="warning-field__icon"><span class="icon"><svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#timer") }}"></use></svg></span></div>
+                    <div class="warning-field__icon"><span class="icon"><svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#timer") }}"></use></svg></span></div>
                     <div class="warning-field__text">{{ __('text.checkout_invoice') }}</div>
                     <div class="warning-field__timer" id="timer">30:00</div>
                 </div>
@@ -680,7 +680,7 @@
                             <s class="fiat-discount" id="crypto_price">{{ $Currency::convert(session('total.checkout_total', 0)) }}</s>
                             <span class="fiat-amount" id="crypto_discount_price">{{ session('crypto.crypto_total') ? $Currency::convert(session('crypto.crypto_total')) : '' }}</span>
                             <button class="copy-button" type="button" data-action="copy-text" aria-label="Copy">
-                                <span class="icon"><svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#fi-sr-copy") }}"></use></svg></span>
+                                <span class="icon"><svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#fi-sr-copy") }}"></use></svg></span>
                                 <span class="button-text">{{ __('text.checkout_copy') }}</span>
                             </button>
                         </div>
@@ -690,7 +690,7 @@
                         <div class="crypto-transaction-info__field copy-field">
                             <span class="crypto-address copy-text" id="purse">{{ session('crypto.purse', '') }}</span>
                             <button class="copy-button" type="button" data-action="copy-text" aria-label="Copy">
-                                <span class="icon"><svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#fi-sr-copy") }}"></use></svg></span>
+                                <span class="icon"><svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#fi-sr-copy") }}"></use></svg></span>
                                 <span class="button-text">{{ __('text.checkout_copy') }}</span>
                             </button>
                         </div>
@@ -721,7 +721,7 @@
                         </div>
                         <button type="button" class="copy-button" data-action="copy-text" aria-label="Copy">
                             {{-- <svg width="18" height="18"><use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy"></use></svg> --}}
-                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#fi-sr-copy") }}"></use></svg>
+                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#fi-sr-copy") }}"></use></svg>
                             <span class="button-text">{{ __('text.checkout_copy') }}</span>
                         </button>
                     </div>
@@ -752,7 +752,7 @@
                         </div>
                         <button type="button" class="copy-button" data-action="copy-text" aria-label="Copy">
                             {{-- <svg width="18" height="18"><use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy"></use></svg> --}}
-                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#fi-sr-copy") }}"></use></svg>
+                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#fi-sr-copy") }}"></use></svg>
                             <span class="button-text">{{ __('text.checkout_copy') }}</span>
                         </button>
                     </div>
@@ -766,7 +766,7 @@
                             </div>
                             <button type="button" class="copy-button" data-action="copy-text" aria-label="Copy">
                                 {{-- <svg width="18" height="18"><use xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-copy"></use></svg> --}}
-                                <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#fi-sr-copy") }}"></use></svg>
+                                <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#fi-sr-copy") }}"></use></svg>
                                 <span class="button-text">{{ __('text.checkout_copy') }}</span>
                             </button>
                         </div>
@@ -928,7 +928,7 @@
                 <button class="button form__submit" type="button" data-action="process-bonus-card">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>
                     <span class="icon">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#arrow-right") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
                     </span>
                 </button>
             </div>
@@ -939,7 +939,7 @@
                 <button class="button form__submit" type="button" data-action="process-gift-card">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>
                     <span class="icon">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#arrow-right") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
                     </span>
                 </button>
             </div>
@@ -953,7 +953,7 @@
                 <button class="button form__submit" type="button" data-action="process-open-banking" data-payment-type="{{ $payment_type_current }}">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>
                     <span class="icon">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#arrow-right") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
                     </span>
                 </button>
             </div>
@@ -967,7 +967,7 @@
                 <button class="button form__submit" type="button" data-action="process-wallet" data-payment-type="{{ $payment_type_current }}">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>
                     <span class="icon">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#arrow-right") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
                     </span>
                 </button>
             </div>
@@ -981,7 +981,7 @@
                 <button class="button form__submit" type="button" data-action="process-wallet" data-payment-type="{{ $payment_type_current }}">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>
                     <span class="icon">
-                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#arrow-right") }}"></use></svg>
+                        <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
                     </span>
                 </button>
             </div>

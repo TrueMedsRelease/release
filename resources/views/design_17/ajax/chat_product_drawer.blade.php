@@ -117,7 +117,7 @@ usort($dosageKeys, static fn (string $left, string $right): int => -$compareDosa
                                                 <button class="button product__button" type="submit">
                                                     <span class="icon">
                                                         <svg width="1em" height="1em" fill="currentColor">
-                                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#cart-white') }}"></use>
+                                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#cart-white') }}"></use>
                                                         </svg>
                                                     </span>
                                                     <span class="button__text">{{ __('text.chat_add_to_cart') }}</span>

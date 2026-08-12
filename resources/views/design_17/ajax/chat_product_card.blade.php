@@ -103,12 +103,12 @@
                             <button class="card__button button" type="button" aria-label="{{ __('text.product_add_to_cart_text') }}">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#cart-white') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#cart-white') }}"></use>
                                     </svg>
                                 </span>
                                 {{-- <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#arrow-right') }}"></use>
                                     </svg>
                                 </span> --}}
                             </button>

@@ -68,7 +68,7 @@
         <a class="button button--white button--return" href="{{ route('cart.index') }}">
             <span class="icon">
                 <svg width="1em" height="1em" fill="currentColor">
-                    <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#arrow-left") }}"></use>
+                    <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-left") }}"></use>
                 </svg>
             </span>
             {{ __('text.checkout_back') }}

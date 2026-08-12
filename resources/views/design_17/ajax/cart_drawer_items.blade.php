@@ -29,7 +29,7 @@
         <button class="cart-item__remove-button js-cart-remove-button" type="button" data-cart-remove-pack="{{ $product['pack_id'] }}">
             <span class="icon">
                 <svg width="1em" height="1em" fill="currentColor">
-                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#trash-round') }}"></use>
+                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#trash-round') }}"></use>
                 </svg>
             </span>
         </button>
