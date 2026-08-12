@@ -5,12 +5,22 @@
             $activeNames[] = $aktiv['name'];
         }
     }
+
+    $is_catalog = $is_catalog ?? false;
+    $productUrl = route('home.product', $product['url']);
 @endphp
 
-<article class="card chat-search-card">
+@if ($is_catalog)
+    <a class="card-link chat-search-card-link" href="{{ $productUrl }}" data-product-title="{{ $product['name'] }}">
+@endif
+    <article class="card chat-search-card">
     <div class="card__header">
         <h2 class="card__title">
-            <a class="js-chat-product-link" href="{{ route('home.product', $product['url']) }}" data-product-title="{{ $product['name'] }}">{{ $product['name'] }}</a>
+            @if ($is_catalog)
+                <span>{{ $product['name'] }}</span>
+            @else
+                <a class="js-chat-product-link" href="{{ $productUrl }}" data-product-title="{{ $product['name'] }}">{{ $product['name'] }}</a>
+            @endif
         </h2>
         @if (!empty($activeNames))
             <div class="card__description">
@@ -47,8 +57,17 @@
         <div class="card__price-wrapper">
             <span class="card__price">{{ $Currency::convert($product['price'], false, true) }}</span>
         </div>
-        <a class="card__button button button--outlined js-chat-product-link" href="{{ route('home.product', $product['url']) }}" data-product-title="{{ $product['name'] }}">
-            {{ __('text.product_add_to_cart_text') }}
-        </a>
+        @if ($is_catalog)
+            <span class="card__button button button--outlined">
+                {{ __('text.product_add_to_cart_text') }}
+            </span>
+        @else
+            <a class="card__button button button--outlined js-chat-product-link" href="{{ $productUrl }}" data-product-title="{{ $product['name'] }}">
+                {{ __('text.product_add_to_cart_text') }}
+            </a>
+        @endif
     </div>
-</article>
+    </article>
+@if ($is_catalog)
+    </a>
+@endif

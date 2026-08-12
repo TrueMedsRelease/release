@@ -185,6 +185,7 @@ return [
     "cart_tabs_text" => "caps",
     "cart_total_price_text" => "Yhteensä: ",
     "cart_checkout_text" => "Checkout",
+    "cart_go_to_text" => "Siirry ostoskoriin",
     "cart_products_title" => "Product(s)",
     "cart_quantity_title" => "Quantity",
     "cart_price_title" => "Price",

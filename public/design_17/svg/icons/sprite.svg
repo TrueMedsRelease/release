@@ -121,4 +121,6 @@
 <rect x="11" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5" />
 <rect x="3" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5" />
 <rect x="11" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5" />
+</symbol><symbol viewBox="0 0 20 20" fill="none" id="done">
+<path d="M8.11834 12.2941L5.64775 9.82354L4.82422 10.6471L8.11834 13.9412L15.1772 6.88237L14.3536 6.05884L8.11834 12.2941Z" fill="currentColor" />
 </symbol></defs></svg>
