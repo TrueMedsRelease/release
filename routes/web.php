@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
@@ -351,3 +352,8 @@ Route::fallback(function () {
 Route::options('/{any}', function () {
     return response()->json([], 200);
 })->where('any', '.*');
+
+Route::controller(CatalogController::class)->prefix("catalog")->group(static function () {
+    Route::get("/", "index")->name('catalog.index');
+    Route::get("/load", "load")->name('catalog.load');
+});
