@@ -44,7 +44,7 @@
                     <aside class="catalog__sidebar">
                         <div class="catalog__sidebar-search js-catalog-category-filter">
                             <svg class="catalog__sidebar-search-icon" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#history') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#history') }}"></use>
                             </svg>
                             <input class="catalog__sidebar-search-input js-catalog-category-filter-input"
                                    type="search"
@@ -56,7 +56,7 @@
                                     aria-label="Reset search"
                                     hidden>
                                 <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#close') }}"></use>
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#close') }}"></use>
                                 </svg>
                             </button>
                         </div>
@@ -87,7 +87,7 @@
                         <a class="catalog__back js-catalog-back" href="{{ route('home.index') }}">
                             <span class="icon">
                                 <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-left') }}"></use>
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#arrow-left') }}"></use>
                                 </svg>
                             </span>
                             {{ __('text.common_back_to_chat') }}
@@ -107,7 +107,7 @@
                                 <button class="catalog__search-submit button" type="submit" aria-label="Search">
                                     <span class="icon">
                                         <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
+                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#arrow-right') }}"></use>
                                         </svg>
                                     </span>
                                 </button>

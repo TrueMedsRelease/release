@@ -170,7 +170,7 @@
                                                             <button class="button product__button">
                                                                 <span class="icon">
                                                                     <svg width="1em" height="1em" fill="currentColor">
-                                                                        <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#cart-white") }}"></use>
+                                                                        <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#cart-white") }}"></use>
                                                                     </svg>
                                                                 </span>
                                                                 <span class="button__text">{{ __('text.product_add_to_cart_text_d2') }}</span>
@@ -179,7 +179,7 @@
                                                             <button class="button product__button" style="padding: 0;">
                                                                 <span class="icon" style="display: flex; width: 4rem; justify-content: center;">
                                                                     <svg width="1em" height="1em" fill="currentColor">
-                                                                        <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#cart-white") }}"></use>
+                                                                        <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#cart-white") }}"></use>
                                                                     </svg>
                                                                 </span>
                                                             </button>
