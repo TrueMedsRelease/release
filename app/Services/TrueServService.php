@@ -11,7 +11,9 @@ class TrueServService
 
     public static function available(): bool
     {
-        return (bool) Cache::get(self::KEY, false);
+        return (bool) Cache::remember(self::KEY,60,static function () {
+            return checkdnsrr(self::HOST, 'A');
+        });
     }
 
     public static function refresh(): bool
