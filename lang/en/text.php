@@ -1193,4 +1193,7 @@ return [
     'chat_browse_first_letter' => 'Products starting with',
     'chat_browse_search' => 'Search',
     'chat_browse_default' => 'Show',
+
+    "chat_catalog_link" => "View our catalog",
+    "chat_fallback_not_found" => 'We couldn\'t find anything for your query ":query". You can browse our catalog and see our bestsellers below.',
 ];

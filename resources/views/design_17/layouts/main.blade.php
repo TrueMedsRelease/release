@@ -172,6 +172,8 @@
                 captcha_title: "{{ __('text.captcha_title') }}",
                 captcha_placeholder: "{{ __('text.captcha_placeholder') }}",
                 captcha_submit: "{{ __('text.captcha_submit') }}",
+                delivery_express: "{{ __('text.cart_free_express') }}",
+                delivery_regular: "{{ __('text.cart_free_regular') }}",
             };
 
             window.routeChatBrowse = @json(url('/chat/browse/__TYPE__/__SLUG__'));

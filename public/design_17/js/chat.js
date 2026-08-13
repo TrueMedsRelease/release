@@ -94,7 +94,7 @@
                     currencyCoef = payload.currency.coef || 1;
                 }
                 if (payload.status === 'done') {
-                    renderAgentAnswer(payload.answer || '', payload.products);
+                    renderAgentAnswer(payload.answer || '', payload.products, payload);
                 } else if (payload.status === 'error') {
                     renderAgentError(payload.message || getText('error_unknown'));
                 }
@@ -431,6 +431,21 @@
         return html;
     }
 
+    function buildCatalogLinkHtml(meta) {
+        if (!meta || !meta.show_catalog_link || !meta.catalog_url) {
+            return '';
+        }
+
+        return (
+            '<div class="dc17-chat-fallback-catalog">' +
+                '<a href="' + escapeAttr(meta.catalog_url) + '" target="_blank" rel="noopener noreferrer">' +
+                    escapeHtml(meta.catalog_label || getText('catalog_link')) +
+                '</a>' +
+            '</div>'
+        );
+    }
+
+
     function svgIcon(name, className) {
         var cls = className || '';
         return '<span class="icon ' + cls + '"><svg width="1em" height="1em" fill="currentColor">' +
@@ -633,7 +648,8 @@
         }
     }
 
-    function renderAgentAnswer(answer, products) {
+    function renderAgentAnswer(answer, products, meta) {
+        meta = meta || {};
         if (!activeSkeletonRow) return;
 
         stopStatusTextRotation();
@@ -664,6 +680,7 @@
         }
 
         var answerHtml = formatAnswerText(answer);
+        var catalogHtml = buildCatalogLinkHtml(meta);
 
         var pageContent = '';
         if (hasProducts) {
@@ -682,6 +699,7 @@
                     '<div class="chat-message__content content">' +
                         '<div class="' + bubbleClass + '">' +
                             '<div class="dc17-chat-answer-text">' + answerHtml + '</div>' +
+                            catalogHtml +
                         '</div>' +
                     '</div>' +
                     pageContent +
@@ -1358,19 +1376,31 @@
 
         var rowsHtml = '';
         packs.forEach(function (pack, idx) {
+            var isFirstRow = (idx === 0);
+            var isLastRow = (idx === packs.length - 1);
             var discountHtml = '';
-            if (maxPillPrice > 0 && pack.quantity > 0 && pack.price > 0) {
+            if (!isLastRow && maxPillPrice > 0 && pack.quantity > 0 && pack.price > 0) {
                 var oldPrice = maxPillPrice * pack.quantity;
-                if (oldPrice > pack.price) {
-                    var discount = Math.round((1 - pack.price / oldPrice) * 100);
+                var discount = Math.round((1 - pack.price / oldPrice) * 100);
+                if (discount > 0) {
                     discountHtml =
                         '<div class="product__discount"><s>' + formatPrice(oldPrice) + '</s> ' +
                         '<span>-' + discount + '%</span></div>';
                 }
             }
 
-            var deliveryHtml = pack.delivery
-                ? '<div class="product__delivery">' + escapeHtml(pack.delivery) + '</div>'
+            var deliveryHtml = pack.deliveryText = pack.delivery || '';
+
+            if (!deliveryText) {
+                if (pack.price >= 300) {
+                    deliveryText = getText('delivery_express');
+                } else if (pack.price >= 200) {
+                    deliveryText = getText('delivery_regular');
+                }
+            }
+
+            var deliveryHtml = deliveryText
+                ? '<div class="product__delivery">' + escapeHtml(pack.deliveryText) + '</div>'
                 : '';
 
             var perPillHtml = '';
@@ -1381,7 +1411,8 @@
             rowsHtml +=
                 '<tr class="product">' +
                     '<td class="product__info-wrapper">' +
-                        '<div class="product__info' + (discountHtml ? ' product__info--sale' : '') + '">' +
+                        '<div class="product__info' + (discountHtmlFirstRow ? ' product__info--sale' : '') + '"' +
+                            (isFirstRow ? ' style="height: auto;"' : '') + '>' +
                             '<div class="product__quantity">' + escapeHtml(String(pack.quantity)) +
                                 (pack.unit ? ' ' + escapeHtml(pack.unit) : '') +
                             '</div>' +
@@ -1773,7 +1804,7 @@
                     currencyPrefix = data.currency.prefix;
                     currencyCoef = data.currency.coef || 1;
                 }
-                renderAgentAnswer(data.answer || '', data.products);
+                renderAgentAnswer(data.answer || '', data.products, data);
                 if (isLeader && crossBus) {
                     crossBus.emit('chat:response', {
                         status: 'done',
@@ -1781,6 +1812,11 @@
                         answer: data.answer || '',
                         products: data.products || [],
                         currency: data.currency || { prefix: currencyPrefix, code: 'usd', coef: currencyCoef },
+                        fallback: data.fallback,
+                        fallback_reason: data.fallback_reason,
+                        show_catalog_link: data.show_catalog_link,
+                        catalog_url: data.catalog_url,
+                        catalog_label: data.catalog_label,
                     });
                 }
             } else if (data.status === 'error') {
@@ -1955,7 +1991,7 @@
             updateSkeletonStatus('done');
             setState(State.DONE);
 
-            renderAgentAnswer(data.answer || '', data.products || []);
+            renderAgentAnswer(data.answer || '', data.products || [], data);
         })
         .catch(function (err) {
             log('error', 'sendBrowseQuery error: ' + err.message);
@@ -2143,6 +2179,9 @@
         captcha_title: 'Verify you are human',
         captcha_placeholder: 'Enter code',
         captcha_submit: 'Continue',
+        catalog_link: 'View our catalog',
+        delivery_express: 'Free Express Delivery',
+        delivery_regular: 'Free Regular Delivery',
     };
 
     var previousTextSelections = {};
@@ -2319,7 +2358,7 @@
                 if (msg.role === 'user') {
                     renderHistoryUserMessage(msg.content);
                 } else if (msg.role === 'assistant') {
-                    renderHistoryAssistantMessage(msg.content, msg.products);
+                    renderHistoryAssistantMessage(msg.content, msg.products, msg);
                 }
             });
 
@@ -2388,13 +2427,15 @@
         thread.appendChild(row);
     }
 
-    function renderHistoryAssistantMessage(text, products) {
+    function renderHistoryAssistantMessage(text, products, meta) {
+        meta = meta || {};
         var thread = getChatThread();
         if (!thread) return;
         var hasProducts = products && products.length;
         var totalProducts = hasProducts ? products.length : 0;
         var needsPagination = totalProducts > 6;
         var productCardsHtml = hasProducts ? renderProductCards(products) : '';
+        var catalogHtml = buildCatalogLinkHtml(meta);
 
         var paginationHtml = '';
         if (needsPagination) {
@@ -2414,7 +2455,7 @@
             '<div class="chat-row chat-row--agent">' +
                 '<div class="chat-message">' +
                     '<div class="chat-message__content content">' +
-                        '<div class="' + bubbleClass + '">' + textHtml + '</div>' +
+                        '<div class="' + bubbleClass + '">' + textHtml + catalogHtml + '</div>' +
                     '</div>' +
                     pageContent +
                 '</div>' +
@@ -2596,12 +2637,15 @@
         }
 
         if (answer) {
+            var remoteCatalogHtml = buildCatalogLinkHtml(payload);
+
             thread.appendChild(createElement(
                 '<div class="chat-row chat-row--agent">' +
                     '<div class="chat-message">' +
                         '<div class="chat-message__content content">' +
                             '<div class="chat-message__bubble chat-message__bubble--agent">' +
                                 '<div class="dc17-chat-answer-text">' + formatAnswerText(answer) + '</div>' +
+                                remoteCatalogHtml +
                             '</div>' +
                         '</div>' +
                     '</div>' +
