@@ -44,6 +44,9 @@
                             <td class="cart-item__brand" data-caption="Package">
                                 <span class="cart-item__brand-name">
                                     <span>{{ $product['name'] }}</span>
+                                    @if (!in_array($product['product_id'], [616, 619, 620, 483, 484, 501, 615]))
+                                        {{ $product['dosage_name'] }}
+                                    @endif
                                 </span>
                             </td>
                             <td class="cart-item__qty" data-caption="QTY">
