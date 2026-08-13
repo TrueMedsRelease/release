@@ -673,6 +673,8 @@ class CheckoutController extends Controller
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
+        }else {
+            return ['error' => 'Service unavailable'];
         }
     }
 
