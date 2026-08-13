@@ -41,6 +41,9 @@
         if (action === 'change-country' || action === 'change-payment' || select.hasAttribute('data-search')) {
             options.features.push('search');
         }
+        if (action === 'change-payment') {
+            lastValidPaymentType = select.value;
+        }
         try {
             var inst = new window.CustomSelector(container, options);
             container.__customSelector = inst;
@@ -1180,28 +1183,69 @@
         }
     });
 
+    var lastValidPaymentType = (function () {
+        var el = document.getElementById('payment_type');
+        return el ? el.value : 'mastercard';
+    })();
+    var paymentReverting = false;
+
     $(document).on('change', '[data-action="change-payment"]', function () {
+        if (paymentReverting) { paymentReverting = false; return; }
         var select = this;
         var type = select.value;
         log.debug('action change-payment', { type: type });
 
+        var container = select.parentNode;
+        var inst = container && container.__customSelector;
+
+        function revertPayment() {
+            select.value = lastValidPaymentType;
+            showPaymentBlock(lastValidPaymentType);
+            if (inst && typeof inst.syncFromNativeSelect === 'function') {
+                paymentReverting = true;
+                inst.syncFromNativeSelect();
+            }
+        }
+
+        function markPaymentValid() {
+            lastValidPaymentType = type;
+        }
+
         function recalc() {
             return requestCheckout('recalculation', { bonus_checkout_payment: type }, { raw: true }).then(function (resp) {
+                markPaymentValid();
                 if (resp && resp.html) renderCheckout(resp.html);
-            }, function () {});
+            }, function () {
+                log.warn('recalc rejected (validation) — reverting payment', { type: type });
+                revertPayment();
+            });
         }
 
         function savePaymentType() {
             var loaderMsgs = getLoaderMessages();
             showAjaxLoader(loaderMsgs.recalculation || 'Saving...');
-            $.ajax({ url: routes().recalculation, method: 'POST', data: serializeOrderForm() + '&bonus_checkout_payment=' + encodeURIComponent(type) }).always(function () {
+            $.ajax({
+                url: routes().recalculation,
+                method: 'POST',
+                data: serializeOrderForm() + '&bonus_checkout_payment=' + encodeURIComponent(type),
+                dataType: 'text'
+            }).then(function () {
                 hideAjaxLoader();
+            }, function (xhr) {
+                hideAjaxLoader();
+                var err = parseResponse(xhr.responseText);
+                var validationErrors = getResponseErrors(err);
+                if (validationErrors.length) {
+                    showFieldErrors(validationErrors);
+                    revertPayment();
+                }
             });
         }
 
         if (type === 'crypto') {
             var valid = validateCheckoutForm();
-            if (!valid) { log.warn('crypto: form invalid, reverting'); return; }
+            if (!valid) { log.warn('crypto: form invalid, reverting'); revertPayment(); return; }
+            markPaymentValid();
             // disableCheckoutFields(true);
             showPaymentBlock(type);
             savePaymentType();
@@ -1216,6 +1260,7 @@
         if (localTypes.indexOf(type) !== -1) {
             requestCheckout('localPaymentInfo', { local_payment: type }, { raw: true, silentValidation: true }).then(function (resp) {
                 if (resp && resp.success) {
+                    markPaymentValid();
                     $.ajax({ url: routes().dataForLocalPayment, method: 'POST', data: { form: serializeOrderForm() } });
                     renderCheckout(resp.html);
                 } else {

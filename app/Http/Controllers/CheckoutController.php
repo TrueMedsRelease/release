@@ -1383,6 +1383,8 @@ class CheckoutController extends Controller
 
     public function validate_for_crypt(Request $request)
     {
+        $previousPaymentType = session('form.payment_type', 'mastercard');
+
         $validator = Validator::make($request->all(), [
             'phone'            => ['required', 'min:5', 'max:16'],
             'email'            => ['required', 'email:rfc,dns', 'max:255'],
@@ -1403,6 +1405,7 @@ class CheckoutController extends Controller
         session(['form' => $request->all()]);
 
         if ($validator->fails()) {
+            session(['form.payment_type' => $previousPaymentType]);
             $errors = [];
             foreach ($validator->messages()->toArray() as $key => $error) {
                 $errors[] = ['message' => $error[0], 'field' => $key];
@@ -4775,6 +4778,7 @@ class CheckoutController extends Controller
     public function recalculation(Request $request)
     {
         $form = $request->all();
+        $previousPaymentType = session('form.payment_type', 'mastercard');
 
         $validator = Validator::make($request->all(), [
             'phone'            => ['required', 'min:5', 'max:16'],
@@ -4796,6 +4800,7 @@ class CheckoutController extends Controller
         session(['form' => $request->all()]);
 
         if ($validator->fails()) {
+            session(['form.payment_type' => $previousPaymentType]);
             $errors = [];
             foreach ($validator->messages()->toArray() as $key => $error) {
                 $errors[] = ['message' => $error[0], 'field' => $key];
