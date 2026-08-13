@@ -1616,7 +1616,7 @@
 
         setTimeout(function () {
             item.classList.remove('is-added-highlight');
-        }, 3000);
+        }, 3400);
     }
 
     function addToCart(btn, allButtons, packUrl) {
