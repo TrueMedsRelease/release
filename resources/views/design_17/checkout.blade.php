@@ -29,7 +29,7 @@
     .checkout-fatal { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9997; max-width: 92%; padding: 14px 22px; background: #ed4c54; color: #fff; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.18); font-size: 14px; text-align: center; }
     .checkout-fatal[hidden] { display: none; }
     .checkout_wrapper .poopuptext { display: none; }
-    .checkout_wrapper .poopuptext.show { display: block; position: absolute; top: -1.8rem; right: 0; padding: 0.2rem 0.8rem; background: #C53030; color: #fff; font-size: 1rem; line-height: 1.4; border-radius: 0.6rem; white-space: nowrap; z-index: 1; }
+    .checkout_wrapper .poopuptext.show { display: block; position: absolute; top: 0.4rem; right: 0; padding: 0.2rem 0.8rem; background: #C53030; color: #fff; font-size: 1rem; line-height: 1.4; border-radius: 0.6rem; white-space: nowrap; z-index: 1; }
     .checkout_wrapper .poopuptext.show::after { content: ''; position: absolute; bottom: -0.4rem; right: 1rem; width: 0; height: 0; border-left: 0.4rem solid transparent; border-right: 0.4rem solid transparent; border-top: 0.4rem solid #C53030; }
     .checkout-page .chat-scroll-down { display: none !important; }
     .checkout_wrapper .form__field.has-error .form__text-input,

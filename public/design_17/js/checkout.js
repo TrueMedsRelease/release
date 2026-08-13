@@ -1378,41 +1378,46 @@
         log.debug('crypto select currency', { currency: currency, email: email });
         var req = document.getElementById('requisites');
         var loading = document.getElementById('crypto-loading');
-        if (loading) loading.removeAttribute('hidden');
         var loaderMsgs = getLoaderMessages();
-        showAjaxLoader(loaderMsgs.cryptoInfo || 'Loading crypto...');
-        requestCheckout('cryptoInfo', { currency: currency, email: email }, { raw: true }).then(function (resp) {
-            hideAjaxLoader();
-            if (loading) loading.setAttribute('hidden', '');
-            var data = resp;
-            if (typeof data === 'string') { try { data = JSON.parse(data); } catch (e) { data = null; } }
-            if (!data) { log.warn('crypto_info empty response'); return; }
-            if (data.status === 'error') { window.LegacyUI.alert({ type: 'error', message: data.text || 'Crypto error', duration: 5000 }); return; }
-            if (req) req.removeAttribute('hidden');
-            log.debug('crypto_info data', { keys: Object.keys(data) });
-            setText('crypto_total', data.amount != null ? data.amount : data.crypto_total);
-            setText('purse', data.purse);
-            setSrc('qr_code', data.qr);
-            setVal('invoiceId', data.invoiceId);
-            setText('invoce_p', data.invoiceId);
-            if (data.crypto_total != null) setText('crypto_discount_price', data.crypto_total);
-            sessionStorage.setItem('crypto_ts_' + data.invoiceId, Date.now().toString());
-            var paid = document.getElementById('paid');
-            if (paid) paid.disabled = false;
-            $.ajax({
-                url: routes().dataForCrypt,
-                method: 'POST',
-                data: {
-                    crypto_currency: currency,
-                    crypto_total: data.crypto_total,
-                    crypto_discount_price: data.crypto_total,
-                    purse: data.purse,
-                    invoiceId: data.invoiceId
-                }
-            });
-            startCryptoTimer();
-            if (req && req.scrollIntoView) req.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, function () { hideAjaxLoader(); if (loading) loading.setAttribute('hidden', ''); });
+
+        requestCheckout('validateForCrypt', {}, { raw: true }).then(function () {
+            if (loading) loading.removeAttribute('hidden');
+            showAjaxLoader(loaderMsgs.cryptoInfo || 'Loading crypto...');
+            requestCheckout('cryptoInfo', { currency: currency, email: email }, { raw: true }).then(function (resp) {
+                hideAjaxLoader();
+                if (loading) loading.setAttribute('hidden', '');
+                var data = resp;
+                if (typeof data === 'string') { try { data = JSON.parse(data); } catch (e) { data = null; } }
+                if (!data) { log.warn('crypto_info empty response'); return; }
+                if (data.status === 'error') { window.LegacyUI.alert({ type: 'error', message: data.text || 'Crypto error', duration: 5000 }); return; }
+                if (req) req.removeAttribute('hidden');
+                log.debug('crypto_info data', { keys: Object.keys(data) });
+                setText('crypto_total', data.amount != null ? data.amount : data.crypto_total);
+                setText('purse', data.purse);
+                setSrc('qr_code', data.qr);
+                setVal('invoiceId', data.invoiceId);
+                setText('invoce_p', data.invoiceId);
+                if (data.crypto_total != null) setText('crypto_discount_price', data.crypto_total);
+                sessionStorage.setItem('crypto_ts_' + data.invoiceId, Date.now().toString());
+                var paid = document.getElementById('paid');
+                if (paid) paid.disabled = false;
+                $.ajax({
+                    url: routes().dataForCrypt,
+                    method: 'POST',
+                    data: {
+                        crypto_currency: currency,
+                        crypto_total: data.crypto_total,
+                        crypto_discount_price: data.crypto_total,
+                        purse: data.purse,
+                        invoiceId: data.invoiceId
+                    }
+                });
+                startCryptoTimer();
+                if (req && req.scrollIntoView) req.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, function () { hideAjaxLoader(); if (loading) loading.setAttribute('hidden', ''); });
+        }, function () {
+            log.warn('crypto: validate_for_crypt failed');
+        });
     }
 
     function initCryptoState() {
