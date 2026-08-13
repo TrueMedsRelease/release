@@ -942,9 +942,6 @@
         </div>
 
         <div class="payment-information__open-banking-content" @if (!in_array($payment_type_current, ['revolut', 'open_banking'])) hidden @endif>
-            <div class="details-payment__row">
-                <div class="details-payment__data" style="text-align: center;">{{ __('text.checkout_sepa_text') }}</div>
-            </div>
             <div class="form__field submit-field">
                 <button class="button form__submit" type="button" data-action="process-open-banking" data-payment-type="{{ $payment_type_current }}">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>
