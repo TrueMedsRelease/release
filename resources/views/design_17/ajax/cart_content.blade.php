@@ -1,5 +1,13 @@
 <div class="main__heading">
     <h1 class="h1">{{ __('text.common_cart_text') }}</h1>
+    <a class="button button--white button--return" href="{{ route('home.index') }}">
+        <span class="icon">
+            <svg width="1em" height="1em" fill="currentColor">
+                <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-left") }}"></use>
+            </svg>
+        </span>
+        {{ __('text.common_back_to_chat') }}
+    </a>
 </div>
 <form class="form cart-form">
     <fieldset class="form__fieldset">

@@ -196,6 +196,7 @@ class CheckoutController extends Controller
             $item['name']      = $desc[$item['product_id']]['name'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
             if ($item['dosage'] != '1card') {
+                $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
                 if (in_array($item['product_id'], [619, 620, 483, 484, 501, 615])) {
                     $item['pack_name'] = $item['name'];
                 } else {
