@@ -624,24 +624,23 @@ td.product__button-wrapper{
     text-align:right;
   }
   #order_form .table.cart-table .cart-item__pack-price .cart-item__price-wrapper{
-    display:inline-block;
-    white-space:nowrap;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:0.2rem;
   }
   #order_form .table.cart-table .cart-item__pack-price .cart-item__price-wrapper .price{
-    vertical-align:top;
     white-space:nowrap;
   }
   #order_form .table.cart-table .cart-item__pack-price .discount-price{
-    display:inline-block;
-    margin-right:1rem;
-    vertical-align:top;
-    text-align:right;
-    white-space:nowrap;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:0.4rem;
   }
   #order_form .table.cart-table .cart-item__pack-price .discount-price s,
   #order_form .table.cart-table .cart-item__pack-price .discount-price .discount-label{
-    display:block;
-    text-align:right;
+    display:inline;
   }
   #order_form .table.cart-table .cart-item__total-price .cart-item__price-wrapper{
     justify-content:flex-end;
@@ -2156,6 +2155,7 @@ td.product__button-wrapper{
   #order_form .table.cart-table > tbody > tr.cart-item-content > td{
     border-bottom:1px solid var(--color-gray-2);
     padding:1.5rem 0 1rem 0;
+    height:6.8rem;
   }
   #order_form .table.cart-table .cart-item-content td:nth-child(1){
     padding-left:2rem;
