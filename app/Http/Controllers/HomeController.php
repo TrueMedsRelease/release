@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Phattarachai\LaravelMobileDetect\Agent;
+use App\Services\TrueServService;
 
 class HomeController extends Controller
 {
@@ -1740,7 +1741,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/phone_request.php',
@@ -1805,7 +1806,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/subscribe.php',
@@ -1910,7 +1911,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/messages_new.php',
@@ -2014,7 +2015,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/messages_new.php',

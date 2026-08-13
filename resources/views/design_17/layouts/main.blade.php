@@ -115,6 +115,18 @@
             }
         @endphp
 
+        @php
+            $hideMedbotChat = request()->routeIs([
+                'cart.index',
+                'checkout.index',
+            ]) || request()->is([
+                'cart',
+                'cart/*',
+                'checkout',
+                'checkout/*',
+            ]);
+        @endphp
+
         <script>
             const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
             const routeCartContent = "{{ route('cart.content') }}";
@@ -164,6 +176,12 @@
 
             window.routeChatBrowse = @json(url('/chat/browse/__TYPE__/__SLUG__'));
         </script>
+
+        @if($hideMedbotChat)
+            <script>
+                window.design17ChatDisabled = true;
+            </script>
+        @endif
 
         <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
         <script defer src="{{ asset_ver('vendor/jquery/autocomplete.js') }}"></script>
@@ -381,7 +399,7 @@
                             </button>
                         </div> --}}
                     </div>
-                    @if (!request()->routeIs('catalog.index'))
+                    @if (!request()->routeIs(['catalog.index', 'cart.index', 'checkout.index']))
                     <div class="thread-box js-chat-form">
                         <label class="thread-box__label textarea-field">
                             <textarea class="thread-box__input input-textarea js-chat-input"

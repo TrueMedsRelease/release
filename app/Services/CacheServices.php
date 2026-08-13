@@ -7,6 +7,7 @@ use App\Models\CountryInfoCache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Services\TrueServService;
 
 class CacheServices
 {
@@ -49,7 +50,7 @@ class CacheServices
             'api_key' => $api_key->key_data
         ];
 
-        if(checkdnsrr('true-serv.net', 'A'))
+        if(TrueServService::available())
         {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);

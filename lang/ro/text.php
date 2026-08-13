@@ -893,4 +893,11 @@ return [
     "captcha_submit" => "Continuă",
 
     "common_search_medbot" => "Introduceți căutarea, simptomele sau numele produsului...",
+
+    'chat_browse_active' => 'Afișează produsele cu substanța activă',
+    'chat_browse_category' => 'Afișează produsele din categorie',
+    'chat_browse_disease' => 'Afișează produse pentru',
+    'chat_browse_first_letter' => 'Produse care încep cu',
+    'chat_browse_search' => 'Caută',
+    'chat_browse_default' => 'Afișează',
 ];

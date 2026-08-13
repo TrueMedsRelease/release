@@ -1016,5 +1016,12 @@ return [
     "captcha_submit" => "続行",
 
     "common_search_medbot" => "検索キーワード、症状、または商品名を入力してください...",
+
+    'chat_browse_active' => '有効成分を含む商品を表示',
+    'chat_browse_category' => 'カテゴリーの商品を表示',
+    'chat_browse_disease' => '対象の商品を表示',
+    'chat_browse_first_letter' => '次で始まる商品',
+    'chat_browse_search' => '検索',
+    'chat_browse_default' => '表示',
 ];
 

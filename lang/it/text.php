@@ -1033,4 +1033,11 @@ return [
     "captcha_submit" => "Continua",
 
     "common_search_medbot" => "Inserisci la tua ricerca, i sintomi o il nome del prodotto...",
+
+    'chat_browse_active' => 'Mostra prodotti con principio attivo',
+    'chat_browse_category' => 'Mostra prodotti della categoria',
+    'chat_browse_disease' => 'Mostra prodotti per',
+    'chat_browse_first_letter' => 'Prodotti che iniziano con',
+    'chat_browse_search' => 'Cerca',
+    'chat_browse_default' => 'Mostra',
 ];

@@ -898,4 +898,11 @@ return [
     "captcha_submit" => "Kontynuuj",
 
     "common_search_medbot" => "Wpisz wyszukiwane hasło, objawy lub nazwę produktu...",
+
+    'chat_browse_active' => 'Pokaż produkty z substancją czynną',
+    'chat_browse_category' => 'Pokaż produkty z kategorii',
+    'chat_browse_disease' => 'Pokaż produkty na',
+    'chat_browse_first_letter' => 'Produkty zaczynające się na',
+    'chat_browse_search' => 'Szukaj',
+    'chat_browse_default' => 'Pokaż',
 ];

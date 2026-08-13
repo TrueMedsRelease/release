@@ -903,4 +903,11 @@ return [
     "captcha_submit" => "Folytatás",
 
     "common_search_medbot" => "Adja meg a keresési kifejezést, a tüneteket vagy a termék nevét...",
+
+    'chat_browse_active' => 'Hatóanyagot tartalmazó termékek megjelenítése',
+    'chat_browse_category' => 'A kategória termékeinek megjelenítése',
+    'chat_browse_disease' => 'Termékek megjelenítése ehhez',
+    'chat_browse_first_letter' => 'Ezzel kezdődő termékek',
+    'chat_browse_search' => 'Keresés',
+    'chat_browse_default' => 'Megjelenítés',
 ];

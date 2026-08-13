@@ -937,4 +937,11 @@ return [
     "captcha_submit" => "Doorgaan",
 
     "common_search_medbot" => "Voer uw zoekopdracht, symptomen of productnaam in...",
+
+    'chat_browse_active' => 'Producten met werkzame stof tonen',
+    'chat_browse_category' => 'Producten uit de categorie tonen',
+    'chat_browse_disease' => 'Producten voor tonen',
+    'chat_browse_first_letter' => 'Producten die beginnen met',
+    'chat_browse_search' => 'Zoeken',
+    'chat_browse_default' => 'Tonen',
 ];

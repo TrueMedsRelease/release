@@ -901,4 +901,11 @@ return [
     "captcha_submit" => "متابعة",
 
     "common_search_medbot" => "أدخل استعلام البحث أو الأعراض أو اسم المنتج...",
+
+    'chat_browse_active' => 'عرض المنتجات التي تحتوي على المادة الفعالة',
+    'chat_browse_category' => 'عرض المنتجات من الفئة',
+    'chat_browse_disease' => 'عرض المنتجات لـ',
+    'chat_browse_first_letter' => 'المنتجات التي تبدأ بـ',
+    'chat_browse_search' => 'بحث',
+    'chat_browse_default' => 'عرض',
 ];

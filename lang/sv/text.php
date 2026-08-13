@@ -897,4 +897,11 @@ return [
     "captcha_submit" => "Fortsätt",
 
     "common_search_medbot" => "Ange din sökning, symtom eller produktnamn...",
+
+    'chat_browse_active' => 'Visa produkter med aktiv substans',
+    'chat_browse_category' => 'Visa produkter från kategorin',
+    'chat_browse_disease' => 'Visa produkter för',
+    'chat_browse_first_letter' => 'Produkter som börjar med',
+    'chat_browse_search' => 'Sök',
+    'chat_browse_default' => 'Visa',
 ];
