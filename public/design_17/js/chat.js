@@ -1392,7 +1392,9 @@
                 }
             }
 
-            var deliveryHtml = pack.deliveryText = pack.delivery || '';
+            var discountHtmlFirstRow = isFirstRow && discountHtml !== '';
+
+            var deliveryText = pack.delivery || '';
 
             if (!deliveryText) {
                 if (pack.price >= 300) {
@@ -1403,7 +1405,7 @@
             }
 
             var deliveryHtml = deliveryText
-                ? '<div class="product__delivery">' + escapeHtml(pack.deliveryText) + '</div>'
+                ? '<div class="product__delivery">' + escapeHtml(deliveryText) + '</div>'
                 : '';
 
             var perPillHtml = '';
