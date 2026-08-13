@@ -79,23 +79,6 @@
                                 </span>
                             </td>
                         </tr>
-                        @if (!empty($product['upgrade_pack']))
-                            <tr>
-                                <td class="cart-item__caption" colspan="4" onclick="upgrade({{ $product['pack_id'] }})">
-                                    <a>
-                                        {{__('text.cart_upgrade')}}
-                                        <b>{{ $product['upgrade_pack']['num'] }} {{$product['type_name']}} {{__('text.cart_for_only')}} {{ $Currency::convert($product['upgrade_pack']['price'] - $product['price'], true) }}</b>
-                                        {{__('text.cart_savei')}}
-                                        {{ $Currency::convert($product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'], true) }}.
-                                        @if ($product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 200 && $product_total + ($product['upgrade_pack']['price'] - $product['price']) < 300)
-                                            <b>{{__('text.cart_get_regular')}}</b>
-                                        @elseif ($product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 300)
-                                            <b>{{__('text.cart_get_ems')}}</b>
-                                        @endif
-                                    </a>
-                                </td>
-                            </tr>
-                        @endif
                     @endforeach
                     @if (!$card_only)
                         <tr>
