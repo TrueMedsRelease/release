@@ -29,131 +29,147 @@
                 <div class="panel__header">
                     <h2 class="panel__title">{{ __('text.cart_order_title_1') }}</h2>
                 </div>
-                <table class="table cart-table order-table">
+                <table class="table cart-table">
                     <thead>
-                        <tr>
-                            <th>{{ __('text.checkout_package') }}</th>
-                            <th>{{ __('text.checkout_qty') }}</th>
-                            <th>{{ __('text.checkout_per_pack') }}</th>
-                            <th>{{ __('text.checkout_price') }}</th>
-                        </tr>
+                    <tr>
+                        <th>{{__('text.cart_package')}}</th>
+                        <th>{{__('text.cart_qty')}}</th>
+                        <th>{{__('text.cart_per_pack')}}</th>
+                        <th>{{__('text.cart_price')}}</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td colspan="4">
-                                <div class="cart-item-wrapper">
-                                    <table class="cart-item">
-                                        @foreach ($products as $product)
-                                            <tr class="cart-item-content">
-                                                <td class="cart-item__brand">
-                                                    <span class="cart-item__brand-name">{{ $product['pack_name'] }}</span>
-                                                </td>
-                                                <td class="cart-item__qty">{{ $product['q'] }}</td>
-                                                <td class="cart-item__pack-price">
-                                                    {{ $Currency::convert($product['price'], true) }}
-                                                </td>
-                                                <td class="cart-item__total-price">
-                                                    @if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0)
-                                                        <span style="color: var(--color-red);text-decoration: line-through;font-weight: 500;">
-                                                            {{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}
-                                                        </span>
-                                                    @endif
-                                                    <span class="price">{{ $Currency::convert($product['price'] * $product['q'], true) }}</span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        @if ($bonus != '')
-                                            <tr class="cart-item-content">
-                                                <td class="cart-item__brand">
-                                                    <span class="cart-item__brand-name">{{ __('text.checkout_bonus') }}: {{ $bonus->name }}</span>
-                                                </td>
-                                                <td class="cart-item__qty"></td>
-                                                <td class="cart-item__pack-price"></td>
-                                                <td class="cart-item__total-price">
-                                                    <span class="price">{{ $Currency::convert($bonus->price) }}</span>
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    </table>
+                    @foreach ($products as $product)
+                        <tr class="cart-item-content">
+                            <td class="cart-item__brand" data-caption="Package">
+                                <span class="cart-item__brand-name">
+                                    <span>{{ $product['name'] }}</span>
+                                </span>
+                            </td>
+                            <td class="cart-item__qty" data-caption="QTY">
+                                <div class="qty-input">
+                                    <label class="qty-input__label">
+                                        <span class="qty-input__qty-field">{{ $product['q'] }}</span>
+                                    </label>
                                 </div>
                             </td>
+                            <td class="cart-item__pack-price" data-caption="Per Pack">
+                                <span class="cart-item__price-wrapper">
+                                    @if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0)
+                                        <span class="discount-price">
+                                            <s>{{ $Currency::convert($product['max_pill_price'] * $product['num'], true) }}</s>
+                                            <span class="discount-label">-{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
+                                        </span>
+                                    @endif
+                                    <span class="price">@if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0) {!!__('text.product_only')!!} @endif {{ $Currency::convert($product['price'],true) }} </span>
+                                </span>
+                            </td>
+                            <td class="cart-item__total-price" data-caption="Price">
+                                <span class="cart-item__price-wrapper">
+                                    @if ($product['dosage'] != '1card' && ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) != 0)
+                                        <span class="discount-price">
+                                            <s>{{ $Currency::convert($product['max_pill_price'] * $product['num'] * $product['q'], true) }}</s>
+                                            <span class="discount-label">-{{ ceil(100 - ($product['price'] / ($product['max_pill_price'] * $product['num'])) * 100) }}%</span>
+                                        </span>
+                                    @endif
+                                    <span class="price">{{ $Currency::convert($product['price'] * $product['q'], true) }}</span>
+                                </span>
+                            </td>
                         </tr>
-                        @if (!$card_only)
+                        @if (!empty($product['upgrade_pack']))
                             <tr>
-                                <td colspan="4">
-                                    <div class="order-option">
-                                        <div class="order-option__checkbox">
-                                            <input class="form__checkbox" id="shipping-insurance" type="checkbox" name="insurance" value="1" data-action="toggle-insurance" @if (session('cart_option.insurance', env('APP_INSUR_ON'))) checked="checked" @endif>
-                                            <label class="form__label form__label--checkbox" for="shipping-insurance">
-                                                <div class="form__label-title">{{ __('text.checkout_insurance') }}</div>
-                                            </label>
-                                        </div>
-                                        <div class="order-option__price">
-                                            {{ $Currency::convert(session('cart_option.insurance_price'), false, true) }}
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="order-option">
-                                        <div class="order-option__checkbox">
-                                            <input class="form__checkbox" id="secret-packaging" type="checkbox" name="secret" value="1" data-action="toggle-secret" @if (session('cart_option.secret_package', env('APP_SECRET_ON'))) checked @endif>
-                                            <label class="form__label form__label--checkbox" for="secret-packaging">
-                                                <div class="form__label-title">{{ __('text.checkout_secret') }}</div>
-                                            </label>
-                                        </div>
-                                        <div class="order-option__price">
-                                            {{ $Currency::convert(session('cart_option.secret_price'), false, true) }}
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="order-options">
-                                        @if ($shipping['ems'] != 0)
-                                            <div class="order-option">
-                                                <div class="order-option__checkbox">
-                                                    <input class="form__checkbox" id="regular-delivery" type="radio" name="delivery" value="ems" data-action="change-shipping" data-shipping-name="ems" data-shipping-price="{{ $product_total_check >= 300 ? 0 : $shipping['ems'] }}" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'ems') checked @endif>
-                                                    <label class="form__label form__label--checkbox" for="regular-delivery">
-                                                        <div class="form__label-title">{{ __('text.checkout_express') }}</div>
-                                                        <div class="form__label-text">{{ __('text.checkout_express_text') }}</div>
-                                                    </label>
-                                                </div>
-                                                <div class="order-option__price">
-                                                    @if ($product_total_check >= 300)
-                                                        <span class="red_price">{{ $Currency::convert($shipping['ems']) }}</span>
-                                                        <p style="color: var(--green); font-size: 1.4rem;">{{ __('text.checkout_free') }}</p>
-                                                    @else
-                                                        <span>{{ $Currency::convert($shipping['ems']) }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
+                                <td class="cart-item__caption" colspan="4" onclick="upgrade({{ $product['pack_id'] }})">
+                                    <a>
+                                        {{__('text.cart_upgrade')}}
+                                        <b>{{ $product['upgrade_pack']['num'] }} {{$product['type_name']}} {{__('text.cart_for_only')}} {{ $Currency::convert($product['upgrade_pack']['price'] - $product['price'], true) }}</b>
+                                        {{__('text.cart_savei')}}
+                                        {{ $Currency::convert($product['max_pill_price'] * $product['upgrade_pack']['num'] - $product['upgrade_pack']['price'], true) }}.
+                                        @if ($product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 200 && $product_total + ($product['upgrade_pack']['price'] - $product['price']) < 300)
+                                            <b>{{__('text.cart_get_regular')}}</b>
+                                        @elseif ($product_total + ($product['upgrade_pack']['price'] - $product['price']) >= 300)
+                                            <b>{{__('text.cart_get_ems')}}</b>
                                         @endif
-                                        @if ($shipping['regular'] != 0)
-                                            <div class="order-option">
-                                                <div class="order-option__checkbox">
-                                                    <input class="form__checkbox" id="express-delivery" type="radio" name="delivery" value="regular" data-action="change-shipping" data-shipping-name="regular" data-shipping-price="{{ $product_total_check >= 200 ? 0 : $shipping['regular'] }}" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'regular') checked @endif>
-                                                    <label class="form__label form__label--checkbox" for="express-delivery">
-                                                        <div class="form__label-title">{{ __('text.checkout_regular') }}</div>
-                                                        <div class="form__label-text">{{ __('text.checkout_regular_text') }}</div>
-                                                    </label>
-                                                </div>
-                                                <div class="order-option__price">
-                                                    @if ($product_total_check >= 200)
-                                                        <span class="red_price">{{ $Currency::convert($shipping['regular']) }}</span>
-                                                        <p style="color: var(--green); font-size: 1.4rem;">{{ __('text.checkout_free') }}</p>
-                                                    @else
-                                                        <span>{{ $Currency::convert($shipping['regular']) }}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
+                                    </a>
                                 </td>
                             </tr>
                         @endif
+                    @endforeach
+                    @if (!$card_only)
+                        <tr>
+                            <td colspan="4">
+                                <div class="order-option">
+                                    <div class="order-option__checkbox">
+                                        <input class="form__checkbox" id="shipping-insurance" type="checkbox" name="insurance" value="1" data-action="toggle-insurance" @if (session('cart_option.insurance', env('APP_INSUR_ON'))) checked="checked" @endif>
+                                        <label class="form__label form__label--checkbox" for="shipping-insurance">
+                                            <div class="form__label-title">{{ __('text.checkout_insurance') }}</div>
+                                        </label>
+                                    </div>
+                                    <div class="order-option__price">
+                                        {{ $Currency::convert(session('cart_option.insurance_price'), false, true) }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="order-option">
+                                    <div class="order-option__checkbox">
+                                        <input class="form__checkbox" id="secret-packaging" type="checkbox" name="secret" value="1" data-action="toggle-secret" @if (session('cart_option.secret_package', env('APP_SECRET_ON'))) checked @endif>
+                                        <label class="form__label form__label--checkbox" for="secret-packaging">
+                                            <div class="form__label-title">{{ __('text.checkout_secret') }}</div>
+                                        </label>
+                                    </div>
+                                    <div class="order-option__price">
+                                        {{ $Currency::convert(session('cart_option.secret_price'), false, true) }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="order-options">
+                                    @if ($shipping['ems'] != 0)
+                                        <div class="order-option">
+                                            <div class="order-option__checkbox">
+                                                <input class="form__checkbox" id="regular-delivery" type="radio" name="delivery" value="ems" data-action="change-shipping" data-shipping-name="ems" data-shipping-price="{{ $product_total_check >= 300 ? 0 : $shipping['ems'] }}" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'ems') checked @endif>
+                                                <label class="form__label form__label--checkbox" for="regular-delivery">
+                                                    <div class="form__label-title">{{ __('text.checkout_express') }}</div>
+                                                    <div class="form__label-text">{{ __('text.checkout_express_text') }}</div>
+                                                </label>
+                                            </div>
+                                            <div class="order-option__price">
+                                                @if ($product_total_check >= 300)
+                                                    <span class="red_price">{{ $Currency::convert($shipping['ems']) }}</span>
+                                                    <p style="color: var(--green); font-size: 1.4rem;">{{ __('text.checkout_free') }}</p>
+                                                @else
+                                                    <span>{{ $Currency::convert($shipping['ems']) }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if ($shipping['regular'] != 0)
+                                        <div class="order-option">
+                                            <div class="order-option__checkbox">
+                                                <input class="form__checkbox" id="express-delivery" type="radio" name="delivery" value="regular" data-action="change-shipping" data-shipping-name="regular" data-shipping-price="{{ $product_total_check >= 200 ? 0 : $shipping['regular'] }}" @if (session('cart_option.shipping', env('APP_DEFAULT_SHIPPING')) == 'regular') checked @endif>
+                                                <label class="form__label form__label--checkbox" for="express-delivery">
+                                                    <div class="form__label-title">{{ __('text.checkout_regular') }}</div>
+                                                    <div class="form__label-text">{{ __('text.checkout_regular_text') }}</div>
+                                                </label>
+                                            </div>
+                                            <div class="order-option__price">
+                                                @if ($product_total_check >= 200)
+                                                    <span class="red_price">{{ $Currency::convert($shipping['regular']) }}</span>
+                                                    <p style="color: var(--green); font-size: 1.4rem;">{{ __('text.checkout_free') }}</p>
+                                                @else
+                                                    <span>{{ $Currency::convert($shipping['regular']) }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @endif
                     </tbody>
                 </table>
                 <div class="order-total-wrapper">
