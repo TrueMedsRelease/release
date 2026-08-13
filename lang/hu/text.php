@@ -910,4 +910,9 @@ return [
     'chat_browse_first_letter' => 'Ezzel kezdődő termékek',
     'chat_browse_search' => 'Keresés',
     'chat_browse_default' => 'Megjelenítés',
+
+    "chat_catalog_link" => "Katalógusunk megtekintése",
+    "chat_fallback_not_found" => 'Nem találtunk semmit a(z) ":query" keresésre. Böngészheti katalógusunkat, és alább megtekintheti legnépszerűbb termékeinket.',
+    "chat_heading_title" => "True Meds Bot gyógyszerek vásárlásához",
+    "chat_heading_caption" => "Egyszerűbben, biztonságosabban, gyorsabban",
 ];

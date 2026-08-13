@@ -905,4 +905,9 @@ return [
     'chat_browse_first_letter' => 'Produkty zaczynające się na',
     'chat_browse_search' => 'Szukaj',
     'chat_browse_default' => 'Pokaż',
+
+    "chat_catalog_link" => "Zobacz nasz katalog",
+    "chat_fallback_not_found" => 'Nie znaleźliśmy niczego dla Twojego zapytania ":query". Możesz przejrzeć nasz katalog i zobaczyć poniżej nasze najlepiej sprzedające się produkty.',
+    "chat_heading_title" => "True Meds Bot do kupowania leków",
+    "chat_heading_caption" => "Łatwiej, bezpieczniej, szybciej",
 ];

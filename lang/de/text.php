@@ -1030,4 +1030,9 @@ return [
     'chat_browse_first_letter' => 'Produkte beginnend mit',
     'chat_browse_search' => 'Suchen',
     'chat_browse_default' => 'Anzeigen',
+
+    "chat_catalog_link" => "Unseren Katalog ansehen",
+    "chat_fallback_not_found" => 'Wir konnten für Ihre Suchanfrage ":query" nichts finden. Sie können unseren Katalog durchsuchen und unten unsere meistverkauften Produkte ansehen.',
+    "chat_heading_title" => "True Meds Bot zum Kauf von Medikamenten",
+    "chat_heading_caption" => "Einfacher, sicherer, schneller",
 ];

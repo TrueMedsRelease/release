@@ -905,4 +905,9 @@ return  [
     'chat_browse_first_letter' => '以此開頭的產品',
     'chat_browse_search' => '搜尋',
     'chat_browse_default' => '顯示',
+
+    "chat_catalog_link" => "查看我們的產品目錄",
+    "chat_fallback_not_found" => '我們找不到與您的查詢":query"相關的內容。您可以瀏覽我們的產品目錄，並查看下方的熱銷產品。',
+    "chat_heading_title" => "True Meds 藥品購買機器人",
+    "chat_heading_caption" => "更簡單、更安全、更快速",
 ];

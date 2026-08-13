@@ -1023,5 +1023,10 @@ return [
     'chat_browse_first_letter' => '次で始まる商品',
     'chat_browse_search' => '検索',
     'chat_browse_default' => '表示',
+
+    "chat_catalog_link" => "カタログを見る",
+    "chat_fallback_not_found" => '":query"に一致するものが見つかりませんでした。カタログを閲覧して、以下の人気商品をご覧いただけます。',
+    "chat_heading_title" => "医薬品購入のためのTrue Meds Bot",
+    "chat_heading_caption" => "より簡単に、より安全に、より速く",
 ];
 

@@ -907,4 +907,9 @@ return [
     'chat_browse_first_letter' => 'Produkter som begynner med',
     'chat_browse_search' => 'Søk',
     'chat_browse_default' => 'Vis',
+
+    "chat_catalog_link" => "Se katalogen vår",
+    "chat_fallback_not_found" => 'Vi fant ikke noe for søket ditt ":query". Du kan bla gjennom katalogen vår og se våre bestselgende produkter nedenfor.',
+    "chat_heading_title" => "True Meds Bot for kjøp av medisiner",
+    "chat_heading_caption" => "Enklere, tryggere, raskere",
 ];

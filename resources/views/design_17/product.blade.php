@@ -13,7 +13,7 @@
             'full_desc' => $product['full_desc'] ?? '',
             'image'     => !empty($product['image']) ? route('home.set_images', $product['image']) : '',
             'aktiv'     => $product['aktiv'] ?? [],
-            'packs'     => $product['packs'] ?? [],   // приходит сгруппированным по dosage — нормализуем в JS
+            'packs'     => $product['packs'] ?? [],
             'currency_prefix' => $Currency::$prefix[session('currency', 'usd')] ?? '$',
             'currency_coef'   => (float) session('currency_c', 1),
         ];

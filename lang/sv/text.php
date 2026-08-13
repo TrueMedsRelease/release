@@ -904,4 +904,9 @@ return [
     'chat_browse_first_letter' => 'Produkter som börjar med',
     'chat_browse_search' => 'Sök',
     'chat_browse_default' => 'Visa',
+
+    "chat_catalog_link" => "Visa vår katalog",
+    "chat_fallback_not_found" => 'Vi kunde inte hitta något för din sökning ":query". Du kan bläddra i vår katalog och se våra bästsäljande produkter nedan.',
+    "chat_heading_title" => "True Meds Bot för köp av läkemedel",
+    "chat_heading_caption" => "Enklare, säkrare, snabbare",
 ];

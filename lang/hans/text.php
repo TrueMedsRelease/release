@@ -909,4 +909,9 @@ return [
     'chat_browse_first_letter' => '以此开头的产品',
     'chat_browse_search' => '搜索',
     'chat_browse_default' => '显示',
+
+    "chat_catalog_link" => "查看我们的产品目录",
+    "chat_fallback_not_found" => '我们未能找到与您的查询":query"相关的内容。您可以浏览我们的产品目录，并查看下面的热销产品。',
+    "chat_heading_title" => "True Meds 药品购买机器人",
+    "chat_heading_caption" => "更简单、更安全、更快捷",
 ];

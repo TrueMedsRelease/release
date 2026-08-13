@@ -904,4 +904,9 @@ return [
     'chat_browse_first_letter' => 'Produkty začínajúce na',
     'chat_browse_search' => 'Hľadať',
     'chat_browse_default' => 'Zobraziť',
+
+    "chat_catalog_link" => "Zobraziť náš katalóg",
+    "chat_fallback_not_found" => 'Pre vaše vyhľadávanie ":query" sa nám nepodarilo nič nájsť. Môžete si prezrieť náš katalóg a nižšie nájdete naše najpredávanejšie produkty.',
+    "chat_heading_title" => "True Meds Bot na nákup liekov",
+    "chat_heading_caption" => "Jednoduchšie, bezpečnejšie, rýchlejšie",
 ];

@@ -900,4 +900,9 @@ return [
     'chat_browse_first_letter' => 'Produse care încep cu',
     'chat_browse_search' => 'Caută',
     'chat_browse_default' => 'Afișează',
+
+    "chat_catalog_link" => "Vezi catalogul nostru",
+    "chat_fallback_not_found" => 'Nu am găsit nimic pentru căutarea dvs. ":query". Puteți răsfoi catalogul nostru și puteți vedea mai jos produsele noastre cele mai vândute.',
+    "chat_heading_title" => "True Meds Bot pentru cumpărarea medicamentelor",
+    "chat_heading_caption" => "Mai ușor, mai sigur, mai rapid",
 ];

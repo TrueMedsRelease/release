@@ -908,4 +908,9 @@ return [
     'chat_browse_first_letter' => 'المنتجات التي تبدأ بـ',
     'chat_browse_search' => 'بحث',
     'chat_browse_default' => 'عرض',
+
+    "chat_catalog_link" => "عرض الكتالوج الخاص بنا",
+    "chat_fallback_not_found" => 'لم نتمكن من العثور على أي شيء لطلب البحث ":query". يمكنك تصفح الكتالوج الخاص بنا والاطلاع على منتجاتنا الأكثر مبيعًا أدناه.',
+    "chat_heading_title" => "إنه روبوت True Meds لشراء الأدوية",
+    "chat_heading_caption" => "أسهل، أكثر أمانًا، أسرع",
 ];

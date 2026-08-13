@@ -906,4 +906,9 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     'chat_browse_first_letter' => 'Produk yang bermula dengan',
     'chat_browse_search' => 'Cari',
     'chat_browse_default' => 'Tunjukkan',
+
+    "chat_catalog_link" => "Lihat katalog kami",
+    "chat_fallback_not_found" => 'Kami tidak dapat menemui apa-apa untuk carian anda ":query". Anda boleh melayari katalog kami dan melihat produk terlaris kami di bawah.',
+    "chat_heading_title" => "True Meds Bot untuk membeli ubat",
+    "chat_heading_caption" => "Lebih mudah, lebih selamat, lebih pantas",
 ];

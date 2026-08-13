@@ -903,4 +903,9 @@ return [
     'chat_browse_first_letter' => 'Προϊόντα που ξεκινούν με',
     'chat_browse_search' => 'Αναζήτηση',
     'chat_browse_default' => 'Εμφάνιση',
+
+    "chat_catalog_link" => "Δείτε τον κατάλογό μας",
+    "chat_fallback_not_found" => 'Δεν μπορέσαμε να βρούμε κάτι για το ερώτημά σας ":query". Μπορείτε να περιηγηθείτε στον κατάλογό μας και να δείτε τα προϊόντα με τις περισσότερες πωλήσεις παρακάτω.',
+    "chat_heading_title" => "True Meds Bot για αγορά φαρμάκων",
+    "chat_heading_caption" => "Πιο εύκολα, πιο ασφαλή, πιο γρήγορα",
 ];

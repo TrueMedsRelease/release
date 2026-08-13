@@ -990,4 +990,9 @@ return [
     'chat_browse_first_letter' => 'Produkty začínající na',
     'chat_browse_search' => 'Hledat',
     'chat_browse_default' => 'Zobrazit',
+
+    "chat_catalog_link" => "Zobrazit náš katalog",
+    "chat_fallback_not_found" => 'Pro váš dotaz ":query" se nám nepodařilo nic najít. Můžete si prohlédnout náš katalog a níže najdete naše nejprodávanější produkty.',
+    "chat_heading_title" => "True Meds Bot pro nákup léků",
+    "chat_heading_caption" => "Snadněji, bezpečněji, rychleji",
 ];

@@ -174,9 +174,12 @@
                 captcha_submit: "{{ __('text.captcha_submit') }}",
                 delivery_express: "{{ __('text.cart_free_express') }}",
                 delivery_regular: "{{ __('text.cart_free_regular') }}",
+                heading_title: "{{ __('text.chat_heading_title') }}",
+                heading_caption: "{{ __('text.chat_heading_caption') }}",
             };
 
             window.routeChatBrowse = @json(url('/chat/browse/__TYPE__/__SLUG__'));
+            window.design17ChatLocale = '{{ App::currentLocale() }}';
         </script>
 
         @if($hideMedbotChat)
@@ -401,22 +404,22 @@
                             </button>
                         </div> --}}
                     </div>
-                    @if (!request()->routeIs(['catalog.index', 'cart.index', 'checkout.index']))
-                    <div class="thread-box js-chat-form">
-                        <label class="thread-box__label textarea-field">
-                            <textarea class="thread-box__input input-textarea js-chat-input"
-                                        rows="1" placeholder=" " autocomplete="off"
-                                        maxlength="512" required></textarea>
-                            <span class="thread-box__placeholder">{{ __('text.common_search_medbot') }}</span>
-                        </label>
-                        <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
-                            <span class="icon">
-                                <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}#arrow-up"></use>
-                                </svg>
-                            </span>
-                        </button>
-                    </div>
+                    @if (!request()->routeIs(['catalog.index', 'cart.index', 'checkout.index', 'home.about', 'home.contact_us', 'home.testimonials', 'home.delivery', 'home.moneyback', 'home.bonus_referral_program', 'home.affiliate']))
+                        <div class="thread-box js-chat-form">
+                            <label class="thread-box__label textarea-field">
+                                <textarea class="thread-box__input input-textarea js-chat-input"
+                                            rows="1" placeholder=" " autocomplete="off"
+                                            maxlength="512" required></textarea>
+                                <span class="thread-box__placeholder">{{ __('text.common_search_medbot') }}</span>
+                            </label>
+                            <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
+                                <span class="icon">
+                                    <svg width="1em" height="1em" fill="currentColor">
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}#arrow-up"></use>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
                     @endif
                     {{-- @else
                         @yield('content')
@@ -524,98 +527,100 @@
                 <div class="drawer__body js-product-drawer-body"></div>
             </aside>
             <footer class="footer">
-                <div class="sup-footer container">
-                    <div class="footer-testimonials">
-                        <div class="swiper footer-testimonials__swiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_1') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                @if (!request()->routeIs('home.testimonials'))
+                    <div class="sup-footer container">
+                        <div class="footer-testimonials">
+                            <div class="swiper footer-testimonials__swiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_1') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_1') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_1') }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_7') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_7') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_7') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_7') }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_13') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_13') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_13') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_13') }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_17') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_17') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_17') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_17') }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="footer__container container">
                     <div class="footer__wrapper">

@@ -911,4 +911,9 @@ return [
     'chat_browse_first_letter' => 'Tuotteet, jotka alkavat kirjaimella',
     'chat_browse_search' => 'Hae',
     'chat_browse_default' => 'Näytä',
+
+    "chat_catalog_link" => "Katso luettelomme",
+    "chat_fallback_not_found" => 'Emme löytäneet mitään haullasi ":query". Voit selata luetteloamme ja tutustua alla oleviin suosituimpiin tuotteisiimme.',
+    "chat_heading_title" => "True Meds Bot lääkkeiden ostamiseen",
+    "chat_heading_caption" => "Helpommin, turvallisemmin, nopeammin",
 ];

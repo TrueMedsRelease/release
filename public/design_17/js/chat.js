@@ -448,10 +448,20 @@
         );
     }
 
+    var COMPACT_CART_LOCALES = ['de', 'it', 'gr', 'nl', 'hu', 'pt'];
 
-    function svgIcon(name, className) {
+    function isCompactCartLocale() {
+        var locale = String(window.design17ChatLocale || '').toLowerCase();
+        if (!locale && document.documentElement) {
+            locale = String(document.documentElement.getAttribute('lang') || '').toLowerCase();
+        }
+        locale = locale.split('-')[0].split('_')[0];
+        return COMPACT_CART_LOCALES.indexOf(locale) !== -1;
+    }
+
+    function svgIcon(name, className, style) {
         var cls = className || '';
-        return '<span class="icon ' + cls + '"><svg width="1em" height="1em" fill="currentColor">' +
+        return '<span class="icon ' + cls + '"' + (style ? ' style="' + style + '"' : '') + '><svg width="1em" height="1em" fill="currentColor">' +
             '<use href="' + (window.design17SvgSprite || 'svg/icons/sprite.svg') + '#' + name + '"></use>' +
             '</svg></span>';
     }
@@ -1368,7 +1378,7 @@
 
     function buildPackTableHtml(packs, productName) {
         if (!packs.length) return '';
-
+        var compactCart = isCompactCartLocale();
         var maxPillPrice = 0;
         packs.forEach(function (pack) {
             if (pack.quantity && pack.quantity > 0 && pack.price > 0) {
@@ -1376,11 +1386,11 @@
                 if (pp > maxPillPrice) maxPillPrice = pp;
             }
         });
-
         var rowsHtml = '';
         packs.forEach(function (pack, idx) {
             var isFirstRow = (idx === 0);
             var isLastRow = (idx === packs.length - 1);
+
             var discountHtml = '';
             if (!isLastRow && maxPillPrice > 0 && pack.quantity > 0 && pack.price > 0) {
                 var oldPrice = maxPillPrice * pack.quantity;
@@ -1392,10 +1402,7 @@
                 }
             }
 
-            var discountHtmlFirstRow = isFirstRow && discountHtml !== '';
-
             var deliveryText = pack.delivery || '';
-
             if (!deliveryText) {
                 if (pack.price >= 300) {
                     deliveryText = getText('delivery_express');
@@ -1413,10 +1420,19 @@
                 perPillHtml = formatPrice(pack.price / pack.quantity);
             }
 
+            var buttonHtml = compactCart
+                ? '<button class="button product__button" type="button" style="padding: 0;" data-pack-url="' + escapeHtml(pack.add_url || '') + '">' +
+                    svgIcon('cart-white', '', 'display: flex; width: 4rem; justify-content: center;') +
+                '</button>'
+                : '<button class="button product__button" type="button" data-pack-url="' + escapeHtml(pack.add_url || '') + '">' +
+                    svgIcon('cart-white') +
+                    '<span class="button__text">' + getText('add_to_cart') + '</span>' +
+                '</button>';
+
             rowsHtml +=
                 '<tr class="product">' +
                     '<td class="product__info-wrapper">' +
-                        '<div class="product__info' + (discountHtmlFirstRow ? ' product__info--sale' : '') + '"' +
+                        '<div class="product__info' + (isFirstRow ? ' product__info--sale' : '') + '"' +
                             (isFirstRow ? ' style="height: auto;"' : '') + '>' +
                             '<div class="product__quantity">' + escapeHtml(String(pack.quantity)) +
                                 (pack.unit ? ' ' + escapeHtml(pack.unit) : '') +
@@ -1432,19 +1448,14 @@
                         '</div>' +
                     '</td>' +
                     '<td class="product__button-wrapper">' +
-                        '<button class="button product__button" type="button" data-pack-url="' + escapeHtml(pack.add_url || '') + '">' +
-                            svgIcon('cart-white') +
-                            '<span class="button__text">' + getText('add_to_cart') + '</span>' +
-                        '</button>' +
+                        buttonHtml +
                     '</td>' +
                 '</tr>';
         });
-
         var dosageLabel = packs[0].dosage || '';
         var headerHtml = dosageLabel
             ? '<div class="panel__header"><h2 class="h2">' + escapeHtml(productName || '') + ' ' + escapeHtml(dosageLabel) + '</h2></div>'
             : '';
-
         return '' +
             '<div class="panel">' +
                 headerHtml +
@@ -2197,6 +2208,8 @@
         catalog_link: 'View our catalog',
         delivery_express: 'Free Express Delivery',
         delivery_regular: 'Free Regular Delivery',
+        heading_title: 'Its\' True Meds Bot for buying Drugs',
+        heading_caption: 'Easier, Safer, Faster',
     };
 
     var previousTextSelections = {};
@@ -2414,8 +2427,8 @@
 
         var heading = createElement(
             '<h1 class="main-heading js-chat-start-heading">' +
-                '<span class="main-heading__title">Its\' True Meds Bot for buying Drugs</span>' +
-                '<span class="main-heading__caption">Easier, Safer, Faster</span>' +
+                '<span class="main-heading__title">'+ escapeHtml(getText('heading_title')) +'</span>' +
+                '<span class="main-heading__caption">'+ escapeHtml(getText('heading_caption')) +'</span>' +
             '</h1>'
         );
 

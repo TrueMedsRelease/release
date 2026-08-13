@@ -1196,4 +1196,6 @@ return [
 
     "chat_catalog_link" => "View our catalog",
     "chat_fallback_not_found" => 'We couldn\'t find anything for your query ":query". You can browse our catalog and see our bestsellers below.',
+    "chat_heading_title"   => "It`s True Meds Bot for buying Drugs",
+    "chat_heading_caption" => "Easier, Safer, Faster",
 ];

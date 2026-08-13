@@ -944,4 +944,9 @@ return [
     'chat_browse_first_letter' => 'Producten die beginnen met',
     'chat_browse_search' => 'Zoeken',
     'chat_browse_default' => 'Tonen',
+
+    "chat_catalog_link" => "Bekijk onze catalogus",
+    "chat_fallback_not_found" => 'We konden niets vinden voor uw zoekopdracht ":query". U kunt onze catalogus bekijken en hieronder onze bestverkochte producten zien.',
+    "chat_heading_title" => "True Meds Bot voor het kopen van medicijnen",
+    "chat_heading_caption" => "Eenvoudiger, veiliger, sneller",
 ];
