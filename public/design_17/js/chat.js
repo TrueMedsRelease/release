@@ -94,10 +94,13 @@
                     currencyCoef = payload.currency.coef || 1;
                 }
                 if (payload.status === 'done') {
+                    setState(State.DONE);
                     renderAgentAnswer(payload.answer || '', payload.products);
                 } else if (payload.status === 'error') {
+                    setState(State.ERROR);
                     renderAgentError(payload.message || getText('error_unknown'));
                 }
+                pollInFlight = false;
                 remoteSkeletonRow = null;
             } else {
                 renderRemoteMessage(payload);
@@ -1680,6 +1683,7 @@
 
     function stopPolling() {
         pollActive = false;
+        pollInFlight = false;
         if (pollTimer) {
             clearTimeout(pollTimer);
             pollTimer = null;
@@ -1726,6 +1730,7 @@
 
     function pollMessage(messageId) {
         if (!pollActive || pollInFlight) return; // ← никогда не летит 2 запроса сразу
+        if (messageId !== activeMessageId) return; // ← устаревший poll от предыдущего сообщения
         pollInFlight = true;
 
         pollRetries++;
@@ -1811,9 +1816,11 @@
 
     // ── Main flow ──
 
+    var sendInFlight = false;
+
     function sendMessage(text) {
-        if (state === State.SENDING || state === State.POLLING) {
-            log('warn', 'sendMessage: blocked, current state=' + state);
+        if (sendInFlight || state === State.SENDING || state === State.POLLING) {
+            log('warn', 'sendMessage: blocked, current state=' + state + ', sendInFlight=' + sendInFlight);
             return;
         }
 
@@ -1829,10 +1836,12 @@
             return;
         }
 
+        sendInFlight = true;
         setState(State.SENDING);
 
         var activated = activateChat();
         if (!activated) {
+            sendInFlight = false;
             setState(State.IDLE);
             log('warn', 'sendMessage: could not activate chat thread');
 
@@ -1851,6 +1860,7 @@
             setState(State.POLLING);
             remoteSkeletonRow = activeSkeletonRow;
             crossBus.emit('chat:query', { message: cleanText, tabId: crossBus.getTabId() });
+            sendInFlight = false;
             return;
         }
 
@@ -1872,6 +1882,8 @@
             return response.json();
         })
         .then(function (data) {
+            sendInFlight = false;
+
             if (data.captcha_required) {
                 setState(State.IDLE);
                 showCaptchaModal(data.captcha_src, data.message, cleanText);
@@ -1891,6 +1903,7 @@
             startPolling(data.message_id);
         })
         .catch(function (err) {
+            sendInFlight = false;
             setState(State.ERROR);
             updateSkeletonStatus('error');
             renderAgentError(err.message || getText('error_network'));
