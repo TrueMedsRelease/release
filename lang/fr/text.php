@@ -1028,4 +1028,11 @@ return [
     "captcha_submit" => "Continuer",
 
     "common_search_medbot" => "Saisissez votre recherche, vos symptômes ou le nom du produit...",
+
+    'chat_browse_active' => 'Afficher les produits contenant le principe actif',
+    'chat_browse_category' => 'Afficher les produits de la catégorie',
+    'chat_browse_disease' => 'Afficher les produits pour',
+    'chat_browse_first_letter' => 'Produits commençant par',
+    'chat_browse_search' => 'Rechercher',
+    'chat_browse_default' => 'Afficher',
 ];

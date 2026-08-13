@@ -904,4 +904,11 @@ return [
     "captcha_submit" => "Jatka",
 
     "common_search_medbot" => "Kirjoita hakusi, oireet tai tuotteen nimi...",
+
+    'chat_browse_active' => 'Näytä tuotteet, jotka sisältävät vaikuttavaa ainetta',
+    'chat_browse_category' => 'Näytä kategorian tuotteet',
+    'chat_browse_disease' => 'Näytä tuotteet kohteelle',
+    'chat_browse_first_letter' => 'Tuotteet, jotka alkavat kirjaimella',
+    'chat_browse_search' => 'Hae',
+    'chat_browse_default' => 'Näytä',
 ];

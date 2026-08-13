@@ -898,4 +898,11 @@ return  [
     "captcha_submit" => "繼續",
 
     "common_search_medbot" => "輸入搜尋內容、症狀或產品名稱...",
+
+    'chat_browse_active' => '顯示含有活性成分的產品',
+    'chat_browse_category' => '顯示此類別的產品',
+    'chat_browse_disease' => '顯示用於治療的產品',
+    'chat_browse_first_letter' => '以此開頭的產品',
+    'chat_browse_search' => '搜尋',
+    'chat_browse_default' => '顯示',
 ];

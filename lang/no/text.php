@@ -900,4 +900,11 @@ return [
     "captcha_submit" => "Fortsett",
 
     "common_search_medbot" => "Skriv inn søket ditt, symptomer eller produktnavn...",
+
+    'chat_browse_active' => 'Vis produkter med virkestoff',
+    'chat_browse_category' => 'Vis produkter fra kategorien',
+    'chat_browse_disease' => 'Vis produkter for',
+    'chat_browse_first_letter' => 'Produkter som begynner med',
+    'chat_browse_search' => 'Søk',
+    'chat_browse_default' => 'Vis',
 ];

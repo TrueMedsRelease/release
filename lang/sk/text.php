@@ -897,4 +897,11 @@ return [
     "captcha_submit" => "Pokračovať",
 
     "common_search_medbot" => "Zadajte vyhľadávací dopyt, príznaky alebo názov produktu...",
+
+    'chat_browse_active' => 'Zobraziť produkty s účinnou látkou',
+    'chat_browse_category' => 'Zobraziť produkty z kategórie',
+    'chat_browse_disease' => 'Zobraziť produkty na',
+    'chat_browse_first_letter' => 'Produkty začínajúce na',
+    'chat_browse_search' => 'Hľadať',
+    'chat_browse_default' => 'Zobraziť',
 ];

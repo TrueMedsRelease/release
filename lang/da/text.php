@@ -947,4 +947,11 @@ return [
     "captcha_submit" => "Fortsæt",
 
     "common_search_medbot" => "Indtast din søgeforespørgsel, symptomer eller produktnavn...",
+
+    'chat_browse_active' => 'Vis produkter med aktivt stof',
+    'chat_browse_category' => 'Vis produkter fra kategorien',
+    'chat_browse_disease' => 'Vis produkter til',
+    'chat_browse_first_letter' => 'Produkter, der starter med',
+    'chat_browse_search' => 'Søg',
+    'chat_browse_default' => 'Vis',
 ];

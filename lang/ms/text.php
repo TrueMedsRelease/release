@@ -899,4 +899,11 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "captcha_submit" => "Teruskan",
 
     "common_search_medbot" => "Masukkan carian, simptom atau nama produk...",
+
+    'chat_browse_active' => 'Tunjukkan produk dengan bahan aktif',
+    'chat_browse_category' => 'Tunjukkan produk daripada kategori',
+    'chat_browse_disease' => 'Tunjukkan produk untuk',
+    'chat_browse_first_letter' => 'Produk yang bermula dengan',
+    'chat_browse_search' => 'Cari',
+    'chat_browse_default' => 'Tunjukkan',
 ];

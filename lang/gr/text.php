@@ -896,4 +896,11 @@ return [
     "captcha_submit" => "Συνέχεια",
 
     "common_search_medbot" => "Εισαγάγετε το ερώτημα αναζήτησης, τα συμπτώματα ή το όνομα του προϊόντος...",
+
+    'chat_browse_active' => 'Εμφάνιση προϊόντων με δραστική ουσία',
+    'chat_browse_category' => 'Εμφάνιση προϊόντων από την κατηγορία',
+    'chat_browse_disease' => 'Εμφάνιση προϊόντων για',
+    'chat_browse_first_letter' => 'Προϊόντα που ξεκινούν με',
+    'chat_browse_search' => 'Αναζήτηση',
+    'chat_browse_default' => 'Εμφάνιση',
 ];

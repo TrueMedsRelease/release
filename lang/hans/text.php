@@ -902,4 +902,11 @@ return [
     "captcha_submit" => "继续",
 
     "common_search_medbot" => "输入搜索内容、症状或产品名称...",
+
+    'chat_browse_active' => '显示含有活性成分的产品',
+    'chat_browse_category' => '显示该类别的产品',
+    'chat_browse_disease' => '显示用于治疗的产品',
+    'chat_browse_first_letter' => '以此开头的产品',
+    'chat_browse_search' => '搜索',
+    'chat_browse_default' => '显示',
 ];

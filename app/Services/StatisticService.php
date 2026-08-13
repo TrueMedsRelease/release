@@ -9,6 +9,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Services\TrueServService;
 
 class StatisticService
 {
@@ -100,7 +101,7 @@ class StatisticService
             "user_agent"  => request()->userAgent(),
             'is_checkout_data_send' => session('is_checkout_data_send', 0)
         ];
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
 

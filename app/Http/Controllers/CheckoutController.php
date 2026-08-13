@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use App\Helpers\RequestHelper;
+use App\Services\TrueServService;
 
 class CheckoutController extends Controller
 {
@@ -73,7 +74,7 @@ class CheckoutController extends Controller
             'api_key' => $api_key->key_data,
         ];
 
-        if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-serv.net', 'A')) {
+        if (env("APP_PAYPAL_ON", false) && TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $message);
                 Log::info("Paypal limit answer: " . $response);
@@ -266,7 +267,7 @@ class CheckoutController extends Controller
         }
 
         $service_enable = true;
-        if (!checkdnsrr('true-serv.net', 'A')) {
+        if (!TrueServService::available()) {
             $service_enable = false;
         }
 
@@ -398,7 +399,7 @@ class CheckoutController extends Controller
             'coupon'  => $coupon,
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Coupon answer: " . $response);
@@ -443,7 +444,7 @@ class CheckoutController extends Controller
             'gift_card'  => $gift_card,
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Gift Card answer: " . $response);
@@ -481,7 +482,7 @@ class CheckoutController extends Controller
         $bonus_api_key = DB::table('shop_keys')->where('name_key', '=', 'bonus_card')->get('key_data')->toArray()[0];
         $bonus_card = str_replace(' ', '', $request->bonus_card);
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->withHeaders([
                         'X-API-KEY' => $bonus_api_key->key_data,
@@ -642,7 +643,7 @@ class CheckoutController extends Controller
             'ip'      => $ip
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info('Response AUTH: ' . $response);
@@ -964,7 +965,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse  = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Order answer: " . $httpResponse);
@@ -1236,7 +1237,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Paypal answer: " . $httpResponse);
@@ -1341,7 +1342,7 @@ class CheckoutController extends Controller
             'currency' => $request->currency,
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Crypto info answer: " . $response);
@@ -1517,7 +1518,7 @@ class CheckoutController extends Controller
             'is_pwa' => session('is_pwa', 0),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -1603,7 +1604,7 @@ class CheckoutController extends Controller
 
             $local_payment_api_key = DB::table('shop_keys')->where('name_key', '=', 'local_payment')->get('key_data')->toArray()[0];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(10)
                         ->withHeaders([
@@ -1769,7 +1770,7 @@ class CheckoutController extends Controller
             'is_pwa' => session('is_pwa', 0),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -1937,7 +1938,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Transfer answer: " . $httpResponse);
@@ -2074,7 +2075,7 @@ class CheckoutController extends Controller
                 'order_id' => session('order.order_id'),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2108,7 +2109,7 @@ class CheckoutController extends Controller
                 ];
             }
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2153,7 +2154,7 @@ class CheckoutController extends Controller
             //     'invoiceId' => session('crypto.invoiceId'),
             // ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2503,7 +2504,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2654,7 +2655,7 @@ class CheckoutController extends Controller
 
         $order_cache_id = $this->getOrCreateOrderCache($data, $form['email']);
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("GooglePay answer: " . $httpResponse);
@@ -2892,7 +2893,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -3058,7 +3059,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Sepa answer: " . $httpResponse);
@@ -3179,7 +3180,7 @@ class CheckoutController extends Controller
             'aff'         => session('aff', 0),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -3345,7 +3346,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Zelle Data answer: " . $response);
@@ -3415,7 +3416,7 @@ class CheckoutController extends Controller
     //         'sessid' => $sessid
     //     ];
 
-    //     if (checkdnsrr('true-serv.net', 'A')) {
+    //     if (TrueServService::available()) {
     //         try {
     //             Log::info("PayVMC data answer: " . json_encode($data));
     //             $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
@@ -3606,7 +3607,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Bonus Card answer: " . $httpResponse);
@@ -3846,7 +3847,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Gift Card answer: " . $httpResponse);
@@ -4081,7 +4082,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -4337,7 +4338,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Wallet answer: " . $httpResponse);
@@ -4639,7 +4640,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Open Banking answer: " . $httpResponse);
@@ -4826,7 +4827,7 @@ class CheckoutController extends Controller
 
     private function retryUnsentOrders(): void
     {
-        if (!checkdnsrr('true-serv.net', 'A')) {
+        if (!TrueServService::available()) {
             return;
         }
 
@@ -5223,7 +5224,7 @@ class CheckoutController extends Controller
             'sessid'   => session()->getId(),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 Log::info("PayVMC data answer: " . json_encode($data));
 

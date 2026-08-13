@@ -32,6 +32,11 @@
     var statusTextTimer = null;
     var activeStatusName = null;
 
+    function isChatDisabledPage() {
+        return window.design17ChatDisabled === true;
+    }
+
+
     function initCrossTabSync() {
         if (typeof CrossTabBus === 'undefined') return;
         crossBus = CrossTabBus;
@@ -2335,6 +2340,10 @@
     }
 
     function restoreHeading() {
+        if (isChatDisabledPage()) {
+            return;
+        }
+
         var container = getChatContainer();
         if (!container) return;
 
@@ -2422,6 +2431,11 @@
     // ── Init ──
 
     function init() {
+        if (isChatDisabledPage()) {
+            log('debug', 'init: chat disabled on this page');
+            return;
+        }
+
         log('debug', 'init');
 
         initCrossTabSync();
@@ -2703,12 +2717,12 @@
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function () {
-            if (getChatContainer()) {
+            if (!isChatDisabledPage() && getChatContainer()) {
                 init();
             }
         });
     } else {
-        if (getChatContainer()) {
+        if (!isChatDisabledPage() && getChatContainer()) {
             init();
         }
     }
