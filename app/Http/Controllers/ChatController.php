@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ChatController extends Controller
 {
+    private const GIFT_PRODUCT_ID = 616;
     private MedicalAssistantService $medicalAssistant;
 
     public function __construct()
@@ -122,7 +123,7 @@ class ChatController extends Controller
                     'reason' => $fallbackReason,
                 ]);
 
-                return $this->fallbackToSearch($pending['query'] ?? '');
+                return $this->fallbackToSearch($pending['query'] ?? '', 'service_unavailable');
             }
 
             try {
@@ -143,7 +144,7 @@ class ChatController extends Controller
                     'error' => $e->getMessage(),
                 ]);
 
-                return $this->fallbackToSearch($pending['query'] ?? '');
+                return $this->fallbackToSearch($pending['query'] ?? '', 'service_error');
             }
 
             if (!$result['ok']) {
@@ -159,7 +160,7 @@ class ChatController extends Controller
                     'error' => $result['error'],
                 ]);
 
-                return $this->fallbackToSearch($pending['query'] ?? '');
+                return $this->fallbackToSearch($pending['query'] ?? '', 'service_error');
             }
 
             $realId = $result['data']['id'] ?? null;
@@ -174,7 +175,7 @@ class ChatController extends Controller
                     'query' => $pending['query'] ?? '',
                 ]);
 
-                return $this->fallbackToSearch($pending['query'] ?? '');
+                return $this->fallbackToSearch($pending['query'] ?? '', 'service_error');
             }
 
             Cache::forget($pendingKey);
@@ -234,7 +235,7 @@ class ChatController extends Controller
                         'query' => $query,
                         'error' => $result['error'],
                     ]);
-                    return $this->fallbackToSearch($query);
+                    return $this->fallbackToSearch($query, 'service_error');
                 }
 
                 return $this->buildErrorResponse($result['error'], $result['http_status']);
@@ -259,7 +260,7 @@ class ChatController extends Controller
                 ]);
                 $query = Cache::get("chat_query:{$localId}", '');
                 if ($query !== '') {
-                    return $this->fallbackToSearch($query);
+                    return $this->fallbackToSearch($query, 'service_error');
                 }
                 return $this->buildErrorResponse('server_error', 500);
             }
@@ -277,34 +278,71 @@ class ChatController extends Controller
                 'status' => $status,
             ]);
 
-            if ($status === 'done' && !empty($data['result'])) {
-                $apiResult = $data['result'];
-                $response['answer'] = $apiResult['answer'] ?? '';
-                $response['language'] = $apiResult['language'] ?? 'en';
-                $response['product_ids'] = $apiResult['product_ids'] ?? [];
+            if ($status === 'error') {
+                $query = Cache::get("chat_query:{$localId}", '');
 
+                Log::info('[ChatController.pollMessage] medbot returned error status, fallback to shop search', [
+                    'msg_id' => $messageId,
+                    'local_id' => $localId,
+                    'query' => $query,
+                ]);
+
+                return $this->fallbackToSearch($query, 'medbot_error');
+            }
+
+            if ($status === 'done' && !empty($data['result'])) {
+                $apiResult = $data['result'] ?? [];
                 $productIds = $apiResult['product_ids'] ?? [];
 
-                if (!empty($productIds)) {
-                    Log::debug('[ChatController.pollMessage] fetching products', [
-                        'product_ids' => $productIds,
+                if (empty($productIds)) {
+                    $query = Cache::get("chat_query:{$localId}", '');
+
+                    Log::info('[ChatController.pollMessage] medbot returned empty product list, fallback to shop search', [
+                        'msg_id' => $messageId,
+                        'local_id' => $localId,
+                        'query' => $query,
                     ]);
-                    $products = $this->fetchShopProducts($productIds);
-                    Log::info('[ChatController.pollMessage] products fetched', [
-                        'count' => count($products),
-                    ]);
-                    $response['products'] = $products;
-                } else {
-                    $response['products'] = [];
+
+                    return $this->fallbackToSearch($query, 'empty_products');
                 }
 
+                Log::debug('[ChatController.pollMessage] fetching products', [
+                    'product_ids' => $productIds,
+                ]);
+
+                $products = $this->fetchShopProducts($productIds);
+
+                Log::info('[ChatController.pollMessage] products fetched', [
+                    'count' => count($products),
+                ]);
+
+                if (empty($products)) {
+                    $query = Cache::get("chat_query:{$localId}", '');
+
+                    Log::info('[ChatController.pollMessage] medbot products not found in shop, fallback to shop search', [
+                        'msg_id' => $messageId,
+                        'local_id' => $localId,
+                        'query' => $query,
+                    ]);
+
+                    return $this->fallbackToSearch($query, 'empty_products');
+                }
+
+                $response['answer'] = $apiResult['answer'] ?? '';
+                $response['language'] = $apiResult['language'] ?? 'en';
+                $response['product_ids'] = $productIds;
+                $response['products'] = $products;
                 $response['currency'] = [
                     'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
                     'code' => session('currency', 'usd'),
                     'coef' => (float) session('currency_c', 1),
                 ];
 
-                $this->appendToHistory('assistant', $response['answer'] ?? '', $response['products']);
+                $this->appendToHistory(
+                    'assistant',
+                    $response['answer'] ?? '',
+                    $response['products']
+                );
             }
 
             return response()->json($response);
@@ -321,7 +359,7 @@ class ChatController extends Controller
                 Log::info('[ChatController.pollMessage] fallback activated (exception in polling)', [
                     'query' => $query,
                 ]);
-                return $this->fallbackToSearch($query);
+                return $this->fallbackToSearch($query, 'service_error');
             }
 
             return $this->buildErrorResponse('server_error', 500);
@@ -401,18 +439,26 @@ class ChatController extends Controller
         }
     }
 
-    private function buildFallbackResponse(string $query, array $products): JsonResponse
+    private function buildFallbackResponse(string $query, array $products, string $reason = "service_error"): JsonResponse
     {
+        $catalogUrl = $this->getCatalogUrl();
+        $catalogLabel = $this->getCatalogLabel();
+
+        $showCatalogLink = false;
+
         if (empty($products)) {
-            $answer = __('text.search_result_nothing_found1') . ' «' . $query . '» ' . __('text.search_result_nothing_found2') . '. ' . __('text.search_result_nothing_found3');
+            $products = $this->getBestsellerProducts(8);
+            $showCatalogLink = true;
+
+            $key = 'text.chat_fallback_not_found';
+            $answer = __($key, ['query' => $query]);
+
+            if ($answer === $key) {
+                $answer = 'We couldn\'t find anything for your query "' . $query . '". You can browse our catalog and see our bestsellers below.';
+            }
         } else {
             $answer = __('text.search_result_title_page') . ' «' . $query . '».';
         }
-
-        Log::info('[ChatController.buildFallbackResponse]', [
-            'query' => $query,
-            'products_count' => count($products),
-        ]);
 
         return response()->json([
             'success' => true,
@@ -425,7 +471,73 @@ class ChatController extends Controller
                 'coef' => (float) session('currency_c', 1),
             ],
             'steps' => [],
+            'fallback' => true,
+            'fallback_reason' => $reason,
+            'show_catalog_link' => $showCatalogLink,
+            'catalog_url' => $catalogUrl,
+            'catalog_label' => $catalogLabel,
         ]);
+    }
+
+    private function getCatalogUrl(): string
+    {
+        return route('catalog.index');
+    }
+
+    private function getCatalogLabel(): string
+    {
+        $key = 'text.chat_catalog_link';
+        $value = __($key);
+
+        return $value === $key ? 'View our catalog' : $value;
+    }
+
+    private function getBestsellerProducts(int $limit = 8): array
+    {
+        try {
+            $bestsellers = ProductServices::GetBestsellers('design_17');
+
+            if (is_object($bestsellers) && method_exists($bestsellers, 'toArray')) {
+                $bestsellers = $bestsellers->toArray();
+            }
+
+            $ids = [];
+
+            foreach ((array) $bestsellers as $item) {
+                if (is_array($item)) {
+                    if (!empty($item['id'])) {
+                        $ids[] = (int) $item['id'];
+                    } elseif (!empty($item['product_id'])) {
+                        $ids[] = (int) $item['product_id'];
+                    }
+                } elseif (is_object($item)) {
+                    if (!empty($item->id)) {
+                        $ids[] = (int) $item->id;
+                    } elseif (!empty($item->product_id)) {
+                        $ids[] = (int) $item->product_id;
+                    }
+                }
+            }
+
+            if (empty($ids)) {
+                $ids = $this->extractProductIds($bestsellers);
+            }
+
+            $ids = array_values(array_unique(array_filter($ids)));
+            $ids = array_slice($ids, 0, $limit);
+
+            if (empty($ids)) {
+                return [];
+            }
+
+            return $this->fetchShopProducts($ids);
+        } catch (\Throwable $e) {
+            Log::error('[ChatController.getBestsellerProducts] exception', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return [];
+        }
     }
 
     private function resolveCurrentLocale(): string
@@ -474,6 +586,10 @@ class ChatController extends Controller
         }
 
         foreach ($productIds as $apiProductId) {
+            if ((int) $apiProductId === self::GIFT_PRODUCT_ID) {
+                continue;
+            }
+
             $product = Product::where('id', $apiProductId)
                 ->where('is_showed', 1)
                 ->first();
@@ -609,17 +725,23 @@ class ChatController extends Controller
         return $products;
     }
 
-    private function appendToHistory(string $role, string $content, array $products = []): void
+    private function appendToHistory(string $role, string $content, array $products = [], array $meta = []): void
     {
         $history = session('chat_history', []);
         $maxMessages = 50;
 
-        $history[] = [
+        $message = [
             'role' => $role,
             'content' => $content,
             'products' => $products,
             'time' => now()->toIso8601String(),
         ];
+
+        if (!empty($meta)) {
+            $message = array_merge($message, $meta);
+        }
+
+        $history[] = $message;
 
         if (count($history) > $maxMessages) {
             $history = array_slice($history, -$maxMessages);
@@ -667,14 +789,15 @@ class ChatController extends Controller
                     continue;
                 }
 
-                $message['products'] = array_values(array_map(
+                $message['products'] = array_values(array_filter(array_map(
                     static function (array $product) use ($localizedProductsById): array {
                         $productId = (int) ($product['id'] ?? 0);
-
                         return $localizedProductsById[$productId] ?? $product;
                     },
                     $message['products']
-                ));
+                ), static function (array $product): bool {
+                    return (int) ($product['id'] ?? 0) !== self::GIFT_PRODUCT_ID;
+                }));
             }
             unset($message);
 
@@ -699,16 +822,25 @@ class ChatController extends Controller
         ]);
     }
 
-    private function fallbackToSearch(string $query): JsonResponse
+    private function fallbackToSearch(string $query, string $reason = 'service_error'): JsonResponse
     {
         $products = $this->performFallbackSearch($query);
 
         $response = $this->buildFallbackResponse($query, $products);
 
+        $data = $response->getData(true);
+
         $this->appendToHistory(
             'assistant',
-            $response->getData(true)['answer'] ?? '',
-            $products
+            $data['answer'] ?? '',
+            $data['products'] ?? [],
+            [
+                'fallback' => $data['fallback'] ?? true,
+                'fallback_reason' => $data['fallback_reason'] ?? $reason,
+                'show_catalog_link' => $data['show_catalog_link'] ?? false,
+                'catalog_url' => $data['catalog_url'] ?? null,
+                'catalog_label' => $data['catalog_label'] ?? null,
+            ]
         );
 
         return $response;
