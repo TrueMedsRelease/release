@@ -288,16 +288,6 @@
                                 {{ __('text.common_profile') }}
                             </a>
                             <ul class="nav__list">
-                                <li class="nav__item">
-                                    <a class="nav__link nav__link--catalog" href="{{ route("catalog.index") }}">
-                                        <span class="icon">
-                                            <svg width="1em" height="1em" fill="none">
-                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#grid') }}"></use>
-                                            </svg>
-                                        </span>
-                                        <span class="button-text">{{ __('text.common_catalog') }}</span>
-                                    </a>
-                                </li>
                                 @if (count($Language::GetAllLanuages()) > 1)
                                     <li class="nav__item" data-dropdown data-dropdown-hover="toggler" data-dropdown-select>
                                         <a class="nav__link sublist-toggler sublist-toggler--level-1" href="{{ route('home.language', session('locale', 'en')) }}" data-dropdown-button aria-expanded="false">

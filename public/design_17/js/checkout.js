@@ -597,7 +597,11 @@
         $w.html(html);
         initCheckoutComponents($w[0]);
         initCryptoState();
-        if (cryptoTimerInterval && !$w[0].querySelector('#paid')) {
+
+        var requisitesVisible = paymentRequisitesVisible();
+        setPriceControlsDisabled(requisitesVisible);
+
+        if (cryptoTimerInterval && !requisitesVisible) {
             clearInterval(cryptoTimerInterval);
             cryptoTimerInterval = null;
             log.debug('crypto timer stopped (left crypto)');
@@ -773,6 +777,41 @@
             var el = document.getElementById(id);
             if (el) el.disabled = disabled;
         });
+    }
+
+    function setPriceControlsDisabled(disabled) {
+        var selectors = [
+            '[data-action="toggle-insurance"]',
+            '[data-action="toggle-secret"]',
+            '[data-action="change-shipping"]',
+            '[name="coupon"]',
+            '[data-action="apply-coupon"]',
+            '[name="gift_card"]',
+            '[data-action="apply-gift-card"]',
+            '[name="bonus_card"]',
+            '[data-action="apply-bonus-card"]',
+            '[data-action="switch-bonus"]',
+            '[data-action="forget-bonus"]'
+        ];
+        selectors.forEach(function (selector) {
+            var els = document.querySelectorAll(selector);
+            for (var i = 0; i < els.length; i++) {
+                els[i].disabled = disabled;
+            }
+        });
+        log.debug('price controls ' + (disabled ? 'disabled' : 'enabled'));
+    }
+
+    function paymentRequisitesVisible() {
+        var req = document.getElementById('requisites');
+        if (req && !req.hasAttribute('hidden')) {
+            return true;
+        }
+        var localReq = document.querySelector('.content-local-payment');
+        if (localReq && !localReq.hasAttribute('hidden')) {
+            return true;
+        }
+        return false;
     }
 
     function getLoaderMessages() {
@@ -1219,6 +1258,11 @@
                     paymentReverting = false;
                 }
             }
+            var requisitesVisible = paymentRequisitesVisible();
+            setPriceControlsDisabled(requisitesVisible);
+            if (requisitesVisible) {
+                initCryptoState();
+            }
         }
 
         function markPaymentValid() {
@@ -1259,16 +1303,43 @@
         if (type === 'crypto') {
             var valid = validateCheckoutForm();
             if (!valid) { log.warn('crypto: form invalid, reverting'); revertPayment(); return; }
-            markPaymentValid();
-            // disableCheckoutFields(true);
-            showPaymentBlock(type);
-            savePaymentType();
+            requestCheckout('validateForCrypt', {}, { raw: true }).then(function () {
+                markPaymentValid();
+                // disableCheckoutFields(true);
+                showPaymentBlock(type);
+                savePaymentType();
+            }, function () {
+                log.warn('crypto: validateForCrypt rejected, reverting', { type: type });
+                revertPayment();
+            });
             return;
         } else {
             disableCheckoutFields(false);
+            setPriceControlsDisabled(false);
+            stopCryptoTimer();
         }
 
         showPaymentBlock(type);
+
+        if (type === 'sepa') {
+            requestCheckout('validateForSepa', {}, { raw: true }).then(function () {
+                recalc();
+            }, function () {
+                log.warn('sepa: validateForSepa rejected, reverting', { type: type });
+                revertPayment();
+            });
+            return;
+        }
+
+        if (type === 'google_pay' || type === 'apple_pay') {
+            requestCheckout('validateForWallet', { wallet: type }, { raw: true }).then(function () {
+                recalc();
+            }, function () {
+                log.warn('wallet: validateForWallet rejected, reverting', { type: type });
+                revertPayment();
+            });
+            return;
+        }
 
         var localTypes = ['sepa_local', 'fps', 'domestic', 'ach', 'interac', 'usd_swift', 'gbp_swift'];
         if (localTypes.indexOf(type) !== -1) {
@@ -1450,6 +1521,7 @@
                 if (!data) { log.warn('crypto_info empty response'); return; }
                 if (data.status === 'error') { window.LegacyUI.alert({ type: 'error', message: data.text || 'Crypto error', duration: 5000 }); return; }
                 if (req) req.removeAttribute('hidden');
+                setPriceControlsDisabled(true);
                 log.debug('crypto_info data', { keys: Object.keys(data) });
                 setText('crypto_total', data.amount != null ? data.amount : data.crypto_total);
                 setText('purse', data.purse);
@@ -1587,6 +1659,7 @@
                 var req = document.getElementById('zelle_requisites');
                 if (req) req.removeAttribute('hidden');
                 btn.setAttribute('hidden', '');
+                setPriceControlsDisabled(true);
             } else {
                 handlePaymentResponse(resp);
             }

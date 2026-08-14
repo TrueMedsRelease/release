@@ -341,6 +341,8 @@ class CheckoutController extends Controller
 
         session(['form' => $request->all()]);
 
+        $this->clearPaymentRequisites();
+
         return $this->checkout();
     }
 
@@ -354,6 +356,8 @@ class CheckoutController extends Controller
 
         session(['form' => $request->all()]);
 
+        $this->clearPaymentRequisites();
+
         return $this->checkout();
     }
 
@@ -366,6 +370,8 @@ class CheckoutController extends Controller
         session(['cart_option.shipping_price' => $shipping_price]);
 
         session(['form' => $request->all()]);
+
+        $this->clearPaymentRequisites();
 
         return $this->checkout();
     }
@@ -381,10 +387,11 @@ class CheckoutController extends Controller
 
 
         if (session()->has('local_payment')) {
-            session()->forget('local_payment');
             session(['form.payment_type' => 'mastercard']);
             // session(['form.payment_type' => 'card']);
         }
+
+        $this->clearPaymentRequisites();
 
         return $this->checkout();
     }
@@ -416,6 +423,8 @@ class CheckoutController extends Controller
                         $result['type']    = $response['coupon']['type'];
 
                         session(['coupon' => $result]);
+
+                        $this->clearPaymentRequisites();
                     }
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
@@ -460,6 +469,8 @@ class CheckoutController extends Controller
                         $result['gift_card_balance'] = $response['coupon']['balans'];
 
                         session(['gift_card' => $result]);
+
+                        $this->clearPaymentRequisites();
                     }
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
@@ -528,7 +539,7 @@ class CheckoutController extends Controller
                             session(['form.payment_type' => 'bonus_card']);
                         }
 
-                        session()->forget('crypto');
+                        $this->clearPaymentRequisites();
                     }
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
@@ -575,7 +586,7 @@ class CheckoutController extends Controller
         }
 
         session(['checked_bonus' => $request->checked_bonus]);
-        session()->forget('crypto');
+        $this->clearPaymentRequisites();
 
         return $this->checkout();
     }
@@ -4812,6 +4823,10 @@ class CheckoutController extends Controller
             session(['bonus_checkout_payment' => $form['bonus_checkout_payment']]);
             session(['form.payment_type' => $form['bonus_checkout_payment']]);
 
+            if (($form['bonus_checkout_payment'] ?? '') !== 'crypto') {
+                $this->clearPaymentRequisites();
+            }
+
             return $this->checkout();
         }
     }
@@ -4827,12 +4842,19 @@ class CheckoutController extends Controller
                 session()->forget($witch_forget);
             }
 
-            session()->forget('crypto');
+            $this->clearPaymentRequisites();
             // session(['form.payment_type' => 'card']);
             session(['form.payment_type' => 'mastercard']);
         }
 
         return $this->checkout();
+    }
+
+    private function clearPaymentRequisites(): void
+    {
+        session()->forget('crypto');
+        session()->forget('zelle');
+        session()->forget('local_payment');
     }
 
     private function retryUnsentOrders(): void
