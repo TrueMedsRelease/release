@@ -735,7 +735,8 @@
             bindBrowseChips(row);
         }
 
-        scrollThreadToBottom();
+        // Не скроллим при получении результата (на мобильной версии скролл уже сделан при отправке запроса)
+        // scrollThreadToBottom();
     }
 
     function renderAgentError(message) {
