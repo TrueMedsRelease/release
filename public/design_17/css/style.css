@@ -3432,7 +3432,7 @@ article.content{
   padding:0.9rem;
   transform:translateY(-50%);
 }
-.thread:has(.main-heading + .thread-box){
+.thread:has(.main-heading){
   justify-content:center;
   margin-block:auto;
 }
@@ -4234,7 +4234,7 @@ article.content{
     right:1.5rem;
     padding:1.3rem;
   }
-  .thread:has(.main-heading + .thread-box){
+  .thread:has(.main-heading){
     --thread-gap:8rem;
   }
   .main-heading__title{
