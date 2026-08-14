@@ -11,6 +11,12 @@
     var TAG = '[Design17Chat]';
     var State = { IDLE: 'idle', SENDING: 'sending', POLLING: 'polling', DONE: 'done', ERROR: 'error' };
 
+    var LOG_LEVELS = { error: 0, warn: 1, info: 2, debug: 3 };
+    var currentLogLevel = (function () {
+        var v = String(window.DESIGN17_CHAT_LOG_LEVEL || 'error').toLowerCase();
+        return LOG_LEVELS[v] != null ? LOG_LEVELS[v] : LOG_LEVELS.error;
+    })();
+
     var state = State.IDLE;
     var pollTimer = null;
     var pollRetries = 0;
@@ -186,6 +192,7 @@
 
     function log(level, msg, data) {
         if (typeof console === 'undefined') return;
+        if ((LOG_LEVELS[level] != null ? LOG_LEVELS[level] : 0) > currentLogLevel) return;
         var fullMsg = TAG + ' ' + msg;
         if (data !== undefined) {
             console[level](fullMsg, data);

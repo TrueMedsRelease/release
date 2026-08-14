@@ -196,6 +196,7 @@
         };
     </script>
     <link href="{{ asset_ver($design . '/js/custom-selector/CustomSelector.css') }}" rel="stylesheet">
+    <script>window.CHECKOUT17_LOG_LEVEL = "{{ app()->environment('production') ? 'error' : 'debug' }}";</script>
     <script src="{{ asset_ver($design . '/vendor/floating-ui/core@1.6.9.min.js') }}"></script>
     <script src="{{ asset_ver($design . '/vendor/floating-ui/dom@1.6.13.min.js') }}"></script>
     <script type="module">
