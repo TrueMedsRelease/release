@@ -406,6 +406,18 @@ td.product__button-wrapper{
   opacity:1;
   transition:opacity 0.6s ease;
 }
+
+.page-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1.5rem;
+  flex-wrap:wrap;
+  margin-bottom:1.6rem;
+}
+.page-heading h1{
+  margin-bottom:0;
+}
 .product-content h2{
   font-size:2rem;
 }
@@ -1038,6 +1050,9 @@ td.product__button-wrapper{
   padding:0.8rem;
   font-size:1.2rem;
   text-align:center;
+}
+.content a.button--return{
+  text-decoration:none;
 }
 .button--return .icon{
   font-size:1.8rem;
