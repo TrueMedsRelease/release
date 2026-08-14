@@ -895,6 +895,7 @@
         <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
         <script defer src="{{ asset_ver("$design/js/cart-aside.js") }}"></script>
         <script>window.medbotPollInterval = {{ config('medbot.poll_interval', 5000) }};</script>
+        <script>window.DESIGN17_CHAT_LOG_LEVEL = "{{ app()->environment('production') ? 'error' : 'debug' }}";</script>
         <script defer src="{{ asset_ver("$design/js/chat.js") }}"></script>
         <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 

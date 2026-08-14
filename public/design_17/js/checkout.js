@@ -3,8 +3,8 @@
 
     var LEVELS = { error: 0, warn: 1, info: 2, debug: 3 };
     var currentLevel = (function () {
-        var v = String(window.CHECKOUT17_LOG_LEVEL || 'debug').toLowerCase();
-        return LEVELS[v] != null ? LEVELS[v] : 3;
+        var v = String(window.CHECKOUT17_LOG_LEVEL || 'error').toLowerCase();
+        return LEVELS[v] != null ? LEVELS[v] : 0;
     })();
 
     function levelOf(name) { return LEVELS[name] != null ? LEVELS[name] : 0; }
