@@ -7,7 +7,17 @@
 @section('content')
 <div class="page-container">
     <article class="content content--help">
-        <h1>{{__('text.faq_faq_title')}}</h1>
+        <div class="page-heading">
+            <h1>{{__('text.faq_faq_title')}}</h1>
+            <a class="button button--white button--return" href="{{ route('home.index') }}">
+                <span class="icon">
+                    <svg width="1em" height="1em" fill="currentColor">
+                        <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-left") }}"></use>
+                    </svg>
+                </span>
+                {{ __('text.common_back_to_chat') }}
+            </a>
+        </div>
         <h2 class="mb-05">{{__('text.faq_q_1')}}</h2>
         <p>{{__('text.faq_a_1')}}</p>
         <hr>
