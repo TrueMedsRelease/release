@@ -835,6 +835,8 @@ class CheckoutController extends Controller
             // 'bank_name'        => ['exclude_unless:payment_type,card', 'required'],
             // 'expire_date'      => ['exclude_unless:payment_type,card', 'required', 'date_format:m/Y', 'after:now'],
             // 'cvc_2'            => ['exclude_unless:payment_type,card', 'required', 'min:3', 'max:4']
+        ], [
+            'card_numb.credit_card_number' => __('text.checkout_wrong_card'),
         ]);
 
         session(['form' => $request->all()]);
