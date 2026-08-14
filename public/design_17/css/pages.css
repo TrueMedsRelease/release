@@ -326,6 +326,8 @@ td.product__price-per-pill{
 
 .product__price{
   line-height:2.1rem;
+}
+.product__price-wrapper:has(.product__discount) .product__price{
   transform:translateY(0.2rem);
 }
 
