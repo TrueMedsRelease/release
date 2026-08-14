@@ -2290,6 +2290,21 @@ $('.close_popup').off('click').click(function () {
     $('#insur_popup').hide();
 });
 
+function closePaymentDropdown() {
+    var selectWrap = document.querySelector('.card_type .select');
+    if (!selectWrap) return;
+    selectWrap.classList.remove('_select-open');
+    var options = selectWrap.querySelector('.select__options');
+    if (options) {
+        options.hidden = true;
+        options.classList.remove('_slide');
+        options.style.removeProperty('height');
+        options.style.removeProperty('overflow');
+        options.style.removeProperty('transition-duration');
+        options.style.removeProperty('transition-property');
+    }
+}
+
 $(".card_type .select__option").click(function (e) {
     var type = $(this).attr('data-value');
     var form = $('form').serialize();
@@ -2365,8 +2380,9 @@ $(".card_type .select__option").click(function (e) {
                 }
             });
             if (flag) {
-                previousIndex = this.selectedIndex;
-                e.target.selectedIndex = previousIndex;
+                closePaymentDropdown();
+                e.preventDefault();
+                e.stopPropagation();
                 return false;
             }
         }
@@ -2398,8 +2414,9 @@ $(".card_type .select__option").click(function (e) {
             }
         });
         if (flag) {
-            previousIndex = this.selectedIndex;
-            e.target.selectedIndex = previousIndex;
+            closePaymentDropdown();
+            e.preventDefault();
+            e.stopPropagation();
             return false;
         }
     }
@@ -2430,8 +2447,9 @@ $(".card_type .select__option").click(function (e) {
             }
         });
         if (flag) {
-            previousIndex = this.selectedIndex;
-            e.target.selectedIndex = previousIndex;
+            closePaymentDropdown();
+            e.preventDefault();
+            e.stopPropagation();
             return false;
         }
     } else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
@@ -2467,11 +2485,12 @@ $(".card_type .select__option").click(function (e) {
             }
         });
 
-        // if (flag) {
-        //     previousIndex = this.selectedIndex;
-        //     e.target.selectedIndex = previousIndex;
-        //     return false;
-        // }
+        if (flag) {
+            closePaymentDropdown();
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
     } else if (type == 'google_pay' || type == 'apple_pay') {
         form += '&wallet=' + type;
         $.ajax({
@@ -2514,11 +2533,12 @@ $(".card_type .select__option").click(function (e) {
             }
         });
 
-        // if (flag) {
-        //     previousIndex = this.selectedIndex;
-        //     e.target.selectedIndex = previousIndex;
-        //     return false;
-        // }
+        if (flag) {
+            closePaymentDropdown();
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
     }
 
     // if (type == 'visa' || type == 'mastercard' || type == 'amex' || type == 'discover') {
@@ -2564,6 +2584,13 @@ $(".card_type .select__option").click(function (e) {
             });
         }
     });
+
+    if (flag) {
+        closePaymentDropdown();
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
 });
 
 // if ($('#payment_type_select').val() == 'google_pay') {
