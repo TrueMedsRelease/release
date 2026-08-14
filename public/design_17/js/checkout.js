@@ -652,7 +652,17 @@
             form.elements &&
             typeof form.elements.namedItem === 'function'
         ) {
-            return form.elements.namedItem(field);
+            input = form.elements.namedItem(field);
+
+            if (input) {
+                return input;
+            }
+        }
+
+        var aliases = { expire_date: 'card_month' };
+
+        if (aliases[field]) {
+            return findFormField(aliases[field]);
         }
 
         return null;

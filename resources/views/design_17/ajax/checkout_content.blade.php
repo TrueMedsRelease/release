@@ -572,6 +572,7 @@
             </fieldset>
             <fieldset class="form__fieldset fieldset--2-col fieldset--mobile-row">
                 <div class="form__field custom-field">
+                    <span class="poopuptext" data-error-for="expire_date">{{ __('text.checkout_required') }}</span>
                     <div class="form__label">{{ __('text.checkout_exp_date') }}</div>
                     <div class="expiration-date-wrapper">
                         <div class="select-wrapper" data-placeholder="{{ __('text.checkout_month') }}">
