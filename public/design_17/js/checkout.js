@@ -1259,16 +1259,41 @@
         if (type === 'crypto') {
             var valid = validateCheckoutForm();
             if (!valid) { log.warn('crypto: form invalid, reverting'); revertPayment(); return; }
-            markPaymentValid();
-            // disableCheckoutFields(true);
-            showPaymentBlock(type);
-            savePaymentType();
+            requestCheckout('validateForCrypt', {}, { raw: true }).then(function () {
+                markPaymentValid();
+                // disableCheckoutFields(true);
+                showPaymentBlock(type);
+                savePaymentType();
+            }, function () {
+                log.warn('crypto: validateForCrypt rejected, reverting', { type: type });
+                revertPayment();
+            });
             return;
         } else {
             disableCheckoutFields(false);
         }
 
         showPaymentBlock(type);
+
+        if (type === 'sepa') {
+            requestCheckout('validateForSepa', {}, { raw: true }).then(function () {
+                recalc();
+            }, function () {
+                log.warn('sepa: validateForSepa rejected, reverting', { type: type });
+                revertPayment();
+            });
+            return;
+        }
+
+        if (type === 'google_pay' || type === 'apple_pay') {
+            requestCheckout('validateForWallet', { wallet: type }, { raw: true }).then(function () {
+                recalc();
+            }, function () {
+                log.warn('wallet: validateForWallet rejected, reverting', { type: type });
+                revertPayment();
+            });
+            return;
+        }
 
         var localTypes = ['sepa_local', 'fps', 'domestic', 'ach', 'interac', 'usd_swift', 'gbp_swift'];
         if (localTypes.indexOf(type) !== -1) {
