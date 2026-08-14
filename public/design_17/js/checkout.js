@@ -1213,7 +1213,11 @@
             showPaymentBlock(lastValidPaymentType);
             if (inst && typeof inst.syncFromNativeSelect === 'function') {
                 paymentReverting = true;
-                inst.syncFromNativeSelect();
+                try {
+                    inst.syncFromNativeSelect();
+                } finally {
+                    paymentReverting = false;
+                }
             }
         }
 
