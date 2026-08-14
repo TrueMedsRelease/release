@@ -65,13 +65,13 @@
 <div class="main__content">
     <div class="main__heading">
         <h1 class="h1">{{ __('text.checkout_order') }}</h1>
-        <a class="button button--white button--return" href="{{ route('cart.index') }}">
+        <a class="button button--white button--return" href="{{ route('home.index') }}">
             <span class="icon">
                 <svg width="1em" height="1em" fill="currentColor">
                     <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-left") }}"></use>
                 </svg>
             </span>
-            {{ __('text.checkout_back') }}
+            {{ __('text.common_back_to_chat') }}
         </a>
     </div>
     <div class="checkout_wrapper">
