@@ -1707,3 +1707,37 @@ function changeBonusFromSelect(select) {
         updateScrollButtonVisibility();
     }
 })();
+
+(function () {
+    'use strict';
+
+    // Компенсация "прыжка" липкого инпута чата при показе/скрытии адресной строки
+    // мобильного браузера: ставим --url-bar-offset = высоте адресной строки.
+    function initUrlBarOffset() {
+        var box = document.querySelector('.thread-box.js-chat-form');
+        if (!box) return;
+        if (!window.visualViewport) return;
+
+        function apply() {
+            var inner = window.innerHeight || document.documentElement.clientHeight || 0;
+            var vvHeight = window.visualViewport.height || inner;
+            var offset = Math.max(0, inner - vvHeight);
+            box.style.setProperty('--url-bar-offset', offset + 'px');
+        }
+
+        if (typeof window.visualViewport.addEventListener === 'function') {
+            window.visualViewport.addEventListener('resize', apply);
+            window.visualViewport.addEventListener('scroll', apply);
+        }
+        window.addEventListener('resize', apply);
+        window.addEventListener('scroll', apply, { passive: true });
+
+        apply();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initUrlBarOffset);
+    } else {
+        initUrlBarOffset();
+    }
+})();

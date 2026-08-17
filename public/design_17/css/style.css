@@ -5546,17 +5546,8 @@ article.content{
     min-height: calc(100vh - 16rem);
   }
 
-  .main:has(.thread-box) {
-    padding-bottom: 18rem;
-  }
-
   .thread-box {
-    position: fixed;
-    top: calc(100dvh - 16rem - env(safe-area-inset-bottom, 0px));
-    right: 1.5rem;
-    bottom: auto;
-    left: 1.5rem;
-    z-index: 999;
+    bottom: calc(8rem + var(--url-bar-offset, 0px));
   }
 
   .footer-buttons,
