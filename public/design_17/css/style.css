@@ -5544,7 +5544,15 @@ article.content{
 @media (max-width: 767px) {
   .main:has(.thread-box) .thread.js-chat-container:not(:has(.thread-chat)) {
     min-height: calc(100vh - 16rem);
-    min-height: calc(100dvh - 16rem);
+  }
+
+  .footer-buttons,
+  body.is-locked .footer-buttons {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
   }
 
   .thread.js-chat-container .chat-row--user .chat-message {
