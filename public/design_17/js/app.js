@@ -1711,18 +1711,18 @@ function changeBonusFromSelect(select) {
 (function () {
     'use strict';
 
-    // Компенсация "прыжка" липкого инпута чата при показе/скрытии адресной строки
-    // мобильного браузера: ставим --url-bar-offset = высоте адресной строки.
+    // Компенсация "прыжка" липкого инпута чата и нижней панели при показе/скрытии
+    // адресной строки мобильного браузера: ставим --url-bar-offset = высоте адресной строки.
     function initUrlBarOffset() {
-        var box = document.querySelector('.thread-box.js-chat-form');
-        if (!box) return;
+        var root = document.documentElement;
+        if (!root) return;
         if (!window.visualViewport) return;
 
         function apply() {
             var inner = window.innerHeight || document.documentElement.clientHeight || 0;
             var vvHeight = window.visualViewport.height || inner;
             var offset = Math.max(0, inner - vvHeight);
-            box.style.setProperty('--url-bar-offset', offset + 'px');
+            root.style.setProperty('--url-bar-offset', offset + 'px');
         }
 
         if (typeof window.visualViewport.addEventListener === 'function') {
