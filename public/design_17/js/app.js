@@ -1720,8 +1720,10 @@ function changeBonusFromSelect(select) {
 
         function apply() {
             var inner = window.innerHeight || document.documentElement.clientHeight || 0;
-            var vvHeight = window.visualViewport.height || inner;
-            var offset = Math.max(0, inner - vvHeight);
+            var vv = window.visualViewport;
+            var vvTop = (typeof vv.offsetTop === 'number') ? vv.offsetTop : 0;
+            var vvBottom = vvTop + (vv.height || inner);
+            var offset = Math.max(0, inner - vvBottom);
             root.style.setProperty('--url-bar-offset', offset + 'px');
         }
 
