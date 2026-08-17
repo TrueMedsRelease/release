@@ -66,7 +66,6 @@
     <div class="main__heading">
         <h1 class="h1">{{ __('text.checkout_order') }}</h1>
         <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
-            <a class="link" href="{{ route('home.index') }}">{{ __('text.common_back_to_chat') }}</a>
             <a class="button button--white button--return" href="{{ route('cart.index') }}">
                 <span class="icon">
                     <svg width="1em" height="1em" fill="currentColor">
