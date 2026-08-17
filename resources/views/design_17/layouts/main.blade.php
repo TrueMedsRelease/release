@@ -119,6 +119,7 @@
             $hideMedbotChat = request()->routeIs([
                 'cart.index',
                 'checkout.index',
+                'home.help',
             ]) || request()->is([
                 'cart',
                 'cart/*',
@@ -394,7 +395,7 @@
                             </button>
                         </div> --}}
                     </div>
-                    @if (!request()->routeIs(['catalog.index', 'cart.index', 'checkout.index', 'home.about', 'home.contact_us', 'home.testimonials', 'home.delivery', 'home.moneyback', 'home.bonus_referral_program', 'home.affiliate']))
+                    @if (!request()->routeIs(['catalog.index', 'cart.index', 'checkout.index', 'home.about', 'home.contact_us', 'home.testimonials', 'home.delivery', 'home.moneyback', 'home.bonus_referral_program', 'home.affiliate','home.help']))
                         <div class="thread-box js-chat-form">
                             <label class="thread-box__label textarea-field">
                                 <textarea class="thread-box__input input-textarea js-chat-input"
