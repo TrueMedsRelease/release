@@ -5549,9 +5549,11 @@ article.content{
   .footer-buttons,
   body.is-locked .footer-buttons {
     position: fixed;
+    top: calc(100dvh - 6rem - env(safe-area-inset-bottom, 0px));
     right: 0;
-    bottom: 0;
+    bottom: auto;
     left: 0;
+    height: 6rem;
     z-index: 999;
   }
 
