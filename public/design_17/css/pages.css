@@ -1060,6 +1060,15 @@ td.product__button-wrapper{
   font-size:1.8rem;
 }
 
+@media (max-width: 829.98px){
+  .button--return{
+    min-width:0;
+    width:fit-content;
+    padding-left:0.6rem;
+    padding-right:0.6rem;
+  }
+}
+
 .order-confirmation-panel.alt-panel{
   padding:0 1rem 2rem 1rem;
 }
