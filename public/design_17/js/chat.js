@@ -1680,10 +1680,6 @@
             return;
         }
 
-        var originalHtml = btn ? btn.innerHTML : null;
-        if (btn) {
-            btn.innerHTML = svgIcon('cart-white') + ' <span class="button__text">' + getText('adding') + '</span>';
-        }
         allButtons.forEach(function (b) { b.disabled = true; });
 
         fetch(packUrl, {
@@ -1710,9 +1706,6 @@
         })
         .then(function () {
             allButtons.forEach(function (b) { b.disabled = false; });
-            if (btn) {
-                btn.innerHTML = originalHtml;
-            }
         });
     }
 
