@@ -164,7 +164,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="product__button-wrapper">
-                                                    <form action="{{ route('cart.add', $item['id']) }}" method="post">
+                                                    <form class="js-product-add-form" action="{{ route('cart.add', $item['id']) }}" method="post">
                                                         @csrf
                                                         @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt']))
                                                             <button class="button product__button">
