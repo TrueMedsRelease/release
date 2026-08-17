@@ -1680,7 +1680,10 @@
             return;
         }
 
-        allButtons.forEach(function (b) { b.disabled = true; });
+        allButtons.forEach(function (b) {
+            b.disabled = true;
+            b.classList.add('is-loading');
+        });
 
         fetch(packUrl, {
             method: 'GET',
@@ -1705,7 +1708,10 @@
             showAddToast(getText('cart_error'), true);
         })
         .then(function () {
-            allButtons.forEach(function (b) { b.disabled = false; });
+            allButtons.forEach(function (b) {
+                b.disabled = false;
+                b.classList.remove('is-loading');
+            });
         });
     }
 
