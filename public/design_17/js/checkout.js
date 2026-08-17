@@ -562,6 +562,30 @@
         log.debug('initCheckoutComponents', { count: count });
     }
 
+    function initCardNumberFormat() {
+        var input = document.getElementById('card_numb');
+        if (!input) return;
+
+        function formatValue() {
+            var cursor = input.selectionStart != null ? input.selectionStart : input.value.length;
+            var digitsBeforeCursor = input.value.slice(0, cursor).replace(/\D/g, '').length;
+            var digits = input.value.replace(/\D/g, '').slice(0, 19);
+            var formatted = digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+            input.value = formatted;
+
+            var newCursor = formatted.length;
+            var seen = 0;
+            for (var j = 0; j < formatted.length; j++) {
+                if (formatted[j] !== ' ') seen++;
+                if (seen > digitsBeforeCursor) { newCursor = j; break; }
+            }
+            input.setSelectionRange(newCursor, newCursor);
+        }
+
+        input.addEventListener('input', formatValue);
+        formatValue();
+    }
+
     function destroyCheckoutComponents(root) {
         root = root || document;
         var nodes = root.querySelectorAll('[data-init]');
@@ -597,6 +621,7 @@
         $w.html(html);
         initCheckoutComponents($w[0]);
         initCryptoState();
+        initCardNumberFormat();
 
         var requisitesVisible = paymentRequisitesVisible();
         setPriceControlsDisabled(requisitesVisible);
