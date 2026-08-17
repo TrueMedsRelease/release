@@ -164,79 +164,12 @@
         }, true);
     }
 
-    function showAddToast(message, isError) {
-        var toast = document.getElementById('design17-toast');
-        if (!toast) return;
-
-        var textEl = toast.querySelector('.design17-toast__text');
-        if (textEl && message) textEl.textContent = message;
-
-        toast.classList.toggle('design17-toast--error', !!isError);
-        toast.removeAttribute('hidden');
-        toast.classList.remove('is-visible');
-        void toast.offsetWidth;
-        toast.classList.add('is-visible');
-
-        clearTimeout(showAddToast._timer);
-        showAddToast._timer = setTimeout(function () {
-            toast.classList.remove('is-visible');
-            setTimeout(function () {
-                toast.setAttribute('hidden', '');
-            }, 300);
-        }, 2600);
-    }
-
-    function initCartAddForms() {
-        document.addEventListener('submit', function (e) {
-            var form = e.target.closest('form.js-product-add-form');
-            if (!form) return;
-
-            e.preventDefault();
-
-            var action = form.getAttribute('action') || '';
-            var btn = form.querySelector('[type="submit"]');
-
-            if (btn) {
-                btn.disabled = true;
-                btn.classList.add('is-loading');
-            }
-
-            fetch(action, {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: new FormData(form),
-            })
-            .then(function () {
-                return refreshCartState();
-            })
-            .then(function () {
-                var texts = window.design17ChatTexts || {};
-                showAddToast(texts.added_to_cart || 'Added to cart');
-            })
-            .catch(function () {
-                var texts = window.design17ChatTexts || {};
-                showAddToast(texts.cart_error || 'Could not add this product to cart. Please try again.', true);
-            })
-            .then(function () {
-                if (btn) {
-                    btn.classList.remove('is-loading');
-                    btn.disabled = false;
-                }
-            });
-        });
-    }
-
     window.CartAside = {
         refresh: refreshCartState
     };
 
     initCartRemove();
     initCartSync();
-    initCartAddForms();
 })();
 
 (function () {
