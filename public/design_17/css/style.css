@@ -5539,18 +5539,14 @@ article.content{
   text-decoration: none;
 }
 
-.thread.js-chat-container .card__button.is-loading,
 .thread.js-chat-container .product__button.is-loading {
   position: relative;
   pointer-events: none;
 }
-.thread.js-chat-container .card__button.is-loading .icon,
-.thread.js-chat-container .card__button.is-loading .button__text,
 .thread.js-chat-container .product__button.is-loading .icon,
 .thread.js-chat-container .product__button.is-loading .button__text {
   opacity: 0;
 }
-.thread.js-chat-container .card__button.is-loading::after,
 .thread.js-chat-container .product__button.is-loading::after {
   content: "";
   position: absolute;
@@ -5560,8 +5556,8 @@ article.content{
   height: 1.8rem;
   margin: -0.9rem 0 0 -0.9rem;
   border-radius: 50%;
-  border: 0.2rem solid rgba(19, 22, 63, 0.2);
-  border-top-color: #13163f;
+  border: 0.2rem solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
   animation: dc17-spin 0.8s linear infinite;
 }
 

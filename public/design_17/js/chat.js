@@ -1680,10 +1680,9 @@
             return;
         }
 
-        allButtons.forEach(function (b) {
-            b.disabled = true;
-            b.classList.add('is-loading');
-        });
+        var clicked = btn || null;
+        allButtons.forEach(function (b) { b.disabled = true; });
+        if (clicked) clicked.classList.add('is-loading');
 
         fetch(packUrl, {
             method: 'GET',
@@ -1708,10 +1707,8 @@
             showAddToast(getText('cart_error'), true);
         })
         .then(function () {
-            allButtons.forEach(function (b) {
-                b.disabled = false;
-                b.classList.remove('is-loading');
-            });
+            allButtons.forEach(function (b) { b.disabled = false; });
+            if (clicked) clicked.classList.remove('is-loading');
         });
     }
 
