@@ -1459,110 +1459,180 @@ class HomeController extends Controller
         if ($pill) {
             $pill = str_replace('&', '-', (str_replace(' ', '-', strtolower(trim($pill)))));
 
-            if (in_array(session('aff'), [1799, 1947, 1952, 1957]) || in_array(env('APP_AFF'), [1799, 1947, 1952, 1957]
-                )) {
+            if (
+                in_array(session('aff'), [1799, 1947, 1952, 1957]) ||
+                in_array(env('APP_AFF'), [1799, 1947, 1952, 1957])
+            ) {
                 $parts = explode('_', $pill, 2);
                 $pill  = $parts[1] ?? $pill;
             }
 
             $safari = false;
 
-            if (str_contains($_SERVER['HTTP_USER_AGENT'], 'iPhone') || str_contains(
-                    $_SERVER['HTTP_USER_AGENT'],
-                    'iPad'
-                ) || str_contains($_SERVER['HTTP_USER_AGENT'], 'iPod') || str_contains(
-                    $_SERVER['HTTP_USER_AGENT'],
-                    'Macintosh'
-                )) {
-                if (file_exists(public_path() . "/images/" . $pill . ".png") && file_get_contents(
-                                                                                    public_path(
-                                                                                    ) . "/images/" . $pill . ".png"
-                                                                                ) !== "error") {
+            $userAgent = request()->userAgent() ?? '';
+            $water_string = request()->getHost();
+
+            if (
+                str_contains($userAgent, 'iPhone') ||
+                str_contains($userAgent, 'iPad') ||
+                str_contains($userAgent, 'iPod') ||
+                str_contains($userAgent, 'Macintosh')
+            ) {
+                if (
+                    file_exists(public_path() . "/images/" . $pill . ".png") &&
+                    file_get_contents(public_path() . "/images/" . $pill . ".png") !== "error"
+                ) {
                     $safari = true;
-                    return response(file_get_contents(public_path() . "/images/" . $pill . ".png"))->header(
+
+                    return response(
+                        file_get_contents(public_path() . "/images/" . $pill . ".png")
+                    )->header(
                         'Content-type',
                         'image/png'
                     );
                 } else {
-                    $water_string  = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents(
-                        'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=png&url=' . $water_string
+                        'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' .
+                        $pill .
+                        '&img=png&url=' .
+                        $water_string
                     );
 
-                    file_put_contents(public_path() . "/images/" . $pill . ".png", $server_answer);
-                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".png");
+                    file_put_contents(
+                        public_path() . "/images/" . $pill . ".png",
+                        $server_answer
+                    );
+
+                    $temp = file_get_contents(
+                        public_path() . "/images/" . $pill . ".png"
+                    );
+
                     if ($temp != "error") {
                         $safari = true;
-                        return response($temp)->header('Content-type', 'image/png');
+
+                        return response($temp)->header(
+                            'Content-type',
+                            'image/png'
+                        );
                     }
                 }
+
                 if (!$safari) {
-                    if (file_exists(public_path() . "/images/" . $pill . ".jpg") && file_get_contents(
-                                                                                        public_path(
-                                                                                        ) . "/images/" . $pill . ".jpg"
-                                                                                    ) !== "error") {
+                    if (
+                        file_exists(public_path() . "/images/" . $pill . ".jpg") &&
+                        file_get_contents(public_path() . "/images/" . $pill . ".jpg") !== "error"
+                    ) {
                         $safari = true;
-                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpg"))->header(
+
+                        return response(
+                            file_get_contents(public_path() . "/images/" . $pill . ".jpg")
+                        )->header(
                             'Content-type',
                             'image/png'
                         );
                     } else {
-                        $water_string  = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents(
-                            'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpg&url=' . $water_string
+                            'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' .
+                            $pill .
+                            '&img=jpg&url=' .
+                            $water_string
                         );
 
-                        file_put_contents(public_path() . "/images/" . $pill . ".jpg", $server_answer);
-                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpg");
+                        file_put_contents(
+                            public_path() . "/images/" . $pill . ".jpg",
+                            $server_answer
+                        );
+
+                        $temp = file_get_contents(
+                            public_path() . "/images/" . $pill . ".jpg"
+                        );
+
                         if ($temp != "error") {
                             $safari = true;
-                            return response($temp)->header('Content-type', 'image/png');
+
+                            return response($temp)->header(
+                                'Content-type',
+                                'image/png'
+                            );
                         }
                     }
                 }
+
                 if (!$safari) {
-                    if (file_exists(public_path() . "/images/" . $pill . ".jpeg") && file_get_contents(
-                                                                                         public_path(
-                                                                                         ) . "/images/" . $pill . ".jpeg"
-                                                                                     ) !== "error") {
+                    if (
+                        file_exists(public_path() . "/images/" . $pill . ".jpeg") &&
+                        file_get_contents(public_path() . "/images/" . $pill . ".jpeg") !== "error"
+                    ) {
                         $safari = true;
-                        return response(file_get_contents(public_path() . "/images/" . $pill . ".jpeg"))->header(
+
+                        return response(
+                            file_get_contents(public_path() . "/images/" . $pill . ".jpeg")
+                        )->header(
                             'Content-type',
                             'image/png'
                         );
                     } else {
-                        $water_string  = $_SERVER["HTTP_HOST"];
                         $server_answer = file_get_contents(
-                            'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=jpeg&url=' . $water_string
+                            'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' .
+                            $pill .
+                            '&img=jpeg&url=' .
+                            $water_string
                         );
 
-                        file_put_contents(public_path() . "/images/" . $pill . ".jpeg", $server_answer);
-                        $temp = file_get_contents(public_path() . "/images/" . $pill . ".jpeg");
+                        file_put_contents(
+                            public_path() . "/images/" . $pill . ".jpeg",
+                            $server_answer
+                        );
+
+                        $temp = file_get_contents(
+                            public_path() . "/images/" . $pill . ".jpeg"
+                        );
+
                         if ($temp != "error") {
                             $safari = true;
-                            return response($temp)->header('Content-type', 'image/png');
+
+                            return response($temp)->header(
+                                'Content-type',
+                                'image/png'
+                            );
                         }
                     }
                 }
             } else {
-                if (file_exists(public_path() . "/images/" . $pill . ".webp") && file_get_contents(
-                                                                                     public_path(
-                                                                                     ) . "/images/" . $pill . ".webp"
-                                                                                 ) !== "error") {
-                    return response(file_get_contents(public_path() . "/images/" . $pill . ".webp"))->header(
+                if (
+                    file_exists(public_path() . "/images/" . $pill . ".webp") &&
+                    file_get_contents(public_path() . "/images/" . $pill . ".webp") !== "error"
+                ) {
+                    return response(
+                        file_get_contents(public_path() . "/images/" . $pill . ".webp")
+                    )->header(
                         'Content-type',
                         'image/png'
                     );
                 } else {
-                    $water_string  = $_SERVER["HTTP_HOST"];
                     $server_answer = file_get_contents(
-                        'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' . $pill . '&img=webp&url=' . $water_string
+                        'https://true-serv.net/support/images_for_shops/image_return_new.php?pill=' .
+                        $pill .
+                        '&img=webp&url=' .
+                        $water_string
                     );
-                    file_put_contents(public_path() . "/images/" . $pill . ".webp", $server_answer);
-                    $temp = file_get_contents(public_path() . "/images/" . $pill . ".webp");
+
+                    file_put_contents(
+                        public_path() . "/images/" . $pill . ".webp",
+                        $server_answer
+                    );
+
+                    $temp = file_get_contents(
+                        public_path() . "/images/" . $pill . ".webp"
+                    );
+
                     if ($temp != "error") {
                         $safari = true;
-                        return response($temp)->header('Content-type', 'image/png');
+
+                        return response($temp)->header(
+                            'Content-type',
+                            'image/png'
+                        );
                     }
                 }
             }
