@@ -90,11 +90,9 @@
 								<li class="menu__item">
 								    <a href="{{ route('admin.admin_currencies') }}">{{__('text.admin_common_main_menu_10_element')}}</a>
 								</li>
-                                @if (env("APP_UPDATE_ON", 1))
-                                    <li class="menu__item">
-                                        <a href="{{ route('admin.renewal_page') }}">Update Shop</a>
-								    </li>
-                                @endif
+                                <li class="menu__item">
+                                    <a href="{{ route('admin.renewal_page') }}">Update Shop</a>
+                                </li>
                                 <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
                                         <svg width="20" height="20">

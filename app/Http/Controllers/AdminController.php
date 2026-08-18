@@ -566,10 +566,10 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) 
-                && $cur_template != "." 
-                && $cur_template != ".." 
-                && $cur_template != "admin" 
+            if (is_dir($catalog_templates_path . "/" . $cur_template)
+                && $cur_template != "."
+                && $cur_template != ".."
+                && $cur_template != "admin"
                 && $cur_template != "design_17"
             ) {
                 $cur_template_info = [];
@@ -1418,7 +1418,7 @@ class AdminController extends Controller
 
     public function renewal_page_shop(Request $request)
     {
-        if (env('APP_UPDATE_ON', 1)) {
+        // if (env('APP_UPDATE_ON', 1)) {
             $access = DB::table('user')
                 ->where('md5_pw', '=', $request->renewal_hash)
                 ->get(['id'])
@@ -1427,14 +1427,14 @@ class AdminController extends Controller
             if ($access || session('logged_in') == true) {
                 return RenewalService::renewalShop();
             }
-        } else {
-            return redirect()->route('admin.renewal_page');
-        }
+        // } else {
+        //     return redirect()->route('admin.renewal_page');
+        // }
     }
 
     public function renewal_page_data(Request $request)
     {
-        if (env('APP_UPDATE_ON', 1)) {
+        // if (env('APP_UPDATE_ON', 1)) {
             $access = DB::table('user')
                 ->where('md5_pw', '=', $request->renewal_hash)
                 ->get(['id'])
@@ -1443,9 +1443,9 @@ class AdminController extends Controller
             if ($access || session('logged_in') == true) {
                 return RenewalService::renewalDatabase();
             }
-        } else {
-            return redirect()->route('admin.renewal_page');
-        }
+        // } else {
+        //     return redirect()->route('admin.renewal_page');
+        // }
     }
 
     public function pageAdminTitle($page) {
