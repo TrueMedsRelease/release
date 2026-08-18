@@ -31,12 +31,16 @@
 
     <div class="card__img">
         @if ($product['id'] == 616)
-            <picture>
-                <source type="image/webp" srcset="{{ asset("$design/img/products/gift-125w.webp") }} 1x, {{ asset("$design/img/products/gift-251w.webp") }} 2x">
-                <img src="{{ asset("$design/img/products/gift-125w.jpg") }}"
-                    srcset="{{ asset("$design/img/products/gift-125w.jpg") }} 1x, {{ asset("$design/img/products/gift-251w.jpg") }} 2x"
-                    width="126" height="126" alt="{{ $product['image'] }}">
-            </picture>
+            @if ($is_catalog)
+                <img src="{{ asset("$design/img/products/gift.webp") }}" width="126" height="126" alt="{{ $product['image'] }}" loading="lazy">
+            @else
+                <picture>
+                    <source type="image/webp" srcset="{{ asset("$design/img/products/gift-product-175w.webp") }} 1x, {{ asset("$design/img/products/gift-product-350w.webp") }} 2x">
+                    <img src="{{ asset("$design/img/products/gift-product-175w.jpg") }}"
+                        srcset="{{ asset("$design/img/products/gift-product-175w.jpg") }} 1x, {{ asset("$design/img/products/gift-product-350w.jpg") }} 2x"
+                        width="126" height="126" alt="{{ $product['image'] }}">
+                </picture>
+            @endif
         @else
             <picture style="max-height: 126px; max-width: 126px;">
                 <source srcset="{{ route('home.set_images', $product['image']) }}" type="image/webp">
