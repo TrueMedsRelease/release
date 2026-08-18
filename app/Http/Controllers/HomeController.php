@@ -64,12 +64,13 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $first_letters = ProductServices::getFirstLetters();
+
         // if (!is_null($statisticPromise)) {
         //     $statisticPromise->wait();
         // }
 
         if (!in_array($design, ['design_7', 'design_8', 'design_17'])) {
-            $first_letters = ProductServices::getFirstLetters();
             $bestsellers = ProductServices::GetBestsellers($design);
             $menu        = ProductServices::GetCategoriesWithProducts($design);
 
