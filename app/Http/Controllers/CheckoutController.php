@@ -4823,7 +4823,9 @@ class CheckoutController extends Controller
             session(['bonus_checkout_payment' => $form['bonus_checkout_payment']]);
             session(['form.payment_type' => $form['bonus_checkout_payment']]);
 
-            if (($form['bonus_checkout_payment'] ?? '') !== 'crypto') {
+            $paymentTypesWithRequisites = ['crypto', 'sepa_local', 'fps', 'domestic', 'ach', 'interac', 'usd_swift', 'gbp_swift'];
+
+            if (!in_array($form['bonus_checkout_payment'] ?? '', $paymentTypesWithRequisites)) {
                 $this->clearPaymentRequisites();
             }
 
