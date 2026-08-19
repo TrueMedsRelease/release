@@ -4234,6 +4234,9 @@ article.content{
   body.cart-hidden-desktop .thread{
     max-width:100%;
   }
+  body.cart-hidden-desktop .main-heading{
+    margin-inline:auto;
+  }
   body.cart-hidden-desktop .dc17-chat-new-msgs{
     left:50%;
   }
