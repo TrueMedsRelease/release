@@ -3093,6 +3093,10 @@ td.product__button-wrapper{
     color: var(--color-text-gray);
 }
 
+.catalog__grid {
+    scroll-margin-top: calc(8rem + 1.6rem);
+}
+
 .catalog__grid .cards {
     max-width: none;
 }
