@@ -2342,7 +2342,7 @@
             return;
         }
 
-        if (heading) {
+        if (heading || window.design17AutoBrowse || window.design17AutoProduct) {
             showChatLoader();
         }
 
