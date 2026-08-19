@@ -4235,6 +4235,9 @@ article.content{
     left:0;
     width:100%;
   }
+  body.cart-hidden-desktop .dc17-chat-new-msgs{
+    left:50%;
+  }
   .thread-box{
     bottom:2rem;
     min-height:8rem;
