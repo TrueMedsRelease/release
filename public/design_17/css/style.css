@@ -4216,6 +4216,25 @@ article.content{
     width:calc(100% - 2rem);
     padding-block:2rem;
   }
+  body.cart-hidden-desktop .main-container{
+    grid-template-columns:auto;
+  }
+  body.cart-hidden-desktop .cart.drawer{
+    display:none;
+  }
+  body.cart-hidden-desktop .header,
+  body.cart-hidden-desktop .header-placeholder,
+  body.cart-hidden-desktop .page-wrapper,
+  body.cart-hidden-desktop .footer{
+    grid-column:auto;
+  }
+  body.cart-hidden-desktop .header-placeholder{
+    grid-column:auto !important;
+  }
+  body.cart-hidden-desktop .header.is-sticky{
+    left:0;
+    width:100%;
+  }
   .thread-box{
     bottom:2rem;
     min-height:8rem;

@@ -28,6 +28,8 @@
         if (typeof data.count !== 'undefined') {
             var hasItems = data.count > 0;
 
+            document.body.classList.toggle('cart-hidden-desktop', !hasItems);
+
             if (!hasItems) {
                 var onCheckout = document.querySelector('.checkout_wrapper');
                 if (onCheckout) {
