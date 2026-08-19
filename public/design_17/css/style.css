@@ -4997,6 +4997,18 @@ article.content{
   color:var(--color-text-gray);
 }
 
+.dc17-chat-history-loader{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:1.6rem 0;
+}
+.dc17-chat-history-loader .dc17-chat-loader__spinner{
+  width:2.4rem;
+  height:2.4rem;
+  border-width:0.2rem;
+}
+
 .dc17-chat-new-msgs{
     position:fixed;
     bottom:15rem;
