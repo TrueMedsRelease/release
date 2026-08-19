@@ -26,6 +26,11 @@
     var currencyPrefix = '$';
     var currencyCoef = 1;
 
+    // ── History pagination ──
+    var historyLoadedFromEnd = 0;
+    var historyHasMore = false;
+    var historyLoading = false;
+
     // ── Cross-tab sync ──
     var isLeader = false;
     var leaderTabId = null;
@@ -2341,15 +2346,9 @@
             showChatLoader();
         }
 
-        var historyRoute = window.routeChatHistory || '/chat/history';
         log('debug', 'loadHistory');
 
-        fetch(historyRoute, {
-            credentials: 'same-origin',
-            headers: { 'Accept': 'application/json' },
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
+        fetchHistory(0, 6).then(function (data) {
             hideChatLoader();
 
             if (!data.success || !data.messages || !data.messages.length) {
@@ -2394,9 +2393,16 @@
                 }
             });
 
+            historyLoadedFromEnd = data.next_offset || data.messages.length;
+            historyHasMore = !!data.has_more;
+
             scrollToLastUserRequest(null, 'smooth');
             scrollThreadToBottom();
             log('debug', 'loadHistory: ' + data.messages.length + ' messages restored');
+
+            if (historyHasMore) {
+                initHistoryLazyLoad();
+            }
 
             runAutoBrowse(data.messages);
             runAutoProduct(data.messages);
@@ -2407,6 +2413,150 @@
             restoreHeading();
             runAutoBrowse([]);
             runAutoProduct([]);
+        });
+    }
+
+    function fetchHistory(offset, limit) {
+        var historyRoute = window.routeChatHistory || '/chat/history';
+        var sep = historyRoute.indexOf('?') === -1 ? '?' : '&';
+        return fetch(
+            historyRoute + sep + 'offset=' + encodeURIComponent(offset) + '&limit=' + encodeURIComponent(limit || 6),
+            {
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json' },
+            }
+        )
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (!data || !data.success) {
+                throw new Error('bad history response');
+            }
+            if (data.currency && data.currency.prefix) {
+                currencyPrefix = data.currency.prefix;
+                currencyCoef = data.currency.coef || 1;
+            }
+            return data;
+        });
+    }
+
+    function renderHistoryMessages(messages) {
+        var thread = getChatThread();
+        if (!thread) return;
+
+        var fragment = document.createDocumentFragment();
+        messages.forEach(function (msg) {
+            if (msg.role === 'user') {
+                var userRow = createHistoryUserRow(msg.content);
+                if (userRow) fragment.appendChild(userRow);
+            } else if (msg.role === 'assistant') {
+                var agentRow = createHistoryAssistantRow(msg.content, msg.products, msg);
+                if (agentRow) fragment.appendChild(agentRow);
+            }
+        });
+        return fragment;
+    }
+
+    function isHistoryNearTop() {
+        var thread = getChatThread();
+        if (!thread) return true;
+
+        // внутренний скролл потока
+        if (thread.scrollHeight > thread.clientHeight + 10) {
+            return thread.scrollTop <= 80;
+        }
+
+        // оконный скролл — проверяем верхнюю границу первого сообщения
+        var firstRow = thread.querySelector('.chat-row');
+        if (!firstRow) return true;
+
+        var rect = firstRow.getBoundingClientRect();
+        return rect.top >= -80;
+    }
+
+    function initHistoryLazyLoad() {
+        var thread = getChatThread();
+        if (!thread) return;
+
+        var onScroll = function () {
+            if (historyLoading || !historyHasMore) return;
+            if (isHistoryNearTop()) {
+                loadOlderHistory();
+            }
+        };
+
+        thread.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        if (historyHasMore) {
+            createHistoryLoaderIndicator();
+        }
+    }
+
+    function createHistoryLoaderIndicator() {
+        var container = getChatContainer();
+        if (!container) return;
+        var existing = container.querySelector('.js-chat-history-loader');
+        if (existing) return;
+
+        var loader = createElement(
+            '<div class="js-chat-history-loader dc17-chat-history-loader" style="display:none">' +
+                '<div class="dc17-chat-loader__spinner"></div>' +
+            '</div>'
+        );
+        container.insertBefore(loader, container.firstChild);
+    }
+
+    function loadOlderHistory() {
+        if (historyLoading || !historyHasMore) return;
+        historyLoading = true;
+
+        var loader = document.querySelector('.js-chat-history-loader');
+        if (loader) loader.style.display = 'block';
+
+        fetchHistory(historyLoadedFromEnd, 6)
+        .then(function (data) {
+            var thread = getChatThread();
+            if (!thread || !data.messages || !data.messages.length) {
+                historyHasMore = false;
+                return;
+            }
+
+            var prevScrollHeight = thread.scrollHeight;
+            var prevScrollTop = thread.scrollTop;
+            var prevWindowY = window.scrollY;
+
+            var fragment = renderHistoryMessages(data.messages);
+            if (fragment && fragment.childNodes.length) {
+                thread.insertBefore(fragment, thread.firstChild);
+            }
+
+            historyLoadedFromEnd = data.next_offset || (historyLoadedFromEnd + data.messages.length);
+            historyHasMore = !!data.has_more;
+
+            // сохраняем позицию прокрутки (контент добавляется сверху)
+            requestAnimationFrame(function () {
+                var addedHeight = thread.scrollHeight - prevScrollHeight;
+                if (thread.scrollHeight > thread.clientHeight + 10) {
+                    thread.scrollTop = prevScrollTop + addedHeight;
+                } else {
+                    window.scrollTo(0, prevWindowY + addedHeight);
+                }
+            });
+
+            if (!historyHasMore) {
+                var loaderEl = document.querySelector('.js-chat-history-loader');
+                if (loaderEl && loaderEl.parentNode) loaderEl.parentNode.removeChild(loaderEl);
+            }
+        })
+        .catch(function () {
+            historyHasMore = false;
+        })
+        .then(function () {
+            historyLoading = false;
+            var loaderEl = document.querySelector('.js-chat-history-loader');
+            if (loaderEl && !historyHasMore) {
+                loaderEl.style.display = 'none';
+            }
         });
     }
 
@@ -2457,12 +2607,24 @@
             '</div>'
         );
         thread.appendChild(row);
+        return row;
     }
 
-    function renderHistoryAssistantMessage(text, products, meta) {
+    function createHistoryUserRow(text) {
+        if (!text) return null;
+        return createElement(
+            '<div class="chat-row chat-row--user">' +
+                '<div class="chat-message">' +
+                    '<div class="chat-message__content content">' +
+                        '<div class="chat-message__bubble">' + escapeHtml(text) + '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
+    }
+
+    function createHistoryAssistantRow(text, products, meta) {
         meta = meta || {};
-        var thread = getChatThread();
-        if (!thread) return;
         var hasProducts = products && products.length;
         var totalProducts = hasProducts ? products.length : 0;
         var needsPagination = totalProducts > 6;
@@ -2493,12 +2655,20 @@
                 '</div>' +
             '</div>'
         );
-        thread.appendChild(row);
         if (hasProducts) {
             bindProductCardClicks(row, products);
             if (needsPagination) initPagination(row, products);   // ← добавлено
             bindBrowseChips(row);
         }
+        return row;
+    }
+
+    function renderHistoryAssistantMessage(text, products, meta) {
+        var thread = getChatThread();
+        if (!thread) return;
+        var row = createHistoryAssistantRow(text, products, meta);
+        if (row) thread.appendChild(row);
+        return row;
     }
 
     // ── Init ──

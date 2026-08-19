@@ -204,7 +204,15 @@
         {!! isset($pixel) ? $pixel : '' !!}
     </head>
 
-    <body class="@yield('page_name')" data-page="@yield('body_data_page')">
+    @php
+        $cart_count = 0;
+        if (!empty(session('cart'))) {
+            foreach (session('cart') as $value) {
+                $cart_count += $value['q'];
+            }
+        }
+    @endphp
+    <body class="@yield('page_name'){{ $cart_count <= 0 ? ' cart-hidden-desktop' : '' }}" data-page="@yield('body_data_page')">
         <script>
             let flagc = false;
             let flagp = false;

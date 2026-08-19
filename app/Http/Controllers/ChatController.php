@@ -589,14 +589,37 @@ class ChatController extends Controller
                 ->toArray();
         }
 
-        foreach ($productIds as $apiProductId) {
+        $uniqueIds = array_values(array_unique(array_filter(array_map('intval', $productIds))));
+        $uniqueIds = array_values(array_diff($uniqueIds, [self::GIFT_PRODUCT_ID]));
+
+        $productsById = [];
+        if (!empty($uniqueIds)) {
+            $productsById = Product::query()
+                ->whereIn('id', $uniqueIds)
+                ->where('is_showed', 1)
+                ->get()
+                ->keyBy('id')
+                ->all();
+        }
+
+        $packsByProduct = [];
+        if (!empty($uniqueIds)) {
+            $packsByProduct = ProductPackaging::query()
+                ->whereIn('product_id', $uniqueIds)
+                ->where('price', '!=', 0)
+                ->where('is_showed', 1)
+                ->orderBy('product_id')
+                ->orderBy('ord')
+                ->get()
+                ->groupBy('product_id');
+        }
+
+        foreach ($uniqueIds as $apiProductId) {
             if ((int) $apiProductId === self::GIFT_PRODUCT_ID) {
                 continue;
             }
 
-            $product = Product::where('id', $apiProductId)
-                ->where('is_showed', 1)
-                ->first();
+            $product = $productsById[$apiProductId] ?? null;
 
             if (!$product) {
                 Log::warning('[ChatController.fetchShopProducts] product not found', [
@@ -664,11 +687,8 @@ class ChatController extends Controller
                 }
             }
 
-            $packs = ProductPackaging::where('product_id', $product->id)
-                ->where('price', '!=', 0)
-                ->where('is_showed', 1)
-                ->orderBy('ord')
-                ->get();
+            $packs = $packsByProduct[$product->id] ?? [];
+            $packs = collect($packs);
 
             $packData = [];
             foreach ($packs as $pack) {
@@ -760,14 +780,22 @@ class ChatController extends Controller
         ]);
     }
 
-    public function getHistory(): JsonResponse
+    public function getHistory(Request $request): JsonResponse
     {
         $history = session('chat_history', []);
-        $history = array_slice($history, -20);
+        $total = count($history);
+
+        $loadedFromEnd = max(0, (int) $request->input('offset', 0));
+        $limit = min(max(1, (int) $request->input('limit', 6)), 20);
+
+        $end = max(0, $total - $loadedFromEnd);
+        $start = max(0, $end - $limit);
+
+        $chunk = array_slice($history, $start, $end - $start, true);
 
         $productIds = [];
 
-        foreach ($history as $message) {
+        foreach ($chunk as $message) {
             foreach (($message['products'] ?? []) as $product) {
                 $productId = (int) ($product['id'] ?? 0);
 
@@ -788,7 +816,7 @@ class ChatController extends Controller
                 $localizedProductsById[(int) $product['id']] = $product;
             }
 
-            foreach ($history as &$message) {
+            foreach ($chunk as &$message) {
                 if (empty($message['products']) || !is_array($message['products'])) {
                     continue;
                 }
@@ -805,19 +833,31 @@ class ChatController extends Controller
             }
             unset($message);
 
+            foreach ($chunk as $key => $message) {
+                $history[$key] = $message;
+            }
+
             session(['chat_history' => $history]);
             session()->save();
         }
 
+        $nextOffset = $loadedFromEnd + count($chunk);
+
         Log::debug('[ChatController.getHistory]', [
-            'count' => count($history),
+            'count' => count($chunk),
+            'total' => $total,
+            'start' => $start,
+            'has_more' => $start > 0,
             'locale' => $this->resolveCurrentLocale(),
             'localized_product_ids' => array_values(array_unique($productIds)),
         ]);
 
         return response()->json([
             'success' => true,
-            'messages' => array_values($history),
+            'messages' => array_values($chunk),
+            'has_more' => $start > 0,
+            'next_offset' => $nextOffset,
+            'total' => $total,
             'currency' => [
                 'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
                 'code' => session('currency', 'usd'),

@@ -2991,7 +2991,7 @@ td.product__button-wrapper{
     box-shadow: var(--shadow-menu);
     overflow-y: auto;
     overscroll-behavior: contain;
-    max-height: calc(100vh - 16rem);
+    max-height: calc(100vh - 19rem);
     scrollbar-width: none;
     scrollbar-color: transparent transparent;
     transition: scrollbar-color var(--transition-medium-cubic);
@@ -3091,6 +3091,10 @@ td.product__button-wrapper{
 .catalog__count {
     font-size: 1.3rem;
     color: var(--color-text-gray);
+}
+
+.catalog__grid {
+    scroll-margin-top: calc(8rem + 1.6rem);
 }
 
 .catalog__grid .cards {
