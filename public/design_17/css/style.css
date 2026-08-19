@@ -4231,6 +4231,9 @@ article.content{
     left:0;
     width:100%;
   }
+  body.cart-hidden-desktop .thread{
+    max-width:100%;
+  }
   body.cart-hidden-desktop .dc17-chat-new-msgs{
     left:50%;
   }
