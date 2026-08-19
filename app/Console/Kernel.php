@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             CacheServices::GetCountryInfo();
         })->daily();
+
+        $schedule->command('trueserv:check-dns')->everyMinute();
     }
 
     /**

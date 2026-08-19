@@ -12,25 +12,27 @@ class DetectPwaMode
         $isPwa = false;
         $cookies = [];
 
-        foreach (explode(';', $request->header('cookie')) as $cookie) {
-            $parts = explode('=', trim($cookie), 2);
+        if (!empty($request->header('cookie'))) {
+            foreach (explode(';', $request->header('cookie')) as $cookie) {
+                $parts = explode('=', trim($cookie), 2);
 
-            if (count($parts) === 2) {
-                $name = trim($parts[0]);
-                $value = urldecode($parts[1]);
+                if (count($parts) === 2) {
+                    $name = trim($parts[0]);
+                    $value = urldecode($parts[1]);
 
-                $cookies[$name] = $value;
+                    $cookies[$name] = $value;
+                }
             }
-        }
 
-        if ((isset($cookies['is_pwa']) && $cookies['is_pwa'] == '1') || $request->query('source') === 'pwa') {
-            session(['is_pwa' => 1]);
-            $isPwa = true;
-        } else {
-            session(['is_pwa' => 0]);
-        }
+            if ((isset($cookies['is_pwa']) && $cookies['is_pwa'] == '1') || $request->query('source') === 'pwa') {
+                session(['is_pwa' => 1]);
+                $isPwa = true;
+            } else {
+                session(['is_pwa' => 0]);
+            }
 
-        view()->share('isPwa', $isPwa);
+            view()->share('isPwa', $isPwa);
+        }
 
         return $next($request);
     }

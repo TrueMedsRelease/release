@@ -12,8 +12,16 @@
         <br>
         <p>{{__('text.contact_us_sended')}}</p>
     </div>
-    <div class="main__heading">
+    <div class="page-heading">
         <h1 class="h1">{{__('text.contact_us_title')}}</h1>
+        <a class="button button--white button--return" href="{{ route('home.index') }}">
+            <span class="icon">
+                <svg width="1em" height="1em" fill="currentColor">
+                    <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-left") }}"></use>
+                </svg>
+            </span>
+            {{ __('text.common_back_to_chat') }}
+        </a>
     </div>
     <form class="form contact-form form-panel">
         <fieldset class="form__fieldset">
@@ -27,7 +35,7 @@
                     </select>
                     <span class="icon select-wrapper__chevron">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego#chevron-down") }}"></use>
+                            <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#chevron-down") }}"></use>
                         </svg>
                     </span>
                 </div>

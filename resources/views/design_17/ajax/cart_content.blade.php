@@ -1,5 +1,13 @@
 <div class="main__heading">
     <h1 class="h1">{{ __('text.common_cart_text') }}</h1>
+    <a class="button button--white button--return" href="{{ route('home.index') }}">
+        <span class="icon">
+            <svg width="1em" height="1em" fill="currentColor">
+                <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-left") }}"></use>
+            </svg>
+        </span>
+        {{ __('text.common_back_to_chat') }}
+    </a>
 </div>
 <form class="form cart-form">
     <fieldset class="form__fieldset">
@@ -41,7 +49,7 @@
                                                         <span class="icon">
                                                             @if (env('APP_PRINT_SPRITE', 1) == 1)
                                                                 <svg width="1em" height="1em" fill="currentColor">
-                                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#minus') }}"></use>
+                                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#minus') }}"></use>
                                                                 </svg>
                                                             @else
                                                                 <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
@@ -57,7 +65,7 @@
                                                         <span class="icon">
                                                             @if (env('APP_PRINT_SPRITE', 1) == 1)
                                                                 <svg width="1em" height="1em" fill="currentColor">
-                                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#plus') }}"></use>
+                                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#plus') }}"></use>
                                                                 </svg>
                                                             @else
                                                                 <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
@@ -96,7 +104,7 @@
                                                     <span class="icon">
                                                         @if (env('APP_PRINT_SPRITE', 1) == 1)
                                                             <svg width="1em" height="1em" fill="currentColor">
-                                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#trash-round') }}"></use>
+                                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#trash-round') }}"></use>
                                                             </svg>
                                                         @else
                                                             <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
@@ -192,7 +200,7 @@
                     </select>
                     <span class="icon select-wrapper__chevron">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                         </svg>
                     </span>
                 </div>
@@ -220,7 +228,7 @@
 
                     <span class="icon select-wrapper__chevron">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                         </svg>
                     </span>
                 </div>
@@ -252,7 +260,7 @@
                                     </select>
                                     <span class="icon select-wrapper__chevron">
                                         <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                                         </svg>
                                     </span>
                                 </div>
@@ -328,7 +336,7 @@
                         {{__('text.cart_pay_button')}}
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#arrow-right') }}"></use>
                             </svg>
                         </span>
                     </a>

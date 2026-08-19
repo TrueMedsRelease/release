@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomSelector — Demo for Design 17</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CustomSelector.css">
+  <style>
+    :root {
+      --font-inter: 'Inter', sans-serif;
+      --font-poppins: 'Poppins', sans-serif;
+      --color-primary: #13163f;
+      --color-primary-50: rgba(19, 22, 63, 0.5);
+      --color-primary-hover: #0b0d26;
+      --color-secondary: #188;
+      --color-gray-1: #f0f5fa;
+      --color-gray-2: #e6ebf0;
+      --color-gray-3: #d5d9de;
+      --color-gray-4: #797c80;
+      --color-gray-5: #f2f2f8;
+      --color-text: #13163f;
+      --color-text-gray: #797c80;
+      --color-white: #fff;
+      --color-red: #e14c4c;
+      --color-green: #81c61c;
+      --shadow-menu: 0 10px 20px 0 rgba(19, 22, 63, 0.05);
+      --transition-medium-cubic: 0.2s cubic-bezier(0.4, 0.8, 0.4, 1);
+      --transition-short-cubic: 0.1s cubic-bezier(0.4, 0.8, 0.4, 1);
+      --html-bg-color: #f0f5fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-inter);
+      background: var(--html-bg-color);
+      color: var(--color-text);
+      padding: 2rem;
+      line-height: 1.5;
+    }
+    .demo-container {
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+    .demo-header {
+      margin-bottom: 3rem;
+    }
+    .demo-header h1 {
+      font-family: var(--font-poppins);
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+    .demo-header p {
+      color: var(--color-text-gray);
+      font-size: 1.4rem;
+      margin-top: 0.4rem;
+    }
+    .demo-section {
+      background: var(--color-white);
+      border-radius: 2rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-menu);
+    }
+    .demo-section h2 {
+      font-family: var(--font-poppins);
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin-bottom: 1.6rem;
+      color: var(--color-primary);
+    }
+    .demo-section h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--color-text-gray);
+      margin-bottom: 0.8rem;
+      margin-top: 1.6rem;
+    }
+    .demo-section h3:first-child {
+      margin-top: 0;
+    }
+    .demo-description {
+      font-size: 1.3rem;
+      color: var(--color-text-gray);
+      margin-bottom: 1.2rem;
+    }
+    .demo-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+    .demo-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.6rem;
+      border: 1px solid var(--color-gray-3);
+      border-radius: 2.4rem;
+      background: var(--color-white);
+      font-family: var(--font-inter);
+      font-size: 1.3rem;
+      color: var(--color-primary);
+      cursor: pointer;
+      transition: border-color var(--transition-medium-cubic);
+    }
+    .demo-btn:hover {
+      border-color: var(--color-primary);
+    }
+    .demo-btn.primary {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border-color: var(--color-primary);
+    }
+    .demo-btn.primary:hover {
+      background: var(--color-primary-hover);
+    }
+    .demo-output {
+      margin-top: 1rem;
+      padding: 1rem 1.6rem;
+      background: var(--color-gray-1);
+      border-radius: 1rem;
+      font-size: 1.3rem;
+      color: var(--color-text-gray);
+      font-family: 'SF Mono', 'Consolas', monospace;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 2.4rem;
+    }
+    .radio-select .cs-control {
+      min-height: 6.6rem;
+      height: auto;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.75rem 4rem 0.75rem 2rem;
+      background-color: var(--color-white);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <div class="demo-header">
+      <h1>CustomSelector</h1>
+      <p>Custom selector for Design 17 — feature demonstration</p>
+    </div>
+
+    <!-- Single Select -->
+    <div class="demo-section">
+      <h2>Single Select</h2>
+      <div class="demo-description">Select a single option. Supports rich content: flags, labels, captions.</div>
+      <div id="single-demo" data-placeholder="Select a country"></div>
+    </div>
+
+    <!-- Single with Rich Options -->
+    <div class="demo-section">
+      <h2>Single Select (Rich Options)</h2>
+      <div class="demo-description">Options with label (red badge), caption (gray description) and country flags.</div>
+      <div id="single-rich-demo" data-placeholder="Select delivery method"></div>
+    </div>
+
+    <!-- Radio Select -->
+    <div class="demo-section radio-select">
+      <h2>Radio Select</h2>
+      <div class="demo-description">Radio button variant for selecting payment method.</div>
+      <div id="radio-demo" data-placeholder="Select payment method"></div>
+    </div>
+
+    <!-- Multi Select -->
+    <div class="demo-section">
+      <h2>Multi Select</h2>
+      <div class="demo-description">Select multiple options with tags. Supports search.</div>
+      <div id="multi-demo" data-placeholder="Select programming languages"></div>
+    </div>
+
+    <!-- Tag-based Select -->
+    <div class="demo-section">
+      <h2>Tag-based Select</h2>
+      <div class="demo-description">Select tags with custom rendering and icons.</div>
+      <div id="tag-demo" data-placeholder="Select technologies"></div>
+    </div>
+
+    <!-- API Demo -->
+    <div class="demo-section">
+      <h2>Programmatic API</h2>
+      <div class="demo-description">Control the selector via JavaScript API.</div>
+      <div id="api-demo" data-placeholder="Select a value"></div>
+      <div class="demo-actions">
+        <button class="demo-btn" id="api-get-value">Get Value</button>
+        <button class="demo-btn" id="api-set-value">Set Value (PHP)</button>
+        <button class="demo-btn" id="api-toggle">Toggle Open</button>
+        <button class="demo-btn" id="api-disable">Disable</button>
+        <button class="demo-btn primary" id="api-enable">Enable</button>
+        <button class="demo-btn" id="api-clear">Clear</button>
+      </div>
+      <div class="demo-output" id="api-output">// Click "Get Value" to start</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import CustomSelector from './CustomSelector.js';
+
+    // ------------------------------------------------
+    // 1. Single Select — countries with flags
+    // ------------------------------------------------
+    const countries = [
+      { value: 'US', label: 'United States', flag: 'us' },
+      { value: 'GB', label: 'United Kingdom', flag: 'gb' },
+      { value: 'DE', label: 'Germany', flag: 'de' },
+      { value: 'FR', label: 'France', flag: 'fr' },
+      { value: 'IT', label: 'Italy', flag: 'it' },
+      { value: 'ES', label: 'Spain', flag: 'es' },
+      { value: 'JP', label: 'Japan', flag: 'jp' },
+      { value: 'BR', label: 'Brazil', flag: 'br' },
+      { value: 'CA', label: 'Canada', flag: 'ca' },
+      { value: 'AU', label: 'Australia', flag: 'au' },
+    ];
+
+    const singleSelect = new CustomSelector('#single-demo', {
+      selectorType: 'single',
+      features: ['search', 'keyboard-navigation', 'accessibility'],
+      dataSource: { type: 'static', options: countries },
+      callbacks: {
+        onChange: (val) => console.log('[Single] Selected:', val),
+      },
+    });
+
+    // ------------------------------------------------
+    // 2. Single Select (Rich) — delivery with label and caption
+    // ------------------------------------------------
+    const singleRich = new CustomSelector('#single-rich-demo', {
+      selectorType: 'single',
+      features: ['search', 'keyboard-navigation', 'custom-rendering'],
+      dataSource: {
+        type: 'static',
+        options: [
+          { value: 'free', label: 'Free', flag: 'us', caption: '5-7 business days', text: 'Free Delivery' },
+          { value: 'express', label: 'Only $29.99', flag: 'us', caption: '1-2 business days', text: 'Express Delivery' },
+          { value: 'next-day', label: 'Only $49.99', flag: 'gb', caption: 'Next day', text: 'Next Day Delivery' },
+          { value: 'pickup', label: 'Free', flag: 'us', caption: 'Pick up in store', text: 'In-Store Pickup' },
+        ],
+      },
+    });
+
+    // ------------------------------------------------
+    // 3. Radio Select — payment
+    // ------------------------------------------------
+    const radioSelect = new CustomSelector('#radio-demo', {
+      selectorType: 'single',
+      features: ['keyboard-navigation', 'accessibility'],
+      dataSource: {
+        type: 'static',
+        options: [
+          { value: 'card', text: 'Card Payment' },
+          { value: 'crypto', text: 'Cryptocurrency' },
+          { value: 'paypal', text: 'PayPal' },
+          { value: 'apple-pay', text: 'Apple Pay' },
+          { value: 'google-pay', text: 'Google Pay' },
+        ],
+      },
+      callbacks: {
+        onChange: (val) => console.log('[Radio] Selected:', val),
+      },
+    });
+    document.querySelector('#radio-demo').closest('.radio-select')?.querySelector('.cs-container')?.classList.add('radio-select');
+
+    // ------------------------------------------------
+    // 4. Multi Select — languages with tags
+    // ------------------------------------------------
+    const multiSelect = new CustomSelector('#multi-demo', {
+      selectorType: 'multiple',
+      features: ['search', 'keyboard-navigation', 'accessibility'],
+      dataSource: {
+        type: 'static',
+        options: [
+          { value: 'js', label: 'JavaScript' },
+          { value: 'py', label: 'Python' },
+          { value: 'go', label: 'Go' },
+          { value: 'rs', label: 'Rust' },
+          { value: 'ts', label: 'TypeScript' },
+          { value: 'rb', label: 'Ruby' },
+          { value: 'java', label: 'Java' },
+          { value: 'kt', label: 'Kotlin' },
+          { value: 'swift', label: 'Swift' },
+          { value: 'php', label: 'PHP' },
+        ],
+      },
+      callbacks: {
+        onChange: (val) => console.log('[Multi] Selected:', val),
+      },
+    });
+
+    // ------------------------------------------------
+    // 5. Tag-based Select
+    // ------------------------------------------------
+    const tagSelect = new CustomSelector('#tag-demo', {
+      selectorType: 'tag-based',
+      features: ['search', 'keyboard-navigation', 'custom-rendering'],
+      dataSource: {
+        type: 'static',
+        options: [
+          { value: 'react', label: 'React', text: '⚛️ React' },
+          { value: 'vue', label: 'Vue', text: '💚 Vue' },
+          { value: 'angular', label: 'Angular', text: '🔴 Angular' },
+          { value: 'svelte', label: 'Svelte', text: '🧡 Svelte' },
+          { value: 'solid', label: 'Solid', text: '💙 Solid' },
+          { value: 'qwik', label: 'Qwik', text: '⚡ Qwik' },
+        ],
+      },
+      callbacks: {
+        onRenderOption: (item) => item.text || item.label,
+        onChange: (val) => console.log('[Tag] Selected:', val),
+      },
+    });
+
+    // ------------------------------------------------
+    // 6. API Demo
+    // ------------------------------------------------
+    const apiSelect = new CustomSelector('#api-demo', {
+      selectorType: 'single',
+      features: ['search', 'keyboard-navigation', 'accessibility'],
+      dataSource: {
+        type: 'static',
+        options: [
+          { value: 'js', label: 'JavaScript' },
+          { value: 'py', label: 'Python' },
+          { value: 'php', label: 'PHP' },
+          { value: 'rb', label: 'Ruby' },
+          { value: 'go', label: 'Go' },
+        ],
+      },
+      callbacks: {
+        onChange: (val) => {
+          document.getElementById('api-output').textContent = `// onChange fired\n{ value: "${val?.value}", label: "${val?.label}" }`;
+        },
+      },
+    });
+
+    document.getElementById('api-get-value').addEventListener('click', () => {
+      const val = apiSelect.getValue();
+      document.getElementById('api-output').textContent = `// getValue()\n${JSON.stringify(val, null, 2)}`;
+    });
+
+    document.getElementById('api-set-value').addEventListener('click', () => {
+      apiSelect.setValue('php');
+      document.getElementById('api-output').textContent = '// setValue("php")\n→ Selected PHP';
+    });
+
+    document.getElementById('api-toggle').addEventListener('click', () => {
+      apiSelect.toggle();
+      document.getElementById('api-output').textContent = '// toggle()\n→ Toggled';
+    });
+
+    document.getElementById('api-disable').addEventListener('click', () => {
+      apiSelect.disable();
+      document.getElementById('api-output').textContent = '// disable()\n→ Selector disabled';
+    });
+
+    document.getElementById('api-enable').addEventListener('click', () => {
+      apiSelect.enable();
+      document.getElementById('api-output').textContent = '// enable()\n→ Selector enabled';
+    });
+
+    document.getElementById('api-clear').addEventListener('click', () => {
+      apiSelect.clear();
+      document.getElementById('api-output').textContent = '// clear()\n→ Cleared';
+    });
+
+    console.log('[CustomSelector Demo] All instances created successfully');
+    console.log('[CustomSelector Demo] Instances:', {
+      singleSelect,
+      singleRich,
+      radioSelect,
+      multiSelect,
+      tagSelect,
+      apiSelect,
+    });
+  </script>
+</body>
+</html>

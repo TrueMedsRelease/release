@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Phattarachai\LaravelMobileDetect\Agent;
+use App\Services\TrueServService;
 
 class HomeController extends Controller
 {
@@ -27,7 +28,6 @@ class HomeController extends Controller
         $design          = session('design') ? session('design') : config('app.design');
         $phone_codes     = PhoneCodes::all()->toArray();
         $page_properties = ProductServices::getPageProperties('main');
-        $first_letters   = ProductServices::getFirstLetters();
         $agent           = new Agent();
 
         $codes = $this->getAllCountryISO();
@@ -64,11 +64,13 @@ class HomeController extends Controller
             $domain = substr($domain, 0, -1);
         }
 
+        $first_letters = ProductServices::getFirstLetters();
+
         // if (!is_null($statisticPromise)) {
         //     $statisticPromise->wait();
         // }
 
-        if (!in_array($design, ['design_7', 'design_8'])) {
+        if (!in_array($design, ['design_7', 'design_8', 'design_17'])) {
             $bestsellers = ProductServices::GetBestsellers($design);
             $menu        = ProductServices::GetCategoriesWithProducts($design);
 
@@ -86,6 +88,22 @@ class HomeController extends Controller
                     'Currency'        => Currency::class,
                     'pixel'           => $pixel,
                     'first_letters'   => $first_letters,
+                    'domain'          => $domain,
+                    'web_statistic'   => $web_statistic,
+                    'codes'           => json_encode($codes),
+                ]
+            );
+        } elseif ($design == 'design_17') {
+            return view(
+                $design . '.index',
+                [
+                    'design'          => $design,
+                    'phone_codes'     => $phone_codes,
+                    'page_properties' => $page_properties,
+                    'agent'           => $agent,
+                    'Language'        => Language::class,
+                    'Currency'        => Currency::class,
+                    'pixel'           => $pixel,
                     'domain'          => $domain,
                     'web_statistic'   => $web_statistic,
                     'codes'           => json_encode($codes),
@@ -1430,8 +1448,7 @@ class HomeController extends Controller
 
     public function design($design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16,
-            // 17
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17
         ])) {
             session(['design' => 'design_' . $design]);
         }
@@ -1441,8 +1458,7 @@ class HomeController extends Controller
 
     public function design_with_url($url, $design)
     {
-        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16,
-            // 17
+        if (in_array($design, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17
         ])) {
             session(['design' => 'design_' . $design]);
         }
@@ -1796,7 +1812,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/phone_request.php',
@@ -1861,7 +1877,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/subscribe.php',
@@ -1966,7 +1982,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/messages_new.php',
@@ -2070,7 +2086,7 @@ class HomeController extends Controller
 
         if (!$error) {
             $response = [];
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(3)->post(
                         'http://true-serv.net/support/messages/messages_new.php',

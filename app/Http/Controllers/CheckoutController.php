@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use App\Helpers\RequestHelper;
+use App\Services\TrueServService;
 
 class CheckoutController extends Controller
 {
@@ -73,7 +74,7 @@ class CheckoutController extends Controller
             'api_key' => $api_key->key_data,
         ];
 
-        if (env("APP_PAYPAL_ON", false) && checkdnsrr('true-serv.net', 'A')) {
+        if (env("APP_PAYPAL_ON", false) && TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $message);
                 Log::info("Paypal limit answer: " . $response);
@@ -163,6 +164,13 @@ class CheckoutController extends Controller
             return redirect(route('home.index'));
         }
 
+        $returnHTML = $this->getCheckoutHtml();
+
+        return response()->json(['success' => true, 'html' => "$returnHTML"]);
+    }
+
+    private function getCheckoutHtml(): string
+    {
         $language_id = isset(Language::$languages[App::currentLocale()]) ? Language::$languages[App::currentLocale()] : Language::$languages['en'];
         $design      = session('design') ? session('design') : config('app.design');
         $desc        = ProductServices::GetProductDesc($language_id);
@@ -188,6 +196,7 @@ class CheckoutController extends Controller
             $item['name']      = $desc[$item['product_id']]['name'];
             $item['type_name'] = $types->where('type_id', '=', $item['type'])->first()->name;
             if ($item['dosage'] != '1card') {
+                $item['dosage_name'] = $item['dosage'] . ' x ' . $item['num'] . ' ' . $item['type_name'];
                 if (in_array($item['product_id'], [619, 620, 483, 484, 501, 615])) {
                     $item['pack_name'] = $item['name'];
                 } else {
@@ -205,7 +214,7 @@ class CheckoutController extends Controller
         $product_total_check += session('cart_option.bonus_price');
 
         $country_info = CountryInfoCache::query()
-            ->where('country_iso2', '=', session('form.billing_country', session('location.country')))
+            ->where('country_iso2', '=', session('form.billing_country') ?? session('location.country'))
             ->get()
             ->toArray();
 
@@ -259,7 +268,7 @@ class CheckoutController extends Controller
         }
 
         $service_enable = true;
-        if (!checkdnsrr('true-serv.net', 'A')) {
+        if (!TrueServService::available()) {
             $service_enable = false;
         }
 
@@ -274,43 +283,52 @@ class CheckoutController extends Controller
 
         $states = State::$states;
 
-        if ($design == 'design_17') {
-            $returnHTML = view($design . '.ajax.checkout_content')->with([
-                'Language'            => Language::class,
-                'Currency'            => Currency::class,
-                'products'            => $products,
-                'card_only'           => $card_only,
-                'bonus'               => $bonus,
-                'design'              => $design,
-                'shipping'            => $shipping,
-                'product_total'       => $product_total,
-                'product_total_check' => $product_total_check,
-                'phone_codes'         => $phone_codes,
-                'countries'           => $countries,
-                'states'              => $states,
-                'service_enable'      => $service_enable,
+        try {
+            if ($design == 'design_17') {
+                $returnHTML = view($design . '.ajax.checkout_content')->with([
+                    'Language'            => Language::class,
+                    'Currency'            => Currency::class,
+                    'products'            => $products,
+                    'card_only'           => $card_only,
+                    'bonus'               => $bonus,
+                    'design'              => $design,
+                    'shipping'            => $shipping,
+                    'product_total'       => $product_total,
+                    'product_total_check' => $product_total_check,
+                    'phone_codes'         => $phone_codes,
+                    'countries'           => $countries,
+                    'states'              => $states,
+                    'service_enable'      => $service_enable,
 
-            ])->render();
-        } else {
-            $returnHTML = view('checkout_content')->with([
-                'Language'            => Language::class,
-                'Currency'            => Currency::class,
-                'products'            => $products,
-                'card_only'           => $card_only,
-                'bonus'               => $bonus,
-                'design'              => $design,
-                'shipping'            => $shipping,
-                'product_total'       => $product_total,
-                'product_total_check' => $product_total_check,
-                'phone_codes'         => $phone_codes,
-                'countries'           => $countries,
-                'states'              => $states,
-                'service_enable'      => $service_enable,
+                ])->render();
+            } else {
+                $returnHTML = view('checkout_content')->with([
+                    'Language'            => Language::class,
+                    'Currency'            => Currency::class,
+                    'products'            => $products,
+                    'card_only'           => $card_only,
+                    'bonus'               => $bonus,
+                    'design'              => $design,
+                    'shipping'            => $shipping,
+                    'product_total'       => $product_total,
+                    'product_total_check' => $product_total_check,
+                    'phone_codes'         => $phone_codes,
+                    'countries'           => $countries,
+                    'states'              => $states,
+                    'service_enable'      => $service_enable,
 
-            ])->render();
+                ])->render();
+            }
+        } catch (\Throwable $e) {
+            Log::error('[CheckoutController.getCheckoutHtml] view render failed', [
+                'design' => $design,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return '';
         }
 
-        return response()->json(array('success' => true, 'html' => "$returnHTML"));
+        return $returnHTML;
     }
 
     public function insurance(Request $request)
@@ -322,6 +340,8 @@ class CheckoutController extends Controller
         }
 
         session(['form' => $request->all()]);
+
+        $this->clearPaymentRequisites();
 
         return $this->checkout();
     }
@@ -336,6 +356,8 @@ class CheckoutController extends Controller
 
         session(['form' => $request->all()]);
 
+        $this->clearPaymentRequisites();
+
         return $this->checkout();
     }
 
@@ -348,6 +370,8 @@ class CheckoutController extends Controller
         session(['cart_option.shipping_price' => $shipping_price]);
 
         session(['form' => $request->all()]);
+
+        $this->clearPaymentRequisites();
 
         return $this->checkout();
     }
@@ -363,10 +387,11 @@ class CheckoutController extends Controller
 
 
         if (session()->has('local_payment')) {
-            session()->forget('local_payment');
             session(['form.payment_type' => 'mastercard']);
             // session(['form.payment_type' => 'card']);
         }
+
+        $this->clearPaymentRequisites();
 
         return $this->checkout();
     }
@@ -382,7 +407,7 @@ class CheckoutController extends Controller
             'coupon'  => $coupon,
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Coupon answer: " . $response);
@@ -398,6 +423,8 @@ class CheckoutController extends Controller
                         $result['type']    = $response['coupon']['type'];
 
                         session(['coupon' => $result]);
+
+                        $this->clearPaymentRequisites();
                     }
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
@@ -427,7 +454,7 @@ class CheckoutController extends Controller
             'gift_card'  => $gift_card,
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Gift Card answer: " . $response);
@@ -442,6 +469,8 @@ class CheckoutController extends Controller
                         $result['gift_card_balance'] = $response['coupon']['balans'];
 
                         session(['gift_card' => $result]);
+
+                        $this->clearPaymentRequisites();
                     }
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
@@ -465,7 +494,7 @@ class CheckoutController extends Controller
         $bonus_api_key = DB::table('shop_keys')->where('name_key', '=', 'bonus_card')->get('key_data')->toArray()[0];
         $bonus_card = str_replace(' ', '', $request->bonus_card);
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->withHeaders([
                         'X-API-KEY' => $bonus_api_key->key_data,
@@ -510,7 +539,7 @@ class CheckoutController extends Controller
                             session(['form.payment_type' => 'bonus_card']);
                         }
 
-                        session()->forget('crypto');
+                        $this->clearPaymentRequisites();
                     }
                 } else {
                     // Обработка ответа с ошибкой (4xx или 5xx)
@@ -557,7 +586,7 @@ class CheckoutController extends Controller
         }
 
         session(['checked_bonus' => $request->checked_bonus]);
-        session()->forget('crypto');
+        $this->clearPaymentRequisites();
 
         return $this->checkout();
     }
@@ -626,7 +655,7 @@ class CheckoutController extends Controller
             'ip'      => $ip
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info('Response AUTH: ' . $response);
@@ -655,6 +684,8 @@ class CheckoutController extends Controller
                 Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                 $responseData = ['error' => 'Service unavailable'];
             }
+        }else {
+            return ['error' => 'Service unavailable'];
         }
     }
 
@@ -815,6 +846,8 @@ class CheckoutController extends Controller
             // 'bank_name'        => ['exclude_unless:payment_type,card', 'required'],
             // 'expire_date'      => ['exclude_unless:payment_type,card', 'required', 'date_format:m/Y', 'after:now'],
             // 'cvc_2'            => ['exclude_unless:payment_type,card', 'required', 'min:3', 'max:4']
+        ], [
+            'card_numb.credit_card_number' => __('text.checkout_wrong_card'),
         ]);
 
         session(['form' => $request->all()]);
@@ -905,7 +938,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -948,7 +981,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse  = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Order answer: " . $httpResponse);
@@ -1177,7 +1210,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -1220,7 +1253,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Paypal answer: " . $httpResponse);
@@ -1325,7 +1358,7 @@ class CheckoutController extends Controller
             'currency' => $request->currency,
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Crypto info answer: " . $response);
@@ -1338,8 +1371,7 @@ class CheckoutController extends Controller
                     if (isset($response['status']) && $response['status'] == 'error') {
                         return response()->json(json_encode(['status' => 'error', 'text' => 'Service unavailable']));
                     } else {
-                        $response['crypto_total'] = Currency::$prefix[session('currency')] . round(session('total.checkout_total') * 0.85 * session('currency_c',
-                                    1), 2);
+                        $response['crypto_total'] = Currency::$prefix[session('currency', 'usd')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
                         $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
                         $response['currency']     = $request->currency;
 
@@ -1364,6 +1396,8 @@ class CheckoutController extends Controller
 
     public function validate_for_crypt(Request $request)
     {
+        $previousPaymentType = session('form.payment_type', 'mastercard');
+
         $validator = Validator::make($request->all(), [
             'phone'            => ['required', 'min:5', 'max:16'],
             'email'            => ['required', 'email:rfc,dns', 'max:255'],
@@ -1384,6 +1418,7 @@ class CheckoutController extends Controller
         session(['form' => $request->all()]);
 
         if ($validator->fails()) {
+            session(['form.payment_type' => $previousPaymentType]);
             $errors = [];
             foreach ($validator->messages()->toArray() as $key => $error) {
                 $errors[] = ['message' => $error[0], 'field' => $key];
@@ -1502,7 +1537,7 @@ class CheckoutController extends Controller
             'is_pwa' => session('is_pwa', 0),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -1588,7 +1623,7 @@ class CheckoutController extends Controller
 
             $local_payment_api_key = DB::table('shop_keys')->where('name_key', '=', 'local_payment')->get('key_data')->toArray()[0];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(10)
                         ->withHeaders([
@@ -1754,7 +1789,7 @@ class CheckoutController extends Controller
             'is_pwa' => session('is_pwa', 0),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -1879,7 +1914,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -1922,7 +1957,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Transfer answer: " . $httpResponse);
@@ -2059,7 +2094,7 @@ class CheckoutController extends Controller
                 'order_id' => session('order.order_id'),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2093,7 +2128,7 @@ class CheckoutController extends Controller
                 ];
             }
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2138,7 +2173,7 @@ class CheckoutController extends Controller
             //     'invoiceId' => session('crypto.invoiceId'),
             // ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2238,7 +2273,7 @@ class CheckoutController extends Controller
                         'products'            => $products_str,
                         'saff'                => session('saff', ''),
                         'language'            => App::currentLocale(),
-                        'currency'            => session('currency'),
+                        'currency'            => session('currency', 'usd'),
                         'user_agent'          => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                                 'Accept-Language'
                             ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -2451,7 +2486,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -2488,7 +2523,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -2596,7 +2631,7 @@ class CheckoutController extends Controller
             'products'           => $products_str,
             'saff'               => session('saff', ''),
             'language'           => App::currentLocale(),
-            'currency'           => session('currency'),
+            'currency'           => session('currency', 'usd'),
             'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                     'Accept-Language'
                 ) . '&screen_resolution=' . $form['screen_resolution'] . '&customer_date=' . $request->customer_date,
@@ -2639,7 +2674,7 @@ class CheckoutController extends Controller
 
         $order_cache_id = $this->getOrCreateOrderCache($data, $form['email']);
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("GooglePay answer: " . $httpResponse);
@@ -2840,7 +2875,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -2877,7 +2912,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -3000,7 +3035,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -3043,7 +3078,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Sepa answer: " . $httpResponse);
@@ -3164,7 +3199,7 @@ class CheckoutController extends Controller
             'aff'         => session('aff', 0),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -3293,7 +3328,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -3330,7 +3365,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Zelle Data answer: " . $response);
@@ -3400,7 +3435,7 @@ class CheckoutController extends Controller
     //         'sessid' => $sessid
     //     ];
 
-    //     if (checkdnsrr('true-serv.net', 'A')) {
+    //     if (TrueServService::available()) {
     //         try {
     //             Log::info("PayVMC data answer: " . json_encode($data));
     //             $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
@@ -3548,7 +3583,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -3591,7 +3626,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Bonus Card answer: " . $httpResponse);
@@ -3626,7 +3661,7 @@ class CheckoutController extends Controller
                         return response()->json(['response' => $response], 200);
                     } else {
                         // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+                       Log::error("Сервис вернул ошибку: " . $httpResponse->status());
 
                         $this->markOrderRetry(
                             $order_cache_id,
@@ -3788,7 +3823,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -3831,7 +3866,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Gift Card answer: " . $httpResponse);
@@ -4029,7 +4064,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent(),
                 'fingerprint'        => '',
                 'product_total'      => session('total.product_total'),
@@ -4066,7 +4101,7 @@ class CheckoutController extends Controller
                 'is_pwa' => session('is_pwa', 0),
             ];
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -4279,7 +4314,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -4322,7 +4357,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Wallet answer: " . $httpResponse);
@@ -4581,7 +4616,7 @@ class CheckoutController extends Controller
                 'products'           => $products_str,
                 'saff'               => session('saff', ''),
                 'language'           => App::currentLocale(),
-                'currency'           => session('currency'),
+                'currency'           => session('currency', 'usd'),
                 'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
                         'Accept-Language'
                     ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
@@ -4624,7 +4659,7 @@ class CheckoutController extends Controller
 
             $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
 
-            if (checkdnsrr('true-serv.net', 'A')) {
+            if (TrueServService::available()) {
                 try {
                     $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Open Banking answer: " . $httpResponse);
@@ -4756,6 +4791,7 @@ class CheckoutController extends Controller
     public function recalculation(Request $request)
     {
         $form = $request->all();
+        $previousPaymentType = session('form.payment_type', 'mastercard');
 
         $validator = Validator::make($request->all(), [
             'phone'            => ['required', 'min:5', 'max:16'],
@@ -4777,6 +4813,7 @@ class CheckoutController extends Controller
         session(['form' => $request->all()]);
 
         if ($validator->fails()) {
+            session(['form.payment_type' => $previousPaymentType]);
             $errors = [];
             foreach ($validator->messages()->toArray() as $key => $error) {
                 $errors[] = ['message' => $error[0], 'field' => $key];
@@ -4785,6 +4822,12 @@ class CheckoutController extends Controller
         } else {
             session(['bonus_checkout_payment' => $form['bonus_checkout_payment']]);
             session(['form.payment_type' => $form['bonus_checkout_payment']]);
+
+            $paymentTypesWithRequisites = ['crypto', 'sepa_local', 'fps', 'domestic', 'ach', 'interac', 'usd_swift', 'gbp_swift'];
+
+            if (!in_array($form['bonus_checkout_payment'] ?? '', $paymentTypesWithRequisites)) {
+                $this->clearPaymentRequisites();
+            }
 
             return $this->checkout();
         }
@@ -4801,7 +4844,7 @@ class CheckoutController extends Controller
                 session()->forget($witch_forget);
             }
 
-            session()->forget('crypto');
+            $this->clearPaymentRequisites();
             // session(['form.payment_type' => 'card']);
             session(['form.payment_type' => 'mastercard']);
         }
@@ -4809,9 +4852,16 @@ class CheckoutController extends Controller
         return $this->checkout();
     }
 
+    private function clearPaymentRequisites(): void
+    {
+        session()->forget('crypto');
+        session()->forget('zelle');
+        session()->forget('local_payment');
+    }
+
     private function retryUnsentOrders(): void
     {
-        if (!checkdnsrr('true-serv.net', 'A')) {
+        if (!TrueServService::available()) {
             return;
         }
 
@@ -5208,7 +5258,7 @@ class CheckoutController extends Controller
             'sessid'   => session()->getId(),
         ];
 
-        if (checkdnsrr('true-serv.net', 'A')) {
+        if (TrueServService::available()) {
             try {
                 Log::info("PayVMC data answer: " . json_encode($data));
 

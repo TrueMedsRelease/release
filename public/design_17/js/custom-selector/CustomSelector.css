@@ -1,0 +1,556 @@
+/* CSS Variables */
+:root {
+    --color-primary: #13163f;
+    --color-text: #13163f;
+    --color-text-gray: #797c80;
+    --color-white: #fff;
+    --color-gray-1: #f0f5fa;
+    --color-gray-3: #d5d9de;
+    --color-gray-4: #797c80;
+    --color-gray-5: #f2f2f8;
+    --color-red: #e14c4c;
+    --font-inter: 'Inter', sans-serif;
+    --transition-short-cubic: 0.1s cubic-bezier(0.4, 0.8, 0.4, 1);
+    --transition-medium-cubic: 0.2s cubic-bezier(0.4, 0.8, 0.4, 1);
+    --shadow-menu: 0 10px 20px 0 rgba(19, 22, 63, 0.05);
+}
+
+.cs-container {
+    position: relative;
+    flex-grow: 1;
+    font-family: var(--font-inter, 'Inter', sans-serif);
+    font-size: 1.4rem;
+    color: var(--color-text, #13163f);
+    width: 100%;
+    user-select: none;
+}
+
+.cs-container.cs-dark {
+    --cs-bg: #1e1e2e;
+    --cs-bg-hover: #2a2a3e;
+    --cs-border: #3a3a4e;
+    --cs-text: #e0e0e0;
+    --cs-text-light: #888;
+    --cs-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --cs-tag-bg: #2a3a5e;
+    --cs-tag-color: #8ab4f8;
+    --cs-highlight-bg: #4a3a1e;
+    --cs-disabled-bg: #2a2a2a;
+}
+
+/* Control */
+.cs-control {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 4.8rem;
+    height: auto;
+    padding: 0.4rem 4rem 0.4rem 1.9rem;
+    border: 1px solid var(--color-gray-1, #f0f5fa);
+    border-radius: 2.4rem;
+    font-size: 1.6rem;
+    line-height: normal;
+    background-color: var(--color-gray-1, #f0f5fa);
+    color: var(--color-text, #13163f);
+    cursor: pointer;
+    transition: border-color var(--transition-medium-cubic, 0.2s cubic-bezier(0.4, 0.8, 0.4, 1));
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.cs-control:hover,
+.cs-control:focus-visible {
+    border-color: var(--color-gray-3, #d5d9de);
+    outline: none;
+}
+
+.cs-container.cs-open .cs-control {
+    z-index: 4;
+    border-color: var(--color-gray-3, #d5d9de);
+}
+
+.cs-container.cs-disabled .cs-control {
+    background: var(--cs-disabled-bg, #f0f0f0);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Placeholder */
+.cs-placeholder {
+    flex: 1;
+    color: var(--color-gray-4, #797c80);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+}
+
+/* Arrow */
+.cs-arrow {
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    z-index: 4;
+    font-size: 1.6rem;
+    color: var(--color-primary, #13163f);
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: transform var(--transition-medium-cubic, 0.2s cubic-bezier(0.4, 0.8, 0.4, 1));
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
+
+.cs-container.cs-open .cs-arrow {
+    transform: rotate(-180deg) translateY(50%);
+}
+
+/* Clear button */
+.cs-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: var(--color-gray-4, #797c80);
+    padding: 0;
+    line-height: 1;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    transition: color var(--transition-medium-cubic, 0.2s cubic-bezier(0.4, 0.8, 0.4, 1));
+}
+
+.cs-clear-btn:hover {
+    color: var(--color-text, #13163f);
+}
+
+.cs-clear-btn[hidden] {
+    display: none;
+}
+
+/* Tags (multi/tag-based) */
+.cs-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.cs-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.8rem;
+    background: var(--color-white, #fff);
+    border: 1px solid var(--color-gray-3, #d5d9de);
+    border-radius: 1rem;
+    font-size: 1.3rem;
+    color: var(--color-text, #13163f);
+    white-space: nowrap;
+}
+
+.cs-tag-label {
+    max-width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cs-tag-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-gray-4, #797c80);
+    font-size: 1.4rem;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity var(--transition-medium-cubic, 0.2s cubic-bezier(0.4, 0.8, 0.4, 1));
+}
+
+.cs-tag-remove:hover {
+    opacity: 1;
+}
+
+/* Dropdown */
+.cs-dropdown {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    flex-direction: column;
+    border-radius: 2rem;
+    padding: 0;
+    background: var(--color-white, #fff);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-menu, 0 10px 20px 0 rgba(19, 22, 63, 0.05));
+    min-width: 100%;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    pointer-events: none;
+}
+
+.cs-dropdown[hidden] {
+    display: none;
+}
+
+.cs-container.cs-open .cs-dropdown {
+    z-index: 15;
+    display: flex;
+    max-height: 24rem;
+    border-radius: 2rem;
+    box-shadow: var(--shadow-menu, 0 10px 20px 0 rgba(19, 22, 63, 0.05));
+    opacity: 1;
+    pointer-events: auto;
+    animation: cs-panel-appear 0.2s;
+    overflow: hidden;
+}
+
+@keyframes cs-panel-appear {
+    from {
+        opacity: 0;
+        margin-top: -0.8rem;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+
+/* Search */
+.cs-search {
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--color-gray-5, #f2f2f8);
+}
+
+.cs-search-input {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid var(--color-gray-3, #d5d9de);
+    border-radius: 1rem;
+    font-family: var(--font-inter, 'Inter', sans-serif);
+    font-size: 1.4rem;
+    background: var(--color-white, #fff);
+    color: var(--color-text, #13163f);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color var(--transition-medium-cubic, 0.2s cubic-bezier(0.4, 0.8, 0.4, 1));
+}
+
+.cs-search-input:focus {
+    border-color: var(--color-gray-4, #797c80);
+}
+
+.cs-search-input::placeholder {
+    color: var(--color-gray-4, #797c80);
+}
+
+/* Options list */
+.cs-options {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.cs-options::-webkit-scrollbar {
+    width: 0.4rem;
+    border-radius: 0.2rem;
+}
+
+.cs-options::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cs-options::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 0.2rem;
+}
+
+.cs-options:hover::-webkit-scrollbar-thumb {
+    background: var(--color-primary, #13163f);
+}
+
+.cs-option {
+    position: relative;
+    padding: 1rem 2rem 0.9rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--color-text, #13163f);
+    cursor: pointer;
+    transition: color var(--transition-short-cubic, 0.1s cubic-bezier(0.4, 0.8, 0.4, 1));
+}
+
+.cs-option:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-gray-5, #f2f2f8);
+}
+
+.cs-option:hover,
+.cs-option--highlighted {
+    background-color: transparent;
+    color: var(--color-text-gray, #797c80);
+}
+
+.cs-option--selected {
+    font-weight: normal;
+    color: var(--color-text-gray, #797c80);
+}
+
+.cs-option--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Highlight match */
+.cs-highlight {
+    background: var(--color-gray-5, #f2f2f8);
+    padding: 0 0.2rem;
+    border-radius: 0.2rem;
+}
+
+/* No results message */
+.cs-no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--color-gray-4, #797c80);
+    text-align: center;
+}
+
+.cs-no-results-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.cs-no-results p {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+/* Error message */
+.cs-error-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--color-red, #e14c4c);
+    text-align: center;
+}
+
+.cs-error-message p {
+    margin: 0 0 1rem 0;
+    font-size: 1.4rem;
+}
+
+.cs-retry-btn {
+    padding: 0.6rem 1.2rem;
+    background: var(--color-primary, #13163f);
+    color: var(--color-white, #fff);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: opacity 0.2s;
+}
+
+.cs-retry-btn:hover {
+    opacity: 0.8;
+}
+
+/* Rich option content */
+.cs-option-wrapper {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cs-option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.cs-flag[data-flag] {
+    display: inline-block;
+    width: 2rem;
+    height: 1.4rem;
+    border-radius: 0.2rem;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-gray-5, #f2f2f8);
+}
+
+.cs-label {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-red, #e14c4c);
+    line-height: 1.2;
+}
+
+.cs-caption {
+    font-size: 1.2rem;
+    color: var(--color-text-gray, #797c80);
+    line-height: 1.2;
+}
+
+.cs-text {
+    font-size: 1.4rem;
+    color: var(--color-text, #13163f);
+}
+
+/* Radio-select variant */
+.radio-select .cs-container {
+    border: none;
+}
+
+.radio-select .cs-control {
+    min-height: 6.6rem;
+    height: auto;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.75rem 4rem 0.75rem 2rem;
+    background-color: var(--color-white, #fff);
+}
+
+.radio-select .cs-control:hover,
+.radio-select .cs-control:focus-visible {
+    border: 1px solid var(--color-primary, #13163f);
+}
+
+.radio-select .cs-container.cs-open .cs-control {
+    border: 1px solid var(--color-primary, #13163f);
+}
+
+.radio-select .cs-dropdown {
+    border-radius: 2rem;
+}
+
+.radio-select .cs-option {
+    padding-left: 4.6rem;
+}
+
+.radio-select .cs-option::before {
+    content: '';
+    position: absolute;
+    left: 2rem;
+    top: 50%;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid var(--color-gray-3, #d5d9de);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: border-color var(--transition-medium-cubic, 0.2s cubic-bezier(0.4, 0.8, 0.4, 1));
+}
+
+.radio-select .cs-option:hover::before,
+.radio-select .cs-option:focus-visible::before {
+    border-color: var(--color-primary, #13163f);
+}
+
+.radio-select .cs-option--selected::before {
+    border-width: 0.5rem;
+    border-color: var(--color-primary, #13163f);
+    background-color: var(--color-primary, #13163f);
+    background-clip: content-box;
+}
+
+.radio-select .cs-option > span {
+    display: block;
+}
+
+/* Asset icon (payment methods, flags as images) */
+.cs-asset-icon {
+    width: 2.4rem;
+    height: 1.6rem;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.6rem;
+    pointer-events: none;
+    border-radius: 0.2rem;
+}
+
+.cs-opener-asset {
+    width: 2.4rem;
+    height: 1.6rem;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.6rem;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+/* Loading state */
+.cs-container.cs-loading .cs-arrow svg {
+    display: none;
+}
+
+.cs-container.cs-loading .cs-arrow::after {
+    content: '';
+    display: inline-block;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 0.2rem solid var(--color-gray-3, #d5d9de);
+    border-top-color: var(--color-primary, #13163f);
+    border-radius: 50%;
+    animation: cs-spin 0.6s linear infinite;
+}
+
+@keyframes cs-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Checkout integration overrides */
+.checkout_wrapper .select-wrapper {
+    position: relative;
+}
+
+.checkout_wrapper .select-wrapper .cs-container {
+    flex-grow: 1;
+}
+
+.checkout_wrapper .select-wrapper .select-wrapper__chevron {
+    display: none;
+}
+
+.checkout_wrapper .form__field.has-error .cs-control {
+    border-color: #C53030 !important;
+    box-shadow: 0 0 0 1px #C53030 inset;
+    border-radius: 6px;
+}
+
+/* Screen reader only */
+.cs-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

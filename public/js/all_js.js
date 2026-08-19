@@ -1,3 +1,9 @@
+function refreshCartSidebar() {
+    if (typeof window.CartAside !== 'undefined' && typeof window.CartAside.refresh === 'function') {
+        window.CartAside.refresh();
+    }
+}
+
 function up(pack_id) {
     $.ajax({
         url: routeCartUp,
@@ -8,6 +14,7 @@ function up(pack_id) {
         success: function (data) {
             data = JSON.parse(data);
             $('#shopping_cart').html(data.html);
+            refreshCartSidebar();
         }
     });
 }
@@ -22,6 +29,7 @@ function down(pack_id) {
         success: function (data) {
             data = JSON.parse(data);
             $('#shopping_cart').html(data.html);
+            refreshCartSidebar();
         }
     });
 }
@@ -42,6 +50,7 @@ function remove(pack_id) {
             {
                 data = JSON.parse(data);
                 $('#shopping_cart').html(data.html);
+                refreshCartSidebar();
             }
         }
     });
@@ -57,6 +66,7 @@ function upgrade(pack_id) {
         success: function (data) {
             data = JSON.parse(data);
             $('#shopping_cart').html(data.html);
+            refreshCartSidebar();
         }
     });
 }
@@ -78,6 +88,7 @@ function change_shipping(shipping_name, shipping_price)
         success: function (data) {
             data = JSON.parse(data);
             $('#shopping_cart').html(data.html);
+            refreshCartSidebar();
         }
     });
 }
@@ -93,6 +104,7 @@ function change_bonus(bonus_id, bonus_price)
         success: function (data) {
             data = JSON.parse(data);
             $('#shopping_cart').html(data.html);
+            refreshCartSidebar();
         }
     });
 }
@@ -147,6 +159,7 @@ function addCardNew() {
         success: function (data) {
             data = JSON.parse(data);
             $('#shopping_cart').html(data.html);
+            refreshCartSidebar();
         }
     });
 }

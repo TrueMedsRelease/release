@@ -7,7 +7,17 @@
 @section('content')
 <div class="page-container">
     <article class="content content--page content--about">
-        <h1>{{__('text.bonus_ref_menu')}}</h1>
+        <div class="page-heading">
+            <h1>{{__('text.bonus_ref_menu')}}</h1>
+            <a class="button button--white button--return" href="{{ route('home.index') }}">
+                <span class="icon">
+                    <svg width="1em" height="1em" fill="currentColor">
+                        <use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-left") }}"></use>
+                    </svg>
+                </span>
+                {{ __('text.common_back_to_chat') }}
+            </a>
+        </div>
         <h2>{{ __('text.bonus_page_bonus') }}</h2>
         <p>{{ __('text.bonus_page_text1') }}</p>
         <p style="line-height: 1.5">

@@ -29,6 +29,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="theme-color" content="#14151a" />
         <link rel="canonical" href="{{ url()->current() }}">
+        <link rel="preconnect" href="{{ config('app.url') }}">
 
         @php
             if (!function_exists('asset_ver')) {
@@ -83,13 +84,7 @@
 
         {{-- <script type="text/javascript" src="{{ asset("js/delete_cache.js") }}"></script> --}}
 
-        <link href="{{ asset($design . '/fonts/inter-regular.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/inter-medium.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/inter-semibold.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/inter-bold.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/poppins-regular.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/poppins-medium.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
-        <link href="{{ asset($design . '/fonts/poppins-semibold.woff2') }}" rel="preload" as="font" type="font/woff2" crossorigin="anonymous">
+
 
         <link href="{{ asset($design . '/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
         <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
@@ -97,13 +92,102 @@
         <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">
         <link href="{{ asset_ver($design . '/css/pages.css') }}" rel="stylesheet">
 
+        @php
+            $chatStatusVariants = [];
+            $chatTranslator = app('translator');
+            $chatLocale = app()->getLocale();
+
+            foreach (['queued', 'processing', 'done', 'error'] as $chatStatusName) {
+                $variantsKey = 'text.chat_status_' . $chatStatusName . '_variants';
+                $fallbackKey = 'text.chat_status_' . $chatStatusName;
+
+                if ($chatTranslator->hasForLocale($variantsKey, $chatLocale)) {
+                    $variants = $chatTranslator->get($variantsKey, [], $chatLocale);
+                } else {
+                    $variants = [$chatTranslator->get($fallbackKey, [], $chatLocale)];
+                }
+
+                $variants = is_array($variants)
+                    ? array_values(array_filter($variants, static fn ($value) => is_string($value) && trim($value) !== ''))
+                    : [];
+
+                $chatStatusVariants[$chatStatusName] = $variants ?: [$chatTranslator->get($fallbackKey, [], $chatLocale)];
+            }
+        @endphp
+
+        @php
+            $hideMedbotChat = request()->routeIs([
+                'cart.index',
+                'checkout.index',
+                'home.help',
+            ]) || request()->is([
+                'cart',
+                'cart/*',
+                'checkout',
+                'checkout/*',
+            ]);
+        @endphp
+
         <script>
             const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
-            const routeSearchChat = "{{ route('search.search_chat') }}";
-            const routeSearchChatSuggest = "{{ route('search.search_chat_suggest') }}";
             const routeCartContent = "{{ route('cart.content') }}";
             const routeCartState = "{{ route('cart.state') }}";
+            const routeChatSend = "{{ route('chat.send') }}";
+            const routeChatPoll = "{{ route('chat.poll', ['message_id' => '__MSGID__']) }}";
+            window.routeChatSend = routeChatSend;
+            window.routeChatPoll = routeChatPoll;
+            window.routeChatHistory = "{{ route('chat.history') }}";
+            window.routeCartState = routeCartState;
+            window.design17ChatV2 = true;
+            window.design17SvgSprite = "{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}";
+            window.design17ChatTexts = {
+                status_queued: @json($chatStatusVariants['queued']),
+                status_processing: @json($chatStatusVariants['processing']),
+                status_done: @json($chatStatusVariants['done']),
+                status_error: @json($chatStatusVariants['error']),
+                error_timeout: "{{ __('text.chat_error_timeout') }}",
+                error_network: "{{ __('text.chat_error_network') }}",
+                error_server: "{{ __('text.chat_error_server') }}",
+                error_history: "{{ __('text.chat_error_history') }}",
+                error_unknown: "{{ __('text.chat_error_unknown') }}",
+                error_too_long: "{{ __('text.chat_error_too_long') }}",
+                show_more: "{{ __('text.chat_show_more') }}",
+                show_less: "{{ __('text.chat_show_less') }}",
+                read_more: "{{ __('text.chat_read_more') }}",
+                from: "{{ __('text.chat_from') }}",
+                select: "{{ __('text.chat_select') }}",
+                add_to_cart: "{{ __('text.chat_add_to_cart') }}",
+                adding: "{{ __('text.chat_adding') }}",
+                added_to_cart: "{{ __('text.chat_added_to_cart') }}",
+                cart_error: "{{ __('text.chat_cart_error') }}",
+                close: "{{ __('text.chat_close') }}",
+                package: "{{ __('text.chat_package') }}",
+                per_item: "{{ __('text.chat_per_item') }}",
+                price: "{{ __('text.chat_price') }}",
+                new_messages: "↓",
+                loading_chat: "{{ __('text.chat_loading') }}",
+                select_product: "{{ __('text.chat_select_product') }}",
+                chat_waiting: "{{ __('text.chat_waiting') }}",
+                chat_busy: "{{ __('text.chat_busy') }}",
+                chat_placeholder: "{{ __('text.common_search_medbot') }}",
+                captcha_title: "{{ __('text.captcha_title') }}",
+                captcha_placeholder: "{{ __('text.captcha_placeholder') }}",
+                captcha_submit: "{{ __('text.captcha_submit') }}",
+                delivery_express: "{{ __('text.cart_free_express') }}",
+                delivery_regular: "{{ __('text.cart_free_regular') }}",
+                heading_title: "{{ __('text.chat_heading_title') }}",
+                heading_caption: "{{ __('text.chat_heading_caption') }}",
+            };
+
+            window.routeChatBrowse = @json(url('/chat/browse/__TYPE__/__SLUG__'));
+            window.design17ChatLocale = '{{ App::currentLocale() }}';
         </script>
+
+        @if($hideMedbotChat)
+            <script>
+                window.design17ChatDisabled = true;
+            </script>
+        @endif
 
         <script src="{{ asset('vendor/jquery/jquery-3.6.3.min.js') }}"></script>
         <script defer src="{{ asset_ver('vendor/jquery/autocomplete.js') }}"></script>
@@ -189,7 +273,7 @@
             <header class="header" data-sticky="header" data-sticky-on-top>
                 <div class="container">
                     <a class="logo header__logo" href="{{ route("home.index") }}">
-                        <img src="{{ asset($design . '/svg/logo.svg') }}" width="160" height="30" alt="Site logo">
+                        <img src="{{ asset($design . '/svg/logo.svg') }}" width="160" height="30" alt="Site logo" fetchpriority="high">
                     </a>
                     <button class="navbar-toggler" data-drawer-toggle="navbar" aria-label="Toggle Main Menu" aria-controls="main-nav" aria-expanded="false">
                         <span class="navbar-burger"></span>
@@ -199,7 +283,7 @@
                             <a class="navbar__auth-link link" href="{{ route("home.login") }}" target="_blank">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#user-round') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>
                                     </svg>
                                 </span>
                                 {{ __('text.common_profile') }}
@@ -211,7 +295,7 @@
                                             <span class="button-text">{{ $Language::$languages_name[session('locale', 'en')] }}</span>
                                             <span class="icon">
                                                 <svg width="1em" height="1em" fill="currentColor">
-                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                                                 </svg>
                                             </span>
                                         </a>
@@ -236,7 +320,7 @@
                                             <span class="button-text">{{ $Currency::GetAllCurrency()[0]['code'] }}</span>
                                             <span class="icon">
                                                 <svg width="1em" height="1em" fill="currentColor">
-                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                                                 </svg>
                                             </span>
                                         </a>
@@ -260,7 +344,7 @@
                                         <span class="button-text">{{ __('text.phones_title_phone_' . array_key_first($phone_arr)) }}</span>
                                         <span class="icon">
                                             <svg width="1em" height="1em" fill="currentColor">
-                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#chevron-down') }}"></use>
+                                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#chevron-down') }}"></use>
                                             </svg>
                                         </span>
                                     </a>
@@ -291,37 +375,46 @@
 
             <div class="page-wrapper container">
                 <main class="main">
-                    <div class="thread">
-
+                    {{-- @if (request()->route()->getName() === 'home.index') --}}
+                    <div class="thread js-chat-container">
                         @yield('content')
 
-                        <button class="chat-scroll-down js-chat-scroll-down" type="button" hidden aria-label="Scroll to latest answer">
-                            <span class="chat-scroll-down__text">New answer</span>
-                            <span class="icon chat-scroll-down__icon">
-                                <svg width="1em" height="1em" fill="currentColor">
-                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
-                                </svg>
-                            </span>
-                        </button>
-
-                        <div class="thread-box search search-bar">
-                            <form class="search-form form js-chat-search-form" action="{{ route('search.search_product') }}" method="post" style="width: 100%;">
-                                @csrf
-                                <label class="thread-box__label textarea-field">
-                                    {{-- <textarea class="thread-box__input input-textarea ac_input input-text" rows="1" id="autocomplete" placeholder="Enter a drug name" name="search_text"></textarea> --}}
-                                    <input class="search-form__input form__text-input input-text search-form__input js-chat-search-input" id="chat-search-input" autocomplete="off" type="text" placeholder="{{ __('text.common_search') }}" name="search_text" required>
-                                    {{-- <span class="thread-box__placeholder">{{ __('text.common_search') }}</span> --}}
-                                </label>
-                                <button class="thread-box__submit button search-form__button js-chat-search-submit" aria-label="Thred box submit">
-                                    <span class="icon">
-                                        <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-up') }}"></use>
-                                        </svg>
-                                    </span>
-                                </button>
-                            </form>
-                        </div>
+                        {{-- <div class="thread-box js-chat-form">
+                            <label class="thread-box__label textarea-field">
+                                <textarea class="thread-box__input input-textarea js-chat-input"
+                                          rows="1" placeholder=" " autocomplete="off"
+                                          maxlength="512" required></textarea>
+                                <span class="thread-box__placeholder">{{ __('text.common_search_medbot') }}</span>
+                            </label>
+                            <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
+                                <span class="icon">
+                                    <svg width="1em" height="1em" fill="currentColor">
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}#arrow-up"></use>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div> --}}
                     </div>
+                    @if (!request()->routeIs(['catalog.index', 'cart.index', 'checkout.index', 'home.about', 'home.contact_us', 'home.testimonials', 'home.delivery', 'home.moneyback', 'home.bonus_referral_program', 'home.affiliate','home.help']))
+                        <div class="thread-box js-chat-form">
+                            <label class="thread-box__label textarea-field">
+                                <textarea class="thread-box__input input-textarea js-chat-input"
+                                            rows="1" placeholder=" " autocomplete="off"
+                                            maxlength="512" required></textarea>
+                                <span class="thread-box__placeholder">{{ __('text.common_search_medbot') }}</span>
+                            </label>
+                            <button class="thread-box__submit button js-chat-submit" type="submit" aria-label="Send message">
+                                <span class="icon">
+                                    <svg width="1em" height="1em" fill="currentColor">
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2') }}#arrow-up"></use>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    @endif
+                    {{-- @else
+                        @yield('content')
+                    @endif --}}
                 </main>
             </div>
 
@@ -340,7 +433,7 @@
                     <div class="cart__hgroup">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#cart') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#cart') }}"></use>
                             </svg>
                         </span>
                         <h2 class="cart__title">
@@ -352,7 +445,7 @@
                     <button class="cart__close-button navbar-toggler" data-drawer-close="cart" aria-label="Close cart">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#close') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#close') }}"></use>
                             </svg>
                         </span>
                     </button>
@@ -390,7 +483,7 @@
                                 <button class="cart-item__remove-button js-cart-remove-button" type="button" data-cart-remove-pack="{{ $product['pack_id'] }}">
                                     <span class="icon">
                                         <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#trash-round') }}"></use>
+                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#trash-round') }}"></use>
                                         </svg>
                                     </span>
                                 </button>
@@ -398,110 +491,127 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="cart__footer">
-                    <a class="cart__checkout-button button" href="{{ route('checkout.index') }}">
-                        {{ __('text.cart_checkout_text') }}
+                @if (request()->route()->getName() !== 'checkout.index')
+                    <div class="cart__footer js-cart-checkout-footer" @if ($cart_count <= 0) hidden @endif >
+                        <a class="cart__checkout-button button" href="{{ route('cart.index') }}">
+                            {{ __('text.cart_go_to_text') }}
+                            <span class="icon">
+                                <svg width="1em" height="1em" fill="currentColor">
+                                    <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#arrow-right') }}"></use>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                @endif
+            </aside>
+            <aside class="drawer drawer--rtl drawer--product js-product-drawer">
+                <div class="drawer__header">
+                    <h2 class="drawer__title"></h2>
+                    <button class="drawer__close-button js-product-drawer-close" aria-label="Close">
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor">
-                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#arrow-right') }}"></use>
+                                <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#close') }}"></use>
                             </svg>
                         </span>
-                    </a>
+                    </button>
                 </div>
+                <div class="drawer__body js-product-drawer-body"></div>
             </aside>
             <footer class="footer">
-                <div class="sup-footer container">
-                    <div class="footer-testimonials">
-                        <div class="swiper footer-testimonials__swiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_1') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                @if (!request()->routeIs('home.testimonials'))
+                    <div class="sup-footer container">
+                        <div class="footer-testimonials">
+                            <div class="swiper footer-testimonials__swiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_1') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_1') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_1') }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_7') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_7') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_7') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_7') }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_13') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_13') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_13') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_13') }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="testimonial">
-                                        <div class="testimonial__header">
-                                            <div class="testimonial__author">
-                                                {!! __('text.testimonials_author_t_17') !!}
-                                            </div>
-                                            <div class="testimonial__rating">
-                                                <div class="rating">
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
-                                                    <div class="rating__star"></div>
+                                    <div class="swiper-slide">
+                                        <div class="testimonial">
+                                            <div class="testimonial__header">
+                                                <div class="testimonial__author">
+                                                    {!! __('text.testimonials_author_t_17') !!}
+                                                </div>
+                                                <div class="testimonial__rating">
+                                                    <div class="rating">
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                        <div class="rating__star"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="testimonial__text">
-                                            {{ __('text.testimonials_t_17') }}
+                                            <div class="testimonial__text">
+                                                {{ __('text.testimonials_t_17') }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="footer__container container">
                     <div class="footer__wrapper">
@@ -515,6 +625,11 @@
                             <nav class="nav footer-nav">
                                 <div class="nav-container">
                                     <ul class="nav__list">
+                                        <li class="nav__item">
+                                            <a class="nav__link" href="{{ route("catalog.index") }}">
+                                                <span class="button-text">{{ __('text.common_catalog') }}</span>
+                                            </a>
+                                        </li>
                                         <li class="nav__item">
                                             <a class="nav__link" href="{{ route("home.about") }}">
                                                 <span class="button-text">{{ __('text.common_about_us_main_menu_item') }}</span>
@@ -566,7 +681,7 @@
                                 <div class="subscribe__header">
                                     <span class="icon subscribe__icon">
                                         <svg width="1em" height="1em" fill="currentColor">
-                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#subscribe') }}"></use>
+                                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#subscribe') }}"></use>
                                         </svg>
                                     </span>
                                     <div class="subscribe__title">{{ __('text.common_subscribe') }}</div>
@@ -587,7 +702,7 @@
                             <button class="button button--tapbar footer-buttons__cart" data-drawer-toggle="cart" data-counter="{{ $cart_count }}">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#cart') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#cart') }}"></use>
                                     </svg>
                                 </span>
                                 <span class="button__text">{{ __('text.common_cart_text_d2') }}</span>
@@ -596,7 +711,7 @@
                             <a class="button button--tapbar" href="{{ route("home.login") }}" target="_blank">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
-                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#user-round') }}"></use>
+                                        <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>
                                     </svg>
                                 </span>
                                 <span class="button__text">{{ __('text.common_profile') }}</span>
@@ -605,6 +720,15 @@
                     </div>
                 </div>
             </footer>
+        </div>
+
+        <div class="design17-toast" id="design17-toast" hidden role="status">
+            <span class="design17-toast__icon">
+                <svg width="1.8em" height="1.8em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span class="design17-toast__text"></span>
         </div>
 
         <dialog class="dialog-container" data-dialog="call" data-modal>
@@ -625,7 +749,7 @@
                 <button class="dialog__close-button link" data-dialog-close="call" aria-label="Close dialog">
                     <span class="icon">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego#close') }}"></use>
+                            <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#close') }}"></use>
                         </svg>
                     </span>
                 </button>
@@ -659,7 +783,7 @@
                 <button class="dialog__close-button link" data-dialog-close="call-push" aria-label="Close dialog">
                     <span class="icon">
                         <svg width="1em" height="1em" fill="currentColor">
-                            <use href="svg/icons/sprite.svg?vmxkaego#close"></use>
+                            <use href="svg/icons/sprite.svg?vmxkaego2#close"></use>
                         </svg>
                     </span>
                 </button>
@@ -720,7 +844,7 @@
 
             const routeCartUp = "{{ route('cart.up') }}";
             const routeCartDown = "{{ route('cart.down') }}";
-            const routeCartRemove = "{{ route('cart.remove') }}";
+            window.routeCartRemove = "{{ route('cart.remove') }}";
             const routeCartUpgrade = "{{ route('cart.upgrade') }}";
             const routeCartShipping = "{{ route('cart.shipping') }}";
             const routeCartBonus = "{{ route('cart.bonus') }}";
@@ -769,6 +893,11 @@
 
         <script defer src="{{ asset_ver("$design/js/main.5b1e354c.js") }}"></script>
         <script defer src="{{ asset_ver("$design/js/app.js") }}"></script>
+        <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
+        <script defer src="{{ asset_ver("$design/js/cart-aside.js") }}"></script>
+        <script>window.medbotPollInterval = {{ config('medbot.poll_interval', 5000) }};</script>
+        <script>window.DESIGN17_CHAT_LOG_LEVEL = "{{ app()->environment('production') ? 'error' : 'debug' }}";</script>
+        <script defer src="{{ asset_ver("$design/js/chat.js") }}"></script>
         <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 
         @if ($web_statistic)
