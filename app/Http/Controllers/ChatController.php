@@ -293,8 +293,9 @@ class ChatController extends Controller
             if ($status === 'done' && !empty($data['result'])) {
                 $apiResult = $data['result'] ?? [];
                 $productIds = $apiResult['product_ids'] ?? [];
+                $isShopQuestion = (bool) ($apiResult['is_shop_question'] ?? $data['is_shop_question'] ?? false);
 
-                if (empty($productIds)) {
+                if (empty($productIds) && !$isShopQuestion) {
                     $query = Cache::get("chat_query:{$localId}", '');
 
                     Log::info('[ChatController.pollMessage] medbot returned empty product list, fallback to shop search', [
@@ -306,32 +307,35 @@ class ChatController extends Controller
                     return $this->fallbackToSearch($query, 'empty_products');
                 }
 
-                Log::debug('[ChatController.pollMessage] fetching products', [
-                    'product_ids' => $productIds,
-                ]);
-
-                $products = $this->fetchShopProducts($productIds);
-
-                Log::info('[ChatController.pollMessage] products fetched', [
-                    'count' => count($products),
-                ]);
-
-                if (empty($products)) {
-                    $query = Cache::get("chat_query:{$localId}", '');
-
-                    Log::info('[ChatController.pollMessage] medbot products not found in shop, fallback to shop search', [
-                        'msg_id' => $messageId,
-                        'local_id' => $localId,
-                        'query' => $query,
+                if (!empty($productIds)) {
+                    Log::debug('[ChatController.pollMessage] fetching products', [
+                        'product_ids' => $productIds,
                     ]);
 
-                    return $this->fallbackToSearch($query, 'empty_products');
+                    $products = $this->fetchShopProducts($productIds);
+
+                    Log::info('[ChatController.pollMessage] products fetched', [
+                        'count' => count($products),
+                    ]);
+
+                    if (empty($products) && !$isShopQuestion) {
+                        $query = Cache::get("chat_query:{$localId}", '');
+
+                        Log::info('[ChatController.pollMessage] medbot products not found in shop, fallback to shop search', [
+                            'msg_id' => $messageId,
+                            'local_id' => $localId,
+                            'query' => $query,
+                        ]);
+
+                        return $this->fallbackToSearch($query, 'empty_products');
+                    }
                 }
 
                 $response['answer'] = $apiResult['answer'] ?? '';
                 $response['language'] = $apiResult['language'] ?? 'en';
                 $response['product_ids'] = $productIds;
-                $response['products'] = $products;
+                $response['products'] = $products ?? [];
+                $response['is_shop_question'] = $isShopQuestion;
                 $response['currency'] = [
                     'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
                     'code' => session('currency', 'usd'),
