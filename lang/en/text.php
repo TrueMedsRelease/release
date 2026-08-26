@@ -1198,4 +1198,11 @@ return [
     "chat_fallback_not_found" => 'We couldn\'t find anything for your query ":query". You can browse our catalog and see our bestsellers below.',
     "chat_heading_title"   => "It`s True Meds Bot for buying Drugs",
     "chat_heading_caption" => "Easier, Safer, Faster",
+
+    "track_url_title" => "Track the status of your order",
+    "track_url_copy_label" => "Order tracking link",
+    "track_url_copy_button" => "Copy link",
+    "track_url_copied" => "Link copied",
+    "track_url_text1" => "You can use this link at any time to check the current status of your order and information about its processing.",
+    "track_url_text2" => "Save the link or QR code for future access. For security reasons, do not share them with third parties, as the page contains information about your order.",
 ];

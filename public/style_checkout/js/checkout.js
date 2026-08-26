@@ -24,7 +24,7 @@ function validate_form()
     var shipping_city = document.getElementById('shipping_city');
     var shipping_address = document.getElementById('shipping_address');
     var shipping_zip = document.getElementById('shipping_zip');
-    
+
     if(phone.value.length < 4 || phone.value.length > 16)
     {
         //alert(phone.value);
@@ -83,27 +83,27 @@ function validate_form()
             shipping_city.reportValidity();
             return false;
         }
-    
+
         if(shipping_address.value.trim() == '')
         {
             shipping_address.setCustomValidity('Incorrect shipping address');
             shipping_address.reportValidity();
             return false;
         }
-    
+
         if(shipping_zip.value.trim() == '')
         {
             shipping_zip.setCustomValidity('Incorrect shipping zip');
             shipping_zip.reportValidity();
             return false;
         }
-    
+
     }
 
     return true;
 
-    
-    
+
+
 }
 
 $('#phone').bind('input', function() {
@@ -170,23 +170,23 @@ $('#cvc_2').bind('input', function() {
 function valid_credit_card(value) {
     // accept only digits, dashes or spaces
     if (/[^0-9-\s]+/.test(value)) return false;
-    
+
     // The Luhn Algorithm. It's so pretty.
     var nCheck = 0, nDigit = 0, bEven = false;
     value = value.replace(/\D/g, "");
-    
+
     for (var n = value.length - 1; n >= 0; n--) {
         var cDigit = value.charAt(n),
         nDigit = parseInt(cDigit, 10);
-        
+
         if (bEven) {
             if ((nDigit *= 2) > 9) nDigit -= 9;
         }
-        
+
         nCheck += nDigit;
         bEven = !bEven;
     }
-    
+
     return (nCheck % 10) == 0;
 }
 
@@ -206,7 +206,7 @@ function findWord(word, str) {
 if(!(typeof(window.countdownfunction1) !== "undefined" && window.countdownfunction1 !== null)) {
     var countDownDate = new Date().getTime() + 1800000;
     clearInterval(window.countdownfunction1);
-    
+
     // Update the count down every 1 second
     window.countdownfunction1 = setInterval(function() {
         //alert('aaaa');
@@ -229,8 +229,8 @@ if(!(typeof(window.countdownfunction1) !== "undefined" && window.countdownfuncti
 
     document.getElementById("t1").innerHTML = minutes + ":" + seconds;
     document.getElementById("t2").innerHTML = minutes + ":" + seconds;
-    
-    // If the count down is over, write some text 
+
+    // If the count down is over, write some text
     if (distance < 0) {
         clearInterval(countdownfunction1);
         document.getElementById("t1").innerHTML = "0";
@@ -240,10 +240,10 @@ if(!(typeof(window.countdownfunction1) !== "undefined" && window.countdownfuncti
 }
 
 // $(document).ready(function(){
-    
+
 
 // });
-        
+
 $('input[name="shipping"]').bind('change', function(e) {
     var language = $(".language option:selected").val();
     var currency = $(".currency option:selected").val();
@@ -274,20 +274,20 @@ $('input[name="shipping"]').bind('change', function(e) {
     var card_number = $("#card_numb").val();
     var card_cvv = $("#cvc_2").val();
     $.ajax({
-            url:'/checkout/content_ajax.php',   
+            url:'/checkout/content_ajax.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
             data: {'products':products,'bonus':bonus,'Insurance':  document.getElementsByName("Insurance")[0].value,'SecretPackage': document.getElementsByName("SecretPackage")[0].value,
-            'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email, 
+            'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email,
             'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
             'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
             'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-            
+
             success:function(data){$('.wrapper').html(data);}
-            
+
         });
-    }); 
+    });
     var btn1 = document.getElementById("SecretPackage");
     btn1.onclick = function() {
         var language = $(".language option:selected").val();
@@ -322,9 +322,9 @@ $('input[name="shipping"]').bind('change', function(e) {
     {
         document.getElementById("SecretPackage").classList.remove('checked');
         document.getElementsByName("SecretPackage")[0].value = "0";
-        
+
         $.ajax({
-            url:'/checkout/content_ajax.php',   
+            url:'/checkout/content_ajax.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -336,16 +336,16 @@ $('input[name="shipping"]').bind('change', function(e) {
             'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
 
             success:function(data){$('.wrapper').html(data);}
-            
+
         });
     }
     else
     {
-            document.getElementById("SecretPackage").classList.add('checked');   
+            document.getElementById("SecretPackage").classList.add('checked');
             document.getElementsByName("SecretPackage")[0].value = $("#secret_price").val();;
-            
+
             $.ajax({
-                url:'/checkout/content_ajax.php',   
+                url:'/checkout/content_ajax.php',
                 type: 'POST',
                 cache: false,
                 dataType: 'html',
@@ -355,9 +355,9 @@ $('input[name="shipping"]').bind('change', function(e) {
                 'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
                 'language':language, 'currency':currency, 'theme': theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-                
+
                 success:function(data){$('.wrapper').html(data);}
-                
+
             });
         }
     }
@@ -395,9 +395,9 @@ btn2.onclick = function() {
     {
         document.getElementById("Insurance").classList.remove('checked');
         document.getElementsByName("Insurance")[0].value = "0";
-        
+
         $.ajax({
-            url:'/checkout/content_ajax.php',   
+            url:'/checkout/content_ajax.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -409,16 +409,16 @@ btn2.onclick = function() {
             'language':language, 'currency':currency, 'theme': theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
             //beforeSend:async function(){alert('aaa');},
             success:function(data){$('.wrapper').html(data);}
-            
+
         });
     }
     else
     {
         document.getElementById("Insurance").classList.add('checked');
         document.getElementsByName("Insurance")[0].value = $("#insurance_price").val();
-        
+
         $.ajax({
-            url:'/checkout/content_ajax.php',   
+            url:'/checkout/content_ajax.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -428,9 +428,9 @@ btn2.onclick = function() {
             'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
             'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
             'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-            
+
             success:function(data){$('.wrapper').html(data);}
-            
+
         });
     }
 }
@@ -468,9 +468,9 @@ btn3.onclick = function() {
     {
         // document.getElementById("Insurance").classList.remove('checked');
         // document.getElementsByName("Insurance")[0].value = "0";
-        
+
         // $.ajax({
-        //     url:'/checkout/content_ajax.php',   
+        //     url:'/checkout/content_ajax.php',
         //     type: 'POST',
         //     cache: false,
         //     dataType: 'html',
@@ -482,16 +482,16 @@ btn3.onclick = function() {
         //     'language':language, 'currency':currency, 'theme': theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
         //     //beforeSend:async function(){alert('aaa');},
         //     success:function(data){$('.wrapper').html(data);}
-            
+
         // });
     }
     else
     {
         document.getElementById("Insurance").classList.add('checked');
         document.getElementsByName("Insurance")[0].value = $("#insurance_price").val();
-        
+
         $.ajax({
-            url:'/checkout/content_ajax.php',   
+            url:'/checkout/content_ajax.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -501,22 +501,22 @@ btn3.onclick = function() {
             'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
             'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
             'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-            
+
             success:function(data){$('.wrapper').html(data);}
-            
+
         });
     }
 }
 
 // $('#Insurance').change(function() {
-    
+
 //     if(!this.checked) {
 //         var returnVal = confirm("Are you sure?");
 //         alert(returnVal);
 //         $(this).prop("checked", !returnVal);
 //     }
 //     alert(this.checked);
-//     $('#Insurance').val(this.checked);        
+//     $('#Insurance').val(this.checked);
 // });
 
 $('#c_6').bind('input', function() {
@@ -531,7 +531,7 @@ $( ".card_type .select__option" ).click(function() {
     //alert(type);
     if(type == 'crypto')
     {
-        
+
         if(!validate_form())
         {
             $(this).val($.data(this, 'current'));
@@ -543,7 +543,7 @@ $( ".card_type .select__option" ).click(function() {
 
         // document.getElementById("sure").hidden = true;
         // document.getElementById("please_wait").hidden = false;
-        
+
 
         document.getElementById("phone").disabled = true;
         document.getElementById("Insurance").disabled = true;
@@ -561,7 +561,7 @@ $( ".card_type .select__option" ).click(function() {
             document.getElementById("billing_state").disabled = true;
           }
 
-        
+
         document.getElementById("billing_city").disabled = true;
         document.getElementById("billing_address").disabled = true;
         document.getElementById("billing_zip").disabled = true;
@@ -572,7 +572,7 @@ $( ".card_type .select__option" ).click(function() {
             document.getElementById("shipping_state").disabled = true;
           }
 
-        
+
         document.getElementById("shipping_city").disabled = true;
         document.getElementById("shipping_address").disabled = true;
         document.getElementById("shipping_zip").disabled = true;
@@ -608,7 +608,7 @@ $( ".card_type .select__option" ).click(function() {
             document.getElementById("billing_state").disabled = true;
           }
 
-        
+
         document.getElementById("billing_city").disabled = true;
         document.getElementById("billing_address").disabled = true;
         document.getElementById("billing_zip").disabled = true;
@@ -619,7 +619,7 @@ $( ".card_type .select__option" ).click(function() {
             document.getElementById("shipping_state").disabled = true;
           }
 
-        
+
         document.getElementById("shipping_city").disabled = true;
         document.getElementById("shipping_address").disabled = true;
         document.getElementById("shipping_zip").disabled = true;
@@ -662,14 +662,14 @@ $('input[name="crypt_currency"]').click(function() {
     var total = document.getElementById('total');
 
     if(currency != '')
-    {   
+    {
         //document.body.classList.remove('loaded');
 
         document.getElementById("requisites_load").hidden = false;
         document.getElementById("requisites").hidden = true;
-        
+
         $.ajax({
-            url:'/checkout/crypto.php',   
+            url:'/checkout/crypto.php',
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -701,7 +701,7 @@ $('input[name="crypt_currency"]').click(function() {
 
         var countDownDate = new Date().getTime() + 1800000;
         clearInterval(window.countdownfunction);
-        
+
         // Update the count down every 1 second
         window.countdownfunction = setInterval(function() {
             //alert('aaaa');
@@ -723,13 +723,13 @@ $('input[name="crypt_currency"]').click(function() {
         }
         document.getElementById("timer").innerHTML = minutes + ":" + seconds;
 
-        // If the count down is over, write some text 
+        // If the count down is over, write some text
         if (distance < 0) {
             clearInterval(countdownfunction);
             document.getElementById("timer").innerHTML = "EXPIRED";
         }
         }, 1000);
-        
+
     }
     else
     {
@@ -767,7 +767,7 @@ $( ".select_billing_country .select__option" ).click(function() {
     var card_number = $("#card_numb").val();
     var card_cvv = $("#cvc_2").val();
   $.ajax({
-             url:'/checkout/content_ajax.php',   
+             url:'/checkout/content_ajax.php',
              type: 'POST',
              cache: false,
              dataType: 'html',
@@ -816,7 +816,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     var card_number = $("#card_numb").val();
     var card_cvv = $("#cvc_2").val();
     $.ajax({
-               url:'/checkout/content_ajax.php',   
+               url:'/checkout/content_ajax.php',
                type: 'POST',
                cache: false,
                dataType: 'html',
@@ -825,13 +825,13 @@ $( ".select_billing_state .select__option" ).click(function() {
                'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
                'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-  
+
            //        async: false,
-  
+
                success:function(data){
                   $('.wrapper').html(data);
               }
-  
+
            });
   });
 
@@ -865,7 +865,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     var card_number = $("#card_numb").val();
     var card_cvv = $("#cvc_2").val();
     $.ajax({
-               url:'/checkout/content_ajax.php',   
+               url:'/checkout/content_ajax.php',
                type: 'POST',
                cache: false,
                dataType: 'html',
@@ -874,13 +874,13 @@ $( ".select_billing_state .select__option" ).click(function() {
                'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
                'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-  
+
            //        async: false,
-  
+
                success:function(data){
                   $('.wrapper').html(data);
               }
-  
+
            });
   });
 
@@ -914,7 +914,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     var card_number = $("#card_numb").val();
     var card_cvv = $("#cvc_2").val();
     $.ajax({
-               url:'/checkout/content_ajax.php',   
+               url:'/checkout/content_ajax.php',
                type: 'POST',
                cache: false,
                dataType: 'html',
@@ -923,13 +923,13 @@ $( ".select_billing_state .select__option" ).click(function() {
                'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
                'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-  
+
            //        async: false,
-  
+
                success:function(data){
                   $('.wrapper').html(data);
               }
-  
+
            });
   });
     var input = document.querySelector("#phone");
@@ -995,9 +995,9 @@ $( ".select_billing_state .select__option" ).click(function() {
 //     //         $("#check_zip").val(0);
 //     //     }
 //     // });
- 
 
-    $('#card_numb').bind('change', function(e) {      
+
+    $('#card_numb').bind('change', function(e) {
         var popup = document.getElementById("myPopup");
         var card_number = $("#card_numb").val();
         card_number = card_number.replace(/\s/g, "");
@@ -1012,7 +1012,7 @@ $( ".select_billing_state .select__option" ).click(function() {
         {
             popup.classList.remove("show");
             $("#check_number").val(1);
-        }  
+        }
     });
 
     $('#card_numb').bind('input', function() {
@@ -1035,7 +1035,7 @@ $( ".select_billing_state .select__option" ).click(function() {
 
     $('#cvc_2').bind('input', function() {
         if(this.value.match(/[^0-9]/g)){
-            this.value = this.value.replace(/[^0-9]/g, ""); 
+            this.value = this.value.replace(/[^0-9]/g, "");
         };
     });
 
@@ -1085,7 +1085,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     //     if(year != '')
     //     {
     //         var today = new Date();
-    //         var mm = today.getMonth() + 1; 
+    //         var mm = today.getMonth() + 1;
     //         var popup = document.getElementById("myPopup1");
     //         var month = parseInt($(this).attr('data-value'));
     //         if(parseInt(year) == today.getFullYear())
@@ -1097,13 +1097,13 @@ $( ".select_billing_state .select__option" ).click(function() {
     //             }
     //             else{
     //                 popup.classList.remove("show");
-    //                 $("#check_expire").val(1);  
+    //                 $("#check_expire").val(1);
     //             }
     //         }
     //         else
     //         {
     //             popup.classList.remove("show");
-    //             $("#check_expire").val(1); 
+    //             $("#check_expire").val(1);
     //         }
     //     }
     // });
@@ -1114,14 +1114,14 @@ $( ".select_billing_state .select__option" ).click(function() {
     //     var popup = document.getElementById("myPopup1");
     //     if(parseInt(year) < today.getFullYear())
     //     {
-    //         popup.classList.add("show"); 
+    //         popup.classList.add("show");
     //         $("#check_expire").val(0);
     //     }
     //     else if(parseInt(year) == today.getFullYear())
     //     {
     //         if(month < mm)
     //         {
-    //             var mm = today.getMonth() + 1; 
+    //             var mm = today.getMonth() + 1;
     //             var month = parseInt($(".card_month .select__content").text());
     //             var popup = document.getElementById("myPopup1");
     //             popup.classList.add("show");
@@ -1129,13 +1129,13 @@ $( ".select_billing_state .select__option" ).click(function() {
     //         }
     //         else{
     //             popup.classList.remove("show");
-    //             $("#check_expire").val(1);  
+    //             $("#check_expire").val(1);
     //         }
     //     }
     //     else
     //     {
     //         popup.classList.remove("show");
-    //         $("#check_expire").val(1); 
+    //         $("#check_expire").val(1);
     //     }
     // });
 
@@ -1182,7 +1182,7 @@ $( ".select_billing_state .select__option" ).click(function() {
             popup5.classList.remove("show");
 
             $.ajax({
-                url:'/checkout/content_ajax.php',   
+                url:'/checkout/content_ajax.php',
                 type: 'POST',
                 cache: false,
                 dataType: 'html',
@@ -1190,13 +1190,13 @@ $( ".select_billing_state .select__option" ).click(function() {
                 'shipping':shipping,'discount':discount,'phone':phone,'email':email,'alter_email':alter_email,
                 'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'authorization': 1,
                 'language':language, 'theme':theme, 'currency':currency, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-   
+
             //        async: false,
-   
+
                 success:function(data){
                     if(data.includes("/status/"))
                     {
-                        window.location.replace(data); 
+                        window.location.replace(data);
                         document.body.classList.remove('loaded');
                     }
                     else if(data == "no")
@@ -1208,7 +1208,7 @@ $( ".select_billing_state .select__option" ).click(function() {
                         $('.wrapper').html(data);
                     }
                }
-   
+
             });
         }
     });
@@ -1239,7 +1239,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     //         var shipping_zip = $("#shipping_zip").val();
     //         var shipping_open = $(".info-form__add-inputs").is(":hidden") ? 0 : 1;
     //         $.ajax({
-    //                    url:'/checkout/content_ajax.php',   
+    //                    url:'/checkout/content_ajax.php',
     //                    type: 'POST',
     //                    cache: false,
     //                    dataType: 'html',
@@ -1248,16 +1248,16 @@ $( ".select_billing_state .select__option" ).click(function() {
     //                    'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
     //                    'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open, 'authorization': 1,
     //                    'language':language, 'currency':currency},
-          
+
     //                //        async: false,
-          
+
     //                    success:function(data){
     //                       $('.wrapper').html(data);
     //                   }
-          
+
     //                });
     //     }
-       
+
     // });
 
 
@@ -1292,7 +1292,7 @@ $( ".select_billing_state .select__option" ).click(function() {
         var card_cvv = $("#cvc_2").val();
 
         $.ajax({
-        url:'/checkout/content_ajax.php',   
+        url:'/checkout/content_ajax.php',
         type: 'POST',
         cache: false,
         dataType: 'html',
@@ -1358,7 +1358,7 @@ $( ".select_billing_state .select__option" ).click(function() {
             var fingerprint = $("#fingerprint").val();
             var invoiceId = $("#invoiceId").val();
             var recurring = $("input[name='recurring2']:checked").val();
-            var refc = $("#refc").val(); 
+            var refc = $("#refc").val();
             if(recurring = 'yes')
             {
                 var recurring_period = $("input[name='recurring_period2']:checked").val();
@@ -1384,7 +1384,7 @@ $( ".select_billing_state .select__option" ).click(function() {
                 cache: false,
                 dataType: 'html',
                 data: {'products':products, 'screen_resolution':resolution, 'customer_date':date, 'coupon':coupon, 'refc':refc, 'bonus':bonus,'Insurance':  document.getElementsByName("Insurance")[0].value,'SecretPackage': document.getElementsByName("SecretPackage")[0].value,
-                'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email, 
+                'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email,
                 'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'different':different,
                 'proccess':1,'payment_type':payment_type, 'total':total,'product_total':product_total, 'reorder_discount':reorder_discount, 'shipping_price':shipping_price,'aff':aff,'saff':saff,'curr':curr,'store_skin':store_skin,'domain_from':domain_from,
@@ -1427,7 +1427,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     $('#order_form').unbind('submit').bind('submit',function(e) {
             e.preventDefault();
 
- 
+
 
             var value = $('#shipping_city').val();
             value = value.trim();
@@ -1439,7 +1439,7 @@ $( ".select_billing_state .select__option" ).click(function() {
             {
                 $("#check_city").val(0);
             }
-    
+
             var value = $('#shipping_address').val();
             value = value.trim();
             if (value.length > 0)
@@ -1450,7 +1450,7 @@ $( ".select_billing_state .select__option" ).click(function() {
             {
                 $("#check_address").val(0);
             }
-    
+
             var value = $('#shipping_zip').val();
             value = value.trim();
             if (value.length > 0)
@@ -1489,7 +1489,7 @@ $( ".select_billing_state .select__option" ).click(function() {
                 $("#check_expire").val(0);
             }
             else{
-                $("#check_expire").val(1);  
+                $("#check_expire").val(1);
             }
         }
         else if(parseInt(card_year) > today.getFullYear() && card_month < 12)
@@ -1501,7 +1501,7 @@ $( ".select_billing_state .select__option" ).click(function() {
             $("#check_expire").val(0);
         }
 
-        
+
         if(!valid_credit_card($("#card_numb").val().replace(/\s/g, "")) || $("#card_numb").val().replace(/\s/g, "") == "")
         {
             $("#check_number").val(0);
@@ -1509,7 +1509,7 @@ $( ".select_billing_state .select__option" ).click(function() {
         else
         {
             $("#check_number").val(1);
-        } 
+        }
 
         //alert($("#check_number").val());
 
@@ -1551,7 +1551,7 @@ $( ".select_billing_state .select__option" ).click(function() {
             {
                 var recurring_period = 0;
             }
-            
+
             //alert(recurring_period);
             var billing_country = $("#billing_country option:selected").val();
             var billing_state = $("#billing_state option:selected").val();
@@ -1595,7 +1595,7 @@ $( ".select_billing_state .select__option" ).click(function() {
             var ref = $("#ref").val();
             var fingerprint = $(".fingerprint").val();
             var coupon = $("#coupon").val();
-            var refc = $("#refc").val(); 
+            var refc = $("#refc").val();
 
             var resolution = window.screen.width + 'x' + window.screen.height;
 
@@ -1611,7 +1611,7 @@ $( ".select_billing_state .select__option" ).click(function() {
                 cache: false,
                 dataType: 'html',
                 data: {'products':products, 'screen_resolution':resolution, 'customer_date':date, 'coupon':coupon, 'refc':refc, 'bonus':bonus,'Insurance':  document.getElementsByName("Insurance")[0].value,'SecretPackage': document.getElementsByName("SecretPackage")[0].value,
-                'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email, 
+                'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email,
                 'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                 'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'different':different,
                 'proccess':1,'card_month':card_month,'payment_type':payment_type,'card_year':card_year,'card_holder':card_holder, 'card_number':card_number,'card_cvv':card_cvv,
@@ -1729,7 +1729,7 @@ $( ".select_billing_state .select__option" ).click(function() {
         var card_number = $("#card_numb").val();
         var card_cvv = $("#cvc_2").val();
         $.ajax({
-                   url:'/checkout/content_ajax.php',   
+                   url:'/checkout/content_ajax.php',
                    type: 'POST',
                    cache: false,
                    dataType: 'html',
@@ -1738,13 +1738,13 @@ $( ".select_billing_state .select__option" ).click(function() {
                    'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                    'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
                    'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-      
+
                //        async: false,
-      
+
                    success:function(data){
                       $('.wrapper').html(data);
                   }
-      
+
                });
     });
 
@@ -1778,7 +1778,7 @@ $( ".select_billing_state .select__option" ).click(function() {
         var card_number = $("#card_numb").val();
         var card_cvv = $("#cvc_2").val();
         $.ajax({
-                   url:'/checkout/content_ajax.php',   
+                   url:'/checkout/content_ajax.php',
                    type: 'POST',
                    cache: false,
                    dataType: 'html',
@@ -1787,13 +1787,13 @@ $( ".select_billing_state .select__option" ).click(function() {
                    'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                    'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'shipping_open':shipping_open,
                    'language':language, 'currency':currency, 'theme':theme, 'phone_code':phone_code, 'card_month':card_month, 'card_year':card_year, 'card_holder':card_holder, 'card_number':card_number, 'card_cvv':card_cvv},
-      
+
                //        async: false,
-      
+
                    success:function(data){
                       $('.wrapper').html(data);
                   }
-      
+
                });
     });
 
@@ -1803,7 +1803,7 @@ $( ".select_billing_state .select__option" ).click(function() {
         var startTime = (new Date()).getTime();
         interval = interval || 1000,
         canPoll = true;
-    
+
         (function p() {
             canPoll = ((new Date).getTime() - startTime ) <= timeout;
             if (!fn() && canPoll)  { // ensures the function exucutes
@@ -1811,25 +1811,25 @@ $( ".select_billing_state .select__option" ).click(function() {
             }
         })();
     }
-    
-    
+
+
 
     function CheckPayment() {
         var invoiceId = document.getElementById('invoiceId');
         //alert($("#crypto_currency option:selected").val());
         if (invoiceId.value) {
             $.ajax({
-                url:'/checkout/check_payment.php', 
+                url:'/checkout/check_payment.php',
                 type: 'POST',
                 cache: false,
                 dataType: 'html',
                 data: {'invoiceId':invoiceId.value},
-   
+
             //        async: false,
-   
+
                 success:function(data){
                     var result = JSON.parse(data);
-                   if(result.status == 3){                    
+                   if(result.status == 3){
                         document.body.classList.remove('loaded');
                         //alert('aaaaa');
                         var language = $(".language option:selected").val();
@@ -1890,24 +1890,24 @@ $( ".select_billing_state .select__option" ).click(function() {
                         var resolution = window.screen.width + 'x' + window.screen.height;
 
                         const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-            
+
                         const d = new Date();
                         var day = weekday[d.getDay()];
-                        var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();            
-            
+                        var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
                         $.ajax({
                             url:'/checkout/crypto_order.php',
                             type: 'POST',
                             cache: false,
                             dataType: 'html',
                             data: {'products':products, 'screen_resolution':resolution, 'customer_date':date, 'coupon':coupon, 'refc':refc, 'bonus':bonus,'Insurance':  document.getElementsByName("Insurance")[0].value,'SecretPackage': document.getElementsByName("SecretPackage")[0].value,
-                            'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email, 
+                            'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email,
                             'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                             'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'different':different,
                             'proccess':1,'payment_type':payment_type, 'total':total,'product_total':product_total, 'reorder_discount':reorder_discount, 'shipping_price':shipping_price,'aff':aff,'saff':saff,'curr':curr,'store_skin':store_skin,'domain_from':domain_from,
                             'language':language, 'currency':currency, 'ref':ref, 'fingerprint':fingerprint, 'coupon_discount':coupon_discount, 'crypto_currency':crypto_currency, 'invoiceId': invoiceId, 'theme':theme, 'phone_code':phone_code, 'recurring_period':recurring_period,
                             'merchant_id':result.merchantId,'purse':result.purse,'amount':result.amount,'amountInPayCurrency':result.amountInPayCurrency,'commission':result.complexCommission},
-            
+
                             success:function(data){
                                 quit_flag = 1;
                                 // alert(data);
@@ -1916,7 +1916,7 @@ $( ".select_billing_state .select__option" ).click(function() {
                                 throw new Error("ok");
                                 //$('.wrapper').html(data);
                             }
-            
+
                             });
 
                    }
@@ -1990,35 +1990,35 @@ $( ".select_billing_state .select__option" ).click(function() {
                         var resolution = window.screen.width + 'x' + window.screen.height;
 
                         const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-            
+
                         const d = new Date();
                         var day = weekday[d.getDay()];
-                        var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();  
-            
+                        var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
                         $.ajax({
                             url:'/checkout/crypto_order.php',
                             type: 'POST',
                             cache: false,
                             dataType: 'html',
                             data: {'underpaid':1,'products':products, 'screen_resolution':resolution, 'customer_date':date, 'coupon':coupon, 'refc':refc, 'bonus':bonus,'Insurance':  document.getElementsByName("Insurance")[0].value,'SecretPackage': document.getElementsByName("SecretPackage")[0].value,
-                            'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email, 
+                            'shipping':shipping,'discount':discount,'billing_country':billing_country,'billing_state':billing_state,'phone':phone,'email':email,'alter_email':alter_email,
                             'billing_firstname':billing_firstname, 'billing_lastname':billing_lastname, 'billing_city':billing_city, 'billing_address':billing_address, 'billing_zip':billing_zip,
                             'shipping_country':shipping_country,'shipping_state':shipping_state,'shipping_city':shipping_city, 'shipping_address':shipping_address,'shipping_zip':shipping_zip, 'different':different,
                             'proccess':1,'payment_type':payment_type, 'total':total,'product_total':product_total, 'reorder_discount':reorder_discount, 'shipping_price':shipping_price,'aff':aff,'saff':saff,'curr':curr,'store_skin':store_skin,'domain_from':domain_from,
                             'language':language, 'currency':currency, 'ref':ref, 'fingerprint':fingerprint, 'coupon_discount':coupon_discount, 'crypto_currency':crypto_currency, 'invoiceId': invoiceId, 'theme':theme, 'phone_code':phone_code, 'recurring_period':recurring_period,
                             'merchant_id':result.merchantId,'purse':result.purse,'amount':result.amount,'amountInPayCurrency':result.amountInPayCurrency,'commission':result.complexCommission},
-            
+
                             success:function(data){
                                 quit_flag = 1;
                                 window.location.replace(data);
                                 throw new Error("ok");
                             }
-            
+
                             });
                     }
                }
-   
-            });         
+
+            });
         }
     }
 
@@ -2027,7 +2027,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     //     var text = document.getElementById('crypto_total').innerHTML;
     //     text = text.split(' ');
     //     text = text[0];
-        
+
     //     navigator.clipboard.writeText(text)
     //     .then(() => {
     //         //console.log('Text copied to clipboard');
@@ -2059,7 +2059,7 @@ $( ".select_billing_state .select__option" ).click(function() {
     //     var text = document.getElementById('purse').innerHTML;
     //     text = text.split(' ');
     //     text = text[0];
-        
+
     //     navigator.clipboard.writeText(text)
     //     .then(() => {
     //         //console.log('Text copied to clipboard');

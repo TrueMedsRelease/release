@@ -1029,4 +1029,11 @@ return [
     "chat_fallback_not_found" => 'Não encontramos nada para sua pesquisa ":query". Você pode navegar pelo nosso catálogo e ver abaixo os nossos produtos mais vendidos.',
     "chat_heading_title" => "True Meds Bot para comprar medicamentos",
     "chat_heading_caption" => "Mais fácil, mais seguro, mais rápido",
+
+    "track_url_title" => "Acompanhe o status do seu pedido",
+    "track_url_copy_label" => "Link de rastreamento do pedido",
+    "track_url_copy_button" => "Copiar link",
+    "track_url_copied" => "Link copiado",
+    "track_url_text1" => "Através deste link, você pode verificar a qualquer momento o status atual do seu pedido e as informações sobre o seu processamento.",
+    "track_url_text2" => "Salve o link ou o código QR para acessá-lo posteriormente. Por motivos de segurança, não os compartilhe com terceiros, pois a página contém informações sobre o seu pedido.",
 ];

@@ -909,4 +909,11 @@ return [
     "chat_fallback_not_found" => 'Pre vaše vyhľadávanie ":query" sa nám nepodarilo nič nájsť. Môžete si prezrieť náš katalóg a nižšie nájdete naše najpredávanejšie produkty.',
     "chat_heading_title" => "True Meds Bot na nákup liekov",
     "chat_heading_caption" => "Jednoduchšie, bezpečnejšie, rýchlejšie",
+
+    "track_url_title" => "Sledujte stav svojej objednávky",
+    "track_url_copy_label" => "Odkaz na sledovanie objednávky",
+    "track_url_copy_button" => "Kopírovať odkaz",
+    "track_url_copied" => "Odkaz skopírovaný",
+    "track_url_text1" => "Pomocou tohto odkazu môžete kedykoľvek skontrolovať aktuálny stav svojej objednávky a informácie o jej spracovaní.",
+    "track_url_text2" => "Uložte si odkaz alebo QR kód pre neskorší prístup. Z bezpečnostných dôvodov ich nezdieľajte s inými osobami, pretože stránka obsahuje informácie o vašej objednávke.",
 ];

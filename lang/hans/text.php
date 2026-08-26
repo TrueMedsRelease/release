@@ -914,4 +914,11 @@ return [
     "chat_fallback_not_found" => '我们未能找到与您的查询":query"相关的内容。您可以浏览我们的产品目录，并查看下面的热销产品。',
     "chat_heading_title" => "True Meds 药品购买机器人",
     "chat_heading_caption" => "更简单、更安全、更快捷",
+
+    "track_url_title" => "跟踪您的订单状态",
+    "track_url_copy_label" => "订单跟踪链接",
+    "track_url_copy_button" => "复制链接",
+    "track_url_copied" => "链接已复制",
+    "track_url_text1" => "通过此链接，您可以随时查看订单的最新状态及其处理信息。",
+    "track_url_text2" => "请保存此链接或二维码，以便日后访问。出于安全考虑，请勿将其分享给第三方，因为该页面包含您的订单信息。",
 ];

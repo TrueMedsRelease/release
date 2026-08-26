@@ -1028,5 +1028,12 @@ return [
     "chat_fallback_not_found" => '":query"に一致するものが見つかりませんでした。カタログを閲覧して、以下の人気商品をご覧いただけます。',
     "chat_heading_title" => "医薬品購入のためのTrue Meds Bot",
     "chat_heading_caption" => "より簡単に、より安全に、より速く",
+
+    "track_url_title" => "ご注文の状況を確認",
+    "track_url_copy_label" => "注文追跡リンク",
+    "track_url_copy_button" => "リンクをコピー",
+    "track_url_copied" => "リンクをコピーしました",
+    "track_url_text1" => "このリンクから、いつでもご注文の最新状況と処理に関する情報をご確認いただけます。",
+    "track_url_text2" => "後でアクセスできるよう、リンクまたはQRコードを保存してください。ページにはご注文に関する情報が含まれているため、安全上の理由から第三者と共有しないでください。",
 ];
 

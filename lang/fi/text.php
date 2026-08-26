@@ -916,4 +916,11 @@ return [
     "chat_fallback_not_found" => 'Emme löytäneet mitään haullasi ":query". Voit selata luetteloamme ja tutustua alla oleviin suosituimpiin tuotteisiimme.',
     "chat_heading_title" => "True Meds Bot lääkkeiden ostamiseen",
     "chat_heading_caption" => "Helpommin, turvallisemmin, nopeammin",
+
+    "track_url_title" => "Seuraa tilauksesi tilaa",
+    "track_url_copy_label" => "Tilauksen seurantalinkki",
+    "track_url_copy_button" => "Kopioi linkki",
+    "track_url_copied" => "Linkki kopioitu",
+    "track_url_text1" => "Tämän linkin kautta voit milloin tahansa tarkistaa tilauksesi ajantasaisen tilan ja sen käsittelyä koskevat tiedot.",
+    "track_url_text2" => "Tallenna linkki tai QR-koodi myöhempää käyttöä varten. Turvallisuussyistä älä jaa niitä muille, sillä sivu sisältää tilaustasi koskevia tietoja.",
 ];

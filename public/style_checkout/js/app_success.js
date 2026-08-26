@@ -1934,6 +1934,33 @@
     })();
 })();
 
+function copyTrackUrl() {
+    const input = document.getElementById('order_track_url');
+    const status = document.getElementById('copy_track_status');
+    const button = document.getElementById('copy_track_url');
+
+    navigator.clipboard.writeText(input.value)
+        .then(() => {
+            status.classList.add('show');
+            button.classList.add('copied');
+
+            setTimeout(() => {
+                status.classList.remove('show');
+                button.classList.remove('copied');
+            }, 2000);
+        })
+        .catch(() => {
+            input.select();
+            document.execCommand('copy');
+
+            status.classList.add('show');
+
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 2000);
+        });
+}
+
 $( ".language .select__option" ).click(function() {
     var language = $(this).attr('data-value');
     window.location.replace(language);

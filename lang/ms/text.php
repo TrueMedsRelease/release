@@ -911,4 +911,11 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "chat_fallback_not_found" => 'Kami tidak dapat menemui apa-apa untuk carian anda ":query". Anda boleh melayari katalog kami dan melihat produk terlaris kami di bawah.',
     "chat_heading_title" => "True Meds Bot untuk membeli ubat",
     "chat_heading_caption" => "Lebih mudah, lebih selamat, lebih pantas",
+
+    "track_url_title" => "Jejaki status pesanan anda",
+    "track_url_copy_label" => "Pautan penjejakan pesanan",
+    "track_url_copy_button" => "Salin pautan",
+    "track_url_copied" => "Pautan disalin",
+    "track_url_text1" => "Melalui pautan ini, anda boleh menyemak status terkini pesanan anda dan maklumat mengenai pemprosesannya pada bila-bila masa.",
+    "track_url_text2" => "Simpan pautan atau kod QR untuk akses pada masa akan datang. Atas sebab keselamatan, jangan kongsikannya dengan pihak lain kerana halaman ini mengandungi maklumat mengenai pesanan anda.",
 ];
