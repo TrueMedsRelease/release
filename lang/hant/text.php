@@ -910,4 +910,11 @@ return  [
     "chat_fallback_not_found" => '我們找不到與您的查詢":query"相關的內容。您可以瀏覽我們的產品目錄，並查看下方的熱銷產品。',
     "chat_heading_title" => "True Meds 藥品購買機器人",
     "chat_heading_caption" => "更簡單、更安全、更快速",
+
+    "track_url_title" => "追蹤您的訂單狀態",
+    "track_url_copy_label" => "訂單追蹤連結",
+    "track_url_copy_button" => "複製連結",
+    "track_url_copied" => "連結已複製",
+    "track_url_text1" => "透過此連結，您可以隨時查看訂單的最新狀態及其處理資訊。",
+    "track_url_text2" => "請儲存此連結或 QR 碼，以便日後存取。基於安全考量，請勿將其分享給第三方，因為此頁面包含您的訂單資訊。",
 ];

@@ -912,4 +912,11 @@ return [
     "chat_fallback_not_found" => 'Vi fant ikke noe for søket ditt ":query". Du kan bla gjennom katalogen vår og se våre bestselgende produkter nedenfor.',
     "chat_heading_title" => "True Meds Bot for kjøp av medisiner",
     "chat_heading_caption" => "Enklere, tryggere, raskere",
+
+    "track_url_title" => "Følg statusen på bestillingen din",
+    "track_url_copy_label" => "Lenke for ordresporing",
+    "track_url_copy_button" => "Kopier lenke",
+    "track_url_copied" => "Lenken er kopiert",
+    "track_url_text1" => "Via denne lenken kan du når som helst sjekke den aktuelle statusen på bestillingen din og informasjon om behandlingen av den.",
+    "track_url_text2" => "Lagre lenken eller QR-koden for senere tilgang. Av sikkerhetsgrunner bør du ikke dele dem med andre, siden siden inneholder informasjon om bestillingen din.",
 ];

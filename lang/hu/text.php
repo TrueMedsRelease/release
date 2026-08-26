@@ -915,4 +915,11 @@ return [
     "chat_fallback_not_found" => 'Nem találtunk semmit a(z) ":query" keresésre. Böngészheti katalógusunkat, és alább megtekintheti legnépszerűbb termékeinket.',
     "chat_heading_title" => "True Meds Bot gyógyszerek vásárlásához",
     "chat_heading_caption" => "Egyszerűbben, biztonságosabban, gyorsabban",
+
+    "track_url_title" => "Kövesse nyomon rendelése állapotát",
+    "track_url_copy_label" => "Rendeléskövetési link",
+    "track_url_copy_button" => "Link másolása",
+    "track_url_copied" => "Link másolva",
+    "track_url_text1" => "Ezen a linken bármikor ellenőrizheti rendelése aktuális állapotát és a feldolgozásával kapcsolatos információkat.",
+    "track_url_text2" => "Mentse el a linket vagy a QR-kódot a későbbi hozzáféréshez. Biztonsági okokból ne ossza meg azokat másokkal, mivel az oldal információkat tartalmaz a rendeléséről.",
 ];

@@ -174,6 +174,29 @@
 						@endforeach
 					</div>
 				@endif
+                @if (session('order.track_url'))
+                    <div class="succes__block track_url_block">
+                        <div class="track_url_title">
+                            {{ __('text.track_url_title') }}
+                        </div>
+                        <div class="track_url_qr">
+                            <img loading="lazy" id="qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(session('order.track_url')) }}" width="160" height="160">
+                        </div>
+                        <div class="track_url_copy">
+                            <input type="text" id="order_track_url" value="{{ session('order.track_url') }}" readonly aria-label="{{ __('text.track_url_copy_label') }}">
+                            <button type="button" id="copy_track_url" onclick="copyTrackUrl()" title="{{ __('text.track_url_copy_button') }}">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/icons/copy.png') }}" id="copy_img">
+                            </button>
+                        </div>
+                        <div class="track_url_copy_status" id="copy_track_status">
+                            {{ __('text.track_url_copied') }}
+                        </div>
+                        <div class="track_url_description">
+                            <p>{{ __('text.track_url_text1') }}</p>
+                            <p class="track_url_security">{{ __('text.track_url_text2') }}</p>
+                        </div>
+                    </div>
+                @endif
                 <div class="succes__block">
                     <p><b>{{ __('text.success_confirm') }}</b></p>
                     <div class="succes__row">

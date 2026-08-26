@@ -905,4 +905,11 @@ return [
     "chat_fallback_not_found" => 'Nu am găsit nimic pentru căutarea dvs. ":query". Puteți răsfoi catalogul nostru și puteți vedea mai jos produsele noastre cele mai vândute.',
     "chat_heading_title" => "True Meds Bot pentru cumpărarea medicamentelor",
     "chat_heading_caption" => "Mai ușor, mai sigur, mai rapid",
+
+    "track_url_title" => "Urmăriți starea comenzii dvs.",
+    "track_url_copy_label" => "Link pentru urmărirea comenzii",
+    "track_url_copy_button" => "Copiază linkul",
+    "track_url_copied" => "Link copiat",
+    "track_url_text1" => "Prin intermediul acestui link puteți verifica în orice moment starea actuală a comenzii și informațiile privind procesarea acesteia.",
+    "track_url_text2" => "Salvați linkul sau codul QR pentru acces ulterior. Din motive de securitate, nu le distribuiți altor persoane, deoarece pagina conține informații despre comanda dvs.",
 ];

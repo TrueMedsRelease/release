@@ -544,7 +544,8 @@ class AdminController extends Controller
         $new_password = $request->new_password;
 
         $md5_pw = md5($new_password);
-        DB::update("UPDATE user SET md5_pw = '{$md5_pw}' WHERE `login` = '$user_login'");
+        DB::update("UPDATE user SET md5_pw = ? WHERE `login` = ?", [$md5_pw, $user_login]);
+
 
         Cache::flush();
 

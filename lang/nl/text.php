@@ -949,4 +949,11 @@ return [
     "chat_fallback_not_found" => 'We konden niets vinden voor uw zoekopdracht ":query". U kunt onze catalogus bekijken en hieronder onze bestverkochte producten zien.',
     "chat_heading_title" => "True Meds Bot voor het kopen van medicijnen",
     "chat_heading_caption" => "Eenvoudiger, veiliger, sneller",
+
+    "track_url_title" => "Volg de status van uw bestelling",
+    "track_url_copy_label" => "Link voor het volgen van uw bestelling",
+    "track_url_copy_button" => "Link kopiëren",
+    "track_url_copied" => "Link gekopieerd",
+    "track_url_text1" => "Via deze link kunt u op elk moment de actuele status van uw bestelling en informatie over de verwerking ervan bekijken.",
+    "track_url_text2" => "Bewaar de link of QR-code voor later gebruik. Deel deze om veiligheidsredenen niet met derden, aangezien de pagina informatie over uw bestelling bevat.",
 ];
