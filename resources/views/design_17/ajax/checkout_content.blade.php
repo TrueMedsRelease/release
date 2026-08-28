@@ -508,7 +508,8 @@
                     @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "BG", "CZ", "DK", "EE", "FI", "FR", "DE", "HU", "IE", "IT", "LV", "LT", "LU", "NL", "PL", "PT", "RO", "SK", "ES", "SE", "NO", "CH", "GB"]))
                         <option value="revolut" data-asset="{{ asset('style_checkout/images/icons/revolut.svg') }}" @selected($payment_type_current == 'revolut')>Revolut -5% extra off</option>
                     @endif
-                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
+                    {{-- @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"])) --}}
+                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                         <option value="open_banking" data-asset="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" @selected($payment_type_current == 'open_banking')>Instant Bank Transfer -5% extra off</option>
                     @endif
                     @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || $billing_country_current == "US"))
