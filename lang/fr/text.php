@@ -1047,4 +1047,5 @@ return [
     "track_url_copied" => "Lien copié",
     "track_url_text1" => "Grâce à ce lien, vous pouvez consulter à tout moment le statut actuel de votre commande ainsi que les informations relatives à son traitement.",
     "track_url_text2" => "Enregistrez le lien ou le code QR pour y accéder ultérieurement. Pour des raisons de sécurité, ne les partagez pas avec des tiers, car cette page contient des informations concernant votre commande.",
+    "track_url_print_button" => "Imprimer la page",
 ];

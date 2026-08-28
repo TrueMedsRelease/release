@@ -174,22 +174,47 @@
 						@endforeach
 					</div>
 				@endif
+
+                <div class="succes__block">
+                    <div style="margin-bottom: 15px">
+                        <b>{{ __('text.success_support') }}</b>
+                        <a class="succes__link" href="https://true-client-support.com">true-client-support.com</a>
+                    </div>
+                    <div>
+                        <b>{{ __('text.success_email') }}</b>
+                        <a class="succes__link" href="mailto:support@true-client-support.com">support@true-client-support.com</a>
+                    </div>
+                </div>
+
                 @if (session('order.track_url'))
                     <div class="succes__block track_url_block">
                         <div class="track_url_title">
-                            {{ __('text.track_url_title') }}
+                            {{ __('text.track_url_title') }}:
+                            <a class="succes__link" href="{{ session('order.track_url') }}" style="font-size: 17px">
+                                {{ $successOrder['order_id'] ?? '' }}
+                            </a>
                         </div>
-                        <div class="track_url_qr">
-                            <img loading="lazy" id="qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(session('order.track_url')) }}" width="160" height="160">
-                        </div>
-                        <div class="track_url_copy">
-                            <input type="text" id="order_track_url" value="{{ session('order.track_url') }}" readonly aria-label="{{ __('text.track_url_copy_label') }}">
-                            <button type="button" id="copy_track_url" onclick="copyTrackUrl()" title="{{ __('text.track_url_copy_button') }}">
-                                <img loading="lazy" src="{{ asset('style_checkout/images/icons/copy.png') }}" id="copy_img">
-                            </button>
-                        </div>
-                        <div class="track_url_copy_status" id="copy_track_status">
-                            {{ __('text.track_url_copied') }}
+                        <div class="traking_full_block">
+                            <div class="track_url_qr">
+                                <img id="qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(session('order.track_url')) }}" width="160" height="160">
+                            </div>
+                            <div class="traking_block_input">
+                                <div class="track_url_copy">
+                                    <input type="text" id="order_track_url" value="{{ session('order.track_url') }}" readonly aria-label="{{ __('text.track_url_copy_label') }}">
+                                    <button type="button" id="copy_track_url" onclick="copyTrackUrl()" title="{{ __('text.track_url_copy_button') }}">
+                                        <img src="{{ asset('style_checkout/images/icons/copy.png') }}" id="copy_img">
+                                    </button>
+                                </div>
+                                <div class="track_url_actions">
+                                    <button type="button" class="print_order_btn" onclick="printOrderPage()">
+                                        <img loading="lazy" src="{{ asset('style_checkout/images/icons/print.svg') }}" width="18" height="18">
+                                        <span style="color: white">{{ __('text.track_url_print_button') }}</span>
+                                    </button>
+                                </div>
+                                <div class="track_url_copy_status" id="copy_track_status">
+                                    {{ __('text.track_url_copied') }}
+                                </div>
+                            </div>
                         </div>
                         <div class="track_url_description">
                             <p>{{ __('text.track_url_text1') }}</p>
@@ -200,7 +225,7 @@
                 <div class="succes__block">
                     <p><b>{{ __('text.success_confirm') }}</b></p>
                     <div class="succes__row">
-                        <a style="cursor: pointer;" class="succes__button button" id="succes__button">
+                        <a style="cursor: pointer;" class="succes__button button call_button" id="succes__button">
                             <svg width="18" height="18">
                                 <use xlink:class="succes__link"
                                     href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-phone"></use>
@@ -213,23 +238,13 @@
                         <p class="succes__phones">
                             <span>{{ __('text.success_call_us') }}</span>
                             @foreach ($phone_arr as $id_phone => $phones)
-                                <a class="succes__link" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a>
+                                {{__('text.phones_title_phone_' . $id_phone . '_code')}}<a class="succes__link" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone)}}</a>
                             @endforeach
                         </p>
                     </div>
                 </div>
-                <div class="succes__block">
-                    <div style="margin-bottom: 15px">
-                        <b>{{ __('text.success_support') }}</b>
-                        <a class="succes__link" href="https://true-client-support.com">true-client-support.com</a>
-                    </div>
-                    <div>
-                        <b>{{ __('text.success_email') }}</b>
-                        <a class="succes__link" href="mailto:support@true-client-support.com">support@true-client-support.com</a>
-                    </div>
-                </div>
                 @if (!empty($fromCookie))
-                    <div class="succes__block">
+                    <div class="succes__block new_order">
                         <a href="{{ route('checkout.new_order') }}" class="succes__button button" style="max-width: 500px;">
                             <span>{{ __('text.complete_new_order') }}</span>
                         </a>

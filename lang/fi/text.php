@@ -923,4 +923,5 @@ return [
     "track_url_copied" => "Linkki kopioitu",
     "track_url_text1" => "Tämän linkin kautta voit milloin tahansa tarkistaa tilauksesi ajantasaisen tilan ja sen käsittelyä koskevat tiedot.",
     "track_url_text2" => "Tallenna linkki tai QR-koodi myöhempää käyttöä varten. Turvallisuussyistä älä jaa niitä muille, sillä sivu sisältää tilaustasi koskevia tietoja.",
+    "track_url_print_button" => "Tulosta sivu",
 ];

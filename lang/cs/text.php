@@ -1002,4 +1002,5 @@ return [
     "track_url_copied" => "Odkaz zkopírován",
     "track_url_text1" => "Pomocí tohoto odkazu můžete kdykoli zkontrolovat aktuální stav své objednávky a informace o jejím vyřízení.",
     "track_url_text2" => "Uložte si odkaz nebo QR kód pro pozdější přístup. Z bezpečnostních důvodů je nesdílejte s jinými osobami, protože stránka obsahuje informace o vaší objednávce.",
+    "track_url_print_button" => "Vytisknout stránku",
 ];

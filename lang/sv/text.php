@@ -916,4 +916,5 @@ return [
     "track_url_copied" => "Länken har kopierats",
     "track_url_text1" => "Via den här länken kan du när som helst kontrollera den aktuella statusen för din beställning och information om hanteringen av den.",
     "track_url_text2" => "Spara länken eller QR-koden för framtida åtkomst. Av säkerhetsskäl bör du inte dela dem med andra, eftersom sidan innehåller information om din beställning.",
+    "track_url_print_button" => "Skriv ut sidan",
 ];
