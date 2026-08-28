@@ -912,4 +912,5 @@ return [
     "track_url_copied" => "Link copiat",
     "track_url_text1" => "Prin intermediul acestui link puteți verifica în orice moment starea actuală a comenzii și informațiile privind procesarea acesteia.",
     "track_url_text2" => "Salvați linkul sau codul QR pentru acces ulterior. Din motive de securitate, nu le distribuiți altor persoane, deoarece pagina conține informații despre comanda dvs.",
+    "track_url_print_button" => "Tipărește pagina",
 ];

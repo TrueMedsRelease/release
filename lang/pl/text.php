@@ -917,4 +917,5 @@ return [
     "track_url_copied" => "Link skopiowany",
     "track_url_text1" => "Za pomocą tego linku możesz w dowolnym momencie sprawdzić aktualny status swojego zamówienia oraz informacje dotyczące jego realizacji.",
     "track_url_text2" => "Zapisz link lub kod QR, aby mieć do nich dostęp w przyszłości. Ze względów bezpieczeństwa nie udostępniaj ich osobom trzecim, ponieważ strona zawiera informacje o Twoim zamówieniu.",
+    "track_url_print_button" => "Drukuj stronę",
 ];

@@ -1961,6 +1961,10 @@ function copyTrackUrl() {
         });
 }
 
+function printOrderPage() {
+    window.print();
+}
+
 $( ".language .select__option" ).click(function() {
     var language = $(this).attr('data-value');
     window.location.replace(language);

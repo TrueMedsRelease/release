@@ -966,4 +966,5 @@ return [
     "track_url_copied" => "Link kopieret",
     "track_url_text1" => "Via dette link kan du til enhver tid kontrollere den aktuelle status på din ordre og oplysninger om behandlingen af den.",
     "track_url_text2" => "Gem linket eller QR-koden til senere brug. Af sikkerhedsmæssige årsager bør du ikke dele dem med andre, da siden indeholder oplysninger om din ordre.",
+    "track_url_print_button" => "Udskriv side",
 ];

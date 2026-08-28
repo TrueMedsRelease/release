@@ -921,4 +921,5 @@ return [
     "track_url_copied" => "链接已复制",
     "track_url_text1" => "通过此链接，您可以随时查看订单的最新状态及其处理信息。",
     "track_url_text2" => "请保存此链接或二维码，以便日后访问。出于安全考虑，请勿将其分享给第三方，因为该页面包含您的订单信息。",
+    "track_url_print_button" => "打印页面",
 ];

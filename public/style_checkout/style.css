@@ -3666,7 +3666,6 @@ html { scroll-behavior: smooth; }
     height: 46px;
     padding: 0 14px;
     border: 1px solid #d9ddd8;
-    border-right: 0;
     border-radius: 8px 0 0 8px;
     background: #fff;
     font-size: 14px;
@@ -3688,10 +3687,18 @@ html { scroll-behavior: smooth; }
     align-items: center;
     justify-content: center;
     border: 1px solid #d9ddd8;
-    border-radius: 0 8px 8px 0;
     background: #fff;
     cursor: pointer;
     transition: background 0.2s ease;
+}
+
+.track_url_copy button:first-of-type {
+    border-radius: 0;
+    border-left: 0;
+}
+
+.track_url_copy button:last-of-type {
+    border-radius: 0 8px 8px 0;
 }
 
 .track_url_copy button:hover {
@@ -3760,5 +3767,140 @@ html { scroll-behavior: smooth; }
 
     .track_url_description {
         font-size: 13px;
+    }
+}
+
+.track_url_copy {
+    display: flex;
+    align-items: center;
+}
+
+.track_url_copy input {
+    flex: 1;
+}
+
+.track_url_copy button {
+    width: 48px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #d9ddd8;
+    cursor: pointer;
+}
+
+.track_url_copy button img {
+    width: 20px;
+    height: 20px;
+}
+
+.print_btn img {
+    filter: invert(54%) sepia(45%) saturate(500%) hue-rotate(55deg);
+}
+
+.track_url_actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.print_order_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 46px;
+    padding: 0 24px;
+    border-radius: 12px;
+    border: 1px solid var(--green);
+    background: var(--green);
+    color: #fff;
+    font-family: "Poppins";
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.print_order_btn img {
+    width: 18px;
+    height: 18px;
+    filter: brightness(0) invert(1);
+}
+
+.print_order_btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.print_order_btn:active {
+    transform: translateY(0);
+}
+
+.traking_full_block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.traking_block_input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 500px) {
+    .traking_full_block {
+        flex-direction: column;
+    }
+}
+
+@media print {
+
+    body {
+        background: #fff !important;
+    }
+
+    .wrapper {
+        background: #fff !important;
+    }
+
+    /* .succes__block,
+    .track_url_block {
+        background: #fff !important;
+        border: 1px solid #eee;
+    } */
+
+    .header {
+        background: #508111 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .track_url_block {
+        background: #fff !important;
+    }
+
+    .print_order_btn {
+        display:none !important;
+    }
+
+    .track_url_copy button {
+        display:none !important;
+    }
+
+    .new_order {
+        display:none !important;
+    }
+
+    .call_button {
+        display:none !important;
+    }
+
+    .top-phones-header {
+        display:none !important;
     }
 }

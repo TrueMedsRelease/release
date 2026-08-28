@@ -917,4 +917,5 @@ return  [
     "track_url_copied" => "連結已複製",
     "track_url_text1" => "透過此連結，您可以隨時查看訂單的最新狀態及其處理資訊。",
     "track_url_text2" => "請儲存此連結或 QR 碼，以便日後存取。基於安全考量，請勿將其分享給第三方，因為此頁面包含您的訂單資訊。",
+    "track_url_print_button" => "列印頁面",
 ];

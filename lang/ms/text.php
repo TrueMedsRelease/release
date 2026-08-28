@@ -918,4 +918,5 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "track_url_copied" => "Pautan disalin",
     "track_url_text1" => "Melalui pautan ini, anda boleh menyemak status terkini pesanan anda dan maklumat mengenai pemprosesannya pada bila-bila masa.",
     "track_url_text2" => "Simpan pautan atau kod QR untuk akses pada masa akan datang. Atas sebab keselamatan, jangan kongsikannya dengan pihak lain kerana halaman ini mengandungi maklumat mengenai pesanan anda.",
+    "track_url_print_button" => "Cetak halaman",
 ];

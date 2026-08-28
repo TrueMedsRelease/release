@@ -956,4 +956,5 @@ return [
     "track_url_copied" => "Link gekopieerd",
     "track_url_text1" => "Via deze link kunt u op elk moment de actuele status van uw bestelling en informatie over de verwerking ervan bekijken.",
     "track_url_text2" => "Bewaar de link of QR-code voor later gebruik. Deel deze om veiligheidsredenen niet met derden, aangezien de pagina informatie over uw bestelling bevat.",
+    "track_url_print_button" => "Pagina afdrukken",
 ];
