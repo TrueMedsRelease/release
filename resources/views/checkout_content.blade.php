@@ -703,14 +703,27 @@
                                             </option>
                                         @endif
 
-                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "CZ", "DK", "EE", "FI", "FR", "DE", "HU", "IE", "IT", "LV", "LT", "LU", "NL", "PL", "PT", "RO", "SK", "ES", "SE", "NO", "CH", "GB"]))
+                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                                             <option value="revolut" @selected(session('form.payment_type', 'mastercard') == 'revolut')
                                                 data-asset="{{ asset("/style_checkout/images/icons/revolut.svg") }}">
                                                 Revolut -5% extra off
                                             </option>
                                         @endif
 
-                                        {{-- @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"])) --}}
+                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
+                                            <option value="wise" @selected(session('form.payment_type', 'mastercard') == 'wise')
+                                                data-asset="{{ asset("/style_checkout/images/icons/wise.svg") }}">
+                                                Wise -5% extra off
+                                            </option>
+                                        @endif
+
+                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
+                                            <option value="n26" @selected(session('form.payment_type', 'mastercard') == 'n26')
+                                                data-asset="{{ asset("/style_checkout/images/icons/n26.svg") }}">
+                                                N26 -5% extra off
+                                            </option>
+                                        @endif
+
                                         @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                                             <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')
                                                 data-asset="{{ asset("/style_checkout/images/icons/de_rotating_40x40.gif") }}"
@@ -1568,7 +1581,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__open-banking-content" @if (!in_array(session('form.payment_type', 'mastercard'), ['open_banking', 'revolut'])) hidden @endif>
+                        <div class="enter-info__open-banking-content" @if (!in_array(session('form.payment_type', 'mastercard'), ['open_banking', 'revolut', 'wise', 'n26'])) hidden @endif>
                             <button id="proccess_open_banking" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_place') }}</span>
                                 <svg width="18" height="18">
