@@ -874,7 +874,7 @@
         sepa_local: ['local'], fps: ['local'], domestic: ['local'], ach: ['local'], interac: ['local'], usd_swift: ['local'], gbp_swift: ['local'],
         paypal: ['paypal'], sepa: ['sepa'], zelle: ['zelle'],
         bonus_card: ['bonus-card'], gift_card: ['gift-card'],
-        revolut: ['open-banking'], open_banking: ['open-banking'],
+        revolut: ['open-banking'], wise: ['open-banking'], n26: ['open-banking'], open_banking: ['open-banking'],
         google: ['google-pay', 'google'],
         google_pay: ['google-pay', 'google'],
         apple_pay: ['apple-pay', 'google']
@@ -1644,7 +1644,15 @@
     $(document).on('click', '[data-action="process-open-banking"]', function (e) {
         e.preventDefault();
         var pt = getSelectedPaymentType($(this).data('payment-type') || 'open_banking');
-        processPayment('openBanking', pt === 'revolut' ? { is_revolut: 1 } : {});
+        if (pt === 'revolut') {
+            processPayment('openBanking', { is_revolut: 1 });
+        } else if (pt === 'wise') {
+            processPayment('openBanking', { is_wise: 1 });
+        } else if (pt === 'n26') {
+            processPayment('openBanking', { is_n26: 1 });
+        } else {
+            processPayment('openBanking', {});
+        }
     });
 
     $(document).on('click', '[data-action="process-wallet"]', function (e) {

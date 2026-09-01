@@ -505,10 +505,15 @@
                     @if (env('APP_GOOGLE_PAY_ON', 0) && session('device') == 'android' && session('wallet_available', true))
                         <option value="google_pay" data-asset="{{ asset('style_checkout/images/icons/payment_type/google_pay.svg') }}" @selected($payment_type_current == 'google_pay')>Google Pay</option>
                     @endif
-                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "BG", "CZ", "DK", "EE", "FI", "FR", "DE", "HU", "IE", "IT", "LV", "LT", "LU", "NL", "PL", "PT", "RO", "SK", "ES", "SE", "NO", "CH", "GB"]))
+                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                         <option value="revolut" data-asset="{{ asset('style_checkout/images/icons/revolut.svg') }}" @selected($payment_type_current == 'revolut')>Revolut -5% extra off</option>
                     @endif
-                    {{-- @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"])) --}}
+                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
+                        <option value="wise" data-asset="{{ asset('style_checkout/images/icons/wise.svg') }}" @selected($payment_type_current == 'wise')>Wise -5% extra off</option>
+                    @endif
+                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
+                        <option value="n26" data-asset="{{ asset('style_checkout/images/icons/n26.svg') }}" @selected($payment_type_current == 'n26')>N26 -5% extra off</option>
+                    @endif
                     @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                         <option value="open_banking" data-asset="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" @selected($payment_type_current == 'open_banking')>Instant Bank Transfer -5% extra off</option>
                     @endif
@@ -943,7 +948,7 @@
             </div>
         </div>
 
-        <div class="payment-information__open-banking-content" @if (!in_array($payment_type_current, ['revolut', 'open_banking'])) hidden @endif>
+        <div class="payment-information__open-banking-content" @if (!in_array($payment_type_current, ['revolut', 'open_banking', 'wise', 'n26'])) hidden @endif>
             <div class="form__field submit-field">
                 <button class="button form__submit" type="button" data-action="process-open-banking" data-payment-type="{{ $payment_type_current }}">
                     <span class="button-text">{{ __('text.checkout_place') }}</span>

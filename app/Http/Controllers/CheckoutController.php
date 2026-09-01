@@ -4603,6 +4603,8 @@ class CheckoutController extends Controller
                 ),
                 'payment_type'       => 'open_banking',
                 'is_revolut'         => $request->is_revolut ?? 0,
+                'is_wise'            => $request->is_wise ?? 0,
+                'is_n26'             => $request->is_n26 ?? 0,
                 'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
                     'cf-connecting-ip'
                 ) : request()->ip(),

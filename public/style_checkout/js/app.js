@@ -2142,7 +2142,7 @@
                     _slideUp(bonusCardBlock);
                     _slideUp(applePayBlock);
                     _slideUp(openBankingBlock);
-                } else if (currentSelect.value === "open_banking" || currentSelect.value === "revolut") {
+                } else if (currentSelect.value === "open_banking" || currentSelect.value === "revolut" || currentSelect.value === "wise" || currentSelect.value === "n26") {
                     _slideDown(openBankingBlock);
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
@@ -3741,6 +3741,14 @@ $("#proccess_open_banking").click(function (e) {
 
     if ($('[name="payment_type"]').val() === 'revolut') {
         form += "&is_revolut=1";
+    }
+
+    if ($('[name="payment_type"]').val() === 'wise') {
+        form += "&is_wise=1";
+    }
+
+    if ($('[name="payment_type"]').val() === 'n26') {
+        form += "&is_n26=1";
     }
 
     $('.poopuptext').removeClass("show");

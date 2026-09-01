@@ -240,6 +240,8 @@ class Cart extends Model
             // 'gbp_swift'
             'revolut',
             'open_banking',
+            'wise',
+            'n26',
         ];
 
         if (in_array(session('bonus_checkout_payment', 'mastercard'), $payment_with_bonus)) {
