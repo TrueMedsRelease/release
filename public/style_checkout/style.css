@@ -3904,3 +3904,13 @@ html { scroll-behavior: smooth; }
         display:none !important;
     }
 }
+
+.payment-text {
+    flex-direction: row;
+    gap: 10px;
+}
+
+.payment-discount {
+    color: var(--green);
+    font-weight: 500;
+}

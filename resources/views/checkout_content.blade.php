@@ -705,21 +705,24 @@
 
                                         @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                                             <option value="revolut" @selected(session('form.payment_type', 'mastercard') == 'revolut')
-                                                data-asset="{{ asset("/style_checkout/images/icons/revolut.svg") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/revolut.svg") }}"
+                                                data-text="Revolut <span class='payment-discount'>-5% extra off</span>">
                                                 Revolut -5% extra off
                                             </option>
                                         @endif
 
                                         @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                                             <option value="wise" @selected(session('form.payment_type', 'mastercard') == 'wise')
-                                                data-asset="{{ asset("/style_checkout/images/icons/wise.svg") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/wise.svg") }}"
+                                                data-text="Wise <span class='payment-discount'>-5% extra off</span>">
                                                 Wise -5% extra off
                                             </option>
                                         @endif
 
                                         @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                                             <option value="n26" @selected(session('form.payment_type', 'mastercard') == 'n26')
-                                                data-asset="{{ asset("/style_checkout/images/icons/n26.svg") }}">
+                                                data-asset="{{ asset("/style_checkout/images/icons/n26.svg") }}"
+                                                data-text="N26 <span class='payment-discount'>-5% extra off</span>">
                                                 N26 -5% extra off
                                             </option>
                                         @endif
@@ -727,7 +730,8 @@
                                         @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                                             <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')
                                                 data-asset="{{ asset("/style_checkout/images/icons/de_rotating_40x40.gif") }}"
-                                                data-subtext="{{ __('text.checkout_open_banking_subtext') }}">
+                                                data-subtext="{{ __('text.checkout_open_banking_subtext') }}"
+                                                data-text="Instant Bank Transfer <span class='payment-discount'>-5% extra off</span>">
                                                 Instant Bank Transfer -5% extra off
                                             </option>
                                         @endif
