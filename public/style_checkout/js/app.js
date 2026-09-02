@@ -649,7 +649,7 @@
             getSelectElementContent(selectOption) {
                 const asset = selectOption.dataset.asset ? selectOption.dataset.asset.trim() : "";
                 const countryCode = selectOption.dataset.country ? selectOption.dataset.country.trim() : "";
-                const text = selectOption.textContent.trim();
+                const text = selectOption.dataset.text ? selectOption.dataset.text.trim() : selectOption.textContent.trim();
                 const subtext = selectOption.dataset.subtext ? selectOption.dataset.subtext.trim() : "";
 
                 const textHTML = subtext
@@ -692,7 +692,11 @@
                         html += `<span class="${this.selectClasses.classSelectData}">${assetHTML}</span>`;
                     }
 
-                    html += `<span class="${this.selectClasses.classSelectText}">`;
+                    const textClass = selectOption.dataset.text && !selectOption.dataset.subtext
+                        ? `${this.selectClasses.classSelectText} payment-text`
+                        : this.selectClasses.classSelectText;
+
+                    html += `<span class="${textClass}">`;
                     html += textHTML;
 
                     if (countryCode) {
