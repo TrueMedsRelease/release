@@ -822,7 +822,7 @@ function renewalShop() {
             // 'popup_status': popup_status,
         },
         success: function (data) {
-            data = JSON.parse(data);
+            // data = JSON.parse(data);
             if (data.status === 'OK') {
                 alert(data.text);
                 location.reload();
