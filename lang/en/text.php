@@ -17,6 +17,7 @@ return [
     "errors_connection_failed" => "No connection to the cabinet. Please try again later.",
     "errors_login_failed" => "Sign-in failed. Please try again.",
     "common_profile" => "My Account",
+    "cabinet_continue_shopping" => "Continue shopping",
     "common_product1" => " people ",
     "common_product2" => "are looking at this moment",
     "common_cart1" => "Last purchase from ",

@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Longueur max débordement du champ",
     "errors_empty_required_fields" => "Les champs obligatoires sont vides",
     "common_profile" => "Mon compte",
+    "cabinet_continue_shopping" => "Continuer mes achats",
     "common_product1" => " personnes ",
     "common_product2" => "regardent ce produit",
     "common_cart1" => "Le dernier achat de ",

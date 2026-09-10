@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Lunghezza massima del campo",
     "errors_empty_required_fields" => "Overflow Lunghezza Massima Del campoRequired campi sono vuoti",
     "common_profile" => "Il mio conto",
+    "cabinet_continue_shopping" => "Continua gli acquisti",
     "common_after" => "Acquista Farmaci Economici Online",
     "common_product1" => " persone ",
     "common_product2" => "stanno guardando questo prodotto",

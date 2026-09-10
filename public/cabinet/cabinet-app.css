@@ -104,6 +104,24 @@
     background-color: var(--primary-color);
 }
 
+.app-shop-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 12px;
+    background-color: var(--blue-light);
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: color 0.4s ease, background-color 0.4s ease;
+}
+
+.app-shop-button:hover,
+.app-shop-button:focus-visible {
+    color: var(--white);
+    background-color: var(--primary-color);
+}
+
 .app-menu-link--disabled {
     cursor: default;
     opacity: 0.45;

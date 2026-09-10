@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field",
     "errors_empty_required_fields" => "Los campos obligatorios están vacíos",
     "common_profile" => "Mi cuenta",
+    "cabinet_continue_shopping" => "Seguir comprando",
     "common_after" => "Compre productos de farmacia baratos online",
     "common_home_main_menu_item" => "Inicio",
     "common_product1" => " personas ",

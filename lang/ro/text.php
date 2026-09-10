@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Contul meu",
+    "cabinet_continue_shopping" => "Continuă cumpărăturile",
     "common_product1" => " de persoane ",
     "common_product2" => "se uită la acest moment",
     "common_cart1" => "Ultima comandă este din ",

@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Ο λογαριασμός μου",
+    "cabinet_continue_shopping" => "Συνέχεια αγορών",
     "common_product1" => " άτομα ",
     "common_product2" => "κοιτάζουν αυτή τη στιγμή",
     "common_cart1" => "Τελευταία αγορά από τον ",

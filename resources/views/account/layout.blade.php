@@ -96,6 +96,7 @@
                 </nav>
 
                 <div class="header__actions">
+                    <a href="{{ route('home.index') }}" class="app-shop-button">{{ __('text.cabinet_continue_shopping') }}</a>
                     <div class="header__select">
                         @include('account.partials.lang-select')
                     </div>

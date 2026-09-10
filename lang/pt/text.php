@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Minha conta",
+    "cabinet_continue_shopping" => "Continuar comprando",
     "common_after" => "Comprar Medicamentos Baratos Online",
     "common_product1" => " pessoas ",
     "common_product2" => "estão a ver neste momento",

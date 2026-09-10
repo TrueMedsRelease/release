@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "A fiókom",
+    "cabinet_continue_shopping" => "Vásárlás folytatása",
     "common_product1" => "-an ",
     "common_product2" => "nézik éppen",
     "common_cart1" => "Legutóbbi vásárlás ",

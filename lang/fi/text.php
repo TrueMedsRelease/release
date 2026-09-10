@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Tilini",
+    "cabinet_continue_shopping" => "Jatka ostoksia",
     "common_product1" => " ihmistä ",
     "common_product2" => "katselee tällä hetkellä",
     "common_cart1" => "Viimeinen ostos ",
