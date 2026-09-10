@@ -20,7 +20,9 @@ class AccountController extends Controller
     /**
      * Хаб: есть токены — заказы, нет — экран входа.
      * Вход либо полностью у себя (разрешён в настройках интеграции
-     * кабинета, кеш CabinetService::shopSettings), либо уход на кабинет.
+     * кабинета, кеш CabinetService::shopSettings), либо мгновенный уход
+     * на кабинет. Промежуточный экран показываем только с ошибкой
+     * (иначе авторедирект зациклился бы: callback → index → start → …).
      */
     public function index()
     {
@@ -46,9 +48,13 @@ class AccountController extends Controller
             ]);
         }
 
-        return view('account.start', [
-            'cabinet_error' => (string) session('cabinet_error', ''),
-        ]);
+        if (session('cabinet_error')) {
+            return view('account.start', [
+                'cabinet_error' => (string) session('cabinet_error', ''),
+            ]);
+        }
+
+        return $this->start();
     }
 
     /**
