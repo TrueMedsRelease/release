@@ -372,7 +372,7 @@
                                 </article>
                             </template>
 
-                            <div class="oc-list__state oc-list__state--more" x-show="loadingMore">
+                            <div class="oc-list__state oc-list__state--more" x-show="loadingMore || switchingFilter">
                                 <span class="oc-list__spinner" aria-hidden="true"></span>
                             </div>
                         </div>
