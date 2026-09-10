@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Mein Konto",
+    "cabinet_nav_shop" => "Shop",
     "cabinet_continue_shopping" => "Weiter einkaufen",
     "common_after" => "Kaufen Sie Günstige Apotheke Online",
     "common_product1" => " Leute ",

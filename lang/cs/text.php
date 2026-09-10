@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Můj účet",
+    "cabinet_nav_shop" => "Obchod",
     "cabinet_continue_shopping" => "Pokračovat v nákupu",
     "common_# after" => "Nakupujte levné farmaceutické přípravky online",
     "common_product1" => " lidí ",

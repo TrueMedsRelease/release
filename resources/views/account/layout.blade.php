@@ -230,6 +230,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
                 <span>{{ __('text.cabinet_header_menu') }}</span>
             </button>
+            <a href="{{ route('home.index') }}" class="bottom-dock__tab" aria-label="{{ __('text.cabinet_nav_shop') }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1 12.5h-11L5.5 8z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></svg>
+                <span>{{ __('text.cabinet_nav_shop') }}</span>
+            </a>
             @foreach ($cabNav as $cabItem)
                 @if (isset($cabItem['url'])) @continue @endif
                 @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
@@ -252,10 +256,6 @@
             @endforeach
         </div>
     </nav>
-
-    {{-- Кнопка Shop: справа над доком, на месте бывшего FAB фильтра.
-         Заменяет Continue shopping на мобилке. --}}
-    <button type="button" class="app-shop-dock-btn" @click="window.location.href='{{ route('home.index') }}'">{{ __('text.cabinet_continue_shopping') }}</button>
 
 </div>
 <script>

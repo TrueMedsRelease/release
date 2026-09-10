@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Mitt konto",
+    "cabinet_nav_shop" => "Butik",
     "cabinet_continue_shopping" => "Fortsätt handla",
     "common_product1" => " personer ",
     "common_product2" => "tittar just nu",

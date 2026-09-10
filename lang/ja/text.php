@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "私のアカウント",
+    "cabinet_nav_shop" => "ショップ",
     "cabinet_continue_shopping" => "買い物を続ける",
     "common_after" => "安く医薬品をネットで購入",
     "common_product1" => " 人 ",

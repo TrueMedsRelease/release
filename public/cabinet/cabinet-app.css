@@ -129,10 +129,6 @@
     color: var(--green-dark);
 }
 
-/* Floating shop button - mobile only, visible below. */
-.app-shop-dock-btn {
-    display: none;
-}
 
 .app-menu-link--disabled {
     cursor: default;
@@ -1312,9 +1308,9 @@ body.lock { overflow: hidden; }
   /* РјРµСЃС‚Рѕ РїРѕРґ РїР»Р°РІР°СЋС‰РёР№ РґРѕРє */
   .wrapper { padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)); }
 
-  /* Tab-bar dock: 5 columns (MobileBottomBar 1:1) */
+  /* Tab-bar dock: 6 columns (MobileBottomBar 1:1 + Shop tab) */
   .bottom-dock__pill.bottom-dock__pill--tabs {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 2px;
   }
 
@@ -1373,34 +1369,6 @@ body.lock { overflow: hidden; }
     display: none;
   }
 
-  /* Floating Shop button: right, above the dock, on the filter FAB's old spot. */
-  .app-shop-dock-btn {
-    display: inline-flex;
-    position: fixed;
-    right: .75rem;
-    bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
-    z-index: 60;
-    align-items: center;
-    max-width: 56vw;
-    min-height: 48px;
-    padding: 0 1.1rem;
-    border: 0;
-    border-radius: 999px;
-    background-color: var(--primary-color);
-    color: var(--white);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: pointer;
-    box-shadow: 0 8px 32px rgba(38, 45, 56, .25);
-  }
-
-  .app-shop-dock-btn:active {
-    transform: scale(.97);
-  }
   /* РґСѓР±Р»РёРєР°С‚С‹ РґРµР№СЃС‚РІРёР№ РёР· С€Р°РїРєРё РЅРµ РЅСѓР¶РЅС‹ вЂ” РІСЃС‘ РІ РґРѕРєРµ */
   .header .user-info-header { display: none; }
   .header .icon-menu { display: none; }

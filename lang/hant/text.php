@@ -9,6 +9,7 @@ return  [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "我的帳戶",
+    "cabinet_nav_shop" => "商店",
     "cabinet_continue_shopping" => "繼續購物",
     "common_product1" => " 人 ",
     "common_product2" => "在看這一刻",

@@ -9,6 +9,7 @@ return [
     "errors_many_chars" => "Overflow Max Length Of The Field ",
     "errors_empty_required_fields" => "Required fields are empty",
     "common_profile" => "Akaun saya",
+    "cabinet_nav_shop" => "Kedai",
     "cabinet_continue_shopping" => "Teruskan membeli-belah",
     "common_product1" => " orang ",
     "common_product2" => "sedang melihat pada saat ini",
