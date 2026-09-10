@@ -53,7 +53,9 @@
                             <td width="10%;">&nbsp;</td>
                             <td width="50%;" valign="center">
                                 @foreach ($templates as $cur_template_ar)
+                                    @if (!empty($cur_template_ar['scrin']))
                                     <img id="{{ $cur_template_ar['name'] }}_image" src="{{ asset($cur_template_ar['scrin']) }}" width="200" alt="" style="display: @if ($cur_template_ar['name'] == $cur_template) block @else none @endif">
+                                    @endif
                                 @endforeach
                             </td>
                         </tr>

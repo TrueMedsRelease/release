@@ -140,9 +140,11 @@ class AdminController extends Controller
             if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Ключ задаём всегда: скриншота может не быть (например, у
+                // служебных папок вьюх) — шаблон проверяет его через empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
@@ -179,9 +181,11 @@ class AdminController extends Controller
             if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Ключ задаём всегда: скриншота может не быть (например, у
+                // служебных папок вьюх) — шаблон проверяет его через empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
@@ -591,9 +595,11 @@ class AdminController extends Controller
             ) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Ключ задаём всегда: скриншота может не быть (например, у
+                // служебных папок вьюх) — шаблон проверяет его через empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
@@ -641,9 +647,11 @@ class AdminController extends Controller
             if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Ключ задаём всегда: скриншота может не быть (например, у
+                // служебных папок вьюх) — шаблон проверяет его через empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
