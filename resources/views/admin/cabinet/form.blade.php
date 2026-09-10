@@ -2,8 +2,7 @@
     <div class="statistic__rows">
         <h3 class="payment-details__caption">Settings</h3>
         <form name="cabinet_properties" id="cabinet_properties" method="POST" action="#"
-              data-save-url="{{ route('admin.save_cabinet_info') }}"
-              data-test-url="{{ route('admin.test_cabinet_connection') }}">
+              data-save-url="{{ route('admin.save_cabinet_info') }}">
             <div class="cab-admin__field">
                 <div>
                     <div class="cab-admin__label">Status</div>
@@ -44,15 +43,6 @@
                 </div>
             </div>
 
-            <div class="cab-admin__field cab-admin__field--flat">
-                <div>
-                    <div class="cab-admin__label">Shop domain</div>
-                </div>
-                <div class="cab-admin__auto">
-                    <span>Detected automatically from this request host: <b>{{ $cabinet_domain }}</b></span>
-                </div>
-            </div>
-
             <div class="cab-admin__actions">
                 <button type="submit" id="cab_save_btn" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled">
                     <span>
@@ -62,12 +52,6 @@
                         </svg>
                     </span>
                 </button>
-                <button type="button" id="cab_test_btn" class="jqTransformButton payment-details__button button">
-                    <span>
-                        <span>Test connection</span>
-                    </span>
-                </button>
-                <span class="cab-admin__result" id="cabinet_test_result" role="status" aria-live="polite"></span>
             </div>
         </form>
     </div>

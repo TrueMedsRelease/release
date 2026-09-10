@@ -6,14 +6,6 @@
 (function ($) {
     'use strict';
 
-    function setResult($el, text, kind) {
-        $el.text(text || '');
-        $el.removeClass('cab-admin__result--success cab-admin__result--warning cab-admin__result--error');
-        if (kind) {
-            $el.addClass('cab-admin__result--' + kind);
-        }
-    }
-
     function copyText(text, $btn) {
         var done = function () {
             var original = $btn.text();
@@ -47,68 +39,42 @@
         if (!$form.length) return;
 
         var saveUrl = $form.data('save-url');
-        var testUrl = $form.data('test-url');
         var $saveBtn = $('#cab_save_btn');
-        var $testBtn = $('#cab_test_btn');
-        var $result = $('#cabinet_test_result');
+        var saveHtml = $saveBtn.html();
 
         function setPending(pending) {
             $saveBtn.prop('disabled', pending);
-            $testBtn.prop('disabled', pending);
-        }
-
-        function formData() {
-            return {
-                cabinet_enabled: $('input[name="cabinet_enabled"]:checked').val(),
-                cabinet_url: $('#cabinet_url').val(),
-                cabinet_secret: $('#cabinet_secret').val()
-            };
+            if (pending) {
+                $saveBtn.text('Saving...');
+            } else {
+                $saveBtn.html(saveHtml);
+            }
         }
 
         function save() {
             setPending(true);
-            setResult($result, 'Saving...', '');
             $.ajax({
                 url: saveUrl,
                 type: 'POST',
                 cache: false,
                 dataType: 'json',
-                data: formData()
+                data: {
+                    cabinet_enabled: $('input[name="cabinet_enabled"]:checked').val(),
+                    cabinet_url: $('#cabinet_url').val(),
+                    cabinet_secret: $('#cabinet_secret').val()
+                }
             }).done(function (data) {
                 if (data && data.status === 'error') {
-                    setResult($result, data.text || 'Save failed.', 'error');
+                    alert(data.text || 'Save failed.');
                     setPending(false);
                 } else if (data && data.url) {
                     location.href = data.url;
                 } else {
-                    setResult($result, 'Unexpected response.', 'error');
+                    alert('Unexpected response.');
                     setPending(false);
                 }
             }).fail(function () {
-                setResult($result, 'Save request failed.', 'error');
-                setPending(false);
-            });
-        }
-
-        function test() {
-            setPending(true);
-            setResult($result, 'Checking...', '');
-            $.ajax({
-                url: testUrl,
-                type: 'POST',
-                cache: false,
-                dataType: 'json',
-                data: formData()
-            }).done(function (data) {
-                var kind = data.status === 'success' ? 'success' : (data.status === 'warning' ? 'warning' : 'error');
-                setResult($result, (data && (data.text || data.status)) || 'No response.', kind);
-                if (data && (data.status === 'success' || data.status === 'warning')) {
-                    setTimeout(function () { location.reload(); }, 1200);
-                } else {
-                    setPending(false);
-                }
-            }).fail(function () {
-                setResult($result, 'Request failed.', 'error');
+                alert('Save request failed.');
                 setPending(false);
             });
         }
@@ -118,7 +84,6 @@
             e.preventDefault();
             save();
         });
-        $testBtn.on('click', test);
 
         // Показать/скрыть секрет.
         $('#cab_secret_toggle').on('click', function () {

@@ -8,23 +8,10 @@
 <link rel="stylesheet" href="{{ asset('admin_style/css/cabinet.css') }}">
 
 <div class="cab-admin">
-    <p class="cab-admin__lead">
-        When enabled, the “My Account” button opens the customer cabinet
-        <b>inside this shop</b> (orders are loaded from the cabinet via API).
-        When disabled, customers are redirected to true-help as before.
-    </p>
-
-    @include('admin.cabinet.status', [
-        'cabinet_enabled' => $cabinet_enabled,
-        'cabinet_secret' => $cabinet_secret,
-        'cabinet_embedded' => $cabinet_embedded,
-    ])
-
     @include('admin.cabinet.form', [
         'cabinet_enabled' => $cabinet_enabled,
         'cabinet_url' => $cabinet_url,
         'cabinet_secret' => $cabinet_secret,
-        'cabinet_domain' => $cabinet_domain,
     ])
 
     @include('admin.cabinet.guide', [
