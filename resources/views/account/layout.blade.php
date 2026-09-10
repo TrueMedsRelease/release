@@ -97,8 +97,9 @@
                         @include('account.partials.lang-select')
                     </div>
 
-                    {{-- Компакт-юзер с поповером (AppHeader 1:1) --}}
-                    <div class="user-compact" @keydown.escape.window="userPopoverOpen = false">
+                    {{-- Компакт-юзер с поповером (AppHeader 1:1). Скрыт целиком,
+                         если скоуп me выключен у API-клиента (403). --}}
+                    <div class="user-compact" x-show="!meForbidden" @keydown.escape.window="userPopoverOpen = false">
                         <button type="button" class="user-compact__trigger" aria-label="User menu" x-bind:aria-expanded="String(userPopoverOpen)" @click.stop="userPopoverOpen = !userPopoverOpen">
                             <span class="user-compact__avatar" x-text="avatarInitials"></span>
                         </button>
@@ -176,7 +177,7 @@
             </div>
 
             <div class="menu-drawer__footer">
-                <div class="menu-drawer__user-top">
+                <div class="menu-drawer__user-top" x-show="!meForbidden">
                     <span class="menu-drawer__avatar" x-text="avatarInitials"></span>
                     <div class="menu-drawer__user-meta">
                         <span class="menu-drawer__user-name" x-text="userName"></span>
@@ -184,7 +185,7 @@
                     </div>
                 </div>
                 <div class="menu-drawer__user-actions">
-                    <a href="{{ route('account.bonus') }}" class="user-info-header__bonus menu-drawer__bonus">
+                    <a href="{{ route('account.bonus') }}" class="user-info-header__bonus menu-drawer__bonus" x-show="!meForbidden">
                         <span x-text="bonusText"></span>
                         <span class="user-info-header__icon tippy">
                             <svg width="16" height="16" aria-hidden="true"><use href="{{ asset('cabinet/icons.svg') }}#svg-question" /></svg>

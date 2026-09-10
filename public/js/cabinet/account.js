@@ -192,6 +192,9 @@
             headerStuck: false,
             userPopoverOpen: false,
             phonesOpen: false,
+            // Скоуп me выключен у API-клиента (403 от /account/api/me) —
+            // блок с данными кастомера не показываем вообще.
+            meForbidden: false,
             userName: '',
             userIdLabel: '',
             avatarInitials: '?',
@@ -230,7 +233,10 @@
                     if (bonus !== undefined && bonus !== null && bonus !== '') {
                         this.bonusText = '$' + Number(bonus).toFixed(2);
                     }
-                } catch (e) { /* шапка опциональна */ }
+                } catch (e) {
+                    // Скоуп me отключён — прячем блок, пустые плейсхолдеры не показываем.
+                    if (e && e.status === 403) this.meForbidden = true;
+                }
             },
 
             mountScrollbars() {
