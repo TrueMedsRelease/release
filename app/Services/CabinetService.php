@@ -28,7 +28,7 @@ class CabinetService
     public const SESSION_PREFIX = 'cabinet.';
 
     public const SETTINGS_CACHE_KEY = 'cabinet.shop_settings';
-    public const SETTINGS_CACHE_TTL = 600;
+    public const SETTINGS_CACHE_TTL = 60;
 
     /**
      * Конфиг из shop_keys. Безопасные дефолты при отсутствии строк.
@@ -288,7 +288,7 @@ class CabinetService
     }
 
     /**
-     * Настройки интеграции из кабинета (кеш 10 минут): шоп ветвится по ним —
+     * Настройки интеграции из кабинета (кеш 1 минуту): шоп ветвится по ним —
      * встроенный логин у себя либо уход на внешние страницы кабинета,
      * а внутри встроенного — нужен ли код из письма (skip_2fa).
      *
