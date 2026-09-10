@@ -1308,9 +1308,9 @@ body.lock { overflow: hidden; }
   /* РјРµСЃС‚Рѕ РїРѕРґ РїР»Р°РІР°СЋС‰РёР№ РґРѕРє */
   .wrapper { padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)); }
 
-  /* Tab-bar dock: 6 columns (MobileBottomBar 1:1 + Shop tab) */
+  /* Tab-bar dock: 5 columns (MobileBottomBar 1:1 + Shop tab, contact lives in drawer) */
   .bottom-dock__pill.bottom-dock__pill--tabs {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 2px;
   }
 

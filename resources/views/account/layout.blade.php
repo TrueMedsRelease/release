@@ -51,10 +51,10 @@
     <link rel="stylesheet" href="{{ asset('css/cabinet-account.css') }}?v={{ filemtime(public_path('css/cabinet-account.css')) }}">
     <style>
         [x-cloak] { display: none !important; }
-        /* Нижнего дока в шопе нет (только кабинет) — FAB фильтров у нижнего края. */
+        /* Как в customerportal: ниже 649px виден bottom-dock — поднимаем FAB и поповер над ним. */
         @media (max-width: 649px) {
-            .oc-filters-fab { bottom: 20px; }
-            .oc-filters-pop._open { bottom: 80px; }
+            .oc-filters-fab { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+            .oc-filters-pop._open { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); }
         }
     </style>
 </head>
@@ -236,6 +236,8 @@
             </a>
             @foreach ($cabNav as $cabItem)
                 @if (isset($cabItem['url'])) @continue @endif
+                {{-- Contact us нет в мобильном доке (как в customerportal) — он есть в drawer-меню. --}}
+                @if (($cabItem['route'] ?? '') === 'account.contact') @continue @endif
                 @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
                 @php
                     $cabDockHref = route($cabItem['route']);
@@ -248,8 +250,6 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></svg>
                     @elseif ($cabItem['route'] === 'account.bonus')
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="17" height="4"/><path d="M12 8v12.5M6 12.5V20h12v-7.5"/><path d="M12 8s-1.5-4.5-4.2-4.5S5.5 8 12 8zm0 0s1.5-4.5 4.2-4.5S18.5 8 12 8z"/></svg>
-                    @elseif ($cabItem['route'] === 'account.contact')
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
                     @endif
                     <span>{{ $cabItem['label'] }}</span>
                 </a>
