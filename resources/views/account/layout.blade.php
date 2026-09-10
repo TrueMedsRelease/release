@@ -96,7 +96,7 @@
                 </nav>
 
                 <div class="header__actions">
-                    <a href="{{ route('home.index') }}" class="app-shop-button">{{ __('text.cabinet_continue_shopping') }}</a>
+                    <button type="button" class="app-shop-button" @click="window.location.href='{{ route('home.index') }}'">{{ __('text.cabinet_continue_shopping') }}</button>
                     <div class="header__select">
                         @include('account.partials.lang-select')
                     </div>
@@ -220,6 +220,40 @@
             </div>
         </div>
     </footer>
+
+    {{-- Нижний док (MobileBottomBar 1:1, только ≤649px): меню + разделы кабинета.
+         Внешние ссылки (FAQ) сюда не входят — они есть в drawer. --}}
+    <nav class="bottom-dock" aria-label="{{ __('text.cabinet_header_menu') }}">
+        <div class="bottom-dock__pill bottom-dock__pill--tabs">
+            <button type="button" class="bottom-dock__tab" aria-label="{{ __('text.cabinet_header_menu') }}" @click="menuOpen = !menuOpen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+                <span>{{ __('text.cabinet_header_menu') }}</span>
+            </button>
+            @foreach ($cabNav as $cabItem)
+                @if (isset($cabItem['url'])) @continue @endif
+                @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
+                @php
+                    $cabDockHref = route($cabItem['route']);
+                    $cabDockActive = in_array($cabRoute, $cabItem['match'], true);
+                @endphp
+                <a href="{{ $cabDockHref }}" class="bottom-dock__tab @if ($cabDockActive) is-active @endif" @if ($cabDockActive) aria-current="page" @endif>
+                    @if ($cabItem['route'] === 'account.orders')
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l7.5 3.8v9.4L12 20.5l-7.5-3.8V7.3L12 3.5z"/><path d="M4.5 7.3L12 11l7.5-3.7M12 11v9.5"/></svg>
+                    @elseif ($cabItem['route'] === 'account.referral')
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></svg>
+                    @elseif ($cabItem['route'] === 'account.bonus')
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="17" height="4"/><path d="M12 8v12.5M6 12.5V20h12v-7.5"/><path d="M12 8s-1.5-4.5-4.2-4.5S5.5 8 12 8zm0 0s1.5-4.5 4.2-4.5S18.5 8 12 8z"/></svg>
+                    @elseif ($cabItem['route'] === 'account.contact')
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                    @endif
+                    <span>{{ $cabItem['label'] }}</span>
+                </a>
+            @endforeach
+        </div>
+    </nav>
+
+    {{-- Плавающая кнопка «Continue shopping» — только ≤649px, над доком слева. --}}
+    <button type="button" class="app-shop-fab" @click="window.location.href='{{ route('home.index') }}'">{{ __('text.cabinet_continue_shopping') }}</button>
 
 </div>
 <script>

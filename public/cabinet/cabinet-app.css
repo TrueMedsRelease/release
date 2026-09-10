@@ -108,11 +108,15 @@
     display: inline-flex;
     align-items: center;
     padding: 15px 20px;
+    border: 0;
     border-radius: 12px;
     background-color: var(--blue-light);
+    font-family: inherit;
     font-size: 14px;
     font-weight: 700;
+    color: inherit;
     white-space: nowrap;
+    cursor: pointer;
     transition: color 0.4s ease, background-color 0.4s ease;
 }
 
@@ -120,6 +124,11 @@
 .app-shop-button:focus-visible {
     color: var(--white);
     background-color: var(--primary-color);
+}
+
+/* Плавающая кнопка «Continue shopping» — только мобайл, видна ниже. */
+.app-shop-fab {
+    display: none;
 }
 
 .app-menu-link--disabled {
@@ -1298,6 +1307,97 @@ body.lock { overflow: hidden; }
 
   /* РјРµСЃС‚Рѕ РїРѕРґ РїР»Р°РІР°СЋС‰РёР№ РґРѕРє */
   .wrapper { padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)); }
+
+  /* Tab-bar dock: 5 columns (MobileBottomBar 1:1) */
+  .bottom-dock__pill.bottom-dock__pill--tabs {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+  }
+
+  .bottom-dock__tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 52px;
+    min-width: 0;
+    padding: 6px 2px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: rgba(255, 255, 255, .62);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+  }
+
+  .bottom-dock__tab svg {
+    width: 21px;
+    height: 21px;
+    flex-shrink: 0;
+  }
+
+  .bottom-dock__tab span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bottom-dock__tab.is-active {
+    color: #fff;
+    background: rgba(255, 255, 255, .14);
+  }
+
+  .bottom-dock__tab:active {
+    transform: scale(.96);
+  }
+
+  .bottom-dock__tab:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+  }
+
+  /* Header button is hidden on mobile - FAB + dock take over */
+  .header .app-shop-button {
+    display: none;
+  }
+
+  /* Floating Continue shopping: left, above the dock.
+     Right side stays free for the orders page filter FAB. */
+  .app-shop-fab {
+    display: inline-flex;
+    position: fixed;
+    left: .75rem;
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    z-index: 55;
+    align-items: center;
+    max-width: 44vw;
+    min-height: 48px;
+    padding: 0 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(38, 45, 56, .25);
+  }
+
+  .app-shop-fab:active {
+    transform: scale(.97);
+  }
   /* РґСѓР±Р»РёРєР°С‚С‹ РґРµР№СЃС‚РІРёР№ РёР· С€Р°РїРєРё РЅРµ РЅСѓР¶РЅС‹ вЂ” РІСЃС‘ РІ РґРѕРєРµ */
   .header .user-info-header { display: none; }
   .header .icon-menu { display: none; }
