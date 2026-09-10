@@ -372,7 +372,7 @@
                                 </article>
                             </template>
 
-                            <div class="oc-list__state oc-list__state--more" x-show="loadingMore || switchingFilter">
+                            <div class="oc-list__state oc-list__state--more" x-show="loadingMore">
                                 <span class="oc-list__spinner" aria-hidden="true"></span>
                             </div>
                         </div>
@@ -384,7 +384,7 @@
                             <p class="oc-side__caption">{{ __('text.cabinet_filter_by_status') }}</p>
                             <div class="oc-side__filters" role="group" aria-label="{{ __('text.cabinet_filter_by_status') }}">
                                 <template x-for="f in filters" :key="f.key">
-                                    <button type="button" class="oc-side__filter" x-bind:class="{ 'oc-side__filter--active': activeFilter === f.key }" x-bind:disabled="listBusy" x-bind:aria-pressed="String(activeFilter === f.key)" @click="selectFilter(f.key)" x-text="f.label"></button>
+                                    <button type="button" class="oc-side__filter" x-bind:class="{ 'oc-side__filter--active': activeFilter === f.key }" x-bind:disabled="listBusy" x-bind:aria-pressed="String(activeFilter === f.key)" @click="selectFilter(f.key)"><span class="oc-spinner" aria-hidden="true" x-show="switchingFilter && activeFilter === f.key"></span><span x-text="f.label"></span></button>
                                 </template>
                             </div>
                         </div>
@@ -404,13 +404,14 @@
                 {{-- РњРѕР±РёР»СЊРЅС‹Рµ С„РёР»СЊС‚СЂС‹: FAB + popover (OrdersSidebar 1:1) --}}
                 <button type="button" class="oc-filters-fab" x-bind:class="{ '_open': filtersOpen }" x-bind:aria-expanded="String(filtersOpen)" aria-label="{{ __('text.cabinet_filter_by_status') }}" @click="filtersOpen = !filtersOpen">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v5.5l-4 2.5v-8L3 5z"/></svg>
+                    <span class="oc-spinner" aria-hidden="true" x-show="switchingFilter"></span>
                     <span x-text="activeFilterLabel"></span>
                 </button>
                 <div class="oc-filters-pop _open" role="dialog" aria-label="{{ __('text.cabinet_filter_by_status') }}" x-show="filtersOpen" @click.outside="filtersOpen = false" @keydown.escape.window="filtersOpen = false">
                     <p class="oc-side__caption">{{ __('text.cabinet_filter_by_status') }}</p>
                     <div class="oc-side__filters" role="group" aria-label="{{ __('text.cabinet_filter_by_status') }}">
                         <template x-for="f in filters" :key="f.key">
-                            <button type="button" class="oc-side__filter" x-bind:class="{ 'oc-side__filter--active': activeFilter === f.key }" x-bind:disabled="listBusy" x-bind:aria-pressed="String(activeFilter === f.key)" @click="selectFilter(f.key)" x-text="f.label"></button>
+                            <button type="button" class="oc-side__filter" x-bind:class="{ 'oc-side__filter--active': activeFilter === f.key }" x-bind:disabled="listBusy" x-bind:aria-pressed="String(activeFilter === f.key)" @click="selectFilter(f.key)"><span class="oc-spinner" aria-hidden="true" x-show="switchingFilter && activeFilter === f.key"></span><span x-text="f.label"></span></button>
                         </template>
                     </div>
                 </div>

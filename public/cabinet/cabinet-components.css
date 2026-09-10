@@ -1498,6 +1498,13 @@ button.oc-card__number.is-copied svg {
     cursor: wait;
 }
 
+/* Спиннер прямо в пилюле фильтра на время переключения. */
+.oc-side__filter .oc-spinner {
+    display: inline-block;
+    vertical-align: -2px;
+    margin-right: 6px;
+}
+
 .oc-side__filter:focus-visible,
 .oc-filters-fab:focus-visible {
     outline: 2px solid #171717;
