@@ -16,7 +16,6 @@
         ['route' => 'account.orders', 'label' => __('text.cabinet_nav_orders'), 'match' => ['account.orders'], 'scope' => 'orders'],
         ['route' => 'account.referral', 'label' => __('text.cabinet_nav_referral'), 'match' => ['account.referral'], 'scope' => 'referral'],
         ['route' => 'account.bonus', 'label' => __('text.cabinet_nav_bonus'), 'match' => ['account.bonus'], 'scope' => 'bonus'],
-        ['url' => route('home.help'), 'label' => __('text.cabinet_nav_faq'), 'match' => [], 'scope' => null],
         ['route' => 'account.contact', 'label' => __('text.cabinet_nav_contact'), 'match' => ['account.contact'], 'scope' => 'contact'],
     ];
     $cabPhones = [
@@ -81,13 +80,12 @@
 
                 <nav class="header__menu top menu" aria-label="Main navigation">
                     <ul class="menu__list">
-                        @foreach ($cabNav as $cabItem)
-                            {{-- Скоуп выключен у API-клиента (запомнили 403) — пункт прячем. --}}
-                            @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
-                            @php
-                                $cabHref = $cabItem['url'] ?? route($cabItem['route']);
-                                $cabActive = in_array($cabRoute, $cabItem['match'], true);
-                            @endphp
+            @foreach ($cabNav as $cabItem)
+                @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
+                @php
+                    $cabDockHref = route($cabItem['route']);
+                    $cabDockActive = in_array($cabRoute, $cabItem['match'], true);
+                @endphp
                             <li class="menu__item">
                                 <a href="{{ $cabHref }}" class="menu__link @if ($cabActive) _active @endif">{{ $cabItem['label'] }}</a>
                             </li>
