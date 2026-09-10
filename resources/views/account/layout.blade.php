@@ -83,8 +83,8 @@
             @foreach ($cabNav as $cabItem)
                 @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
                 @php
-                    $cabDockHref = route($cabItem['route']);
-                    $cabDockActive = in_array($cabRoute, $cabItem['match'], true);
+                    $cabHref = route($cabItem['route']);
+                    $cabActive = in_array($cabRoute, $cabItem['match'], true);
                 @endphp
                             <li class="menu__item">
                                 <a href="{{ $cabHref }}" class="menu__link @if ($cabActive) _active @endif">{{ $cabItem['label'] }}</a>
