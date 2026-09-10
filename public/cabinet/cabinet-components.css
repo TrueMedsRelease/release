@@ -454,8 +454,7 @@
     flex-direction: column;
     gap: 16px;
     width: 100%;
-    max-width: 47.5rem;
-    margin: 0 auto;
+    /* Шоп: без лимита 47.5rem — карточки на всю доступную ширину. */
 }
 
 .oc-list__state {
@@ -3172,15 +3171,14 @@ button.bottom-dock__bonus {
 
 @media (min-width: 1024px) {
     .orders__layout {
-        grid-template-columns: minmax(0, 1fr) 300px;
+        grid-template-columns: minmax(0, 1fr) 340px;
     }
 }
 
 .orders__list {
     width: 100%;
-    max-width: 760px;
     min-width: 0;
-    margin: 0 auto;
+    /* Шоп: без лимита 760px — карточки на всю ширину колонки. */
 }
 
 @media (min-width: 1024px) {
