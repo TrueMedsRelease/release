@@ -5,7 +5,7 @@
 
 @section('content')
 
-<link rel="stylesheet" href="{{ asset_ver('admin_style/css/cabinet.css') }}">
+<link rel="stylesheet" href="{{ asset('admin_style/css/cabinet.css') }}">
 
 <div class="cab-admin">
     <p class="cab-admin__lead">
@@ -33,6 +33,6 @@
     ])
 </div>
 
-<script src="{{ asset_ver('admin_style/js/cabinet.js') }}"></script>
+<script src="{{ asset('admin_style/js/cabinet.js') }}"></script>
 
 @endsection
