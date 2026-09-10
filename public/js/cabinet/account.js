@@ -220,6 +220,8 @@
             // Скоуп me выключен у API-клиента (403 от /account/api/me) —
             // блок с данными кастомера не показываем вообще.
             meForbidden: false,
+            // Пока /me грузится — спиннер вместо плейсхолдеров.
+            meLoading: true,
             userName: '',
             userIdLabel: '',
             avatarInitials: '?',
@@ -262,6 +264,7 @@
                     // Скоуп me отключён — прячем блок, пустые плейсхолдеры не показываем.
                     if (e && e.status === 403) this.meForbidden = true;
                 }
+                this.meLoading = false;
             },
 
             mountScrollbars() {

@@ -103,21 +103,25 @@
                          если скоуп me выключен у API-клиента (403). --}}
                     <div class="user-compact" x-show="!meForbidden" @keydown.escape.window="userPopoverOpen = false">
                         <button type="button" class="user-compact__trigger" aria-label="User menu" x-bind:aria-expanded="String(userPopoverOpen)" @click.stop="userPopoverOpen = !userPopoverOpen">
-                            <span class="user-compact__avatar" x-text="avatarInitials"></span>
+                            <span class="oc-spinner" aria-hidden="true" x-show="meLoading"></span>
+                            <span class="user-compact__avatar" x-show="!meLoading" x-text="avatarInitials"></span>
                         </button>
                         <div class="user-popover" role="dialog" aria-label="User info" x-show="userPopoverOpen" x-cloak @click.outside="userPopoverOpen = false">
-                            <div class="user-popover__head">
+                            <div class="user-popover__loading" x-show="meLoading">
+                                <span class="oc-spinner" aria-hidden="true"></span>
+                            </div>
+                            <div class="user-popover__head" x-show="!meLoading">
                                 <span class="user-popover__avatar" x-text="avatarInitials"></span>
                                 <div class="user-popover__meta">
                                     <span class="user-popover__name" x-text="userName"></span>
                                     <span class="user-popover__id" x-text="userIdLabel"></span>
                                 </div>
                             </div>
-                            <a href="{{ route('account.bonus') }}" class="user-popover__bonus">
+                            <a href="{{ route('account.bonus') }}" class="user-popover__bonus" x-show="!meLoading">
                                 <span>{{ __('text.cabinet_nav_bonus') }}</span>
                                 <b x-text="bonusText"></b>
                             </a>
-                            <div class="user-popover__hint">{{ __('text.cabinet_header_bonus_tooltip') }}</div>
+                            <div class="user-popover__hint" x-show="!meLoading">{{ __('text.cabinet_header_bonus_tooltip') }}</div>
                         </div>
                     </div>
 
@@ -181,7 +185,8 @@
 
             <div class="menu-drawer__footer">
                 <div class="menu-drawer__user-top" x-show="!meForbidden">
-                    <span class="menu-drawer__avatar" x-text="avatarInitials"></span>
+                    <span class="menu-drawer__avatar" x-show="!meLoading" x-text="avatarInitials"></span>
+                    <span class="menu-drawer__avatar" x-show="meLoading"><span class="oc-spinner" aria-hidden="true"></span></span>
                     <div class="menu-drawer__user-meta">
                         <span class="menu-drawer__user-name" x-text="userName"></span>
                         <span class="menu-drawer__user-id" x-text="userIdLabel"></span>

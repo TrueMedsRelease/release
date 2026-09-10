@@ -3375,3 +3375,15 @@ button.bottom-dock__bonus {
     line-height: 1.5;
     color: rgba(38, 45, 56, 0.75);
 }
+
+.user-popover__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
+.user-popover__loading .oc-spinner {
+    width: 20px;
+    height: 20px;
+}
