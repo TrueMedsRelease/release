@@ -1153,6 +1153,30 @@ html.custom-scrollbar-page::-webkit-scrollbar { width: 0; height: 0; display: no
 }
 
 /* РЅРёР· drawer'Р° вЂ” РєР°СЂС‚РѕС‡РєР° СЋР·РµСЂР°, РїСЂРёР¶Р°С‚Р° Рє РЅРёР·Сѓ Рё РІРёРґРЅР° РІСЃРµРіРґР° */
+/* Language row in drawer: hidden except mobile (header select hides there) - portal AppHeader 1:1. */
+.menu-drawer__lang {
+  display: none;
+}
+
+@media (max-width: 40.5625em) {
+  .header__actions > .header__select {
+    display: none;
+  }
+
+  .menu-drawer__lang {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 2px;
+    margin: .1rem 0 .7rem;
+  }
+
+  .menu-drawer__lang-select {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
 .menu-drawer__footer {
   background-color: var(--blue-light);
   border-radius: var(--radius);
