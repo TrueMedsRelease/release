@@ -1119,7 +1119,6 @@ html.custom-scrollbar-page::-webkit-scrollbar { width: 0; height: 0; display: no
 }
 
 .menu-drawer__nav { display: flex; flex-direction: column; margin-bottom: 1rem; }
-.menu-drawer__link--shop { color: var(--green-dark); }
 .menu-drawer__link {
   padding: .85rem .25rem;
   font-size: .9375rem;

@@ -149,7 +149,6 @@
 
             <div class="menu-drawer__scroll" x-ref="drawerScroll">
                 <nav class="menu-drawer__nav">
-                    <a href="{{ route('home.index') }}" class="menu-drawer__link menu-drawer__link--shop" @click="menuOpen = false">{{ __('text.cabinet_continue_shopping') }}</a>
                     @foreach ($cabNav as $cabItem)
                         @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
                         @php
