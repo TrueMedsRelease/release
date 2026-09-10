@@ -1578,12 +1578,13 @@ button.oc-card__number.is-copied svg {
 
 /* РЅРёР¶Рµ 650px вЂ” РїРѕРґРЅРёРјР°РµРј РЅР°Рґ bottom-dock */
 @media (max-width: 649px) {
+    /* FAB фильтра живёт отдельно выше: место справа над доком заняла кнопка Shop. */
     .oc-filters-fab {
-        bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+        bottom: calc(148px + env(safe-area-inset-bottom, 0px));
     }
 
     .oc-filters-pop._open {
-        bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+        bottom: calc(212px + env(safe-area-inset-bottom, 0px));
     }
 }
 

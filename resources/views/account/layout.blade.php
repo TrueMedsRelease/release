@@ -252,8 +252,9 @@
         </div>
     </nav>
 
-    {{-- Плавающая кнопка «Continue shopping» — только ≤649px, над доком слева. --}}
-    <button type="button" class="app-shop-fab" @click="window.location.href='{{ route('home.index') }}'">{{ __('text.cabinet_continue_shopping') }}</button>
+    {{-- Кнопка Shop: справа над доком, на месте бывшего FAB фильтра.
+         Заменяет Continue shopping на мобилке. --}}
+    <button type="button" class="app-shop-dock-btn" @click="window.location.href='{{ route('home.index') }}'">{{ __('text.cabinet_continue_shopping') }}</button>
 
 </div>
 <script>

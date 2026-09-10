@@ -107,27 +107,30 @@
 .app-shop-button {
     display: inline-flex;
     align-items: center;
-    padding: 15px 20px;
+    min-height: 2.625rem;
+    padding: .5rem .75rem;
     border: 0;
-    border-radius: 12px;
-    background-color: var(--blue-light);
+    border-radius: var(--radius);
+    background: var(--blue-light);
+    box-shadow: none;
     font-family: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    color: inherit;
+    font-size: .8125rem;
+    font-weight: 500;
+    color: var(--main-color);
     white-space: nowrap;
     cursor: pointer;
-    transition: color 0.4s ease, background-color 0.4s ease;
+    transition: box-shadow .4s ease, color .4s ease;
 }
 
 .app-shop-button:hover,
 .app-shop-button:focus-visible {
-    color: var(--white);
-    background-color: var(--primary-color);
+    outline: none;
+    box-shadow: inset 0 0 0 1px rgba(40, 209, 124, .55);
+    color: var(--green-dark);
 }
 
-/* Плавающая кнопка «Continue shopping» — только мобайл, видна ниже. */
-.app-shop-fab {
+/* Floating shop button - mobile only, visible below. */
+.app-shop-dock-btn {
     display: none;
 }
 
@@ -1369,16 +1372,15 @@ body.lock { overflow: hidden; }
     display: none;
   }
 
-  /* Floating Continue shopping: left, above the dock.
-     Right side stays free for the orders page filter FAB. */
-  .app-shop-fab {
+  /* Floating Shop button: right, above the dock, on the filter FAB's old spot. */
+  .app-shop-dock-btn {
     display: inline-flex;
     position: fixed;
-    left: .75rem;
-    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
-    z-index: 55;
+    right: .75rem;
+    bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+    z-index: 60;
     align-items: center;
-    max-width: 44vw;
+    max-width: 56vw;
     min-height: 48px;
     padding: 0 1.1rem;
     border: 0;
@@ -1395,7 +1397,7 @@ body.lock { overflow: hidden; }
     box-shadow: 0 8px 32px rgba(38, 45, 56, .25);
   }
 
-  .app-shop-fab:active {
+  .app-shop-dock-btn:active {
     transform: scale(.97);
   }
   /* РґСѓР±Р»РёРєР°С‚С‹ РґРµР№СЃС‚РІРёР№ РёР· С€Р°РїРєРё РЅРµ РЅСѓР¶РЅС‹ вЂ” РІСЃС‘ РІ РґРѕРєРµ */
