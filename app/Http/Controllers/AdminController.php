@@ -137,7 +137,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 // Ключ задаём всегда: скриншота может не быть (например, у
@@ -178,7 +178,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 // Ключ задаём всегда: скриншота может не быть (например, у
@@ -592,6 +592,7 @@ class AdminController extends Controller
                 && $cur_template != "."
                 && $cur_template != ".."
                 && $cur_template != "admin"
+                && $cur_template != "account"
             ) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
@@ -644,7 +645,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 // Ключ задаём всегда: скриншота может не быть (например, у

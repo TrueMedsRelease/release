@@ -3232,3 +3232,140 @@ button.bottom-dock__bonus {
 @keyframes spin{to{transform:rotate(360deg)}}
 
 
+/* ===== Components/AppHeader.vue: user compact + popover ===== */
+.user-compact {
+    position: relative;
+}
+
+.user-compact__trigger {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 0;
+    background: var(--blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-compact__trigger:hover {
+    background: var(--white);
+    transform: translateY(-1px);
+}
+
+.user-compact__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(40, 209, 124, 0.18);
+    color: var(--green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.user-popover {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    width: 272px;
+    background: var(--white);
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(38, 45, 56, 0.14), 0 4px 12px rgba(38, 45, 56, 0.08);
+    overflow: hidden;
+    z-index: 120;
+}
+
+.user-popover__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    background: linear-gradient(180deg, rgba(240, 244, 249, 0.6), transparent);
+}
+
+.user-popover__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(40, 209, 124, 0.18);
+    color: var(--green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-popover__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.user-popover__name {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-popover__id {
+    font-size: 12px;
+    color: rgba(38, 45, 56, 0.55);
+}
+
+.user-popover__bonus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 12px;
+    padding: 12px 14px;
+    background: var(--blue-light);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--main-color);
+    transition: all 0.2s ease;
+}
+
+.user-popover__bonus:hover {
+    border-color: rgba(40, 209, 124, 0.35);
+    background: var(--white);
+}
+
+.user-popover__bonus span:first-child {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(38, 45, 56, 0.65);
+}
+
+.user-popover__bonus b {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin-left: auto;
+}
+
+.user-popover__hint {
+    margin: 0 12px 12px;
+    padding: 10px 12px;
+    background: rgba(40, 209, 124, 0.08);
+    border: 1px solid rgba(40, 209, 124, 0.15);
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(38, 45, 56, 0.75);
+}

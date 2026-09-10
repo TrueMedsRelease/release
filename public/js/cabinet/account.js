@@ -218,7 +218,9 @@
                     var me = await api(window.CabinetMeUrl || '/account/api/me');
                     var d = pickObject(me);
                     var name = d.name || d.email || '';
-                    var id = d.id || d.customerId || '';
+                    // Кабинет отдаёт /api/v1/me как {customer_id, email, balance} —
+                    // полей name/id/bonus там нет, маппим их синонимы.
+                    var id = d.id || d.customerId || d.customer_id || '';
                     var bonus = d.bonus;
                     if (bonus === undefined || bonus === null) bonus = d.balance;
                     if (name) this.userName = name;
