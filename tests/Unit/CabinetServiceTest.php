@@ -64,4 +64,26 @@ class CabinetServiceTest extends TestCase
 
         $this->assertSame('fail', $result['status']);
     }
+
+    public function test_scope_for_path(): void
+    {
+        $this->assertSame('me', CabinetService::scopeForPath('me'));
+        $this->assertSame('orders', CabinetService::scopeForPath('orders'));
+        $this->assertSame('orders.shipping', CabinetService::scopeForPath('orders/12/shipping'));
+        $this->assertSame('orders.tracking', CabinetService::scopeForPath('orders/12/tracking'));
+        $this->assertSame('orders.stop_recurring', CabinetService::scopeForPath('orders/12/stop-recurring'));
+        $this->assertSame('orders', CabinetService::scopeForPath('orders/12/repeat-virtual'));
+        $this->assertSame('bonus', CabinetService::scopeForPath('bonus/program'));
+        $this->assertSame('referral', CabinetService::scopeForPath('referral'));
+        $this->assertSame('sessions', CabinetService::scopeForPath('sessions'));
+        $this->assertSame('sessions.revoke', CabinetService::scopeForPath('sessions/revoke-all'));
+        $this->assertSame('contact', CabinetService::scopeForPath('contact'));
+    }
+
+    public function test_scope_for_path_unknown(): void
+    {
+        $this->assertNull(CabinetService::scopeForPath('unknown'));
+        $this->assertNull(CabinetService::scopeForPath('orders/abc/shipping'));
+        $this->assertNull(CabinetService::scopeForPath(''));
+    }
 }

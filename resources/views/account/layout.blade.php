@@ -13,11 +13,11 @@
     $cabLocale = str_replace('_', '-', app()->getLocale());
     $cabRoute = Route::currentRouteName();
     $cabNav = [
-        ['route' => 'account.orders', 'label' => __('text.cabinet_nav_orders'), 'match' => ['account.orders']],
-        ['route' => 'account.referral', 'label' => __('text.cabinet_nav_referral'), 'match' => ['account.referral']],
-        ['route' => 'account.bonus', 'label' => __('text.cabinet_nav_bonus'), 'match' => ['account.bonus']],
-        ['url' => route('home.help'), 'label' => __('text.cabinet_nav_faq'), 'match' => []],
-        ['route' => 'account.contact', 'label' => __('text.cabinet_nav_contact'), 'match' => ['account.contact']],
+        ['route' => 'account.orders', 'label' => __('text.cabinet_nav_orders'), 'match' => ['account.orders'], 'scope' => 'orders'],
+        ['route' => 'account.referral', 'label' => __('text.cabinet_nav_referral'), 'match' => ['account.referral'], 'scope' => 'referral'],
+        ['route' => 'account.bonus', 'label' => __('text.cabinet_nav_bonus'), 'match' => ['account.bonus'], 'scope' => 'bonus'],
+        ['url' => route('home.help'), 'label' => __('text.cabinet_nav_faq'), 'match' => [], 'scope' => null],
+        ['route' => 'account.contact', 'label' => __('text.cabinet_nav_contact'), 'match' => ['account.contact'], 'scope' => 'contact'],
     ];
     $cabPhones = [
         ['US', '+1-800-981-5864'], ['CA', '+1-647-370-8281'], ['AU', '+61-48-207-5486'],
@@ -81,6 +81,8 @@
                 <nav class="header__menu top menu" aria-label="Main navigation">
                     <ul class="menu__list">
                         @foreach ($cabNav as $cabItem)
+                            {{-- Скоуп выключен у API-клиента (запомнили 403) — пункт прячем. --}}
+                            @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
                             @php
                                 $cabHref = $cabItem['url'] ?? route($cabItem['route']);
                                 $cabActive = in_array($cabRoute, $cabItem['match'], true);
@@ -146,6 +148,7 @@
             <div class="menu-drawer__scroll" x-ref="drawerScroll">
                 <nav class="menu-drawer__nav">
                     @foreach ($cabNav as $cabItem)
+                        @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
                         @php
                             $cabHref = $cabItem['url'] ?? route($cabItem['route']);
                             $cabActive = in_array($cabRoute, $cabItem['match'], true);

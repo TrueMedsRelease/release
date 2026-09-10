@@ -387,11 +387,13 @@ class AccountController extends Controller
             'cabinet.refresh_token' => (string) ($pair['refresh_token'] ?? ''),
             'cabinet.expires_at'    => (string) ($pair['expires_at'] ?? ''),
         ]);
+        // Новый вход — запреты скоупов проверяем заново.
+        session()->forget('cabinet.forbidden');
     }
 
     private function forgetTokens(): void
     {
-        session()->forget(['cabinet.access_token', 'cabinet.refresh_token', 'cabinet.expires_at', 'cabinet.email']);
+        session()->forget(['cabinet.access_token', 'cabinet.refresh_token', 'cabinet.expires_at', 'cabinet.email', 'cabinet.forbidden']);
     }
 
     /**
@@ -603,6 +605,12 @@ class AccountController extends Controller
 
                 return response()->json(['error' => 'Session expired, please log in again.', 'login' => false], 401);
             }
+        }
+
+        // Скоуп выключен у API-клиента (403 от кабинета) — запоминаем,
+        // чтобы прятать соответствующие разделы в навигации.
+        if ($response->status() === 403 && ($scope = CabinetService::scopeForPath($path)) !== null) {
+            session(['cabinet.forbidden.'.$scope => true]);
         }
 
         return response($response->body(), $response->status())

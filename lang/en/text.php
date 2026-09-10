@@ -1304,6 +1304,7 @@ return [
     "cabinet_direct_note" => "No email code needed: sign-in completes right after the puzzle.",
     "cabinet_resend" => "Resend code",
     "cabinet_resend_in" => "Resend code in {s}s",
+    "cabinet_scope_forbidden" => "This section is not available for this shop.",
     // 1:1 с customerportal translations/messages.en.yaml (nav/header/orders/bonus/referral/contact/common).
     "cabinet_nav_orders" => "My orders",
     "cabinet_nav_referral" => "Referral program",

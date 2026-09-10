@@ -246,6 +246,47 @@ class CabinetService
     }
 
     /**
+     * Логический скоуп кабинета для пути /api/v1/* (1:1 с ApiClientPolicy
+     * кабинета). Нужен, чтобы шоп запоминал 403 «скоуп выключен» и прятал
+     * соответствующие разделы. null — путь вне скоупов.
+     */
+    public static function scopeForPath(string $path): ?string
+    {
+        $path = trim($path, '/');
+        if ($path === 'me') {
+            return 'me';
+        }
+        if ($path === 'orders') {
+            return 'orders';
+        }
+        if (preg_match('~^orders/\d+/(shipping|tracking|stop-recurring|repeat-virtual)$~', $path, $m)) {
+            return match ($m[1]) {
+                'shipping'       => 'orders.shipping',
+                'tracking'       => 'orders.tracking',
+                'stop-recurring' => 'orders.stop_recurring',
+                default          => 'orders',
+            };
+        }
+        if ($path === 'bonus/program') {
+            return 'bonus';
+        }
+        if ($path === 'referral') {
+            return 'referral';
+        }
+        if ($path === 'sessions') {
+            return 'sessions';
+        }
+        if ($path === 'sessions/revoke-all') {
+            return 'sessions.revoke';
+        }
+        if ($path === 'contact') {
+            return 'contact';
+        }
+
+        return null;
+    }
+
+    /**
      * Прямой вызов /api/v1/* от имени покупателя.
      */
     public static function apiCall(string $method, string $path, string $accessToken, string $fingerprint, array $options = [])

@@ -179,6 +179,7 @@
 @php
 $cabinetConfig = [
     'bonusUrl' => route('account.api.bonus'),
+    'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
     'tExpireAmount' => __('text.cabinet_bonus_expire_amount'),
     'tActions' => [
         'accrue_order' => 'Accrue (Order: :id)',

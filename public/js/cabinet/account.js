@@ -165,6 +165,15 @@
         ctx.toastTimer = setTimeout(function () { ctx.toast = ''; ctx.toastTimer = null; }, ms || 4000);
     }
 
+    // Скоуп выключен у API-клиента (403 от кабинета): вместо технической
+    // ошибки показываем понятный текст (cfg.tScopeForbidden со страницы).
+    function scopeMessage(e, fallback, cfg) {
+        if (e && e.status === 403) {
+            return (cfg && cfg.tScopeForbidden) || 'This section is not available for this shop.';
+        }
+        return (e && e.message) || fallback;
+    }
+
     function pickList(body) {
         if (!body) return { items: [], cursor: null };
         var d = body.data && typeof body.data === 'object' ? body.data : {};
@@ -378,10 +387,10 @@
                 } catch (e) {
                     if (e && e.login === false) { window.location.href = cfg.startUrl || '/account'; return; }
                     if (replace) {
-                        this.failed = (e && e.message) || 'Failed to load orders.';
+                        this.failed = scopeMessage(e, 'Failed to load orders.', cfg);
                         this.items = [];
                     } else {
-                        showToast(this, (e && e.message) || 'Failed to load orders.');
+                        showToast(this, scopeMessage(e, 'Failed to load orders.', cfg));
                     }
                 } finally {
                     if (replace) this.loading = false;
@@ -423,7 +432,7 @@
                 } catch (e) {
                     if (e && e.login === false) { window.location.href = cfg.startUrl || '/account'; return; }
                     this.activeFilter = prev;
-                    showToast(this, (e && e.message) || 'Failed to load orders.');
+                    showToast(this, scopeMessage(e, 'Failed to load orders.', cfg));
                 } finally {
                     this.switchingFilter = false;
                 }
@@ -631,7 +640,7 @@
                     window.location.href = d.checkoutUrl;
                 } catch (e) {
                     if (e && e.login === false) { window.location.href = cfg.startUrl || '/account'; return; }
-                    showToast(this, (e && e.message) || cfg.tRepeatFailed || 'Repeat failed');
+                    showToast(this, scopeMessage(e, cfg.tRepeatFailed || 'Repeat failed', cfg));
                 } finally {
                     this.repeatingId = null;
                 }
@@ -654,7 +663,7 @@
                     this.confirmStopId = null;
                 } catch (e) {
                     if (e && e.login === false) { window.location.href = cfg.startUrl || '/account'; return; }
-                    showToast(this, (e && e.message) || 'Failed to stop auto repeat.');
+                    showToast(this, scopeMessage(e, 'Failed to stop auto repeat.', cfg));
                 } finally {
                     this.stoppingId = null;
                 }
@@ -714,7 +723,7 @@
                     this.perPage = d.perPage || this.perPage;
                     this.totalPages = d.totalPages || 1;
                 } catch (e) {
-                    this.failed = (e && e.message) || 'Failed to load bonus program.';
+                    this.failed = scopeMessage(e, 'Failed to load bonus program.', cfg);
                 } finally {
                     this.loading = false;
                 }
@@ -785,7 +794,7 @@
                     this.qrCode = d.qrCode || '';
                     this.coupon = d.coupon || null;
                 } catch (e) {
-                    this.failed = (e && e.message) || 'Failed to load referral program.';
+                    this.failed = scopeMessage(e, 'Failed to load referral program.', cfg);
                 } finally {
                     this.loading = false;
                 }
@@ -820,7 +829,7 @@
                     this.sessions = (data && data.sessions) || [];
                 } catch (e) {
                     if (e && e.login === false) { window.location.href = cfg.startUrl || '/account'; return; }
-                    this.error = (e && e.message) || 'Failed to load sessions.';
+                    this.error = scopeMessage(e, 'Failed to load sessions.', cfg);
                 } finally {
                     this.loading = false;
                 }
@@ -842,7 +851,7 @@
                 } catch (e) {
                     this.confirmOpen = false;
                     if (e && e.login === false) { window.location.href = cfg.startUrl || '/account'; return; }
-                    alert((e && e.message) || 'Failed to revoke sessions.');
+                    alert(scopeMessage(e, 'Failed to revoke sessions.', cfg));
                 } finally {
                     this.revoking = false;
                 }
@@ -938,7 +947,7 @@
                         });
                         this.fieldErrors = flat;
                     } else {
-                        this.submitError = (e && e.message) || 'Failed to send message.';
+                        this.submitError = scopeMessage(e, 'Failed to send message.', cfg);
                     }
                 } finally {
                     this.sending = false;

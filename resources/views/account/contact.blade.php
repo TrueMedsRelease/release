@@ -100,6 +100,7 @@ $cabinetConfig = [
     'contactUrl' => route('account.api.contact'),
     'meUrl' => route('account.api.me'),
     'email' => $email,
+    'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
 ];
 @endphp
 <script>

@@ -469,6 +469,7 @@ $cabinetConfig = [
         'refunded' => __('text.cabinet_status_refunded'),
     ],
     'tRepeatFailed' => __('text.cabinet_repeat_failed'),
+    'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
     'tShowAll' => __('text.cabinet_show_all_events'),
     'tDays' => __('text.cabinet_track_days'),
 ];

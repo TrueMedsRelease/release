@@ -48,6 +48,7 @@ $cabinetConfig = [
     'cabinetUrl' => $cabinet_url,
     'email' => $email,
     'startUrl' => route('account.index'),
+    'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
 ];
 @endphp
 <script>

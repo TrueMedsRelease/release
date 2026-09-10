@@ -95,6 +95,7 @@
 @php
 $cabinetConfig = [
     'referralUrl' => route('account.api.referral'),
+    'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
 ];
 @endphp
 <script>
