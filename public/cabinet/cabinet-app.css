@@ -1167,7 +1167,8 @@ html.custom-scrollbar-page::-webkit-scrollbar { width: 0; height: 0; display: no
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 0 2px;
+    /* Без боковых отступов: иначе уже карточки юзера под ним. */
+    padding: 0;
     margin: .1rem 0 .7rem;
   }
 
