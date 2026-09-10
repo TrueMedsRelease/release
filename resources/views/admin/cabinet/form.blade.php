@@ -2,7 +2,8 @@
     <div class="statistic__rows">
         <h3 class="payment-details__caption">Settings</h3>
         <form name="cabinet_properties" id="cabinet_properties" method="POST" action="#"
-              data-save-url="{{ route('admin.save_cabinet_info') }}">
+              data-save-url="{{ route('admin.save_cabinet_info') }}"
+              data-test-url="{{ route('admin.test_cabinet_connection') }}">
             <div class="cab-admin__field">
                 <div>
                     <div class="cab-admin__label">Status</div>
@@ -52,6 +53,12 @@
                         </svg>
                     </span>
                 </button>
+                <button type="button" id="cab_test_btn" class="jqTransformButton payment-details__button button">
+                    <span>
+                        <span>Test connection</span>
+                    </span>
+                </button>
+                <span class="cab-admin__result" id="cabinet_test_result" role="status" aria-live="polite"></span>
             </div>
         </form>
     </div>

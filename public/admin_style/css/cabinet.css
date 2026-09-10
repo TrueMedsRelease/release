@@ -114,6 +114,23 @@
     margin-left: 0.6rem;
 }
 
+.cab-admin__result {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cab-admin__result--success {
+    color: green;
+}
+
+.cab-admin__result--warning {
+    color: orange;
+}
+
+.cab-admin__result--error {
+    color: red;
+}
+
 /* ---------- инструкция ---------- */
 
 .cab-admin__steps {

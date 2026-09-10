@@ -22,7 +22,8 @@
                 The manager registers the domain and returns a <b>secret key</b>.
             </li>
             <li>
-                Paste the secret key above, switch the cabinet to <b>Enabled</b> and press <b>Save</b>.
+                Paste the secret key above, press <b>Test connection</b> (it must report
+                that the secret is valid), then switch the cabinet to <b>Enabled</b> and press <b>Save</b>.
             </li>
         </ol>
     </div>
