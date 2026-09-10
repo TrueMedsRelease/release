@@ -43,12 +43,12 @@
     <title>@yield('cab_title', __('text.cabinet_my_orders'))</title>
     <link rel="icon" href="{{ asset('icon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset('icon.svg') }}">
-    <link rel="stylesheet" href="{{ asset('cabinet/true-help.css') }}">
-    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-app.css') }}">
-    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-components.css') }}">
+    <link rel="stylesheet" href="{{ asset('cabinet/true-help.css') }}?v={{ filemtime(public_path('cabinet/true-help.css')) }}">
+    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-app.css') }}?v={{ filemtime(public_path('cabinet/cabinet-app.css')) }}">
+    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-components.css') }}?v={{ filemtime(public_path('cabinet/cabinet-components.css')) }}">
     {{-- Legacy-стили shop-кабинета: только для служебных страниц (start/sessions),
          скоуп .cab-account — портальную вёрстку не затрагивают. --}}
-    <link rel="stylesheet" href="{{ asset('css/cabinet-account.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/cabinet-account.css') }}?v={{ filemtime(public_path('css/cabinet-account.css')) }}">
     <style>
         [x-cloak] { display: none !important; }
         /* Нижнего дока в шопе нет (только кабинет) — FAB фильтров у нижнего края. */
@@ -149,6 +149,7 @@
 
             <div class="menu-drawer__scroll" x-ref="drawerScroll">
                 <nav class="menu-drawer__nav">
+                    <a href="{{ route('home.index') }}" class="menu-drawer__link menu-drawer__link--shop" @click="menuOpen = false">{{ __('text.cabinet_continue_shopping') }}</a>
                     @foreach ($cabNav as $cabItem)
                         @if (!empty($cabItem['scope']) && session('cabinet.forbidden.'.$cabItem['scope'])) @continue @endif
                         @php

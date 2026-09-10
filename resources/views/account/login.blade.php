@@ -31,10 +31,10 @@
     <title>@yield('cab_title')</title>
     <link rel="icon" href="{{ asset('icon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ asset('icon.svg') }}">
-    <link rel="stylesheet" href="{{ asset('cabinet/true-help.css') }}">
-    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-app.css') }}">
-    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-components.css') }}">
-    <link rel="stylesheet" href="{{ asset('cabinet/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('cabinet/true-help.css') }}?v={{ filemtime(public_path('cabinet/true-help.css')) }}">
+    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-app.css') }}?v={{ filemtime(public_path('cabinet/cabinet-app.css')) }}">
+    <link rel="stylesheet" href="{{ asset('cabinet/cabinet-components.css') }}?v={{ filemtime(public_path('cabinet/cabinet-components.css')) }}">
+    <link rel="stylesheet" href="{{ asset('cabinet/login.css') }}?v={{ filemtime(public_path('cabinet/login.css')) }}">
     <style>[x-cloak] { display: none !important; }</style>
     <script src="{{ asset('js/cabinet-alpine.min.js') }}" defer></script>
 </head>
