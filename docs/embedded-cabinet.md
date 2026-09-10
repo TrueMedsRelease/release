@@ -63,8 +63,7 @@ Cache 10 минут, `cabinet.shop_settings`) и ветвится по флаг�
    domain, `callback_url`, скоупы `me, orders, orders.shipping,
    orders.tracking, orders.stop_recurring, bonus, referral, sessions,
    sessions.revoke, contact`, `orders.aff` — и выдаёт **секрет**.
-3. Владелец вставляет секрет (и домен, если отличается от текущего хоста)
-   в `/admin/cabinet`, жмёт **Test connection**:
+3. Владелец вставляет секрет в `/admin/cabinet`, жмёт **Test connection**:
    - «Secret is valid» — можно включать;
    - «does not accept this secret» — неверный ключ, домен не зарегистрирован
      или клиент выключен (`active`) в кабинете;
@@ -77,11 +76,13 @@ Cache 10 минут, `cabinet.shop_settings`) и ветвится по флаг�
 ## Файлы
 
 - `app/Services/CabinetService.php` — конфиг (`shop_keys`: `cabinet_enabled`,
-  `cabinet_secret`, `cabinet_url`, `cabinet_domain`), PKCE, обмен/refresh/прокси-вызовы,
+  `cabinet_secret`, `cabinet_url`), PKCE, обмен/refresh/прокси-вызовы,
   кеш настроек интеграции, проверка связи.
-- Поле **Shop domain**: домен, зарегистрированный в кабинете. По умолчанию —
-  текущий хост; оверрайд нужен при работе не с боевого домена (локалка, зеркала).
-  Все серверные вызовы (`settings`, обмен, `?s=`) используют именно его.
+- **Shop domain нигде не настраивается**: всегда текущий хост запроса
+  (`$request->getHost()`, без www — `CabinetService::shopDomain()`).
+  Все серверные вызовы (`settings`, обмен, `?s=`) используют именно его,
+  иначе кабинет не узнает шоп в allowlist. Легаси-строка `cabinet_domain`
+  в `shop_keys` при сохранении удаляется автоматически.
 - `app/Http/Controllers/AccountController.php` — `/account/*`: хаб (ветвление
   по `embedded_login`), start/callback (внешний вход), `embeddedStart`/
   `embeddedCode`/`embeddedVerify` (встроенный вход, throttle 10/мин + своя
@@ -90,7 +91,9 @@ Cache 10 минут, `cabinet.shop_settings`) и ветвится по флаг�
   `save_cabinet_info()`, `test_cabinet_connection()` (+ пункт меню
   и `pageAdminTitle`, роуты в `routes/web.php`).
 - `resources/views/account/` — `layout`, `start`, `popup`, `popup-callback`, `orders` (Alpine).
-- `resources/views/admin/cabinet.blade.php` + JS в `public/admin_style/js/style.js`.
+- `resources/views/admin/cabinet.blade.php` + компоненты `resources/views/admin/cabinet/`
+  (`status`, `form`, `guide`), стили `public/admin_style/css/cabinet.css`
+  и JS `public/admin_style/js/cabinet.js` (отдельные файлы только этой страницы).
 - `public/js/cabinet-alpine.min.js` (вендор Alpine 3, в репо), `public/js/cabinet/account.js`,
   `public/css/cabinet-account.css` (стили 1:1 с кабинетом, скоуп `.cab-account`),
   `public/fonts/Poppins-*.woff2` (скопированы из кабинета).

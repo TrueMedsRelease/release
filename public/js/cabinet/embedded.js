@@ -1,8 +1,9 @@
 /**
  * Встроенный логин — клиентская логика без сборки.
- * Повторяет поведение кабинета (SmartCaptcha.vue + OtpInput.vue + Login.vue):
- * пазл-капча с drag, автоотправка формы после решения, OTP из 6 ячеек
- * с автосабмитом, обратный отсчёт повторной отправки.
+ * Повторяет поведение кабинета (customerportal Login.vue + SmartCaptcha.vue):
+ * шаг 1 — только email с кнопкой, шаг 2 — только пазл-капча
+ * (без поля email), после решения форма уходит сама;
+ * OTP из 6 ячеек с автосабмитом, обратный отсчёт повторной отправки.
  */
 (function () {
     'use strict';
@@ -12,7 +13,11 @@
         return meta ? meta.getAttribute('content') : '';
     }
 
-    /* ================= пазл-капча (SmartCaptcha 1:1) ================= */
+    function isEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    /* ================= шаги email -> captcha (Login.vue 1:1) ================= */
 
     function initCaptcha() {
         var box = document.getElementById('cab-captcha');
@@ -24,9 +29,15 @@
         var verifyBtn = document.getElementById('cab-captcha-verify');
         var refreshBtn = document.getElementById('cab-captcha-refresh');
         var statusEl = document.getElementById('cab-captcha-status');
-        var submitBtn = document.getElementById('cab-embedded-submit');
         var form = document.getElementById('cab-embedded-form');
         var emailRow = document.getElementById('cab-email-row');
+        var emailInput = document.getElementById('cab-email');
+        var emailError = document.getElementById('cab-email-error');
+        var stepEmail = document.getElementById('cab-step-email');
+        var stepCaptcha = document.getElementById('cab-step-captcha');
+        var continueBtn = document.getElementById('cab-continue');
+        var changeEmailBtn = document.getElementById('cab-change-email');
+        if (!canvas || !bg || !piece || !verifyBtn || !refreshBtn || !statusEl || !form) return;
 
         var cfg = window.CabEmbeddedConfig;
         var state = {
@@ -45,6 +56,8 @@
             startTime: 0,
             endTime: 0,
             loading: false,
+            loaded: false,
+            submitted: false,
         };
 
         function setStatus(text, type, loading) {
@@ -98,6 +111,7 @@
                 state.currentY = data.height - data.puzzleSize - 10;
                 state.startTime = 0;
                 state.endTime = 0;
+                state.loaded = true;
                 paintPiece();
             } catch (e) {
                 setStatus(cfg.tLoadFailed || 'Failed to load captcha. Try again.', 'error');
@@ -105,6 +119,61 @@
                 state.loading = false;
                 verifyBtn.disabled = false;
             }
+        }
+
+        function showEmail() {
+            if (stepCaptcha) stepCaptcha.hidden = true;
+            if (stepEmail) stepEmail.hidden = false;
+            if (emailInput) emailInput.focus();
+        }
+
+        function showCaptcha() {
+            if (stepEmail) stepEmail.hidden = true;
+            if (stepCaptcha) stepCaptcha.hidden = false;
+            // Капчу тянем лениво — только когда она реально понадобилась,
+            // как SmartCaptcha в кабинете (монтируется на шаге капчи).
+            if (!state.loaded && !state.loading) fetchCaptcha();
+        }
+
+        function hideEmailError() {
+            if (emailError) emailError.hidden = true;
+        }
+
+        function showEmailError(text) {
+            if (!emailError) return;
+            emailError.textContent = text;
+            emailError.hidden = false;
+        }
+
+        function goCaptcha() {
+            var value = emailInput ? emailInput.value.trim() : '';
+            if (!isEmail(value)) {
+                showEmailError(cfg.tInvalidEmail || 'Wrong Email!');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+            hideEmailError();
+            if (emailInput) emailInput.value = value;
+            showCaptcha();
+        }
+
+        if (continueBtn) {
+            continueBtn.addEventListener('click', goCaptcha);
+        }
+        if (emailInput) {
+            emailInput.addEventListener('input', hideEmailError);
+            // Кнопка шага — type=button, поэтому Enter обрабатываем вручную.
+            emailInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    goCaptcha();
+                }
+            });
+            emailInput.focus();
+        }
+        if (changeEmailBtn) {
+            // Как changeEmail в кабинете: возврат на шаг email.
+            changeEmailBtn.addEventListener('click', showEmail);
         }
 
         function clamp(v, min, max) {
@@ -160,7 +229,7 @@
         refreshBtn.addEventListener('click', fetchCaptcha);
 
         verifyBtn.addEventListener('click', async function () {
-            if (state.loading || !state.token) return;
+            if (state.loading || state.submitted || !state.token) return;
             state.loading = true;
             verifyBtn.disabled = true;
             setStatus(cfg.tChecking || 'Checking...', '', true);
@@ -183,10 +252,10 @@
                 });
                 var result = await res.json();
                 if (result && result.success) {
+                    // Как onCaptchaVerified в кабинете: решили пазл — форма уходит сама.
+                    state.submitted = true;
                     setStatus(cfg.tSuccess || 'Success!', 'success');
                     piece.classList.add('is-success');
-                    submitBtn.disabled = false;
-                    // Как в кабинете: решили пазл — форма уходит сама.
                     setTimeout(function () { form.submit(); }, 400);
                 } else {
                     setStatus((result && result.reason) || cfg.tFailed || 'Verification failed', 'error');
@@ -196,13 +265,12 @@
                 setStatus(cfg.tError || 'Verification error', 'error');
             } finally {
                 state.loading = false;
-                verifyBtn.disabled = false;
+                if (!state.submitted) verifyBtn.disabled = false;
             }
         });
 
         // Подсветка ошибки email как в UiInput.
         if (emailRow) {
-            var emailInput = document.getElementById('cab-email');
             var syncRow = function () {
                 emailRow.classList.toggle('active', !!(emailInput && emailInput.value));
             };
@@ -211,8 +279,6 @@
                 syncRow();
             }
         }
-
-        fetchCaptcha();
     }
 
     /* ================= OTP из 6 ячеек (OtpInput 1:1) ================= */

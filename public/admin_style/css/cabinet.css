@@ -1,0 +1,253 @@
+/**
+ * Страница /admin/cabinet — стили только этой страницы.
+ * Всё завёрнуто в скоуп .cab-admin: глобальные стили админки не затрагиваются.
+ * Карточки .statistic и кнопки .button переиспользуются из общего style.css.
+ */
+
+.cab-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 2%;
+    max-width: 980px;
+}
+
+.cab-admin__lead {
+    margin: 0;
+    max-width: 760px;
+    line-height: 1.6;
+}
+
+/* ---------- статусы ---------- */
+
+.cab-admin__status {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.cab-admin__tile {
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #fafafa;
+}
+
+.cab-admin__tile-caption {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+}
+
+.cab-admin__badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.cab-admin__badge--on {
+    background: #e6f7ec;
+    color: #1c7a3d;
+}
+
+.cab-admin__badge--off {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.cab-admin__badge--warn {
+    background: #fdecec;
+    color: #b00;
+}
+
+.cab-admin__tile-note {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+/* ---------- форма ---------- */
+
+.cab-admin__field {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cab-admin__field--flat {
+    border-bottom: 0;
+}
+
+.cab-admin__label {
+    font-weight: bold;
+    padding-top: 8px;
+}
+
+.cab-admin__hint {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+.cab-admin__input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.4;
+    box-sizing: border-box;
+    background: #fff;
+    color: #333;
+}
+
+.cab-admin__input:focus {
+    outline: none;
+    border-color: #59f;
+}
+
+.cab-admin__input[readonly] {
+    background: #f6f6f6;
+    color: #555;
+}
+
+.cab-admin__radio-group {
+    display: flex;
+    gap: 24px;
+    padding-top: 8px;
+}
+
+.cab-admin__radio {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cab-admin__secret-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.cab-admin__secret-wrap .cab-admin__input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.cab-admin__mini-btn {
+    flex: none;
+    padding: 0 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #f4f4f4;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.cab-admin__mini-btn:hover {
+    background: #e9e9e9;
+}
+
+.cab-admin__auto {
+    background: #f4f9ff;
+    border: 1px solid #d6e6fb;
+    padding: 10px 12px;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.cab-admin__actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 16px;
+}
+
+.cab-admin__actions .button {
+    min-height: 0;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.875rem;
+}
+
+.cab-admin__actions .button svg {
+    margin-left: 0.6rem;
+}
+
+.cab-admin__result {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cab-admin__result--success {
+    color: green;
+}
+
+.cab-admin__result--warning {
+    color: orange;
+}
+
+.cab-admin__result--error {
+    color: red;
+}
+
+/* ---------- инструкция ---------- */
+
+.cab-admin__steps {
+    margin: 12px 0 5px 20px;
+    max-width: 760px;
+    line-height: 1.7;
+}
+
+.cab-admin__steps li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.cab-admin__copy {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cab-admin__copy-label {
+    flex: none;
+    min-width: 110px;
+}
+
+.cab-admin__copy .cab-admin__input {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+/* ---------- адаптив ---------- */
+
+@media (max-width: 700px) {
+    .cab-admin__status {
+        grid-template-columns: 1fr;
+    }
+
+    .cab-admin__field {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .cab-admin__label {
+        padding-top: 0;
+    }
+}

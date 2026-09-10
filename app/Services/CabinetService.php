@@ -22,7 +22,6 @@ class CabinetService
     public const KEY_ENABLED = 'cabinet_enabled';
     public const KEY_SECRET  = 'cabinet_secret';
     public const KEY_URL     = 'cabinet_url';
-    public const KEY_DOMAIN  = 'cabinet_domain';
 
     public const DEFAULT_URL = 'https://true-help.com';
 
@@ -33,17 +32,18 @@ class CabinetService
 
     /**
      * Конфиг из shop_keys. Безопасные дефолты при отсутствии строк.
+     * Домен шопа здесь не хранится: он всегда берётся из текущего
+     * хоста запроса (см. shopDomain()/autoHost()).
      */
     public static function config(): array
     {
         $enabled = false;
         $secret  = '';
         $url     = self::DEFAULT_URL;
-        $domain  = '';
 
         try {
             $rows = DB::table('shop_keys')
-                ->whereIn('name_key', [self::KEY_ENABLED, self::KEY_SECRET, self::KEY_URL, self::KEY_DOMAIN])
+                ->whereIn('name_key', [self::KEY_ENABLED, self::KEY_SECRET, self::KEY_URL])
                 ->pluck('key_data', 'name_key')
                 ->toArray();
 
@@ -56,9 +56,6 @@ class CabinetService
             if (isset($rows[self::KEY_URL]) && trim((string) $rows[self::KEY_URL]) !== '') {
                 $url = trim((string) $rows[self::KEY_URL]);
             }
-            if (isset($rows[self::KEY_DOMAIN])) {
-                $domain = mb_strtolower(trim((string) $rows[self::KEY_DOMAIN]));
-            }
         } catch (\Throwable $e) {
             Log::error('CabinetService config read failed: '.$e->getMessage());
         }
@@ -67,7 +64,7 @@ class CabinetService
             'enabled' => $enabled,
             'secret'  => $secret,
             'url'     => rtrim($url, '/'),
-            'domain'  => $domain,
+            'domain'  => self::autoHost(),
         ];
     }
 
@@ -88,6 +85,8 @@ class CabinetService
 
     /**
      * Сохранение настроек (insert при отсутствии строк).
+     * Легаси-строка cabinet_domain (ручной оверрайд домена) при
+     * сохранении удаляется: домен всегда определяется из хоста запроса.
      */
     public static function save(array $data): void
     {
@@ -95,7 +94,6 @@ class CabinetService
             self::KEY_ENABLED => isset($data['enabled']) && $data['enabled'] ? '1' : '0',
             self::KEY_SECRET  => trim((string) ($data['secret'] ?? '')),
             self::KEY_URL     => rtrim(trim((string) ($data['url'] ?? self::DEFAULT_URL)) ?: self::DEFAULT_URL, '/'),
-            self::KEY_DOMAIN  => mb_strtolower(trim((string) ($data['domain'] ?? ''))),
         ];
 
         foreach ($map as $nameKey => $keyData) {
@@ -103,6 +101,12 @@ class CabinetService
                 ['name_key' => $nameKey],
                 ['key_data' => $keyData]
             );
+        }
+
+        try {
+            DB::table('shop_keys')->where('name_key', 'cabinet_domain')->delete();
+        } catch (\Throwable $e) {
+            Log::error('CabinetService legacy domain cleanup failed: '.$e->getMessage());
         }
     }
 
@@ -117,21 +121,18 @@ class CabinetService
 
     /**
      * Домен шопа для кабинета (?s= и все серверные вызовы).
-     * Явно заданный в настройках — иначе текущий хост. Оверрайд нужен,
-     * когда шоп открывают не с боевого домена (локалка, зеркала).
+     * Всегда текущий хост запроса ($request->getHost(), без www):
+     * руками в админке он не задаётся, иначе кабинет не узнает шоп
+     * в allowlist и встроенный вход/обмен кода сломаются.
      */
     public static function shopDomain(): string
     {
-        $configured = self::config()['domain'];
-        if ($configured !== '') {
-            return (string) preg_replace('~^www\.~i', '', $configured);
-        }
-
         return self::autoHost();
     }
 
     /**
-     * Текущий хост запроса (без оверрайда) — для подсказок в админке.
+     * Текущий хост запроса ($request->getHost(), без www, lowercased) —
+     * единственный источник домена шопа для кабинета.
      */
     public static function autoHost(): string
     {
@@ -531,6 +532,8 @@ class CabinetService
 
     /**
      * Проверка связи.
+     * Домен шопа всегда берётся из текущего хоста запроса
+     * ($request->getHost()) — передавать его руками не нужно.
      * Шаг 1: новый эндпоинт настроек (с доменом) — заодно узнаём флаг
      * embedded-входа. Шаг 2 (фолбэк для старого кабинета без settings):
      * обмен заведомо мусорным кодом — секрет верный + домен зарегистрирован,
@@ -539,13 +542,16 @@ class CabinetService
      * @return array{status: string, text: string, embedded: bool|null}
      *   status: ok|not_registered|outdated|fail
      */
-    public static function testConnection(string $secret, string $url, string $domain): array
+    public static function testConnection(string $secret, string $url): array
     {
         $url = rtrim(trim($url) ?: self::DEFAULT_URL, '/');
-        $domain = mb_strtolower(trim($domain));
+        $domain = self::autoHost();
 
-        if ($secret === '' || $domain === '') {
-            return ['status' => 'fail', 'text' => 'Enter the secret key and the shop domain first.', 'embedded' => null];
+        if ($secret === '') {
+            return ['status' => 'fail', 'text' => 'Enter the secret key first.', 'embedded' => null];
+        }
+        if ($domain === '') {
+            return ['status' => 'fail', 'text' => 'Cannot detect the shop host from the request.', 'embedded' => null];
         }
 
         try {

@@ -1396,8 +1396,8 @@ class AdminController extends Controller
             'cabinet_secret' => $cabinet['secret'],
             'cabinet_url' => $cabinet['url'],
             'cabinet_callback' => CabinetService::callbackUrl(),
+            // Домен нигде не настраивается: всегда текущий хост запроса.
             'cabinet_domain' => CabinetService::shopDomain(),
-            'cabinet_host' => CabinetService::autoHost(),
             'cabinet_embedded' => $shopSettings['embedded_login'],
         ]);
     }
@@ -1407,7 +1407,6 @@ class AdminController extends Controller
             'enabled' => (int) $request->input('cabinet_enabled', 0) === 1,
             'secret'  => (string) $request->input('cabinet_secret', ''),
             'url'     => (string) $request->input('cabinet_url', CabinetService::DEFAULT_URL),
-            'domain'  => (string) $request->input('cabinet_domain', ''),
         ]);
         CabinetService::forgetShopSettings();
 
@@ -1419,13 +1418,14 @@ class AdminController extends Controller
     public function test_cabinet_connection(Request $request) {
         $secret = trim((string) $request->input('cabinet_secret', ''));
         $url = trim((string) $request->input('cabinet_url', '')) ?: CabinetService::DEFAULT_URL;
-        $domain = mb_strtolower(trim((string) $request->input('cabinet_domain', '')));
 
-        if ($secret === '' || $domain === '') {
-            return response()->json(array('status' => 'error', 'text' => 'Enter the secret key and the shop domain first.'));
+        if ($secret === '') {
+            return response()->json(array('status' => 'error', 'text' => 'Enter the secret key first.'));
         }
 
-        $result = CabinetService::testConnection($secret, $url, $domain);
+        // Домен подставляется автоматически из хоста текущего запроса
+        // (CabinetService::shopDomain()), руками его вводить не нужно.
+        $result = CabinetService::testConnection($secret, $url);
 
         if ($result['status'] === 'ok' || $result['status'] === 'outdated') {
             // Связь есть — фиксируем проверенные значения и освежаем
@@ -1434,7 +1434,6 @@ class AdminController extends Controller
                 'enabled' => CabinetService::enabled(),
                 'secret'  => $secret,
                 'url'     => $url,
-                'domain'  => $domain,
             ]);
             CabinetService::shopSettings(true);
 
