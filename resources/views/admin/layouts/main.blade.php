@@ -94,6 +94,9 @@
                                     <a href="{{ route('admin.renewal_page') }}">Update Shop</a>
                                 </li>
                                 <li class="menu__item">
+                                    <a href="{{ route('admin.cabinet') }}">Customer Cabinet</a>
+                                </li>
+                                <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
                                         <svg width="20" height="20">
                                             <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-sign-out") }}"></use>
@@ -234,6 +237,8 @@
         const routeAdminDeletePixel = "{{ route('admin.delete_pixel') }}";
         const routeAdminGiftCardInfo = "{{ route('admin.gift_card_info') }}";
         const routeAdminSaveCheckoutInfo = "{{ route('admin.save_checkout_info') }}";
+        const routeAdminSaveCabinetInfo = "{{ route('admin.save_cabinet_info') }}";
+        const routeAdminTestCabinetConnection = "{{ route('admin.test_cabinet_connection') }}";
         const routeAdminSaveSubscribeInfo = "{{ route('admin.save_subscribe_info') }}";
         const routeAdminSaveDefaultErrorPage = "{{ route('admin.save_default_error_page') }}";
         const routeAdminRenewalShop = "{{ route('admin.renewal_page_shop') }}";

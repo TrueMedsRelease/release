@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Phattarachai\LaravelMobileDetect\Agent;
+use App\Services\CabinetService;
 use App\Services\TrueServService;
 
 class HomeController extends Controller
@@ -1361,6 +1362,12 @@ class HomeController extends Controller
             } else {
                 return redirect(route('home.index'));
             }
+        }
+
+        // Встроенный кабинет включён — ведём покупателя в /account,
+        // иначе старый флоу: login.blade.php → редирект на true-help.
+        if (CabinetService::enabled()) {
+            return redirect()->route('account.index');
         }
 
         // $statisticPromise = StatisticService::SendStatistic('login');

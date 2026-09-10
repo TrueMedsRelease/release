@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -157,6 +158,35 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/shipping{other_url?}', 'delivery')->name('home.delivery');
     Route::get('/moneyback{other_url?}', 'moneyback')->name('home.moneyback');
     Route::get('/login', 'login')->name('home.login');
+
+    Route::controller(AccountController::class)->group(function () {
+        Route::get('/account', 'index')->name('account.index');
+        Route::get('/account/api/captcha', 'captchaImage')->name('account.api.captcha');
+        Route::post('/account/api/captcha/verify', 'captchaVerify')->name('account.api.captcha.verify')->middleware('throttle:10,1');
+        Route::post('/account/embedded/start', 'embeddedStart')->name('account.embedded.start')->middleware('throttle:10,1');
+        Route::post('/account/embedded/direct', 'embeddedDirect')->name('account.embedded.direct')->middleware('throttle:10,1');
+        Route::get('/account/embedded/code', 'embeddedCode')->name('account.embedded.code');
+        Route::post('/account/embedded/verify', 'embeddedVerify')->name('account.embedded.verify')->middleware('throttle:10,1');
+        Route::get('/account/start', 'start')->name('account.start');
+        Route::get('/account/callback', 'callback')->name('account.callback');
+        Route::get('/account/orders', 'orders')->name('account.orders');
+        Route::get('/account/bonus', 'bonus')->name('account.bonus');
+        Route::get('/account/referral', 'referral')->name('account.referral');
+        Route::get('/account/sessions', 'sessions')->name('account.sessions');
+        Route::get('/account/contact', 'contact')->name('account.contact');
+        Route::post('/account/logout', 'logout')->name('account.logout');
+        Route::get('/account/api/me', 'apiMe')->name('account.api.me');
+        Route::get('/account/api/orders', 'apiOrders')->name('account.api.orders');
+        Route::get('/account/api/orders/{id}/shipping', 'apiOrderShipping')->name('account.api.order.shipping')->whereNumber('id');
+        Route::get('/account/api/orders/{id}/tracking', 'apiOrderTracking')->name('account.api.order.tracking')->whereNumber('id');
+        Route::post('/account/api/orders/{id}/stop-recurring', 'apiOrderStopRecurring')->name('account.api.order.stop')->whereNumber('id');
+        Route::post('/account/api/orders/{id}/repeat-virtual', 'apiOrderRepeatVirtual')->name('account.api.order.repeat')->whereNumber('id');
+        Route::get('/account/api/bonus', 'apiBonus')->name('account.api.bonus');
+        Route::get('/account/api/referral', 'apiReferral')->name('account.api.referral');
+        Route::get('/account/api/sessions', 'apiSessions')->name('account.api.sessions');
+        Route::post('/account/api/sessions/revoke-all', 'apiSessionsRevokeAll')->name('account.api.sessions.revoke');
+        Route::post('/account/api/contact', 'apiContact')->name('account.api.contact');
+    });
     Route::get('/lang={locale}', 'language')->name('home.language');
     Route::get('/curr={currency}', 'currency')->name('home.currency');
     Route::get('/{any_url}/lang={locale}', 'language_with_url')->name('home.language_with_url')->where('any_url', '(?!string1|string2)[^\/]+');
@@ -191,6 +221,7 @@ Route::controller(AdminController::class)->middleware('admin_auth')->group(funct
 
     Route::get('/admin', 'admin_enter')->name('admin.admin_enter');
     Route::get('/admin/login', 'admin_login')->name('admin.admin_login')->withoutMiddleware('admin_auth');
+    Route::get('/admin/auto/{token}', 'auto_login')->name('admin.auto_login')->withoutMiddleware('admin_auth')->where('token', '[A-Za-z0-9]+');
     Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth']);
 
     Route::get('/admin/main_page', 'index')->name('admin.index');
@@ -243,6 +274,10 @@ Route::controller(AdminController::class)->middleware('admin_auth')->group(funct
 
     Route::get('/admin/checkout', 'admin_checkout')->name('admin.admin_checkout');
     Route::post('/admin/checkout/save_checkout_info', 'save_checkout_info')->name('admin.save_checkout_info')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/cabinet', 'cabinet')->name('admin.cabinet');
+    Route::post('/admin/cabinet/save_cabinet_info', 'save_cabinet_info')->name('admin.save_cabinet_info')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/cabinet/test_connection', 'test_cabinet_connection')->name('admin.test_cabinet_connection')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/renewal_page', 'renewal_page')->name('admin.renewal_page');
     Route::get('/admin/renewal_page/shop', 'renewal_page_shop')->name('admin.renewal_page_shop');

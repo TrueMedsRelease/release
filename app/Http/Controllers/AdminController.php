@@ -8,6 +8,7 @@ use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\AdminServices;
+use App\Services\CabinetService;
 use App\Models\Language;
 use App\Models\Currency;
 use App\Models\Category;
@@ -48,6 +49,22 @@ class AdminController extends Controller
     {
         session(['logged_in' => false]);
         return redirect()->route('admin.admin_login');
+    }
+
+    /**
+     * Автологин по секретному токену из .env (ADMIN_AUTOLOGIN_TOKEN).
+     * Удобно для стенда; на проде токен не задавать (будет 404).
+     */
+    public function auto_login($token = '') {
+        $expected = (string) env('ADMIN_AUTOLOGIN_TOKEN', '');
+
+        if ($expected === '' || !hash_equals($expected, (string) $token)) {
+            abort(404);
+        }
+
+        session(['logged_in' => true]);
+
+        return redirect()->route('admin.cabinet');
     }
 
     public function request_login(Request $request) {
@@ -1362,6 +1379,74 @@ class AdminController extends Controller
         ]);
     }
 
+    public function cabinet() {
+        $title = $this->pageAdminTitle('cabinet');
+        $agent = new Agent();
+        $cabinet = CabinetService::config();
+
+        // Настройки интеграции из кабинета (кеш): по ним шоп решает,
+        // пускать ли встроенный логин у себя или уводить на кабинет.
+        $shopSettings = CabinetService::shopSettings();
+
+        return view('admin.cabinet', [
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+            'cabinet_enabled' => $cabinet['enabled'],
+            'cabinet_secret' => $cabinet['secret'],
+            'cabinet_url' => $cabinet['url'],
+            'cabinet_callback' => CabinetService::callbackUrl(),
+            'cabinet_domain' => CabinetService::shopDomain(),
+            'cabinet_host' => CabinetService::autoHost(),
+            'cabinet_embedded' => $shopSettings['embedded_login'],
+        ]);
+    }
+
+    public function save_cabinet_info(Request $request) {
+        CabinetService::save([
+            'enabled' => (int) $request->input('cabinet_enabled', 0) === 1,
+            'secret'  => (string) $request->input('cabinet_secret', ''),
+            'url'     => (string) $request->input('cabinet_url', CabinetService::DEFAULT_URL),
+            'domain'  => (string) $request->input('cabinet_domain', ''),
+        ]);
+        CabinetService::forgetShopSettings();
+
+        Cache::flush();
+
+        return response()->json(array('status' => 'success', 'url' => route('admin.cabinet')));
+    }
+
+    public function test_cabinet_connection(Request $request) {
+        $secret = trim((string) $request->input('cabinet_secret', ''));
+        $url = trim((string) $request->input('cabinet_url', '')) ?: CabinetService::DEFAULT_URL;
+        $domain = mb_strtolower(trim((string) $request->input('cabinet_domain', '')));
+
+        if ($secret === '' || $domain === '') {
+            return response()->json(array('status' => 'error', 'text' => 'Enter the secret key and the shop domain first.'));
+        }
+
+        $result = CabinetService::testConnection($secret, $url, $domain);
+
+        if ($result['status'] === 'ok' || $result['status'] === 'outdated') {
+            // Связь есть — фиксируем проверенные значения и освежаем
+            // настройки интеграции из кабинета.
+            CabinetService::save([
+                'enabled' => CabinetService::enabled(),
+                'secret'  => $secret,
+                'url'     => $url,
+                'domain'  => $domain,
+            ]);
+            CabinetService::shopSettings(true);
+
+            return response()->json(array(
+                'status' => $result['status'] === 'ok' ? 'success' : 'warning',
+                'text' => $result['text'],
+            ));
+        }
+
+        return response()->json(array('status' => 'error', 'text' => $result['text']));
+    }
+
     public function save_checkout_info(Request $request) {
         $default_shipping = $request->default_shipping;
         // $default_insur = $request->default_insur;
@@ -1479,6 +1564,9 @@ class AdminController extends Controller
                 break;
             case 'checkout':
                 $title = 'Checkout';
+                break;
+            case 'cabinet':
+                $title = 'Customer Cabinet';
                 break;
             case 'update_shop':
                 // $title = __('text.admin_renewal_shop');
