@@ -38,15 +38,22 @@
         if (fpPromise) return fpPromise;
         fpPromise = (async function () {
             try {
-                var fpUrl = window.CabinetFpUrl || '';
-                if (fpUrl && !window.DeviceLib && !window.FingerprintLib) {
+                // Своя копия в файлах шопа (same-origin): не режется баннерами
+                // и не зависит от деплоя кабинета. Дальше — фолбэки на кабинет.
+                if (!window.DeviceLib && !window.FingerprintLib) {
                     try {
-                        await loadScript(fpUrl, 5000);
+                        await loadScript('/js/cabinet/device-lib.js', 5000);
                     } catch (e) {
-                        // Кабинет ещё не обновлён (нет /f.js) — пробуем старый путь.
-                        var legacy = fpUrl.replace(/\/f\.js([?#]|$)/, '/fingerprint.js$1');
-                        if (legacy !== fpUrl) {
-                            try { await loadScript(legacy, 5000); } catch (e2) { /* ниже вернём '' */ }
+                        var fpUrl = window.CabinetFpUrl || '';
+                        if (fpUrl) {
+                            try {
+                                await loadScript(fpUrl, 5000);
+                            } catch (e2) {
+                                var legacy = fpUrl.replace(/\/f\.js([?#]|$)/, '/fingerprint.js$1');
+                                if (legacy !== fpUrl) {
+                                    try { await loadScript(legacy, 5000); } catch (e3) { /* ниже вернём '' */ }
+                                }
+                            }
                         }
                     }
                 }
