@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\ProductPackaging;
 use App\Services\CabinetService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -486,32 +488,55 @@ class AccountController extends Controller
     }
 
     /**
-     * Повтор заказа 1:1 с порталом (useOrderActions.repeatVirtual):
-     * POST → {status:'success', checkoutUrl} → браузер уходит на checkout.
-     * Относительный checkoutUrl кабинета делаем абсолютным, иначе
-     * браузер уйдёт на несуществующий путь шопа.
+     * Повтор заказа локально, без обращений к API кабинета:
+     * позиции заказа (с packagingId из /api/v1/orders) кладём в корзину
+     * шопа и отдаём URL чекаута. Несопоставленные/скрытые упаковки молча
+     * пропускаем; если не легло ничего — ошибка для тоста.
      */
     public function apiOrderRepeatVirtual(Request $request, int $id)
     {
-        $response = $this->proxy($request, 'POST', 'orders/'.$id.'/repeat-virtual');
-
-        if ($response->getStatusCode() === 200) {
-            $body = json_decode($response->getContent(), true);
-            if (is_array($body)) {
-                $holder = null;
-                if (isset($body['checkoutUrl']) && is_string($body['checkoutUrl'])) {
-                    $holder = &$body;
-                } elseif (isset($body['data']['checkoutUrl']) && is_string($body['data']['checkoutUrl'])) {
-                    $holder = &$body['data'];
-                }
-                if ($holder !== null && str_starts_with($holder['checkoutUrl'], '/')) {
-                    $holder['checkoutUrl'] = rtrim(CabinetService::cabinetUrl(), '/').$holder['checkoutUrl'];
-                    $response->setContent(json_encode($body));
-                }
-            }
+        if (!CabinetService::enabled()) {
+            return response()->json(['status' => 'error', 'message' => 'Cabinet is disabled.'], 403);
+        }
+        if ((string) session('cabinet.access_token', '') === '') {
+            return response()->json(['status' => 'error', 'message' => 'Not logged in.', 'login' => false], 401);
         }
 
-        return $response;
+        $items = $request->input('items', []);
+        if (!is_array($items) || $items === []) {
+            return response()->json(['status' => 'error', 'message' => __('text.cabinet_repeat_failed')], 422);
+        }
+
+        $added = 0;
+        foreach ($items as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+            $packId = (int) ($item['packagingId'] ?? $item['packaging_id'] ?? 0);
+            $qty = (int) ($item['quantity'] ?? 0);
+            if ($packId <= 0 || $qty <= 0) {
+                continue;
+            }
+            $pack = ProductPackaging::query()
+                ->where('id', $packId)
+                ->where('is_showed', 1)
+                ->first();
+            if ($pack === null) {
+                continue;
+            }
+            for ($i = 0; $i < $qty; $i++) {
+                Cart::add($packId);
+            }
+            $added++;
+        }
+
+        if ($added === 0) {
+            return response()->json(['status' => 'error', 'message' => __('text.cabinet_repeat_failed')], 422);
+        }
+
+        Cart::update_cart_total();
+
+        return response()->json(['status' => 'success', 'checkoutUrl' => route('checkout.index')]);
     }
 
     public function apiBonus(Request $request)

@@ -641,10 +641,15 @@
                 if (this.repeatingId) return;
                 this.repeatingId = order.id;
                 try {
-                    var body = await api((cfg.repeatUrl || '/account/api/orders') + '/' + order.id + '/repeat-virtual', { method: 'POST' });
+                    // Локальный повтор: позиции с packagingId уходят в корзину шопа,
+                    // API кабинета не дёргаем. Ответ: {status, checkoutUrl} или {status:'error', message}.
+                    var body = await api((cfg.repeatUrl || '/account/api/orders') + '/' + order.id + '/repeat-virtual', {
+                        method: 'POST',
+                        body: { items: order.items || [] },
+                    });
                     var d = pickObject(body);
-                    if (d.status !== 'success' || !d.checkoutUrl) {
-                        throw new Error(d.message || cfg.tRepeatFailed || 'Repeat failed');
+                    if (!d || d.status !== 'success' || !d.checkoutUrl) {
+                        throw new Error((d && d.message) || cfg.tRepeatFailed || 'Repeat failed');
                     }
                     window.location.href = d.checkoutUrl;
                 } catch (e) {
