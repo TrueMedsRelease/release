@@ -107,7 +107,7 @@
                                                     <template x-for="(item, idx) in (order.items || [])" :key="idx">
                                                         <div class="oc-items__row">
                                                             <p class="oc-items__name" x-text="itemName(item)"></p>
-                                                            <span class="oc-mono oc-items__qty" x-text="'Г—' + (item.quantity || 0)"></span>
+                                                            <span class="oc-mono oc-items__qty" x-text="'×' + (item.quantity || 0)"></span>
                                                             <span class="oc-mono oc-items__sum" x-text="formatMoney(Number(item.price || 0) * Number(item.quantity || 0))"></span>
                                                         </div>
                                                     </template>
