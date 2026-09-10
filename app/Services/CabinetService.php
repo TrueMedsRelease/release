@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Log;
  * Обмен одноразового кода на пару токенов идёт сервер→сервер
  * (POST {cabinet}/api/v1/auth/token {code, secret, code_verifier}),
  * токены лежат только в сессии сервера. X-Fingerprint для /api/v1/*
- * пробрасывается из браузера покупателя (считается через /fingerprint.js
- * кабинета), т.к. токен кабинета привязан к fingerprint устройства.
+ * пробрасывается из браузера покупателя (считается через /f.js
+ * кабинета, глобал DeviceLib), т.к. токен кабинета привязан к fingerprint устройства.
  */
 class CabinetService
 {

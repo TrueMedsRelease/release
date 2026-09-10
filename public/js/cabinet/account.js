@@ -11,7 +11,7 @@
  *  - assets/Layouts/AppLayout.vue + AppHeader.vue (drawer, popover, бейдж корзины)
  *
  * Токены живут только в сессии сервера шопа. Браузер считает fingerprint
- * через fingerprint.js кабинета (window.CabinetFpUrl) и прикладывает его
+ * через f.js кабинета (window.CabinetFpUrl, глобал DeviceLib) и прикладывает его
  * к запросам прокси (X-FP → сервер перекладывает в X-Fingerprint).
  */
 (function () {
@@ -39,11 +39,20 @@
         fpPromise = (async function () {
             try {
                 var fpUrl = window.CabinetFpUrl || '';
-                if (fpUrl && !window.FingerprintLib) {
-                    await loadScript(fpUrl, 5000);
+                if (fpUrl && !window.DeviceLib && !window.FingerprintLib) {
+                    try {
+                        await loadScript(fpUrl, 5000);
+                    } catch (e) {
+                        // Кабинет ещё не обновлён (нет /f.js) — пробуем старый путь.
+                        var legacy = fpUrl.replace(/\/f\.js([?#]|$)/, '/fingerprint.js$1');
+                        if (legacy !== fpUrl) {
+                            try { await loadScript(legacy, 5000); } catch (e2) { /* ниже вернём '' */ }
+                        }
+                    }
                 }
-                if (!window.FingerprintLib) return '';
-                var lib = new window.FingerprintLib();
+                var Ctor = window.DeviceLib || window.FingerprintLib;
+                if (!Ctor) return '';
+                var lib = new Ctor();
                 var r = await lib.get();
                 var fp = (r && r.hash && (r.hash.v4 || String(r.hash.numeric || ''))) || '';
                 if (fp) window.CabinetAccountFp = String(fp);

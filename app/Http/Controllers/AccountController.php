@@ -430,7 +430,7 @@ class AccountController extends Controller
         return view($view, [
             'email'       => (string) session('cabinet.email', ''),
             'cabinet_url' => CabinetService::cabinetUrl(),
-            'cabinet_fp'  => rtrim(CabinetService::cabinetUrl(), '/').'/fingerprint.js',
+            'cabinet_fp'  => rtrim(CabinetService::cabinetUrl(), '/').'/f.js',
         ]);
     }
 
