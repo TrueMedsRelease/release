@@ -302,7 +302,7 @@
                                 </div>
                             @endif
 							<div class="actions__item actions__item--order" data-da=".fixed-bar, 700, 1">
-								<a href='{{ route('home.login') }}' target="_blank">
+								<a href='{{ route('home.login') }}'>
 									<div class="actions__icon">
                                         @if (env('APP_PRINT_SPRITE', 1) == 1)
                                             <svg width="20" height="20">

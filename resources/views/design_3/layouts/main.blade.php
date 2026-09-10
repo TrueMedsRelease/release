@@ -265,7 +265,7 @@
                                 </select>
                             </div>
                         @endif
-                        <a href='{{ route('home.login') }}' target="_blank" class="header__status">{{__('text.common_profile')}}</a>
+                        <a href='{{ route('home.login') }}' class="header__status">{{__('text.common_profile')}}</a>
                     </div>
                     <a href="{{ route('cart.index') }}" class="header__cart cart-header">
                         @php

@@ -582,7 +582,7 @@
                                 </span>
                             </div>
                         @endif
-                        <a class="header-auth link link--white" href="{{ route('home.login') }}" target="_blank">{{ __('text.common_profile') }}</a>
+                        <a class="header-auth link link--white" href="{{ route('home.login') }}">{{ __('text.common_profile') }}</a>
                     </div>
                 </div>
             </div>

@@ -505,7 +505,7 @@
                                 </span>
                             </div>
                         @endif
-                        <a class="header-auth link link--white" href="{{ route('home.login') }}" target="_blank">{{ __('text.common_profile') }}</a>
+                        <a class="header-auth link link--white" href="{{ route('home.login') }}">{{ __('text.common_profile') }}</a>
                     </div>
                 </div>
             </div>
@@ -785,7 +785,7 @@
                             </span>
                             <span class="button__text">{{ __('text.common_categories_menu') }}</span>
                         </button>
-                        <a class="footer-button" href="{{ route('home.login') }}" target="_blank">
+                        <a class="footer-button" href="{{ route('home.login') }}">
                             <span class="icon">
                                 @if (env('APP_PRINT_SPRITE', 1) == 1)
                                     <svg width="1em" height="1em" fill="currentColor">

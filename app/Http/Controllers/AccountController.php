@@ -10,11 +10,8 @@ use Illuminate\Support\Facades\Log;
  * Встроенный личный кабинет (работает только при включённом
  * флаге в /admin/cabinet, иначе редирект на старый вход).
  *
- * Вход — оба варианта:
- *  - redirect: уход на кабинет и возврат на /account/callback;
- *  - popup: /account/start?mode=popup открывает кабинет в окне,
- *    оно приземляется на тот же /account/callback, который сам
- *    закрывается после серверного обмена кода.
+ * Внешний вход — только прямой редирект: уход на кабинет и возврат
+ * на /account/callback (та же вкладка, без попапов).
  * Обмен code→токены всегда сервер→сервер с секретом из shop_keys,
  * токены живут только в сессии сервера.
  */
@@ -273,7 +270,11 @@ class AccountController extends Controller
     /**
      * Старт логина: state + PKCE в сессию, дальше редирект или попап.
      */
-    public function start(Request $request)
+    /**
+     * Старт внешнего входа: state + PKCE в сессию, дальше прямой
+     * редирект в кабинет (та же вкладка, без попапов).
+     */
+    public function start()
     {
         if (!CabinetService::enabled()) {
             return redirect()->route('home.login');
@@ -283,7 +284,6 @@ class AccountController extends Controller
             return redirect()->route('account.orders');
         }
 
-        $mode = $request->query('mode', 'redirect') === 'popup' ? 'popup' : 'redirect';
         $cfg  = CabinetService::config();
 
         if ($cfg['secret'] === '') {
@@ -297,14 +297,9 @@ class AccountController extends Controller
         session([
             'cabinet.pkce_verifier' => $pkce['verifier'],
             'cabinet.login_state'   => $state,
-            'cabinet.login_mode'    => $mode,
         ]);
 
         $url = CabinetService::loginUrl($cfg['url'], CabinetService::shopDomain(), $state, $pkce['challenge']);
-
-        if ($mode === 'popup') {
-            return view('account.popup', ['login_url' => $url]);
-        }
 
         return redirect()->away($url);
     }
@@ -312,23 +307,13 @@ class AccountController extends Controller
     /**
      * Callback кабинета: ?token=&state=. Проверяем state,
      * меняем код сервер→сервер, кладём пару в сессию.
-     * В попапе страница сама закроется (вид popup-callback).
      */
     public function callback(Request $request)
     {
-        $mode  = (string) session('cabinet.login_mode', 'redirect');
         $error = $this->finishLogin($request);
 
         if ($error !== null) {
-            if ($mode === 'popup') {
-                return view('account.popup-callback', ['success' => false, 'error' => $error]);
-            }
-
             return redirect()->route('account.index')->with('cabinet_error', $this->humanError($error));
-        }
-
-        if ($mode === 'popup') {
-            return view('account.popup-callback', ['success' => true, 'error' => '']);
         }
 
         return redirect()->route('account.orders');
@@ -348,7 +333,7 @@ class AccountController extends Controller
         $expected = (string) session('cabinet.login_state', '');
         $verifier = (string) session('cabinet.pkce_verifier', '');
 
-        session()->forget(['cabinet.login_state', 'cabinet.pkce_verifier', 'cabinet.login_mode']);
+        session()->forget(['cabinet.login_state', 'cabinet.pkce_verifier']);
 
         if ($code === '' || $state === '' || $expected === '' || !hash_equals($expected, $state)) {
             return 'bad_state';

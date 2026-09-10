@@ -288,7 +288,7 @@
                     </button>
                     <nav class="nav navbar drawer drawer--rtl" id="main-nav" data-drawer="navbar" aria-label="Main Menu">
                         <div class="nav-container">
-                            <a class="navbar__auth-link link" href="{{ route("home.login") }}" target="_blank">
+                            <a class="navbar__auth-link link" href="{{ route("home.login") }}">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
                                         <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>
@@ -716,7 +716,7 @@
                                 <span class="button__text">{{ __('text.common_cart_text_d2') }}</span>
                                 <span class="button__price ellipsis">{{ $Currency::Convert($cart_total, true) }}</span>
                             </button>
-                            <a class="button button--tapbar" href="{{ route("home.login") }}" target="_blank">
+                            <a class="button button--tapbar" href="{{ route("home.login") }}">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
                                         <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>

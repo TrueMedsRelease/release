@@ -11,8 +11,7 @@
    |                        |                                     |
    |-- /account ------------|                                     |
    |   /account/start ------|                                     |
-   |                        |-- GET /login?s=домен&state&challenge |
-   |                        |   (redirect) или window.open (popup) |
+   |                        |-- GET /login?s=домен&state&challenge (та же вкладка) |
    |<================ email → капча → код из письма =============>|
    |                        |-- GET /account/callback?token&state  |
    |                        |-- POST /api/v1/auth/token ---------->|
@@ -36,7 +35,7 @@
 Cache 1 минуту, `cabinet.shop_settings`) и ветвится по флагу `embedded_login`:
 
 - **Флаг выкл (по умолчанию)** — как раньше: `/account` показывает экран
-  с двумя кнопками (редирект / попап), покупатель уходит на страницы кабинета,
+  с одной кнопкой, покупатель уходит на страницы кабинета в той же вкладке,
   возвращается на `/account/callback` с одноразовым кодом.
 - **Флаг вкл (менеджер разрешил в `/admin/api-clients` → «Встроенный логин в шопе»)** —
   `/account` показывает форму **у себя** в стилях страницы логина кабинета 1:1
@@ -90,7 +89,7 @@ Cache 1 минуту, `cabinet.shop_settings`) и ветвится по флаг
 - `app/Http/Controllers/AdminController.php` — `cabinet()`,
   `save_cabinet_info()`, `test_cabinet_connection()` (+ пункт меню
   и `pageAdminTitle`, роуты в `routes/web.php`).
-- `resources/views/account/` — `layout`, `start`, `popup`, `popup-callback`, `orders` (Alpine).
+- `resources/views/account/` — `layout`, `start`, `orders` (Alpine).
 - `resources/views/admin/cabinet.blade.php` + компоненты `resources/views/admin/cabinet/`
   (`status`, `form`, `guide`), стили `public/admin_style/css/cabinet.css`
   и JS `public/admin_style/js/cabinet.js` (отдельные файлы только этой страницы).

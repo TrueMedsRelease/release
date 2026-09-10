@@ -312,7 +312,7 @@
                             </div>
                         @endif
                         <div class="profile_top_block">
-                            <a href="{{ route('home.login') }}" class="item profile_top" target="_blank">
+                            <a href="{{ route('home.login') }}" class="item profile_top">
                                 <span class="ico">
                                     <img loading="lazy" src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt=""
                                         width="20" height="20">
@@ -820,7 +820,7 @@
             </span>
             <span class="name">{{ __('text.common_home_main_menu_item') }}</span>
         </a>
-        <a href="{{ route('home.login') }}" class="item" target="_blank">
+        <a href="{{ route('home.login') }}" class="item">
             <span class="ico">
                 <img loading="lazy" src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt="">
             </span>

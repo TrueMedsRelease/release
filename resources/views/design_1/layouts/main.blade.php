@@ -302,7 +302,7 @@
                     </div>
                 @endif
                 <div class="header__currency header__control profile" data-da=".controls, 768, last">
-                    <a href='{{ route('home.login') }}' target="_blank">
+                    <a href='{{ route('home.login') }}'>
                         <picture>
                             <source srcset="{{ asset("$design/images/user.png") }}" type="image/png">
                             <img loading="lazy" src="{{ asset("$design/images/user.png") }}" alt="profile" width="25" height="25" loading="lazy">

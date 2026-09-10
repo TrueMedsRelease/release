@@ -13,11 +13,8 @@
 
     <div class="cab-account__list">
         <div class="oc-card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
-            <a class="oc-action oc-action--dark" href="{{ route('account.start', ['mode' => 'redirect']) }}">
+            <a class="oc-action oc-action--dark" href="{{ route('account.start') }}">
                 {{ __('text.cabinet_continue') }}
-            </a>
-            <a class="oc-action oc-action--light" href="{{ route('account.start', ['mode' => 'popup']) }}">
-                {{ __('text.cabinet_popup_open') }}
             </a>
             <p class="cab-account__sub" style="margin: 0;">{{ __('text.cabinet_login_redirect_note') }}</p>
         </div>

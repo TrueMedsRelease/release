@@ -290,8 +290,7 @@
                             <div class="header__phone2">
                                 <div class="profile">
                                     <img loading="lazy" src="{{ asset("$design/images/user_blue_2.png") }}">
-                                    <a href="{{ route('home.login') }}"
-                                        target="_blank">{{ __('text.common_profile') }}</a>
+                                    <a href="{{ route('home.login') }}">{{ __('text.common_profile') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -1376,7 +1375,7 @@
                         <h3 class="actions-mobile__label">{{ __('text.common_categories_menu') }}</h3>
                     </div>
                     <div class="actions-mobile__item">
-                        <a href="{{ route('home.login') }}" target="_blank">
+                        <a href="{{ route('home.login') }}">
                             <div class="actions-mobile__icon">
                                 <img loading="lazy" src="{{ asset("$design/images/user_blue_2.png") }}">
                             </div>
