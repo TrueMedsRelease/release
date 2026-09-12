@@ -127,7 +127,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                         <div class="oc-card__actions">
                             <div class="oc-card__secondary">
                                 <span class="oc-ship">
-                                    <button type="button" class="oc-footlink" :aria-expanded="String(isShipOpen(order.id))" @click="toggleShip(order.id)">
+                                    <button type="button" class="oc-footlink" :aria-expanded="String(isShipOpen(order.id))" @click.stop="toggleShip(order.id)">
                                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1C4.79 1 3 2.79 3 5c0 3 4 8 4 8s4-5 4-8c0-2.21-1.79-4-4-4z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="7" cy="5" r="1.4" stroke="currentColor" stroke-width="1.2"/></svg>
                                         <span>{{ __('text.cabinet_shipping') }}</span>
                                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" class="oc-ship__caret" :class="{ 'oc-ship__caret--open': isShipOpen(order.id) }">
@@ -180,8 +180,8 @@ window.CabinetMeUrl = @json(route('account.api.me'));
 
                         <template x-if="trackRendered[order.id]">
                             <span>
-                                <span class="oc-track__backdrop" @click="closeTrack(order.id)"></span>
-                                <span class="oc-track__panel" role="dialog" aria-modal="true" @keydown.escape.window="closeTrack(order.id)">
+                                <span class="oc-track__backdrop _open" @click="closeTrack(order.id)"></span>
+                                <span class="oc-track__panel _open" role="dialog" aria-modal="true" @keydown.escape.window="closeTrack(order.id)">
                                     <span class="oc-track__head">
                                         <span>
                                             <p class="oc-track__eyebrow">{{ __('text.cabinet_tracking_title') }}</p>
@@ -295,7 +295,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
         </div>
     </aside>
 
-    <button type="button" class="oc-filters-fab" :aria-expanded="String(filtersOpen)" @click="filtersOpen = !filtersOpen">
+    <button type="button" class="oc-filters-fab" :aria-expanded="String(filtersOpen)" @click.stop="filtersOpen = !filtersOpen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v5.5l-4 2.5v-8L3 5z"/></svg>
         <span x-text="activeFilterLabel"></span>
     </button>
