@@ -558,19 +558,19 @@ class CabinetService
     }
 
     /**
-     * Встроенный логин без кода из письма: email + пазл → сразу пара токенов.
-     * Работает только для запросов с админского IP кабинета, остальным
-     * портал отвечает 403 direct_login_disabled (шоп молча идёт кодовым путём).
+     * Встроенный логин без кода из письма: email + пазл (+ разовый пропуск
+     * из админки) → сразу пара токенов.
      *
      * @return array{ok: bool, data?: array, code?: string, error?: string}
      */
-    public static function embeddedDirect(string $email, ?string $customerIp, ?string $captchaToken, ?string $fingerprint = null): array
+    public static function embeddedDirect(string $email, ?string $customerIp, ?string $captchaToken, ?string $fingerprint = null, ?string $bypassToken = null): array
     {
         return self::embeddedCall('auth/embedded/direct', [
             'email'         => $email,
             'customer_ip'   => $customerIp,
             'captcha_token' => $captchaToken,
             'fingerprint'   => $fingerprint,
+            'bypass_token'  => $bypassToken,
         ]);
     }
 
