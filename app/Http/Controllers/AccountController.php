@@ -20,11 +20,11 @@ use Illuminate\Support\Facades\Log;
 class AccountController extends Controller
 {
     /**
-     * Хаб: есть токены — заказы, нет — экран входа.
-     * Вход либо полностью у себя (разрешён в настройках интеграции
-     * кабинета, кеш CabinetService::shopSettings), либо мгновенный уход
-     * на кабинет. Промежуточный экран показываем только с ошибкой
-     * (иначе авторедирект зациклился бы: callback → index → start → …).
+     * Хаб: есть токены — живой кабинет текущего дизайна, нет — экран входа.
+     * Вход либо полностью у себя на дизайн-страницах (разрешён в настройках
+     * интеграции кабинета), либо мгновенный уход на кабинет. После неуспешного
+     * внешнего callback показываем дизайн-вход с текстом ошибки (иначе
+     * авторедирект зациклился бы: callback → index → start → …).
      */
     public function index()
     {
@@ -33,20 +33,17 @@ class AccountController extends Controller
         }
 
         if (session('cabinet.access_token')) {
-            return redirect()->route('account.orders');
+            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
         }
 
         $settings = CabinetService::shopSettings();
         if ($settings['embedded_login']) {
-            return view('account.embedded', [
-                'email' => (string) session('cabinet.embedded_email', ''),
-            ]);
+            return redirect()->route('cabinet.login', ['step' => 'email']);
         }
 
         if (session('cabinet_error')) {
-            return view('account.start', [
-                'cabinet_error' => (string) session('cabinet_error', ''),
-            ]);
+            return redirect()->route('cabinet.login', ['step' => 'email'])
+                ->with('cabinet_embedded_error', (string) session('cabinet_error', ''));
         }
 
         return $this->start();
@@ -98,7 +95,7 @@ class AccountController extends Controller
             return redirect()->route('home.login');
         }
         if (session('cabinet.access_token')) {
-            return redirect()->route('account.orders');
+            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
         }
         $settings = CabinetService::shopSettings();
         if (empty($settings['embedded_login'])) {
@@ -108,7 +105,7 @@ class AccountController extends Controller
         $email = trim((string) $request->input('email', ''));
 
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return redirect()->route('account.index')
+            return redirect()->route('cabinet.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', __('text.errors_wrong_email'))
                 ->withInput(['email' => $email]);
         }
@@ -118,7 +115,7 @@ class AccountController extends Controller
         // отказе НЕ должна его трогать — он ещё пригодится для входа с кодом.
         $captchaToken = (string) session('cabinet.captcha_token', '');
         if ($captchaToken === '') {
-            return redirect()->route('account.index')
+            return redirect()->route('cabinet.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', __('text.cabinet_captcha_required'))
                 ->withInput(['email' => $email]);
         }
@@ -132,13 +129,13 @@ class AccountController extends Controller
             session()->forget('cabinet.captcha_token');
             $this->storePair((array) $direct['data']);
 
-            return redirect()->route('account.orders');
+            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
         }
         if (!\in_array((string) ($direct['code'] ?? ''), ['direct_login_disabled', 'rate_limited'], true)) {
             session()->forget('cabinet.captcha_token');
             $message = $this->embeddedErrorMessage((string) ($direct['code'] ?? ''), (string) ($direct['error'] ?? ''), null);
 
-            return redirect()->route('account.index')
+            return redirect()->route('cabinet.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', $message)
                 ->withInput(['email' => $email]);
         }
@@ -148,38 +145,14 @@ class AccountController extends Controller
         if (empty($result['ok'])) {
             $message = $this->embeddedErrorMessage((string) ($result['code'] ?? ''), (string) ($result['error'] ?? ''), isset($result['retry_after']) ? (int) $result['retry_after'] : null);
 
-            return redirect()->route('account.index')
+            return redirect()->route('cabinet.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', $message)
                 ->withInput(['email' => $email]);
         }
 
         session(['cabinet.embedded_email' => $email]);
 
-        return redirect()->route('account.embedded.code');
-    }
-
-    /**
-     * Встроенный логин, шаг 2: форма кода.
-     */
-    public function embeddedCode()
-    {
-        if (!CabinetService::enabled()) {
-            return redirect()->route('home.login');
-        }
-        if (session('cabinet.access_token')) {
-            return redirect()->route('account.orders');
-        }
-        $settings = CabinetService::shopSettings();
-        if (empty($settings['embedded_login'])) {
-            return redirect()->route('account.index');
-        }
-        if ((string) session('cabinet.embedded_email', '') === '') {
-            return redirect()->route('account.index');
-        }
-
-        return view('account.embedded-code', [
-            'email' => (string) session('cabinet.embedded_email', ''),
-        ]);
+        return redirect()->route('cabinet.login', ['step' => 'code']);
     }
 
     /**
@@ -191,7 +164,7 @@ class AccountController extends Controller
             return redirect()->route('home.login');
         }
         if (session('cabinet.access_token')) {
-            return redirect()->route('account.orders');
+            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
         }
 
         $email = (string) session('cabinet.embedded_email', '');
@@ -202,7 +175,7 @@ class AccountController extends Controller
 
         $code = (string) preg_replace('/\D/', '', (string) $request->input('code', ''));
         if (strlen($code) !== 6) {
-            return redirect()->route('account.embedded.code')
+            return redirect()->route('cabinet.login', ['step' => 'code'])
                 ->with('cabinet_embedded_error', __('text.errors_wrong_code'));
         }
 
@@ -212,18 +185,18 @@ class AccountController extends Controller
             if ($resultCode === 'too_many_attempts') {
                 session()->forget('cabinet.embedded_email');
 
-                return redirect()->route('account.index')
+                return redirect()->route('cabinet.login', ['step' => 'email'])
                     ->with('cabinet_embedded_error', __('text.errors_too_many_attempts'));
             }
 
-            return redirect()->route('account.embedded.code')
+            return redirect()->route('cabinet.login', ['step' => 'code'])
                 ->with('cabinet_embedded_error', __('text.errors_wrong_code'));
         }
 
         $this->storePair((array) $result['data']);
         session()->forget('cabinet.embedded_email');
 
-        return redirect()->route('account.orders');
+        return redirect()->route('cabinet.live.page', ['page' => 'orders']);
     }
 
     /**
@@ -264,7 +237,7 @@ class AccountController extends Controller
         }
 
         if (session('cabinet.access_token')) {
-            return redirect()->route('account.orders');
+            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
         }
 
         $cfg  = CabinetService::config();
@@ -296,10 +269,11 @@ class AccountController extends Controller
         $error = $this->finishLogin($request);
 
         if ($error !== null) {
-            return redirect()->route('account.index')->with('cabinet_error', $this->humanError($error));
+            return redirect()->route('cabinet.login', ['step' => 'email'])
+                ->with('cabinet_embedded_error', $this->humanError($error));
         }
 
-        return redirect()->route('account.orders');
+        return redirect()->route('cabinet.live.page', ['page' => 'orders']);
     }
 
     /**
@@ -362,53 +336,6 @@ class AccountController extends Controller
     private function forgetTokens(): void
     {
         session()->forget(['cabinet.access_token', 'cabinet.refresh_token', 'cabinet.expires_at', 'cabinet.email', 'cabinet.forbidden']);
-    }
-
-    /**
-     * Страница "My orders" (Alpine-приложение, данные через прокси ниже).
-     */
-    public function orders()
-    {
-        return $this->page('account.orders');
-    }
-
-    public function bonus()
-    {
-        return $this->page('account.bonus');
-    }
-
-    public function referral()
-    {
-        return $this->page('account.referral');
-    }
-
-    public function sessions()
-    {
-        return $this->page('account.sessions');
-    }
-
-    public function contact()
-    {
-        return $this->page('account.contact');
-    }
-
-    /**
-     * Общая страница кабинета: требует включённого флага и токенов.
-     */
-    private function page(string $view)
-    {
-        if (!CabinetService::enabled()) {
-            return redirect()->route('home.login');
-        }
-        if (!session('cabinet.access_token')) {
-            return redirect()->route('account.index');
-        }
-
-        return view($view, [
-            'email'       => (string) session('cabinet.email', ''),
-            'cabinet_url' => CabinetService::cabinetUrl(),
-            'cabinet_fp'  => rtrim(CabinetService::cabinetUrl(), '/').'/f.js',
-        ]);
     }
 
     public function logout()

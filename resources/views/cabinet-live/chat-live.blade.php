@@ -6,7 +6,7 @@
 $cabLiveChatConfig = [
     'chatUrl' => route('account.api.chat'),
     'chatSendUrl' => route('account.api.chat.send'),
-    'loginUrl' => route('preview.cabinet.login', ['design' => $design, 'step' => 'email']),
+    'loginUrl' => route('cabinet.login', ['step' => 'email']),
     'tYou' => __('text.cabinet_chat_you'),
     'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
 ];

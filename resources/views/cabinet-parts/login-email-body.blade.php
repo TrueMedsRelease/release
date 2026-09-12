@@ -5,6 +5,9 @@
 --}}
 <div class="cablogin-step">
     <p class="cablogin-step__caption">1 · Email</p>
+    @if (!empty(session('cabinet_embedded_error')))
+        <div class="cablogin-field__error" role="alert">{{ session('cabinet_embedded_error') }}</div>
+    @endif
     <form class="cablogin-form" onsubmit="return false;" novalidate>
         <div class="cablogin-field">
             <label class="cablogin-field__label" for="shop-email">{{ __('text.cabinet_login_email') }}</label>

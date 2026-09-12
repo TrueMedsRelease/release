@@ -5,7 +5,7 @@
 @php
 $cabLiveReferralConfig = [
     'referralUrl' => route('account.api.referral'),
-    'loginUrl' => route('preview.cabinet.login', ['design' => $design, 'step' => 'email']),
+    'loginUrl' => route('cabinet.login', ['step' => 'email']),
     'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
 ];
 @endphp

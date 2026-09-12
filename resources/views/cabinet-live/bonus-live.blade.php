@@ -5,7 +5,7 @@
 @php
 $cabLiveBonusConfig = [
     'bonusUrl' => route('account.api.bonus'),
-    'loginUrl' => route('preview.cabinet.login', ['design' => $design, 'step' => 'email']),
+    'loginUrl' => route('cabinet.login', ['step' => 'email']),
     'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
     'tExpireAmount' => __('text.cabinet_bonus_expire_amount'),
     'tActions' => [

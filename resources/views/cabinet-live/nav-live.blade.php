@@ -26,7 +26,7 @@
     <nav class="cabp-tabs" aria-label="Cabinet">
         @foreach ($cabpTabs as $tab)
             @if (!empty($tab['scope']) && session('cabinet.forbidden.' . $tab['scope'])) @continue @endif
-            <a href="{{ route('cabinet.live.page', ['design' => $design, 'page' => $tab['key']]) }}"
+            <a href="{{ route('cabinet.live.page', ['page' => $tab['key']]) }}"
                class="cabp-tab @if ($cabpCurrent === $tab['key']) is-active @endif"
                @if ($cabpCurrent === $tab['key']) aria-current="page" @endif>{{ $tab['label'] }}</a>
         @endforeach

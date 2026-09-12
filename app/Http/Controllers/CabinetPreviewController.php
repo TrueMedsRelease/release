@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\PhoneCodes;
+use App\Services\CabinetService;
 use App\Services\ProductServices;
 use Illuminate\Support\Facades\DB;
 use Phattarachai\LaravelMobileDetect\Agent;
@@ -89,12 +90,17 @@ class CabinetPreviewController extends Controller
 
     /**
      * Вход в кабинет текущего дизайна. Пример: /cabinet-login/email
+     * Без встроенного входа — сразу на внешний (формы всё равно упрутся
+     * в 403 embedded_disabled).
      */
     public function cabinetLogin(string $step = 'email')
     {
         $design = $this->currentDesign();
         if ($design === null) {
             abort(404);
+        }
+        if (!CabinetService::shopSettings()['embedded_login']) {
+            return redirect()->route('account.start');
         }
 
         return $this->login($design, $step);
@@ -114,7 +120,11 @@ class CabinetPreviewController extends Controller
             abort(404);
         }
         if ((string) session('cabinet.access_token', '') === '') {
-            return redirect()->route('cabinet.login', ['step' => 'email']);
+            if (CabinetService::shopSettings()['embedded_login']) {
+                return redirect()->route('cabinet.login', ['step' => 'email']);
+            }
+
+            return redirect()->route('account.start');
         }
 
         return view($design . '.cabinet.live-' . $page, array_merge(

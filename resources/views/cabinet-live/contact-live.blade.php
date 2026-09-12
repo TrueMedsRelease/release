@@ -6,7 +6,7 @@
 $cabLiveContactConfig = [
     'contactUrl' => route('account.api.contact'),
     'meUrl' => route('account.api.me'),
-    'loginUrl' => route('preview.cabinet.login', ['design' => $design, 'step' => 'email']),
+    'loginUrl' => route('cabinet.login', ['step' => 'email']),
     'email' => (string) session('cabinet.email', ''),
     'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
 ];

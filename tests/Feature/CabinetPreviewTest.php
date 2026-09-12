@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Services\CabinetService;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tests\TestCase;
 
@@ -78,15 +80,89 @@ class CabinetPreviewTest extends TestCase
         $controller->page('design_99', 'orders');
     }
 
-    public function test_live_redirects_to_login_without_tokens(): void
+    public function test_live_redirects_to_design_login_when_embedded_on(): void
     {
-        // Прогреваем UrlGenerator.
-        $this->get('/preview/cabinet/design_10/orders');
+        $this->get('/preview/cabinet/design_10/orders'); // прогреваем UrlGenerator
+        $this->seedShopSettings(true);
 
-        foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
-            $response = $this->get('/cabinet/design_10/' . $page);
-            $response->assertRedirect(route('preview.cabinet.login', ['design' => 'design_10', 'step' => 'email']));
+        try {
+            foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
+                $response = $this->get('/cabinet/' . $page);
+                $response->assertRedirect(route('cabinet.login', ['step' => 'email']));
+            }
+        } finally {
+            $this->forgetShopSettings();
         }
+    }
+
+    public function test_live_redirects_to_external_when_embedded_off(): void
+    {
+        $this->get('/preview/cabinet/design_10/orders'); // прогреваем UrlGenerator
+        $this->seedShopSettings(false);
+
+        try {
+            foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
+                $response = $this->get('/cabinet/' . $page);
+                $response->assertRedirect(route('account.start'));
+            }
+        } finally {
+            $this->forgetShopSettings();
+        }
+    }
+
+    public function test_designless_login_renders_when_embedded_on(): void
+    {
+        $this->get('/preview/cabinet/design_10/orders'); // прогреваем UrlGenerator
+        $this->seedShopSettings(true);
+
+        try {
+            foreach (['email', 'captcha', 'code'] as $step) {
+                $response = $this->get('/cabinet-login/' . $step);
+                $response->assertStatus(200);
+                $response->assertSee('cablogin-', false);
+            }
+        } finally {
+            $this->forgetShopSettings();
+        }
+    }
+
+    public function test_designless_login_redirects_to_external_when_embedded_off(): void
+    {
+        $this->get('/preview/cabinet/design_10/orders'); // прогреваем UrlGenerator
+        $this->seedShopSettings(false);
+
+        try {
+            foreach (['email', 'captcha', 'code'] as $step) {
+                $response = $this->get('/cabinet-login/' . $step);
+                $response->assertRedirect(route('account.start'));
+            }
+        } finally {
+            $this->forgetShopSettings();
+        }
+    }
+
+    public function test_unknown_design_404_on_designless_routes(): void
+    {
+        $this->get('/preview/cabinet/design_10/orders'); // прогреваем UrlGenerator
+
+        $response = $this->withSession(['design' => 'design_99'])->get('/cabinet/orders');
+        $response->assertNotFound();
+
+        $response = $this->withSession(['design' => 'design_99'])->get('/cabinet-login/email');
+        $response->assertNotFound();
+    }
+
+    /**
+     * Настройки интеграции без сети: кеш обходит и БД, и кабинет.
+     */
+    private function seedShopSettings(bool $embedded): void
+    {
+        Cache::put(CabinetService::SETTINGS_CACHE_KEY, ['shop_id' => 'test', 'embedded_login' => $embedded], 60);
+    }
+
+    private function forgetShopSettings(): void
+    {
+        Cache::forget(CabinetService::SETTINGS_CACHE_KEY);
     }
 
     /**

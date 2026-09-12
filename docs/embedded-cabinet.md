@@ -17,9 +17,16 @@
    |                        |-- POST /api/v1/auth/token ---------->|
    |                        |   {code, secret, code_verifier}      |
    |                        |<------ access + refresh -------------|
-   |   /account/orders (Alpine)                                   |
+   |   /cabinet/orders (дизайн из сессии, Alpine)                 |
    |   /account/api/* ------|--- /api/v1/* Bearer + X-Fingerprint->|
 ```
+
+Кабинет живёт в дизайнах (`design_*/cabinet/*`, дизайн из сессии — в URL
+его нет): `/cabinet/{orders,bonus,referral,contact,chat}`,
+вход — `/cabinet-login/{email,captcha,code}`. Старые общие страницы
+`account/*` удалены; `/account` остался хабом-редиректом, `/account/api/*`
+и embedded-endpoint'ы — без изменений. Превью для вёрстки с моками:
+`/preview/cabinet/{design}/{page}` и `/preview/cabinet-login/{design}/{step}`.
 
 - Секретный ключ хранится **только на сервере** (`shop_keys.cabinet_secret`),
   в браузер не попадает. Обмен кода — всегда сервер→сервер.
@@ -72,13 +79,14 @@ Cache 1 минуту, `cabinet.shop_settings`) и ветвится по флаг
   он показывается только с текстом ошибки, иначе редирект бы зациклился),
   возвращается на `/account/callback` с одноразовым кодом.
 - **Флаг вкл (менеджер разрешил в `/admin/api-clients` → «Встроенный логин в шопе»)** —
-  `/account` показывает форму **у себя** в стилях страницы логина кабинета 1:1
-  (зелёный лейаут, лого, hero, телефоны, OTP-ячейки): email + пазл-капча **кабинета**
-  (тянется по API, своей капчи у формы нет) → шоп просит кабинет отправить код
-  (`embedded/start` с одноразовым `captcha_token`), покупатель вводит код из письма
-  у нас же (`embedded/verify`) → пара токенов в сессию сервера. Внешних сайтов нет вообще.
-   Код из письма обязателен всегда. Повторная отправка кода — через шаг email
-   заново (нужен свежий пазл).
+  дизайн-страницы входа `/cabinet-login/email|captcha|code` в скине текущего
+  дизайна (общие partials `cabinet-parts/*`, JS `shop-login.js`): email +
+  пазл-капча **кабинета** (тянется по API, своей капчи у формы нет) → шоп просит
+  кабинет отправить код (`embedded/start` с одноразовым `captcha_token`),
+  покупатель вводит код из письма у нас же (`embedded/verify`) → пара токенов
+  в сессию сервера. Внешних сайтов нет вообще.
+  Код из письма обязателен всегда. Повторная отправка кода — через шаг email
+  заново (нужен свежий пазл).
 - Перед `embedded/start` шоп молча пробует `embedded/direct` (вход без кода):
   он срабатывает только для запросов с админского IP кабинета, остальным
   портал отвечает 403 `direct_login_disabled` (и `rate_limited`) — тогда идём
@@ -126,28 +134,35 @@ Cache 1 минуту, `cabinet.shop_settings`) и ветвится по флаг
   в `shop_keys` при сохранении удаляется автоматически.
 - `app/Http/Controllers/AccountController.php` — `/account/*`: хаб (ветвление
   по `embedded_login`), start/callback (внешний вход), `embeddedStart`/
-  `embeddedCode`/`embeddedVerify` (встроенный вход, throttle 10/мин + своя
-  капча `captcha_check`), страницы, logout, JSON-прокси.
+  `embeddedVerify` (встроенный вход, throttle 10/мин), logout, JSON-прокси.
+  Старых страничных экшенов больше нет — страницы отдаёт
+  `CabinetPreviewController` (`/cabinet/*`, `/cabinet-login/*`, дизайн
+  из сессии; `/preview/*` — моки для вёрстки).
 - `app/Http/Controllers/AdminController.php` — `cabinet()`,
   `save_cabinet_info()`, `test_cabinet_connection()` (+ пункт меню
   и `pageAdminTitle`, роуты в `routes/web.php`).
-- `resources/views/account/` — `layout`, `start`, `orders` (Alpine).
+- `resources/views/design_*/cabinet/` — per-design кабинет (13 дизайнов):
+  `live-*` (живые данные через `/account/api/*`), `login-*` (вход),
+  остальные (моки для превью); общие куски — `cabinet-live/*`,
+  `cabinet-parts/*`.
 - `resources/views/admin/cabinet.blade.php` + компоненты `resources/views/admin/cabinet/`
   (`status`, `form`, `guide`), стили `public/admin_style/css/cabinet.css`
   и JS `public/admin_style/js/cabinet.js` (отдельные файлы только этой страницы).
 - `public/js/cabinet-alpine.min.js` (вендор Alpine 3, в репо), `public/js/cabinet/account.js`,
-  `public/css/cabinet-account.css` (стили 1:1 с кабинетом, скоуп `.cab-account`),
+  `shop-cabinet.js` (транспорт + Alpine-компоненты),
   `public/fonts/Poppins-*.woff2` (скопированы из кабинета).
-- Тесты: `tests/Unit/CabinetServiceTest.php`.
+- Тесты: `tests/Unit/CabinetServiceTest.php`, `tests/Feature/CabinetPreviewTest.php`.
 
 ## Состав кабинета
 
-- **My orders** (`/account/orders`): список + курсорная пагинация, shipping,
+- **My orders** (`/cabinet/orders`): список + курсорная пагинация, shipping,
   tracking, остановка автопродления.
-- **Bonus** (`/account/bonus`): карта, баланс, сгорающие бонусы, история с пагинацией.
-- **Referral** (`/account/referral`): ссылка + копирование, QR, купон, приглашённые заказы.
-- **Sessions** (`/account/sessions`): активные сессии + «выйти везде» (отзывает и локальные токены).
-- **Contact us** (`/account/contact`): форма (с Bearer капча не нужна).
+- **Bonus** (`/cabinet/bonus`): карта, баланс, сгорающие бонусы, история с пагинацией.
+- **Referral** (`/cabinet/referral`): ссылка + копирование, QR, купон, приглашённые заказы.
+- **Contact us** (`/cabinet/contact`): форма (с Bearer капча не нужна).
+- **Chat** (`/cabinet/chat`): переписка с поддержкой.
+- Страницы Sessions в дизайнах нет (только API `sessions`/`revoke-all` живут
+  в прокси) — UI перенесём при необходимости.
 - Шапка кабинета: email + баланс (из `/api/v1/me`), навигация по разделам.
 
 ## Нюансы и ограничения

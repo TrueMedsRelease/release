@@ -6,8 +6,8 @@
 @php
 $cabLiveOrdersConfig = [
     'email' => (string) session('cabinet.email', ''),
-    'startUrl' => route('preview.cabinet.login', ['design' => $design, 'step' => 'email']),
-    'loginUrl' => route('preview.cabinet.login', ['design' => $design, 'step' => 'email']),
+    'startUrl' => route('cabinet.login', ['step' => 'email']),
+    'loginUrl' => route('cabinet.login', ['step' => 'email']),
     'ordersUrl' => route('account.api.orders'),
     'meUrl' => route('account.api.me'),
     'shipUrl' => url('/account/api/orders'),
@@ -156,7 +156,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                                 <p class="oc-ship__addr"><span x-text="shipAddress(order.id)"></span><br><span x-text="shipCityLine(order.id)"></span><br><span x-text="shipCountryLine(order.id)"></span></p>
                                                 <span class="oc-ship__contact">
                                                     <p class="oc-ship__note">{{ __('text.cabinet_shipping_note') }}</p>
-                                                    <a class="oc-ship__btn" href="{{ route('cabinet.live.page', ['design' => $design, 'page' => 'contact']) }}"><span>{{ __('text.cabinet_nav_contact') }}</span></a>
+                                                    <a class="oc-ship__btn" href="{{ route('cabinet.live.page', ['page' => 'contact']) }}"><span>{{ __('text.cabinet_nav_contact') }}</span></a>
                                                 </span>
                                             </span>
                                         </template>
@@ -289,7 +289,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
         <div class="oc-side__card">
             <p class="oc-side__help-title">{{ __('text.cabinet_help_title') }}</p>
             <p class="oc-side__help-text">{{ __('text.cabinet_help_text') }}</p>
-            <a class="button cabp-action cabp-action--dark cabp-wide" href="{{ route('cabinet.live.page', ['design' => $design, 'page' => 'contact']) }}">
+            <a class="button cabp-action cabp-action--dark cabp-wide" href="{{ route('cabinet.live.page', ['page' => 'contact']) }}">
                 <span>{{ __('text.cabinet_nav_contact') }}</span>
             </a>
         </div>
