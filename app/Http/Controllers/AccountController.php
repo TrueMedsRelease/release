@@ -114,15 +114,37 @@ class AccountController extends Controller
         }
 
         // Одноразовый токен пазла из сессии (кладётся captchaVerify выше).
+        // Сжигаем только на выходе с этого шага: попытка direct ниже при
+        // отказе НЕ должна его трогать — он ещё пригодится для входа с кодом.
         $captchaToken = (string) session('cabinet.captcha_token', '');
-        session()->forget('cabinet.captcha_token');
         if ($captchaToken === '') {
             return redirect()->route('account.index')
                 ->with('cabinet_embedded_error', __('text.cabinet_captcha_required'))
                 ->withInput(['email' => $email]);
         }
 
+        // Прямой вход без кода — только для запросов шопа с админского IP
+        // кабинета. Остальным портал отвечает 403 direct_login_disabled —
+        // молча идём обычным путём с кодом (и при rate_limited тоже:
+        // у start свой лимит, пользователю прерываться незачем).
+        $direct = CabinetService::embeddedDirect($email, $request->ip(), $captchaToken, $this->browserFingerprint($request));
+        if (!empty($direct['ok'])) {
+            session()->forget('cabinet.captcha_token');
+            $this->storePair((array) $direct['data']);
+
+            return redirect()->route('account.orders');
+        }
+        if (!\in_array((string) ($direct['code'] ?? ''), ['direct_login_disabled', 'rate_limited'], true)) {
+            session()->forget('cabinet.captcha_token');
+            $message = $this->embeddedErrorMessage((string) ($direct['code'] ?? ''), (string) ($direct['error'] ?? ''), null);
+
+            return redirect()->route('account.index')
+                ->with('cabinet_embedded_error', $message)
+                ->withInput(['email' => $email]);
+        }
+
         $result = CabinetService::embeddedStart($email, $request->ip(), $captchaToken, $this->browserFingerprint($request));
+        session()->forget('cabinet.captcha_token');
         if (empty($result['ok'])) {
             $message = $this->embeddedErrorMessage((string) ($result['code'] ?? ''), (string) ($result['error'] ?? ''), isset($result['retry_after']) ? (int) $result['retry_after'] : null);
 
