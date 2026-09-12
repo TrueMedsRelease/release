@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CabinetPreviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ChatController;
@@ -162,9 +163,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::controller(AccountController::class)->group(function () {
         Route::get('/account', 'index')->name('account.index');
         Route::get('/account/api/captcha', 'captchaImage')->name('account.api.captcha');
+        Route::get('/account/api/e2ee/keys', 'apiE2eeKeys')->name('account.api.e2ee.keys')->middleware('throttle:30,1');
         Route::post('/account/api/captcha/verify', 'captchaVerify')->name('account.api.captcha.verify')->middleware('throttle:10,1');
         Route::post('/account/embedded/start', 'embeddedStart')->name('account.embedded.start')->middleware('throttle:10,1');
-        Route::post('/account/embedded/direct', 'embeddedDirect')->name('account.embedded.direct')->middleware('throttle:10,1');
         Route::get('/account/embedded/code', 'embeddedCode')->name('account.embedded.code');
         Route::post('/account/embedded/verify', 'embeddedVerify')->name('account.embedded.verify')->middleware('throttle:10,1');
         Route::get('/account/start', 'start')->name('account.start');
@@ -186,6 +187,8 @@ Route::controller(HomeController::class)->group(function () {
         Route::get('/account/api/sessions', 'apiSessions')->name('account.api.sessions');
         Route::post('/account/api/sessions/revoke-all', 'apiSessionsRevokeAll')->name('account.api.sessions.revoke');
         Route::post('/account/api/contact', 'apiContact')->name('account.api.contact');
+        Route::get('/account/api/chat/messages', 'apiChat')->name('account.api.chat');
+        Route::post('/account/api/chat/messages', 'apiChatSend')->name('account.api.chat.send');
     });
     Route::get('/lang={locale}', 'language')->name('home.language');
     Route::get('/curr={currency}', 'currency')->name('home.currency');
@@ -368,6 +371,28 @@ Route::get('/admin/logs/{file}', function ($file) {
 
     return response(implode('', $lastLines), 200)
         ->header('Content-Type', 'text/plain; charset=UTF-8');
+});
+
+Route::controller(CabinetPreviewController::class)->prefix('preview/cabinet')->group(static function () {
+    // Статика кабинета в лейауте магазина: без auth, данные — моки.
+    // Только для вёрстки, боевые ссылки дизайн не указывают.
+    // Пилот: design_10. Пример: /preview/cabinet/design_10/orders
+    Route::get('/{design}/{page?}', 'page')->name('preview.cabinet.page');
+});
+Route::controller(CabinetPreviewController::class)->prefix('cabinet')->group(static function () {
+    // Живой кабинет в лейауте текущего дизайна (как остальные страницы):
+    // дизайн из сессии, в URL не указывается. Без токенов — редирект на вход.
+    // Пример: /cabinet/orders
+    Route::get('/{page?}', 'cabinetPage')->name('cabinet.live.page');
+});
+Route::controller(CabinetPreviewController::class)->prefix('preview/cabinet-login')->group(static function () {
+    // Статика логина: /preview/cabinet-login/design_10/login и .../code
+    Route::get('/{design}/{step?}', 'login')->name('preview.cabinet.login');
+});
+Route::controller(CabinetPreviewController::class)->prefix('cabinet-login')->group(static function () {
+    // Вход в кабинет текущего дизайна, дизайн из сессии.
+    // Пример: /cabinet-login/email
+    Route::get('/{step?}', 'cabinetLogin')->name('cabinet.login');
 });
 
 Route::fallback(function () {

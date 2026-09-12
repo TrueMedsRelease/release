@@ -7,6 +7,7 @@
 
     <form class="login-content__form form" method="post" action="{{ route('account.embedded.start') }}" id="cab-embedded-form" novalidate>
         @csrf
+        <input type="hidden" name="fingerprint" id="cab-fp" value="" />
         {{-- Шаг 1 как в customerportal Login.vue: только email + кнопка. Капчи здесь нет. --}}
         <div id="cab-step-email">
             <div class="form__rows">

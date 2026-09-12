@@ -7,6 +7,7 @@
 
     <form class="login-content__form form" method="post" action="{{ route('account.embedded.verify') }}" id="cab-code-form">
         @csrf
+        <input type="hidden" name="fingerprint" id="cab-code-fp" value="" />
         <div class="login-content__error" role="alert" id="cab-code-error" style="display: none;"></div>
         @if (session('cabinet_embedded_error'))
             <div class="login-content__error" role="alert">{{ session('cabinet_embedded_error') }}</div>

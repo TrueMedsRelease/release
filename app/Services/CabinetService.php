@@ -249,8 +249,9 @@ class CabinetService
      * Логический скоуп кабинета для пути /api/v1/* (1:1 с ApiClientPolicy
      * кабинета). Нужен, чтобы шоп запоминал 403 «скоуп выключен» и прятал
      * соответствующие разделы. null — путь вне скоупов.
+     * Чат различаем по методу: чтение — chat, отправка — chat.send.
      */
-    public static function scopeForPath(string $path): ?string
+    public static function scopeForPath(string $path, string $method = 'GET'): ?string
     {
         $path = trim($path, '/');
         if ($path === 'me') {
@@ -282,6 +283,9 @@ class CabinetService
         if ($path === 'contact') {
             return 'contact';
         }
+        if ($path === 'chat/messages') {
+            return strtoupper($method) === 'POST' ? 'chat.send' : 'chat';
+        }
 
         return null;
     }
@@ -294,13 +298,22 @@ class CabinetService
         $cfg = self::config();
         $url = $cfg['url'].'/api/v1/'.ltrim($path, '/');
 
+        $headers = [
+            'Authorization'  => 'Bearer '.$accessToken,
+            'X-Fingerprint' => $fingerprint,
+        ];
+        // Сквозные заголовки E2EE (X-E2EE, X-E2EE-Epk) — шоп их не читает,
+        // только ретранслирует: тела при этом идут шифром (см. e2ee.js).
+        foreach ((array) ($options['headers'] ?? []) as $name => $value) {
+            if (\is_string($name) && $name !== '' && \is_scalar($value)) {
+                $headers[$name] = trim((string) $value);
+            }
+        }
+
         $pending = Http::acceptJson()
             ->timeout(15)
             ->connectTimeout(5)
-            ->withHeaders([
-                'Authorization'  => 'Bearer '.$accessToken,
-                'X-Fingerprint' => $fingerprint,
-            ]);
+            ->withHeaders($headers);
 
         $method = strtoupper($method);
         if ($method === 'GET') {
@@ -329,15 +342,44 @@ class CabinetService
     }
 
     /**
-     * Настройки интеграции из кабинета (кеш 1 минуту): шоп ветвится по ним —
-     * встроенный логин у себя либо уход на внешние страницы кабинета,
-     * а внутри встроенного — нужен ли код из письма (skip_2fa).
+     * Публичный ключ E2EE портала (релей без авторизации, как в кабинете).
+     * Браузер забирает его через /account/api/e2ee/keys.
      *
-     * @return array{shop_id: string, embedded_login: bool, skip_2fa: bool}
+     * @return array{ok: bool, data?: array, error?: string}
+     */
+    public static function e2eeKeys(): array
+    {
+        $cfg = self::config();
+
+        try {
+            $response = Http::acceptJson()
+                ->timeout(10)
+                ->connectTimeout(5)
+                ->get($cfg['url'].'/api/v1/e2ee/keys');
+        } catch (\Throwable $e) {
+            Log::error('CabinetService e2ee keys failed: '.$e->getMessage());
+
+            return ['ok' => false, 'error' => 'connection_failed'];
+        }
+
+        $body = $response->json();
+        $body = \is_array($body) ? $body : [];
+        if (!$response->successful() || empty($body['kid']) || empty($body['pk'])) {
+            return ['ok' => false, 'error' => (string) ($body['code'] ?? 'e2ee_unavailable')];
+        }
+
+        return ['ok' => true, 'data' => ['kid' => (string) $body['kid'], 'pk' => (string) $body['pk']]];
+    }
+
+    /**
+     * Настройки интеграции из кабинета (кеш 1 минуту): шоп ветвится по ним —
+     * встроенный логин у себя либо уход на внешние страницы кабинета.
+     *
+     * @return array{shop_id: string, embedded_login: bool}
      */
     public static function shopSettings(bool $force = false): array
     {
-        $defaults = ['shop_id' => '', 'embedded_login' => false, 'skip_2fa' => false];
+        $defaults = ['shop_id' => '', 'embedded_login' => false];
 
         try {
             $cached = Cache::get(self::SETTINGS_CACHE_KEY);
@@ -378,7 +420,7 @@ class CabinetService
     }
 
     /**
-     * @return array{shop_id: string, embedded_login: bool, skip_2fa: bool}|null null — нет секрета/связи
+     * @return array{shop_id: string, embedded_login: bool}|null null — нет секрета/связи
      */
     private static function fetchShopSettings(): ?array
     {
@@ -412,7 +454,6 @@ class CabinetService
         return [
             'shop_id'        => (string) ($body['shop_id'] ?? ''),
             'embedded_login' => (bool) $body['embedded_login'],
-            'skip_2fa'       => (bool) ($body['skip_2fa'] ?? false),
         ];
     }
 
@@ -491,12 +532,13 @@ class CabinetService
      *
      * @return array{ok: bool, code?: string, error?: string, retry_after?: int}
      */
-    public static function embeddedStart(string $email, ?string $customerIp, ?string $captchaToken): array
+    public static function embeddedStart(string $email, ?string $customerIp, ?string $captchaToken, ?string $fingerprint = null): array
     {
         return self::embeddedCall('auth/embedded/start', [
             'email'         => $email,
             'customer_ip'   => $customerIp,
             'captcha_token' => $captchaToken,
+            'fingerprint'   => $fingerprint,
         ]);
     }
 
@@ -505,27 +547,13 @@ class CabinetService
      *
      * @return array{ok: bool, data?: array, code?: string, error?: string}
      */
-    public static function embeddedVerify(string $email, string $code, ?string $customerIp): array
+    public static function embeddedVerify(string $email, string $code, ?string $customerIp, ?string $fingerprint = null): array
     {
         return self::embeddedCall('auth/embedded/verify', [
             'email'       => $email,
             'code'        => $code,
             'customer_ip' => $customerIp,
-        ]);
-    }
-
-    /**
-     * Встроенный логин без кода из письма (только при skip_2fa у клиента):
-     * email + пазл → сразу пара токенов.
-     *
-     * @return array{ok: bool, data?: array, code?: string, error?: string}
-     */
-    public static function embeddedDirect(string $email, ?string $customerIp, ?string $captchaToken): array
-    {
-        return self::embeddedCall('auth/embedded/direct', [
-            'email'         => $email,
-            'customer_ip'   => $customerIp,
-            'captcha_token' => $captchaToken,
+            'fingerprint' => $fingerprint,
         ]);
     }
 

@@ -301,6 +301,13 @@
             hidden.value = value();
             if (hidden.value.length === 6 && !submitting) {
                 submitting = true;
+                // K_code для E2EE: код ещё в руках, после verify его уже нигде нет.
+                try {
+                    if (window.E2EE) {
+                        var emailEl = document.getElementById('cab-email');
+                        window.E2EE.setCode(hidden.value, emailEl ? emailEl.value : '');
+                    }
+                } catch (e) {}
                 form.submit();
             }
         }
@@ -366,6 +373,28 @@
         focusIndex(0);
     }
 
+    /* ================= fingerprint для привязки кода (детект перехвата) ================= */
+
+    // Считается лениво через DeviceLib (тот же hash.v4, что шлёт account.js
+    // в X-FP): кладём в скрытые поля обеих форм, шоп пробросит в кабинет,
+    // кабинет сверит с окружением использования кода. Пусто = без сигнала.
+    function initFingerprint() {
+        function fill(fp) {
+            if (!fp) return;
+            ['cab-fp', 'cab-code-fp'].forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el && !el.value) el.value = fp;
+            });
+        }
+        try {
+            if (typeof window.DeviceLib === 'undefined') return;
+            new window.DeviceLib().get().then(function (r) {
+                var fp = (r && r.hash && (r.hash.v4 || String(r.hash.numeric || ''))) || '';
+                if (fp) fill(String(fp));
+            }).catch(function () {});
+        } catch (e) {}
+    }
+
     /* ================= повторная отправка (обратный отсчёт) ================= */
 
     function initResend() {
@@ -400,10 +429,12 @@
             initCaptcha();
             initOtp();
             initResend();
+            initFingerprint();
         });
     } else {
         initCaptcha();
         initOtp();
         initResend();
+        initFingerprint();
     }
 })();

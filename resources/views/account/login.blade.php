@@ -77,6 +77,7 @@
 </div>
 <script src="{{ asset('js/cabinet/custom-scrollbar.js') }}?v={{ filemtime(public_path('js/cabinet/custom-scrollbar.js')) }}"></script>
 <script src="{{ asset('js/cabinet/lang-select.js') }}?v={{ filemtime(public_path('js/cabinet/lang-select.js')) }}"></script>
+<script src="{{ asset('js/cabinet/device-lib.js') }}?v={{ filemtime(public_path('js/cabinet/device-lib.js')) }}"></script>
 @stack('cab_login_scripts')
 </body>
 </html>

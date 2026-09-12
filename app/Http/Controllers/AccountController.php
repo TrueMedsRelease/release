@@ -38,13 +38,6 @@ class AccountController extends Controller
 
         $settings = CabinetService::shopSettings();
         if ($settings['embedded_login']) {
-            // Пропуск 2FA у клиента — вход без кода из письма вообще.
-            if (!empty($settings['skip_2fa'])) {
-                return view('account.embedded-direct', [
-                    'email' => (string) session('cabinet.embedded_email', ''),
-                ]);
-            }
-
             return view('account.embedded', [
                 'email' => (string) session('cabinet.embedded_email', ''),
             ]);
@@ -111,10 +104,6 @@ class AccountController extends Controller
         if (empty($settings['embedded_login'])) {
             return redirect()->route('account.index');
         }
-        // При пропуске 2FA шаг с кодом не существует — только прямой вход.
-        if (!empty($settings['skip_2fa'])) {
-            return redirect()->route('account.index');
-        }
 
         $email = trim((string) $request->input('email', ''));
 
@@ -133,7 +122,7 @@ class AccountController extends Controller
                 ->withInput(['email' => $email]);
         }
 
-        $result = CabinetService::embeddedStart($email, $request->ip(), $captchaToken);
+        $result = CabinetService::embeddedStart($email, $request->ip(), $captchaToken, $this->browserFingerprint($request));
         if (empty($result['ok'])) {
             $message = $this->embeddedErrorMessage((string) ($result['code'] ?? ''), (string) ($result['error'] ?? ''), isset($result['retry_after']) ? (int) $result['retry_after'] : null);
 
@@ -159,7 +148,7 @@ class AccountController extends Controller
             return redirect()->route('account.orders');
         }
         $settings = CabinetService::shopSettings();
-        if (empty($settings['embedded_login']) || !empty($settings['skip_2fa'])) {
+        if (empty($settings['embedded_login'])) {
             return redirect()->route('account.index');
         }
         if ((string) session('cabinet.embedded_email', '') === '') {
@@ -185,7 +174,7 @@ class AccountController extends Controller
 
         $email = (string) session('cabinet.embedded_email', '');
         $settings = CabinetService::shopSettings();
-        if ($email === '' || empty($settings['embedded_login']) || !empty($settings['skip_2fa'])) {
+        if ($email === '' || empty($settings['embedded_login'])) {
             return redirect()->route('account.index');
         }
 
@@ -195,7 +184,7 @@ class AccountController extends Controller
                 ->with('cabinet_embedded_error', __('text.errors_wrong_code'));
         }
 
-        $result = CabinetService::embeddedVerify($email, $code, $request->ip());
+        $result = CabinetService::embeddedVerify($email, $code, $request->ip(), $this->browserFingerprint($request));
         if (empty($result['ok'])) {
             $resultCode = (string) ($result['code'] ?? '');
             if ($resultCode === 'too_many_attempts') {
@@ -216,50 +205,15 @@ class AccountController extends Controller
     }
 
     /**
-     * Встроенный логин без кода из письма (только при skip_2fa у клиента):
-     * email + пазл → сразу пара токенов, шага с кодом нет вообще.
+     * Fingerprint браузера из скрытого поля форм (считает DeviceLib):
+     * шоп пробрасывает его в кабинет для привязки кода (детект перехвата).
+     * Пусто — допустимо, тогда сверка по fingerprint пропускается.
      */
-    public function embeddedDirect(Request $request)
+    private function browserFingerprint(Request $request): ?string
     {
-        if (!CabinetService::enabled()) {
-            return redirect()->route('home.login');
-        }
-        if (session('cabinet.access_token')) {
-            return redirect()->route('account.orders');
-        }
-        $settings = CabinetService::shopSettings();
-        if (empty($settings['embedded_login']) || empty($settings['skip_2fa'])) {
-            return redirect()->route('account.index');
-        }
+        $fp = trim((string) $request->input('fingerprint', ''));
 
-        $email = trim((string) $request->input('email', ''));
-        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return redirect()->route('account.index')
-                ->with('cabinet_embedded_error', __('text.errors_wrong_email'))
-                ->withInput(['email' => $email]);
-        }
-
-        // Одноразовый токен пазла из сессии (кладётся captchaVerify выше).
-        $captchaToken = (string) session('cabinet.captcha_token', '');
-        session()->forget('cabinet.captcha_token');
-        if ($captchaToken === '') {
-            return redirect()->route('account.index')
-                ->with('cabinet_embedded_error', __('text.cabinet_captcha_required'))
-                ->withInput(['email' => $email]);
-        }
-
-        $result = CabinetService::embeddedDirect($email, $request->ip(), $captchaToken);
-        if (empty($result['ok'])) {
-            $message = $this->embeddedErrorMessage((string) ($result['code'] ?? ''), (string) ($result['error'] ?? ''), null);
-
-            return redirect()->route('account.index')
-                ->with('cabinet_embedded_error', $message)
-                ->withInput(['email' => $email]);
-        }
-
-        $this->storePair((array) $result['data']);
-
-        return redirect()->route('account.orders');
+        return $fp !== '' ? substr($fp, 0, 128) : null;
     }
 
     private function embeddedErrorMessage(string $code, string $fallback, ?int $retryAfter): string
@@ -268,7 +222,6 @@ class AccountController extends Controller
             'unknown_email'         => __('text.errors_unknown_email'),
             'cooldown'              => __('text.errors_code_cooldown', ['seconds' => (int) $retryAfter]),
             'embedded_disabled'     => __('text.errors_embedded_disabled'),
-            'direct_login_disabled' => __('text.errors_direct_disabled'),
             'captcha_required'      => __('text.cabinet_captcha_required'),
             'connection_failed'     => __('text.errors_connection_failed'),
             default                 => $fallback !== '' ? $fallback : __('text.errors_login_failed'),
@@ -586,9 +539,74 @@ class AccountController extends Controller
         return $this->proxy($request, 'POST', 'contact', ['body' => $body]);
     }
 
+    public function apiChat(Request $request)
+    {
+        $query = [];
+        if ($request->query('offset') !== null && $request->query('offset') !== '') {
+            $query['offset'] = max(0, (int) $request->query('offset'));
+        }
+        if ($request->query('per_page') !== null && $request->query('per_page') !== '') {
+            $query['per_page'] = min(50, max(1, (int) $request->query('per_page')));
+        }
+
+        return $this->proxy($request, 'GET', 'chat/messages', ['query' => $query]);
+    }
+
+    public function apiChatSend(Request $request)
+    {
+        $body = [
+            'subject' => trim((string) $request->input('subject', '')),
+            'message' => trim((string) $request->input('message', '')),
+        ];
+
+        return $this->proxy($request, 'POST', 'chat/messages', ['body' => $body]);
+    }
+
+    /**
+     * Публичный ключ E2EE портала для браузера (релей без авторизации).
+     */
+    public function apiE2eeKeys()
+    {
+        if (!CabinetService::enabled()) {
+            return response()->json(['error' => 'Cabinet is disabled.'], 403);
+        }
+
+        $result = CabinetService::e2eeKeys();
+        if (empty($result['ok'])) {
+            return response()->json(['error' => 'E2EE is not available.'], 503);
+        }
+
+        return response()->json((array) $result['data']);
+    }
+
+    /**
+     * Сквозные E2EE-заголовки браузера в кабинет (allowlist, без чтения).
+     *
+     * @return array<string, string>
+     */
+    private function e2eeForwardHeaders(Request $request): array
+    {
+        if (trim((string) $request->header('X-E2EE', '')) !== '1') {
+            return [];
+        }
+        $headers = ['X-E2EE' => '1'];
+        $epk = trim((string) $request->header('X-E2EE-Epk', ''));
+        if ($epk !== '') {
+            $headers['X-E2EE-Epk'] = substr($epk, 0, 64);
+        }
+        $kb = trim((string) $request->header('X-E2EE-Kb', ''));
+        if ($kb === '1' || $kb === '0') {
+            $headers['X-E2EE-Kb'] = $kb;
+        }
+
+        return $headers;
+    }
+
     /**
      * Прокси с Bearer из серверной сессии + проброс X-FP браузера
      * как X-Fingerprint (токен кабинета к нему привязан).
+     * E2EE-заголовки и тела-конверты ретранслируются вслепую
+     * (шоп их не читает и не логирует, см. e2ee.js).
      * При 401 — одна ротация пары и повтор.
      */
     private function proxy(Request $request, string $method, string $path, array $options = [])
@@ -603,6 +621,7 @@ class AccountController extends Controller
         }
 
         $fingerprint = trim((string) $request->header('X-FP', ''));
+        $options['headers'] = $this->e2eeForwardHeaders($request);
 
         $response = CabinetService::apiCall($method, $path, $access, $fingerprint, $options);
 
@@ -625,7 +644,7 @@ class AccountController extends Controller
 
         // Скоуп выключен у API-клиента (403 от кабинета) — запоминаем,
         // чтобы прятать соответствующие разделы в навигации.
-        if ($response->status() === 403 && ($scope = CabinetService::scopeForPath($path)) !== null) {
+        if ($response->status() === 403 && ($scope = CabinetService::scopeForPath($path, $method)) !== null) {
             session(['cabinet.forbidden.'.$scope => true]);
         }
 

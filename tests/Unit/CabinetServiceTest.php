@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Http\Controllers\AccountController;
 use App\Services\CabinetService;
+use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
 
 class CabinetServiceTest extends TestCase
@@ -78,6 +80,9 @@ class CabinetServiceTest extends TestCase
         $this->assertSame('sessions', CabinetService::scopeForPath('sessions'));
         $this->assertSame('sessions.revoke', CabinetService::scopeForPath('sessions/revoke-all'));
         $this->assertSame('contact', CabinetService::scopeForPath('contact'));
+        $this->assertSame('chat', CabinetService::scopeForPath('chat/messages'));
+        $this->assertSame('chat', CabinetService::scopeForPath('chat/messages', 'GET'));
+        $this->assertSame('chat.send', CabinetService::scopeForPath('chat/messages', 'POST'));
     }
 
     public function test_scope_for_path_unknown(): void
@@ -85,5 +90,38 @@ class CabinetServiceTest extends TestCase
         $this->assertNull(CabinetService::scopeForPath('unknown'));
         $this->assertNull(CabinetService::scopeForPath('orders/abc/shipping'));
         $this->assertNull(CabinetService::scopeForPath(''));
+    }
+
+    public function test_random_base64_url_format(): void
+    {
+        $value = CabinetService::randomBase64Url(24);
+
+        // 24 байта в base64url без паддинга = 32 символа.
+        $this->assertMatchesRegularExpression('/^[A-Za-z0-9\-_]{32}$/', $value);
+        $this->assertNotSame($value, CabinetService::randomBase64Url(24));
+    }
+
+    public function test_browser_fingerprint_empty_is_null(): void
+    {
+        $this->assertNull($this->fingerprint(new Request()));
+        $this->assertNull($this->fingerprint(new Request(['fingerprint' => ''])));
+        $this->assertNull($this->fingerprint(new Request(['fingerprint' => '   '])));
+    }
+
+    public function test_browser_fingerprint_trimmed_and_truncated(): void
+    {
+        $this->assertSame('fp-abc', $this->fingerprint(new Request(['fingerprint' => '  fp-abc  '])));
+
+        $long = str_repeat('x', 200);
+        $result = $this->fingerprint(new Request(['fingerprint' => $long]));
+        $this->assertSame(128, strlen((string) $result));
+        $this->assertSame(substr($long, 0, 128), $result);
+    }
+
+    private function fingerprint(Request $request): ?string
+    {
+        $method = new \ReflectionMethod(AccountController::class, 'browserFingerprint');
+
+        return $method->invoke(new AccountController(), $request);
     }
 }
