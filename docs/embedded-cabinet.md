@@ -25,8 +25,7 @@
 его нет): `/cabinet/{orders,bonus,referral,contact,chat}`,
 вход — `/cabinet-login/{email,captcha,code}`. Старые общие страницы
 `account/*` удалены; `/account` остался хабом-редиректом, `/account/api/*`
-и embedded-endpoint'ы — без изменений. Превью для вёрстки с моками:
-`/preview/cabinet/{design}/{page}` и `/preview/cabinet-login/{design}/{step}`.
+и embedded-endpoint'ы — без изменений.
 
 - Секретный ключ хранится **только на сервере** (`shop_keys.cabinet_secret`),
   в браузер не попадает. Обмен кода — всегда сервер→сервер.
@@ -58,7 +57,7 @@
   вызова: POST шлют конверт с `X-E2EE: 1` + `X-E2EE-Kb`, GET шлют `X-E2EE-Epk`,
   ответы-конверты расшифровывают. Ошибки сервера — открытым текстом
   с машинным кодом (иначе не прочитать `e2ee_rekey`).
-- Формы входа (`embedded.js`, `shop-login.js`) при submit кода зовут
+- Форма входа (`shop-login.js`) при submit кода зовёт
   `E2EE.setCode(code, email)`; выход везде — `E2EE.forgetAll()`.
 - `AccountController::proxy()` — форвардит `X-E2EE*` и тела как есть
   (allowlist, без чтения и логирования), `apiE2eeKeys()` — публичный релей
@@ -137,14 +136,13 @@ Cache 1 минуту, `cabinet.shop_settings`) и ветвится по флаг
   `embeddedVerify` (встроенный вход, throttle 10/мин), logout, JSON-прокси.
   Старых страничных экшенов больше нет — страницы отдаёт
   `CabinetPreviewController` (`/cabinet/*`, `/cabinet-login/*`, дизайн
-  из сессии; `/preview/*` — моки для вёрстки).
+  из сессии).
 - `app/Http/Controllers/AdminController.php` — `cabinet()`,
   `save_cabinet_info()`, `test_cabinet_connection()` (+ пункт меню
   и `pageAdminTitle`, роуты в `routes/web.php`).
 - `resources/views/design_*/cabinet/` — per-design кабинет (13 дизайнов):
-  `live-*` (живые данные через `/account/api/*`), `login-*` (вход),
-  остальные (моки для превью); общие куски — `cabinet-live/*`,
-  `cabinet-parts/*`.
+  `live-*` (живые данные через `/account/api/*`), `login-*` (вход);
+  общие куски — `cabinet-live/*`, `cabinet-parts/*` (только login-части).
 - `resources/views/admin/cabinet.blade.php` + компоненты `resources/views/admin/cabinet/`
   (`status`, `form`, `guide`), стили `public/admin_style/css/cabinet.css`
   и JS `public/admin_style/js/cabinet.js` (отдельные файлы только этой страницы).

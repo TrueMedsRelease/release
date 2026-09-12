@@ -23,20 +23,22 @@
                 </a>
                 <span class="cablogin-header__lang">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg>
-                    <span>English</span>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    @php try { $cabLangs = $Language::GetAllLanuages(); } catch (\Throwable $e) { $cabLangs = []; } @endphp
+                    @if (count($cabLangs) > 1)
+                        <select class="cablogin-header__select" onchange="location.href=this.options[this.selectedIndex].value" aria-label="Language">
+                            @foreach ($cabLangs as $cabLang)
+                                <option value="{{ route('home.language', $cabLang['code']) }}" @if (App::currentLocale() == $cabLang['code']) selected @endif>{{ $cabLang['name'] }}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <span>{{ App::currentLocale() }}</span>
+                    @endif
                 </span>
             </header>
 
             <main class="cablogin-content">
                 <h1 class="cablogin-content__title">{{ __('text.cabinet_login_title') }}</h1>
                 @yield('cab_content')
-                <nav class="cablogin-pager" aria-label="Preview steps">
-                    <span>Preview:</span>
-                    <a href="{{ route('preview.cabinet.login', ['design' => $design, 'step' => 'email']) }}" @if (($cabp_step ?? '') === 'email') aria-current="page" @endif>1 · Email</a>
-                    <a href="{{ route('preview.cabinet.login', ['design' => $design, 'step' => 'captcha']) }}" @if (($cabp_step ?? '') === 'captcha') aria-current="page" @endif>2 · Captcha</a>
-                    <a href="{{ route('preview.cabinet.login', ['design' => $design, 'step' => 'code']) }}" @if (($cabp_step ?? '') === 'code') aria-current="page" @endif>3 · Code</a>
-                </nav>
             </main>
 
             <footer class="cablogin-footer">

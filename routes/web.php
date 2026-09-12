@@ -367,21 +367,11 @@ Route::get('/admin/logs/{file}', function ($file) {
         ->header('Content-Type', 'text/plain; charset=UTF-8');
 });
 
-Route::controller(CabinetPreviewController::class)->prefix('preview/cabinet')->group(static function () {
-    // Статика кабинета в лейауте магазина: без auth, данные — моки.
-    // Только для вёрстки, боевые ссылки дизайн не указывают.
-    // Пилот: design_10. Пример: /preview/cabinet/design_10/orders
-    Route::get('/{design}/{page?}', 'page')->name('preview.cabinet.page');
-});
 Route::controller(CabinetPreviewController::class)->prefix('cabinet')->group(static function () {
     // Живой кабинет в лейауте текущего дизайна (как остальные страницы):
     // дизайн из сессии, в URL не указывается. Без токенов — редирект на вход.
     // Пример: /cabinet/orders
     Route::get('/{page?}', 'cabinetPage')->name('cabinet.live.page');
-});
-Route::controller(CabinetPreviewController::class)->prefix('preview/cabinet-login')->group(static function () {
-    // Статика логина: /preview/cabinet-login/design_10/login и .../code
-    Route::get('/{design}/{step?}', 'login')->name('preview.cabinet.login');
 });
 Route::controller(CabinetPreviewController::class)->prefix('cabinet-login')->group(static function () {
     // Вход в кабинет текущего дизайна, дизайн из сессии.
