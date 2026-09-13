@@ -29,6 +29,53 @@
                 this.langOpen = false;
             },
 
+            onTitleKeydown(e) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!this.langOpen) this.toggle();
+                    this.$nextTick(() => this.focusOption(0));
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.toggle();
+                } else if (e.key === 'Escape' && this.langOpen) {
+                    e.preventDefault();
+                    this.close();
+                }
+            },
+
+            onOptionKeydown(e, index, total) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    this.focusOption((index + 1) % total);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    this.focusOption((index - 1 + total) % total);
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    this.focusOption(0);
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    this.focusOption(total - 1);
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.close();
+                    this.focusTitle();
+                } else if (e.key === 'Tab') {
+                    this.close();
+                }
+            },
+
+            focusOption(i) {
+                var panel = this.$refs && this.$refs.panel;
+                if (!panel) return;
+                var opts = panel.querySelectorAll('.select__option');
+                if (opts[i]) opts[i].focus();
+            },
+
+            focusTitle() {
+                if (this.$refs && this.$refs.title) this.$refs.title.focus();
+            },
+
             mountScroll() {
                 if (!window.CustomScrollbar) return;
                 var el = this.$refs && this.$refs.scroll;

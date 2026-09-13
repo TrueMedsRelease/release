@@ -119,6 +119,23 @@ class CabinetPreviewTest extends TestCase
         $response->assertSessionMissing('cabinet.access_token');
         $response->assertSessionMissing('cabinet.refresh_token');
     }
+
+    public function test_login_layout_uses_custom_alpine_lang_dropdown(): void
+    {
+        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
+        $html = view('design_10.cabinet.login-layout', [
+            'design' => 'design_10',
+            'Language' => CabinetLoginLayoutFakeLanguage::class,
+        ])->render();
+
+        $this->assertStringNotContainsString('<select', $html);
+        $this->assertStringContainsString('x-data="cabinetLangSelect()"', $html);
+        $this->assertStringContainsString('select__options', $html);
+        $this->assertStringContainsString('Deutsch', $html);
+        $this->assertStringContainsString(route('home.language', 'de'), $html);
+        $this->assertStringContainsString('js/cabinet/lang-select.js', $html);
+        $this->assertStringContainsString('js/cabinet-alpine.min.js', $html);
+    }
     /**
      * Настройки интеграции без сети: кеш обходит и БД, и кабинет.
      */
@@ -156,5 +173,17 @@ class CabinetPreviewTest extends TestCase
         foreach (['nav-live', 'orders-live', 'bonus-live', 'referral-live', 'contact-live', 'chat-live'] as $partial) {
             $this->assertTrue(view()->exists('cabinet-live.' . $partial), "Shared partial cabinet-live.{$partial} should exist");
         }
+    }
+}
+
+class CabinetLoginLayoutFakeLanguage
+{
+    public static function GetAllLanuages(): array
+    {
+        return [
+            ['code' => 'en', 'name' => 'English'],
+            ['code' => 'de', 'name' => 'Deutsch'],
+            ['code' => 'fr', 'name' => 'Française'],
+        ];
     }
 }
