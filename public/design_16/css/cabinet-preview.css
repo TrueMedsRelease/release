@@ -32,6 +32,7 @@
 .cabp-layout { display: grid; grid-template-columns: 1fr 300px; gap: 16px; align-items: start; }
 @media (max-width: 900px) { .cabp-layout { grid-template-columns: 1fr; } }
 .cabp-main { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.cabp-live-list { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .cabp-side { display: flex; flex-direction: column; gap: 12px; }
 
 .oc-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 20px 12px; }
@@ -260,9 +261,9 @@ label.cabp-send { cursor: pointer; }
 /* Чистый кабинет отключён: показываем полный chrome магазина. */
 
 /* Отступ от футера и мелкие экраны */
-.cabp { padding-bottom: 48px; }
+.cabp { padding-bottom: 64px; }
 @media (max-width: 640px) {
-    .cabp { padding-bottom: 32px; }
+    .cabp { padding-bottom: 48px; }
     .oc-card__head { flex-wrap: wrap; }
     .oc-card__total-value { font-size: 17px; }
     .cabp-bank__number { font-size: 16px; overflow-wrap: anywhere; }
