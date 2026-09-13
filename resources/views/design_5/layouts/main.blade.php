@@ -834,6 +834,8 @@
             <span class="name">{{ $Currency::convert($cart_total) }}</span>
         </a>
     </div>
+    {{-- Announce-баннер магазина ("N people are looking...") не показываем в живом кабинете --}}
+    @if(!request()->routeIs('cabinet.live.page', 'cabinet.login', 'account.*'))
     <div class="announce">
         <div class="announce__item @yield('announce_color', 'announce__item--blue')">
             <div class="announce__icon">
@@ -852,6 +854,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
