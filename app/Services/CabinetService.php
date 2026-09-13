@@ -149,6 +149,22 @@ class CabinetService
     }
 
     /**
+     * IP покупателя из текущего запроса (колбэк кабинета прилетает
+     * из браузера покупателя) для customer_ip в обмене кода.
+     * null — вне HTTP-контекста или невалидный IP (портал отфолбэкается сам).
+     */
+    public static function customerIp(): ?string
+    {
+        try {
+            $ip = trim((string) request()->ip());
+        } catch (\Throwable $e) {
+            return null;
+        }
+
+        return $ip !== '' && filter_var($ip, FILTER_VALIDATE_IP) ? $ip : null;
+    }
+
+    /**
      * PKCE-пара (RFC 7636) для привязки старта логина к обмену.
      *
      * @return array{verifier: string, challenge: string, method: string}
@@ -189,6 +205,8 @@ class CabinetService
 
     /**
      * Серверный обмен кода на пару токенов (secret-флоу).
+     * IP покупателя из текущего запроса едет в customer_ip — кабинет
+     * показывает его в Active sessions (иначе там был бы IP сервера шопа).
      *
      * @return array{ok: bool, data?: array, error?: string}
      */
@@ -204,11 +222,12 @@ class CabinetService
             $response = Http::acceptJson()
                 ->timeout(15)
                 ->connectTimeout(5)
-                ->post($cfg['url'].'/api/v1/auth/token', [
+                ->post($cfg['url'].'/api/v1/auth/token', array_filter([
                     'code'          => $code,
                     'secret'        => $cfg['secret'],
                     'code_verifier' => $verifier,
-                ]);
+                    'customer_ip'   => self::customerIp(),
+                ]));
         } catch (\Throwable $e) {
             Log::error('CabinetService exchange failed: '.$e->getMessage());
 
