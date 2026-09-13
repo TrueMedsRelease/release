@@ -1,3 +1,17 @@
+@php
+if (!function_exists('asset_ver')) {
+    function asset_ver(string $path): string {
+        static $mtimes = [];
+        $full = public_path($path);
+        if (!isset($mtimes[$path])) {
+            $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+        }
+        $url = asset($path);
+        $v = $mtimes[$path] ?? time();
+        return $url . '?v=' . $v;
+    }
+}
+@endphp
 {{--
     Отдельный layout логина кабинета (без chrome магазина).
     Структура 1:1 с референсом (customerportal LoginLayout.vue):
@@ -11,7 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('cab_title', __('text.cabinet_login_title'))</title>
-    <link rel="stylesheet" href="{{ asset($design . '/css/cabinet-login.css') }}">
+    <link rel="stylesheet" href="{{ asset_ver($design . '/css/cabinet-login.css') }}">
 </head>
 <body>
 <div class="cablogin">
@@ -80,7 +94,7 @@ $shopCodeConfig = [
 window.ShopLoginConfig = @json($shopLoginConfig);
 window.ShopCodeConfig = @json($shopCodeConfig);
 </script>
-<script src="{{ asset('js/cabinet/device-lib.js') }}" defer></script>
-<script src="{{ asset('js/cabinet/shop-login.js') }}" defer></script>
+<script src="{{ asset_ver('js/cabinet/device-lib.js') }}" defer></script>
+<script src="{{ asset_ver('js/cabinet/shop-login.js') }}" defer></script>
 </body>
 </html>
