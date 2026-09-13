@@ -272,7 +272,14 @@ class AccountController extends Controller
             'cabinet.login_state'   => $state,
         ]);
 
-        $url = CabinetService::loginUrl($cfg['url'], CabinetService::shopDomain(), $state, $pkce['challenge']);
+        $url = CabinetService::loginUrl(
+            $cfg['url'],
+            CabinetService::shopDomain(),
+            $state,
+            $pkce['challenge'],
+            'S256',
+            (string) session('design', config('app.design'))
+        );
 
         return redirect()->away($url);
     }

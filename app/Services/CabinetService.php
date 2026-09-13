@@ -169,17 +169,22 @@ class CabinetService
 
     /**
      * Ссылка старта логина в кабинете (handoff ?s= + PKCE).
+     * Дизайн шопа (design_N) едет опционально — портал красит
+     * страницу логина в тему шопа для бесшовного редиректа.
      */
-    public static function loginUrl(string $cabinetUrl, string $domain, string $state, string $challenge, string $method = 'S256'): string
+    public static function loginUrl(string $cabinetUrl, string $domain, string $state, string $challenge, string $method = 'S256', ?string $design = null): string
     {
-        $q = http_build_query([
+        $q = [
             's'                     => $domain,
             'state'                 => $state,
             'code_challenge'        => $challenge,
             'code_challenge_method' => $method,
-        ]);
+        ];
+        if (is_string($design) && preg_match('/^design_\d+$/', $design)) {
+            $q['design'] = $design;
+        }
 
-        return rtrim($cabinetUrl, '/').'/login?'.$q;
+        return rtrim($cabinetUrl, '/').'/login?'.http_build_query($q);
     }
 
     /**
