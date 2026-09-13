@@ -41,5 +41,9 @@
                class="cabp-tab @if ($cabpCurrent === $tab['key']) is-active @endif"
                @if ($cabpCurrent === $tab['key']) aria-current="page" @endif>{{ $tab['label'] }}</a>
         @endforeach
+        <form method="POST" action="{{ route('account.logout') }}" style="margin:0 0 0 auto;display:inline-flex">
+            @csrf
+            <button type="submit" class="cabp-tab" style="font:inherit;background:transparent;cursor:pointer">{{ __('text.cabinet_logout') }}</button>
+        </form>
     </nav>
 </div>

@@ -91,6 +91,34 @@ class CabinetPreviewTest extends TestCase
         $response->assertNotFound();
     }
 
+    public function test_cabinet_nav_contains_logout_form(): void
+    {
+        $html = view('cabinet-live.nav-live', [
+            'cabp_page' => 'orders',
+            'cabCapabilities' => ['scopes' => ['orders', 'bonus', 'referral', 'contact', 'chat'], 'chat_enabled' => true],
+            'design' => 'design_10',
+        ])->render();
+
+        $this->assertStringContainsString(route('account.logout'), $html);
+        $this->assertStringContainsString(__('text.cabinet_logout'), $html);
+    }
+
+    public function test_logout_clears_session_and_redirects_home(): void
+    {
+        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
+        \Illuminate\Support\Facades\Http::fake();
+
+        $response = $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)
+            ->withSession([
+                'cabinet.access_token' => 'test-token',
+                'cabinet.refresh_token' => 'test-refresh',
+            ])
+            ->post(route('account.logout'));
+
+        $response->assertRedirect(route('home.index'));
+        $response->assertSessionMissing('cabinet.access_token');
+        $response->assertSessionMissing('cabinet.refresh_token');
+    }
     /**
      * Настройки интеграции без сети: кеш обходит и БД, и кабинет.
      */
