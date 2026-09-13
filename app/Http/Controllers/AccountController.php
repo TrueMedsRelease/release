@@ -346,13 +346,15 @@ class AccountController extends Controller
             'cabinet.refresh_token' => (string) ($pair['refresh_token'] ?? ''),
             'cabinet.expires_at'    => (string) ($pair['expires_at'] ?? ''),
         ]);
-        // Новый вход — запреты скоупов проверяем заново.
+        // Новый вход — запреты скоупов и кеш capabilities сбрасываем.
         session()->forget('cabinet.forbidden');
+        CabinetService::forgetCapabilities();
     }
 
     private function forgetTokens(): void
     {
         session()->forget(['cabinet.access_token', 'cabinet.refresh_token', 'cabinet.expires_at', 'cabinet.email', 'cabinet.forbidden']);
+        CabinetService::forgetCapabilities();
     }
 
     public function logout()
@@ -491,6 +493,11 @@ class AccountController extends Controller
         }
 
         return $response;
+    }
+
+    public function apiCapabilities(Request $request)
+    {
+        return $this->proxy($request, 'GET', 'account/capabilities');
     }
 
     public function apiContact(Request $request)

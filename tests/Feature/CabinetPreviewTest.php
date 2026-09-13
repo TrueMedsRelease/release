@@ -56,10 +56,10 @@ class CabinetPreviewTest extends TestCase
                 $response->assertStatus(200);
                 $response->assertSee('cablogin-', false);
             }
-            // Пейджера превью больше нет, вместо муляжа языка — рабочий селектор.
+            // Пейджера превью больше нет, вместо муляжа языка — рабочий блок языка.
             $html = $this->get('/cabinet-login/email')->getContent();
             $this->assertStringNotContainsString('cablogin-pager', $html);
-            $this->assertStringContainsString('cablogin-header__select', $html);
+            $this->assertStringContainsString('cablogin-header__lang', $html);
         } finally {
             $this->forgetShopSettings();
         }

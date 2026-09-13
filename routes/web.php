@@ -180,6 +180,7 @@ Route::controller(HomeController::class)->group(function () {
         Route::get('/account/api/referral', 'apiReferral')->name('account.api.referral');
         Route::get('/account/api/sessions', 'apiSessions')->name('account.api.sessions');
         Route::post('/account/api/sessions/revoke-all', 'apiSessionsRevokeAll')->name('account.api.sessions.revoke');
+        Route::get('/account/api/capabilities', 'apiCapabilities')->name('account.api.capabilities');
         Route::post('/account/api/contact', 'apiContact')->name('account.api.contact');
         Route::get('/account/api/chat/messages', 'apiChat')->name('account.api.chat');
         Route::post('/account/api/chat/messages', 'apiChatSend')->name('account.api.chat.send');

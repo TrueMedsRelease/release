@@ -30,6 +30,9 @@ class CabinetService
     public const SETTINGS_CACHE_KEY = 'cabinet.shop_settings';
     public const SETTINGS_CACHE_TTL = 60;
 
+    public const CAPABILITIES_CACHE_KEY = 'cabinet.capabilities';
+    public const CAPABILITIES_CACHE_TTL = 60;
+
     /**
      * Конфиг из shop_keys. Безопасные дефолты при отсутствии строк.
      * Домен шопа здесь не хранится: он всегда берётся из текущего
@@ -374,8 +377,10 @@ class CabinetService
     /**
      * Настройки интеграции из кабинета (кеш 1 минуту): шоп ветвится по ним —
      * встроенный логин у себя либо уход на внешние страницы кабинета.
+     * Сюда же кладём scopes/chat_enabled чтобы навигáция скрывалась сразу
+     * (кеш 60с, как и capabilities).
      *
-     * @return array{shop_id: string, embedded_login: bool}
+     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}
      */
     public static function shopSettings(bool $force = false): array
     {
@@ -420,6 +425,127 @@ class CabinetService
     }
 
     /**
+     * Доступные скоупы текущего покупателя (кеш 60с на домен шопа).
+     * Возвращает null если нет токена/связи; иначе массив вида
+     * ['scopes' => string[], 'shop_id' => string, 'chat_enabled' => bool].
+     * Кеш — 1 минута, как и shopSettings, чтобы не дергать кабинет каждый хит.
+     *
+     * @return array{scopes: string[], shop_id: string, chat_enabled: bool}|null
+     */
+    public static function capabilities(): ?array
+    {
+        $access = (string) session('cabinet.access_token', '');
+        if ($access === '') {
+            return null;
+        }
+        $domain = self::shopDomain();
+        $cacheKey = self::CAPABILITIES_CACHE_KEY . '.' . ($domain !== '' ? $domain : 'default');
+
+        try {
+            $cached = Cache::get($cacheKey);
+            if (is_array($cached) && isset($cached['scopes']) && is_array($cached['scopes'])) {
+                return $cached;
+            }
+        } catch (\Throwable $e) {
+            $cached = null;
+        }
+
+        // Быстрый путь: scopes уже в shopSettings (без Bearer, без fingerprint)
+        $settings = self::shopSettings();
+        if (isset($settings['scopes']) && is_array($settings['scopes'])) {
+            $fallback = [
+                'scopes' => $settings['scopes'],
+                'shop_id' => (string) ($settings['shop_id'] ?? ''),
+                'chat_enabled' => (bool) ($settings['chat_enabled'] ?? true),
+            ];
+            try {
+                Cache::put($cacheKey, $fallback, self::CAPABILITIES_CACHE_TTL);
+            } catch (\Throwable $e) {
+            }
+
+            return $fallback;
+        }
+
+        // В тестах не лезем в сеть — нет токена с реальным fingerprint
+        if (app()->environment('testing')) {
+            return null;
+        }
+
+        $fresh = self::fetchCapabilities($access);
+        if ($fresh !== null) {
+            try {
+                Cache::put($cacheKey, $fresh, self::CAPABILITIES_CACHE_TTL);
+            } catch (\Throwable $e) {
+                Log::error('CabinetService capabilities cache failed: '.$e->getMessage());
+            }
+
+            return $fresh;
+        }
+
+        if (is_array($cached) && isset($cached['scopes'])) {
+            return $cached;
+        }
+
+        return null;
+    }
+
+    public static function forgetCapabilities(): void
+    {
+        $domain = self::shopDomain();
+        $cacheKey = self::CAPABILITIES_CACHE_KEY . '.' . ($domain !== '' ? $domain : 'default');
+        try {
+            Cache::forget($cacheKey);
+        } catch (\Throwable $e) {
+            Log::error('CabinetService capabilities cache clear failed: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * @return array{scopes: string[], shop_id: string, chat_enabled: bool}|null
+     */
+    private static function fetchCapabilities(string $accessToken): ?array
+    {
+        $cfg = self::config();
+        if ($cfg['url'] === '') {
+            return null;
+        }
+
+        try {
+            $response = Http::acceptJson()
+                ->timeout(10)
+                ->connectTimeout(5)
+                ->withHeaders([
+                    'Authorization' => 'Bearer ' . $accessToken,
+                    // Портал привязывает токен к fingerprint, но для
+                    // серверного префетча fingerprint неизвестен — шлём
+                    // пустой, портал его проигнорирует если был пустой при логине.
+                    'X-Fingerprint' => '',
+                ])
+                ->get($cfg['url'] . '/api/v1/account/capabilities');
+        } catch (\Throwable $e) {
+            Log::error('CabinetService capabilities fetch failed: '.$e->getMessage());
+
+            return null;
+        }
+
+        if (!$response->successful()) {
+            return null;
+        }
+
+        $body = $response->json();
+        $data = is_array($body['data'] ?? null) ? $body['data'] : (is_array($body) ? $body : null);
+        if (!is_array($data) || !isset($data['scopes']) || !is_array($data['scopes'])) {
+            return null;
+        }
+
+        return [
+            'scopes' => array_values(array_map('strval', $data['scopes'])),
+            'shop_id' => (string) ($data['shop_id'] ?? ''),
+            'chat_enabled' => (bool) ($data['chat_enabled'] ?? true),
+        ];
+    }
+
+    /**
      * @return array{shop_id: string, embedded_login: bool}|null null — нет секрета/связи
      */
     private static function fetchShopSettings(): ?array
@@ -451,9 +577,15 @@ class CabinetService
             return null;
         }
 
+        $scopes = isset($body['scopes']) && is_array($body['scopes'])
+            ? array_values(array_map('strval', $body['scopes']))
+            : null;
+
         return [
             'shop_id'        => (string) ($body['shop_id'] ?? ''),
             'embedded_login' => (bool) $body['embedded_login'],
+            'scopes'         => $scopes,
+            'chat_enabled'   => isset($body['chat_enabled']) ? (bool) $body['chat_enabled'] : true,
         ];
     }
 

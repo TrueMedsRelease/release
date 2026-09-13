@@ -254,7 +254,7 @@ label.cabp-send { cursor: pointer; }
 .cabp-share__label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--color-grey-1); }
 .cabp-share__code { background: rgba(255,255,255,.05); border: 1px solid #2b2c30; padding: 10px 14px; font-size: 13px; word-break: break-all; color: var(--color-grey-1); }
 .cabp-share__link .cabp-action { align-self: flex-start; }
-.cabp-ticket { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding: 16px 18px; border: 1.5px dashed var(--color-primary); background: rgba(201,176,154,.07); }
+.cabp-ticket { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding: 16px 18px; border: 1.5px dashed var(--color-primary); background: rgba(201,176,154,.07); }
 .cabp-ticket__label { margin: 0 0 4px; font-size: 12px; color: var(--color-grey-1); }
 .cabp-ticket__code { margin: 0; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 24px; font-weight: 800; letter-spacing: .06em; color: var(--color-primary); }
 

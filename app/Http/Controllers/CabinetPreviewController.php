@@ -90,6 +90,8 @@ class CabinetPreviewController extends Controller
     /**
      * Живой кабинет в лейауте магазина: те же разделы, данные — через
      * /account/api/* (Alpine). Без токенов — на страницу входа.
+     * Capabilities — из кеша 60с, чтобы скрывать недоступные разделы сразу
+     * (а не после 403 и мигания «раздел не доступен»).
      */
     public function live(string $design, string $page = 'orders')
     {
@@ -108,9 +110,28 @@ class CabinetPreviewController extends Controller
             return redirect()->route('account.start');
         }
 
+        // Мгновенное скрытие отключенных разделов: префетч capabilities (кеш 60с)
+        $capabilities = CabinetService::capabilities();
+        if (is_array($capabilities) && isset($capabilities['scopes']) && is_array($capabilities['scopes'])) {
+            $scopeMap = [
+                'orders' => 'orders',
+                'bonus' => 'bonus',
+                'referral' => 'referral',
+                'contact' => 'contact',
+                'chat' => 'chat',
+            ];
+            $need = $scopeMap[$page] ?? null;
+            if ($need !== null && !in_array($need, $capabilities['scopes'], true)) {
+                abort(404);
+            }
+            if ($page === 'chat' && empty($capabilities['chat_enabled'])) {
+                abort(404);
+            }
+        }
+
         return view($design . '.cabinet.live-' . $page, array_merge(
             $this->layoutData($design, 'cabinet_' . $page),
-            ['cabp_page' => $page]
+            ['cabp_page' => $page, 'cabCapabilities' => $capabilities]
         ));
     }
 
