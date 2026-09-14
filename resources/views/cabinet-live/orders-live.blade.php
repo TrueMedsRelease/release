@@ -1,8 +1,10 @@
 {{--
     Live: "My orders" — Alpine (account.js cabinetOrders) на классах превью.
     Состояния: загрузка/ошибка/пусто/403-скоуп/тосты. Конфиг — ниже.
+    V1 soft-кнопки действий: public/css/cabinet-v1.css (общий для всех дизайнов).
     Переменные: $design.
 --}}
+<link rel="stylesheet" href="{{ asset_ver('css/cabinet-v1.css') }}">
 @php
 $cabLiveOrdersConfig = [
     'email' => (string) session('cabinet.email', ''),
@@ -172,7 +174,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                     <span x-show="repeatingId !== order.id">{{ __('text.cabinet_repeat_order') }}</span>
                                     <span x-show="repeatingId === order.id">…</span>
                                 </span>
-                                <span class="button cabp-action cabp-action--light" x-show="showStop(order)" :disabled="stoppingId === order.id" @click="askStop(order.id)" style="cursor:pointer">
+                                <span class="button cabp-action cabp-action--danger-soft" x-show="showStop(order)" :disabled="stoppingId === order.id" @click="askStop(order.id)" style="cursor:pointer">
                                     <span>{{ __('text.cabinet_stop_auto') }}</span>
                                 </span>
                             </div>

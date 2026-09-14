@@ -220,6 +220,18 @@
                 if (m.from === 'me') return (cfg.tYou || 'You');
                 return m.author || '';
             },
+            escapeHtml(s) {
+                return String(s === undefined || s === null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c];
+                });
+            },
+            // Тело письма — HTML (textHtml с портала, уже почищен).
+            // Нет textHtml (старый кабинет) — экранируем текст сами.
+            msgHtml(m) {
+                if (!m) return '';
+                if (m.textHtml) return m.textHtml;
+                return this.escapeHtml(m.text).replace(/\n/g, '<br>');
+            },
             async send() {
                 if (this.sending) return;
                 if (!this.text.trim()) return;

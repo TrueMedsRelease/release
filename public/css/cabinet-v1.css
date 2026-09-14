@@ -1,0 +1,155 @@
+/* Shared живой кабинет: V1 soft-кнопки действий (портал OrderCard 1:1)
+ * и HTML-рендер писем чата. Один файл на все дизайны, подключается
+ * из shared-паршалов cabinet-live (после per-design cabinet-preview.css).
+ * Primary (repeat) остаётся per-design .cabp-action--dark — на тёмных
+ * дизайнах единый тёмный primary был бы нечитаем.
+ */
+
+/* ---------- Заказы: все действия — кнопки в один ряд слева направо ---------- */
+.cabp-layout--orders .oc-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.cabp-layout--orders .oc-card__secondary,
+.cabp-layout--orders .oc-actions {
+    display: contents;
+}
+@media (max-width: 639px) {
+    .cabp-layout--orders .oc-card__actions .button,
+    .cabp-layout--orders .oc-footlink {
+        flex: 1 1 40%;
+        justify-content: center;
+    }
+}
+
+/* Триггеры shipping/tracking: из ссылок в soft-кнопки. */
+.cabp-layout--orders .oc-footlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+}
+@media (any-hover: hover) {
+    .cabp-layout--orders .oc-footlink:hover {
+        background: #e2e8f0;
+        color: #334155;
+        text-decoration: none;
+    }
+}
+.cabp-layout--orders .oc-footlink:active {
+    background: #e2e8f0;
+}
+.cabp-layout--orders .oc-footlink:focus-visible {
+    outline: 2px solid #334155;
+    outline-offset: 2px;
+}
+
+/* Обычные действия — серо-голубая заливка, опасные — мягко-красная. Без рамок. */
+.button.cabp-action--soft {
+    border: 0;
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+}
+@media (any-hover: hover) {
+    .button.cabp-action--soft:hover {
+        background: #e2e8f0;
+    }
+}
+.button.cabp-action--soft:active {
+    background: #e2e8f0;
+}
+.button.cabp-action--danger-soft {
+    border: 0;
+    background: #fef2f2;
+    color: #dc2626;
+    font-weight: 600;
+}
+@media (any-hover: hover) {
+    .button.cabp-action--danger-soft:hover {
+        background: #fee2e2;
+    }
+}
+.button.cabp-action--danger-soft:active {
+    background: #fee2e2;
+}
+
+/* ---------- Чат: HTML писем (textHtml с бэка, уже почищен) ---------- */
+.cabp-chat .cabp-chat-msg__text {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+.cabp-chat .cabp-chat-msg__text p,
+.cabp-chat .cabp-chat-msg__text div,
+.cabp-chat .cabp-chat-msg__text h1,
+.cabp-chat .cabp-chat-msg__text h2,
+.cabp-chat .cabp-chat-msg__text h3,
+.cabp-chat .cabp-chat-msg__text h4,
+.cabp-chat .cabp-chat-msg__text blockquote,
+.cabp-chat .cabp-chat-msg__text pre,
+.cabp-chat .cabp-chat-msg__text ul,
+.cabp-chat .cabp-chat-msg__text ol,
+.cabp-chat .cabp-chat-msg__text table {
+    margin: 0 0 8px;
+}
+.cabp-chat .cabp-chat-msg__text :last-child {
+    margin-bottom: 0;
+}
+.cabp-chat .cabp-chat-msg__text ul,
+.cabp-chat .cabp-chat-msg__text ol {
+    padding-left: 20px;
+}
+.cabp-chat .cabp-chat-msg__text li {
+    margin-bottom: 2px;
+}
+.cabp-chat .cabp-chat-msg__text a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+}
+.cabp-chat .cabp-chat-msg__text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.cabp-chat .cabp-chat-msg__text table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+.cabp-chat .cabp-chat-msg__text th,
+.cabp-chat .cabp-chat-msg__text td {
+    padding: 4px 8px;
+    border: 1px solid rgba(128, 128, 128, .3);
+    text-align: left;
+    vertical-align: top;
+}
+.cabp-chat .cabp-chat-msg__text blockquote {
+    padding-left: 10px;
+    border-left: 2px solid rgba(128, 128, 128, .35);
+}
+.cabp-chat .cabp-chat-msg__text pre {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(128, 128, 128, .12);
+    font-size: 12px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+.cabp-chat .cabp-chat-msg__text hr {
+    border: 0;
+    border-top: 1px solid rgba(128, 128, 128, .3);
+    margin: 8px 0;
+}

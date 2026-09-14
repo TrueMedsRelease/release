@@ -1,7 +1,10 @@
 {{--
     Live: "Chat" — Alpine (shop-cabinet.js cabinetChat, Chat.vue 1:1).
+    Тело письма — HTML (textHtml с портала, уже почищен), рендер через x-html.
+    V1 + стили HTML: public/css/cabinet-v1.css (общий для всех дизайнов).
     Переменные: $design.
 --}}
+<link rel="stylesheet" href="{{ asset_ver('css/cabinet-v1.css') }}">
 @php
 $cabLiveChatConfig = [
     'chatUrl' => route('account.api.chat'),
@@ -46,7 +49,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                             <span class="cabp-chat-msg__date" x-text="message.date"></span>
                         </div>
                         <p class="cabp-chat-msg__subject" x-show="message.subject" x-text="message.subject"></p>
-                        <p class="cabp-chat-msg__text" x-text="message.text"></p>
+                        <div class="cabp-chat-msg__text" x-html="msgHtml(message)"></div>
                     </div>
                 </template>
                 <p class="cabp-empty" x-show="empty">{{ __('text.cabinet_chat_no_messages') }}</p>
