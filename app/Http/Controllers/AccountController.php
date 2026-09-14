@@ -278,7 +278,8 @@ class AccountController extends Controller
             $state,
             $pkce['challenge'],
             'S256',
-            (string) session('design', config('app.design'))
+            (string) session('design', config('app.design')),
+            (string) session('locale', config('app.locale'))
         );
 
         return redirect()->away($url);

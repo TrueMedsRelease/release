@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Language;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -187,8 +188,10 @@ class CabinetService
      * Ссылка старта логина в кабинете (handoff ?s= + PKCE).
      * Дизайн шопа (design_N) едет опционально — портал красит
      * страницу логина в тему шопа для бесшовного редиректа.
+     * Язык кастомера (lang) едет опционально — портал сразу
+     * показывает логин на языке шопа (коды — из Language::$languages).
      */
-    public static function loginUrl(string $cabinetUrl, string $domain, string $state, string $challenge, string $method = 'S256', ?string $design = null): string
+    public static function loginUrl(string $cabinetUrl, string $domain, string $state, string $challenge, string $method = 'S256', ?string $design = null, ?string $lang = null): string
     {
         $q = [
             's'                     => $domain,
@@ -198,6 +201,12 @@ class CabinetService
         ];
         if (is_string($design) && preg_match('/^design_\d+$/', $design)) {
             $q['design'] = $design;
+        }
+        if (is_string($lang)) {
+            $lang = strtolower(trim($lang));
+            if (isset(Language::$languages[$lang])) {
+                $q['lang'] = $lang;
+            }
         }
 
         return rtrim($cabinetUrl, '/').'/login?'.http_build_query($q);

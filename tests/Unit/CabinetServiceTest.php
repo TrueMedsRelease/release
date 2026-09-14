@@ -58,6 +58,25 @@ class CabinetServiceTest extends TestCase
         }
     }
 
+    public function test_login_url_passes_lang(): void
+    {
+        $url = CabinetService::loginUrl('https://true-help.com/', 'shop-example.com', 'state123', 'challengeABC', 'S256', 'design_4', 'de');
+
+        $this->assertSame(
+            'https://true-help.com/login?s=shop-example.com&state=state123&code_challenge=challengeABC&code_challenge_method=S256&design=design_4&lang=de',
+            $url
+        );
+    }
+
+    public function test_login_url_drops_invalid_lang(): void
+    {
+        foreach (['xx', '../etc', 'de;">', '', 'design_4'] as $bad) {
+            $url = CabinetService::loginUrl('https://true-help.com/', 'shop-example.com', 'state123', 'challengeABC', 'S256', 'design_4', $bad);
+
+            $this->assertStringNotContainsString('lang=', $url);
+        }
+    }
+
     public function test_interpret_test_connection_ok(): void
     {
         $result = CabinetService::interpretTestConnection(401, ['error' => 'Invalid or expired code.']);
