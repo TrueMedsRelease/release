@@ -258,6 +258,8 @@
                 <div class="popup_block">
                     <div class="popup_head">{{__('text.common_push_head')}}</div>
                     <div class="popup_push_text">{{__('text.common_push_text')}}</div>
+                    <p style="font-weight: bold; color: #ff416c; margin: 10px 0;">🎁 Подпишитесь сейчас и получите скидку 5% на первый заказ!</p>
+                    <p>Мы отправим вам персональный промокод в Push-уведомлении.</p>
                     <div class="push_buttons">
                         <div class="push_decline">{{__('text.common_decline')}}</div>
                         <div class="push_allow">{{__('text.common_allow')}}</div>
@@ -1093,6 +1095,340 @@
 @if ($web_statistic)
     <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
 @endif
+
+@php
+    $promoChannels = collect(config('promo.channels'))->filter(fn($c) => !empty($c['enabled']));
+    $gpwIcons = [
+        'email'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>',
+        'push'     => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
+        'telegram' => '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.31l-.37 5.27c.53 0 .76-.23 1.05-.51l2.55-2.44 5.28 3.87c.97.53 1.66.25 1.91-.9l3.47-16.29c.31-1.43-.52-2.08-1.47-1.72L1.05 10.45c-1.42.56-1.4 1.35-.24 1.71l5.22 1.63L18.1 6.2c.57-.38 1.09-.17.66.21L9.04 15.31z"/></svg>',
+    ];
+@endphp
+
+<div id="global-promo-widget">
+    <div id="gpw-trigger" onclick="GPW.openPopup()" title="Получить скидку 5%">
+        <span>%</span>
+    </div>
+
+    <div id="gpw-popup" class="gpw-hidden">
+        <div id="gpw-popup-content">
+            <span id="gpw-close" onclick="GPW.closePopup()">&times;</span>
+            <h3>Получи скидку 5%!</h3>
+            <p>Выбери способ подписки и получи промокод.</p>
+
+            <!-- ПЕРЕКЛЮЧАТЕЛЬ КАНАЛОВ (сюда добавлять новые табы) -->
+            <div id="gpw-tabs">
+                @foreach ($promoChannels as $key => $ch)
+                    <button type="button" class="gpw-tab @if($loop->first) gpw-tab-active @endif"
+                            data-channel="{{ $key }}" onclick="GPW.switchChannel('{{ $key }}')">
+                        {!! $gpwIcons[$key] ?? '' !!} {{ $ch['title'] }}
+                    </button>
+                @endforeach
+            </div>
+
+            @foreach ($promoChannels as $key => $ch)
+                <div class="gpw-panel @if(!$loop->first) gpw-hidden @endif" id="gpw-panel-{{ $key }}">
+                    @if (!empty($ch['input_placeholder']))
+                        <input type="{{ $ch['input_type'] ?? 'text' }}" id="gpw-field-{{ $key }}" placeholder="{{ $ch['input_placeholder'] }}">
+                    @endif
+                    <button type="button" id="gpw-request-{{ $key }}" onclick="GPW.requestCode('{{ $key }}')">{{ $ch['button_text'] }}</button>
+                    <p id="gpw-subscribed-{{ $key }}" style="display:none; color:#28a745; font-weight:bold; margin:0 0 10px 0;"></p>
+                    @if (!empty($ch['hint']))
+                        <p style="font-size:13px; color:#666; margin:10px 0 0 0;">{{ $ch['hint'] }}</p>
+                    @endif
+                </div>
+            @endforeach
+
+            <!-- ОБЩИЙ БЛОК АКТИВАЦИИ (один на все каналы) -->
+            <div id="gpw-activate-block">
+                <input type="text" id="gpw-code" placeholder="Введите код" maxlength="6" style="text-transform:uppercase;">
+                <button type="button" class="gpw-btn-success" onclick="GPW.verifyCode()">Активировать скидку</button>
+            </div>
+
+            <div id="gpw-message"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #global-promo-widget * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    #gpw-trigger {
+        position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b); color: #fff;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 32px; font-weight: bold; cursor: pointer; z-index: 99998;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.2s;
+    }
+    #gpw-trigger:hover { transform: scale(1.1); }
+    #gpw-popup {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6); z-index: 99999; display: flex;
+        align-items: center; justify-content: center;
+    }
+    .gpw-hidden { display: none !important; }
+    #gpw-popup-content {
+        background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 380px;
+        position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    #gpw-close { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #999; }
+    #gpw-popup-content h3 { margin: 0 0 8px 0; color: #333; text-align: center; }
+    #gpw-popup-content p { margin: 0 0 15px 0; color: #666; text-align: center; font-size: 14px; }
+
+    /* Табы-переключатель */
+    #gpw-tabs { display: flex; gap: 8px; margin: 0 0 15px 0; }
+    #gpw-popup-content .gpw-tab {
+        flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+        padding: 10px 6px; width: auto; background: #fff; border: 2px solid #e5e5e5;
+        border-radius: 8px; color: #777; font-size: 14px; font-weight: bold; cursor: pointer;
+        transition: all 0.15s;
+    }
+    #gpw-popup-content .gpw-tab:hover { border-color: #bbb; }
+    #gpw-popup-content .gpw-tab.gpw-tab-active { border-color: #007bff; color: #007bff; background: #f0f7ff; }
+    #gpw-popup-content .gpw-tab svg { width: 18px; height: 18px; flex: none; }
+
+    /* Поля и кнопки */
+    #gpw-popup-content input {
+        width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px;
+        font-size: 14px; margin-bottom: 10px;
+    }
+    #gpw-popup-content button:not(.gpw-tab) {
+        width: 100%; padding: 12px; background: #007bff; color: #fff; border: none;
+        border-radius: 6px; font-size: 15px; cursor: pointer; font-weight: bold; transition: opacity 0.2s;
+    }
+    #gpw-popup-content button:not(.gpw-tab):hover { opacity: 0.9; }
+    #gpw-popup-content button:not(.gpw-tab):disabled { background: #ccc; cursor: not-allowed; }
+    #gpw-popup-content .gpw-btn-success { background: #28a745; }
+    #gpw-activate-block { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+    #gpw-message { margin-top: 12px; font-weight: bold; text-align: center; color: #d9534f; }
+    #gpw-message.success { color: #28a745; }
+
+    /* Пока идёт запрос — все кнопки попапа некликабельны */
+    #gpw-popup-content.gpw-busy button { pointer-events: none; }
+
+    /* Кнопка с прелоадером: текст скрыт, вместо него спиннер */
+    #gpw-popup-content button.gpw-loading {
+        position: relative;
+        color: transparent !important;
+    }
+    #gpw-popup-content button.gpw-loading::after {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 18px; height: 18px;
+        margin: -9px 0 0 -9px;
+        border: 3px solid rgba(255,255,255,0.35);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: gpw-spin 0.7s linear infinite;
+    }
+    @keyframes gpw-spin { to { transform: rotate(360deg); } }
+
+    /* Успешно отправленная кнопка (✓ Отправлено) — зелёная, а не серая */
+    #gpw-popup-content button:not(.gpw-tab):disabled {
+        background: #28a745 !important;
+        color: #fff;
+        opacity: 1;
+        cursor: default;
+    }
+</style>
+
+<script>
+    function getPromoCookie(name) {
+        const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([$?*|{}[\]\\/])/g, '\\$1') + '=([^;]*)'));
+        return m ? decodeURIComponent(m[1]) : '';
+    }
+
+    const GPW = {
+        currentChannel: document.querySelector('#gpw-tabs .gpw-tab-active')?.dataset.channel || 'email',
+        telegramBotUrl: '{{ config("promo.channels.telegram.bot_url", "") }}',
+
+        /* ХУКИ КАНАЛОВ: только UX-специфика. Никаких ссылок и проверок — всё в PHP. */
+        channelHooks: {
+            email: {
+                getIdentifier: () => (document.getElementById('gpw-field-email')?.value || '').trim(),
+            },
+            push: {
+                getIdentifier: () => getPromoCookie('user_push'),
+                beforeRequest: async () => {
+                    let up = getPromoCookie('user_push');
+                    if (up) return up;
+                    if (typeof window.allowPushSubscribeFromClick === 'function') window.allowPushSubscribeFromClick();
+                    if (typeof window.enableNotif !== 'function') return null;
+                    const res = await window.enableNotif();
+                    if (!res || !res.subscription) return null;
+                    await new Promise(r => setTimeout(r, 500));
+                    return getPromoCookie('user_push');
+                },
+                onPanelShow: () => {
+                    const up = getPromoCookie('user_push');
+                    const btn = document.getElementById('gpw-request-push');
+                    const msg = document.getElementById('gpw-subscribed-push');
+                    if (btn) btn.style.display = up ? 'none' : 'block';
+                    if (msg) {
+                        msg.style.display = up ? 'block' : 'none';
+                        msg.innerHTML = up ? '✅ Вы уже подписаны на Push!<br><span style="font-weight:normal;font-size:13px;color:#666;">Код придёт в уведомлении — нажмите на него.</span>' : '';
+                    }
+                },
+            },
+            telegram: {
+                getIdentifier: () => '',
+                onSuccess: (data) => {
+                    if (GPW.telegramBotUrl && data.token) {
+                        window.open(GPW.telegramBotUrl + '?start=' + encodeURIComponent(data.token), '_blank');
+                    }
+                },
+            },
+        },
+
+        openPopup: function() {
+            document.getElementById('gpw-popup').classList.remove('gpw-hidden');
+            this.refreshPanel();
+        },
+        closePopup: function() {
+            document.getElementById('gpw-popup').classList.add('gpw-hidden');
+            this.showMsg('');
+        },
+        showMsg: function(text, ok = false) {
+            const el = document.getElementById('gpw-message');
+            el.textContent = text || '';
+            el.className = ok ? 'success' : '';
+        },
+
+        _busy: false,
+        _busyBtn: null,
+
+        setBusy: function(busy, btn) {
+            this._busy = busy;
+            const content = document.getElementById('gpw-popup-content');
+            if (!content) return;
+
+            if (busy) {
+                content.classList.add('gpw-busy');
+                if (btn) btn.classList.add('gpw-loading');
+                this._busyBtn = btn || null;
+            } else {
+                content.classList.remove('gpw-busy');
+                if (this._busyBtn) {
+                    this._busyBtn.classList.remove('gpw-loading');
+                    this._busyBtn = null;
+                }
+            }
+        },
+        switchChannel: function(channel) {
+            this.currentChannel = channel;
+            document.querySelectorAll('#gpw-tabs .gpw-tab').forEach(b => b.classList.toggle('gpw-tab-active', b.dataset.channel === channel));
+            document.querySelectorAll('#gpw-popup-content .gpw-panel').forEach(p => p.classList.toggle('gpw-hidden', p.id !== 'gpw-panel-' + channel));
+            this.showMsg('');
+            this.refreshPanel();
+        },
+        refreshPanel: function() {
+            const hook = this.channelHooks[this.currentChannel];
+            if (hook && hook.onPanelShow) hook.onPanelShow();
+        },
+
+        /* УНИВЕРСАЛЬНЫЙ запрос кода: один метод на все каналы */
+        requestCode: async function(channel) {
+            if (this._busy) return; // защита от спама кликов
+
+            const hook = this.channelHooks[channel] || {};
+            const btn = document.getElementById('gpw-request-' + channel);
+
+            this.setBusy(true, btn);
+            try {
+                let identifier = hook.getIdentifier ? hook.getIdentifier() : '';
+                if (hook.beforeRequest) {
+                    this.showMsg('Подготавливаем подписку...');
+                    identifier = await hook.beforeRequest();
+                    if (identifier === null) {
+                        this.showMsg('Не удалось оформить подписку. Разрешите уведомления и повторите.');
+                        return;
+                    }
+                }
+
+                const r = await fetch('{{ url("promo/send") }}/' + channel, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                    body: JSON.stringify({identifier: identifier})
+                });
+                const data = await r.json();
+
+                this.showMsg(data.message, data.status === 'success');
+
+                if (data.status === 'success') {
+                    // КОД БОЛЬШЕ НЕ подставляется в поле ввода автоматически.
+                    // Кнопка блокируется навсегда (до перезагрузки), чтобы не спамили.
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.textContent = '✓ Отправлено';
+                    }
+                    if (hook.onSuccess) hook.onSuccess(data);
+                }
+                this.refreshPanel();
+            } catch (e) {
+                this.showMsg('Ошибка соединения с сервером');
+            } finally {
+                this.setBusy(false);
+            }
+        },
+
+        /* УНИВЕРСАЛЬНАЯ активация: один метод на все каналы */
+        verifyCode: function() {
+            if (this._busy) return; // защита от спама кликов
+
+            const channel = this.currentChannel;
+            const code = document.getElementById('gpw-code').value.trim();
+            if (!code) return this.showMsg('Введите код');
+
+            const hook = this.channelHooks[channel] || {};
+            const payload = {code: code};
+            if (hook.getIdentifier) payload.identifier = hook.getIdentifier();
+
+            const btn = document.querySelector('#gpw-activate-block .gpw-btn-success');
+            this.setBusy(true, btn);
+
+            fetch('{{ url("promo/verify") }}/' + channel, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                body: JSON.stringify(payload)
+            }).then(r => r.json()).then(data => {
+                this.showMsg(data.message, data.status === 'success');
+                if (data.status === 'success') {
+                    // Блок НЕ снимаем: страница сейчас перезагрузится
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.textContent = 'Активируем...';
+                    }
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    this.setBusy(false); // ошибка — разрешаем попробовать снова
+                }
+            }).catch(() => {
+                this.showMsg('Ошибка проверки');
+                this.setBusy(false);
+            });
+        },
+
+        checkUrlParams: function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('open_promo_widget') === '1') {
+                this.openPopup();
+                const type = params.get('type');
+                if (type && document.getElementById('gpw-panel-' + type)) this.switchChannel(type);
+                if (params.get('code')) {
+                    document.getElementById('gpw-code').value = params.get('code');
+                    this.showMsg('Проверяем код из уведомления...');
+                    this.verifyCode();
+                }
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        GPW.checkUrlParams();
+        GPW.refreshPanel();
+    });
+</script>
 
 </body>
 </html>

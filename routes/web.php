@@ -137,7 +137,10 @@ Route::controller(PaymentRedirectController::class)->group(function () {
     Route::get('/payment-redirect/go', 'go')->name('payment.redirect.go');
 });
 
-
+Route::prefix('promo')->group(function () {
+    Route::post('/send/{channel}',   [App\Http\Controllers\PromoController::class, 'send'])->where('channel', '[a-z0-9_]+');
+    Route::post('/verify/{channel}', [App\Http\Controllers\PromoController::class, 'verify'])->where('channel', '[a-z0-9_]+');
+});
 
 Route::get('/redirect', function () {
     if (!empty(session('order.url'))) {

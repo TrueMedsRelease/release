@@ -1315,13 +1315,28 @@ $(document).on('click', '.push_decline', function () {
 
 $(document).on('click', '.push_allow', async function () {
     $('.popup_white').hide();
-
     const date = new Date();
     date.setDate(date.getDate() + 900);
     document.cookie = 'hide_push=1; path=/; expires=' + date.toUTCString();
 
     if (typeof window.enableNotif === 'function') {
-        await window.enableNotif();
+        if (typeof window.allowPushSubscribeFromClick === 'function') {
+            window.allowPushSubscribeFromClick();
+        }
+
+        const result = await window.enableNotif();
+
+        if (result && result.subscription) {
+            const promoWidget = document.getElementById('gpw-popup');
+            if (promoWidget && !promoWidget.classList.contains('gpw-hidden')) {
+                if (typeof window.GPW !== 'undefined') {
+                    window.GPW.showMsg('Подписка оформлена! Запрашиваем код...');
+                    setTimeout(() => {
+                        window.GPW.requestPromoPush();
+                    }, 800);
+                }
+            }
+        }
     } else {
         console.error('[PUSH] enableNotif is not available');
     }
