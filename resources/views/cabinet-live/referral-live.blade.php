@@ -2,6 +2,7 @@
     Live: "Referral program" — Alpine (account.js cabinetReferral).
     Переменные: $design.
 --}}
+<link rel="stylesheet" href="{{ asset_ver('css/cabinet-v1.css') }}">
 @php
 $cabLiveReferralConfig = [
     'referralUrl' => route('account.api.referral'),

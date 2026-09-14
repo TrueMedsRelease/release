@@ -38,6 +38,9 @@ $cabLiveOrdersConfig = [
     'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
     'tShowAll' => __('text.cabinet_show_all_events'),
     'tDays' => __('text.cabinet_track_days'),
+    // Хост текущего шопа: кнопка Shop показывается только для заказов
+    // с чужого домена (domainFrom != shopHost).
+    'shopHost' => request()->getHost(),
 ];
 @endphp
 <script>
@@ -170,6 +173,9 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                 </button>
                             </div>
                             <div class="oc-actions">
+                                <a x-show="order.billingLink" :href="order.billingLink" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
+                                    <span>{{ __('text.cabinet_billing') }}</span>
+                                </a>
                                 <span class="button cabp-action cabp-action--dark" :disabled="repeatingId === order.id" @click="repeatVirtual(order)" style="cursor:pointer">
                                     <span x-show="repeatingId !== order.id">{{ __('text.cabinet_repeat_order') }}</span>
                                     <span x-show="repeatingId === order.id">…</span>
@@ -177,6 +183,9 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                 <span class="button cabp-action cabp-action--danger-soft" x-show="showStop(order)" :disabled="stoppingId === order.id" @click="askStop(order.id)" style="cursor:pointer">
                                     <span>{{ __('text.cabinet_stop_auto') }}</span>
                                 </span>
+                                <a x-show="showShop(order)" :href="shopUrl(order)" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
+                                    <span>{{ __('text.cabinet_shop') }}</span>
+                                </a>
                             </div>
                         </div>
 

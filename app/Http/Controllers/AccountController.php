@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\ProductPackaging;
 use App\Services\CabinetService;
+use App\Services\CheckoutFormPrefill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -465,7 +466,46 @@ class AccountController extends Controller
 
         Cart::update_cart_total();
 
+        // Форму чекаута сразу заполняем адресом исходного заказа
+        // (ключи session('form.*'), best effort — корзина уже собрана).
+        $this->prefillCheckoutForm($request, $id);
+
         return response()->json(['status' => 'success', 'checkoutUrl' => route('checkout.index')]);
+    }
+
+    /**
+     * Адрес доставки заказа из кабинета → session('form.*') для чекаута.
+     * Best effort: нет скоупа/сети — молча пропускаем, повтор уже работает.
+     */
+    private function prefillCheckoutForm(Request $request, int $id): void
+    {
+        try {
+            $access = (string) session('cabinet.access_token', '');
+            if ($access === '') {
+                return;
+            }
+            $fingerprint = trim((string) $request->header('X-FP', ''));
+            $response = CabinetService::apiCall('GET', 'orders/'.$id.'/shipping', $access, $fingerprint);
+            if (!$response->successful()) {
+                return;
+            }
+            $data = $response->json();
+            $shipping = (is_array($data) && is_array($data['data'] ?? null)) ? $data['data'] : [];
+            if (isset($shipping['shipping']) && is_array($shipping['shipping'])) {
+                $shipping = $shipping['shipping'];
+            }
+            $prefill = CheckoutFormPrefill::fromShipping($shipping, (string) session('cabinet.email', ''));
+            if ($prefill === []) {
+                return;
+            }
+            $form = session('form', []);
+            if (!is_array($form)) {
+                $form = [];
+            }
+            session(['form' => array_merge($form, $prefill)]);
+        } catch (\Throwable $e) {
+            Log::warning('Cabinet repeat prefill failed: '.$e->getMessage());
+        }
     }
 
     public function apiBonus(Request $request)

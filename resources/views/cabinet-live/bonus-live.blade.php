@@ -2,6 +2,7 @@
     Live: "Bonus" — Alpine (account.js cabinetBonus).
     Переменные: $design.
 --}}
+<link rel="stylesheet" href="{{ asset_ver('css/cabinet-v1.css') }}">
 @php
 $cabLiveBonusConfig = [
     'bonusUrl' => route('account.api.bonus'),
@@ -51,8 +52,9 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                             <p class="cabp-bank__caption">{{ __('text.cabinet_card_number') }}</p>
                             <p class="cabp-bank__number" x-text="cardNumber || '—'"></p>
                         </div>
-                        <span class="cabp-bank__copy" title="{{ __('text.cabinet_bonus_copy_card') }}" x-show="cardNumber" @click="copyCard()" style="cursor:pointer">
+                        <span class="cabp-bank__copy" role="button" tabindex="0" title="{{ __('text.cabinet_bonus_copy_card') }}" aria-label="{{ __('text.cabinet_bonus_copy_card') }}" x-show="cardNumber" @click="copyCard()" @keydown.enter.prevent="copyCard()" @keydown.space.prevent="copyCard()" style="cursor:pointer">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M16 8V5.5A2.5 2.5 0 0 0 13.5 3h-8A2.5 2.5 0 0 0 3 5.5v8A2.5 2.5 0 0 0 5.5 16H8" stroke="currentColor" stroke-width="1.8"/></svg>
+                            <span class="cabp-bank__copied" x-show="copied === 'card'" x-cloak>{{ __('text.cabinet_copied') }}</span>
                         </span>
                     </div>
                     <div class="cabp-bank__bottom">
@@ -103,7 +105,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
             </div>
 
             <template x-if="!loading && !failed">
-                <div class="cabp-history">
+                <div class="cabp-history" x-show="(history || []).length">
                     <table class="cabp-table" x-show="(history || []).length">
                         <thead>
                             <tr>

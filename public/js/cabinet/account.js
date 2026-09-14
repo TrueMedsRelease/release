@@ -524,6 +524,30 @@
                 return !!(order.nextRecurringDate && order.nextRecurringDate !== 'none');
             },
 
+            // Кнопка Shop — только для заказов с чужого домена
+            // (свой шоп в кнопке не нуждается). Сравнение по нормализованному
+            // хосту: без схемы/порта/пути/www и в нижнем регистре.
+            normDomain(host) {
+                var h = String(host || '').trim().toLowerCase();
+                h = h.replace(/^[a-z][a-z0-9+.-]*:\/\//, '').replace(/\/.*$/, '').replace(/:\d+$/, '');
+                return h.replace(/^www\./, '');
+            },
+
+            showShop(order) {
+                var d = this.normDomain(order && order.domainFrom);
+                if (!d) return false;
+                var self = this.normDomain((cfg && cfg.shopHost) || window.location.hostname);
+                return d !== self;
+            },
+
+            shopUrl(order) {
+                var d = String((order && order.domainFrom) || '').trim().replace(/\/+$/, '');
+                if (!d) return '#';
+                if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(d)) d = 'https://' + d;
+                var aff = parseInt((order && order.aff) || 0, 10);
+                return aff > 0 ? d + '?aff=' + aff : d;
+            },
+
             isItemsOpen(id) { return this.openItems[id] !== false; },
             toggleItems(id) { this.openItems[id] = !this.isItemsOpen(id); },
 
