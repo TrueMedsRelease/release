@@ -209,23 +209,9 @@
                 </div>
             </div>
         </div>
-        <div class="popup_white hide">
-            <div class="popup_push">
-                <div class="button_close">
-                    <svg class="close_popup" width="15" height="15">
-                        <use xlink:href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
-                    </svg>
-                </div>
-                <div class="popup_block">
-                    <div class="popup_head">{{ __('text.common_push_head') }}</div>
-                    <div class="popup_push_text">{{ __('text.common_push_text') }}</div>
-                    <div class="push_buttons">
-                        <div class="push_decline">{{ __('text.common_decline') }}</div>
-                        <div class="push_allow">{{ __('text.common_allow') }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        @include('push_popup')
+
         <header class="header">
 
             {{-- <div class="christmas" style="display: none">
