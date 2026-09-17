@@ -51,7 +51,7 @@
 </div>
 
 <main class="basket" id="shopping_cart">
-
+    @include('preloader')
 </main>
 
 @section('testimonial')

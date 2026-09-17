@@ -917,6 +917,8 @@
     <script defer src="{{ asset_ver("$design/js/main.js") }}"></script>
     <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 
+    @include('promo_block')
+
 </body>
 
 </html>

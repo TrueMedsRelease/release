@@ -15,7 +15,7 @@
     </script>
 
     <div class="container page-wrapper cart_block basket" id = "shopping_cart">
-
+        @include('preloader')
     </div>
 @endsection
 

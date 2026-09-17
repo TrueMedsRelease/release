@@ -26,9 +26,9 @@ return [
             'normalize'              => 'lower',
             'validate'               => 'email',
             'verify_with_identifier' => true,
-            'input_placeholder'      => 'Введите ваш email',
+            'input_placeholder'      => 'email_ph',
             'input_type'             => 'email',
-            'button_text'            => 'Отправить код на почту',
+            'button_text'            => 'email_btn',
         ],
         'push' => [
             'enabled' => true,
@@ -38,19 +38,63 @@ return [
             'validate'               => null,
             'verify_with_identifier' => false,
             'input_placeholder'      => null,
-            'button_text'            => 'Отправить код в Push',
-            'hint'                   => 'Или введите код из полученного уведомления:',
+            'button_text'            => 'push_btn',
+            'hint'                   => 'push_hint',
         ],
         'telegram' => [
-            'enabled'   => true, // включить, когда будет бот
+            'enabled'   => false, // включить, когда будет бот
             'title'     => 'Telegram',
             'requires_identifier'    => false, // токен сгенерирует сервер
             'normalize'              => null,
             'validate'               => null,
             'verify_with_identifier' => false,
             'input_placeholder'      => null,
-            'button_text'            => 'Получить код в Telegram',
+            'button_text'            => 'bot_btn',
             'bot_url'                => 'https://t.me/test35253',
+        ],
+        'whatsapp' => [
+            'enabled' => false,
+            'title'   => 'WhatsApp',
+            'requires_identifier'    => false,
+            'normalize'              => null,
+            'validate'               => null,
+            'verify_with_identifier' => false,
+            'input_placeholder'      => null,
+            'button_text'            => 'bot_btn',
+            'bot_url'                => '', // пример: https://wa.me/15551234567
+        ],
+        'facebook' => [
+            'enabled' => false,
+            'title'   => 'Facebook',
+            'requires_identifier'    => false,
+            'normalize'              => null,
+            'validate'               => null,
+            'verify_with_identifier' => false,
+            'input_placeholder'      => null,
+            'button_text'            => 'bot_btn',
+            'bot_url'                => '', // пример: https://m.me/YourPage
+        ],
+        'instagram' => [
+            'enabled' => false,
+            'title'   => 'Instagram',
+            'requires_identifier'    => false,
+            'normalize'              => null,
+            'validate'               => null,
+            'verify_with_identifier' => false,
+            'input_placeholder'      => null,
+            'button_text'            => 'bot_btn',
+            'bot_url'                => '', // пример: https://ig.me/m/yourprofile
+        ],
+        'discord' => [
+            'enabled' => false,
+            'title'   => 'Discord',
+            'requires_identifier'    => false,
+            'normalize'              => null,
+            'validate'               => null,
+            'verify_with_identifier' => false,
+            'input_placeholder'      => null,
+            'button_text'            => 'bot_btn',
+            'bot_url'                => '', // пример: https://discord.gg/yourinvite
         ],
         // Пример будущего канала — просто раскомментировать/добавить:
         // 'viber' => ['enabled' => true, 'title' => 'Viber', 'requires_identifier' => true, ...],

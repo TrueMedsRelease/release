@@ -14,7 +14,7 @@
     flagc = true;
 </script>
 <div class="page__body basket" id="shopping_cart">
-
+    @include('preloader')
 </div>
 </div>
 </div>

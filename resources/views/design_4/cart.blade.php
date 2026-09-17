@@ -14,7 +14,7 @@
         flagc = true;
     </script>
         <div class="cart-page__content basket" id="shopping_cart">
-
+            @include('preloader')
         </div>
         <aside class="cart-page__sidebar">
             <div class="cart-page__preference preference-page-cart">

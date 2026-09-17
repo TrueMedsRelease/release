@@ -14,14 +14,11 @@
     flagc = true;
 </script>
     <div class="main" id="scroll">
-    <!-- content -->
-    <section class="basket"  id="shopping_cart">
-
-
-
-    </section>
-    <!-- END content -->
+        <section class="basket"  id="shopping_cart">
+            @include('preloader')
+        </section>
     </div>
+
     </div>
     </div>
     </div>

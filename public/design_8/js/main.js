@@ -264,15 +264,52 @@ $(document).on('click', '.push_decline', function () {
 
 $(document).on('click', '.push_allow', async function () {
     $('.popup_white').hide();
-
     const date = new Date();
     date.setDate(date.getDate() + 900);
     document.cookie = 'hide_push=1; path=/; expires=' + date.toUTCString();
 
-    if (typeof window.enableNotif === 'function') {
-        await window.enableNotif();
-    } else {
+    if (typeof window.enableNotif !== 'function') {
         console.error('[PUSH] enableNotif is not available');
+        return;
+    }
+
+    if (typeof window.allowPushSubscribeFromClick === 'function') {
+        window.allowPushSubscribeFromClick();
+    }
+
+    const result = await window.enableNotif();
+    if (!result || !result.subscription) {
+        console.warn('[PUSH] subscription not created (permission denied?)');
+        return;
+    }
+
+    const user_push = getCookie('user_push');
+    if (!user_push) {
+        console.warn('[PROMO] user_push cookie not found after subscribe');
+        return;
+    }
+
+    try {
+        const response = await fetch(promoUrl('send', 'push'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': (typeof getCsrfToken === 'function') ? getCsrfToken() : ''
+            },
+            body: JSON.stringify({ identifier: user_push })
+        });
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            console.log('[PROMO] promo push queued');
+            if (window.GPW && typeof GPW.toast === 'function' && typeof GPW_LANG !== 'undefined') {
+                GPW.toast(GPW_LANG.code_sent);
+            }
+        } else {
+            console.warn('[PROMO] promo push rejected:', data.message);
+        }
+    } catch (e) {
+        console.error('[PROMO] promo push request failed:', e);
     }
 });
 

@@ -1455,6 +1455,8 @@
 {{-- <input hidden id="stattemp" style="display: none;" value="{$path.global_image}/elements/pixel?{$data.web_statistic.params_string}">
 <img loading="lazy" id="stat" style="display: none;" alt="" src=""> --}}
 
+@include('promo_block')
+
 </body>
 
 </html>

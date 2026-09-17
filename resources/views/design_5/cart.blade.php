@@ -21,7 +21,7 @@
 @endif
 
 <div id="shopping_cart">
-
+    @include('preloader')
 </div>
 
 @endsection

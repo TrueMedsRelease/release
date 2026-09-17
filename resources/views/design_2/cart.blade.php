@@ -265,7 +265,7 @@
 @endif
 
 <main class="basket" id="shopping_cart">
-
+    @include('preloader')
 </main>
 @endsection
 

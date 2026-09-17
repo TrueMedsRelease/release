@@ -14,7 +14,7 @@
     flagc = true;
 </script>
 <div class="page-wrapper container" id="shopping_cart">
-    
+    @include('preloader')
 </div>
 @endsection
 

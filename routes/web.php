@@ -138,8 +138,8 @@ Route::controller(PaymentRedirectController::class)->group(function () {
 });
 
 Route::prefix('promo')->group(function () {
-    Route::post('/send/{channel}',   [App\Http\Controllers\PromoController::class, 'send'])->where('channel', '[a-z0-9_]+');
-    Route::post('/verify/{channel}', [App\Http\Controllers\PromoController::class, 'verify'])->where('channel', '[a-z0-9_]+');
+    Route::post('/send/{channel}', [App\Http\Controllers\PromoController::class, 'send'])->where('channel', '[a-z0-9_]+')->name('promo.send');
+    Route::post('/verify/{channel}', [App\Http\Controllers\PromoController::class, 'verify'])->where('channel', '[a-z0-9_]+')->name('promo.verify');
 });
 
 Route::get('/redirect', function () {

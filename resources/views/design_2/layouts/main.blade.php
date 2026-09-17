@@ -795,5 +795,7 @@
     <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
 @endif
 
+@include('promo_block')
+
 </body>
 </html>
