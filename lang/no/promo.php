@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Abonner deg nå og få 5 % rabatt på din første bestilling!",
+    'push_popup_text1' => "🎁 Abonner deg nå og få 5 % rabatt på bestillingen din!",
     'push_popup_text2' => "Vi sender deg en personlig kampanjekode via en Push-varsling",
     'title' => 'Få 5 % rabatt!',
     'subtitle' => 'Velg en abonnementsmetode og få en promokode.',

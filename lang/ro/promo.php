@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Abonați-vă acum și beneficiați de o reducere de 5% la prima comandă!",
+    'push_popup_text1' => "🎁 Abonați-vă acum și beneficiați de 5% reducere la comanda dvs.!",
     'push_popup_text2' => "Vă vom trimite un cod promoțional personal printr-o notificare Push",
     'title' => 'Obține 5% reducere!',
     'subtitle' => 'Alege o metodă de abonare și primește un cod promo.',

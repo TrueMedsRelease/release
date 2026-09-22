@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Subscribe now and get 5% off your first order!",
+    'push_popup_text1' => "🎁 Subscribe now and get 5% off your order!",
     'push_popup_text2' => "We’ll send you a personal promo code in a Push notification",
     'title' => 'Get 5% discount!',
     'subtitle' => 'Choose a subscription method and get a promo code.',

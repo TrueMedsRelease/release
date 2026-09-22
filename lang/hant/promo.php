@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 立即訂閱，首筆訂單即可享有 5% 折扣！",
+    'push_popup_text1' => "🎁 立即訂閱，您的訂單立享 5% 折扣！",
     'push_popup_text2' => "我們會透過 Push 通知向您發送專屬優惠碼",
     'title' => '獲取5%折扣！',
     'subtitle' => '選擇訂閱方式並獲取促銷碼。',

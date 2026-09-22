@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Iratkozzon fel most, és kapjon 5% kedvezményt az első rendelésére!",
+    'push_popup_text1' => "🎁 Iratkozzon fel most, és kapjon 5% kedvezményt rendelésére!",
     'push_popup_text2' => "Személyes promóciós kódot küldünk Önnek Push-értesítésben",
     'title' => 'Kérj 5% kedvezményt!',
     'subtitle' => 'Válassz feliratkozási módot és kapj promóciós kódot.',

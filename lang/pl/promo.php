@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Zapisz się teraz i otrzymaj 5% rabatu na pierwsze zamówienie!",
+    'push_popup_text1' => "🎁 Zapisz się teraz i otrzymaj 5% rabatu na swoje zamówienie!",
     'push_popup_text2' => "Wyślemy Ci osobisty kod promocyjny w powiadomieniu Push",
     'title' => 'Odbierz 5% zniżki!',
     'subtitle' => 'Wybierz sposób subskrypcji i odbierz kod promocyjny.',

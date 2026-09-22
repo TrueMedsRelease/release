@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Langgan sekarang dan dapatkan diskaun 5% untuk pesanan pertama anda!",
+    'push_popup_text1' => "🎁 Langgan sekarang dan dapatkan diskaun 5% untuk pesanan anda!",
     'push_popup_text2' => "Kami akan menghantar kod promosi peribadi kepada anda melalui pemberitahuan Push",
     'title' => 'Dapatkan diskaun 5%!',
     'subtitle' => 'Pilih kaedah langganan dan dapatkan kod promo.',

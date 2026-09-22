@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Tilaa nyt ja saat 5 % alennuksen ensimmäisestä tilauksestasi!",
+    'push_popup_text1' => "🎁 Tilaa nyt ja saat 5 % alennuksen tilauksestasi!",
     'push_popup_text2' => "Lähetämme sinulle henkilökohtaisen tarjouskoodin Push-ilmoituksena",
     'title' => 'Saat 5 % alennuksen!',
     'subtitle' => 'Valitse tilaustapa ja saat promokoodin.',

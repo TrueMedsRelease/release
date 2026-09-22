@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'push_popup_text1' => "🎁 Prihláste sa na odber a získajte 5 % zľavu na prvú objednávku!",
+    'push_popup_text1' => "🎁 Prihláste sa na odber a získajte 5 % zľavu na svoju objednávku!",
     'push_popup_text2' => "Osobný promo kód vám pošleme prostredníctvom Push upozornenia",
     'title' => 'Získajte zľavu 5 %!',
     'subtitle' => 'Vyberte spôsob odberu a získajte promo kód.',
