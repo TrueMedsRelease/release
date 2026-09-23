@@ -4,6 +4,8 @@ return [
     'discount_percent' => 5,
     'window_hours'     => 24,
 
+    'promo_coupon_enabled' => filter_var(env('APP_PROMO_COUPON_POPUP', true), FILTER_VALIDATE_BOOLEAN),
+
     'true_serv' => [
         'subscribe_url' => 'https://true-serv.net/support/messages/promo_subscribe.php',
         'verify_url'    => 'https://true-serv.net/support/messages/promo_verify.php',

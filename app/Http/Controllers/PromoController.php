@@ -50,6 +50,14 @@ class PromoController extends Controller
             return $guard;
         }
 
+        if (!config('promo.promo_coupon_enabled')) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Push promo is disabled',
+                'reason'  => 'feature_disabled'
+            ], 400);
+        }
+
         $cfg = $this->channelConfig($channel);
         if (!$cfg) {
             return response()->json(['status' => 'error', 'message' => __('promo.unknown_channel')], 400);

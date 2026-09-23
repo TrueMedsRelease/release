@@ -14,8 +14,10 @@
         <div class="popup_block">
             <div class="popup_head">{{__('text.common_push_head')}}</div>
             <div class="popup_push_text">{{__('text.common_push_text')}}</div>
-            <p style="font-weight: bold; color: #ff416c; margin: 0; text-align: center;">{{ __('promo.push_popup_text1') }}</p>
-            <p style="text-align: center; margin: 0;">{{ __('promo.push_popup_text2') }}</p>
+            @if (env('APP_PROMO_COUPON_POPUP', 1))
+                <p style="font-weight: bold; color: #ff416c; margin: 0; text-align: center;">{{ __('promo.push_popup_text1') }}</p>
+                <p style="text-align: center; margin: 0;">{{ __('promo.push_popup_text2') }}</p>
+            @endif
             <div class="push_buttons">
                 <div class="push_decline">{{__('text.common_decline')}}</div>
                 <div class="push_allow">{{__('text.common_allow')}}</div>

@@ -872,6 +872,7 @@ function renewalDatabase() {
 function saveDefaultErrorPage() {
     let default_error_page = $('input[name="default_error_page"]:checked').val();
     let default_meta = $('input[name="default_meta"]:checked').val();
+    let promo_coupon_popup = $('input[name="promo_coupon_popup"]:checked').val();
 
     $.ajax({
         url: routeAdminSaveDefaultErrorPage,
@@ -881,6 +882,7 @@ function saveDefaultErrorPage() {
         data: {
             'default_error_page': default_error_page,
             'default_meta': default_meta,
+            'promo_coupon_popup': promo_coupon_popup
         },
         success: function (data) {
             data = JSON.parse(data);
