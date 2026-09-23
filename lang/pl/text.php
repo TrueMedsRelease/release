@@ -779,6 +779,7 @@ return [
     "loader_google_pay" => "Przetwarzanie Google Pay...",
     "loader_sepa" => "Przetwarzanie SEPA...",
     "loader_zelle" => "Przetwarzanie Zelle...",
+    "loader_cashapp" => "Przetwarzanie Cash App...",
     "loader_open_banking" => "Przetwarzanie Open Banking...",
     "loader_order" => "Składanie zamówienia...",
     "payment_error_visa_message" => "Płatność Visa jest tymczasowo niedostępna dla tego zamówienia.",

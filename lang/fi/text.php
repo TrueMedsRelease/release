@@ -785,6 +785,7 @@ return [
     "loader_google_pay" => "Käsitellään Google Pay -maksua...",
     "loader_sepa" => "Käsitellään SEPA-maksua...",
     "loader_zelle" => "Käsitellään Zelle-maksua...",
+    "loader_cashapp" => "Käsitellään Cash App-maksua...",
     "loader_open_banking" => "Käsitellään Open Banking -maksua...",
     "loader_order" => "Tehdään tilausta...",
     "payment_error_visa_message" => "Visa ei ole tilapäisesti käytettävissä tässä tilauksessa.",

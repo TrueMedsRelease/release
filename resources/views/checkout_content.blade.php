@@ -736,6 +736,13 @@
                                             </option>
                                         @endif
 
+                                        @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                            <option value="cashapp" @selected(session('form.payment_type', 'mastercard') == 'cashapp')
+                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/cashapp.svg") }}">
+                                                Cash App
+                                            </option>
+                                        @endif
+
                                         @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
                                             <option value="zelle" @selected(session('form.payment_type', 'mastercard') == 'zelle')
                                                 data-asset="{{ asset("/style_checkout/images/icons/payment_type/zelle.svg") }}">
@@ -1617,6 +1624,19 @@
                                 </svg>
                             </button>
                         </div>
+
+                        @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                            <div class="enter-info__cashapp-content" @if (session('form.payment_type', 'mastercard') != 'cashapp') hidden @endif>
+                                <button id="proccess_cashapp" name="proccess" class="enter-info__button button">
+                                    <span>{{ __('text.checkout_place') }}</span>
+                                    <svg width="18" height="18">
+                                        <use
+                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                        </use>
+                                    </svg>
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 </section>
             </div>

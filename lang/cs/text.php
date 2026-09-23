@@ -864,6 +864,7 @@ return [
     "loader_google_pay" => "Zpracování Google Pay...",
     "loader_sepa" => "Zpracování SEPA...",
     "loader_zelle" => "Zpracování Zelle...",
+    "loader_cashapp" => "Zpracování Cash App...",
     "loader_open_banking" => "Zpracování otevřeného bankovnictví...",
     "loader_order" => "Odesílání objednávky...",
     "payment_error_visa_message" => "Platba Visa je pro tuto objednávku dočasně nedostupná.",

@@ -774,6 +774,7 @@ return [
     "loader_google_pay" => "Se procesează Google Pay...",
     "loader_sepa" => "Se procesează SEPA...",
     "loader_zelle" => "Se procesează Zelle...",
+    "loader_cashapp" => "Se procesează Cash App...",
     "loader_open_banking" => "Se procesează Open Banking...",
     "loader_order" => "Se plasează comanda...",
     "payment_error_visa_message" => "Visa este temporar indisponibilă pentru această comandă.",
