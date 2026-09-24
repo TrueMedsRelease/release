@@ -783,6 +783,7 @@ return [
     "loader_google_pay" => "正在处理 Google Pay...",
     "loader_sepa" => "正在处理 SEPA...",
     "loader_zelle" => "正在处理 Zelle...",
+    "loader_cashapp" => "正在处理 Cash App...",
     "loader_open_banking" => "正在处理开放银行付款...",
     "loader_order" => "正在提交订单...",
     "payment_error_visa_message" => "此订单暂时无法使用 Visa。",

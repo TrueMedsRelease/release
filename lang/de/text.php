@@ -904,6 +904,7 @@ return [
     "loader_google_pay" => "Google Pay wird verarbeitet...",
     "loader_sepa" => "SEPA wird verarbeitet...",
     "loader_zelle" => "Zelle wird verarbeitet...",
+    "loader_cashapp" => "Cash App wird verarbeitet...",
     "loader_open_banking" => "Open Banking wird verarbeitet...",
     "loader_order" => "Bestellung wird aufgegeben...",
     "payment_error_visa_message" => "Visa ist für diese Bestellung vorübergehend nicht verfügbar.",

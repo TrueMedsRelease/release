@@ -517,6 +517,9 @@
                     @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
                         <option value="open_banking" data-asset="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" @selected($payment_type_current == 'open_banking')>Instant Bank Transfer -5% extra off</option>
                     @endif
+                    @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                        <option value="cashapp" data-asset="{{ asset('style_checkout/images/icons/payment_type/cashapp.svg') }}" @selected($payment_type_current == 'cashapp')>Cash App</option>
+                    @endif
                     @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || $billing_country_current == "US"))
                         <option value="zelle" data-asset="{{ asset('style_checkout/images/icons/payment_type/zelle.svg') }}" @selected($payment_type_current == 'zelle')>ZELLE</option>
                     @endif
@@ -986,5 +989,21 @@
                 </button>
             </div>
         </div>
+
+        @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+            <div class="payment-information__cashapp-content" @if (!in_array($payment_type_current, ['cashapp'])) hidden @endif>
+                <div class="details-payment__row">
+                    <div class="details-payment__data" style="text-align: center;">{{ __('text.checkout_sepa_text') }}</div>
+                </div>
+                <div class="form__field submit-field">
+                    <button class="button form__submit" type="button" data-action="process-cashapp" data-payment-type="{{ $payment_type_current }}">
+                        <span class="button-text">{{ __('text.checkout_place') }}</span>
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        @endif
     </fieldset>
 </form>

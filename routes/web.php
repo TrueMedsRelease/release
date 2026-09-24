@@ -130,6 +130,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/checkout/recalculation', 'recalculation')->name('checkout.recalculation')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/open_banking_process', 'open_banking_process')->name('checkout.open_banking_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/checkout/new_order', 'new_order')->name('checkout.new_order');
+    Route::post('/cashapp_process', 'cashapp_process')->name('checkout.cashapp_process')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::controller(PaymentRedirectController::class)->group(function () {

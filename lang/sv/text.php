@@ -778,6 +778,7 @@ return [
     "loader_google_pay" => "Behandlar Google Pay...",
     "loader_sepa" => "Behandlar SEPA...",
     "loader_zelle" => "Behandlar Zelle...",
+    "loader_cashapp" => "Behandlar Cash App...",
     "loader_open_banking" => "Behandlar Open Banking...",
     "loader_order" => "Lägger beställningen...",
     "payment_error_visa_message" => "Visa är tillfälligt otillgängligt för den här beställningen.",

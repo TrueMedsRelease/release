@@ -818,6 +818,7 @@ return [
     "loader_google_pay" => "Google Pay verwerken...",
     "loader_sepa" => "SEPA verwerken...",
     "loader_zelle" => "Zelle verwerken...",
+    "loader_cashapp" => "Cash App verwerken...",
     "loader_open_banking" => "Open Banking verwerken...",
     "loader_order" => "Bestelling plaatsen...",
     "payment_error_visa_message" => "Visa is tijdelijk niet beschikbaar voor deze bestelling.",
