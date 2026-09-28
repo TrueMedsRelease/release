@@ -105,6 +105,7 @@
         const checkoutWallet = "{{ route('checkout.wallet_process') }}";
         const checkoutRecalculation = "{{ route('checkout.recalculation') }}";
         const checkoutOpenBanking = "{{ route('checkout.open_banking_process') }}";
+        const checkoutCashapp = "{{ route('checkout.cashapp_process') }}";
 
         const pathImageCheckupBiggest = "{{ asset('pub_images/checkup_img/white/checkup_biggest.png') }}";
         const pathImageCheckupBig = "{{ asset('pub_images/checkup_img/white/checkup_big.png') }}";

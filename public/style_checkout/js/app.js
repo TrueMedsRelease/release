@@ -1935,6 +1935,7 @@
             const applePayBlock = document.querySelector('.enter-info__apple_pay-content');
             const googlePayBlock = document.querySelector('.enter-info__google_pay-content');
             const openBankingBlock = document.querySelector('.enter-info__open-banking-content');
+            const cashappBlock = document.querySelector('.enter-info__cashapp-content');
 
             const cryptoCurrencySelect = document.querySelector(".select_crypt_currency");
             const cryptoRequisites = document.getElementById("requisites");
@@ -1959,6 +1960,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                     cryptoCurrencySelect.hidden = false;
                 } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other" || currentSelect.value === "visa" || currentSelect.value === "mastercard" || currentSelect.value === "amex" || currentSelect.value === "discover") {
                     _slideDown(cardBlock);
@@ -1979,6 +1981,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "sepa") {
                     _slideDown(sepaBlock);
                     _slideUp(cryptoBlock);
@@ -1996,6 +1999,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "paypal") {
                     _slideDown(paypalBlock);
                     _slideUp(cryptoBlock);
@@ -2015,6 +2019,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === 'gift_card') {
                     _slideDown(giftCardBlock);
                     _slideUp(paypalBlock);
@@ -2034,6 +2039,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "google") {
                     _slideDown(googleBlock);
                     _slideUp(cryptoBlock);
@@ -2051,6 +2057,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "zelle") {
                     _slideDown(zelleBlock);
                     if ($('#app_google_on').val() == '1') {
@@ -2068,6 +2075,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "sepa_local" || currentSelect.value === "fps" || currentSelect.value === "domestic" || currentSelect.value === "ach" || currentSelect.value === "interac" || currentSelect.value === "usd_swift" || currentSelect.value === "gbp_swift"){
                     _slideDown(localPaymentBlock);
                     if ($('#app_zelle_on').val() == '1') {
@@ -2087,6 +2095,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "bonus_card") {
                     _slideDown(bonusCardBlock);
                     if ($('#app_zelle_on').val() == '1') {
@@ -2106,6 +2115,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "apple_pay") {
                     _slideDown(applePayBlock);
                     // _slideDown(cardBlock);
@@ -2126,6 +2136,7 @@
                     _slideUp(bonusCardBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "google_pay") {
                     _slideDown(googlePayBlock);
                     // _slideDown(cardBlock);
@@ -2146,6 +2157,7 @@
                     _slideUp(bonusCardBlock);
                     _slideUp(applePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 } else if (currentSelect.value === "open_banking" || currentSelect.value === "revolut" || currentSelect.value === "wise" || currentSelect.value === "n26") {
                     _slideDown(openBankingBlock);
                     if ($('#app_zelle_on').val() == '1') {
@@ -2165,6 +2177,27 @@
                     _slideUp(bonusCardBlock);
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
+                    _slideUp(cashappBlock);
+                } else if (currentSelect.value === "cashapp") {
+                    _slideDown(cashappBlock);
+                    if ($('#app_zelle_on').val() == '1') {
+                       _slideUp(zelleBlock);
+                    }
+                    if ($('#app_google_on').val() == '1') {
+                        _slideUp(googleBlock);
+                    }
+                    _slideUp(cryptoBlock);
+                    _slideUp(cardBlock);
+                    if ($('#app_sepa_on').val() == '1') {
+                       _slideUp(sepaBlock);
+                    }
+                    _slideUp(paypalBlock);
+                    _slideUp(giftCardBlock);
+                    _slideUp(localPaymentBlock);
+                    _slideUp(bonusCardBlock);
+                    _slideUp(applePayBlock);
+                    _slideUp(googlePayBlock);
+                    _slideUp(openBankingBlock);
                 } else if (currentSelect.value === "none") {
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
@@ -2184,6 +2217,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(googlePayBlock);
                     _slideUp(openBankingBlock);
+                    _slideUp(cashappBlock);
                 }
 
                 if (currentSelect.value != "crypto") {
@@ -3780,6 +3814,82 @@ $("#proccess_open_banking").click(function (e) {
                     window.location.replace(checkoutComplete);
                 }
             } else if (data.response.status == 'risk_check') {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            $('.poopuptext').removeClass("show");
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
+$("#proccess_cashapp").click(function (e) {
+    var form = $('form').serialize();
+    // console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
+
+    $('.poopuptext').removeClass("show");
+
+    $.ajax({
+        url: checkoutCashapp,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
+            // console.log(data);
+            if (data.response.status == 'SUCCESS') {
+                if(typeof data.response.url !== 'undefined') {
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
+                } else {
+                    window.location.replace(checkoutComplete);
+                }
+            } else if (data.response.status == 'risk_check') {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else if (data.response.visa_error == true) {
                 alert(data.response.message);
                 document.body.classList.add('loaded');
                 $('.wrapper').html(data.response.html.original.html);

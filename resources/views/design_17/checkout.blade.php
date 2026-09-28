@@ -131,6 +131,7 @@
             bonusCardProcess: {!! json_encode(route('checkout.bonus_card_process')) !!},
             giftCardProcess: {!! json_encode(route('checkout.gift_card_process')) !!},
             openBanking: {!! json_encode(route('checkout.open_banking_process')) !!},
+            cashapp: {!! json_encode(route('checkout.cashapp_process')) !!},
             recalculation: {!! json_encode(route('checkout.recalculation')) !!},
             complete: {!! json_encode(route('checkout.complete')) !!},
             sendCheckoutPhoneEmail: {!! json_encode(route('checkout.send_checkout_phone_email')) !!}
@@ -169,6 +170,7 @@
                 zelle: {!! json_encode(__('text.loader_zelle')) !!},
                 openBanking: {!! json_encode(__('text.loader_open_banking')) !!},
                 order: {!! json_encode(__('text.loader_order')) !!},
+                cashapp: {!! json_encode(__('text.loader_cashapp')) !!},
             },
             paymentErrorVisaMessage: {!! json_encode(__('text.payment_error_visa_message') ?? 'Visa is temporarily unavailable for this order') !!},
             paymentErrorRiskCheckMessage: {!! json_encode(__('text.payment_error_risk_check_message') ?? "Payment didn't pass security check. Please try another method.") !!},

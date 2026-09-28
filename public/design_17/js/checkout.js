@@ -877,12 +877,13 @@
         revolut: ['open-banking'], wise: ['open-banking'], n26: ['open-banking'], open_banking: ['open-banking'],
         google: ['google-pay', 'google'],
         google_pay: ['google-pay', 'google'],
-        apple_pay: ['apple-pay', 'google']
+        apple_pay: ['apple-pay', 'google'],
+        cashapp: ['cashapp']
     };
 
     function showPaymentBlock(type) {
         var wanted = PAYMENT_BLOCK_MAP[type] || ['card'];
-        var blocks = document.querySelectorAll('.payment-information__card-content, .payment-information__crypto-content, .payment-information__local-content, .payment-information__paypal-content, .payment-information__sepa-content, .payment-information__google-content, .payment-information__google-pay-content, .payment-information__apple-pay-content, .payment-information__zelle-content, .payment-information__bonus-card-content, .payment-information__gift-card-content, .payment-information__open-banking-content');
+        var blocks = document.querySelectorAll('.payment-information__card-content, .payment-information__crypto-content, .payment-information__local-content, .payment-information__paypal-content, .payment-information__sepa-content, .payment-information__google-content, .payment-information__google-pay-content, .payment-information__apple-pay-content, .payment-information__zelle-content, .payment-information__bonus-card-content, .payment-information__gift-card-content, .payment-information__open-banking-content, .payment-information__cashapp-content');
 
         for (var i = 0; i < blocks.length; i++) {
             var m = blocks[i].className.match(/payment-information__([a-z-]+)-content/);
@@ -1640,6 +1641,7 @@
     $(document).on('click', '[data-action="process-zelle"]', function (e) { e.preventDefault(); processPayment('zelle'); });
     $(document).on('click', '[data-action="process-bonus-card"]', function (e) { e.preventDefault(); processPayment('bonusCardProcess'); });
     $(document).on('click', '[data-action="process-gift-card"]', function (e) { e.preventDefault(); processPayment('giftCardProcess'); });
+    $(document).on('click', '[data-action="process-cashapp"]', function (e) { e.preventDefault(); processPayment('cashapp'); });
 
     $(document).on('click', '[data-action="process-open-banking"]', function (e) {
         e.preventDefault();
