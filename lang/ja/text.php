@@ -897,6 +897,7 @@ return [
     "loader_google_pay" => "Google Payを処理しています...",
     "loader_sepa" => "SEPAを処理しています...",
     "loader_zelle" => "Zelleを処理しています...",
+    "loader_cashapp" => "Cash Appを処理しています...",
     "loader_open_banking" => "オープンバンキングを処理しています...",
     "loader_order" => "注文を確定しています...",
     "payment_error_visa_message" => "この注文ではVisaを一時的にご利用いただけません。",

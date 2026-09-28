@@ -778,6 +778,7 @@ return [
     "loader_google_pay" => "Spracúva sa Google Pay...",
     "loader_sepa" => "Spracúva sa SEPA...",
     "loader_zelle" => "Spracúva sa Zelle...",
+    "loader_cashapp" => "Spracúva sa Cash App...",
     "loader_open_banking" => "Spracúva sa Open Banking...",
     "loader_order" => "Objednávka sa odosiela...",
     "payment_error_visa_message" => "Platba kartou Visa je pre túto objednávku dočasne nedostupná.",

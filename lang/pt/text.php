@@ -898,6 +898,7 @@ return [
     "loader_google_pay" => "A processar o Google Pay...",
     "loader_sepa" => "A processar o SEPA...",
     "loader_zelle" => "A processar o Zelle...",
+    "loader_cashapp" => "A processar o Cash App...",
     "loader_open_banking" => "A processar o Open Banking...",
     "loader_order" => "A efetuar a encomenda...",
     "payment_error_visa_message" => "O Visa está temporariamente indisponível para esta encomenda.",

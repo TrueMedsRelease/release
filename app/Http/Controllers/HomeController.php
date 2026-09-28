@@ -724,7 +724,7 @@ class HomeController extends Controller
 
         $design = session('design') ? session('design') : config('app.design');
 
-        if ($design == 7 || $design == 8) {
+        if (in_array($design, ['design_7', 'design_8'])) {
             return redirect()->route('home.product', $product);
         }
 
@@ -749,6 +749,14 @@ class HomeController extends Controller
                 return redirect(route('home.index'));
             }
         }
+
+        array_walk_recursive($product, function (&$value) {
+            if (is_string($value)) {
+                $value = str_replace("\\", "\\\\", $value);
+                $value = str_replace("'", "\\'", $value);
+                $value = str_replace(["\r\n", "\r", "\n"], ' ', $value);
+            }
+        });
 
         $agent   = new Agent();
 

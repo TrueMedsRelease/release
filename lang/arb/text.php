@@ -782,6 +782,7 @@ return [
     "loader_google_pay" => "جارٍ معالجة Google Pay...",
     "loader_sepa" => "جارٍ معالجة SEPA...",
     "loader_zelle" => "جارٍ معالجة Zelle...",
+    "loader_cashapp" => "جارٍ معالجة Cash App...",
     "loader_open_banking" => "جارٍ معالجة الخدمات المصرفية المفتوحة...",
     "loader_order" => "جارٍ تقديم الطلب...",
     "payment_error_visa_message" => "بطاقة Visa غير متاحة مؤقتًا لهذا الطلب.",

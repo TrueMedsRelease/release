@@ -909,6 +909,7 @@ return [
     "loader_google_pay" => "Traitement de Google Pay...",
     "loader_sepa" => "Traitement de SEPA...",
     "loader_zelle" => "Traitement de Zelle...",
+    "loader_cashapp" => "Traitement de Cash App...",
     "loader_open_banking" => "Traitement de l’Open Banking...",
     "loader_order" => "Passage de la commande...",
     "payment_error_visa_message" => "Visa est temporairement indisponible pour cette commande.",

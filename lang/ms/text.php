@@ -780,6 +780,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "loader_google_pay" => "Memproses Google Pay...",
     "loader_sepa" => "Memproses SEPA...",
     "loader_zelle" => "Memproses Zelle...",
+    "loader_cashapp" => "Memproses Cash App...",
     "loader_open_banking" => "Memproses Open Banking...",
     "loader_order" => "Membuat pesanan...",
     "payment_error_visa_message" => "Visa tidak tersedia buat sementara waktu untuk pesanan ini.",

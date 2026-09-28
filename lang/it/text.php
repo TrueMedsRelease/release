@@ -914,6 +914,7 @@ return [
     "loader_google_pay" => "Elaborazione di Google Pay...",
     "loader_sepa" => "Elaborazione di SEPA...",
     "loader_zelle" => "Elaborazione di Zelle...",
+    "loader_cashapp" => "Elaborazione di Cash App...",
     "loader_open_banking" => "Elaborazione di Open Banking...",
     "loader_order" => "Invio dell’ordine...",
     "payment_error_visa_message" => "Visa non è temporaneamente disponibile per questo ordine.",

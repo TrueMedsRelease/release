@@ -828,6 +828,7 @@ return [
     "loader_google_pay" => "Behandler Google Pay...",
     "loader_sepa" => "Behandler SEPA...",
     "loader_zelle" => "Behandler Zelle...",
+    "loader_cashapp" => "Behandler Cash App...",
     "loader_open_banking" => "Behandler Open Banking...",
     "loader_order" => "Afgiver ordre...",
     "payment_error_visa_message" => "Visa er midlertidigt utilgængeligt for denne ordre.",

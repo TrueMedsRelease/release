@@ -784,6 +784,7 @@ return [
     "loader_google_pay" => "Google Pay feldolgozása...",
     "loader_sepa" => "SEPA feldolgozása...",
     "loader_zelle" => "Zelle feldolgozása...",
+    "loader_cashapp" => "Cash App feldolgozása...",
     "loader_open_banking" => "Open Banking feldolgozása...",
     "loader_order" => "Megrendelés leadása...",
     "payment_error_visa_message" => "A Visa átmenetileg nem érhető el ehhez a megrendeléshez.",

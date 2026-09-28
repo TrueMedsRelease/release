@@ -943,6 +943,7 @@ return [
     "loader_google_pay" => "Procesando Google Pay...",
     "loader_sepa" => "Procesando SEPA...",
     "loader_zelle" => "Procesando Zelle...",
+    "loader_cashapp" => "Procesando Cash App...",
     "loader_open_banking" => "Procesando Open Banking...",
     "loader_order" => "Realizando el pedido...",
     "payment_error_visa_message" => "Visa no está disponible temporalmente para este pedido.",

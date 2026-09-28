@@ -1068,6 +1068,7 @@ return [
     "loader_google_pay" => "Processing Google Pay...",
     "loader_sepa" => "Processing SEPA...",
     "loader_zelle" => "Processing Zelle...",
+    "loader_cashapp" => "Processing Cash App...",
     "loader_open_banking" => "Processing Open Banking...",
     "loader_order" => "Placing order...",
     "payment_error_visa_message" => "Visa is temporarily unavailable for this order.",

@@ -777,6 +777,7 @@ return [
     "loader_google_pay" => "Επεξεργασία Google Pay...",
     "loader_sepa" => "Επεξεργασία SEPA...",
     "loader_zelle" => "Επεξεργασία Zelle...",
+    "loader_cashapp" => "Επεξεργασία Cash App...",
     "loader_open_banking" => "Επεξεργασία Open Banking...",
     "loader_order" => "Καταχώριση παραγγελίας...",
     "payment_error_visa_message" => "Η Visa δεν είναι προσωρινά διαθέσιμη για αυτή την παραγγελία.",
