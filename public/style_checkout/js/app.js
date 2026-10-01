@@ -2275,6 +2275,21 @@
     })();
 })();
 
+(function initPaymentPreloader() {
+    if (document.getElementById('payment_preloader')) return;
+    const preloader = document.createElement('div');
+    preloader.className = 'payment-preloader';
+    preloader.id = 'payment_preloader';
+    preloader.setAttribute('aria-hidden', 'true');
+    preloader.innerHTML = `
+        <div class="payment-preloader__spinner">
+            <span class="payment-preloader__dot"></span>
+            <span class="payment-preloader__dot"></span>
+        </div>
+    `;
+    document.body.appendChild(preloader);
+})();
+
 var browserInfo = {
     browser_color_depth: window.screen.colorDepth,
     browser_language: (navigator.language || '').toLowerCase(),
@@ -2631,54 +2646,170 @@ function closePaymentDropdown() {
 //     }
 // });
 
+function showPaymentPreloader() {
+    const pl = document.getElementById('payment_preloader');
+    if (!pl) return;
+    pl.style.display = 'flex';
+    // Принудительно даем браузеру отрисовать прелоадер
+    void pl.offsetWidth;
+    requestAnimationFrame(() => {
+        pl.classList.add('is_active');
+        pl.setAttribute('aria-hidden', 'false');
+    });
+}
+
+function hidePaymentPreloader() {
+    const pl = document.getElementById('payment_preloader');
+    if (!pl) return;
+    pl.classList.remove('is_active');
+    pl.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+        // Скрываем через display, чтобы точно не мешал
+        if (!pl.classList.contains('is_active')) {
+            pl.style.display = 'none';
+        }
+    }, 300);
+}
+
+function scrollToPaymentContent() {
+    const possibleBlocks = [
+        '.enter-info__card-content',
+        '.enter-info__crypto-content',
+        '.enter-info__sepa-content',
+        '.enter-info__zelle-content',
+        '.enter-info__local_payment-content',
+        '.enter-info__bonus-card-content',
+        '.enter-info__gift-card-content',
+        '.enter-info__open-banking-content',
+        '.enter-info__apple_pay-content',
+        '.enter-info__google_pay-content',
+        '.enter-info__cashapp-content',
+        '.enter-info__paypal-content',
+        '.enter-info__google-content'
+    ];
+
+    let target = null;
+    for (const sel of possibleBlocks) {
+        const el = document.querySelector(sel);
+        if (el && !el.hidden) {
+            target = el;
+            break;
+        }
+    }
+
+    if (target) {
+        const yOffset = -100; // Отступ сверху
+        const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+}
+
+// --- Обработка выбора способа оплаты ---
 $('input[name="payment_type"]').on('change', function (e) {
-    var type = $(this).val();
+    var $radio = $(this);
+    var type = $radio.val();
     var form = $('form').serialize();
 
     $('.poopuptext').removeClass("show");
-
-    // Убираем класс is_selected у всех панелей и добавляем выбранной
     $('.payment-method-panel').removeClass('is_selected');
-    $(this).closest('.payment-method-panel').addClass('is_selected');
+    $radio.closest('.payment-method-panel').addClass('is_selected');
 
-    flag = false;
-    if (type == 'crypto') {
-        document.getElementById('paid').style.display = "none";
-        $.ajax({
-            url: checkoutValidateCrypto,
-            type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: form,
-            async: false,
-            success: function (data) {
+    // 1. Показываем прелоадер
+    showPaymentPreloader();
 
-            },
-            error: function (data) {
-                flag = true;
-                var errors = JSON.parse(data.responseText);
-                $('.poopuptext').removeClass("show");
-                errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
-                    var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
-                });
-            }
-        });
-        if (flag) {
-            closePaymentDropdown();
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
+    // 2. Даем браузеру отрисовать прелоадер, потом выполняем блокирующие запросы
+    setTimeout(function () {
+        var flag = false;
+
+        if (type == 'crypto') {
+            document.getElementById('paid').style.display = "none";
         }
-    }
-    else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
-        form += '&local_payment=' + type;
+        else if (type == 'google') {
+            $.ajax({
+                url: checkoutValidateGoogle,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
+                    errors.errors.forEach(function (error, i) {
+                        var popup = document.getElementById("error_" + error.field);
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
+                    });
+                }
+            });
+            if (flag) { hidePaymentPreloader(); return; }
+        }
+        else if (type == 'sepa') {
+            $.ajax({
+                url: checkoutValidateSepa,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
+                    errors.errors.forEach(function (error, i) {
+                        var popup = document.getElementById("error_" + error.field);
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
+                    });
+                }
+            });
+            if (flag) { hidePaymentPreloader(); return; }
+        }
+        else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
+            form += '&local_payment=' + type;
+            $.ajax({
+                url: checkoutLocalPaymentInfo,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.success == true) {
+                        sendLocalPaymentData(form);
+                        $('.wrapper').html(data.html);
+                    } else {
+                        alert(data.text);
+                    }
+                },
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
+                    errors.errors.forEach(function (error, i) {
+                        var popup = document.getElementById("error_" + error.field);
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
+                    });
+                }
+            });
+            if (flag) { hidePaymentPreloader(); return; }
+        }
+        else if (type == 'google_pay' || type == 'apple_pay') {
+            form += '&wallet=' + type;
+            $.ajax({
+                url: checkoutValidateWallet,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
+                    errors.errors.forEach(function (error, i) {
+                        var popup = document.getElementById("error_" + error.field);
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
+                    });
+                }
+            });
+            if (flag) { hidePaymentPreloader(); return; }
+        }
+
+        if (type != 'crypto') {
+            if (typeof PollingManager !== 'undefined') PollingManager.stopAll();
+            var paidBtn = document.getElementById('paid');
+            if (paidBtn) paidBtn.disabled = true;
+        }
+
+        form += '&bonus_checkout_payment=' + type;
+
         $.ajax({
-            url: checkoutLocalPaymentInfo,
+            url: checkoutRecalculation,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2687,125 +2818,37 @@ $('input[name="payment_type"]').on('change', function (e) {
             success: function (data) {
                 data = JSON.parse(data);
                 if (data.success == true) {
-                    sendLocalPaymentData(form);
                     $('.wrapper').html(data.html);
+
+                    setTimeout(function () {
+                        rebindPaymentMethods();
+                        scrollToPaymentContent();
+                        hidePaymentPreloader();
+                    }, 50);
                 } else {
                     alert(data.text);
+                    hidePaymentPreloader();
                 }
             },
             error: function (data) {
-                flag = true;
                 var errors = JSON.parse(data.responseText);
                 $('.poopuptext').removeClass("show");
                 errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
                     var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
+                    if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
                 });
+                hidePaymentPreloader();
             }
         });
-
-        if (flag) {
-            closePaymentDropdown();
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-    } else if (type == 'google_pay' || type == 'apple_pay') {
-        form += '&wallet=' + type;
-        $.ajax({
-            url: checkoutValidateWallet,
-            type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: form,
-            async: false,
-            success: function (data) {
-                // if (type == 'apple_pay') {
-                //     $('#proccess_apple_pay').show();
-                //     $('#proccess_google_pay').hide();
-                //     $('#proccess').hide();
-                // }
-                // if (type == 'google_pay') {
-                //     $('#proccess_google_pay').show();
-                //     $('#proccess_apple_pay').hide();
-                //     $('#proccess').hide();
-                // }
-            },
-            error: function (data) {
-                // if (type == 'apple_pay') {
-                //     $('#proccess_apple_pay').hide();
-                // }
-                // if (type == 'google_pay') {
-                //     $('#proccess_google_pay').hide();
-                // }
-                flag = true;
-                var errors = JSON.parse(data.responseText);
-                $('.poopuptext').removeClass("show");
-                errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
-                    var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
-                });
-            }
-        });
-
-        if (flag) {
-            closePaymentDropdown();
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-    }
-
-    if (type != 'crypto') {
-        PollingManager.stopAll();
-        document.getElementById('paid').disabled = true;
-    }
-
-    form += '&bonus_checkout_payment=' + type;
-
-    $.ajax({
-        url: checkoutRecalculation,
-        type: 'POST',
-        cache: false,
-        dataType: 'html',
-        data: form,
-        async: false,
-        success: function (data) {
-            data = JSON.parse(data);
-            if (data.success == true) {
-                $('.wrapper').html(data.html);
-            } else {
-                alert(data.text);
-            }
-        },
-        error: function (data) {
-            flag = true;
-            var errors = JSON.parse(data.responseText);
-            $('.poopuptext').removeClass("show");
-            errors.errors.forEach(function (error, i) {
-                var popup = document.getElementById("error_" + error.field);
-                if (popup) {
-                    popup.classList.add("show");
-                    if (i == 0) popup.scrollIntoView();
-                }
-            });
-        }
-    });
-
-    if (flag) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
+    }, 30);
 });
+
+// Функция перепривязки обработчиков после перерисовки HTML (для панелей оплаты)
+function rebindPaymentMethods() {
+    $('.payment-method-panel').removeClass('is_selected');
+    const checked = document.querySelector('input[name="payment_type"]:checked');
+    if (checked) checked.closest('.payment-method-panel').classList.add('is_selected');
+}
 
 
 // if ($('#payment_type_select').val() == 'google_pay') {
