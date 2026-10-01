@@ -734,7 +734,7 @@
                                     @endif
 
                                     <!-- Cash App -->
-                                    @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                    @if (env('APP_CASHAPP_ON', 0) == 1 && session('form.billing_country', session('location.country')) == "US")
                                     <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'cashapp') is_selected @endif">
                                         <input type="radio" name="payment_type" value="cashapp" @if(session('form.payment_type', 'mastercard') == 'cashapp') checked @endif>
                                         <img src="{{ asset('style_checkout/images/icons/payment_type/cashapp.svg') }}" class="payment-method-icon" alt="Cash App">
@@ -743,7 +743,7 @@
                                     @endif
 
                                     <!-- Zelle -->
-                                    @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                    @if (env('APP_ZELLE_ON', 0) && session('form.billing_country', session('location.country')) == "US")
                                     <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'zelle') is_selected @endif">
                                         <input type="radio" name="payment_type" value="zelle" @if(session('form.payment_type', 'mastercard') == 'zelle') checked @endif>
                                         <img src="{{ asset('style_checkout/images/icons/payment_type/zelle.svg') }}" class="payment-method-icon" alt="ZELLE">
@@ -752,7 +752,7 @@
                                     @endif
 
                                     <!-- PayPal -->
-                                    @if (env('APP_PAYPAL_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                    @if (env('APP_PAYPAL_ON', 0) && session('form.billing_country', session('location.country')) == "US")
                                     <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'paypal') is_selected @endif">
                                         <input type="radio" name="payment_type" value="paypal" @if(session('form.payment_type', 'mastercard') == 'paypal') checked @endif>
                                         <img src="{{ asset('style_checkout/images/icons/payment_type/paypal.svg') }}" class="payment-method-icon" alt="Paypal">
@@ -1621,7 +1621,7 @@
                             </button>
                         </div>
 
-                        @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                        @if (env('APP_CASHAPP_ON', 0) == 1 && session('form.billing_country') == "US")
                             <div class="enter-info__cashapp-content" @if (session('form.payment_type', 'mastercard') != 'cashapp') hidden @endif>
                                 <button id="proccess_cashapp" name="proccess" class="enter-info__button button">
                                     <span>{{ __('text.checkout_place') }}</span>
@@ -1634,7 +1634,7 @@
                             </div>
                         @endif
 
-                        @if (env('APP_PAYPAL_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                        @if (env('APP_PAYPAL_ON', 0) == 1 && session('form.billing_country') == "US")
                             <div class="enter-info__paypal-content" @if (session('form.payment_type', 'mastercard') != 'paypal') hidden @endif>
                                 <button id="proccess_paypal" name="proccess" class="enter-info__button button">
                                     <span>{{ __('text.checkout_place') }}</span>
