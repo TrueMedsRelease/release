@@ -925,4 +925,9 @@ return [
     "track_url_text1" => "Tämän linkin kautta voit milloin tahansa tarkistaa tilauksesi ajantasaisen tilan ja sen käsittelyä koskevat tiedot.",
     "track_url_text2" => "Tallenna linkki tai QR-koodi myöhempää käyttöä varten. Turvallisuussyistä älä jaa niitä muille, sillä sivu sisältää tilaustasi koskevia tietoja.",
     "track_url_print_button" => "Tulosta sivu",
+
+    'upsell_title' => 'Suosittelemme myös näitä kausituotteita:',
+    'upsell_skip' => 'Jatka lisäämättä',
+    'upsell_error' => 'Näitä tuotteita ei voitu vahvistaa. Yritä uudelleen tai jatka kassalle ja tarkista ostoskorisi.',
+    'upsell_expired' => 'Valikoima tai hinta on muuttunut. Sulje tämä ikkuna ja avaa se uudelleen päivittääksesi tiedot.',
 ];

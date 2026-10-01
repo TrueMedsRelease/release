@@ -1054,4 +1054,9 @@ return [
     "track_url_text1" => "Tramite questo link puoi controllare in qualsiasi momento lo stato aggiornato del tuo ordine e le informazioni relative alla sua elaborazione.",
     "track_url_text2" => "Salva il link o il codice QR per accedervi in seguito. Per motivi di sicurezza, non condividerli con terzi, poiché la pagina contiene informazioni sul tuo ordine.",
     "track_url_print_button" => "Stampa pagina",
+
+    'upsell_title' => 'Ti consigliamo anche questi prodotti stagionali:',
+    'upsell_skip' => 'Continua senza aggiungere',
+    'upsell_error' => 'Non è stato possibile confermare questi articoli. Riprova oppure continua al pagamento e controlla il carrello.',
+    'upsell_expired' => 'La selezione o il prezzo sono cambiati. Chiudi questa finestra e riaprila per aggiornare.',
 ];

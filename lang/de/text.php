@@ -1044,4 +1044,9 @@ return [
     "track_url_text1" => "Über diesen Link können Sie jederzeit den aktuellen Status Ihrer Bestellung und Informationen zu deren Bearbeitung überprüfen.",
     "track_url_text2" => "Speichern Sie den Link oder QR-Code für den späteren Zugriff. Geben Sie diese aus Sicherheitsgründen nicht an Dritte weiter, da die Seite Informationen zu Ihrer Bestellung enthält.",
     "track_url_print_button" => "Seite drucken",
+
+    'upsell_title' => 'Wir empfehlen außerdem diese saisonalen Produkte:',
+    'upsell_skip' => 'Ohne Hinzufügen fortfahren',
+    'upsell_error' => 'Diese Artikel konnten nicht bestätigt werden. Versuchen Sie es erneut oder fahren Sie zur Kasse fort und überprüfen Sie Ihren Warenkorb.',
+    'upsell_expired' => 'Die Auswahl oder der Preis hat sich geändert. Schließen Sie dieses Fenster und öffnen Sie es erneut, um die Auswahl zu aktualisieren.',
 ];

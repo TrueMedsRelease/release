@@ -1207,4 +1207,9 @@ return [
     "track_url_text1" => "You can use this link at any time to check the current status of your order and information about its processing.",
     "track_url_text2" => "Save the link or QR code for future access. For security reasons, do not share them with third parties, as the page contains information about your order.",
     "track_url_print_button" => "Print page",
+
+    'upsell_title' => 'We also recommend these seasonal products:',
+    'upsell_skip' => 'Continue without adding',
+    'upsell_error' => 'Could not confirm these items. Retry, or continue to checkout and review your cart.',
+    'upsell_expired' => 'The selection or price has changed. Close this window and open it again to refresh.',
 ];

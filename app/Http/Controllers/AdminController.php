@@ -1383,12 +1383,12 @@ class AdminController extends Controller
         $default_error_page = $request->default_error_page;
         $default_meta = $request->default_meta;
         $promo_coupon_popup = $request->promo_coupon_popup;
+        $seasonal_upsell = $request->seasonal_upsell;
 
         $this->envUpdate('APP_ERROR_PAGE', $default_error_page);
         $this->envUpdate('APP_DEFAULT_META', $default_meta);
         $this->envUpdate('APP_PROMO_COUPON_POPUP', $promo_coupon_popup);
-
-        Log::info("Wallet answer: " . $request);
+        $this->envUpdate('SEASONAL_UPSELL_ENABLED', $seasonal_upsell);
 
         Cache::flush();
 
@@ -1522,7 +1522,7 @@ class AdminController extends Controller
 
     public function envUpdate($flag,$value)
     {
-        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META', 'APP_PUSH_COUPON_POPUP'];
+        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META', 'APP_PROMO_COUPON_POPUP', 'SEASONAL_UPSELL_ENABLED'];
 
         if (in_array($flag, $allow_flags))
         {

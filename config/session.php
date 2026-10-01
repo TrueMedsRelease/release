@@ -18,6 +18,9 @@ return [
     |
     */
 
+    // Cross-process lock for routes using ->block(); array cache cannot protect concurrent requests.
+    'block_store' => env('SESSION_BLOCK_STORE', 'file'),
+
     'driver' => env('SESSION_DRIVER', 'file'),
 
     /*

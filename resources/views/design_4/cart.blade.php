@@ -9,6 +9,8 @@
 @section('announce_text_2', ucfirst(session('location.country_name')) . ' ' . __('text.common_cart2'))
 
 @section('content')
+@include('shared.seasonal-upsell')
+
 <div class="cart-page">
     <script>
         flagc = true;

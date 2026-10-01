@@ -312,7 +312,7 @@
                             </div>
                             <div class="column">
                                 <button class="btn btn-default blue back-to-main" onclick="location.href='{{ route('home.index') }}'">{{__('text.cart_back_to_shop')}}</button>
-                                <button class="btn btn-primary button-checkout" onclick="location.href='{{ route('checkout.index') }}'">{{__('text.cart_pay_button')}}</button>
+                                <button class="btn btn-primary button-checkout" onclick="location.href='{{ route('checkout.index') }}'" data-seasonal-checkout="{{ route('checkout.index') }}">{{__('text.cart_pay_button')}}</button>
                             </div>
                         </div>
                     </div>

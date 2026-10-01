@@ -919,4 +919,9 @@ return [
     "track_url_text1" => "Za pomocą tego linku możesz w dowolnym momencie sprawdzić aktualny status swojego zamówienia oraz informacje dotyczące jego realizacji.",
     "track_url_text2" => "Zapisz link lub kod QR, aby mieć do nich dostęp w przyszłości. Ze względów bezpieczeństwa nie udostępniaj ich osobom trzecim, ponieważ strona zawiera informacje o Twoim zamówieniu.",
     "track_url_print_button" => "Drukuj stronę",
+
+    'upsell_title' => 'Polecamy również te produkty sezonowe:',
+    'upsell_skip' => 'Kontynuuj bez dodawania',
+    'upsell_error' => 'Nie udało się potwierdzić tych produktów. Spróbuj ponownie lub przejdź do kasy i sprawdź koszyk.',
+    'upsell_expired' => 'Wybór lub cena uległy zmianie. Zamknij to okno i otwórz je ponownie, aby odświeżyć informacje.',
 ];

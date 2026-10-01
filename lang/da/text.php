@@ -968,4 +968,9 @@ return [
     "track_url_text1" => "Via dette link kan du til enhver tid kontrollere den aktuelle status på din ordre og oplysninger om behandlingen af den.",
     "track_url_text2" => "Gem linket eller QR-koden til senere brug. Af sikkerhedsmæssige årsager bør du ikke dele dem med andre, da siden indeholder oplysninger om din ordre.",
     "track_url_print_button" => "Udskriv side",
+
+    'upsell_title' => 'Vi anbefaler også disse sæsonprodukter:',
+    'upsell_skip' => 'Fortsæt uden at tilføje',
+    'upsell_error' => 'Disse varer kunne ikke bekræftes. Prøv igen, eller fortsæt til betaling og gennemgå din kurv.',
+    'upsell_expired' => 'Udvalget eller prisen er ændret. Luk dette vindue, og åbn det igen for at opdatere.',
 ];
