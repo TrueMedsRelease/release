@@ -667,229 +667,236 @@
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
                             {{-- <div class="enter-info__line"> --}}
-                                <div class="enter-info__select card_type poopup">
-                                    <input required type="hidden" value="{if $data.info.success_trans eq '1'}1{else}0{/if}" id="success_trans">
+                                <div class="payment-methods-grid poopup">
+                                    <!-- MasterCard -->
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'mastercard') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="mastercard" @if(session('form.payment_type', 'mastercard') == 'mastercard') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/pay-systems/mastercard.svg') }}" class="payment-method-icon" alt="MasterCard">
+                                        <span class="payment-method-title">MasterCard</span>
+                                    </label>
 
-                                    <select name="payment_type" class="form" id="payment_type_select" data-pseudo-label="{{__('text.checkout_type')}}"
-                                        @if (
-                                        (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
-                                        || (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
-                                        ) disabled @endif>
-                                        {{-- (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total')) --}}
+                                    <!-- Apple Pay -->
+                                    @if (env('APP_APPLE_PAY_ON', 0) && session('device') == 'apple' && session('wallet_available', true))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'apple_pay') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="apple_pay" @if(session('form.payment_type', 'mastercard') == 'apple_pay') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/apple_pay.svg') }}" class="payment-method-icon" alt="Apple Pay">
+                                        <span class="payment-method-title">Apple Pay</span>
+                                    </label>
+                                    @endif
 
-                                        {{-- <option value="none">{{ __('text.checkout_pls_select') }}</option> --}}
+                                    <!-- Google Pay -->
+                                    @if (env('APP_GOOGLE_PAY_ON', 0) && session('device') == 'android' && session('wallet_available', true))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'google_pay') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="google_pay" @if(session('form.payment_type', 'mastercard') == 'google_pay') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/google_pay.svg') }}" class="payment-method-icon" alt="Google Pay">
+                                        <span class="payment-method-title">Google Pay</span>
+                                    </label>
+                                    @endif
 
-                                        {{-- <option value="card" @selected(session('form.payment_type', 'none') == 'card')
-                                            data-asset="{{ asset("/style_checkout/images/icons/payment_type/bank_card.svg") }}">
-                                            {{__('text.checkout_bank_card')}}
-                                        </option> --}}
+                                    <!-- Revolut, Wise, N26, Open Banking -->
+                                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
+                                        <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'revolut') is_selected @endif">
+                                            <input type="radio" name="payment_type" value="revolut" @if(session('form.payment_type', 'mastercard') == 'revolut') checked @endif>
+                                            <img src="{{ asset('style_checkout/images/icons/revolut.svg') }}" class="payment-method-icon" alt="Revolut">
+                                            <div class="payment-method-info">
+                                                <span class="payment-method-title">Revolut</span>
+                                                <span class="payment-discount">-5% extra off</span>
+                                            </div>
+                                        </label>
 
-                                        <option value="mastercard" @selected(session('form.payment_type', 'mastercard') == 'mastercard')
-                                            data-asset="{{ asset("/style_checkout/images/pay-systems/mastercard.svg") }}">
-                                            MasterCard
-                                        </option>
+                                        <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'wise') is_selected @endif">
+                                            <input type="radio" name="payment_type" value="wise" @if(session('form.payment_type', 'mastercard') == 'wise') checked @endif>
+                                            <img src="{{ asset('style_checkout/images/icons/wise.svg') }}" class="payment-method-icon" alt="Wise">
+                                            <div class="payment-method-info">
+                                                <span class="payment-method-title">Wise</span>
+                                                <span class="payment-discount">-5% extra off</span>
+                                            </div>
+                                        </label>
 
-                                        @if (env('APP_APPLE_PAY_ON', 0) && session('device') == 'apple' && session('wallet_available', true))
-                                            <option value="apple_pay" @selected(session('form.payment_type', 'mastercard') == 'apple_pay')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/apple_pay.svg") }}">
-                                                Apple Pay
-                                            </option>
-                                        @endif
+                                        <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'n26') is_selected @endif">
+                                            <input type="radio" name="payment_type" value="n26" @if(session('form.payment_type', 'mastercard') == 'n26') checked @endif>
+                                            <img src="{{ asset('style_checkout/images/icons/n26.svg') }}" class="payment-method-icon" alt="N26">
+                                            <div class="payment-method-info">
+                                                <span class="payment-method-title">N26</span>
+                                                <span class="payment-discount">-5% extra off</span>
+                                            </div>
+                                        </label>
 
-                                        @if (env('APP_GOOGLE_PAY_ON', 0) && session('device') == 'android' && session('wallet_available', true))
-                                            <option value="google_pay" @selected(session('form.payment_type', 'mastercard') == 'google_pay')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/google_pay.svg") }}">
-                                                Google Pay
-                                            </option>
-                                        @endif
+                                        <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'open_banking') is_selected @endif">
+                                            <input type="radio" name="payment_type" value="open_banking" @if(session('form.payment_type', 'mastercard') == 'open_banking') checked @endif>
+                                            <img src="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" class="payment-method-icon" alt="Instant Bank Transfer">
+                                            <div class="payment-method-info">
+                                                <span class="payment-method-title">Instant Bank Transfer</span>
+                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-subtext">{{ __('text.checkout_open_banking_subtext') }}</span>
+                                            </div>
+                                        </label>
+                                    @endif
 
-                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                                            <option value="revolut" @selected(session('form.payment_type', 'mastercard') == 'revolut')
-                                                data-asset="{{ asset("/style_checkout/images/icons/revolut.svg") }}"
-                                                data-text="Revolut <span class='payment-discount'>-5% extra off</span>">
-                                                Revolut -5% extra off
-                                            </option>
-                                        @endif
+                                    <!-- Cash App -->
+                                    @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'cashapp') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="cashapp" @if(session('form.payment_type', 'mastercard') == 'cashapp') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/cashapp.svg') }}" class="payment-method-icon" alt="Cash App">
+                                        <span class="payment-method-title">Cash App</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                                            <option value="wise" @selected(session('form.payment_type', 'mastercard') == 'wise')
-                                                data-asset="{{ asset("/style_checkout/images/icons/wise.svg") }}"
-                                                data-text="Wise <span class='payment-discount'>-5% extra off</span>">
-                                                Wise -5% extra off
-                                            </option>
-                                        @endif
+                                    <!-- Zelle -->
+                                    @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'zelle') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="zelle" @if(session('form.payment_type', 'mastercard') == 'zelle') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/zelle.svg') }}" class="payment-method-icon" alt="ZELLE">
+                                        <span class="payment-method-title">ZELLE</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                                            <option value="n26" @selected(session('form.payment_type', 'mastercard') == 'n26')
-                                                data-asset="{{ asset("/style_checkout/images/icons/n26.svg") }}"
-                                                data-text="N26 <span class='payment-discount'>-5% extra off</span>">
-                                                N26 -5% extra off
-                                            </option>
-                                        @endif
+                                    <!-- PayPal -->
+                                    @if (env('APP_PAYPAL_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'paypal') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="paypal" @if(session('form.payment_type', 'mastercard') == 'paypal') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/paypal.svg') }}" class="payment-method-icon" alt="Paypal">
+                                        <span class="payment-method-title">Paypal</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                                            <option value="open_banking" @selected(session('form.payment_type', 'mastercard') == 'open_banking')
-                                                data-asset="{{ asset("/style_checkout/images/icons/de_rotating_40x40.gif") }}"
-                                                data-subtext="{{ __('text.checkout_open_banking_subtext') }}"
-                                                data-text="Instant Bank Transfer <span class='payment-discount'>-5% extra off</span>">
-                                                Instant Bank Transfer -5% extra off
-                                            </option>
-                                        @endif
+                                    <!-- SEPA Local -->
+                                    @if (env('APP_SEPA_LOCAL_ON', 0) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'sepa_local') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="sepa_local" @if(session('form.payment_type', 'mastercard') == 'sepa_local') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/sepa.svg') }}" class="payment-method-icon" alt="SEPA">
+                                        <span class="payment-method-title">SEPA</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
-                                            <option value="cashapp" @selected(session('form.payment_type', 'mastercard') == 'cashapp')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/cashapp.svg") }}">
-                                                Cash App
-                                            </option>
-                                        @endif
+                                    <!-- SWIFT USD -->
+                                    @if (env('APP_USD_SWIFT_ON', 0))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'usd_swift') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="usd_swift" @if(session('form.payment_type', 'mastercard') == 'usd_swift') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/swift.svg') }}" class="payment-method-icon" alt="SWIFT USD">
+                                        <span class="payment-method-title">SWIFT USD</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
-                                            <option value="zelle" @selected(session('form.payment_type', 'mastercard') == 'zelle')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/zelle.svg") }}">
-                                                ZELLE
-                                            </option>
-                                        @endif
+                                    <!-- SWIFT GBP -->
+                                    @if (env('APP_GBP_SWIFT_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'gbp_swift') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="gbp_swift" @if(session('form.payment_type', 'mastercard') == 'gbp_swift') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/swift.svg') }}" class="payment-method-icon" alt="SWIFT GBP">
+                                        <span class="payment-method-title">SWIFT GBP</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
-                                            <option value="paypal" @selected(session('form.payment_type', 'mastercard') == 'paypal')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/paypal.svg") }}">
-                                                Paypal
-                                            </option>
-                                        @endif
+                                    <!-- FPS -->
+                                    @if (env('APP_FPS_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'fps') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="fps" @if(session('form.payment_type', 'mastercard') == 'fps') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/fps.svg') }}" class="payment-method-icon" alt="FPS">
+                                        <span class="payment-method-title">FPS</span>
+                                    </label>
+                                    @endif
 
-                                        {{-- @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
-                                            <option value="sepa" @selected(session('form.payment_type', 'none') == 'sepa')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/sepa.png") }}">
-                                                SEPA
-                                            </option>
-                                        @endif --}}
+                                    <!-- Domestic -->
+                                    @if (env('APP_DOMESTIC_ON', 0) && session('form.billing_country', session('location.country')) == "AU")
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'domestic') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="domestic" @if(session('form.payment_type', 'mastercard') == 'domestic') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/domestic.svg') }}" class="payment-method-icon" alt="Domestic">
+                                        <span class="payment-method-title">Domestic</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_SEPA_LOCAL_ON', 0) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
-                                            <option value="sepa_local" @selected(session('form.payment_type', 'mastercard') == 'sepa_local')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/sepa.svg") }}">
-                                                SEPA
-                                            </option>
-                                        @endif
+                                    <!-- ACH -->
+                                    @if (env('APP_ACH_ON', 0) && session('form.billing_country', session('location.country')) == "US")
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'ach') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="ach" @if(session('form.payment_type', 'mastercard') == 'ach') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/ach_wire.svg') }}" class="payment-method-icon" alt="ACH / Wire">
+                                        <span class="payment-method-title">ACH / Wire</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_USD_SWIFT_ON', 0))
-                                            <option value="usd_swift" @selected(session('form.payment_type', 'mastercard') == 'usd_swift')
-                                                data-asset="{{ asset("style_checkout/images/icons/payment_type/swift.svg") }}">
-                                                SWIFT USD
-                                            </option>
-                                        @endif
+                                    <!-- Interac -->
+                                    @if (env('APP_INTERAC_ON', 0) && session('form.billing_country', session('location.country')) == "CA")
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'interac') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="interac" @if(session('form.payment_type', 'mastercard') == 'interac') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/interac.svg') }}" class="payment-method-icon" alt="Interac / EFT">
+                                        <span class="payment-method-title">Interac / EFT</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_GBP_SWIFT_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
-                                            <option value="gbp_swift" @selected(session('form.payment_type', 'mastercard') == 'gbp_swift')
-                                                data-asset="{{ asset("style_checkout/images/icons/payment_type/swift.svg") }}">
-                                                SWIFT GBP
-                                            </option>
-                                        @endif
+                                    <!-- Crypto -->
+                                    @if ($service_enable)
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'crypto') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="crypto" @if(session('form.payment_type', 'mastercard') == 'crypto') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/crypto.svg') }}" class="payment-method-icon" alt="Crypto">
+                                        <div class="payment-method-info">
+                                            <span class="payment-method-title">{{ __('text.checkout_crypto') }}</span>
+                                            <span class="payment-discount">-15% extra off</span>
+                                        </div>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_FPS_ON', 0) && session('form.billing_country', session('location.country')) ==  "GB")
-                                            <option value="fps" @selected(session('form.payment_type', 'mastercard') == 'fps')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/fps.svg") }}">
-                                                FPS
-                                            </option>
-                                        @endif
+                                    <!-- Amex, Discover, Visa -->
+                                    @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'amex') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="amex" @if(session('form.payment_type', 'mastercard') == 'amex') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/pay-systems/amex.svg') }}" class="payment-method-icon" alt="Amex">
+                                        <span class="payment-method-title">Amex</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_DOMESTIC_ON', 0) && session('form.billing_country', session('location.country')) == "AU")
-                                            <option value="domestic" @selected(session('form.payment_type', 'mastercard') == 'domestic')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/domestic.svg") }}">
-                                                Domestic
-                                            </option>
-                                        @endif
+                                    @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'discover') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="discover" @if(session('form.payment_type', 'mastercard') == 'discover') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/pay-systems/discover.svg') }}" class="payment-method-icon" alt="Discover">
+                                        <span class="payment-method-title">Discover</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_ACH_ON', 0) && session('form.billing_country', session('location.country')) == "US")
-                                            <option value="ach" @selected(session('form.payment_type', 'mastercard') == 'ach')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/ach_wire.svg") }}">
-                                                ACH / Wire
-                                            </option>
-                                        @endif
+                                    @if (session('visa_error', false) == false)
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'visa') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="visa" @if(session('form.payment_type', 'mastercard') == 'visa') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/pay-systems/visa.svg') }}" class="payment-method-icon" alt="Visa">
+                                        <span class="payment-method-title">Visa</span>
+                                    </label>
+                                    @endif
 
-                                        @if (env('APP_INTERAC_ON', 0) && session('form.billing_country', session('location.country')) == "CA")
-                                            <option value="interac" @selected(session('form.payment_type', 'mastercard') == 'interac')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/interac.svg") }}">
-                                                Interac / EFT
-                                            </option>
-                                        @endif
+                                    <!-- Gift Card, Bonus Card (скрытые/специальные) -->
+                                    @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'gift_card') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="gift_card" @if(session('form.payment_type', 'mastercard') == 'gift_card') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/gift.svg') }}" class="payment-method-icon" alt="Gift Card">
+                                        <span class="payment-method-title">{{ __('text.common_gift_card') }}</span>
+                                    </label>
+                                    @endif
 
-                                        @if ($service_enable)
-                                            <option value="crypto" @selected(session('form.payment_type', 'mastercard') == 'crypto')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/crypto.svg") }}">
-                                                {{__('text.checkout_crypto')}} -15% extra off
-                                            </option>
-                                        @endif
+                                    @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
+                                    <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'bonus_card') is_selected @endif">
+                                        <input type="radio" name="payment_type" value="bonus_card" @if(session('form.payment_type', 'mastercard') == 'bonus_card') checked @endif>
+                                        <img src="{{ asset('style_checkout/images/icons/payment_type/bonus.svg') }}" class="payment-method-icon" alt="Bonus Card">
+                                        <span class="payment-method-title">{{ __('text.checkout_bonus_card') }}</span>
+                                    </label>
+                                    @endif
 
-                                        @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
-                                            <option value="amex" @selected(session('form.payment_type', 'mastercard') == 'amex')
-                                                data-asset="{{ asset("/style_checkout/images/pay-systems/amex.svg") }}">
-                                                Amex
-                                            </option>
-                                        @endif
-
-                                        @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
-                                            <option value="discover" @selected(session('form.payment_type', 'mastercard') == 'discover')
-                                                data-asset="{{ asset("/style_checkout/images/pay-systems/discover.svg") }}">
-                                                Discover
-                                            </option>
-                                        @endif
-
-                                        @if (session('visa_error', false) == false)
-                                            <option value="visa" @selected(session('form.payment_type', 'mastercard') == 'visa')
-                                                data-asset="{{ asset("/style_checkout/images/pay-systems/visa.svg") }}">
-                                                Visa
-                                            </option>
-                                        @endif
-
-                                        {{-- @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable)
-                                            <option value="google" @selected(session('form.payment_type', 'none') == 'google')>Google Pay</option>
-                                        @endif --}}
-
-                                        @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
-                                            <option value="gift_card" @selected(session('form.payment_type', 'mastercard') == 'gift_card')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/gift.svg") }}">
-                                                {{ __('text.common_gift_card') }}
-                                            </option>
-                                        @endif
-
-                                        {{-- @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.bonus_card_discount', 0) >= session('total.checkout_total'))
-                                            <option value="bonus_card" @selected(session('form.payment_type', 'none') == 'bonus_card')>{{ __('text.checkout_bonus_card') }}</option>
-                                        @endif --}}
-
-                                        @if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1)
-                                            <option value="bonus_card" @selected(session('form.payment_type', 'mastercard') == 'bonus_card')
-                                                data-asset="{{ asset("/style_checkout/images/icons/payment_type/bonus.svg") }}">
-                                                {{ __('text.checkout_bonus_card') }}
-                                            </option>
-                                        @endif
-                                    </select>
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
                                 </div>
-                                <div class="wrap select_crypt_currency" @if (session('form.payment_type', 'mastercard') != 'crypto') hidden @endif>
-                                    <div class="token-select" id="tokenSelect" aria-haspopup="listbox">
-                                        <button class="select__toggle" type="button" aria-expanded="false">
-                                            <div class="toggle-text">
-                                                <span class="caption">{{ __('text.checkout_crypto_select_currency') }}</span>
-                                                <span class="value">{{ __('text.checkout_crypto_select') }}</span>
-                                            </div>
-                                            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                        <div class="select__menu" hidden>
-                                            <div class="search">
-                                                <label class="sr-only" for="selectSearch">{{ __('text.checkout_crypto_search') }}</label>
-                                                <input id="selectSearch" type="text" placeholder="{{ __('text.checkout_crypto_search') }}" autocomplete="off" />
-                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                    <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                                </svg>
-                                            </div>
-                                            <ul class="options" role="listbox"></ul>
-                                        </div>
-                                        <input type="hidden" name="crypto_currency" />
-                                    </div>
-                                </div>
+
+
                             {{-- </div> --}}
+                        </div>
+                        <div class="wrap select_crypt_currency" @if (session('form.payment_type', 'mastercard') != 'crypto') hidden @endif>
+                            <div class="token-select" id="tokenSelect" aria-haspopup="listbox">
+                                {{-- Поиск по криптовалютам --}}
+                                <div class="crypto-search">
+                                    <label class="sr-only" for="selectSearch">{{ __('text.checkout_crypto_search') }}</label>
+                                    <input id="selectSearch" type="text" placeholder="{{ __('text.checkout_crypto_search') }}" autocomplete="off" />
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                {{-- Сетка с плитками --}}
+                                <div class="crypto-grid" role="listbox"></div>
+                                <input type="hidden" name="crypto_currency" />
+                            </div>
                         </div>
                         <div class="enter-info__card-content" @if (session('form.payment_type', 'mastercard') != 'visa' && session('form.payment_type', 'mastercard') != 'mastercard') hidden @endif>
                             <div class="enter-info__row">
@@ -1274,17 +1281,6 @@
                             </div>
                         </div>
 
-                        <div class="enter-info__paypal-content" @if (session('form.payment_type', 'mastercard') != 'paypal') hidden @endif>
-                            <div class="details-payment__row">
-                                <div class="details-payment__data" style="text-align: center;">
-                                    {{__('text.checkout_sepa_text')}}
-                                </div>
-                            </div>
-                            <button type="button" id="proccess_paypal" name="proccess" class="enter-info__button button">
-                                <span>{{__('text.checkout_sepa_button')}}</span>
-                            </button>
-                        </div>
-
                         @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US' && $service_enable)
                             <div class="enter-info__google-content" @if (session('form.payment_type', 'mastercard') != 'google') hidden @endif>
                                 <div class="details-payment__row">
@@ -1628,6 +1624,19 @@
                         @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
                             <div class="enter-info__cashapp-content" @if (session('form.payment_type', 'mastercard') != 'cashapp') hidden @endif>
                                 <button id="proccess_cashapp" name="proccess" class="enter-info__button button">
+                                    <span>{{ __('text.checkout_place') }}</span>
+                                    <svg width="18" height="18">
+                                        <use
+                                            xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
+                                        </use>
+                                    </svg>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if (env('APP_PAYPAL_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+                            <div class="enter-info__paypal-content" @if (session('form.payment_type', 'mastercard') != 'paypal') hidden @endif>
+                                <button id="proccess_paypal" name="proccess" class="enter-info__button button">
                                     <span>{{ __('text.checkout_place') }}</span>
                                     <svg width="18" height="18">
                                         <use

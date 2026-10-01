@@ -114,7 +114,6 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/validate_for_sepa', 'validate_for_sepa')->name('checkout.validate_for_sepa');
     Route::post('/send_google', 'send_google')->name('checkout.send_google')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/log_google', 'log_google')->name('checkout.log_google')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::post('/paypal', 'paypal')->name('checkout.paypal');
     Route::post('/sepa', 'sendSepa')->name('checkout.sendSepa');
     Route::post('/check_payment', 'check_payment')->name('checkout.check_payment')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/complete', 'complete')->name('checkout.complete');
@@ -131,6 +130,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/open_banking_process', 'open_banking_process')->name('checkout.open_banking_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/checkout/new_order', 'new_order')->name('checkout.new_order');
     Route::post('/cashapp_process', 'cashapp_process')->name('checkout.cashapp_process')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/paypal_process', 'paypal_process')->name('checkout.paypal')->withoutMiddleware(VerifyCsrfToken::class);
 });
 
 Route::controller(PaymentRedirectController::class)->group(function () {

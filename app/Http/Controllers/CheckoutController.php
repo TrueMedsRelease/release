@@ -66,35 +66,6 @@ class CheckoutController extends Controller
         //     $statisticPromise->wait();
         // }
 
-        $paypal_limit = 'none';
-        $api_key      = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
-
-        $message = [
-            'method'  => 'get_paypal_limit',
-            'api_key' => $api_key->key_data,
-        ];
-
-        if (env("APP_PAYPAL_ON", false) && TrueServService::available()) {
-            try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $message);
-                Log::info("Paypal limit answer: " . $response);
-                $response = json_decode($response, true);
-
-                if ($response['status'] == 'success') {
-                    $paypal_limit = $response['limit'];
-                    session(['paypal_limit' => $paypal_limit]);
-                } else {
-                    session(['paypal_limit' => $paypal_limit]);
-                }
-            } catch (ConnectionException $e) {
-                Log::error("Ошибка подключения: " . $e->getMessage());
-            } catch (RequestException $e) {
-                // Обработка ошибок запроса, таких как таймаут или недоступность
-                Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
-                $responseData = ['error' => 'Service unavailable'];
-            }
-        }
-
         // if (session('location.country') == "US") {
         //     session(['form.payment_type' => 'zelle']);
         // }
@@ -270,11 +241,6 @@ class CheckoutController extends Controller
         $service_enable = true;
         if (!TrueServService::available()) {
             $service_enable = false;
-        }
-
-        $paypal_limit = session('paypal_limit', 0);
-        if ($paypal_limit == 'none' || $product_total_check > $paypal_limit) {
-            session(['paypal_limit' => 'none']);
         }
 
         if (session('crypto')) {
@@ -1077,242 +1043,6 @@ class CheckoutController extends Controller
                     // Обработка ошибок запроса, таких как таймаут или недоступность
                     Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
 
-                    $this->markOrderRetry($order_cache_id, $e->getMessage());
-
-                    return response()->json([
-                        'response' => [
-                            'status' => 'SUCCESS'
-                        ]
-                    ], 200);
-
-                } catch (\Throwable $e) {
-                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
-
-                    $this->markOrderRetry($order_cache_id, $e->getMessage());
-
-                    return response()->json([
-                        'response' => [
-                            'status' => 'SUCCESS'
-                        ]
-                    ], 200);
-                }
-            } else {
-                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
-
-                session(['order' => 'error']);
-
-                return response()->json([
-                    'response' => [
-                        'status' => 'SUCCESS'
-                    ]
-                ], 200);
-            }
-        }
-    }
-
-    public function paypal(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'phone'            => ['required', 'min:5', 'max:16'],
-            'email'            => ['required', 'email:rfc,dns', 'max:255'],
-            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
-            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
-            'firstname'        => ['required', 'max:255'],
-            'lastname'         => ['required', 'max:255'],
-            'billing_country'  => ['required', 'max:2'],
-            'billing_city'     => ['required', 'max:255'],
-            'billing_address'  => ['required', 'max:255'],
-            'billing_zip'      => ['required', 'max:255'],
-            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
-            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
-            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
-            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
-        ]);
-
-        session(['form' => $request->all()]);
-
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->messages()->toArray() as $key => $error) {
-                $errors[] = ['message' => $error[0], 'field' => $key];
-            }
-            return response()->json(['errors' => $errors], 422);
-        } else {
-            $products = [];
-            $sessid   = '';
-
-            foreach (session('cart') as $product) {
-                $products[$product['pack_id']] = [
-                    'qty'            => $product['q'],
-                    'price'          => $product['price'],
-                    'is_ed_category' => false
-                ];
-
-                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
-            }
-
-            // if (session('cart_option.bonus_id') != 0) {
-            //     $products[session('cart_option.bonus_id')] = [
-            //         'qty'            => 1,
-            //         'price'          => session('cart_option.bonus_price'),
-            //         'is_ed_category' => false
-            //     ];
-            // }
-
-            $products_str = json_encode($products);
-
-            // $products = str_replace(['[',']'], '', $products);
-
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
-            $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
-
-            $data = [
-                'method'             => 'order',
-                'api_key'            => $api_key->key_data,
-                'phone'              => e('+' . $phone_code . $request->phone),
-                'alternative_phone'  => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
-                'email'              => e($request->email),
-                'alter_email'        => !empty($request->alt_email) ? e($request->alt_email) : '',
-                'firstname'          => e($request->firstname),
-                'lastname'           => e($request->lastname),
-                'billing_country'    => e($request->billing_country),
-                'billing_state'      => e($request->billing_state),
-                'billing_city'       => e($request->billing_city),
-                'billing_address'    => e($request->billing_address),
-                'billing_zip'        => e($request->billing_zip),
-                'shipping_country'   => !empty($request->address_match) ? e($request->shipping_country) : e(
-                    $request->billing_country
-                ),
-                'shipping_state'     => !empty($request->address_match) ? e($request->shipping_state) : e(
-                    $request->billing_state
-                ),
-                'shipping_city'      => !empty($request->address_match) ? e($request->shipping_city) : e(
-                    $request->billing_city
-                ),
-                'shipping_address'   => !empty($request->address_match) ? e($request->shipping_address) : e(
-                    $request->billing_address
-                ),
-                'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
-                    $request->billing_zip
-                ),
-                'payment_type'       => e('paypal'),
-                'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
-                    'cf-connecting-ip'
-                ) : request()->ip(),
-                'aff'                => session('aff', 0),
-                'ref'                => session('referer', ''),
-                'refc'               => session('refc', ''),
-                'keyword'            => session('keyword', ''),
-                'domain_from'        => request()->getHost(),
-                'total'              => session('total.checkout_total'),
-                'shipping'           => session('cart_option.shipping'),
-                'products'           => $products_str,
-                'saff'               => session('saff', ''),
-                'language'           => App::currentLocale(),
-                'currency'           => session('currency', 'usd'),
-                'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
-                        'Accept-Language'
-                    ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
-                'fingerprint'        => '',
-                'product_total'      => session('total.product_total'),
-                'customer_id'        => '',
-                'reorder'            => 0,
-                'reorder_discount'   => 0,
-                'shipping_price'     => session('total.shipping_total'),
-                'insurance'          => session('total.insurance'),
-                'secret_package'     => session('total.secret_package'),
-                'store_skin'         => config('app.design'),
-                'recurring_period'   => 0,
-                'bonus'              => session('cart_option.bonus_id', 0),
-                'theme'              => 13,
-                'sessid'             => $sessid,
-                'browser_details' => [
-                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
-                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
-                    'browser_language' => $request->browser_details['browser_language'] ?? '',
-                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
-                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
-                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
-                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
-                    'browser_user_agent' => $request->userAgent(),
-                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
-                    'window_height' => $request->browser_details['window_height'] ?? '',
-                    'window_width' => $request->browser_details['window_width'] ?? '',
-                ],
-                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
-                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
-                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
-                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
-                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
-                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
-                'is_pwa' => session('is_pwa', 0),
-            ];
-
-            session(['data' => $data]);
-
-            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
-
-            if (TrueServService::available()) {
-                try {
-                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Paypal answer: " . $httpResponse);
-
-                    if ($httpResponse->successful()) {
-                        // Обработка успешного ответа
-
-                        $response = $httpResponse->json();
-
-                        if (!is_array($response)) {
-                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
-
-                            return response()->json([
-                                'response' => [
-                                    'status' => 'ERROR',
-                                    'message' => 'Invalid service response'
-                                ]
-                            ], 502);
-                        }
-
-                        if ($this->isFinalOrderResponse($response)) {
-
-                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
-
-                        } else {
-                            $this->markOrderRetry(
-                                $order_cache_id,
-                                'Unexpected response: ' . json_encode($response)
-                            );
-                        }
-
-                        return response()->json(['response' => $response], 200);
-                    } else {
-                        // Обработка ответа с ошибкой (4xx или 5xx)
-                        Log::error("Сервис вернул ошибку: " . $httpResponse->status());
-                        $this->markOrderRetry(
-                            $order_cache_id,
-                            'HTTP status: ' . $httpResponse->status()
-                        );
-
-                        return response()->json([
-                            'response' => [
-                                'status' => 'SUCCESS'
-                            ]
-                        ], 200);
-                    }
-                } catch (ConnectionException $e) {
-                    Log::error("Ошибка подключения: " . $e->getMessage());
-                    $this->markOrderRetry($order_cache_id, $e->getMessage());
-
-                    return response()->json([
-                        'response' => [
-                            'status' => 'SUCCESS'
-                        ]
-                    ], 200);
-
-                } catch (RequestException $e) {
-                    // Обработка ошибок запроса, таких как таймаут или недоступность
-                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
                     $this->markOrderRetry($order_cache_id, $e->getMessage());
 
                     return response()->json([
@@ -4972,7 +4702,278 @@ class CheckoutController extends Controller
                                 ->where('id', $order_cache_id)
                                 ->delete();
 
-                            session(['open_banking_available' => false]);
+                            // session(['open_banking_available' => false]);
+                            session(['form.payment_type' => 'mastercard']);
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'risk_check',
+                                    'message' => __('text.risk_check_failed'),
+                                    'html' => $this->checkout(),
+                                ]
+                            ], 200);
+                        }
+
+                        if ($this->isFinalOrderResponse($response)) {
+                            $this->finalizeSuccessfulOrder($order_cache_id, $response);
+                        } else {
+                            $this->markOrderRetry(
+                                $order_cache_id,
+                                'Unexpected response: ' . json_encode($response)
+                            );
+                        }
+
+                        $redirectUrl = $this->createPaymentRedirectToken($response);
+                        if ($redirectUrl !== null) {
+                            $response['redirect_url'] = $redirectUrl;
+                        }
+
+                        return response()->json(['response' => $response], 200);
+                    } else {
+                        // Обработка ответа с ошибкой (4xx или 5xx)
+                       Log::error("Сервис вернул ошибку: " . $httpResponse->status());
+
+                        $this->markOrderRetry(
+                            $order_cache_id,
+                            'HTTP status: ' . $httpResponse->status()
+                        );
+
+                        return response()->json([
+                            'response' => [
+                                'status' => 'SUCCESS'
+                            ]
+                        ], 200);
+                    }
+                } catch (ConnectionException $e) {
+                    Log::error("Ошибка подключения: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (RequestException $e) {
+                    Log::error("Ошибка HTTP-запроса: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+
+                } catch (\Throwable $e) {
+                    Log::error("Неожиданная ошибка отправки заказа: " . $e->getMessage());
+
+                    $this->markOrderRetry($order_cache_id, $e->getMessage());
+
+                    return response()->json([
+                        'response' => [
+                            'status' => 'SUCCESS'
+                        ]
+                    ], 200);
+                }
+            } else {
+                $this->markOrderRetry($order_cache_id, 'DNS unavailable');
+
+                session(['order' => 'error']);
+
+                return response()->json([
+                    'response' => [
+                        'status' => 'SUCCESS'
+                    ]
+                ], 200);
+            }
+        }
+    }
+
+    public function paypal_process(Request $request)
+    {
+        $request->request->add(['expire_date' => $request->card_month . '/' . $request->card_year]);
+
+        $validator = Validator::make($request->all(), [
+            'phone'            => ['required', 'min:5', 'max:16'],
+            'email'            => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email'        => ['nullable', 'email:rfc,dns', 'max:255'],
+            'alt_phone'        => ['nullable', 'min:5', 'max:16'],
+            'firstname'        => ['required', 'max:255'],
+            'lastname'         => ['required', 'max:255'],
+            'billing_country'  => ['required', 'max:2'],
+            'billing_city'     => ['required', 'max:255'],
+            'billing_address'  => ['required', 'max:255'],
+            'billing_zip'      => ['required', 'max:255'],
+            'shipping_country' => !empty($request->address_match) ? ['required', 'max:2'] : [],
+            'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
+            'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
+        ]);
+
+        session(['form' => $request->all()]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        } else {
+            $products = [];
+            $sessid   = '';
+
+            foreach (session('cart') as $product) {
+                $products[$product['pack_id']] = [
+                    'qty'            => $product['q'],
+                    'price'          => $product['price'],
+                    'is_ed_category' => false
+                ];
+
+                $sessid = !empty($product['cart_id']) ? $product['cart_id'] : SessionHelper::getSessionId($request);
+            }
+
+            // if (session('cart_option.bonus_id') != 0) {
+            //     $products[session('cart_option.bonus_id')] = [
+            //         'qty'            => 1,
+            //         'price'          => session('cart_option.bonus_price'),
+            //         'is_ed_category' => false
+            //     ];
+            // }
+
+            $products_str = json_encode($products);
+
+            // $products = str_replace(['[',']'], '', $products);
+
+            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+            $phone_code = $phone_code->phonecode;
+            $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+
+            $data = [
+                'method'             => 'order',
+                'api_key'            => $api_key->key_data,
+                'phone'              => e('+' . $phone_code . $request->phone),
+                'alternative_phone'  => !empty($request->alt_phone) ? e('+' . $phone_code . $request->alt_phone) : '',
+                'email'              => e($request->email),
+                'alter_email'        => !empty($request->alt_email) ? e($request->alt_email) : '',
+                'firstname'          => e($request->firstname),
+                'lastname'           => e($request->lastname),
+                'billing_country'    => e($request->billing_country),
+                'billing_state'      => e($request->billing_state),
+                'billing_city'       => e($request->billing_city),
+                'billing_address'    => e($request->billing_address),
+                'billing_zip'        => e($request->billing_zip),
+                'shipping_country'   => !empty($request->address_match) ? e($request->shipping_country) : e(
+                    $request->billing_country
+                ),
+                'shipping_state'     => !empty($request->address_match) ? e($request->shipping_state) : e(
+                    $request->billing_state
+                ),
+                'shipping_city'      => !empty($request->address_match) ? e($request->shipping_city) : e(
+                    $request->billing_city
+                ),
+                'shipping_address'   => !empty($request->address_match) ? e($request->shipping_address) : e(
+                    $request->billing_address
+                ),
+                'shipping_zip'       => !empty($request->address_match) ? e($request->shipping_zip) : e(
+                    $request->billing_zip
+                ),
+                'payment_type'       => 'paypal',
+                'ip'                 => request()->headers->get('cf-connecting-ip') ? request()->headers->get(
+                    'cf-connecting-ip'
+                ) : request()->ip(),
+                'aff'                => session('aff', 0),
+                'ref'                => session('referer', ''),
+                'refc'               => session('refc', ''),
+                'keyword'            => session('keyword', ''),
+                'domain_from'        => request()->getHost(),
+                'total'              => session('total.checkout_total'),
+                'shipping'           => session('cart_option.shipping'),
+                'products'           => $products_str,
+                'saff'               => session('saff', ''),
+                'language'           => App::currentLocale(),
+                'currency'           => session('currency', 'usd'),
+                'user_agent'         => 'user_agent=' . $request->userAgent() . '&lang=' . request()->header(
+                        'Accept-Language'
+                    ) . '&screen_resolution=' . $request->screen_resolution . '&customer_date=' . $request->customer_date,
+                'fingerprint'        => '',
+                'product_total'      => session('total.product_total'),
+                'customer_id'        => '',
+                'reorder'            => 0,
+                'reorder_discount'   => 0,
+                'shipping_price'     => session('total.shipping_total'),
+                'insurance'          => session('total.insurance'),
+                'secret_package'     => session('total.secret_package'),
+                'store_skin'         => config('app.design'),
+                'recurring_period'   => 0,
+                'bonus'              => session('cart_option.bonus_id', 0),
+                'theme'              => 13,
+                'sessid'             => $sessid,
+                'browser_details' => [
+                    'browser_accept_header' => $_SERVER['HTTP_ACCEPT'] ?? '',
+                    'browser_color_depth' => $request->browser_details['browser_color_depth'] ?? '',
+                    'browser_language' => $request->browser_details['browser_language'] ?? '',
+                    'browser_screen_height' => $request->browser_details['browser_screen_height'] ?? '',
+                    'browser_screen_width' => $request->browser_details['browser_screen_width'] ?? '',
+                    'browser_timezone' => $request->browser_details['browser_timezone'] ?? '',
+                    'browser_ip' => request()->headers->get('cf-connecting-ip') ? request()->headers->get('cf-connecting-ip') : request()->ip(),
+                    'browser_user_agent' => $request->userAgent(),
+                    'browser_java_enable' => $request->browser_details['browser_java_enable'] ?? false,
+                    'window_height' => $request->browser_details['window_height'] ?? '',
+                    'window_width' => $request->browser_details['window_width'] ?? '',
+                ],
+                'coupon' => session('checked_bonus', 'discount') == 'discount' ? session('coupon.coupon', '') : '',
+                'coupon_discount' => session('checked_bonus', 'discount') == 'discount' ? session('total.coupon_discount', 0) : 0,
+                'gift_card_code' => session('checked_bonus', 'discount') == 'gift_card' ? session('gift_card.gift_card_code', '') : '',
+                'gift_card_discount' => session('checked_bonus', 'discount') == 'gift_card' ? session('total.gift_card_discount', 0) : 0,
+                'bonus_card_number' => session('checked_bonus', 'discount') == 'bonus_card' ? session('bonus_card.card_number', '') : '',
+                'bonus_card_discount' => session('checked_bonus', 'discount') == 'bonus_card' ? session('total.bonus_card_discount', 0) : 0,
+                'is_pwa' => session('is_pwa', 0),
+            ];
+
+            session(['data' => $data]);
+
+            $order_cache_id = $this->getOrCreateOrderCache($data, $request->email);
+
+            if (TrueServService::available()) {
+                try {
+                    $httpResponse = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Paypal answer: " . $httpResponse);
+
+                    if ($httpResponse->successful()) {
+                        $response = $httpResponse->json();
+
+                        if (!is_array($response)) {
+                            $this->markOrderRetry($order_cache_id, 'Invalid JSON response');
+
+                            return response()->json([
+                                'response' => [
+                                    'status' => 'ERROR',
+                                    'message' => 'Invalid service response'
+                                ]
+                            ], 502);
+                        }
+
+                        $message = $response['message'] ?? null;
+
+                        $hasRiskCheckFailed = false;
+
+                        if (is_array($message)) {
+                            $hasRiskCheckFailed = in_array('risk_check_failed', $message, true);
+                        } elseif (is_string($message)) {
+                            $hasRiskCheckFailed = str_contains($message, 'risk_check_failed');
+                        }
+
+                        $status = strtolower((string) ($response['status'] ?? ''));
+
+                        if ($status === 'error' && $hasRiskCheckFailed) {
+
+                            DB::table('order_cache')
+                                ->where('id', $order_cache_id)
+                                ->delete();
+
+                            // session(['open_banking_available' => false]);
                             session(['form.payment_type' => 'mastercard']);
 
                             return response()->json([

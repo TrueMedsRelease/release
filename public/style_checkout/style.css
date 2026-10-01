@@ -3914,3 +3914,295 @@ html { scroll-behavior: smooth; }
     color: var(--green);
     font-weight: 500;
 }
+
+/* --- Стили для максимально компактных панелей оплаты --- */
+.payment-methods-grid {
+    display: grid;
+    /* Уменьшаем минимальную ширину до 100px, чтобы помещалось много колонок */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 6px; /* Уменьшаем отступ между блоками */
+    width: 100%;
+}
+
+.payment-method-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 4px; /* Минимальные внутренние отступы */
+    min-height: 75px; /* Блоки стали заметно ниже */
+    background-color: var(--white);
+    border: 2px solid rgba(38, 45, 56, 0.1);
+    border-radius: 8px; /* Чуть меньше скругление для компактности */
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.payment-method-panel:hover {
+    border-color: rgba(80, 129, 17, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.payment-method-panel.is_selected {
+    border-color: var(--green);
+    background-color: rgba(80, 129, 17, 0.03);
+    box-shadow: 0 0 0 1px var(--green);
+}
+
+/* Скрываем саму радиокнопку */
+.payment-method-panel input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.payment-method-icon {
+    width: 22px; /* Уменьшаем иконки */
+    height: 22px;
+    object-fit: contain;
+    margin-bottom: 4px; /* Минимальный отступ до текста */
+    flex-shrink: 0;
+}
+
+.payment-method-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: center;
+}
+
+.payment-method-title {
+    font-size: 11px; /* Уменьшаем шрифт */
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1.1;
+    word-break: break-word;
+}
+
+.payment-discount {
+    font-size: 9px; /* Уменьшаем шрифт скидки */
+    font-weight: 600;
+    color: var(--green);
+    line-height: 1.1;
+}
+
+/* Скрываем длинный подтекст, чтобы он не растягивал квадратик */
+.payment-subtext {
+    display: none;
+}
+
+/* Адаптив для очень маленьких экранов */
+@media (max-width: 480px) {
+    .payment-methods-grid {
+        grid-template-columns: repeat(3, 1fr); /* На телефонах строго 3 колонки */
+    }
+}
+
+
+
+
+
+/* --- Поиск крипты --- */
+.crypto-search {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.crypto-search input {
+    width: 100%;
+    height: 44px;
+    padding: 0 44px 0 14px;
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    outline: none;
+    background-color: #f5f7fb;
+    font-size: 14px;
+}
+
+.crypto-search svg {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .6;
+}
+
+/* --- Сетка с плитками крипты (в том же стиле, что и оплата) --- */
+.crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 6px;
+    width: 100%;
+    max-height: 380px;
+    overflow-y: auto;
+    padding: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--green) transparent;
+}
+
+.crypto-grid::-webkit-scrollbar { width: 6px; }
+.crypto-grid::-webkit-scrollbar-track { background: transparent; }
+.crypto-grid::-webkit-scrollbar-thumb {
+    background: var(--green);
+    border-radius: 999px;
+}
+
+.crypto-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 4px;
+    min-height: 75px;
+    background-color: var(--white);
+    border: 2px solid rgba(38, 45, 56, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.crypto-panel:hover {
+    border-color: rgba(80, 129, 17, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.crypto-panel.is_selected {
+    border-color: var(--green);
+    background-color: rgba(80, 129, 17, 0.03);
+    box-shadow: 0 0 0 1px var(--green);
+}
+
+.crypto-panel__icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    margin-bottom: 4px;
+}
+
+.crypto-panel__symbol {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1.1;
+}
+
+.crypto-panel__chain {
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(38, 45, 56, 0.55);
+    line-height: 1.1;
+    margin-top: 1px;
+}
+
+@media (max-width: 480px) {
+    .crypto-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* --- Блок с криптой --- */
+.select_crypt_currency {
+    width: 100%; /* Растягиваем на всю ширину */
+}
+
+/* Поиск */
+.crypto-search {
+    position: relative;
+    margin-bottom: 15px;
+    max-width: 400px; /* Ограничиваем ширину поиска, чтобы не был на всю страницу */
+}
+
+.crypto-search input {
+    width: 100%;
+    height: 44px;
+    padding: 0 44px 0 14px;
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    outline: none;
+    background-color: #f5f7fb;
+    font-size: 14px;
+}
+
+.crypto-search svg {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .6;
+}
+
+/* Сетка крипты — точно такая же, как у способов оплаты */
+.crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 6px;
+    width: 100%;
+    max-height: 380px; /* Ограничиваем высоту, чтобы не растягивать страницу */
+    overflow-y: auto;
+    padding: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--green) transparent;
+}
+
+.crypto-grid::-webkit-scrollbar { width: 6px; }
+.crypto-grid::-webkit-scrollbar-track { background: transparent; }
+.crypto-grid::-webkit-scrollbar-thumb {
+    background: var(--green);
+    border-radius: 999px;
+}
+
+/* Плитка крипты — копируем стиль payment-method-panel */
+.crypto-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 4px;
+    min-height: 75px;
+    background-color: var(--white);
+    border: 2px solid rgba(38, 45, 56, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.crypto-panel:hover {
+    border-color: rgba(80, 129, 17, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.crypto-panel.is_selected {
+    border-color: var(--green);
+    background-color: rgba(80, 129, 17, 0.03);
+    box-shadow: 0 0 0 1px var(--green);
+}
+
+.crypto-panel__icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    margin-bottom: 4px;
+}
+
+.crypto-panel__symbol {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1.1;
+}
+
+.crypto-panel__chain {
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(38, 45, 56, 0.55);
+    line-height: 1.1;
+    margin-top: 1px;
+}
