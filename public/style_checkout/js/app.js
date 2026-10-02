@@ -2275,6 +2275,21 @@
     })();
 })();
 
+(function initPaymentPreloader() {
+    if (document.getElementById('payment_preloader')) return;
+    const preloader = document.createElement('div');
+    preloader.className = 'payment-preloader';
+    preloader.id = 'payment_preloader';
+    preloader.setAttribute('aria-hidden', 'true');
+    preloader.innerHTML = `
+        <div class="payment-preloader__spinner">
+            <span class="payment-preloader__dot"></span>
+            <span class="payment-preloader__dot"></span>
+        </div>
+    `;
+    document.body.appendChild(preloader);
+})();
+
 var browserInfo = {
     browser_color_depth: window.screen.colorDepth,
     browser_language: (navigator.language || '').toLowerCase(),
@@ -2343,157 +2358,460 @@ function closePaymentDropdown() {
     }
 }
 
-$(".card_type .select__option").click(function (e) {
-    var type = $(this).attr('data-value');
+// $(".card_type .select__option").click(function (e) {
+//     var type = $(this).attr('data-value');
+//     var form = $('form').serialize();
+
+//     $('.poopuptext').removeClass("show");
+
+//     flag = false;
+//     if (type == 'crypto') {
+//         document.getElementById('paid').style.display = "none";
+//         // document.getElementById('waiting').style.display = "none";
+
+//         if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
+
+//             // let currency = $('input[name="crypt_currency"]:checked').val();
+
+//             // $.ajax({
+//             //     url: checkoutCryptoInfo,
+//             //     type: 'POST',
+//             //     cache: false,
+//             //     dataType: 'html',
+//             //     data: { 'currency': currency, 'email': $('#email').val() },
+//             //     success: function (data) {
+//             //         // alert(data);
+//             //         var result = JSON.parse(JSON.parse(data));
+//             //         var cur = currency.split('_');
+//             //         cur = cur[0];
+//             //         var total = result.amount;
+//             //         // //alert(total);
+//             //         document.getElementById('crypto_total').innerHTML = total;
+//             //         // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
+//             //         document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
+//             //         document.getElementById('purse').innerHTML = result.purse;
+//             //         document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
+//             //         document.getElementById('invoiceId').value = result.invoiceId;
+//             //         document.getElementById('invoce_p').innerHTML = result.invoiceId;
+
+//             //         document.getElementById("requisites_load").hidden = true;
+//             //         document.getElementById("requisites").hidden = false;
+//             //         document.getElementById('paid').disabled = false;
+//             //         // PollingManager.startPolling(CheckPayment, 1800000, 5000);
+
+//             //         document.getElementById("coupon").disabled = true;
+//             //         document.getElementById("coupon_submit").disabled = true;
+//             //         document.getElementById("c_82").disabled = true;
+//             //         document.getElementById("c_83").disabled = true;
+//             //         document.getElementById("c_85").disabled = true;
+//             //         document.getElementById("c_86").disabled = true;
+//             //     }
+//             // });
+//         } else {
+//             $.ajax({
+//                 url: checkoutValidateCrypto,
+//                 type: 'POST',
+//                 cache: false,
+//                 dataType: 'html',
+//                 data: form,
+//                 async: false,
+//                 success: function (data) {
+
+//                 },
+//                 error: function (data) {
+//                     flag = true;
+//                     var errors = JSON.parse(data.responseText);
+//                     $('.poopuptext').removeClass("show");
+//                     errors.errors.forEach(function (error, i) {
+//                         console.log(i + '.' + error.message + ' (' + error.field + ')');
+//                         var popup = document.getElementById("error_" + error.field);
+//                         popup.classList.add("show");
+//                         if (i == 0) {
+//                             popup.scrollIntoView();
+//                         }
+//                     });
+//                 }
+//             });
+//             if (flag) {
+//                 closePaymentDropdown();
+//                 e.preventDefault();
+//                 e.stopPropagation();
+//                 return false;
+//             }
+//         }
+//     }
+//     else if(type == 'google')
+//     {
+//         $.ajax({
+//             url: checkoutValidateGoogle,
+//             type: 'POST',
+//             cache: false,
+//             dataType: 'html',
+//             data: form,
+//             async: false,
+//             success: function (data) {
+
+//             },
+//             error: function (data) {
+//                 flag = true;
+//                 var errors = JSON.parse(data.responseText);
+//                 $('.poopuptext').removeClass("show");
+//                 errors.errors.forEach(function (error, i) {
+//                     console.log(i + '.' + error.message + ' (' + error.field + ')');
+//                     var popup = document.getElementById("error_" + error.field);
+//                     popup.classList.add("show");
+//                     if (i == 0) {
+//                         popup.scrollIntoView();
+//                     }
+//                 });
+//             }
+//         });
+//         if (flag) {
+//             closePaymentDropdown();
+//             e.preventDefault();
+//             e.stopPropagation();
+//             return false;
+//         }
+//     }
+//     else if(type == 'sepa')
+//     {
+//         $.ajax({
+//             url: checkoutValidateSepa,
+//             type: 'POST',
+//             cache: false,
+//             dataType: 'html',
+//             data: form,
+//             async: false,
+//             success: function (data) {
+
+//             },
+//             error: function (data) {
+//                 flag = true;
+//                 var errors = JSON.parse(data.responseText);
+//                 $('.poopuptext').removeClass("show");
+//                 errors.errors.forEach(function (error, i) {
+//                     console.log(i + '.' + error.message + ' (' + error.field + ')');
+//                     var popup = document.getElementById("error_" + error.field);
+//                     popup.classList.add("show");
+//                     if (i == 0) {
+//                         popup.scrollIntoView();
+//                     }
+//                 });
+//             }
+//         });
+//         if (flag) {
+//             closePaymentDropdown();
+//             e.preventDefault();
+//             e.stopPropagation();
+//             return false;
+//         }
+//     } else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
+//         form += '&local_payment=' + type;
+//         $.ajax({
+//             url: checkoutLocalPaymentInfo,
+//             type: 'POST',
+//             cache: false,
+//             dataType: 'html',
+//             data: form,
+//             async: false,
+//             success: function (data) {
+//                 data = JSON.parse(data);
+//                 if (data.success == true) {
+//                     sendLocalPaymentData(form);
+//                     $('.wrapper').html(data.html);
+//                 } else {
+//                     alert(data.text);
+//                 }
+//             },
+//             error: function (data) {
+//                 flag = true;
+//                 var errors = JSON.parse(data.responseText);
+//                 $('.poopuptext').removeClass("show");
+//                 errors.errors.forEach(function (error, i) {
+//                     console.log(i + '.' + error.message + ' (' + error.field + ')');
+//                     var popup = document.getElementById("error_" + error.field);
+//                     popup.classList.add("show");
+//                     if (i == 0) {
+//                         popup.scrollIntoView();
+//                     }
+//                 });
+//             }
+//         });
+
+//         if (flag) {
+//             closePaymentDropdown();
+//             e.preventDefault();
+//             e.stopPropagation();
+//             return false;
+//         }
+//     } else if (type == 'google_pay' || type == 'apple_pay') {
+//         form += '&wallet=' + type;
+//         $.ajax({
+//             url: checkoutValidateWallet,
+//             type: 'POST',
+//             cache: false,
+//             dataType: 'html',
+//             data: form,
+//             async: false,
+//             success: function (data) {
+//                 // if (type == 'apple_pay') {
+//                 //     $('#proccess_apple_pay').show();
+//                 //     $('#proccess_google_pay').hide();
+//                 //     $('#proccess').hide();
+//                 // }
+//                 // if (type == 'google_pay') {
+//                 //     $('#proccess_google_pay').show();
+//                 //     $('#proccess_apple_pay').hide();
+//                 //     $('#proccess').hide();
+//                 // }
+//             },
+//             error: function (data) {
+//                 // if (type == 'apple_pay') {
+//                 //     $('#proccess_apple_pay').hide();
+//                 // }
+//                 // if (type == 'google_pay') {
+//                 //     $('#proccess_google_pay').hide();
+//                 // }
+//                 flag = true;
+//                 var errors = JSON.parse(data.responseText);
+//                 $('.poopuptext').removeClass("show");
+//                 errors.errors.forEach(function (error, i) {
+//                     console.log(i + '.' + error.message + ' (' + error.field + ')');
+//                     var popup = document.getElementById("error_" + error.field);
+//                     popup.classList.add("show");
+//                     if (i == 0) {
+//                         popup.scrollIntoView();
+//                     }
+//                 });
+//             }
+//         });
+
+//         if (flag) {
+//             closePaymentDropdown();
+//             e.preventDefault();
+//             e.stopPropagation();
+//             return false;
+//         }
+//     }
+
+//     // if (type == 'visa' || type == 'mastercard' || type == 'amex' || type == 'discover') {
+//     //     $('#proccess').show();
+//     //     $('#proccess_google_pay').hide();
+//     //     $('#proccess_apple_pay').hide();
+//     // }
+
+//     if (type != 'crypto') {
+//         PollingManager.stopAll();
+//         document.getElementById('paid').disabled = true;
+//         // document.getElementById('waiting').style.display = "none";
+//     }
+
+//     form += '&bonus_checkout_payment=' + type;
+
+//     $.ajax({
+//         url: checkoutRecalculation,
+//         type: 'POST',
+//         cache: false,
+//         dataType: 'html',
+//         data: form,
+//         async: false,
+//         success: function (data) {
+//             data = JSON.parse(data);
+//             if (data.success == true) {
+//                 $('.wrapper').html(data.html);
+//             } else {
+//                 alert(data.text);
+//             }
+//         },
+//         error: function (data) {
+//             flag = true;
+//             var errors = JSON.parse(data.responseText);
+//             $('.poopuptext').removeClass("show");
+//             errors.errors.forEach(function (error, i) {
+//                 console.log(i + '.' + error.message + ' (' + error.field + ')');
+//                 var popup = document.getElementById("error_" + error.field);
+//                 popup.classList.add("show");
+//                 if (i == 0) {
+//                     popup.scrollIntoView();
+//                 }
+//             });
+//         }
+//     });
+
+//     if (flag) {
+//         closePaymentDropdown();
+//         e.preventDefault();
+//         e.stopPropagation();
+//         return false;
+//     }
+// });
+
+function showPaymentPreloader() {
+    const pl = document.getElementById('payment_preloader');
+    if (!pl) return;
+    pl.style.display = 'flex';
+    // Принудительно даем браузеру отрисовать прелоадер
+    void pl.offsetWidth;
+    requestAnimationFrame(() => {
+        pl.classList.add('is_active');
+        pl.setAttribute('aria-hidden', 'false');
+    });
+}
+
+function hidePaymentPreloader() {
+    const pl = document.getElementById('payment_preloader');
+    if (!pl) return;
+    pl.classList.remove('is_active');
+    pl.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+        // Скрываем через display, чтобы точно не мешал
+        if (!pl.classList.contains('is_active')) {
+            pl.style.display = 'none';
+        }
+    }, 300);
+}
+
+function scrollToPaymentContent() {
+    const possibleBlocks = [
+        '.enter-info__card-content',
+        '.enter-info__crypto-content',
+        '.enter-info__sepa-content',
+        '.enter-info__zelle-content',
+        '.enter-info__local_payment-content',
+        '.enter-info__bonus-card-content',
+        '.enter-info__gift-card-content',
+        '.enter-info__open-banking-content',
+        '.enter-info__apple_pay-content',
+        '.enter-info__google_pay-content',
+        '.enter-info__cashapp-content',
+        '.enter-info__paypal-content',
+        '.enter-info__google-content'
+    ];
+
+    let target = null;
+    for (const sel of possibleBlocks) {
+        const el = document.querySelector(sel);
+        if (el && !el.hidden) {
+            target = el;
+            break;
+        }
+    }
+
+    if (target) {
+        const yOffset = -100; // Отступ сверху
+        const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+}
+
+// --- Обработка выбора способа оплаты ---
+$('input[name="payment_type"]').on('change', function (e) {
+    if (this.disabled) return;
+
+    var $radio = $(this);
+    var type = $radio.val();
     var form = $('form').serialize();
 
     $('.poopuptext').removeClass("show");
+    $('.payment-method-panel').removeClass('is_selected');
+    $radio.closest('.payment-method-panel').addClass('is_selected');
 
-    flag = false;
-    if (type == 'crypto') {
-        document.getElementById('paid').style.display = "none";
-        // document.getElementById('waiting').style.display = "none";
+    // 1. Показываем прелоадер
+    showPaymentPreloader();
 
-        if (typeof $('input[name="crypt_currency"]:checked').val() != 'undefined'){
+    // 2. Даем браузеру отрисовать прелоадер, потом выполняем блокирующие запросы
+    setTimeout(function () {
+        var flag = false;
 
-            // let currency = $('input[name="crypt_currency"]:checked').val();
-
-            // $.ajax({
-            //     url: checkoutCryptoInfo,
-            //     type: 'POST',
-            //     cache: false,
-            //     dataType: 'html',
-            //     data: { 'currency': currency, 'email': $('#email').val() },
-            //     success: function (data) {
-            //         // alert(data);
-            //         var result = JSON.parse(JSON.parse(data));
-            //         var cur = currency.split('_');
-            //         cur = cur[0];
-            //         var total = result.amount;
-            //         // //alert(total);
-            //         document.getElementById('crypto_total').innerHTML = total;
-            //         // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
-            //         document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
-            //         document.getElementById('purse').innerHTML = result.purse;
-            //         document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
-            //         document.getElementById('invoiceId').value = result.invoiceId;
-            //         document.getElementById('invoce_p').innerHTML = result.invoiceId;
-
-            //         document.getElementById("requisites_load").hidden = true;
-            //         document.getElementById("requisites").hidden = false;
-            //         document.getElementById('paid').disabled = false;
-            //         // PollingManager.startPolling(CheckPayment, 1800000, 5000);
-
-            //         document.getElementById("coupon").disabled = true;
-            //         document.getElementById("coupon_submit").disabled = true;
-            //         document.getElementById("c_82").disabled = true;
-            //         document.getElementById("c_83").disabled = true;
-            //         document.getElementById("c_85").disabled = true;
-            //         document.getElementById("c_86").disabled = true;
-            //     }
-            // });
-        } else {
+        if (type == 'crypto') {
+            document.getElementById('paid').style.display = "none";
+        }
+        else if (type == 'google') {
             $.ajax({
-                url: checkoutValidateCrypto,
-                type: 'POST',
-                cache: false,
-                dataType: 'html',
-                data: form,
-                async: false,
+                url: checkoutValidateGoogle,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
+                    errors.errors.forEach(function (error, i) {
+                        var popup = document.getElementById("error_" + error.field);
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
+                    });
+                }
+            });
+            if (flag) { hidePaymentPreloader(); return; }
+        }
+        else if (type == 'sepa') {
+            $.ajax({
+                url: checkoutValidateSepa,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
+                    errors.errors.forEach(function (error, i) {
+                        var popup = document.getElementById("error_" + error.field);
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
+                    });
+                }
+            });
+            if (flag) { hidePaymentPreloader(); return; }
+        }
+        else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
+            form += '&local_payment=' + type;
+            $.ajax({
+                url: checkoutLocalPaymentInfo,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
                 success: function (data) {
-
+                    data = JSON.parse(data);
+                    if (data.success == true) {
+                        sendLocalPaymentData(form);
+                        $('.wrapper').html(data.html);
+                    } else {
+                        alert(data.text);
+                    }
                 },
                 error: function (data) {
                     flag = true;
                     var errors = JSON.parse(data.responseText);
                     $('.poopuptext').removeClass("show");
                     errors.errors.forEach(function (error, i) {
-                        console.log(i + '.' + error.message + ' (' + error.field + ')');
                         var popup = document.getElementById("error_" + error.field);
-                        popup.classList.add("show");
-                        if (i == 0) {
-                            popup.scrollIntoView();
-                        }
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
                     });
                 }
             });
-            if (flag) {
-                closePaymentDropdown();
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
+            if (flag) { hidePaymentPreloader(); return; }
         }
-    }
-    else if(type == 'google')
-    {
-        $.ajax({
-            url: checkoutValidateGoogle,
-            type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: form,
-            async: false,
-            success: function (data) {
+        else if (type == 'google_pay' || type == 'apple_pay') {
+            form += '&wallet=' + type;
+            $.ajax({
+                url: checkoutValidateWallet,
+                type: 'POST', cache: false, dataType: 'html', data: form, async: false,
+                error: function (data) {
+                    flag = true;
+                    var errors = JSON.parse(data.responseText);
+                    $('.poopuptext').removeClass("show");
+                    errors.errors.forEach(function (error, i) {
+                        var popup = document.getElementById("error_" + error.field);
+                        if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
+                    });
+                }
+            });
+            if (flag) { hidePaymentPreloader(); return; }
+        }
 
-            },
-            error: function (data) {
-                flag = true;
-                var errors = JSON.parse(data.responseText);
-                $('.poopuptext').removeClass("show");
-                errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
-                    var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
-                });
-            }
-        });
-        if (flag) {
-            closePaymentDropdown();
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
+        if (type != 'crypto') {
+            if (typeof PollingManager !== 'undefined') PollingManager.stopAll();
+            var paidBtn = document.getElementById('paid');
+            if (paidBtn) paidBtn.disabled = true;
         }
-    }
-    else if(type == 'sepa')
-    {
-        $.ajax({
-            url: checkoutValidateSepa,
-            type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: form,
-            async: false,
-            success: function (data) {
 
-            },
-            error: function (data) {
-                flag = true;
-                var errors = JSON.parse(data.responseText);
-                $('.poopuptext').removeClass("show");
-                errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
-                    var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
-                });
-            }
-        });
-        if (flag) {
-            closePaymentDropdown();
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-    } else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
-        form += '&local_payment=' + type;
+        form += '&bonus_checkout_payment=' + type;
+
         $.ajax({
-            url: checkoutLocalPaymentInfo,
+            url: checkoutRecalculation,
             type: 'POST',
             cache: false,
             dataType: 'html',
@@ -2502,134 +2820,67 @@ $(".card_type .select__option").click(function (e) {
             success: function (data) {
                 data = JSON.parse(data);
                 if (data.success == true) {
-                    sendLocalPaymentData(form);
                     $('.wrapper').html(data.html);
+
+                    setTimeout(function () {
+                        rebindPaymentMethods();
+                        applyPaymentLockIfNeeded();
+                        scrollToPaymentContent();
+                        hidePaymentPreloader();
+                    }, 50);
                 } else {
                     alert(data.text);
+                    hidePaymentPreloader();
                 }
             },
             error: function (data) {
-                flag = true;
                 var errors = JSON.parse(data.responseText);
                 $('.poopuptext').removeClass("show");
                 errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
                     var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
+                    if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
                 });
+                hidePaymentPreloader();
             }
         });
+    }, 30);
+});
 
-        if (flag) {
-            closePaymentDropdown();
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-    } else if (type == 'google_pay' || type == 'apple_pay') {
-        form += '&wallet=' + type;
-        $.ajax({
-            url: checkoutValidateWallet,
-            type: 'POST',
-            cache: false,
-            dataType: 'html',
-            data: form,
-            async: false,
-            success: function (data) {
-                // if (type == 'apple_pay') {
-                //     $('#proccess_apple_pay').show();
-                //     $('#proccess_google_pay').hide();
-                //     $('#proccess').hide();
-                // }
-                // if (type == 'google_pay') {
-                //     $('#proccess_google_pay').show();
-                //     $('#proccess_apple_pay').hide();
-                //     $('#proccess').hide();
-                // }
-            },
-            error: function (data) {
-                // if (type == 'apple_pay') {
-                //     $('#proccess_apple_pay').hide();
-                // }
-                // if (type == 'google_pay') {
-                //     $('#proccess_google_pay').hide();
-                // }
-                flag = true;
-                var errors = JSON.parse(data.responseText);
-                $('.poopuptext').removeClass("show");
-                errors.errors.forEach(function (error, i) {
-                    console.log(i + '.' + error.message + ' (' + error.field + ')');
-                    var popup = document.getElementById("error_" + error.field);
-                    popup.classList.add("show");
-                    if (i == 0) {
-                        popup.scrollIntoView();
-                    }
-                });
-            }
-        });
+// Функция перепривязки обработчиков после перерисовки HTML (для панелей оплаты)
+function rebindPaymentMethods() {
+    $('.payment-method-panel').removeClass('is_selected');
+    const checked = document.querySelector('input[name="payment_type"]:checked');
+    if (checked) checked.closest('.payment-method-panel').classList.add('is_selected');
+}
 
-        if (flag) {
-            closePaymentDropdown();
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
+function applyPaymentLockIfNeeded() {
+    const grid = document.querySelector('.payment-methods-grid');
+    if (!grid) return;
+
+    const checked = grid.querySelector('input[name="payment_type"]:checked');
+    if (!checked) {
+        const fallback = grid.querySelector('input[name="payment_type"][value="mastercard"]');
+        if (fallback) {
+            fallback.checked = true;
+            fallback.closest('.payment-method-panel').classList.add('is_selected');
         }
     }
 
-    // if (type == 'visa' || type == 'mastercard' || type == 'amex' || type == 'discover') {
-    //     $('#proccess').show();
-    //     $('#proccess_google_pay').hide();
-    //     $('#proccess_apple_pay').hide();
-    // }
+    if (!grid.classList.contains('is_locked')) return;
 
-    if (type != 'crypto') {
-        PollingManager.stopAll();
-        document.getElementById('paid').disabled = true;
-        // document.getElementById('waiting').style.display = "none";
-    }
-
-    form += '&bonus_checkout_payment=' + type;
-
-    $.ajax({
-        url: checkoutRecalculation,
-        type: 'POST',
-        cache: false,
-        dataType: 'html',
-        data: form,
-        async: false,
-        success: function (data) {
-            data = JSON.parse(data);
-            if (data.success == true) {
-                $('.wrapper').html(data.html);
-            } else {
-                alert(data.text);
-            }
-        },
-        error: function (data) {
-            flag = true;
-            var errors = JSON.parse(data.responseText);
-            $('.poopuptext').removeClass("show");
-            errors.errors.forEach(function (error, i) {
-                console.log(i + '.' + error.message + ' (' + error.field + ')');
-                var popup = document.getElementById("error_" + error.field);
-                popup.classList.add("show");
-                if (i == 0) {
-                    popup.scrollIntoView();
-                }
-            });
+    const radios = grid.querySelectorAll('input[name="payment_type"]');
+    let checkedVal = null;
+    radios.forEach(r => { if (r.checked) checkedVal = r.value; });
+    radios.forEach(r => {
+        if (r.value === checkedVal) {
+            r.disabled = false;
+            r.closest('.payment-method-panel')?.classList.add('is_selected');
+        } else {
+            r.disabled = true;
         }
     });
+}
 
-    if (flag) {
-        closePaymentDropdown();
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
-});
 
 // if ($('#payment_type_select').val() == 'google_pay') {
 //     $('#proccess').hide();
@@ -3206,64 +3457,6 @@ function processForm(e) {
 
     return false;
 }
-
-$("#proccess_paypal").click(function (e) {
-    var form = $('form').serialize();
-    // console.log(form);
-
-    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
-
-    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const d = new Date();
-    var day = weekday[d.getDay()];
-    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-
-    form += "&customer_date=" + date;
-
-    document.body.classList.remove('loaded');
-
-    form += '&' + $.param({ browser_details: browserInfo });
-
-    $('.poopuptext').removeClass("show");
-
-    $.ajax({
-        url: checkoutPaypal,
-        type: 'POST',
-        cache: false,
-        dataType: 'html',
-        data: form,
-        success: function (data) {
-            var data = JSON.parse(data);
-            // console.log(data);
-            if (data.response.status == 'SUCCESS') {
-                if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
-            }
-            else {
-                var error = '';
-                data.response.message.forEach(element => {
-                    error += element + "\n";
-                });
-                document.body.classList.add('loaded');
-                alert(error);
-            }
-        },
-        error: function (data) {
-            var errors = JSON.parse(data.responseText);
-            $('.poopuptext').removeClass("show");
-            errors.errors.forEach(function (error, i) {
-                document.body.classList.add('loaded');
-                console.log(i + '.' + error.message + ' (' + error.field + ')');
-                var popup = document.getElementById("error_" + error.field);
-                popup.classList.add("show");
-                if (i == 0) {
-                    popup.scrollIntoView();
-                }
-            });
-        }
-    });
-
-    return false;
-});
 
 $("#proccess_sepa").click(function (e) {
     var form = $('form').serialize();
@@ -3920,6 +4113,82 @@ $("#proccess_cashapp").click(function (e) {
     return false;
 });
 
+$("#proccess_paypal").click(function (e) {
+    var form = $('form').serialize();
+    // console.log(form);
+
+    form += "&screen_resolution=" + window.screen.width + 'x' + window.screen.height;
+
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    var day = weekday[d.getDay()];
+    var date = day + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+
+    form += "&customer_date=" + date;
+
+    document.body.classList.remove('loaded');
+
+    form += '&' + $.param({ browser_details: browserInfo });
+
+    $('.poopuptext').removeClass("show");
+
+    $.ajax({
+        url: checkoutPaypal,
+        type: 'POST',
+        cache: false,
+        dataType: 'html',
+        data: form,
+        success: function (data) {
+            var parsed;
+            try {
+                parsed = JSON.parse(data);
+            } catch (e) {
+                console.error('[checkout-wallet] JSON parse failed', { raw: data, error: e.message });
+                return;
+            }
+            var data = parsed;
+            // console.log(data);
+            if (data.response.status == 'SUCCESS') {
+                if(typeof data.response.url !== 'undefined') {
+                    if (typeof window.openPaymentRedirect === 'function') { window.openPaymentRedirect(data.response.url, 'url', data.response.redirect_url); } else { window.location.replace(data.response.url); }
+                } else {
+                    window.location.replace(checkoutComplete);
+                }
+            } else if (data.response.status == 'risk_check') {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else if (data.response.visa_error == true) {
+                alert(data.response.message);
+                document.body.classList.add('loaded');
+                $('.wrapper').html(data.response.html.original.html);
+            } else {
+                var error = '';
+                data.response.message.forEach(element => {
+                    error += element + "\n";
+                });
+                document.body.classList.add('loaded');
+                alert(error);
+            }
+        },
+        error: function (data) {
+            var errors = JSON.parse(data.responseText);
+            $('.poopuptext').removeClass("show");
+            errors.errors.forEach(function (error, i) {
+                document.body.classList.add('loaded');
+                console.log(i + '.' + error.message + ' (' + error.field + ')');
+                var popup = document.getElementById("error_" + error.field);
+                popup.classList.add("show");
+                if (i == 0) {
+                    popup.scrollIntoView();
+                }
+            });
+        }
+    });
+
+    return false;
+});
+
 var form = document.getElementById('order_form');
 if (form.attachEvent) {
     form.attachEvent("submit", processForm);
@@ -4267,6 +4536,10 @@ document.querySelectorAll('input[type=number]').forEach(function(input) {
     });
 });
 
+$(document).ready(function () {
+    applyPaymentLockIfNeeded();
+});
+
 function formatBonusCard(value) {
     let digits = value.replace(/\D/g, '').slice(0, 12);
     return digits.replace(/(\d{4})(?=\d)/g, '$1 ');
@@ -4379,168 +4652,62 @@ window.__TOKENS__ = window.__TOKENS__ || [
  ];
 
 (function init(root, items){
-    const toggle = root.querySelector('.select__toggle');
-    const menu   = root.querySelector('.select__menu');
-    const list   = root.querySelector('.options');
+    if (!root) return;
+
+    const list = root.querySelector('.crypto-grid');
     const search = root.querySelector('#selectSearch');
     const hidden = root.querySelector('input[type="hidden"]');
-    const valueSpan = root.querySelector('.value');
-    const placeholderText = valueSpan.textContent;
 
     let filtered = [...items];
-    let activeIndex = -1;
+    let selectedValue = hidden.value || '';
+
+    const ICON_BASE = 'style_checkout/images/icons/';
+
+    function makeIconEl(iconRef) {
+        const img = document.createElement('img');
+        img.className = 'crypto-panel__icon';
+        img.width = 22;
+        img.height = 22;
+        img.alt = '';
+        const src = ICON_BASE + (iconRef.includes('#') ? iconRef.split('#')[0] : iconRef);
+        img.src = src;
+        return img;
+    }
 
     function render() {
         list.innerHTML = '';
-        filtered.forEach((it, idx) => {
-            const li = document.createElement('li');
-            li.className = 'option';
-            li.role='option';
-            li.tabIndex=-1;
-            li.dataset.value = it.value;
-            li.dataset.index = idx;
+        filtered.forEach((it) => {
+            const panel = document.createElement('label');
+            panel.className = 'crypto-panel' + (it.value === selectedValue ? ' is_selected' : '');
+            panel.dataset.value = it.value;
 
-            // const icon = document.createElement('div');
-            // icon.className = 'opt-icon';
-            // icon.innerHTML = it.icon;
+            const symbol = document.createElement('span');
+            symbol.className = 'crypto-panel__symbol';
+            symbol.textContent = it.symbol;
 
-            const icon = makeIconEl(it.icon);
+            const chain = document.createElement('span');
+            chain.className = 'crypto-panel__chain';
+            chain.textContent = it.chain;
 
-            const label = document.createElement('div');
-            label.className = 'opt-label';
-
-            const main = document.createElement('div');
-            main.className = 'opt-main';
-            main.textContent = it.symbol;
-
-            const sub = document.createElement('div');
-            sub.className = 'opt-subtle';
-            sub.textContent = it.chain;
-            label.append(main, sub);
-
-            li.append(icon, label);
-            li.addEventListener('click', () => choose(idx));
-            list.appendChild(li);
+            panel.append(makeIconEl(it.icon), symbol, chain);
+            panel.addEventListener('click', () => choose(it));
+            list.appendChild(panel);
         });
-        // setActive(0);
     }
 
-    function open(){
-        menu.hidden=false;
-        root.classList.add('open');
-        toggle.setAttribute('aria-expanded','true');
-        search.value='';
-        filtered=[...items];
+    function choose(it) {
+        selectedValue = it.value;
+        hidden.value = it.value;
         render();
-        setTimeout(()=>search.focus(),0);
-    }
 
-    function close(){
-        menu.hidden=true;
-        root.classList.remove('open');
-        toggle.setAttribute('aria-expanded','false');
-        activeIndex=-1;
-    }
-
-    function reset() {
-        hidden.value = '';
-        valueSpan.textContent = placeholderText;
-        search.value = '';
-        filtered = [...items];
-        render();
-        close();
-    }
-
-    function setActive(i){
-        const opts=[...list.children];
-        opts.forEach(el=>el.classList.remove('is-active'));
-        if(!opts.length) return; i=Math.max(0, Math.min(i, opts.length-1));
-        opts[i].classList.add('is-active');
-        opts[i].scrollIntoView({
-            block:'nearest'
-        });
-
-        activeIndex=i;
-    }
-
-    function choose(i){
-      const it = filtered[i]; if(!it) return;
-      hidden.value = it.value;
-      valueSpan.textContent = `${it.symbol} ${it.chain}`;
-      root.dispatchEvent(new CustomEvent('change', { detail:{ value: it.value, symbol: it.symbol, chain: it.chain }}));
-      close();
-      toggle.focus();
-    }
-
-    const ICON_BASE = 'style_checkout/images/icons/';
-    const SVG_NS   = 'http://www.w3.org/2000/svg';
-    const XLINK_NS = 'http://www.w3.org/1999/xlink';
-
-    // function makeIconEl(iconRef) {
-    //     const wrap = document.createElement('div');
-    //     wrap.className = 'opt-icon';
-
-    //     const svg = document.createElementNS(SVG_NS, 'svg');
-    //     svg.setAttribute('width', '26');
-    //     svg.setAttribute('height', '26');
-
-    //     const use = document.createElementNS(SVG_NS, 'use');
-    //     // если это спрайт вида "icons.svg#svg-xxx", оставляем как есть,
-    //     // если это отдельный файл "xrp.svg", просто склеиваем базовый путь
-    //     const href = iconRef.includes('#') ? ICON_BASE + iconRef : ICON_BASE + iconRef;
-    //     use.setAttributeNS(XLINK_NS, 'xlink:href', href);
-
-    //     svg.appendChild(use);
-    //     wrap.appendChild(svg);
-    //     return wrap;
-    // }
-
-    function makeIconEl(iconRef) {
-        const wrap = document.createElement('div');
-        wrap.className = 'opt-icon';
-
-        const img = document.createElement('img');
-        img.width = 26;
-        img.height = 26;
-        img.alt = '';
-
-        // img не поддерживает выбор фрагмента SVG-спрайта через #id
-        const src = ICON_BASE + (iconRef.includes('#') ? iconRef.split('#')[0] : iconRef);
-        img.src = src;
-
-        wrap.appendChild(img);
-        return wrap;
-    }
-
-    root.resetSelect = reset;
-
-    toggle.addEventListener('click', () => menu.hidden ? open() : close());
-
-    search.addEventListener('input', () => {
-      const q = search.value.trim().toLowerCase();
-      filtered = items.filter(it => (`${it.symbol} ${it.chain}`).toLowerCase().includes(q));
-      render();
-    });
-
-    search.addEventListener('keydown', (e)=>{
-      if(e.key==='ArrowDown'){e.preventDefault(); setActive(activeIndex+1)}
-      if(e.key==='ArrowUp'){e.preventDefault(); setActive(activeIndex-1)}
-      if(e.key==='Enter'){e.preventDefault(); choose(activeIndex)}
-      if(e.key==='Escape'){e.preventDefault(); close()}
-    });
-
-    document.addEventListener('click', (e)=>{ if(!root.contains(e.target)) close(); });
-
-    root.addEventListener('change', (e)=>{
-        // console.log('Выбрано:', e.detail.value, '|', e.detail.symbol, e.detail.chain);
+        // --- Вся старая логика из события "change" ---
         $(".ploader").show();
         document.getElementById("requisites").hidden = true;
-        // document.getElementById("requisites_load").hidden = false;
         document.getElementById('paid').style.display = "none";
         document.getElementById('paid').disabled = true;
         document.getElementById("info_text_crypto").hidden = true;
 
-        let currency = e.detail.value;
+        let currency = it.value;
 
         $.ajax({
             url: checkoutCryptoInfo,
@@ -4552,21 +4719,18 @@ window.__TOKENS__ = window.__TOKENS__ || [
                 var result = JSON.parse(JSON.parse(data));
                 if (result.status == 'error') {
                     alert(result.text);
-                    // document.getElementById("requisites_load").hidden = true;
                     $(".ploader").hide();
                 } else {
                     $(".ploader").hide();
 
-                    const $c = $('html'); // твой прокручиваемый контейнер
+                    const $c = $('html');
                     const top = $('#requisites').position().top + $c.scrollTop() + 600;
                     $c.animate({ scrollTop: top }, 500);
 
                     var cur = currency.split('_');
                     cur = cur[0];
                     var total = result.amount;
-                    // //alert(total);
                     document.getElementById('crypto_total').innerHTML = total;
-                    // document.getElementById('crypto_price').innerHTML =  result.crypto_total;
                     document.getElementById('crypto_discount_price').innerHTML = result.crypto_total;
                     document.getElementById('purse').innerHTML = result.purse;
                     document.getElementById('qr_code').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result.purse;
@@ -4576,11 +4740,9 @@ window.__TOKENS__ = window.__TOKENS__ || [
                     sendCryptoData(currency, total, result.crypto_total, result.purse, result.invoiceId);
 
                     document.getElementById("info_text_crypto").hidden = false;
-                    // document.getElementById("requisites_load").hidden = true;
                     document.getElementById("requisites").hidden = false;
                     document.getElementById('paid').style.display = "flex";
                     document.getElementById('paid').disabled = false;
-                    // PollingManager.startPolling(CheckPayment, 1800000, 5000);
 
                     document.getElementById("coupon").disabled = true;
                     document.getElementById("coupon_submit").disabled = true;
@@ -4595,34 +4757,34 @@ window.__TOKENS__ = window.__TOKENS__ || [
 
         var countDownDate = new Date().getTime() + 1800000;
         clearInterval(window.countdownfunction);
-
-        // Update the count down every 1 second
         window.countdownfunction = setInterval(function () {
-            //alert('aaaa');
-
-            // Get todays date and time
             var now = new Date().getTime();
-
-            // Find the distance between now an the count down date
             var distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Output the result in an element with id="demo"
-            if (seconds < 10) {
-                seconds = '0' + seconds;
-            }
+            if (seconds < 10) seconds = '0' + seconds;
             document.getElementById("timer").innerHTML = minutes + ":" + seconds;
-
-            // If the count down is over, write some text
             if (distance < 0) {
                 clearInterval(countdownfunction);
                 document.getElementById("timer").innerHTML = "EXPIRED";
             }
         }, 1000);
+    }
+
+    search.addEventListener('input', () => {
+        const q = search.value.trim().toLowerCase();
+        filtered = items.filter(it => (`${it.symbol} ${it.chain}`).toLowerCase().includes(q));
+        render();
     });
+
+    // Сброс при переключении с крипты на другой способ оплаты
+    root.resetSelect = function() {
+        selectedValue = '';
+        hidden.value = '';
+        search.value = '';
+        filtered = [...items];
+        render();
+    };
 
     render();
 })(document.getElementById('tokenSelect'), window.__TOKENS__);
