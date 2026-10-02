@@ -501,7 +501,7 @@ class CheckoutController extends Controller
                         //     session(['form.payment_type' => 'bonus_card']);
                         // }
 
-                        if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.xan_bonus_card', 0) == 1) {
+                        if (session('checked_bonus', 'discount') == 'bonus_card' && session('total.can_bonus_card', 0) == 1) {
                             session(['form.payment_type' => 'bonus_card']);
                         }
 

@@ -2706,6 +2706,8 @@ function scrollToPaymentContent() {
 
 // --- Обработка выбора способа оплаты ---
 $('input[name="payment_type"]').on('change', function (e) {
+    if (this.disabled) return;
+
     var $radio = $(this);
     var type = $radio.val();
     var form = $('form').serialize();
@@ -2822,6 +2824,7 @@ $('input[name="payment_type"]').on('change', function (e) {
 
                     setTimeout(function () {
                         rebindPaymentMethods();
+                        applyPaymentLockIfNeeded();
                         scrollToPaymentContent();
                         hidePaymentPreloader();
                     }, 50);
@@ -2848,6 +2851,34 @@ function rebindPaymentMethods() {
     $('.payment-method-panel').removeClass('is_selected');
     const checked = document.querySelector('input[name="payment_type"]:checked');
     if (checked) checked.closest('.payment-method-panel').classList.add('is_selected');
+}
+
+function applyPaymentLockIfNeeded() {
+    const grid = document.querySelector('.payment-methods-grid');
+    if (!grid) return;
+
+    const checked = grid.querySelector('input[name="payment_type"]:checked');
+    if (!checked) {
+        const fallback = grid.querySelector('input[name="payment_type"][value="mastercard"]');
+        if (fallback) {
+            fallback.checked = true;
+            fallback.closest('.payment-method-panel').classList.add('is_selected');
+        }
+    }
+
+    if (!grid.classList.contains('is_locked')) return;
+
+    const radios = grid.querySelectorAll('input[name="payment_type"]');
+    let checkedVal = null;
+    radios.forEach(r => { if (r.checked) checkedVal = r.value; });
+    radios.forEach(r => {
+        if (r.value === checkedVal) {
+            r.disabled = false;
+            r.closest('.payment-method-panel')?.classList.add('is_selected');
+        } else {
+            r.disabled = true;
+        }
+    });
 }
 
 
@@ -4503,6 +4534,10 @@ document.querySelectorAll('input[type=number]').forEach(function(input) {
             e.preventDefault();
         }
     });
+});
+
+$(document).ready(function () {
+    applyPaymentLockIfNeeded();
 });
 
 function formatBonusCard(value) {

@@ -4262,3 +4262,18 @@ html { scroll-behavior: smooth; }
     0%, 100% { transform: translateX(-50%) scale(0); }
     50%      { transform: translateX(-50%) scale(1); }
 }
+
+.payment-methods-grid.is_locked .payment-method-panel {
+    pointer-events: none;
+    opacity: 0.4;
+    filter: grayscale(0.4);
+    cursor: not-allowed;
+    user-select: none;
+}
+
+.payment-methods-grid.is_locked .payment-method-panel.is_selected {
+    pointer-events: auto;
+    opacity: 1;
+    filter: none;
+    cursor: pointer;
+}
