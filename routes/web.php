@@ -164,12 +164,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::controller(AccountController::class)->group(function () {
         Route::get('/account', 'index')->name('account.index');
         Route::get('/account/api/captcha', 'captchaImage')->name('account.api.captcha');
-        Route::get('/account/api/e2ee/keys', 'apiE2eeKeys')->name('account.api.e2ee.keys')->middleware('throttle:30,1');
         Route::post('/account/api/captcha/verify', 'captchaVerify')->name('account.api.captcha.verify')->middleware('throttle:10,1');
         Route::post('/account/embedded/start', 'embeddedStart')->name('account.embedded.start')->middleware('throttle:10,1');
         Route::post('/account/embedded/verify', 'embeddedVerify')->name('account.embedded.verify')->middleware('throttle:10,1');
-        Route::get('/account/start', 'start')->name('account.start');
-        Route::get('/account/callback', 'callback')->name('account.callback');
         Route::post('/account/logout', 'logout')->name('account.logout');
         Route::get('/account/api/me', 'apiMe')->name('account.api.me');
         Route::get('/account/api/orders', 'apiOrders')->name('account.api.orders');

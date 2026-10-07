@@ -15,10 +15,10 @@ class CabinetPreviewTest extends TestCase
      * прогревочный запрос. На проде с корректным APP_URL и реальным
      * веб-сервером (нормальный REQUEST_URI) этого эффекта нет.
      */
-    public function test_live_redirects_to_design_login_when_embedded_on(): void
+    public function test_live_redirects_to_design_login_when_no_token(): void
     {
         $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
-        $this->seedShopSettings(true);
+        $this->seedShopSettings();
 
         try {
             foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
@@ -30,25 +30,10 @@ class CabinetPreviewTest extends TestCase
         }
     }
 
-    public function test_live_redirects_to_external_when_embedded_off(): void
+    public function test_designless_login_renders(): void
     {
         $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
-        $this->seedShopSettings(false);
-
-        try {
-            foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
-                $response = $this->get('/cabinet/' . $page);
-                $response->assertRedirect(route('account.start'));
-            }
-        } finally {
-            $this->forgetShopSettings();
-        }
-    }
-
-    public function test_designless_login_renders_when_embedded_on(): void
-    {
-        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
-        $this->seedShopSettings(true);
+        $this->seedShopSettings();
 
         try {
             foreach (['email', 'captcha', 'code'] as $step) {
@@ -60,21 +45,6 @@ class CabinetPreviewTest extends TestCase
             $html = $this->get('/cabinet-login/email')->getContent();
             $this->assertStringNotContainsString('cablogin-pager', $html);
             $this->assertStringContainsString('cablogin-header__lang', $html);
-        } finally {
-            $this->forgetShopSettings();
-        }
-    }
-
-    public function test_designless_login_redirects_to_external_when_embedded_off(): void
-    {
-        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
-        $this->seedShopSettings(false);
-
-        try {
-            foreach (['email', 'captcha', 'code'] as $step) {
-                $response = $this->get('/cabinet-login/' . $step);
-                $response->assertRedirect(route('account.start'));
-            }
         } finally {
             $this->forgetShopSettings();
         }
@@ -139,9 +109,9 @@ class CabinetPreviewTest extends TestCase
     /**
      * Настройки интеграции без сети: кеш обходит и БД, и кабинет.
      */
-    private function seedShopSettings(bool $embedded): void
+    private function seedShopSettings(): void
     {
-        Cache::put(CabinetService::SETTINGS_CACHE_KEY, ['shop_id' => 'test', 'embedded_login' => $embedded], 60);
+        Cache::put(CabinetService::SETTINGS_CACHE_KEY, ['shop_id' => 'test', 'embedded_login' => true], 60);
     }
 
     private function forgetShopSettings(): void

@@ -1393,10 +1393,6 @@ class AdminController extends Controller
         $agent = new Agent();
         $cabinet = CabinetService::config();
 
-        // Настройки интеграции из кабинета (кеш): по ним шоп решает,
-        // пускать ли встроенный логин у себя или уводить на кабинет.
-        $shopSettings = CabinetService::shopSettings();
-
         return view('admin.cabinet', [
             'title' => $title,
             'agent' => $agent,
@@ -1404,10 +1400,8 @@ class AdminController extends Controller
             'cabinet_enabled' => $cabinet['enabled'],
             'cabinet_secret' => $cabinet['secret'],
             'cabinet_url' => $cabinet['url'],
-            'cabinet_callback' => CabinetService::callbackUrl(),
             // Домен нигде не настраивается: всегда текущий хост запроса.
             'cabinet_domain' => CabinetService::shopDomain(),
-            'cabinet_embedded' => $shopSettings['embedded_login'],
         ]);
     }
 
@@ -1436,7 +1430,7 @@ class AdminController extends Controller
         // (CabinetService::shopDomain()), руками его вводить не нужно.
         $result = CabinetService::testConnection($secret, $url);
 
-        if ($result['status'] === 'ok' || $result['status'] === 'outdated') {
+        if ($result['status'] === 'ok') {
             // Связь есть — фиксируем проверенные значения и освежаем
             // настройки интеграции из кабинета.
             CabinetService::save([
@@ -1447,7 +1441,7 @@ class AdminController extends Controller
             CabinetService::shopSettings(true);
 
             return response()->json(array(
-                'status' => $result['status'] === 'ok' ? 'success' : 'warning',
+                'status' => 'success',
                 'text' => $result['text'],
             ));
         }

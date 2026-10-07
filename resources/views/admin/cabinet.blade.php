@@ -16,7 +16,6 @@
 
     @include('admin.cabinet.guide', [
         'cabinet_domain' => $cabinet_domain,
-        'cabinet_callback' => $cabinet_callback,
     ])
 </div>
 

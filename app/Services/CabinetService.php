@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Language;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -11,12 +10,11 @@ use Illuminate\Support\Facades\Log;
 /**
  * Встроенный личный кабинет: серверная интеграция с кабинетом (true-help) по API.
  *
- * Схема: секретный ключ хранится только на сервере шопа (shop_keys).
- * Обмен одноразового кода на пару токенов идёт сервер→сервер
- * (POST {cabinet}/api/v1/auth/token {code, secret, code_verifier}),
- * токены лежат только в сессии сервера. X-Fingerprint для /api/v1/*
- * пробрасывается из браузера покупателя (считается через /f.js
- * кабинета, глобал DeviceLib), т.к. токен кабинета привязан к fingerprint устройства.
+ * Вход только встроенный: email + пазл-капча + код из письма
+ * (POST {cabinet}/api/v1/auth/embedded/* с секретом из shop_keys).
+ * Секретный ключ хранится только на сервере шопа, токены лежат
+ * только в сессии сервера. X-Fingerprint для /api/v1/* пробрасывается
+ * из браузера покупателя, т.к. токен кабинета привязан к fingerprint устройства.
  */
 class CabinetService
 {
@@ -115,19 +113,10 @@ class CabinetService
     }
 
     /**
-     * Публичный callback шопа — его владелец передаёт менеджеру
-     * вместе с доменом для allowlist кабинета.
-     */
-    public static function callbackUrl(): string
-    {
-        return rtrim(request()->getSchemeAndHttpHost(), '/').'/account/callback';
-    }
-
-    /**
-     * Домен шопа для кабинета (?s= и все серверные вызовы).
+     * Домен шопа для кабинета (все серверные вызовы).
      * Всегда текущий хост запроса ($request->getHost(), без www):
      * руками в админке он не задаётся, иначе кабинет не узнает шоп
-     * в allowlist и встроенный вход/обмен кода сломаются.
+     * в allowlist и встроенный вход сломается.
      */
     public static function shopDomain(): string
     {
@@ -147,108 +136,6 @@ class CabinetService
         }
 
         return (string) preg_replace('~^www\.~i', '', mb_strtolower(trim($host)));
-    }
-
-    /**
-     * IP покупателя из текущего запроса (колбэк кабинета прилетает
-     * из браузера покупателя) для customer_ip в обмене кода.
-     * null — вне HTTP-контекста или невалидный IP (портал отфолбэкается сам).
-     */
-    public static function customerIp(): ?string
-    {
-        try {
-            $ip = trim((string) request()->ip());
-        } catch (\Throwable $e) {
-            return null;
-        }
-
-        return $ip !== '' && filter_var($ip, FILTER_VALIDATE_IP) ? $ip : null;
-    }
-
-    /**
-     * PKCE-пара (RFC 7636) для привязки старта логина к обмену.
-     *
-     * @return array{verifier: string, challenge: string, method: string}
-     */
-    public static function pkcePair(): array
-    {
-        $verifier  = self::randomBase64Url(64);
-        $digest    = hash('sha256', $verifier, true);
-        $challenge = rtrim(strtr(base64_encode($digest), '+/', '-_'), '=');
-
-        return ['verifier' => $verifier, 'challenge' => $challenge, 'method' => 'S256'];
-    }
-
-    public static function randomBase64Url(int $bytes): string
-    {
-        return rtrim(strtr(base64_encode(random_bytes($bytes)), '+/', '-_'), '=');
-    }
-
-    /**
-     * Ссылка старта логина в кабинете (handoff ?s= + PKCE).
-     * Дизайн шопа (design_N) едет опционально — портал красит
-     * страницу логина в тему шопа для бесшовного редиректа.
-     * Язык кастомера (lang) едет опционально — портал сразу
-     * показывает логин на языке шопа (коды — из Language::$languages).
-     */
-    public static function loginUrl(string $cabinetUrl, string $domain, string $state, string $challenge, string $method = 'S256', ?string $design = null, ?string $lang = null): string
-    {
-        $q = [
-            's'                     => $domain,
-            'state'                 => $state,
-            'code_challenge'        => $challenge,
-            'code_challenge_method' => $method,
-        ];
-        if (is_string($design) && preg_match('/^design_\d+$/', $design)) {
-            $q['design'] = $design;
-        }
-        if (is_string($lang)) {
-            $lang = strtolower(trim($lang));
-            if (isset(Language::$languages[$lang])) {
-                $q['lang'] = $lang;
-            }
-        }
-
-        return rtrim($cabinetUrl, '/').'/login?'.http_build_query($q);
-    }
-
-    /**
-     * Серверный обмен кода на пару токенов (secret-флоу).
-     * IP покупателя из текущего запроса едет в customer_ip — кабинет
-     * показывает его в Active sessions (иначе там был бы IP сервера шопа).
-     *
-     * @return array{ok: bool, data?: array, error?: string}
-     */
-    public static function exchangeCode(string $code, string $verifier): array
-    {
-        $cfg = self::config();
-
-        if ($cfg['secret'] === '') {
-            return ['ok' => false, 'error' => 'cabinet_secret_missing'];
-        }
-
-        try {
-            $response = Http::acceptJson()
-                ->timeout(15)
-                ->connectTimeout(5)
-                ->post($cfg['url'].'/api/v1/auth/token', array_filter([
-                    'code'          => $code,
-                    'secret'        => $cfg['secret'],
-                    'code_verifier' => $verifier,
-                    'customer_ip'   => self::customerIp(),
-                ]));
-        } catch (\Throwable $e) {
-            Log::error('CabinetService exchange failed: '.$e->getMessage());
-
-            return ['ok' => false, 'error' => 'connection_failed'];
-        }
-
-        $body = $response->json();
-        if (!$response->successful() || empty($body['access_token'])) {
-            return ['ok' => false, 'error' => (string) ($body['error'] ?? 'exchange_failed')];
-        }
-
-        return ['ok' => true, 'data' => $body];
     }
 
     /**
@@ -338,13 +225,6 @@ class CabinetService
             'Authorization'  => 'Bearer '.$accessToken,
             'X-Fingerprint' => $fingerprint,
         ];
-        // Сквозные заголовки E2EE (X-E2EE, X-E2EE-Epk) — шоп их не читает,
-        // только ретранслирует: тела при этом идут шифром (см. e2ee.js).
-        foreach ((array) ($options['headers'] ?? []) as $name => $value) {
-            if (\is_string($name) && $name !== '' && \is_scalar($value)) {
-                $headers[$name] = trim((string) $value);
-            }
-        }
 
         $pending = Http::acceptJson()
             ->timeout(15)
@@ -378,40 +258,8 @@ class CabinetService
     }
 
     /**
-     * Публичный ключ E2EE портала (релей без авторизации, как в кабинете).
-     * Браузер забирает его через /account/api/e2ee/keys.
-     *
-     * @return array{ok: bool, data?: array, error?: string}
-     */
-    public static function e2eeKeys(): array
-    {
-        $cfg = self::config();
-
-        try {
-            $response = Http::acceptJson()
-                ->timeout(10)
-                ->connectTimeout(5)
-                ->get($cfg['url'].'/api/v1/e2ee/keys');
-        } catch (\Throwable $e) {
-            Log::error('CabinetService e2ee keys failed: '.$e->getMessage());
-
-            return ['ok' => false, 'error' => 'connection_failed'];
-        }
-
-        $body = $response->json();
-        $body = \is_array($body) ? $body : [];
-        if (!$response->successful() || empty($body['kid']) || empty($body['pk'])) {
-            return ['ok' => false, 'error' => (string) ($body['code'] ?? 'e2ee_unavailable')];
-        }
-
-        return ['ok' => true, 'data' => ['kid' => (string) $body['kid'], 'pk' => (string) $body['pk']]];
-    }
-
-    /**
-     * Настройки интеграции из кабинета (кеш 1 минуту): шоп ветвится по ним —
-     * встроенный логин у себя либо уход на внешние страницы кабинета.
-     * Сюда же кладём scopes/chat_enabled чтобы навигáция скрывалась сразу
-     * (кеш 60с, как и capabilities).
+     * Настройки интеграции из кабинета (кеш 1 минуту): shop_id,
+     * scopes/chat_enabled для навигации (кеш 60с, как и capabilities).
      *
      * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}
      */
@@ -782,16 +630,12 @@ class CabinetService
     }
 
     /**
-     * Проверка связи.
+     * Проверка связи: POST /api/v1/shop/settings с доменом и секретом.
      * Домен шопа всегда берётся из текущего хоста запроса
      * ($request->getHost()) — передавать его руками не нужно.
-     * Шаг 1: новый эндпоинт настроек (с доменом) — заодно узнаём флаг
-     * embedded-входа. Шаг 2 (фолбэк для старого кабинета без settings):
-     * обмен заведомо мусорным кодом — секрет верный + домен зарегистрирован,
-     * если кабинет отвечает "Invalid or expired code.".
      *
      * @return array{status: string, text: string, embedded: bool|null}
-     *   status: ok|not_registered|outdated|fail
+     *   status: ok|not_registered|fail
      */
     public static function testConnection(string $secret, string $url): array
     {
@@ -825,55 +669,15 @@ class CabinetService
 
             return [
                 'status' => 'ok',
-                'text' => 'Secret is valid, shop is registered. Embedded login: '.($embedded ? 'allowed.' : 'not allowed, external cabinet pages will be used.'),
+                'text' => 'Secret is valid, shop is registered. You can enable the cabinet.',
                 'embedded' => $embedded,
             ];
         }
 
         $body = $response->json();
         $body = is_array($body) ? $body : [];
-        $error = (string) ($body['error'] ?? '');
-
-        // Старого эндпоинта настроек нет — кабинет не обновлён.
-        // Проверяем хотя бы связку домен+секрет обменом с мусорным кодом.
-        if ($response->status() === 404 && $error === '') {
-            $legacy = self::legacyProbe($url, $domain, $secret);
-            if ($legacy['status'] === 'ok') {
-                $legacy['status'] = 'outdated';
-                $legacy['text'] .= ' Cabinet is outdated: update it to use embedded login and settings.';
-            }
-
-            return $legacy;
-        }
 
         $result = self::interpretTestConnection($response->status(), $body);
-        $result['embedded'] = null;
-
-        return $result;
-    }
-
-    /**
-     * Проба для старого кабинета (без /api/v1/shop/settings):
-     * обмен заведомо мусорным кодом с доменом.
-     *
-     * @return array{status: string, text: string, embedded: null}
-     */
-    private static function legacyProbe(string $url, string $domain, string $secret): array
-    {
-        try {
-            $response = Http::acceptJson()
-                ->timeout(15)
-                ->connectTimeout(5)
-                ->post($url.'/api/v1/auth/token', [
-                    'domain' => $domain,
-                    'secret' => $secret,
-                    'code'   => 'connection-probe-0000000000000000',
-                ]);
-        } catch (\Throwable $e) {
-            return ['status' => 'fail', 'text' => 'No connection to cabinet: '.$e->getMessage(), 'embedded' => null];
-        }
-
-        $result = self::interpretTestConnection($response->status(), (array) $response->json());
         $result['embedded'] = null;
 
         return $result;
@@ -887,10 +691,6 @@ class CabinetService
     public static function interpretTestConnection(int $httpStatus, array $body): array
     {
         $error = (string) ($body['error'] ?? '');
-
-        if ($error === 'Invalid or expired code.') {
-            return ['status' => 'ok', 'text' => 'Secret is valid, shop is registered. You can enable the cabinet.'];
-        }
 
         if ($error === 'Unknown shop or bad secret.') {
             return ['status' => 'not_registered', 'text' => 'Cabinet does not accept this secret. Check the key and ask the manager to register the shop domain.'];

@@ -10,12 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Встроенный личный кабинет (работает только при включённом
- * флаге в /admin/cabinet, иначе редирект на старый вход).
+ * Встроенный личный кабинет: вход только у себя в шопе
+ * (email + пазл-капча кабинета + код из письма).
  *
- * Внешний вход — только прямой редирект: уход на кабинет и возврат
- * на /account/callback (та же вкладка, без попапов).
- * Обмен code→токены всегда сервер→сервер с секретом из shop_keys,
+ * Секретный ключ хранится только на сервере (shop_keys),
  * токены живут только в сессии сервера.
  */
 class AccountController extends Controller
@@ -39,25 +37,8 @@ class AccountController extends Controller
         if ($bypass !== '') {
             session(['cabinet.bypass_token' => substr($bypass, 0, 128)]);
         }
-        if (!CabinetService::enabled()) {
-            return redirect()->route('home.login');
-        }
 
-        if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
-        }
-
-        $settings = CabinetService::shopSettings();
-        if ($settings['embedded_login']) {
-            return redirect()->route('cabinet.login', ['step' => 'email']);
-        }
-
-        if (session('cabinet_error')) {
-            return redirect()->route('cabinet.login', ['step' => 'email'])
-                ->with('cabinet_embedded_error', (string) session('cabinet_error', ''));
-        }
-
-        return $this->start();
+        return redirect()->route('cabinet.login', ['step' => 'email']);
     }
 
     /**
@@ -65,7 +46,7 @@ class AccountController extends Controller
      */
     public function captchaImage()
     {
-        if (!CabinetService::enabled() || !CabinetService::shopSettings()['embedded_login']) {
+        if (!CabinetService::enabled()) {
             return response()->json(['error' => 'Not available.'], 403);
         }
 
@@ -83,7 +64,7 @@ class AccountController extends Controller
      */
     public function captchaVerify(Request $request)
     {
-        if (!CabinetService::enabled() || !CabinetService::shopSettings()['embedded_login']) {
+        if (!CabinetService::enabled()) {
             return response()->json(['success' => false, 'reason' => 'Not available.']);
         }
 
@@ -107,10 +88,6 @@ class AccountController extends Controller
         }
         if (session('cabinet.access_token')) {
             return redirect()->route('cabinet.live.page', ['page' => 'orders']);
-        }
-        $settings = CabinetService::shopSettings();
-        if (empty($settings['embedded_login'])) {
-            return redirect()->route('account.index');
         }
 
         $email = trim((string) $request->input('email', ''));
@@ -182,8 +159,7 @@ class AccountController extends Controller
         }
 
         $email = (string) session('cabinet.embedded_email', '');
-        $settings = CabinetService::shopSettings();
-        if ($email === '' || empty($settings['embedded_login'])) {
+        if ($email === '') {
             return redirect()->route('account.index');
         }
 
@@ -238,113 +214,6 @@ class AccountController extends Controller
             'captcha_required'      => __('text.cabinet_captcha_required'),
             'connection_failed'     => __('text.errors_connection_failed'),
             default                 => $fallback !== '' ? $fallback : __('text.errors_login_failed'),
-        };
-    }
-
-    /**
-     * Старт логина: state + PKCE в сессию, дальше редирект или попап.
-     */
-    /**
-     * Старт внешнего входа: state + PKCE в сессию, дальше прямой
-     * редирект в кабинет (та же вкладка, без попапов).
-     */
-    public function start()
-    {
-        if (!CabinetService::enabled()) {
-            return redirect()->route('home.login');
-        }
-
-        if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
-        }
-
-        $cfg  = CabinetService::config();
-
-        if ($cfg['secret'] === '') {
-            return redirect()->route('account.index')
-                ->with('cabinet_error', 'Cabinet is not configured: secret key is missing. Ask the shop administrator.');
-        }
-
-        $pkce  = CabinetService::pkcePair();
-        $state = CabinetService::randomBase64Url(24);
-
-        session([
-            'cabinet.pkce_verifier' => $pkce['verifier'],
-            'cabinet.login_state'   => $state,
-        ]);
-
-        $url = CabinetService::loginUrl(
-            $cfg['url'],
-            CabinetService::shopDomain(),
-            $state,
-            $pkce['challenge'],
-            'S256',
-            (string) session('design', config('app.design')),
-            (string) session('locale', config('app.locale'))
-        );
-
-        return redirect()->away($url);
-    }
-
-    /**
-     * Callback кабинета: ?token=&state=. Проверяем state,
-     * меняем код сервер→сервер, кладём пару в сессию.
-     */
-    public function callback(Request $request)
-    {
-        $error = $this->finishLogin($request);
-
-        if ($error !== null) {
-            return redirect()->route('cabinet.login', ['step' => 'email'])
-                ->with('cabinet_embedded_error', $this->humanError($error));
-        }
-
-        return redirect()->route('cabinet.live.page', ['page' => 'orders']);
-    }
-
-    /**
-     * @return string|null null — успех, иначе код ошибки
-     */
-    private function finishLogin(Request $request): ?string
-    {
-        if (!CabinetService::enabled()) {
-            return 'disabled';
-        }
-
-        $code     = trim((string) $request->query('token', (string) $request->query('code', '')));
-        $state    = (string) $request->query('state', '');
-        $expected = (string) session('cabinet.login_state', '');
-        $verifier = (string) session('cabinet.pkce_verifier', '');
-
-        session()->forget(['cabinet.login_state', 'cabinet.pkce_verifier']);
-
-        if ($code === '' || $state === '' || $expected === '' || !hash_equals($expected, $state)) {
-            return 'bad_state';
-        }
-        if ($verifier === '') {
-            return 'session_expired';
-        }
-
-        $result = CabinetService::exchangeCode($code, $verifier);
-        if (!$result['ok']) {
-            Log::warning('Cabinet exchange failed: '.(string) $result['error']);
-
-            return 'exchange_failed';
-        }
-
-        $this->storePair((array) $result['data']);
-
-        return null;
-    }
-
-    private function humanError(string $code): string
-    {
-        return match ($code) {
-            'bad_state'       => 'Login session mismatch, please try again.',
-            'session_expired' => 'Login session expired, please try again.',
-            'exchange_failed' => 'Cabinet did not confirm the login, please try again.',
-            'disabled'        => 'Cabinet is disabled.',
-            default           => 'Login failed, please try again.',
         };
     }
 
@@ -584,50 +453,8 @@ class AccountController extends Controller
     }
 
     /**
-     * Публичный ключ E2EE портала для браузера (релей без авторизации).
-     */
-    public function apiE2eeKeys()
-    {
-        if (!CabinetService::enabled()) {
-            return response()->json(['error' => 'Cabinet is disabled.'], 403);
-        }
-
-        $result = CabinetService::e2eeKeys();
-        if (empty($result['ok'])) {
-            return response()->json(['error' => 'E2EE is not available.'], 503);
-        }
-
-        return response()->json((array) $result['data']);
-    }
-
-    /**
-     * Сквозные E2EE-заголовки браузера в кабинет (allowlist, без чтения).
-     *
-     * @return array<string, string>
-     */
-    private function e2eeForwardHeaders(Request $request): array
-    {
-        if (trim((string) $request->header('X-E2EE', '')) !== '1') {
-            return [];
-        }
-        $headers = ['X-E2EE' => '1'];
-        $epk = trim((string) $request->header('X-E2EE-Epk', ''));
-        if ($epk !== '') {
-            $headers['X-E2EE-Epk'] = substr($epk, 0, 64);
-        }
-        $kb = trim((string) $request->header('X-E2EE-Kb', ''));
-        if ($kb === '1' || $kb === '0') {
-            $headers['X-E2EE-Kb'] = $kb;
-        }
-
-        return $headers;
-    }
-
-    /**
      * Прокси с Bearer из серверной сессии + проброс X-FP браузера
      * как X-Fingerprint (токен кабинета к нему привязан).
-     * E2EE-заголовки и тела-конверты ретранслируются вслепую
-     * (шоп их не читает и не логирует, см. e2ee.js).
      * При 401 — одна ротация пары и повтор.
      */
     private function proxy(Request $request, string $method, string $path, array $options = [])
@@ -642,7 +469,6 @@ class AccountController extends Controller
         }
 
         $fingerprint = trim((string) $request->header('X-FP', ''));
-        $options['headers'] = $this->e2eeForwardHeaders($request);
 
         $response = CabinetService::apiCall($method, $path, $access, $fingerprint, $options);
 

@@ -250,10 +250,6 @@
             hidden.value = value();
             if (hidden.value.length === 6 && !submitting) {
                 submitting = true;
-                // K_code для E2EE: код ещё в руках, после verify его уже нигде нет.
-                try {
-                    if (window.E2EE) window.E2EE.setCode(hidden.value, queryEmail());
-                } catch (e) {}
                 form.submit();
             }
         }

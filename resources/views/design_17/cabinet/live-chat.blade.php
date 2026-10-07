@@ -34,8 +34,6 @@ if (!function_exists('asset_ver')) {
     @include('cabinet-live.chat-live')
 </div>
 <script src="{{ asset_ver('js/cabinet-alpine.min.js') }}" defer></script>
-<script src="{{ asset_ver('js/cabinet/nacl.min.js') }}"></script>
-<script src="{{ asset_ver('js/cabinet/e2ee.js') }}"></script>
 <script src="{{ asset_ver('js/cabinet/account.js') }}"></script>
 <script src="{{ asset_ver('js/cabinet/shop-cabinet.js') }}"></script>
 <script src="{{ asset_ver('js/cabinet/device-lib.js') }}" defer></script>

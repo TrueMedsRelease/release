@@ -97,57 +97,14 @@
             headers['Content-Type'] = 'application/json';
             fetchOpts.body = JSON.stringify(opts.body || {});
         }
-        // E2EE: шифруем тела и ответы, шоп — слепой ретранслятор (e2ee.js).
-        // Нет ключей — обычный plaintext (миграция без флага).
-        var e2ee = (typeof window.E2EE !== 'undefined') ? window.E2EE : null;
-        var e2eeEsk = null;
-        if (e2ee) {
-            try {
-                var e2eeKeys = await e2ee.ensureKeys();
-                if (e2eeKeys) {
-                    headers['X-E2EE'] = '1';
-                    if (method === 'GET') {
-                        var e2eeG = e2ee.sealGet();
-                        if (e2eeG) {
-                            headers['X-E2EE-Epk'] = e2ee.b64uEncode(e2eeG.epk);
-                            headers['X-E2EE-Kb'] = e2ee.hasCodeKey() ? '1' : '0';
-                            e2eeEsk = e2eeG.esk;
-                        }
-                    } else {
-                        var e2eeSealed = e2ee.sealRequest(url, method, opts.body || {}, e2eeKeys);
-                        if (e2eeSealed) {
-                            fetchOpts.body = JSON.stringify(e2eeSealed.envelope);
-                        } else {
-                            delete headers['X-E2EE'];
-                        }
-                    }
-                }
-            } catch (e2eeErr) {
-                delete headers['X-E2EE'];
-            }
-        }
         var res = await fetch(url, fetchOpts);
         var data = await res.json().catch(function () { return {}; });
-        if (e2eeEsk && res.ok && data && data.v === 2 && typeof data.ct === 'string') {
-            try {
-                data = e2ee.unwrapResponse(data, e2eeEsk);
-            } catch (e2eeOpenErr) {
-                var e2eeOpenError = new Error('E2EE: open failed');
-                e2eeOpenError.status = res.status;
-                throw e2eeOpenError;
-            }
-        }
         if (res.status === 401 && data && data.login === false) {
             var err = new Error('Session expired, please log in again.');
             err.login = false;
             throw err;
         }
         if (!res.ok) {
-            if (e2ee && data && data.code === 'e2ee_rekey' && !opts._e2eeRetried) {
-                e2ee.forgetKeys();
-                opts._e2eeRetried = true;
-                return api(path, opts);
-            }
             var msg = (data && (data.error || data.message)) || ('Request failed (' + res.status + ')');
             var e2 = new Error(msg);
             e2.status = res.status;
@@ -938,9 +895,6 @@
                 this.revoking = true;
                 try {
                     await api('/account/api/sessions/revoke-all', { method: 'POST' });
-                    try {
-                        if (window.E2EE) window.E2EE.forgetAll();
-                    } catch (e2eeErr) {}
                     window.location.href = cfg.startUrl || '/account';
                 } catch (e) {
                     this.confirmOpen = false;
