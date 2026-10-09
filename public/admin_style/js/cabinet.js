@@ -66,7 +66,6 @@
         function formData() {
             return {
                 cabinet_enabled: $('input[name="cabinet_enabled"]:checked').val(),
-                cabinet_url: $('#cabinet_url').val(),
                 cabinet_secret: $('#cabinet_secret').val()
             };
         }

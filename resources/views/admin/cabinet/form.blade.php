@@ -22,13 +22,12 @@
 
             <div class="cab-admin__field">
                 <div>
-                    <div class="cab-admin__label"><label for="cabinet_url">Cabinet URL</label></div>
-                    <div class="cab-admin__hint">Address of the customer cabinet (true-help).</div>
+                    <div class="cab-admin__label">Cabinet URL</div>
+                    <div class="cab-admin__hint">Set only via <b>CABINET_URL</b> env, default <b>https://api.true-help.com</b>.</div>
                 </div>
                 <div>
-                    <input class="cab-admin__input" type="text" name="cabinet_url" id="cabinet_url"
-                           value="{{ $cabinet_url }}" placeholder="https://true-help.com"
-                           inputmode="url" autocomplete="off" />
+                    <input class="cab-admin__input" type="text" id="cabinet_url" readonly onclick="this.select();"
+                           value="{{ $cabinet_url }}" aria-label="Cabinet URL" />
                 </div>
             </div>
 

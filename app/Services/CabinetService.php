@@ -11,18 +11,25 @@ use Illuminate\Support\Facades\Log;
  * Встроенный личный кабинет: серверная интеграция с кабинетом (true-help) по API.
  *
  * Вход только встроенный: email + пазл-капча + код из письма
- * (POST {cabinet}/api/v1/auth/embedded/* с секретом из shop_keys).
- * Секретный ключ хранится только на сервере шопа, токены лежат
- * только в сессии сервера. X-Fingerprint для /api/v1/* пробрасывается
- * из браузера покупателя, т.к. токен кабинета привязан к fingerprint устройства.
+ * (POST {cabinet}/api/v1/auth/embedded/*, секрета на проводе нет —
+ * кабинет знает шоп по domain). Bootstrap — GET /api/v1/public-config.
+ * Токены лежат только в сессии сервера. X-Fingerprint для /api/v1/*
+ * и refresh пробрасывается из браузера покупателя, т.к. токен кабинета
+ * привязан к fingerprint устройства (пустой fingerprint кабинет отвергает
+ * 401 fingerprint_required).
  */
 class CabinetService
 {
     public const KEY_ENABLED = 'cabinet_enabled';
     public const KEY_SECRET  = 'cabinet_secret';
+
+    /**
+     * Легаси-ключ shop_keys.cabinet_url: URL больше не хранится в БД
+     * (только env CABINET_URL), строка при сохранении удаляется.
+     */
     public const KEY_URL     = 'cabinet_url';
 
-    public const DEFAULT_URL = 'https://true-help.com';
+    public const DEFAULT_URL = 'https://api.true-help.com';
 
     public const SESSION_PREFIX = 'cabinet.';
 
@@ -33,7 +40,8 @@ class CabinetService
     public const CAPABILITIES_CACHE_TTL = 60;
 
     /**
-     * Конфиг из shop_keys. Безопасные дефолты при отсутствии строк.
+     * Конфиг: enabled/secret из shop_keys, URL только из env CABINET_URL
+     * (дефолт DEFAULT_URL). Безопасные дефолты при отсутствии строк.
      * Домен шопа здесь не хранится: он всегда берётся из текущего
      * хоста запроса (см. shopDomain()/autoHost()).
      */
@@ -41,11 +49,10 @@ class CabinetService
     {
         $enabled = false;
         $secret  = '';
-        $url     = self::DEFAULT_URL;
 
         try {
             $rows = DB::table('shop_keys')
-                ->whereIn('name_key', [self::KEY_ENABLED, self::KEY_SECRET, self::KEY_URL])
+                ->whereIn('name_key', [self::KEY_ENABLED, self::KEY_SECRET])
                 ->pluck('key_data', 'name_key')
                 ->toArray();
 
@@ -55,9 +62,6 @@ class CabinetService
             if (isset($rows[self::KEY_SECRET])) {
                 $secret = trim((string) $rows[self::KEY_SECRET]);
             }
-            if (isset($rows[self::KEY_URL]) && trim((string) $rows[self::KEY_URL]) !== '') {
-                $url = trim((string) $rows[self::KEY_URL]);
-            }
         } catch (\Throwable $e) {
             Log::error('CabinetService config read failed: '.$e->getMessage());
         }
@@ -65,7 +69,7 @@ class CabinetService
         return [
             'enabled' => $enabled,
             'secret'  => $secret,
-            'url'     => rtrim($url, '/'),
+            'url'     => self::cabinetUrl(),
             'domain'  => self::autoHost(),
         ];
     }
@@ -80,22 +84,28 @@ class CabinetService
         return self::config()['secret'];
     }
 
+    /**
+     * URL кабинета: только env CABINET_URL, иначе DEFAULT_URL.
+     * В БД/админке не настраивается.
+     */
     public static function cabinetUrl(): string
     {
-        return self::config()['url'];
+        $env = trim((string) env('CABINET_URL', ''));
+
+        return $env !== '' ? rtrim($env, '/') : self::DEFAULT_URL;
     }
 
     /**
      * Сохранение настроек (insert при отсутствии строк).
-     * Легаси-строка cabinet_domain (ручной оверрайд домена) при
-     * сохранении удаляется: домен всегда определяется из хоста запроса.
+     * URL здесь не сохраняется (только env CABINET_URL).
+     * Легаси-строки cabinet_url/cabinet_domain (ручные оверрайды) при
+     * сохранении удаляются: URL — из env, домен — из хоста запроса.
      */
     public static function save(array $data): void
     {
         $map = [
             self::KEY_ENABLED => isset($data['enabled']) && $data['enabled'] ? '1' : '0',
             self::KEY_SECRET  => trim((string) ($data['secret'] ?? '')),
-            self::KEY_URL     => rtrim(trim((string) ($data['url'] ?? self::DEFAULT_URL)) ?: self::DEFAULT_URL, '/'),
         ];
 
         foreach ($map as $nameKey => $keyData) {
@@ -106,9 +116,9 @@ class CabinetService
         }
 
         try {
-            DB::table('shop_keys')->where('name_key', 'cabinet_domain')->delete();
+            DB::table('shop_keys')->whereIn('name_key', [self::KEY_URL, 'cabinet_domain'])->delete();
         } catch (\Throwable $e) {
-            Log::error('CabinetService legacy domain cleanup failed: '.$e->getMessage());
+            Log::error('CabinetService legacy cleanup failed: '.$e->getMessage());
         }
     }
 
@@ -139,20 +149,24 @@ class CabinetService
     }
 
     /**
-     * Ротация пары по refresh_token.
+     * Ротация пары по refresh_token. Кабинет требует fingerprint
+     * (тело или X-Fingerprint), без него отвечает 401 fingerprint_required.
      *
      * @return array{ok: bool, data?: array, error?: string}
      */
-    public static function refreshPair(string $refreshToken): array
+    public static function refreshPair(string $refreshToken, ?string $fingerprint = null): array
     {
         $cfg = self::config();
+        $fp = $fingerprint !== null ? trim($fingerprint) : '';
 
         try {
             $response = Http::acceptJson()
                 ->timeout(15)
                 ->connectTimeout(5)
+                ->withHeaders(['X-Fingerprint' => $fp])
                 ->post($cfg['url'].'/api/v1/auth/refresh', [
                     'refresh_token' => $refreshToken,
+                    'fingerprint'   => $fp,
                 ]);
         } catch (\Throwable $e) {
             Log::error('CabinetService refresh failed: '.$e->getMessage());
@@ -241,16 +255,22 @@ class CabinetService
 
     /**
      * Отзыв текущей пары на стороне кабинета (best effort).
+     * Bearer-мидлварь кабинета требует и X-Fingerprint — шлём его,
+     * когда известен, иначе logout молча не сработает (401).
      */
-    public static function logoutRemote(string $accessToken): void
+    public static function logoutRemote(string $accessToken, ?string $fingerprint = null): void
     {
         $cfg = self::config();
+        $headers = ['Authorization' => 'Bearer '.$accessToken];
+        if ($fingerprint !== null && trim($fingerprint) !== '') {
+            $headers['X-Fingerprint'] = trim($fingerprint);
+        }
 
         try {
             Http::acceptJson()
                 ->timeout(10)
                 ->connectTimeout(5)
-                ->withHeaders(['Authorization' => 'Bearer '.$accessToken])
+                ->withHeaders($headers)
                 ->post($cfg['url'].'/api/v1/auth/logout');
         } catch (\Throwable $e) {
             Log::error('CabinetService remote logout failed: '.$e->getMessage());
@@ -397,9 +417,9 @@ class CabinetService
                 ->connectTimeout(5)
                 ->withHeaders([
                     'Authorization' => 'Bearer ' . $accessToken,
-                    // Портал привязывает токен к fingerprint, но для
-                    // серверного префетча fingerprint неизвестен — шлём
-                    // пустой, портал его проигнорирует если был пустой при логине.
+                    // Серверного fingerprint нет: кабинет ответит 401
+                    // fingerprint_required — это нормально, вызывающий
+                    // откатится на scopes из public-config (см. capabilities()).
                     'X-Fingerprint' => '',
                 ])
                 ->get($cfg['url'] . '/api/v1/account/capabilities');
@@ -427,12 +447,17 @@ class CabinetService
     }
 
     /**
-     * @return array{shop_id: string, embedded_login: bool}|null null — нет секрета/связи
+     * Bootstrap шопа из кабинета: GET /api/v1/public-config?domain=.
+     * Секрета не требует (его на проводе нет), отвечает всегда
+     * в обёртке {data: {...}}.
+     *
+     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}|null null — нет связи/шоп не зарегистрирован
      */
     private static function fetchShopSettings(): ?array
     {
         $cfg = self::config();
-        if ($cfg['secret'] === '') {
+        $domain = self::shopDomain();
+        if ($domain === '') {
             return null;
         }
 
@@ -440,9 +465,8 @@ class CabinetService
             $response = Http::acceptJson()
                 ->timeout(15)
                 ->connectTimeout(5)
-                ->post($cfg['url'].'/api/v1/shop/settings', [
-                    'domain' => self::shopDomain(),
-                    'secret' => $cfg['secret'],
+                ->get($cfg['url'].'/api/v1/public-config', [
+                    'domain' => $domain,
                 ]);
         } catch (\Throwable $e) {
             Log::error('CabinetService settings fetch failed: '.$e->getMessage());
@@ -454,19 +478,20 @@ class CabinetService
             return null;
         }
         $body = $response->json();
-        if (!is_array($body) || !array_key_exists('embedded_login', $body)) {
+        $data = is_array($body['data'] ?? null) ? $body['data'] : null;
+        if (!is_array($data) || !array_key_exists('embedded_login', $data)) {
             return null;
         }
 
-        $scopes = isset($body['scopes']) && is_array($body['scopes'])
-            ? array_values(array_map('strval', $body['scopes']))
+        $scopes = isset($data['scopes']) && is_array($data['scopes'])
+            ? array_values(array_map('strval', $data['scopes']))
             : null;
 
         return [
-            'shop_id'        => (string) ($body['shop_id'] ?? ''),
-            'embedded_login' => (bool) $body['embedded_login'],
+            'shop_id'        => (string) ($data['shop_id'] ?? ''),
+            'embedded_login' => (bool) $data['embedded_login'],
             'scopes'         => $scopes,
-            'chat_enabled'   => isset($body['chat_enabled']) ? (bool) $body['chat_enabled'] : true,
+            'chat_enabled'   => isset($data['chat_enabled']) ? (bool) $data['chat_enabled'] : true,
         ];
     }
 
@@ -556,49 +581,39 @@ class CabinetService
     }
 
     /**
-     * Встроенный логин, шаг 2: проверить код, вернуть пару токенов.
+     * Встроенный логин, шаг 2: проверить код (или trusted-тикет
+     * с доверенной сети — тогда код не нужен), вернуть пару токенов.
+     * Кабинет отдаёт {token_type, access_token, refresh_token, expires_in}.
      *
      * @return array{ok: bool, data?: array, code?: string, error?: string}
      */
-    public static function embeddedVerify(string $email, string $code, ?string $customerIp, ?string $fingerprint = null): array
+    public static function embeddedVerify(string $email, string $code, ?string $customerIp, ?string $fingerprint = null, ?string $trustedTicket = null): array
     {
-        return self::embeddedCall('auth/embedded/verify', [
+        $payload = [
             'email'       => $email,
             'code'        => $code,
             'customer_ip' => $customerIp,
             'fingerprint' => $fingerprint,
-        ]);
+        ];
+        if ($trustedTicket !== null && $trustedTicket !== '') {
+            $payload['trusted_ticket'] = $trustedTicket;
+        }
+
+        return self::embeddedCall('auth/embedded/verify', $payload);
     }
 
     /**
-     * Встроенный логин без кода из письма: email + пазл (+ разовый пропуск
-     * из админки) → сразу пара токенов.
+     * Браузерный флоу без секрета на проводе: кабинет знает шоп
+     * по domain (или shop_id), секрет shop_keys не отправляется.
      *
-     * @return array{ok: bool, data?: array, code?: string, error?: string}
-     */
-    public static function embeddedDirect(string $email, ?string $customerIp, ?string $captchaToken, ?string $fingerprint = null, ?string $bypassToken = null): array
-    {
-        return self::embeddedCall('auth/embedded/direct', [
-            'email'         => $email,
-            'customer_ip'   => $customerIp,
-            'captcha_token' => $captchaToken,
-            'fingerprint'   => $fingerprint,
-            'bypass_token'  => $bypassToken,
-        ]);
-    }
-
-    /**
      * @return array{ok: bool, data?: array, code?: string, error?: string, retry_after?: int}
      */
     private static function embeddedCall(string $path, array $payload): array
     {
         $cfg = self::config();
-        if ($cfg['secret'] === '') {
-            return ['ok' => false, 'code' => 'not_configured', 'error' => 'Cabinet secret is missing.'];
-        }
 
         $payload['domain'] = self::shopDomain();
-        $payload['secret'] = $cfg['secret'];
+        unset($payload['secret']);
 
         try {
             $response = Http::acceptJson()
@@ -630,21 +645,20 @@ class CabinetService
     }
 
     /**
-     * Проверка связи: POST /api/v1/shop/settings с доменом и секретом.
-     * Домен шопа всегда берётся из текущего хоста запроса
-     * ($request->getHost()) — передавать его руками не нужно.
+     * Проверка связи: GET /api/v1/public-config?domain=. Секрета на проводе
+     * нет (параметр $secret оставлен для совместимости и игнорируется).
+     * URL кабинета — только env CABINET_URL (см. cabinetUrl()),
+     * домен шопа всегда берётся из текущего хоста запроса
+     * ($request->getHost()) — передавать их руками не нужно.
      *
      * @return array{status: string, text: string, embedded: bool|null}
      *   status: ok|not_registered|fail
      */
-    public static function testConnection(string $secret, string $url): array
+    public static function testConnection(string $secret = ''): array
     {
-        $url = rtrim(trim($url) ?: self::DEFAULT_URL, '/');
+        $url = self::cabinetUrl();
         $domain = self::autoHost();
 
-        if ($secret === '') {
-            return ['status' => 'fail', 'text' => 'Enter the secret key first.', 'embedded' => null];
-        }
         if ($domain === '') {
             return ['status' => 'fail', 'text' => 'Cannot detect the shop host from the request.', 'embedded' => null];
         }
@@ -653,9 +667,8 @@ class CabinetService
             $response = Http::acceptJson()
                 ->timeout(15)
                 ->connectTimeout(5)
-                ->post($url.'/api/v1/shop/settings', [
+                ->get($url.'/api/v1/public-config', [
                     'domain' => $domain,
-                    'secret' => $secret,
                 ]);
         } catch (\Throwable $e) {
             return ['status' => 'fail', 'text' => 'No connection to cabinet: '.$e->getMessage(), 'embedded' => null];
@@ -663,13 +676,14 @@ class CabinetService
 
         if ($response->successful()) {
             $body = $response->json();
-            $embedded = is_array($body) && array_key_exists('embedded_login', $body)
-                ? (bool) $body['embedded_login']
+            $data = is_array($body['data'] ?? null) ? $body['data'] : null;
+            $embedded = is_array($data) && array_key_exists('embedded_login', $data)
+                ? (bool) $data['embedded_login']
                 : null;
 
             return [
                 'status' => 'ok',
-                'text' => 'Secret is valid, shop is registered. You can enable the cabinet.',
+                'text' => 'Shop is registered in the cabinet. You can enable the cabinet.',
                 'embedded' => $embedded,
             ];
         }
@@ -690,10 +704,15 @@ class CabinetService
      */
     public static function interpretTestConnection(int $httpStatus, array $body): array
     {
+        $code = (string) ($body['code'] ?? '');
         $error = (string) ($body['error'] ?? '');
 
-        if ($error === 'Unknown shop or bad secret.') {
-            return ['status' => 'not_registered', 'text' => 'Cabinet does not accept this secret. Check the key and ask the manager to register the shop domain.'];
+        if ($code === 'unknown_shop' || $error === 'Unknown shop or bad secret.') {
+            return ['status' => 'not_registered', 'text' => 'Shop domain is not registered in the cabinet. Ask the manager to register the shop domain.'];
+        }
+
+        if ($code === 'embedded_disabled' || $error === 'Cabinet login is disabled for this shop.') {
+            return ['status' => 'fail', 'text' => 'Shop is registered but cabinet login is disabled for it. Ask the manager to activate the shop.'];
         }
 
         if ($httpStatus === 429) {

@@ -12,14 +12,15 @@
    |-- /account ------------|                                     |
    |   /cabinet-login/email (дизайн шопа, Alpine)                 |
    |   email + пазл-капча кабинета (GET /api/captcha)             |
-   |                        |-- POST /api/v1/auth/embedded/start ->|
-   |                        |   {domain, secret, email,            |
-   |                        |    captcha_token, fingerprint}       |
-   |<================ код из письма =============================>|
-   |   /cabinet-login/code  |                                     |
-   |                        |-- POST /api/v1/auth/embedded/verify>|
-   |                        |   {domain, secret, email, code}      |
-   |                        |<------ access + refresh -------------|
+|                        |-- POST /api/v1/auth/embedded/start ->|
+|                        |   {domain, email, captcha_token,      |
+|                        |    fingerprint, customer_ip}          |
+|<================ код из письма =============================>|
+|   /cabinet-login/code  |                                     |
+|                        |-- POST /api/v1/auth/embedded/verify>|
+|                        |   {domain, email, code, fingerprint,  |
+|                        |    customer_ip}                       |
+|                        |<------ access + refresh -------------|
    |   /cabinet/orders (дизайн из сессии, Alpine)                 |
    |   /account/api/* ------|--- /api/v1/* Bearer + X-Fingerprint>|
 ```
@@ -30,13 +31,17 @@
 `account/*` удалены; `/account` остался хабом-редиректом, `/account/api/*`
 и embedded-endpoint'ы — без изменений.
 
-- Секретный ключ хранится **только на сервере** (`shop_keys.cabinet_secret`),
-  в браузер не попадает. Обмен кода — всегда сервер→сервер.
+- Секрета на проводе нет: кабинет знает шоп по domain (bootstrap —
+  `GET /api/v1/public-config?domain=`). Поле `shop_keys.cabinet_secret`
+  хранится для совместимости, в API не отправляется. Обмен кода — всегда
+  сервер→сервер.
 - Токены живут только в сессии сервера. В браузер уходит лишь fingerprint
-   устройства (считается через `/f.js` кабинета, глобал `DeviceLib`) — он нужен,
-  т.к. токен кабинета привязан к fingerprint (`X-FP` → прокси → `X-Fingerprint`).
-- На 401 прокси один раз обновляет пару через `/auth/refresh` (ротация)
-  и повторяет запрос; refresh протух — разлогин на `/account`.
+   устройства (считается через `/f.js` кабинета, глобал `DeviceLib`) — он
+  обязателен: токен кабинета привязан к fingerprint (`X-FP` → прокси →
+  `X-Fingerprint`), пустой fingerprint кабинет отвергает 401.
+- На 401 прокси один раз обновляет пару через `/auth/refresh`
+  (с тем же fingerprint, ротация) и повторяет запрос;
+  refresh протух — разлогин на `/account`.
 
 ## Вход: только встроенный
 
@@ -46,20 +51,16 @@
 кабинет отправить код (`embedded/start` с одноразовым `captcha_token`),
 покупатель вводит код из письма у нас же (`embedded/verify`) → пара токенов
 в сессию сервера. Внешних сайтов нет вообще.
-Код из письма обязателен всегда. Повторная отправка кода — через шаг email
+Код из письма обязателен почти всегда. Повторная отправка кода — через шаг email
 заново (нужен свежий пазл).
-- Перед `embedded/start` шоп молча пробует `embedded/direct` (вход без кода):
-  он срабатывает для запросов с админского IP кабинета либо по разовому
-  пропуску `?bypass=` из админки кабинета (ссылка живёт 60 секунд, токен
-  едет только сервер→сервер через сессию шопа). Остальным портал отвечает
-  403 `direct_login_disabled` (и `rate_limited`) — тогда идём обычным путём
-  с кодом, пользователь ничего не замечает. Остальные ошибки показываются
-  как есть. Одноразовый `captcha_token` при отказе direct не сжигается.
+- С доверенных сетей кабинет вместо `sent` отвечает
+  `{trusted: true, trusted_ticket}` — шоп сразу меняет тикет на пару токенов
+  (`embedded/verify` с `trusted_ticket`, без кода), шаг с кодом пропускается.
+  Тикет одноразовый, привязан к email+fingerprint+IP.
 - Формы `embedded`/`embedded-code` везут скрытое поле `fingerprint` (считает
   `device-lib.js` через тот же `hash.v4`): шоп пробрасывает его в
-  `embedded/start`+`embedded/verify`, кабинет сверяет окружение запроса
-  и ввода кода. Несовпадение — только запись `login_code_context_mismatch`
-  в аудите кабинета, вход не блокируется.
+  `embedded/start`+`embedded/verify`+`refresh`. Пустой fingerprint кабинет
+  отвергает (`fingerprint_required` → просим пройти пазл заново).
 
 Кеш настроек (`cabinet.shop_settings`, 1 минута) сбрасывается при Save
 в `/admin/cabinet` и освежается кнопкой Test connection
@@ -72,24 +73,28 @@
 2. Менеджер в админке кабинета (`/admin/api-clients`) создаёт клиента:
    domain, скоупы `me, orders, orders.shipping,
    orders.tracking, orders.stop_recurring, bonus, referral, sessions,
-   sessions.revoke, contact`, `orders.aff` — и выдаёт **секрет**.
-3. Владелец вставляет секрет в `/admin/cabinet`, жмёт **Test connection**:
-   - «Secret is valid» — можно включать;
-   - «does not accept this secret» — неверный ключ, домен не зарегистрирован
-     или клиент выключен (`active`) в кабинете;
-   - «No connection» — проверить Cabinet URL / сеть.
+   sessions.revoke, contact, chat, chat.send`.
+3. Владелец жмёт **Test connection** (проверяет регистрацию домена
+   через `public-config`, секрет не нужен):
+   - ok — можно включать;
+   - not_registered — домен не зарегистрирован в кабинете;
+   - disabled — шоп зарегистрирован, но логин выключен (`active`) в кабинете;
+   - «No connection» — проверить `CABINET_URL` в env / сеть.
+   URL кабинета задаётся только через env `CABINET_URL`
+   (дефолт `https://api.true-help.com`), в админке он показан read-only.
 4. Переключатель **Enabled** + Save.
 
 ## Файлы
 
 - `app/Services/CabinetService.php` — конфиг (`shop_keys`: `cabinet_enabled`,
-  `cabinet_secret`, `cabinet_url`), refresh/прокси-вызовы,
+  `cabinet_secret`; URL только env `CABINET_URL`, дефолт
+  `https://api.true-help.com`), refresh/прокси-вызовы,
   кеш настроек интеграции, проверка связи.
 - **Shop domain нигде не настраивается**: всегда текущий хост запроса
   (`$request->getHost()`, без www — `CabinetService::shopDomain()`).
-  Все серверные вызовы (`settings`, `embedded/*`) используют именно его,
-  иначе кабинет не узнает шоп в allowlist. Легаси-строка `cabinet_domain`
-  в `shop_keys` при сохранении удаляется автоматически.
+  Все серверные вызовы (`public-config`, `embedded/*`) используют именно его,
+  иначе кабинет не узнает шоп. Легаси-строки `cabinet_url`/`cabinet_domain`
+  в `shop_keys` при сохранении удаляются автоматически.
 - `app/Http/Controllers/AccountController.php` — `/account/*`: хаб,
   `embeddedStart`/`embeddedVerify` (встроенный вход, throttle 10/мин),
   logout, JSON-прокси.

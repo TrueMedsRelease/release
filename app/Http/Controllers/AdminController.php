@@ -1409,7 +1409,6 @@ class AdminController extends Controller
         CabinetService::save([
             'enabled' => (int) $request->input('cabinet_enabled', 0) === 1,
             'secret'  => (string) $request->input('cabinet_secret', ''),
-            'url'     => (string) $request->input('cabinet_url', CabinetService::DEFAULT_URL),
         ]);
         CabinetService::forgetShopSettings();
 
@@ -1420,23 +1419,19 @@ class AdminController extends Controller
 
     public function test_cabinet_connection(Request $request) {
         $secret = trim((string) $request->input('cabinet_secret', ''));
-        $url = trim((string) $request->input('cabinet_url', '')) ?: CabinetService::DEFAULT_URL;
 
-        if ($secret === '') {
-            return response()->json(array('status' => 'error', 'text' => 'Enter the secret key first.'));
-        }
-
-        // Домен подставляется автоматически из хоста текущего запроса
-        // (CabinetService::shopDomain()), руками его вводить не нужно.
-        $result = CabinetService::testConnection($secret, $url);
+        // URL кабинета — только env CABINET_URL, домен — автоматически
+        // из хоста текущего запроса (CabinetService::shopDomain()).
+        // Секрет на проводе не используется (кабинет знает шоп по домену),
+        // поле хранится для совместимости.
+        $result = CabinetService::testConnection($secret);
 
         if ($result['status'] === 'ok') {
-            // Связь есть — фиксируем проверенные значения и освежаем
+            // Связь есть — фиксируем проверенный секрет и освежаем
             // настройки интеграции из кабинета.
             CabinetService::save([
                 'enabled' => CabinetService::enabled(),
                 'secret'  => $secret,
-                'url'     => $url,
             ]);
             CabinetService::shopSettings(true);
 

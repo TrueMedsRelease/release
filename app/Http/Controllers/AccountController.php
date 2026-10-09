@@ -11,19 +11,17 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * Встроенный личный кабинет: вход только у себя в шопе
- * (email + пазл-капча кабинета + код из письма).
+ * (email + пазл-капча кабинета + код из письма; с доверенных сетей
+ * кабинет отвечает trusted_ticket — тогда код не нужен).
  *
- * Секретный ключ хранится только на сервере (shop_keys),
- * токены живут только в сессии сервера.
+ * Токены живут только в сессии сервера.
  */
 class AccountController extends Controller
 {
     /**
      * Хаб: есть токены — живой кабинет текущего дизайна, нет — экран входа.
-     * Разовый пропуск без кода (?bypass= из админки кабинета) забираем
-     * в сессию сервера — дальше он едет только сервер→сервер.
      */
-    public function index(Request $request)
+    public function index()
     {
         if (!CabinetService::enabled()) {
             return redirect()->route('home.login');
@@ -31,11 +29,6 @@ class AccountController extends Controller
 
         if (session('cabinet.access_token')) {
             return redirect()->route('cabinet.live.page', ['page' => 'orders']);
-        }
-
-        $bypass = trim((string) $request->query('bypass', ''));
-        if ($bypass !== '') {
-            session(['cabinet.bypass_token' => substr($bypass, 0, 128)]);
         }
 
         return redirect()->route('cabinet.login', ['step' => 'email']);
@@ -98,41 +91,36 @@ class AccountController extends Controller
                 ->withInput(['email' => $email]);
         }
 
-        // Одноразовый токен пазла из сессии (кладётся captchaVerify выше).
-        // Сжигаем только на выходе с этого шага: попытка direct ниже при
-        // отказе НЕ должна его трогать — он ещё пригодится для входа с кодом.
-        // Разовый пропуск (?bypass= из админки, тоже в сессии) живёт по тем
-        // же правилам: используем здесь — и забываем на любом выходе.
+        // Одноразовый токен пазла из сессии (кладётся captchaVerify выше),
+        // сжигаем на любом выходе с этого шага.
         $captchaToken = (string) session('cabinet.captcha_token', '');
-        $bypassToken = (string) session('cabinet.bypass_token', '');
         if ($captchaToken === '') {
             return redirect()->route('cabinet.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', __('text.cabinet_captcha_required'))
                 ->withInput(['email' => $email]);
         }
 
-        // Прямой вход без кода — для запросов шопа с админского IP кабинета
-        // либо по разовому пропуску из админки. Остальным портал отвечает 403
-        // direct_login_disabled — молча идём обычным путём с кодом (и при
-        // rate_limited тоже: у start свой лимит, пользователю прерываться незачем).
-        $direct = CabinetService::embeddedDirect($email, $request->ip(), $captchaToken, $this->browserFingerprint($request), $bypassToken !== '' ? $bypassToken : null);
-        if (!empty($direct['ok'])) {
-            session()->forget(['cabinet.captcha_token', 'cabinet.bypass_token']);
-            $this->storePair((array) $direct['data']);
-
-            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
-        }
-        if (!\in_array((string) ($direct['code'] ?? ''), ['direct_login_disabled', 'rate_limited'], true)) {
-            session()->forget(['cabinet.captcha_token', 'cabinet.bypass_token']);
-            $message = $this->embeddedErrorMessage((string) ($direct['code'] ?? ''), (string) ($direct['error'] ?? ''), null);
-
-            return redirect()->route('cabinet.login', ['step' => 'email'])
-                ->with('cabinet_embedded_error', $message)
-                ->withInput(['email' => $email]);
-        }
-
         $result = CabinetService::embeddedStart($email, $request->ip(), $captchaToken, $this->browserFingerprint($request));
-        session()->forget(['cabinet.captcha_token', 'cabinet.bypass_token']);
+        session()->forget('cabinet.captcha_token');
+
+        if (!empty($result['ok'])) {
+            $data = (array) ($result['data'] ?? []);
+            // Доверенная сеть: кабинет прислал trusted_ticket вместо кода —
+            // сразу меняем его на пару токенов, шаг с кодом пропускаем.
+            if (!empty($data['trusted']) && !empty($data['trusted_ticket'])) {
+                $verify = CabinetService::embeddedVerify($email, '', $request->ip(), $this->browserFingerprint($request), (string) $data['trusted_ticket']);
+                if (!empty($verify['ok'])) {
+                    $this->storePair((array) $verify['data']);
+
+                    return redirect()->route('cabinet.live.page', ['page' => 'orders']);
+                }
+                $message = $this->embeddedErrorMessage((string) ($verify['code'] ?? ''), (string) ($verify['error'] ?? ''), null);
+
+                return redirect()->route('cabinet.login', ['step' => 'email'])
+                    ->with('cabinet_embedded_error', $message)
+                    ->withInput(['email' => $email]);
+            }
+        }
         if (empty($result['ok'])) {
             $message = $this->embeddedErrorMessage((string) ($result['code'] ?? ''), (string) ($result['error'] ?? ''), isset($result['retry_after']) ? (int) $result['retry_after'] : null);
 
@@ -162,10 +150,6 @@ class AccountController extends Controller
         if ($email === '') {
             return redirect()->route('account.index');
         }
-
-        // Сюда попали — значит разовый пропуск не сработал: забываем,
-        // дальше обычный вход с кодом.
-        session()->forget('cabinet.bypass_token');
 
         $code = (string) preg_replace('/\D/', '', (string) $request->input('code', ''));
         if (strlen($code) !== 6) {
@@ -209,9 +193,14 @@ class AccountController extends Controller
     {
         return match ($code) {
             'unknown_email'         => __('text.errors_unknown_email'),
+            'invalid_email'         => __('text.errors_wrong_email'),
             'cooldown'              => __('text.errors_code_cooldown', ['seconds' => (int) $retryAfter]),
+            'rate_limited'          => __('text.errors_too_many_attempts'),
             'embedded_disabled'     => __('text.errors_embedded_disabled'),
-            'captcha_required'      => __('text.cabinet_captcha_required'),
+            'unknown_shop'          => __('text.errors_login_failed'),
+            'domain_required'       => __('text.errors_login_failed'),
+            'captcha_required',
+            'fingerprint_required'  => __('text.cabinet_captcha_required'),
             'connection_failed'     => __('text.errors_connection_failed'),
             default                 => $fallback !== '' ? $fallback : __('text.errors_login_failed'),
         };
@@ -219,10 +208,15 @@ class AccountController extends Controller
 
     private function storePair(array $pair): void
     {
+        // Кабинет отдаёт expires_in (секунды, ~900), старого expires_at нет.
+        $expiresAt = (string) ($pair['expires_at'] ?? '');
+        if ($expiresAt === '' && isset($pair['expires_in'])) {
+            $expiresAt = (string) (time() + max(0, (int) $pair['expires_in']));
+        }
         session([
             'cabinet.access_token'  => (string) ($pair['access_token'] ?? ''),
             'cabinet.refresh_token' => (string) ($pair['refresh_token'] ?? ''),
-            'cabinet.expires_at'    => (string) ($pair['expires_at'] ?? ''),
+            'cabinet.expires_at'    => $expiresAt,
         ]);
         // Новый вход — запреты скоупов и кеш capabilities сбрасываем.
         session()->forget('cabinet.forbidden');
@@ -235,11 +229,12 @@ class AccountController extends Controller
         CabinetService::forgetCapabilities();
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         $access = (string) session('cabinet.access_token', '');
         if ($access !== '') {
-            CabinetService::logoutRemote($access);
+            $fp = trim((string) $request->header('X-FP', ''));
+            CabinetService::logoutRemote($access, $fp !== '' ? $fp : null);
         }
         $this->forgetTokens();
 
@@ -266,6 +261,14 @@ class AccountController extends Controller
         $status = (string) $request->query('status', '');
         if (in_array($status, ['checking', 'approved', 'delivered', 'declined', 'refunded'], true)) {
             $query['status'] = $status;
+        }
+        // Инлайн shipping кабинета (with_shipping=1|true, алиас include_shipping):
+        // пробрасываем как есть, чтобы фронт мог забрать адреса за один запрос.
+        foreach (['with_shipping', 'include_shipping'] as $shipKey) {
+            $shipVal = (string) $request->query($shipKey, '');
+            if (in_array($shipVal, ['1', 'true'], true)) {
+                $query[$shipKey] = $shipVal;
+            }
         }
 
         return $this->proxy($request, 'GET', 'orders', ['query' => $query]);
@@ -475,7 +478,7 @@ class AccountController extends Controller
         if ($response->status() === 401) {
             $refresh = (string) session('cabinet.refresh_token', '');
             if ($refresh !== '') {
-                $renewed = CabinetService::refreshPair($refresh);
+                $renewed = CabinetService::refreshPair($refresh, $fingerprint !== '' ? $fingerprint : null);
                 if (!empty($renewed['ok'])) {
                     $this->storePair((array) $renewed['data']);
                     $access   = (string) session('cabinet.access_token', '');
