@@ -835,7 +835,7 @@
         </a>
     </div>
     {{-- Announce-баннер магазина ("N people are looking...") не показываем в живом кабинете --}}
-    @if(!request()->routeIs('cabinet.live.page', 'cabinet.login', 'account.*'))
+    @if(!request()->routeIs('account.page', 'account.login', 'account.*'))
     <div class="announce">
         <div class="announce__item @yield('announce_color', 'announce__item--blue')">
             <div class="announce__icon">

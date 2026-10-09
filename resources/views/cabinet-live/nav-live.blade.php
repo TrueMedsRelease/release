@@ -43,7 +43,7 @@
             @else
                 @if (!empty($tab['scope']) && session('cabinet.forbidden.' . $tab['scope'])) @continue @endif
             @endif
-            <a href="{{ route('cabinet.live.page', ['page' => $tab['key']]) }}"
+            <a href="{{ route('account.page', ['page' => $tab['key']]) }}"
                class="cabp-tab @if ($cabpCurrent === $tab['key']) is-active @endif"
                @if ($cabpCurrent === $tab['key']) aria-current="page" @endif>{{ $tab['label'] }}</a>
         @endforeach

@@ -272,9 +272,9 @@ Route::controller(AdminController::class)->middleware('admin_auth')->group(funct
     Route::get('/admin/checkout', 'admin_checkout')->name('admin.admin_checkout');
     Route::post('/admin/checkout/save_checkout_info', 'save_checkout_info')->name('admin.save_checkout_info')->withoutMiddleware(VerifyCsrfToken::class);
 
-    Route::get('/admin/cabinet', 'cabinet')->name('admin.cabinet');
-    Route::post('/admin/cabinet/save_cabinet_info', 'save_cabinet_info')->name('admin.save_cabinet_info')->withoutMiddleware(VerifyCsrfToken::class);
-    Route::post('/admin/cabinet/test_connection', 'test_cabinet_connection')->name('admin.test_cabinet_connection')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::get('/admin/customer-personal-account', 'cabinet')->name('admin.customer_personal_account');
+    Route::post('/admin/customer-personal-account/save_cabinet_info', 'save_cabinet_info')->name('admin.save_customer_personal_account_info')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/customer-personal-account/test_connection', 'test_cabinet_connection')->name('admin.test_customer_personal_account_connection')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/renewal_page', 'renewal_page')->name('admin.renewal_page');
     Route::get('/admin/renewal_page/shop', 'renewal_page_shop')->name('admin.renewal_page_shop');
@@ -367,17 +367,20 @@ Route::get('/admin/logs/{file}', function ($file) {
         ->header('Content-Type', 'text/plain; charset=UTF-8');
 });
 
-Route::controller(CabinetPreviewController::class)->prefix('cabinet')->group(static function () {
-    // Live cabinet in the current design layout (like other pages):
+Route::controller(CabinetPreviewController::class)->prefix('account')->group(static function () {
+    // Personal cabinet in the current design layout (like other pages):
     // design comes from session, not the URL. No tokens — redirect to login.
-    // Example: /cabinet/orders
-    Route::get('/{page?}', 'cabinetPage')->name('cabinet.live.page');
+    // Example: /account/orders. Single-segment page only, so /account/api/*
+    // and /account/login/* (registered elsewhere) never collide.
+    Route::get('/login/{step?}', 'cabinetLogin')->name('account.login');
+    Route::get('/{page}', 'cabinetPage')->name('account.page');
 });
-Route::controller(CabinetPreviewController::class)->prefix('cabinet-login')->group(static function () {
-    // Cabinet login for the current design, design from session.
-    // Example: /cabinet-login/email
-    Route::get('/{step?}', 'cabinetLogin')->name('cabinet.login');
-});
+
+// Legacy cabinet URLs: permanent redirects to the /account/* locations.
+Route::get('/cabinet', static fn () => redirect('/account', 301));
+Route::get('/cabinet/{page}', static fn (string $page) => redirect('/account/' . $page, 301));
+Route::get('/cabinet-login', static fn () => redirect('/account/login/email', 301));
+Route::get('/cabinet-login/{step}', static fn (string $step) => redirect('/account/login/' . $step, 301));
 
 Route::fallback(function () {
     if (env('APP_ERROR_PAGE')) {

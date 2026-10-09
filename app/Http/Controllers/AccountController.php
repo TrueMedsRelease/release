@@ -28,10 +28,10 @@ class AccountController extends Controller
         }
 
         if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
+            return redirect()->route('account.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
-        return redirect()->route('cabinet.login', ['step' => 'email']);
+        return redirect()->route('account.login', ['step' => 'email']);
     }
 
     /**
@@ -80,13 +80,13 @@ class AccountController extends Controller
             return redirect()->route('home.login');
         }
         if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
+            return redirect()->route('account.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
         $email = trim((string) $request->input('email', ''));
 
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return redirect()->route('cabinet.login', ['step' => 'email'])
+            return redirect()->route('account.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', __('text.errors_wrong_email'))
                 ->withInput(['email' => $email]);
         }
@@ -95,7 +95,7 @@ class AccountController extends Controller
         // consumed on any exit from this step.
         $captchaToken = (string) session('cabinet.captcha_token', '');
         if ($captchaToken === '') {
-            return redirect()->route('cabinet.login', ['step' => 'email'])
+            return redirect()->route('account.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', __('text.cabinet_captcha_required'))
                 ->withInput(['email' => $email]);
         }
@@ -113,11 +113,11 @@ class AccountController extends Controller
                     $this->storePair((array) $verify['data']);
                     session(['cabinet.fp_hash' => sha1((string) $this->browserFingerprint($request))]);
 
-                    return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
+                    return redirect()->route('account.page', ['page' => CabinetService::firstVisiblePage()]);
                 }
                 $message = $this->embeddedErrorMessage((string) ($verify['code'] ?? ''), (string) ($verify['error'] ?? ''), null);
 
-                return redirect()->route('cabinet.login', ['step' => 'email'])
+                return redirect()->route('account.login', ['step' => 'email'])
                     ->with('cabinet_embedded_error', $message)
                     ->withInput(['email' => $email]);
             }
@@ -125,14 +125,14 @@ class AccountController extends Controller
         if (empty($result['ok'])) {
             $message = $this->embeddedErrorMessage((string) ($result['code'] ?? ''), (string) ($result['error'] ?? ''), isset($result['retry_after']) ? (int) $result['retry_after'] : null);
 
-            return redirect()->route('cabinet.login', ['step' => 'email'])
+            return redirect()->route('account.login', ['step' => 'email'])
                 ->with('cabinet_embedded_error', $message)
                 ->withInput(['email' => $email]);
         }
 
         session(['cabinet.embedded_email' => $email]);
 
-        return redirect()->route('cabinet.login', ['step' => 'code']);
+        return redirect()->route('account.login', ['step' => 'code']);
     }
 
     /**
@@ -144,7 +144,7 @@ class AccountController extends Controller
             return redirect()->route('home.login');
         }
         if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
+            return redirect()->route('account.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
         $email = (string) session('cabinet.embedded_email', '');
@@ -154,7 +154,7 @@ class AccountController extends Controller
 
         $code = (string) preg_replace('/\D/', '', (string) $request->input('code', ''));
         if (strlen($code) !== 6) {
-            return redirect()->route('cabinet.login', ['step' => 'code'])
+            return redirect()->route('account.login', ['step' => 'code'])
                 ->with('cabinet_embedded_error', __('text.errors_wrong_code'));
         }
 
@@ -164,11 +164,11 @@ class AccountController extends Controller
             if ($resultCode === 'too_many_attempts') {
                 session()->forget('cabinet.embedded_email');
 
-                return redirect()->route('cabinet.login', ['step' => 'email'])
+                return redirect()->route('account.login', ['step' => 'email'])
                     ->with('cabinet_embedded_error', __('text.errors_too_many_attempts'));
             }
 
-            return redirect()->route('cabinet.login', ['step' => 'code'])
+            return redirect()->route('account.login', ['step' => 'code'])
                 ->with('cabinet_embedded_error', __('text.errors_wrong_code'));
         }
 
@@ -178,7 +178,7 @@ class AccountController extends Controller
         session(['cabinet.fp_hash' => sha1((string) $verifyFp)]);
         session()->forget('cabinet.embedded_email');
 
-        return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
+        return redirect()->route('account.page', ['page' => CabinetService::firstVisiblePage()]);
     }
 
     /**

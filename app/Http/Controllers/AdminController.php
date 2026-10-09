@@ -18,6 +18,19 @@ use App\Services\RenewalService;
 
 class AdminController extends Controller
 {
+    /**
+     * View dirs under resources/views that are not shop designs and must
+     * never appear as templates in admin (shared cabinet partials etc.).
+     */
+    private static function isDesignTemplateDir(string $name, string $basePath): bool
+    {
+        if (!is_dir($basePath . '/' . $name)) {
+            return false;
+        }
+
+        return !in_array($name, ['.', '..', 'admin', 'account', 'cabinet-live', 'cabinet-parts'], true);
+    }
+
     public function admin_enter() {
         if (session('logged_in')) {
             return redirect()->route('admin.admin_seo');
@@ -64,7 +77,7 @@ class AdminController extends Controller
 
         session(['logged_in' => true]);
 
-        return redirect()->route('admin.cabinet');
+        return redirect()->route('admin.customer_personal_account');
     }
 
     public function request_login(Request $request) {
@@ -137,7 +150,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 // Always set the key: a screenshot may be missing (e.g. for
@@ -178,7 +191,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 // Always set the key: a screenshot may be missing (e.g. for
@@ -588,12 +601,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template)
-                && $cur_template != "."
-                && $cur_template != ".."
-                && $cur_template != "admin"
-                && $cur_template != "account"
-            ) {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 // Always set the key: a screenshot may be missing (e.g. for
@@ -645,7 +653,7 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
                 // Always set the key: a screenshot may be missing (e.g. for
@@ -1433,7 +1441,7 @@ class AdminController extends Controller
 
         Cache::flush();
 
-        return response()->json(array('status' => 'success', 'url' => route('admin.cabinet')));
+        return response()->json(array('status' => 'success', 'url' => route('admin.customer_personal_account')));
     }
 
     public function test_cabinet_connection(Request $request) {

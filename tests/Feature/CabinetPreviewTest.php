@@ -17,13 +17,13 @@ class CabinetPreviewTest extends TestCase
      */
     public function test_live_redirects_to_design_login_when_no_token(): void
     {
-        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        $this->get('/account/login/email'); // warm up UrlGenerator
         $this->seedShopSettings();
 
         try {
             foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
-                $response = $this->get('/cabinet/' . $page);
-                $response->assertRedirect(route('cabinet.login', ['step' => 'email']));
+                $response = $this->get('/account/' . $page);
+                $response->assertRedirect(route('account.login', ['step' => 'email']));
             }
         } finally {
             $this->forgetShopSettings();
@@ -32,17 +32,17 @@ class CabinetPreviewTest extends TestCase
 
     public function test_designless_login_renders(): void
     {
-        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        $this->get('/account/login/email'); // warm up UrlGenerator
         $this->seedShopSettings();
 
         try {
             foreach (['email', 'captcha', 'code'] as $step) {
-                $response = $this->get('/cabinet-login/' . $step);
+                $response = $this->get('/account/login/' . $step);
                 $response->assertStatus(200);
                 $response->assertSee('cablogin-', false);
             }
             // No preview pager anymore; a working language block instead of the language stub.
-            $html = $this->get('/cabinet-login/email')->getContent();
+            $html = $this->get('/account/login/email')->getContent();
             $this->assertStringNotContainsString('cablogin-pager', $html);
             $this->assertStringContainsString('cablogin-header__lang', $html);
         } finally {
@@ -52,12 +52,12 @@ class CabinetPreviewTest extends TestCase
 
     public function test_unknown_design_404_on_designless_routes(): void
     {
-        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        $this->get('/account/login/email'); // warm up UrlGenerator
 
-        $response = $this->withSession(['design' => 'design_99'])->get('/cabinet/orders');
+        $response = $this->withSession(['design' => 'design_99'])->get('/account/orders');
         $response->assertNotFound();
 
-        $response = $this->withSession(['design' => 'design_99'])->get('/cabinet-login/email');
+        $response = $this->withSession(['design' => 'design_99'])->get('/account/login/email');
         $response->assertNotFound();
     }
 
@@ -75,7 +75,7 @@ class CabinetPreviewTest extends TestCase
 
     public function test_logout_clears_session_and_redirects_home(): void
     {
-        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        $this->get('/account/login/email'); // warm up UrlGenerator
         \Illuminate\Support\Facades\Http::fake();
 
         $response = $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)
@@ -92,7 +92,7 @@ class CabinetPreviewTest extends TestCase
 
     public function test_login_layout_uses_custom_alpine_lang_dropdown(): void
     {
-        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        $this->get('/account/login/email'); // warm up UrlGenerator
         $html = view('design_10.cabinet.login-layout', [
             'design' => 'design_10',
             'Language' => CabinetLoginLayoutFakeLanguage::class,
@@ -157,13 +157,13 @@ class CabinetPreviewTest extends TestCase
             'design' => 'design_10',
         ])->render();
 
-        $this->assertStringContainsString(route('cabinet.live.page', ['page' => 'orders']), $html);
-        $this->assertStringNotContainsString(route('cabinet.live.page', ['page' => 'bonus']), $html);
+        $this->assertStringContainsString(route('account.page', ['page' => 'orders']), $html);
+        $this->assertStringNotContainsString(route('account.page', ['page' => 'bonus']), $html);
     }
 
     public function test_orders_page_config_excludes_refunded_and_carries_display_flags(): void
     {
-        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        $this->get('/account/login/email'); // warm up UrlGenerator
         Cache::put(
             CabinetService::SETTINGS_CACHE_KEY,
             ['shop_id' => 'test', 'embedded_login' => true, 'billing_base_url' => 'https://billing.example'],
@@ -172,7 +172,7 @@ class CabinetPreviewTest extends TestCase
 
         try {
             $response = $this->withSession(['cabinet.access_token' => 'test-token'])
-                ->get('/cabinet/orders');
+                ->get('/account/orders');
             $response->assertStatus(200);
 
             $html = $response->getContent();
@@ -195,7 +195,7 @@ class CabinetPreviewTest extends TestCase
 
     public function test_display_config_endpoint_forbidden_when_cabinet_disabled(): void
     {
-        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        $this->get('/account/login/email'); // warm up UrlGenerator
 
         // No DB in tests: CabinetService::config() degrades to disabled.
         $response = $this->get(route('account.api.display'));
@@ -206,6 +206,35 @@ class CabinetPreviewTest extends TestCase
     {
         // No DB in tests: displayConfig() degrades to defaults (all pages on).
         $this->assertSame('orders', CabinetService::firstVisiblePage());
+    }
+
+    public function test_legacy_cabinet_urls_redirect_to_account(): void
+    {
+        $this->get('/account/login/email'); // warm up UrlGenerator
+
+        $cases = [
+            '/cabinet/orders' => '/account/orders',
+            '/cabinet' => '/account',
+            '/cabinet-login/email' => '/account/login/email',
+            '/cabinet-login' => '/account/login/email',
+        ];
+        foreach ($cases as $old => $new) {
+            $response = $this->get($old);
+            $response->assertStatus(301);
+            $this->assertStringEndsWith($new, (string) $response->headers->get('Location'));
+        }
+    }
+
+    public function test_renamed_routes_generate_new_urls(): void
+    {
+        $this->assertStringEndsWith('/account/orders', route('account.page', ['page' => 'orders']));
+        $this->assertStringEndsWith('/account/login/email', route('account.login', ['step' => 'email']));
+        $this->assertStringEndsWith(
+            '/admin/customer-personal-account',
+            route('admin.customer_personal_account')
+        );
+        $this->assertTrue(\Illuminate\Support\Facades\Route::has('admin.save_customer_personal_account_info'));
+        $this->assertTrue(\Illuminate\Support\Facades\Route::has('admin.test_customer_personal_account_connection'));
     }
 
     public function test_cabinet_repeat_url_prefers_api_formed_link(): void

@@ -93,7 +93,7 @@
     }
 
     function loginRedirect(cfg) {
-        window.location.href = (cfg && cfg.loginUrl) || '/preview/cabinet-login/design_10/email';
+        window.location.href = (cfg && cfg.loginUrl) || '/account/login/email';
     }
 
     // ---------- Section header: me-chip (initials/name/bonus) ----------

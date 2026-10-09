@@ -32,7 +32,7 @@ if (!function_exists('asset_ver')) {
     <div class="cablogin__body">
         <div class="cablogin__inner">
             <header class="cablogin-header">
-                <a class="cablogin-header__logo" href="{{ route('cabinet.login', ['step' => 'email']) }}" aria-label="TrueHelp Client login">
+                <a class="cablogin-header__logo" href="{{ route('account.login', ['step' => 'email']) }}" aria-label="TrueHelp Client login">
                     <img src="{{ asset('cabinet-login/logo-support.svg') }}" width="200" height="38" alt="TrueHelp Client — customer service system">
                 </a>
                 <span class="cablogin-header__lang">
@@ -97,7 +97,7 @@ if (!function_exists('asset_ver')) {
 $shopLoginConfig = [
     'captchaImageUrl' => route('account.api.captcha'),
     'captchaVerifyUrl' => route('account.api.captcha.verify'),
-    'captchaUrl' => route('cabinet.login', ['step' => 'captcha']),
+    'captchaUrl' => route('account.login', ['step' => 'captcha']),
     'tInvalidEmail' => __('text.errors_wrong_email'),
     'tChecking' => __('text.cabinet_captcha_checking'),
     'tSuccess' => __('text.cabinet_captcha_success'),
@@ -108,7 +108,7 @@ $shopLoginConfig = [
 $shopCodeConfig = [
     'resend' => __('text.cabinet_resend'),
     'resendIn' => __('text.cabinet_resend_in'),
-    'emailUrl' => route('cabinet.login', ['step' => 'email']),
+    'emailUrl' => route('account.login', ['step' => 'email']),
 ];
 @endphp
 <script>

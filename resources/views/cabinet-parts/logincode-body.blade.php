@@ -24,7 +24,7 @@
         <button class="cablogin-btn cablogin-btn--primary cablogin-btn--wide" type="submit"><span>{{ __('text.cabinet_confirm') }}</span></button>
 
         <div class="cablogin-actions">
-            <a class="cablogin-link" href="{{ route('cabinet.login', ['step' => 'email']) }}">
+            <a class="cablogin-link" href="{{ route('account.login', ['step' => 'email']) }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 8l9 6 9-6"/></svg>
                 {{ __('text.cabinet_change_email') }}
             </a>

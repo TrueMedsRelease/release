@@ -2,7 +2,7 @@
 
 Кнопка «My Account» ведёт покупателя во встроенный кабинет шопа —
 вход полностью у себя: email + пазл-капча + код из письма.
-Переключается в админке: **Customer Cabinet** (`/admin/cabinet`).
+Переключается в админке: **Customer Cabinet** (`/admin/customer-personal-account`).
 
 ## Как это работает
 
@@ -10,24 +10,24 @@
 Покупатель            Шоп (этот репо)                  Кабинет (true-help)
    |                        |                                     |
    |-- /account ------------|                                     |
-   |   /cabinet-login/email (дизайн шопа, Alpine)                 |
+   |   /account/login/email (дизайн шопа, Alpine)                 |
    |   email + пазл-капча кабинета (GET /api/captcha)             |
 |                        |-- POST /api/v1/auth/embedded/start ->|
 |                        |   {domain, email, captcha_token,      |
 |                        |    fingerprint, customer_ip}          |
 |<================ код из письма =============================>|
-|   /cabinet-login/code  |                                     |
+|   /account/login/code  |                                     |
 |                        |-- POST /api/v1/auth/embedded/verify>|
 |                        |   {domain, email, code, fingerprint,  |
 |                        |    customer_ip}                       |
 |                        |<------ access + refresh -------------|
-   |   /cabinet/orders (дизайн из сессии, Alpine)                 |
+    |   /account/orders (дизайн из сессии, Alpine)                 |
    |   /account/api/* ------|--- /api/v1/* Bearer + X-Fingerprint>|
 ```
 
 Кабинет живёт в дизайнах (`design_*/cabinet/*`, дизайн из сессии — в URL
-его нет): `/cabinet/{orders,bonus,referral,contact,chat}`,
-вход — `/cabinet-login/{email,captcha,code}`. Старые общие страницы
+его нет): `/account/{orders,bonus,referral,contact,chat}`,
+вход — `/account/login/{email,captcha,code}`. Старые общие страницы
 `account/*` удалены; `/account` остался хабом-редиректом, `/account/api/*`
 и embedded-endpoint'ы — без изменений.
 
@@ -45,7 +45,7 @@
 
 ## Вход: только встроенный
 
-Дизайн-страницы входа `/cabinet-login/email|captcha|code` в скине текущего
+Дизайн-страницы входа `/account/login/email|captcha|code` в скине текущего
 дизайна (общие partials `cabinet-parts/*`, JS `shop-login.js`): email +
 пазл-капча **кабинета** (тянется по API, своей капчи у формы нет) → шоп просит
 кабинет отправить код (`embedded/start` с одноразовым `captcha_token`),
@@ -63,12 +63,12 @@
   отвергает (`fingerprint_required` → просим пройти пазл заново).
 
 Кеш настроек (`cabinet.shop_settings`, 1 минута) сбрасывается при Save
-в `/admin/cabinet` и освежается кнопкой Test connection
+в `/admin/customer-personal-account` и освежается кнопкой Test connection
 (при недоступности кабинета отдаётся последнее закешированное).
 
 ## Подключение (владелец шопа + менеджер)
 
-1. Владелец открывает `/admin/cabinet`, копирует **домен шопа**
+1. Владелец открывает `/admin/customer-personal-account`, копирует **домен шопа**
    (например `shop-example.com`) и отправляет менеджеру.
 2. Менеджер в админке кабинета (`/admin/api-clients`) создаёт клиента:
    domain, скоупы `me, orders, orders.shipping,
@@ -99,7 +99,7 @@
   `embeddedStart`/`embeddedVerify` (встроенный вход, throttle 10/мин),
   logout, JSON-прокси.
   Старых страничных экшенов больше нет — страницы отдаёт
-  `CabinetPreviewController` (`/cabinet/*`, `/cabinet-login/*`, дизайн
+  `CabinetPreviewController` (`/account/*`, `/account/login/*`, дизайн
   из сессии).
 - `app/Http/Controllers/AdminController.php` — `cabinet()`,
   `save_cabinet_info()`, `test_cabinet_connection()` (+ пункт меню
@@ -117,12 +117,12 @@
 
 ## Состав кабинета
 
-- **My orders** (`/cabinet/orders`): список + курсорная пагинация, shipping,
+- **My orders** (`/account/orders`): список + курсорная пагинация, shipping,
   tracking, остановка автопродления.
-- **Bonus** (`/cabinet/bonus`): карта, баланс, сгорающие бонусы, история с пагинацией.
-- **Referral** (`/cabinet/referral`): ссылка + копирование, QR, купон, приглашённые заказы.
-- **Contact us** (`/cabinet/contact`): форма (с Bearer капча не нужна).
-- **Chat** (`/cabinet/chat`): переписка с поддержкой.
+- **Bonus** (`/account/bonus`): карта, баланс, сгорающие бонусы, история с пагинацией.
+- **Referral** (`/account/referral`): ссылка + копирование, QR, купон, приглашённые заказы.
+- **Contact us** (`/account/contact`): форма (с Bearer капча не нужна).
+- **Chat** (`/account/chat`): переписка с поддержкой.
 - Страницы Sessions в дизайнах нет (только API `sessions`/`revoke-all` живут
   в прокси) — UI перенесём при необходимости.
 - Шапка кабинета: email + баланс (из `/api/v1/me`), навигация по разделам.

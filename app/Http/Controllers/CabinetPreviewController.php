@@ -14,8 +14,8 @@ use Phattarachai\LaravelMobileDetect\Agent;
  * Live cabinet and login in the current design layout (design from session).
  *
  * Routes:
- *   /cabinet/{page?}      page = orders|bonus|referral|contact|chat
- *   /cabinet-login/{step?} step = email|captcha|code
+ *   /account/{page}      page = orders|bonus|referral|contact|chat
+ *   /account/login/{step} step = email|captcha|code
  */
 class CabinetPreviewController extends Controller
 {
@@ -42,7 +42,7 @@ class CabinetPreviewController extends Controller
             abort(404);
         }
         if ((string) session('cabinet.access_token', '') !== '') {
-            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
+            return redirect()->route('account.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
         return view($design . '.cabinet.' . $view, array_merge(
@@ -57,7 +57,7 @@ class CabinetPreviewController extends Controller
 
     /**
      * Live cabinet of the current design: design from session (like other
-     * shop pages), not present in the URL. Example: /cabinet/orders
+     * shop pages), not present in the URL. Example: /account/orders
      */
     public function cabinetPage(string $page = 'orders')
     {
@@ -70,7 +70,7 @@ class CabinetPreviewController extends Controller
     }
 
     /**
-     * Cabinet login of the current design. Example: /cabinet-login/email
+     * Cabinet login of the current design. Example: /account/login/email
      */
     public function cabinetLogin(string $step = 'email')
     {
@@ -98,7 +98,7 @@ class CabinetPreviewController extends Controller
             abort(404);
         }
         if ((string) session('cabinet.access_token', '') === '') {
-            return redirect()->route('cabinet.login', ['step' => 'email']);
+            return redirect()->route('account.login', ['step' => 'email']);
         }
 
         // Disabled in the shop display settings — same as a missing section.

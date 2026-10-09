@@ -94,7 +94,7 @@
                                     <a href="{{ route('admin.renewal_page') }}">Update Shop</a>
                                 </li>
                                 <li class="menu__item">
-                                    <a href="{{ route('admin.cabinet') }}">Customer Cabinet</a>
+                                    <a href="{{ route('admin.customer_personal_account') }}">Customer Cabinet</a>
                                 </li>
                                 <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">

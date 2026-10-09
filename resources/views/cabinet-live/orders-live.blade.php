@@ -9,8 +9,8 @@
 $cabDisplay = $cabDisplay ?? \App\Services\CabinetService::displayConfig();
 $cabLiveOrdersConfig = [
     'email' => (string) session('cabinet.email', ''),
-    'startUrl' => route('cabinet.login', ['step' => 'email']),
-    'loginUrl' => route('cabinet.login', ['step' => 'email']),
+    'startUrl' => route('account.login', ['step' => 'email']),
+    'loginUrl' => route('account.login', ['step' => 'email']),
     'ordersUrl' => route('account.api.orders'),
     'meUrl' => route('account.api.me'),
     'shipUrl' => url('/account/api/orders'),
@@ -269,7 +269,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
         <div class="oc-side__card" x-show="helpOn">
             <p class="oc-side__help-title">{{ __('text.cabinet_help_title') }}</p>
             <p class="oc-side__help-text">{{ __('text.cabinet_help_text') }}</p>
-            <a class="button cabp-action cabp-action--dark cabp-wide" href="{{ route('cabinet.live.page', ['page' => 'contact']) }}">
+            <a class="button cabp-action cabp-action--dark cabp-wide" href="{{ route('account.page', ['page' => 'contact']) }}">
                 <span>{{ __('text.cabinet_nav_contact') }}</span>
             </a>
         </div>
