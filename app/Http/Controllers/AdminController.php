@@ -1419,9 +1419,8 @@ class AdminController extends Controller
                 'orders_shop_button' => $request->input('display.orders_shop_button'),
                 'shop_domain_override' => $request->input('display.shop_domain_override'),
                 'billing_url_override' => $request->input('display.billing_url_override'),
-                'checkout_base_override' => $request->input('display.checkout_base_override'),
-                'billing_button' => $request->input('display.billing_button'),
-            ]);
+            'checkout_base_override' => $request->input('display.checkout_base_override'),
+        ]);
         } catch (\Illuminate\Database\QueryException $e) {
             $message = 'Save failed: database rejected the value.';
             if (str_contains((string) $e->getMessage(), '1406') || str_contains((string) $e->getMessage(), 'too long')) {

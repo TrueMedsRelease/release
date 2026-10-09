@@ -79,7 +79,6 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
         <div class="cab-admin__field">
             <div>
                 <div class="cab-admin__label">Cabinet pages</div>
-                <div class="cab-admin__hint">Hidden pages return 404 and disappear from navigation (combined with cabinet license scopes).</div>
             </div>
             <div>
                 @foreach ($cbPages as $cbKey => $cbLabel)
@@ -113,7 +112,6 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
         <div class="cab-admin__field">
             <div>
                 <div class="cab-admin__label"><label for="cab_shop_button">Shop button (My orders)</label></div>
-                <div class="cab-admin__hint">Controls the Shop link that the cabinet API returns per order.</div>
             </div>
             <div>
                 <select class="cab-admin__input" name="display_orders_shop_button" id="cab_shop_button">
@@ -127,7 +125,6 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
         <div class="cab-admin__field">
             <div>
                 <div class="cab-admin__label"><label for="cab_shop_override">Shop domain override</label></div>
-                <div class="cab-admin__hint">Full URL, query params allowed (e.g. https://example.com?aff=1842). Host is replaced, missing params are appended, existing params win.</div>
             </div>
             <div>
                 <input class="cab-admin__input" type="text" name="display_shop_domain_override" id="cab_shop_override"
@@ -138,7 +135,6 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
         <div class="cab-admin__field">
             <div>
                 <div class="cab-admin__label"><label for="cab_billing_override">Billing URL override</label></div>
-                <div class="cab-admin__hint">Empty = use billing_base_url from the cabinet. Shown as the Billing button on order cards.</div>
             </div>
             <div>
                 <input class="cab-admin__input" type="text" name="display_billing_url_override" id="cab_billing_override"
@@ -149,24 +145,10 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
         <div class="cab-admin__field">
             <div>
                 <div class="cab-admin__label"><label for="cab_checkout_override">Repeat order link override</label></div>
-                <div class="cab-admin__hint">Replaces the host of the API-formed true-checkout repeat link (e.g. https://example.com?aff=1842). Missing params are appended, existing params win. The sealed auth token is preserved.</div>
             </div>
             <div>
                 <input class="cab-admin__input" type="text" name="display_checkout_base_override" id="cab_checkout_override"
                        value="{{ $cabinet_display['checkout_base_override'] ?? '' }}" placeholder="https://example.com?aff=1842" autocomplete="off" />
-            </div>
-        </div>
-
-        <div class="cab-admin__field">
-            <div>
-                <div class="cab-admin__label">Billing button</div>
-            </div>
-            <div>
-                <label class="cab-admin__radio" for="cab_billing_button">
-                    <input type="checkbox" name="display_billing_button" id="cab_billing_button" value="1"
-                           @if (!empty($cabinet_display['billing_button'])) checked @endif />
-                    Show Billing button when a billing URL is available
-                </label>
             </div>
         </div>
 
