@@ -52,8 +52,8 @@ class AdminController extends Controller
     }
 
     /**
-     * Автологин по секретному токену из .env (ADMIN_AUTOLOGIN_TOKEN).
-     * Удобно для стенда; на проде токен не задавать (будет 404).
+     * Autologin via secret token from .env (ADMIN_AUTOLOGIN_TOKEN).
+     * Handy for staging; do not set the token in prod (results in 404).
      */
     public function auto_login($token = '') {
         $expected = (string) env('ADMIN_AUTOLOGIN_TOKEN', '');
@@ -140,8 +140,8 @@ class AdminController extends Controller
             if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                // Ключ задаём всегда: скриншота может не быть (например, у
-                // служебных папок вьюх) — шаблон проверяет его через empty().
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
                 $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
                     ? "/" . $cur_template . "/images/scrin.png"
                     : "";
@@ -181,8 +181,8 @@ class AdminController extends Controller
             if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                // Ключ задаём всегда: скриншота может не быть (например, у
-                // служебных папок вьюх) — шаблон проверяет его через empty().
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
                 $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
                     ? "/" . $cur_template . "/images/scrin.png"
                     : "";
@@ -596,8 +596,8 @@ class AdminController extends Controller
             ) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                // Ключ задаём всегда: скриншота может не быть (например, у
-                // служебных папок вьюх) — шаблон проверяет его через empty().
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
                 $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
                     ? "/" . $cur_template . "/images/scrin.png"
                     : "";
@@ -648,8 +648,8 @@ class AdminController extends Controller
             if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin" && $cur_template != "account") {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                // Ключ задаём всегда: скриншота может не быть (например, у
-                // служебных папок вьюх) — шаблон проверяет его через empty().
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
                 $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
                     ? "/" . $cur_template . "/images/scrin.png"
                     : "";
@@ -1400,8 +1400,9 @@ class AdminController extends Controller
             'cabinet_enabled' => $cabinet['enabled'],
             'cabinet_secret' => $cabinet['secret'],
             'cabinet_url' => $cabinet['url'],
-            // Домен нигде не настраивается: всегда текущий хост запроса.
+            // Domain is never configured: always the current request host.
             'cabinet_domain' => CabinetService::shopDomain(),
+            'cabinet_display' => CabinetService::displayConfig(),
         ]);
     }
 
@@ -1409,6 +1410,15 @@ class AdminController extends Controller
         CabinetService::save([
             'enabled' => (int) $request->input('cabinet_enabled', 0) === 1,
             'secret'  => (string) $request->input('cabinet_secret', ''),
+        ]);
+        CabinetService::saveDisplay([
+            'pages' => (array) $request->input('display.pages', []),
+            'orders_filters' => $request->input('display.orders_filters'),
+            'orders_help' => $request->input('display.orders_help'),
+            'orders_shop_button' => $request->input('display.orders_shop_button'),
+            'shop_domain_override' => $request->input('display.shop_domain_override'),
+            'billing_url_override' => $request->input('display.billing_url_override'),
+            'billing_button' => $request->input('display.billing_button'),
         ]);
         CabinetService::forgetShopSettings();
 
@@ -1420,15 +1430,15 @@ class AdminController extends Controller
     public function test_cabinet_connection(Request $request) {
         $secret = trim((string) $request->input('cabinet_secret', ''));
 
-        // URL кабинета — только env CABINET_URL, домен — автоматически
-        // из хоста текущего запроса (CabinetService::shopDomain()).
-        // Секрет на проводе не используется (кабинет знает шоп по домену),
-        // поле хранится для совместимости.
+        // Cabinet URL comes from env CABINET_URL only, domain is automatic
+        // from the current request host (CabinetService::shopDomain()).
+        // The secret is not used on the wire (the cabinet knows the shop by domain),
+        // the field is stored for compatibility.
         $result = CabinetService::testConnection($secret);
 
         if ($result['status'] === 'ok') {
-            // Связь есть — фиксируем проверенный секрет и освежаем
-            // настройки интеграции из кабинета.
+            // Connection works — persist the verified secret and refresh
+            // the integration settings from the cabinet.
             CabinetService::save([
                 'enabled' => CabinetService::enabled(),
                 'secret'  => $secret,

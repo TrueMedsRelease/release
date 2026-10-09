@@ -1,11 +1,11 @@
-/* Shared живой кабинет: V1 soft-кнопки действий (портал OrderCard 1:1)
- * и HTML-рендер писем чата. Один файл на все дизайны, подключается
- * из shared-паршалов cabinet-live (после per-design cabinet-preview.css).
- * Primary (repeat) остаётся per-design .cabp-action--dark — на тёмных
- * дизайнах единый тёмный primary был бы нечитаем.
+/* Shared live cabinet: V1 soft action buttons (portal OrderCard 1:1)
+ * and chat message HTML rendering. One file for all designs, included
+ * from shared cabinet-live partials (after per-design cabinet-preview.css).
+ * Primary (repeat) stays per-design .cabp-action--dark — a single dark
+ * primary would be unreadable on dark designs.
  */
 
-/* ---------- Заказы: все действия — кнопки в один ряд слева направо ---------- */
+/* ---------- Orders: all actions as buttons in one left-to-right row ---------- */
 .cabp-layout--orders .oc-card__actions {
     display: flex;
     flex-wrap: wrap;
@@ -23,7 +23,7 @@
     }
 }
 
-/* Триггеры shipping/tracking: из ссылок в soft-кнопки. */
+/* Shipping/tracking triggers: from links to soft buttons. */
 .cabp-layout--orders .oc-footlink {
     display: inline-flex;
     align-items: center;
@@ -56,7 +56,7 @@
     outline-offset: 2px;
 }
 
-/* Обычные действия — серо-голубая заливка, опасные — мягко-красная. Без рамок. */
+/* Regular actions — slate fill, dangerous — soft red. No borders. */
 .button.cabp-action--soft {
     border: 0;
     background: #f1f5f9;
@@ -86,7 +86,7 @@
     background: #fee2e2;
 }
 
-/* ---------- Бонус: отступ истории от about-блока, фидбек копирования ---------- */
+/* ---------- Bonus: history offset from about block, copy feedback ---------- */
 .cabp-history {
     margin-top: 16px;
 }
@@ -102,12 +102,12 @@
     white-space: nowrap;
 }
 
-/* ---------- Рефералка: отступ share-блока от about-блока ---------- */
+/* ---------- Referral: share block offset from about block ---------- */
 .cabp-share {
     margin-top: 16px;
 }
 
-/* ---------- Чат: HTML писем (textHtml с бэка, уже почищен) ---------- */
+/* ---------- Chat: message HTML (textHtml from backend, already sanitized) ---------- */
 .cabp-chat .cabp-chat-msg__text {
     white-space: normal;
     overflow-wrap: anywhere;
@@ -173,4 +173,11 @@
     border: 0;
     border-top: 1px solid rgba(128, 128, 128, .3);
     margin: 8px 0;
+}
+
+/* ---------- My orders: sidebar hidden when filters and help are off ---------- */
+.cabp-layout--full .oc-side,
+.cabp-layout--full .oc-filters-fab,
+.cabp-layout--full .oc-filters-pop {
+    display: none !important;
 }

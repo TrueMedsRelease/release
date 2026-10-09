@@ -1,18 +1,18 @@
 /**
- * Встроенный личный кабинет — клиентская логика (Alpine.js, без сборки).
+ * Embedded account — client logic (Alpine.js, no build).
  *
- * 1:1 с customerportal:
+ * 1:1 with customerportal:
  *  - assets/Composables/useOrderActions.js (repeat/stop/formatMoney/itemName)
- *  - assets/Pages/Orders.vue (фильтры, infinite scroll sentinel 200px, скелетоны)
- *  - assets/Components/orders/* (copy 1.5с, shipping popover, tracking drawer 5 событий)
- *  - assets/Pages/Bonus.vue (copy tippy 900мс, expiring details, пагинация)
- *  - assets/Pages/Referral.vue (copy 900мс)
- *  - assets/Pages/Contact.vue (префилл из me, confirm при смене name/email, success #ok)
- *  - assets/Layouts/AppLayout.vue + AppHeader.vue (drawer, popover, бейдж корзины)
+ *  - assets/Pages/Orders.vue (filters, infinite scroll sentinel 200px, skeletons)
+ *  - assets/Components/orders/* (copy 1.5s, shipping popover, tracking drawer 5 events)
+ *  - assets/Pages/Bonus.vue (copy tippy 900ms, expiring details, pagination)
+ *  - assets/Pages/Referral.vue (copy 900ms)
+ *  - assets/Pages/Contact.vue (prefill from me, confirm on name/email change, success #ok)
+ *  - assets/Layouts/AppLayout.vue + AppHeader.vue (drawer, popover, cart badge)
  *
- * Токены живут только в сессии сервера шопа. Браузер считает fingerprint
- * через f.js кабинета (window.CabinetFpUrl, глобал DeviceLib) и прикладывает его
- * к запросам прокси (X-FP → сервер перекладывает в X-Fingerprint).
+ * Tokens live only in the shop server session. The browser computes fingerprint
+ * via cabinet f.js (window.CabinetFpUrl, DeviceLib global) and attaches it
+ * to proxy requests (X-FP → server forwards as X-Fingerprint).
  */
 (function () {
     'use strict';
@@ -35,9 +35,9 @@
 
     function ensureFingerprint() {
         if (window.CabinetAccountFp) return Promise.resolve(window.CabinetAccountFp);
-        // Тот же FP, что ушёл на embedded.start/verify при логине
-        // (shop-login.js кладёт его в localStorage): DeviceLib даёт разный
-        // хэш на разных страницах, пересчёт здесь сломал бы привязку токена.
+        // Same FP as sent to embedded.start/verify at login
+        // (shop-login.js stores it in localStorage): DeviceLib returns a different
+        // hash on different pages, recomputing here would break token binding.
         try {
             var stored = window.localStorage ? window.localStorage.getItem('cabinet_fp') : '';
             if (stored) {
@@ -52,8 +52,8 @@
         if (fpPromise) return fpPromise;
         fpPromise = (async function () {
             try {
-                // Своя копия в файлах шопа (same-origin): не режется баннерами
-                // и не зависит от деплоя кабинета. Дальше — фолбэки на кабинет.
+                // Own copy in shop files (same-origin): not blocked by banners
+                // and independent of cabinet deploy. Next — cabinet fallbacks.
                 if (!window.DeviceLib && !window.FingerprintLib) {
                     try {
                         await loadScript('/js/cabinet/device-lib.js', 5000);
@@ -68,7 +68,7 @@
                             } catch (e2) {
                                 var legacy = fpUrl.replace(/\/f\.js([?#]|$)/, '/fingerprint.js$1');
                                 if (legacy !== fpUrl) {
-                                    try { await loadScript(legacy, 5000); } catch (e3) { /* ниже вернём '' */ }
+                                    try { await loadScript(legacy, 5000); } catch (e3) { /* return '' below */ }
                                 }
                             }
                         }
@@ -114,12 +114,12 @@
                 var v = opts.query[k];
                 if (v !== undefined && v !== null && v !== '') qs.set(k, String(v));
             });
-            // Дублируем FP в query: запасной канал, если прод-стенд
-            // вырезает кастомный заголовок X-FP (в кабинет не форвардится).
+            // Duplicate FP in query: fallback channel if the prod stand
+            // strips the custom X-FP header (not forwarded to cabinet).
             if (fp) {
                 qs.set('_fp', fp);
             } else if (window.CabinetFpDebug) {
-                // FP пустой — везём код причины для серверного лога.
+                // Empty FP — carry the reason code for the server log.
                 qs.set('_fpd', String(window.CabinetFpDebug).slice(0, 120));
             }
             var s = qs.toString();
@@ -173,7 +173,7 @@
         }
     }
 
-    // 1:1 с customerportal assets/Utils/orderView.js itemName().
+    // 1:1 with customerportal assets/Utils/orderView.js itemName().
     function itemName(item) {
         var parts = [item.name, item.dosage];
         if (item.packSize && item.quantity) parts.push('x ' + (item.packSize * item.quantity));
@@ -221,8 +221,8 @@
         ctx.toastTimer = setTimeout(function () { ctx.toast = ''; ctx.toastTimer = null; }, ms || 4000);
     }
 
-    // Скоуп выключен у API-клиента (403 от кабинета): вместо технической
-    // ошибки показываем понятный текст (cfg.tScopeForbidden со страницы).
+    // Scope disabled on the API client (cabinet 403): show a friendly
+    // message instead of a technical error (cfg.tScopeForbidden from the page).
     function scopeMessage(e, fallback, cfg) {
         if (e && e.status === 403) {
             return (cfg && cfg.tScopeForbidden) || 'This section is not available for this shop.';
@@ -250,17 +250,17 @@
         return body;
     }
 
-    // ---------- Каркас layout: drawer/popover/юзер (AppHeader 1:1) ----------
+    // ---------- Layout shell: drawer/popover/user (AppHeader 1:1) ----------
     window.cabinetShell = function () {
         return {
             menuOpen: false,
             headerStuck: false,
             userPopoverOpen: false,
             phonesOpen: false,
-            // Скоуп me выключен у API-клиента (403 от /account/api/me) —
-            // блок с данными кастомера не показываем вообще.
+            // Scope me disabled on the API client (403 from /account/api/me) —
+            // the customer data block is hidden entirely.
             meForbidden: false,
-            // Пока /me грузится — спиннер вместо плейсхолдеров.
+            // While /me loads — spinner instead of placeholders.
             meLoading: true,
             userName: '',
             userIdLabel: '',
@@ -280,7 +280,7 @@
                 this.$watch('menuOpen', function (open) {
                     document.body.classList.toggle('lock', open);
                 });
-                // Кастомные скроллбары drawer и списка телефонов (AppHeader 1:1).
+                // Custom scrollbars for drawer and phone list (AppHeader 1:1).
                 this.$nextTick(function () {
                     self.mountScrollbars();
                 });
@@ -288,8 +288,8 @@
                     var me = await api(window.CabinetMeUrl || '/account/api/me');
                     var d = pickObject(me);
                     var name = d.name || d.email || '';
-                    // Кабинет отдаёт /api/v1/me как {customer_id, email, balance} —
-                    // полей name/id/bonus там нет, маппим их синонимы.
+                    // Cabinet serves /api/v1/me as {customer_id, email, balance} —
+                    // no name/id/bonus fields there, map their synonyms.
                     var id = d.id || d.customerId || d.customer_id || '';
                     var bonus = d.bonus;
                     if (bonus === undefined || bonus === null) bonus = d.balance;
@@ -301,7 +301,7 @@
                         this.bonusText = '$' + Number(bonus).toFixed(2);
                     }
                 } catch (e) {
-                    // Скоуп me отключён — прячем блок, пустые плейсхолдеры не показываем.
+                    // Scope me disabled — hide the block, skip empty placeholders.
                     if (e && e.status === 403) this.meForbidden = true;
                 }
                 this.meLoading = false;
@@ -331,7 +331,7 @@
         };
     };
 
-    // Верхняя панель layout (legacy, оставлена для совместимости).
+    // Legacy top layout bar (kept for compatibility).
     window.cabinetTopbar = function () {
         var cfg = window.CabinetConfig || {};
         return {
@@ -344,7 +344,7 @@
                     if (d.email) this.email = d.email;
                     if (d.balance !== undefined && d.balance !== null) this.balance = d.balance;
                     else if (d.bonus !== undefined && d.bonus !== null) this.balance = d.bonus;
-                } catch (e) { /* панель опциональна */ }
+                } catch (e) { /* panel is optional */ }
             },
         };
     };
@@ -361,6 +361,12 @@
             activeFilter: null,
             filtersOpen: false,
             switchingFilter: false,
+            // Display settings baked into window.CabinetConfig by the blade partial.
+            filtersOn: cfg.filtersEnabled !== false,
+            helpOn: cfg.helpEnabled !== false,
+            shopButton: cfg.shopButton || 'all',
+            billingUrl: cfg.billingUrl || '',
+            billingLabel: cfg.tBilling || 'Billing',
             openItems: {},
             shipOpen: {},
             shipLoading: {},
@@ -392,7 +398,6 @@
                     { key: 'approved', label: t.approved || 'Approved' },
                     { key: 'delivered', label: t.delivered || 'Delivered' },
                     { key: 'declined', label: t.declined || 'Declined' },
-                    { key: 'refunded', label: t.refunded || 'Refunded' },
                 ];
             },
 
@@ -497,7 +502,7 @@
                 }
             },
 
-            // ----- Карточка -----
+            // ----- Card -----
             statusLabel(order) {
                 var map = cfg.tStatus || {};
                 return map[order.statusKey] || order.status || '';
@@ -521,9 +526,8 @@
                 return !!(order.nextRecurringDate && order.nextRecurringDate !== 'none');
             },
 
-            // Кнопка Shop — только для заказов с чужого домена
-            // (свой шоп в кнопке не нуждается). Сравнение по нормализованному
-            // хосту: без схемы/порта/пути/www и в нижнем регистре.
+            // Host compare for the foreign-only Shop mode, normalized:
+            // no scheme/port/path/www, lowercase.
             normDomain(host) {
                 var h = String(host || '').trim().toLowerCase();
                 h = h.replace(/^[a-z][a-z0-9+.-]*:\/\//, '').replace(/\/.*$/, '').replace(/:\d+$/, '');
@@ -531,18 +535,23 @@
             },
 
             showShop(order) {
-                var d = this.normDomain(order && order.domainFrom);
-                if (!d) return false;
-                var self = this.normDomain((cfg && cfg.shopHost) || window.location.hostname);
-                return d !== self;
+                // order.shop is a ready URL from the cabinet API (already rewritten
+                // with shop_domain_override by the shop proxy). Visibility follows
+                // the admin setting: all | foreign | hide (portal parity by default).
+                var link = order && order.shop;
+                if (!link) return false;
+                if (this.shopButton === 'hide') return false;
+                if (this.shopButton === 'foreign') {
+                    var d = this.normDomain(link);
+                    if (!d) return false;
+                    var self = this.normDomain(window.location.hostname);
+                    return d !== self;
+                }
+                return true;
             },
 
             shopUrl(order) {
-                var d = String((order && order.domainFrom) || '').trim().replace(/\/+$/, '');
-                if (!d) return '#';
-                if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(d)) d = 'https://' + d;
-                var aff = parseInt((order && order.aff) || 0, 10);
-                return aff > 0 ? d + '?aff=' + aff : d;
+                return (order && order.shop) || '#';
             },
 
             isItemsOpen(id) { return this.openItems[id] !== false; },
@@ -715,8 +724,8 @@
                 if (this.repeatingId) return;
                 this.repeatingId = order.id;
                 try {
-                    // Локальный повтор: позиции с packagingId уходят в корзину шопа,
-                    // API кабинета не дёргаем. Ответ: {status, checkoutUrl} или {status:'error', message}.
+                    // Local repeat: positions with packagingId go to the shop cart,
+                    // cabinet API is not called. Response: {status, checkoutUrl} or {status:'error', message}.
                     var body = await api((cfg.repeatUrl || '/account/api/orders') + '/' + order.id + '/repeat-virtual', {
                         method: 'POST',
                         body: { items: order.items || [] },
@@ -899,7 +908,7 @@
         };
     };
 
-    // ---------- Sessions (legacy, без изменений поведения) ----------
+    // ---------- Sessions (legacy, behavior unchanged) ----------
     window.cabinetSessions = function () {
         var cfg = window.CabinetConfig || {};
         return {
@@ -947,7 +956,7 @@
         };
     };
 
-    // ---------- Contact (Contact.vue 1:1, авторизованная ветка) ----------
+    // ---------- Contact (Contact.vue 1:1, authenticated branch) ----------
     window.cabinetContact = function () {
         var cfg = window.CabinetConfig || {};
         return {
@@ -975,7 +984,7 @@
                         this.email = d.email;
                         this.initialEmail = d.email;
                     }
-                } catch (e) { /* префилл опционален */ }
+                } catch (e) { /* prefill is optional */ }
             },
 
             fieldError(field) {

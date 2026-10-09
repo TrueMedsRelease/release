@@ -1,6 +1,6 @@
 {{--
     Live: "Bonus" — Alpine (account.js cabinetBonus).
-    Переменные: $design.
+    Variables: $design.
 --}}
 <link rel="stylesheet" href="{{ asset_ver('css/cabinet-v1.css') }}">
 @php

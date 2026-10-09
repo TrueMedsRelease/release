@@ -179,6 +179,7 @@ Route::controller(HomeController::class)->group(function () {
         Route::get('/account/api/sessions', 'apiSessions')->name('account.api.sessions');
         Route::post('/account/api/sessions/revoke-all', 'apiSessionsRevokeAll')->name('account.api.sessions.revoke');
         Route::get('/account/api/capabilities', 'apiCapabilities')->name('account.api.capabilities');
+        Route::get('/account/api/display-config', 'apiDisplayConfig')->name('account.api.display');
         Route::post('/account/api/contact', 'apiContact')->name('account.api.contact');
         Route::get('/account/api/chat/messages', 'apiChat')->name('account.api.chat');
         Route::post('/account/api/chat/messages', 'apiChatSend')->name('account.api.chat.send');
@@ -367,14 +368,14 @@ Route::get('/admin/logs/{file}', function ($file) {
 });
 
 Route::controller(CabinetPreviewController::class)->prefix('cabinet')->group(static function () {
-    // Живой кабинет в лейауте текущего дизайна (как остальные страницы):
-    // дизайн из сессии, в URL не указывается. Без токенов — редирект на вход.
-    // Пример: /cabinet/orders
+    // Live cabinet in the current design layout (like other pages):
+    // design comes from session, not the URL. No tokens — redirect to login.
+    // Example: /cabinet/orders
     Route::get('/{page?}', 'cabinetPage')->name('cabinet.live.page');
 });
 Route::controller(CabinetPreviewController::class)->prefix('cabinet-login')->group(static function () {
-    // Вход в кабинет текущего дизайна, дизайн из сессии.
-    // Пример: /cabinet-login/email
+    // Cabinet login for the current design, design from session.
+    // Example: /cabinet-login/email
     Route::get('/{step?}', 'cabinetLogin')->name('cabinet.login');
 });
 

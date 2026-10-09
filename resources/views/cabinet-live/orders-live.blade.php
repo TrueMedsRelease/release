@@ -1,11 +1,12 @@
 {{--
-    Live: "My orders" — Alpine (account.js cabinetOrders) на классах превью.
-    Состояния: загрузка/ошибка/пусто/403-скоуп/тосты. Конфиг — ниже.
-    V1 soft-кнопки действий: public/css/cabinet-v1.css (общий для всех дизайнов).
-    Переменные: $design.
+    Live: "My orders" — Alpine (account.js cabinetOrders) on preview classes.
+    States: loading/error/empty/403-scope/toasts. Config below.
+    V1 soft action buttons: public/css/cabinet-v1.css (shared across designs).
+    Variables: $design.
 --}}
 <link rel="stylesheet" href="{{ asset_ver('css/cabinet-v1.css') }}">
 @php
+$cabDisplay = $cabDisplay ?? \App\Services\CabinetService::displayConfig();
 $cabLiveOrdersConfig = [
     'email' => (string) session('cabinet.email', ''),
     'startUrl' => route('cabinet.login', ['step' => 'email']),
@@ -15,6 +16,12 @@ $cabLiveOrdersConfig = [
     'shipUrl' => url('/account/api/orders'),
     'stopUrl' => url('/account/api/orders'),
     'repeatUrl' => url('/account/api/orders'),
+    // Display settings (admin panel → cabinet, 1:1 customerportal Order view).
+    'filtersEnabled' => (bool) ($cabDisplay['orders_filters'] ?? true),
+    'helpEnabled' => (bool) ($cabDisplay['orders_help'] ?? true),
+    'shopButton' => (string) ($cabDisplay['orders_shop_button'] ?? 'all'),
+    'billingUrl' => ((bool) ($cabDisplay['billing_button'] ?? true)) ? (string) \App\Services\CabinetService::resolveBillingUrl() : '',
+    'tBilling' => __('text.cabinet_billing'),
     'tOrderNumber' => __('text.cabinet_order_number'),
     'tItems' => __('text.cabinet_items'),
     'tNextDate' => __('text.cabinet_next_date'),
@@ -25,7 +32,6 @@ $cabLiveOrdersConfig = [
         'approved' => __('text.cabinet_filter_approved'),
         'delivered' => __('text.cabinet_filter_delivered'),
         'declined' => __('text.cabinet_filter_declined'),
-        'refunded' => __('text.cabinet_filter_refunded'),
     ],
     'tStatus' => [
         'checking' => __('text.cabinet_status_checking'),
@@ -38,8 +44,8 @@ $cabLiveOrdersConfig = [
     'tScopeForbidden' => __('text.cabinet_scope_forbidden'),
     'tShowAll' => __('text.cabinet_show_all_events'),
     'tDays' => __('text.cabinet_track_days'),
-    // Хост текущего шопа: кнопка Shop показывается только для заказов
-    // с чужого домена (domainFrom != shopHost).
+    // Current shop host (legacy note: the Shop button used to show
+    // for foreign-domain orders only).
     'shopHost' => request()->getHost(),
 ];
 @endphp
@@ -49,7 +55,8 @@ window.CabinetConfig = @json($cabLiveOrdersConfig);
 window.CabinetMeUrl = @json(route('account.api.me'));
 </script>
 
-<div class="cabp-layout cabp-layout--orders" x-data="cabinetOrders()" x-cloak>
+<div class="cabp-layout cabp-layout--orders" x-data="cabinetOrders()" x-cloak
+     :class="{ 'cabp-layout--full': !filtersOn && !helpOn }">
     <div class="cabp-main">
         <div class="cabp-loaderror" role="alert" x-show="failed">
             <p class="cabp-loaderror__title">{{ __('text.cabinet_nav_orders') }}</p>
@@ -186,6 +193,9 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                 <a x-show="showShop(order)" :href="shopUrl(order)" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
                                     <span>{{ __('text.cabinet_shop') }}</span>
                                 </a>
+                                <a x-show="billingUrl" :href="billingUrl" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
+                                    <span x-text="billingLabel"></span>
+                                </a>
                             </div>
                         </div>
 
@@ -288,8 +298,8 @@ window.CabinetMeUrl = @json(route('account.api.me'));
         <div x-ref="sentinel" aria-hidden="true"></div>
     </div>
 
-    <aside class="oc-side">
-        <div class="oc-side__card oc-side__card--filters">
+    <aside class="oc-side" x-show="filtersOn || helpOn">
+        <div class="oc-side__card oc-side__card--filters" x-show="filtersOn">
             <p class="oc-side__caption">{{ __('text.cabinet_filter_by_status') }}</p>
             <div class="oc-side__filters" role="group" aria-label="{{ __('text.cabinet_filter_by_status') }}">
                 <template x-for="f in filters" :key="f.key">
@@ -297,7 +307,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                 </template>
             </div>
         </div>
-        <div class="oc-side__card">
+        <div class="oc-side__card" x-show="helpOn">
             <p class="oc-side__help-title">{{ __('text.cabinet_help_title') }}</p>
             <p class="oc-side__help-text">{{ __('text.cabinet_help_text') }}</p>
             <a class="button cabp-action cabp-action--dark cabp-wide" href="{{ route('cabinet.live.page', ['page' => 'contact']) }}">
@@ -306,11 +316,11 @@ window.CabinetMeUrl = @json(route('account.api.me'));
         </div>
     </aside>
 
-    <button type="button" class="oc-filters-fab" :aria-expanded="String(filtersOpen)" @click.stop="filtersOpen = !filtersOpen">
+    <button type="button" class="oc-filters-fab" x-show="filtersOn" :aria-expanded="String(filtersOpen)" @click.stop="filtersOpen = !filtersOpen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v5.5l-4 2.5v-8L3 5z"/></svg>
         <span x-text="activeFilterLabel"></span>
     </button>
-    <div class="oc-filters-pop" role="dialog" x-cloak :class="{ '_open': filtersOpen }" @click.outside="filtersOpen = false" @keydown.escape.window="filtersOpen = false">
+    <div class="oc-filters-pop" role="dialog" x-cloak x-show="filtersOn" :class="{ '_open': filtersOpen }" @click.outside="filtersOpen = false" @keydown.escape.window="filtersOpen = false">
         <p class="oc-side__caption">{{ __('text.cabinet_filter_by_status') }}</p>
         <div class="oc-side__filters" role="group">
             <template x-for="f in filters" :key="f.key">

@@ -144,6 +144,69 @@ class CabinetPreviewTest extends TestCase
             $this->assertTrue(view()->exists('cabinet-live.' . $partial), "Shared partial cabinet-live.{$partial} should exist");
         }
     }
+
+    public function test_nav_hides_page_disabled_in_display_settings(): void
+    {
+        $html = view('cabinet-live.nav-live', [
+            'cabp_page' => 'orders',
+            'cabCapabilities' => ['scopes' => ['orders', 'bonus', 'referral', 'contact', 'chat'], 'chat_enabled' => true],
+            'cabDisplay' => array_replace_recursive(
+                CabinetService::displayDefaults(),
+                ['pages' => ['bonus' => false]]
+            ),
+            'design' => 'design_10',
+        ])->render();
+
+        $this->assertStringContainsString(route('cabinet.live.page', ['page' => 'orders']), $html);
+        $this->assertStringNotContainsString(route('cabinet.live.page', ['page' => 'bonus']), $html);
+    }
+
+    public function test_orders_page_config_excludes_refunded_and_carries_display_flags(): void
+    {
+        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+        Cache::put(
+            CabinetService::SETTINGS_CACHE_KEY,
+            ['shop_id' => 'test', 'embedded_login' => true, 'billing_base_url' => 'https://billing.example'],
+            60
+        );
+
+        try {
+            $response = $this->withSession(['cabinet.access_token' => 'test-token'])
+                ->get('/cabinet/orders');
+            $response->assertStatus(200);
+
+            $html = $response->getContent();
+            $this->assertSame(1, preg_match('/window\.CabinetConfig = (\{.*?\});/s', $html, $matches));
+            $config = json_decode($matches[1], true);
+            $this->assertIsArray($config);
+
+            $this->assertSame(
+                ['all', 'checking', 'approved', 'delivered', 'declined'],
+                array_keys($config['tFilters'] ?? [])
+            );
+            $this->assertTrue($config['filtersEnabled']);
+            $this->assertTrue($config['helpEnabled']);
+            $this->assertSame('all', $config['shopButton']);
+            $this->assertSame('https://billing.example', $config['billingUrl']);
+        } finally {
+            $this->forgetShopSettings();
+        }
+    }
+
+    public function test_display_config_endpoint_forbidden_when_cabinet_disabled(): void
+    {
+        $this->get('/cabinet-login/email'); // warm up UrlGenerator
+
+        // No DB in tests: CabinetService::config() degrades to disabled.
+        $response = $this->get(route('account.api.display'));
+        $response->assertStatus(403);
+    }
+
+    public function test_first_visible_page_defaults_to_orders(): void
+    {
+        // No DB in tests: displayConfig() degrades to defaults (all pages on).
+        $this->assertSame('orders', CabinetService::firstVisiblePage());
+    }
 }
 
 class CabinetLoginLayoutFakeLanguage

@@ -1,6 +1,6 @@
 {{--
-    Live: "Contact us" — Alpine (account.js cabinetContact, авторизованная ветка).
-    Переменные: $design.
+    Live: "Contact us" — Alpine (account.js cabinetContact, authenticated branch).
+    Variables: $design.
 --}}
 @php
 $cabLiveContactConfig = [

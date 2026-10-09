@@ -62,3 +62,101 @@
         </form>
     </div>
 </div>
+
+@php
+$cbPages = [
+    'orders' => 'My orders',
+    'bonus' => 'Bonus',
+    'referral' => 'Referral program',
+    'contact' => 'Contact Us',
+    'chat' => 'Chat',
+];
+$cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hide' => 'Hide'];
+@endphp
+<div class="statistic">
+    <div class="statistic__rows">
+        <h3 class="payment-details__caption">Display settings</h3>
+        <div class="cab-admin__field">
+            <div>
+                <div class="cab-admin__label">Cabinet pages</div>
+                <div class="cab-admin__hint">Hidden pages return 404 and disappear from navigation (combined with cabinet license scopes).</div>
+            </div>
+            <div>
+                @foreach ($cbPages as $cbKey => $cbLabel)
+                    <label class="cab-admin__radio" for="cab_page_{{ $cbKey }}">
+                        <input type="checkbox" name="display_pages_{{ $cbKey }}" id="cab_page_{{ $cbKey }}" value="1"
+                               @if (!empty($cabinet_display['pages'][$cbKey])) checked @endif />
+                        {{ $cbLabel }}
+                    </label>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="cab-admin__field">
+            <div>
+                <div class="cab-admin__label">My orders blocks</div>
+            </div>
+            <div>
+                <label class="cab-admin__radio" for="cab_orders_filters">
+                    <input type="checkbox" name="display_orders_filters" id="cab_orders_filters" value="1"
+                           @if (!empty($cabinet_display['orders_filters'])) checked @endif />
+                    Filter by status
+                </label>
+                <label class="cab-admin__radio" for="cab_orders_help">
+                    <input type="checkbox" name="display_orders_help" id="cab_orders_help" value="1"
+                           @if (!empty($cabinet_display['orders_help'])) checked @endif />
+                    Need help with an order?
+                </label>
+            </div>
+        </div>
+
+        <div class="cab-admin__field">
+            <div>
+                <div class="cab-admin__label"><label for="cab_shop_button">Shop button (My orders)</label></div>
+                <div class="cab-admin__hint">Controls the Shop link that the cabinet API returns per order.</div>
+            </div>
+            <div>
+                <select class="cab-admin__input" name="display_orders_shop_button" id="cab_shop_button">
+                    @foreach ($cbShopButtons as $cbValue => $cbLabel)
+                        <option value="{{ $cbValue }}" @if (($cabinet_display['orders_shop_button'] ?? 'all') === $cbValue) selected @endif>{{ $cbLabel }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="cab-admin__field">
+            <div>
+                <div class="cab-admin__label"><label for="cab_shop_override">Shop domain override</label></div>
+                <div class="cab-admin__hint">Full URL, query params allowed (e.g. https://example.com?aff=1842). Host is replaced, missing params are appended, existing params win.</div>
+            </div>
+            <div>
+                <input class="cab-admin__input" type="text" name="display_shop_domain_override" id="cab_shop_override"
+                       value="{{ $cabinet_display['shop_domain_override'] ?? '' }}" placeholder="https://example.com?aff=1842" autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="cab-admin__field">
+            <div>
+                <div class="cab-admin__label"><label for="cab_billing_override">Billing URL override</label></div>
+                <div class="cab-admin__hint">Empty = use billing_base_url from the cabinet. Shown as the Billing button on order cards.</div>
+            </div>
+            <div>
+                <input class="cab-admin__input" type="text" name="display_billing_url_override" id="cab_billing_override"
+                       value="{{ $cabinet_display['billing_url_override'] ?? '' }}" placeholder="https://billing.example.com" autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="cab-admin__field">
+            <div>
+                <div class="cab-admin__label">Billing button</div>
+            </div>
+            <div>
+                <label class="cab-admin__radio" for="cab_billing_button">
+                    <input type="checkbox" name="display_billing_button" id="cab_billing_button" value="1"
+                           @if (!empty($cabinet_display['billing_button'])) checked @endif />
+                    Show Billing button when a billing URL is available
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

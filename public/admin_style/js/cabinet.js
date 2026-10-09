@@ -1,7 +1,7 @@
 /**
- * Страница /admin/cabinet — логика только этой страницы.
- * Домен шопа нигде не вводится: сервер сам берёт его из хоста
- * текущего запроса (CabinetService::shopDomain() → $request->getHost()).
+ * /admin/cabinet page — logic for this page only.
+ * The shop domain is never typed in: the server takes it from the
+ * current request host (CabinetService::shopDomain() → $request->getHost()).
  */
 (function ($) {
     'use strict';
@@ -30,7 +30,7 @@
         try {
             document.execCommand('copy');
         } catch (e) {
-            /* clipboard API недоступен — значение уже выделено для Ctrl+C */
+                /* clipboard API unavailable — value already selected for Ctrl+C */
         }
     }
 
@@ -64,9 +64,24 @@
         }
 
         function formData() {
+            var displayPages = {};
+            ['orders', 'bonus', 'referral', 'contact', 'chat'].forEach(function (page) {
+                displayPages[page] = $('#cab_page_' + page).is(':checked') ? '1' : '0';
+            });
             return {
                 cabinet_enabled: $('input[name="cabinet_enabled"]:checked').val(),
-                cabinet_secret: $('#cabinet_secret').val()
+                cabinet_secret: $('#cabinet_secret').val(),
+                'display[pages][orders]': displayPages.orders,
+                'display[pages][bonus]': displayPages.bonus,
+                'display[pages][referral]': displayPages.referral,
+                'display[pages][contact]': displayPages.contact,
+                'display[pages][chat]': displayPages.chat,
+                'display[orders_filters]': $('#cab_orders_filters').is(':checked') ? '1' : '0',
+                'display[orders_help]': $('#cab_orders_help').is(':checked') ? '1' : '0',
+                'display[orders_shop_button]': $('#cab_shop_button').val(),
+                'display[shop_domain_override]': $('#cab_shop_override').val(),
+                'display[billing_url_override]': $('#cab_billing_override').val(),
+                'display[billing_button]': $('#cab_billing_button').is(':checked') ? '1' : '0'
             };
         }
 
@@ -118,14 +133,14 @@
             });
         }
 
-        // Enter в полях формы — сохранить, а не уйти на пустой action.
+        // Enter in form fields saves instead of leaving via the empty action.
         $form.on('submit', function (e) {
             e.preventDefault();
             save();
         });
         $testBtn.on('click', test);
 
-        // Показать/скрыть секрет.
+        // Show/hide the secret.
         $('#cab_secret_toggle').on('click', function () {
             var $secret = $('#cabinet_secret');
             var show = $secret.attr('type') === 'password';
@@ -133,7 +148,7 @@
             $(this).text(show ? 'Hide' : 'Show');
         });
 
-        // Копирование домена/callback из инструкции.
+        // Copy domain/callback from the guide.
         $('[data-copy-target]').on('click', function () {
             var $btn = $(this);
             var $input = $('#' + $btn.data('copy-target'));

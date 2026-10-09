@@ -1,9 +1,9 @@
 /**
- * Живой кабинет в лейауте магазина: дополнение к account.js.
+ * Live cabinet in the shop layout: companion to account.js.
  * account.js (cabinetOrders/cabinetBonus/cabinetReferral/cabinetContact +
- * Alpine) переиспользуется как есть — биндится к тем же oc- и cabp-классам.
- * Здесь только то, чего в account.js нет: шапка разделов (me-chip) и чат.
- * Эндпоинты — те же /account/api/* (см. AccountController).
+ * Alpine) is reused as is — bound to the same oc- and cabp-classes.
+ * Only what account.js lacks lives here: section header (me-chip) and chat.
+ * Endpoints are the same /account/api/* (see AccountController).
  */
 (function () {
     'use strict';
@@ -13,10 +13,10 @@
         return meta ? meta.getAttribute('content') : '';
     }
 
-    // Единый FP со всеми остальными местами: читаем значение, которое
-    // ушло на embedded.start/verify при логине (localStorage cabinet_fp).
-    // Пересчёт через DeviceLib здесь запрещён: хэш нестабилен между
-    // страницами (viewport, links/scripts, voices) и сломал бы привязку.
+    // One fingerprint shared with everything else: read the value that was
+    // sent on embedded.start/verify at login (localStorage cabinet_fp).
+    // Recomputing via DeviceLib is banned here: the hash is unstable across
+    // pages (viewport, links/scripts, voices) and would break the binding.
     async function ensureFingerprint() {
         try {
             if (window.CabinetAccountFp) return window.CabinetAccountFp;
@@ -41,7 +41,8 @@
             var v = opts.query[k];
             if (v !== undefined && v !== null && v !== '') qs.set(k, String(v));
         });
-        // Дублируем FP в query: запасной канал, если стенд режет X-FP.
+        // Duplicate the FP into the query: fallback channel in case the
+        // server stack strips the X-FP header (never forwarded to the cabinet).
         if (fp) {
             qs.set('_fp', fp);
         } else if (window.CabinetFpDebug) {
@@ -95,8 +96,8 @@
         window.location.href = (cfg && cfg.loginUrl) || '/preview/cabinet-login/design_10/email';
     }
 
-    // ---------- Шапка разделов: me-chip (инициалы/имя/бонус) ----------
-    // Скоуп me выключен (403) — блок прячем целиком, как в cabinetShell.
+    // ---------- Section header: me-chip (initials/name/bonus) ----------
+    // Scope me disabled (403) — hide the block entirely, like cabinetShell.
     window.shopCabinetNav = function () {
         var cfg = window.CabinetConfig || {};
         return {
@@ -128,7 +129,7 @@
         };
     };
 
-    // ---------- Chat (Chat.vue 1:1): лента + композер ----------
+    // ---------- Chat (Chat.vue 1:1): thread + composer ----------
     window.cabinetChat = function () {
         var cfg = window.CabinetConfig || {};
         return {
@@ -157,7 +158,7 @@
                     var d = pickObject(body);
                     var list = Array.isArray(body.messages) ? body.messages : (Array.isArray(d.messages) ? d.messages : []);
                     var offset = (body.next_offset !== undefined) ? body.next_offset : d.nextOffset;
-                    // Бэк отдаёт newest-first — рисуем oldest-first.
+                    // Backend sends newest-first — render oldest-first.
                     list = list.slice().reverse();
                     this.messages = replace ? list : list.concat(this.messages);
                     this.nextOffset = (offset === undefined || offset === null) ? null : offset;
@@ -195,8 +196,8 @@
                     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c];
                 });
             },
-            // Тело письма — HTML (textHtml с портала, уже почищен).
-            // Нет textHtml (старый кабинет) — экранируем текст сами.
+            // Message body is HTML (textHtml from the portal, already sanitized).
+            // No textHtml (legacy cabinet) — escape the text ourselves.
             msgHtml(m) {
                 if (!m) return '';
                 if (m.textHtml) return m.textHtml;

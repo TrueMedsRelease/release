@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Phattarachai\LaravelMobileDetect\Agent;
 
 /**
- * Живой кабинет и вход в лейауте текущего дизайна (дизайн из сессии).
+ * Live cabinet and login in the current design layout (design from session).
  *
- * Роуты:
+ * Routes:
  *   /cabinet/{page?}      page = orders|bonus|referral|contact|chat
  *   /cabinet-login/{step?} step = email|captcha|code
  */
@@ -26,7 +26,7 @@ class CabinetPreviewController extends Controller
     public function login(string $design, string $step = 'email')
     {
         $design = $this->resolveDesign($design);
-        // Старый роут .../login ведём на первый шаг.
+        // Legacy .../login route leads to the first step.
         if ($step === 'login') {
             $step = 'email';
         }
@@ -42,7 +42,7 @@ class CabinetPreviewController extends Controller
             abort(404);
         }
         if ((string) session('cabinet.access_token', '') !== '') {
-            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
+            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
         return view($design . '.cabinet.' . $view, array_merge(
@@ -56,8 +56,8 @@ class CabinetPreviewController extends Controller
     }
 
     /**
-     * Живой кабинет текущего дизайна: дизайн из сессии (как остальные
-     * страницы магазина), в URL не указывается. Пример: /cabinet/orders
+     * Live cabinet of the current design: design from session (like other
+     * shop pages), not present in the URL. Example: /cabinet/orders
      */
     public function cabinetPage(string $page = 'orders')
     {
@@ -70,7 +70,7 @@ class CabinetPreviewController extends Controller
     }
 
     /**
-     * Вход в кабинет текущего дизайна. Пример: /cabinet-login/email
+     * Cabinet login of the current design. Example: /cabinet-login/email
      */
     public function cabinetLogin(string $step = 'email')
     {
@@ -83,10 +83,10 @@ class CabinetPreviewController extends Controller
     }
 
     /**
-     * Живой кабинет в лейауте магазина: те же разделы, данные — через
-     * /account/api/* (Alpine). Без токенов — на страницу входа.
-     * Capabilities — из кеша 60с, чтобы скрывать недоступные разделы сразу
-     * (а не после 403 и мигания «раздел не доступен»).
+     * Live cabinet in the shop layout: same sections, data via
+     * /account/api/* (Alpine). No tokens — to the login page.
+     * Capabilities come from the 60s cache to hide disabled sections at once
+     * (instead of a 403 flash reading "section unavailable").
      */
     public function live(string $design, string $page = 'orders')
     {
@@ -101,7 +101,13 @@ class CabinetPreviewController extends Controller
             return redirect()->route('cabinet.login', ['step' => 'email']);
         }
 
-        // Мгновенное скрытие отключенных разделов: префетч capabilities (кеш 60с)
+        // Disabled in the shop display settings — same as a missing section.
+        $cabDisplay = CabinetService::displayConfig();
+        if (empty($cabDisplay['pages'][$page])) {
+            abort(404);
+        }
+
+        // Instant hiding of disabled sections: capabilities prefetch (60s cache)
         $capabilities = CabinetService::capabilities();
         if (is_array($capabilities) && isset($capabilities['scopes']) && is_array($capabilities['scopes'])) {
             $scopeMap = [
@@ -122,12 +128,12 @@ class CabinetPreviewController extends Controller
 
         return view($design . '.cabinet.live-' . $page, array_merge(
             $this->layoutData($design, 'cabinet_' . $page),
-            ['cabp_page' => $page, 'cabCapabilities' => $capabilities]
+            ['cabp_page' => $page, 'cabCapabilities' => $capabilities, 'cabDisplay' => $cabDisplay]
         ));
     }
 
     /**
-     * Только существующие дизайны с layout магазина.
+     * Only existing designs with a shop layout.
      */
     private function resolveDesign(string $design): ?string
     {
@@ -142,9 +148,9 @@ class CabinetPreviewController extends Controller
     }
 
     /**
-     * Текущий дизайн магазина: сессия, иначе дефолт приложения —
-     * тот же источник, что у остальных страниц (см. HomeController).
-     * Переопределяется ?design=N через SessionParameterHandler.
+     * Current shop design: session, otherwise the app default —
+     * the same source as other pages (see HomeController).
+     * Overridden via ?design=N through SessionParameterHandler.
      */
     private function currentDesign(): ?string
     {
@@ -152,8 +158,8 @@ class CabinetPreviewController extends Controller
     }
 
     /**
-     * Минимальный набор переменных, который требует layouts.main.
-     * Хром магазина (меню/бестселлеры/телефоны) — реальный.
+     * Minimal variable set required by layouts.main.
+     * Shop chrome (menu/bestsellers/phones) is real.
      */
     private function layoutData(string $design, string $pageKey): array
     {

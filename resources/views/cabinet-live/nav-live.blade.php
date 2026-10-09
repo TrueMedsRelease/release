@@ -1,8 +1,8 @@
 {{--
-     Live: шапка разделов кабинета в лейауте магазина.
-     Табы скрываем сразу по capabilities (кеш 60с), фолбэк — session cabinet.forbidden.*
-     + me-chip через /account/api/me (403 по скоупу me — прячем целиком).
-     Переменные: $design, $cabp_page, $cabCapabilities (опц.).
+     Live: cabinet section header in the shop layout.
+     Tabs are hidden upfront via capabilities (60s cache), fallback is session cabinet.forbidden.*
+     + me-chip via /account/api/me (403 on me scope hides it entirely).
+     Variables: $design, $cabp_page, $cabCapabilities (opt.).
 --}}
 @php
     use App\Services\CabinetService;
@@ -14,11 +14,16 @@
         ['key' => 'chat', 'label' => __('text.cabinet_nav_chat'), 'scope' => 'chat'],
     ];
     $cabpCurrent = $cabp_page ?? 'orders';
-    // capabilities — серверный префетч с кешем 60с (мгновенно, без 403-мигания)
+    // capabilities — server-side prefetch with 60s cache (instant, no 403 flicker)
     $cabCapabilities = $cabCapabilities ?? CabinetService::capabilities();
     $cabScopes = is_array($cabCapabilities) && isset($cabCapabilities['scopes']) && is_array($cabCapabilities['scopes'])
         ? $cabCapabilities['scopes'] : null;
     $cabChatEnabled = is_array($cabCapabilities) ? ($cabCapabilities['chat_enabled'] ?? true) : true;
+    // Shop display settings (admin panel → cabinet): a disabled page hides
+    // the tab immediately, ANDed with the license scopes below.
+    $cabDisplay = $cabDisplay ?? CabinetService::displayConfig();
+    $cabPages = is_array($cabDisplay) && isset($cabDisplay['pages']) && is_array($cabDisplay['pages'])
+        ? $cabDisplay['pages'] : [];
 @endphp
 <div class="cabp-head" x-data="shopCabinetNav()" x-cloak>
     <div class="cabp-user" x-show="!meForbidden">
@@ -32,6 +37,7 @@
     <nav class="cabp-tabs" aria-label="Cabinet">
         @foreach ($cabpTabs as $tab)
             @if ($tab['key'] === 'chat' && !$cabChatEnabled) @continue @endif
+            @if (array_key_exists($tab['key'], $cabPages) && empty($cabPages[$tab['key']])) @continue @endif
             @if ($cabScopes !== null)
                 @if (!empty($tab['scope']) && !in_array($tab['scope'], $cabScopes, true)) @continue @endif
             @else

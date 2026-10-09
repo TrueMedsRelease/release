@@ -1,9 +1,9 @@
 /**
- * Живой логин кабинета в отдельных login-layout дизайнов (без сборки).
- * Три отдельные страницы (как шаги customerportal Login.vue):
- *  email (только почта) -> captcha (только пазл) -> code (OTP из письма).
- * ID-привязки свои (shop-*),デザイン-независим: работает во всех 13 дизайнах.
- * Серверные эндпоинты те же, что у embedded.js (captcha/proxy/embedded).
+ * Live cabinet login in standalone login-layout designs (no build).
+ * Three separate pages (mirroring customerportal Login.vue steps):
+ *  email (email only) -> captcha (puzzle only) -> code (OTP from email).
+ * Own ID bindings (shop-*), design-independent: works in all 13 designs.
+ * Server endpoints are the same as embedded.js (captcha/proxy/embedded).
  */
 (function () {
     'use strict';
@@ -25,7 +25,7 @@
         }
     }
 
-    /* ================= шаг 1: email ================= */
+    /* ================= step 1: email ================= */
 
     function initEmailStep() {
         var input = document.getElementById('shop-email');
@@ -61,7 +61,7 @@
         input.focus();
     }
 
-    /* ================= шаг 2: пазл-капча ================= */
+    /* ================= step 2: puzzle captcha ================= */
 
     function initCaptchaStep() {
         var box = document.getElementById('shop-captcha');
@@ -232,7 +232,7 @@
         fetchCaptcha();
     }
 
-    /* ================= шаг 3: OTP ================= */
+    /* ================= step 3: OTP ================= */
 
     function initOtpStep() {
         var wrap = document.getElementById('shop-otp');
@@ -350,13 +350,13 @@
         });
     }
 
-    // Fingerprint привязывается к токену кабинета на шагах
-    // embedded.start/verify (hidden input), а дальше каждая ручка
-    // /account/api/* шлёт его же в X-FP (account.js). Несовпадение
-    // (пусто на логине, реальный после) => 401 fingerprint_required
-    // на первом же запросе заказов => снос токенов => возврат на логин.
-    // Поэтому: считаем FP заранее, заполняем оба hidden input и не даём
-    // формам уйти раньше (включая программный form.submit() OTP-автосабмита).
+    // Fingerprint is bound to the cabinet token at the
+    // embedded.start/verify steps (hidden input), then every
+    // /account/api/* handle sends it back in X-FP (account.js). A mismatch
+    // (empty at login, real afterwards) => 401 fingerprint_required
+    // on the first orders request => tokens wiped => bounce to login.
+    // So: compute FP upfront, fill both hidden inputs, and never let
+    // forms go early (including the programmatic OTP-autosubmit form.submit()).
     var shopFpValue = '';
     var shopFpReady = null;
     var SHOP_FP_KEY = 'cabinet_fp';
@@ -384,9 +384,9 @@
 
     function ensureShopFp() {
         if (shopFpValue) return Promise.resolve(shopFpValue);
-        // DeviceLib нестабилен между страницами (viewport, links/scripts,
-        // voices): переиспользуем значение, посчитанное ранее, чтобы кабинет
-        // видел один и тот же FP на логине и в /account/api/*.
+        // DeviceLib is unstable across pages (viewport, links/scripts,
+        // voices): reuse the previously computed value so the cabinet
+        // sees the same FP at login and in /account/api/*.
         var stored = readStoredShopFp();
         if (stored) {
             fillShopFp(stored);
@@ -398,7 +398,7 @@
                 if (typeof window.DeviceLib === 'undefined' && typeof window.FingerprintLib === 'undefined') {
                     try {
                         await loadShopScript('/js/cabinet/device-lib.js', 5000);
-                    } catch (e) { /* ниже вернём '' */ }
+                    } catch (e) { /* fall through to '' below */ }
                 }
                 var Ctor = window.DeviceLib || window.FingerprintLib;
                 if (!Ctor) return '';

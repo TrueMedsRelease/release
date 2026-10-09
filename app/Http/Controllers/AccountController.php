@@ -10,16 +10,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Встроенный личный кабинет: вход только у себя в шопе
- * (email + пазл-капча кабинета + код из письма; с доверенных сетей
- * кабинет отвечает trusted_ticket — тогда код не нужен).
+ * Embedded customer cabinet: login only inside own shop
+ * (email + cabinet puzzle captcha + emailed code; trusted networks
+ * get trusted_ticket from cabinet — then no code needed).
  *
- * Токены живут только в сессии сервера.
+ * Tokens live in server session only.
  */
 class AccountController extends Controller
 {
     /**
-     * Хаб: есть токены — живой кабинет текущего дизайна, нет — экран входа.
+     * Hub: tokens present — live cabinet of current design, none — login screen.
      */
     public function index()
     {
@@ -28,14 +28,14 @@ class AccountController extends Controller
         }
 
         if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
+            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
         return redirect()->route('cabinet.login', ['step' => 'email']);
     }
 
     /**
-     * Пазл-капча кабинета для встроенного логина (прокси, без кук).
+     * Cabinet puzzle captcha for embedded login (proxy, no cookies).
      */
     public function captchaImage()
     {
@@ -52,8 +52,8 @@ class AccountController extends Controller
     }
 
     /**
-     * Проверка решения пазла. Успех — одноразовый токен в сессию сервера
-     * (в браузер не отдаём), дальше им подписывается embedded/start.
+     * Puzzle solution check. Success — one-time token into server session
+     * (never sent to browser), later signs embedded/start.
      */
     public function captchaVerify(Request $request)
     {
@@ -72,7 +72,7 @@ class AccountController extends Controller
     }
 
     /**
-     * Встроенный логин, шаг 1: email + решённый пазл кабинета → кабинет шлёт код.
+     * Embedded login, step 1: email + solved cabinet puzzle → cabinet sends code.
      */
     public function embeddedStart(Request $request)
     {
@@ -80,7 +80,7 @@ class AccountController extends Controller
             return redirect()->route('home.login');
         }
         if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
+            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
         $email = trim((string) $request->input('email', ''));
@@ -91,8 +91,8 @@ class AccountController extends Controller
                 ->withInput(['email' => $email]);
         }
 
-        // Одноразовый токен пазла из сессии (кладётся captchaVerify выше),
-        // сжигаем на любом выходе с этого шага.
+        // One-time puzzle token from session (set by captchaVerify above),
+        // consumed on any exit from this step.
         $captchaToken = (string) session('cabinet.captcha_token', '');
         if ($captchaToken === '') {
             return redirect()->route('cabinet.login', ['step' => 'email'])
@@ -105,15 +105,15 @@ class AccountController extends Controller
 
         if (!empty($result['ok'])) {
             $data = (array) ($result['data'] ?? []);
-            // Доверенная сеть: кабинет прислал trusted_ticket вместо кода —
-            // сразу меняем его на пару токенов, шаг с кодом пропускаем.
+            // Trusted network: the cabinet sent trusted_ticket instead of a code —
+            // exchange it for a token pair right away, skipping the code step.
             if (!empty($data['trusted']) && !empty($data['trusted_ticket'])) {
                 $verify = CabinetService::embeddedVerify($email, '', $request->ip(), $this->browserFingerprint($request), (string) $data['trusted_ticket']);
                 if (!empty($verify['ok'])) {
                     $this->storePair((array) $verify['data']);
                     session(['cabinet.fp_hash' => sha1((string) $this->browserFingerprint($request))]);
 
-                    return redirect()->route('cabinet.live.page', ['page' => 'orders']);
+                    return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
                 }
                 $message = $this->embeddedErrorMessage((string) ($verify['code'] ?? ''), (string) ($verify['error'] ?? ''), null);
 
@@ -136,7 +136,7 @@ class AccountController extends Controller
     }
 
     /**
-     * Встроенный логин, шаг 2: проверка кода → пара в сессию.
+     * Embedded login, step 2: code check → pair into session.
      */
     public function embeddedVerify(Request $request)
     {
@@ -144,7 +144,7 @@ class AccountController extends Controller
             return redirect()->route('home.login');
         }
         if (session('cabinet.access_token')) {
-            return redirect()->route('cabinet.live.page', ['page' => 'orders']);
+            return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
         $email = (string) session('cabinet.embedded_email', '');
@@ -173,18 +173,18 @@ class AccountController extends Controller
         }
 
         $this->storePair((array) $result['data']);
-        // Хэш FP, к которому кабинет привязал токен: сверяем с ним FP
-        // из /account/api/* при 401 (сырое значение не храним/логируем).
+        // Hash of the FP the cabinet bound the token to: compare the FP
+        // from /account/api/* against it on 401 (raw value never stored/logged).
         session(['cabinet.fp_hash' => sha1((string) $verifyFp)]);
         session()->forget('cabinet.embedded_email');
 
-        return redirect()->route('cabinet.live.page', ['page' => 'orders']);
+        return redirect()->route('cabinet.live.page', ['page' => CabinetService::firstVisiblePage()]);
     }
 
     /**
-     * Fingerprint браузера из скрытого поля форм (считает DeviceLib):
-     * шоп пробрасывает его в кабинет для привязки кода (детект перехвата).
-     * Пусто — допустимо, тогда сверка по fingerprint пропускается.
+     * Browser fingerprint from the forms' hidden field (computed by DeviceLib):
+     * the shop forwards it to the cabinet for code binding (hijack detection).
+     * Empty is allowed, then the fingerprint check is skipped.
      */
     private function browserFingerprint(Request $request): ?string
     {
@@ -212,7 +212,7 @@ class AccountController extends Controller
 
     private function storePair(array $pair): void
     {
-        // Кабинет отдаёт expires_in (секунды, ~900), старого expires_at нет.
+        // The cabinet sends expires_in (seconds, ~900), no legacy expires_at.
         $expiresAt = (string) ($pair['expires_at'] ?? '');
         if ($expiresAt === '' && isset($pair['expires_in'])) {
             $expiresAt = (string) (time() + max(0, (int) $pair['expires_in']));
@@ -222,7 +222,7 @@ class AccountController extends Controller
             'cabinet.refresh_token' => (string) ($pair['refresh_token'] ?? ''),
             'cabinet.expires_at'    => $expiresAt,
         ]);
-        // Новый вход — запреты скоупов и кеш capabilities сбрасываем.
+        // Fresh login — reset scope bans and the capabilities cache.
         session()->forget('cabinet.forbidden');
         CabinetService::forgetCapabilities();
     }
@@ -245,11 +245,20 @@ class AccountController extends Controller
         return redirect()->route('home.index');
     }
 
-    // ---------- JSON-прокси к /api/v1/* ----------
+    // ---------- JSON proxy to /api/v1/* ----------
 
     public function apiMe(Request $request)
     {
         return $this->proxy($request, 'GET', 'me');
+    }
+
+    /**
+     * Allow-list of order status filters (portal parity: no refunded here, pill only).
+     * Pure function, no DB/network.
+     */
+    public static function allowedOrderStatus(string $status): ?string
+    {
+        return in_array($status, ['checking', 'approved', 'delivered', 'declined'], true) ? $status : null;
     }
 
     public function apiOrders(Request $request)
@@ -261,13 +270,14 @@ class AccountController extends Controller
         if ($request->query('per_page') !== null && $request->query('per_page') !== '') {
             $query['per_page'] = min(50, max(1, (int) $request->query('per_page')));
         }
-        // 1:1 с порталом (Orders.vue): фильтр по группе статусов.
-        $status = (string) $request->query('status', '');
-        if (in_array($status, ['checking', 'approved', 'delivered', 'declined', 'refunded'], true)) {
+        // 1:1 with the portal (Orders.vue): filter by status group.
+        // No refunded in the filter (like customerportal — pill only).
+        $status = self::allowedOrderStatus((string) $request->query('status', ''));
+        if ($status !== null) {
             $query['status'] = $status;
         }
-        // Инлайн shipping кабинета (with_shipping=1|true, алиас include_shipping):
-        // пробрасываем как есть, чтобы фронт мог забрать адреса за один запрос.
+        // Cabinet shipping inline (with_shipping=1|true, include_shipping alias):
+        // forwarded as is so the frontend can fetch addresses in one request.
         foreach (['with_shipping', 'include_shipping'] as $shipKey) {
             $shipVal = (string) $request->query($shipKey, '');
             if (in_array($shipVal, ['1', 'true'], true)) {
@@ -275,7 +285,68 @@ class AccountController extends Controller
             }
         }
 
-        return $this->proxy($request, 'GET', 'orders', ['query' => $query]);
+        $response = $this->proxy($request, 'GET', 'orders', ['query' => $query]);
+        if ($response instanceof \Illuminate\Http\JsonResponse || (is_object($response) && method_exists($response, 'getStatusCode') && $response->getStatusCode() !== 200)) {
+            return $response;
+        }
+        try {
+            $body = json_decode((string) $response->getContent(), true);
+        } catch (\Throwable $e) {
+            return $response;
+        }
+        if (!is_array($body)) {
+            return $response;
+        }
+
+        return response()->json(self::rewriteOrderShopLinks($body), 200);
+    }
+
+    /**
+     * Rewrite order shop links through shop_domain_override (admin setting).
+     * Empty override keeps links as is. Pass $override explicitly in tests;
+     * null reads the display config (DB with graceful defaults).
+     */
+    public static function rewriteOrderShopLinks(array $body, ?string $override = null): array
+    {
+        if ($override === null) {
+            $override = (string) (CabinetService::displayConfig()['shop_domain_override'] ?? '');
+        }
+        if ($override === '') {
+            return $body;
+        }
+        $items = $body['data']['items'] ?? null;
+        if (!is_array($items)) {
+            return $body;
+        }
+        foreach ($items as $i => $order) {
+            if (is_array($order) && isset($order['shop']) && is_string($order['shop']) && $order['shop'] !== '') {
+                $body['data']['items'][$i]['shop'] = CabinetService::applyDomainOverride($order['shop'], $override);
+            }
+        }
+
+        return $body;
+    }
+
+    /**
+     * Public cabinet display config for the frontend (no PII, no token needed):
+     * page/block visibility, Shop button mode, final billing URL.
+     */
+    public function apiDisplayConfig()
+    {
+        if (!CabinetService::enabled()) {
+            return response()->json(['error' => 'Cabinet is disabled.'], 403);
+        }
+        $display = CabinetService::displayConfig();
+
+        return response()->json([
+            'pages' => $display['pages'],
+            'orders_filters' => $display['orders_filters'],
+            'orders_help' => $display['orders_help'],
+            'orders_shop_button' => $display['orders_shop_button'],
+            'billing_button' => $display['billing_button'],
+            'billing_url' => CabinetService::resolveBillingUrl(),
+            'billing_label' => __('text.cabinet_billing'),
+        ]);
     }
 
     public function apiOrderShipping(Request $request, int $id)
@@ -294,10 +365,10 @@ class AccountController extends Controller
     }
 
     /**
-     * Повтор заказа локально, без обращений к API кабинета:
-     * позиции заказа (с packagingId из /api/v1/orders) кладём в корзину
-     * шопа и отдаём URL чекаута. Несопоставленные/скрытые упаковки молча
-     * пропускаем; если не легло ничего — ошибка для тоста.
+     * Local order repeat, no cabinet API calls:
+     * order positions (with packagingId from /api/v1/orders) go to the shop
+     * cart and we return the checkout URL. Unmatched/hidden packs are silently
+     * skipped; if nothing lands — an error for the toast.
      */
     public function apiOrderRepeatVirtual(Request $request, int $id)
     {
@@ -342,16 +413,16 @@ class AccountController extends Controller
 
         Cart::update_cart_total();
 
-        // Форму чекаута сразу заполняем адресом исходного заказа
-        // (ключи session('form.*'), best effort — корзина уже собрана).
+        // Prefill the checkout form with the source order address right away
+        // (session('form.*') keys, best effort — the cart is already built).
         $this->prefillCheckoutForm($request, $id);
 
         return response()->json(['status' => 'success', 'checkoutUrl' => route('checkout.index')]);
     }
 
     /**
-     * Адрес доставки заказа из кабинета → session('form.*') для чекаута.
-     * Best effort: нет скоупа/сети — молча пропускаем, повтор уже работает.
+     * Cabinet order shipping address → session('form.*') for checkout.
+     * Best effort: no scope/network — skip silently, repeat already works.
      */
     private function prefillCheckoutForm(Request $request, int $id): void
     {
@@ -411,7 +482,7 @@ class AccountController extends Controller
     public function apiSessionsRevokeAll(Request $request)
     {
         $response = $this->proxy($request, 'POST', 'sessions/revoke-all');
-        // Все сессии отозваны — локальные токены тоже мертвы.
+        // All sessions revoked — local tokens are dead too.
         if ($response->getStatusCode() === 200) {
             $this->forgetTokens();
         }
@@ -460,9 +531,9 @@ class AccountController extends Controller
     }
 
     /**
-     * Прокси с Bearer из серверной сессии + проброс X-FP браузера
-     * как X-Fingerprint (токен кабинета к нему привязан).
-     * При 401 — одна ротация пары и повтор.
+     * Proxy with the server-session Bearer + browser X-FP forwarded
+     * as X-Fingerprint (the cabinet token is bound to it).
+     * On 401 — a single pair rotation and retry.
      */
     private function proxy(Request $request, string $method, string $path, array $options = [])
     {
@@ -478,8 +549,8 @@ class AccountController extends Controller
         $fingerprint = trim((string) $request->header('X-FP', ''));
         $fpSource = $fingerprint !== '' ? 'header' : 'none';
         if ($fingerprint === '') {
-            // Запасной канал: часть прод-стендов режет кастомные заголовки,
-            // поэтому фронт дублирует FP в query ?_fp= (в кабинет не форвардится).
+            // Fallback channel: some prod stacks strip custom headers,
+            // so the frontend duplicates FP into the ?_fp= query (never forwarded to the cabinet).
             $fingerprint = trim((string) $request->query('_fp', ''));
             if ($fingerprint !== '') {
                 $fpSource = 'query';
@@ -494,8 +565,8 @@ class AccountController extends Controller
                 $fpMatch = hash_equals((string) session('cabinet.fp_hash', ''), sha1($fingerprint));
                 $fpDebug = substr(trim((string) $request->query('_fpd', '')), 0, 120);
                 if ($fpDebug === '' && $fingerprint === '') {
-                    // Новый фронт при пустом FP всегда шлёт _fpd: его нет —
-                    // в браузере выполняется старый account.js (кеш HTML/JS).
+                    // New frontend always sends _fpd with an empty FP: missing —
+                    // the browser runs the old account.js (HTML/JS cache).
                     $fpDebug = 'no-fpd-param(stale-js)';
                 }
                 Log::warning('Cabinet proxy 401: path='.$path.' code='.(is_array($cabBody) ? (string) ($cabBody['code'] ?? $cabBody['error'] ?? 'n/a') : 'n/a').' fp_len='.strlen($fingerprint).' fp_source='.$fpSource.' fp_match='.($fpMatch ? 'yes' : 'no').($fpDebug !== '' ? ' fp_debug='.$fpDebug : ''));
@@ -511,10 +582,10 @@ class AccountController extends Controller
                 }
             }
             if ($response->status() === 401) {
-                // Гонка параллельных запросов (orders+me+topbar одновременно):
-                // refresh-токен одноразовый, выигрывает один запрос, остальные
-                // видят 401. Перед сносом сессии проверяем — вдруг соседний
-                // запрос уже положил свежую пару, повторяем с ней.
+                // Parallel-request race (orders+me+topbar at once):
+                // the refresh token is single-use, one request wins and the rest
+                // see 401. Before wiping the session check whether a sibling
+                // request already stored a fresh pair, and retry with it.
                 $currentAccess = (string) session('cabinet.access_token', '');
                 if ($currentAccess !== '' && $currentAccess !== $access) {
                     $access = $currentAccess;
@@ -528,8 +599,8 @@ class AccountController extends Controller
             }
         }
 
-        // Скоуп выключен у API-клиента (403 от кабинета) — запоминаем,
-        // чтобы прятать соответствующие разделы в навигации.
+        // Scope disabled on the API client (cabinet 403) — remember it
+        // to hide the matching sections in navigation.
         if ($response->status() === 403 && ($scope = CabinetService::scopeForPath($path, $method)) !== null) {
             session(['cabinet.forbidden.'.$scope => true]);
         }

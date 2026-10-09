@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Встроенный личный кабинет: серверная интеграция с кабинетом (true-help) по API.
+ * Embedded customer cabinet: server-side integration with the cabinet (true-help) API.
  *
- * Вход только встроенный: email + пазл-капча + код из письма
- * (POST {cabinet}/api/v1/auth/embedded/*, секрета на проводе нет —
- * кабинет знает шоп по domain). Bootstrap — GET /api/v1/public-config.
- * Токены лежат только в сессии сервера. X-Fingerprint для /api/v1/*
- * и refresh пробрасывается из браузера покупателя, т.к. токен кабинета
- * привязан к fingerprint устройства (пустой fingerprint кабинет отвергает
- * 401 fingerprint_required).
+ * Embedded login only: email + puzzle captcha + code from email
+ * (POST {cabinet}/api/v1/auth/embedded/*, no secret on the wire —
+ * the cabinet knows the shop by domain). Bootstrap — GET /api/v1/public-config.
+ * Tokens live only in the server session. X-Fingerprint for /api/v1/*
+ * and refresh is forwarded from the buyer browser, since the cabinet token
+ * is bound to the device fingerprint (the cabinet rejects an empty
+ * fingerprint with 401 fingerprint_required).
  */
 class CabinetService
 {
@@ -24,8 +24,8 @@ class CabinetService
     public const KEY_SECRET  = 'cabinet_secret';
 
     /**
-     * Легаси-ключ shop_keys.cabinet_url: URL больше не хранится в БД
-     * (только env CABINET_URL), строка при сохранении удаляется.
+     * Legacy shop_keys.cabinet_url key: the URL is no longer stored in the DB
+     * (env CABINET_URL only), the row is deleted on save.
      */
     public const KEY_URL     = 'cabinet_url';
 
@@ -40,10 +40,10 @@ class CabinetService
     public const CAPABILITIES_CACHE_TTL = 60;
 
     /**
-     * Конфиг: enabled/secret из shop_keys, URL только из env CABINET_URL
-     * (дефолт DEFAULT_URL). Безопасные дефолты при отсутствии строк.
-     * Домен шопа здесь не хранится: он всегда берётся из текущего
-     * хоста запроса (см. shopDomain()/autoHost()).
+     * Config: enabled/secret from shop_keys, URL from env CABINET_URL only
+     * (DEFAULT_URL fallback). Safe defaults when rows are missing.
+     * The shop domain is not stored here: it always comes from the current
+     * request host (see shopDomain()/autoHost()).
      */
     public static function config(): array
     {
@@ -85,8 +85,8 @@ class CabinetService
     }
 
     /**
-     * URL кабинета: только env CABINET_URL, иначе DEFAULT_URL.
-     * В БД/админке не настраивается.
+     * Cabinet URL: env CABINET_URL only, otherwise DEFAULT_URL.
+     * Not configurable via DB/admin panel.
      */
     public static function cabinetUrl(): string
     {
@@ -96,10 +96,10 @@ class CabinetService
     }
 
     /**
-     * Сохранение настроек (insert при отсутствии строк).
-     * URL здесь не сохраняется (только env CABINET_URL).
-     * Легаси-строки cabinet_url/cabinet_domain (ручные оверрайды) при
-     * сохранении удаляются: URL — из env, домен — из хоста запроса.
+     * Save settings (insert when rows are missing).
+     * URL is not saved here (env CABINET_URL only).
+     * Legacy cabinet_url/cabinet_domain rows (manual overrides) are deleted
+     * on save: URL comes from env, domain from the request host.
      */
     public static function save(array $data): void
     {
@@ -123,10 +123,10 @@ class CabinetService
     }
 
     /**
-     * Домен шопа для кабинета (все серверные вызовы).
-     * Всегда текущий хост запроса ($request->getHost(), без www):
-     * руками в админке он не задаётся, иначе кабинет не узнает шоп
-     * в allowlist и встроенный вход сломается.
+     * Shop domain for the cabinet (all server-side calls).
+     * Always the current request host ($request->getHost(), no www):
+     * it is never set manually in admin, otherwise the cabinet won't
+     * recognize the shop in the allowlist and embedded login breaks.
      */
     public static function shopDomain(): string
     {
@@ -134,8 +134,8 @@ class CabinetService
     }
 
     /**
-     * Текущий хост запроса ($request->getHost(), без www, lowercased) —
-     * единственный источник домена шопа для кабинета.
+     * Current request host ($request->getHost(), no www, lowercased) —
+     * the only source of the shop domain for the cabinet.
      */
     public static function autoHost(): string
     {
@@ -149,8 +149,8 @@ class CabinetService
     }
 
     /**
-     * Ротация пары по refresh_token. Кабинет требует fingerprint
-     * (тело или X-Fingerprint), без него отвечает 401 fingerprint_required.
+     * Pair rotation via refresh_token. The cabinet requires a fingerprint
+     * (body or X-Fingerprint), without it answers 401 fingerprint_required.
      *
      * @return array{ok: bool, data?: array, error?: string}
      */
@@ -183,10 +183,10 @@ class CabinetService
     }
 
     /**
-     * Логический скоуп кабинета для пути /api/v1/* (1:1 с ApiClientPolicy
-     * кабинета). Нужен, чтобы шоп запоминал 403 «скоуп выключен» и прятал
-     * соответствующие разделы. null — путь вне скоупов.
-     * Чат различаем по методу: чтение — chat, отправка — chat.send.
+     * Logical cabinet scope for an /api/v1/* path (1:1 with the cabinet
+     * ApiClientPolicy). Lets the shop remember a 403 "scope disabled" and hide
+     * matching sections. null — path outside scopes.
+     * Chat differs by method: read — chat, send — chat.send.
      */
     public static function scopeForPath(string $path, string $method = 'GET'): ?string
     {
@@ -228,7 +228,7 @@ class CabinetService
     }
 
     /**
-     * Прямой вызов /api/v1/* от имени покупателя.
+     * Direct /api/v1/* call on behalf of the buyer.
      */
     public static function apiCall(string $method, string $path, string $accessToken, string $fingerprint, array $options = [])
     {
@@ -254,9 +254,9 @@ class CabinetService
     }
 
     /**
-     * Отзыв текущей пары на стороне кабинета (best effort).
-     * Bearer-мидлварь кабинета требует и X-Fingerprint — шлём его,
-     * когда известен, иначе logout молча не сработает (401).
+     * Revoke the current pair on the cabinet side (best effort).
+     * The cabinet Bearer middleware also requires X-Fingerprint — send it
+     * when known, otherwise logout silently fails (401).
      */
     public static function logoutRemote(string $accessToken, ?string $fingerprint = null): void
     {
@@ -278,8 +278,8 @@ class CabinetService
     }
 
     /**
-     * Настройки интеграции из кабинета (кеш 1 минуту): shop_id,
-     * scopes/chat_enabled для навигации (кеш 60с, как и capabilities).
+     * Integration settings from the cabinet (1 minute cache): shop_id,
+     * scopes/chat_enabled for navigation (60s cache, like capabilities).
      *
      * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}
      */
@@ -307,8 +307,8 @@ class CabinetService
             return $fresh;
         }
 
-        // Кабинет недоступен — отдаём последнее закешированное, иначе дефолты
-        // (безопасно: встроенный логин выключен).
+        // Cabinet unreachable — serve the last cached copy, otherwise defaults
+        // (safe: embedded login stays off).
         if (is_array($cached) && array_key_exists('embedded_login', $cached)) {
             return $cached + $defaults;
         }
@@ -326,10 +326,10 @@ class CabinetService
     }
 
     /**
-     * Доступные скоупы текущего покупателя (кеш 60с на домен шопа).
-     * Возвращает null если нет токена/связи; иначе массив вида
+     * Available scopes of the current buyer (60s cache per shop domain).
+     * Returns null without a token/connection; otherwise an array shaped
      * ['scopes' => string[], 'shop_id' => string, 'chat_enabled' => bool].
-     * Кеш — 1 минута, как и shopSettings, чтобы не дергать кабинет каждый хит.
+     * Cache is 1 minute, like shopSettings, to avoid hitting the cabinet per request.
      *
      * @return array{scopes: string[], shop_id: string, chat_enabled: bool}|null
      */
@@ -351,7 +351,7 @@ class CabinetService
             $cached = null;
         }
 
-        // Быстрый путь: scopes уже в shopSettings (без Bearer, без fingerprint)
+        // Fast path: scopes already in shopSettings (no Bearer, no fingerprint)
         $settings = self::shopSettings();
         if (isset($settings['scopes']) && is_array($settings['scopes'])) {
             $fallback = [
@@ -367,7 +367,7 @@ class CabinetService
             return $fallback;
         }
 
-        // В тестах не лезем в сеть — нет токена с реальным fingerprint
+        // No network in tests — no token with a real fingerprint there
         if (app()->environment('testing')) {
             return null;
         }
@@ -417,9 +417,9 @@ class CabinetService
                 ->connectTimeout(5)
                 ->withHeaders([
                     'Authorization' => 'Bearer ' . $accessToken,
-                    // Серверного fingerprint нет: кабинет ответит 401
-                    // fingerprint_required — это нормально, вызывающий
-                    // откатится на scopes из public-config (см. capabilities()).
+                    // No server-side fingerprint: the cabinet answers 401
+                    // fingerprint_required — fine, the caller falls back
+                    // to scopes from public-config (see capabilities()).
                     'X-Fingerprint' => '',
                 ])
                 ->get($cfg['url'] . '/api/v1/account/capabilities');
@@ -447,11 +447,10 @@ class CabinetService
     }
 
     /**
-     * Bootstrap шопа из кабинета: GET /api/v1/public-config?domain=.
-     * Секрета не требует (его на проводе нет), отвечает всегда
-     * в обёртке {data: {...}}.
+     * Shop bootstrap from the cabinet: GET /api/v1/public-config?domain=.
+     * Needs no secret (none on the wire), always answers wrapped in {data: {...}}.
      *
-     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}|null null — нет связи/шоп не зарегистрирован
+     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}|null null — no connection/shop not registered
      */
     private static function fetchShopSettings(): ?array
     {
@@ -496,8 +495,8 @@ class CabinetService
     }
 
     /**
-     * Пазл-капча кабинета для встроенного логина (без кук: сервер хранит
-     * зеркало пазла в общем кеше, см. CaptchaService).
+     * Cabinet puzzle captcha for embedded login (no cookies: the server keeps
+     * a mirror of the puzzle in shared cache, see CaptchaService).
      *
      * @return array{ok: bool, data?: array, error?: string}
      */
@@ -526,8 +525,8 @@ class CabinetService
     }
 
     /**
-     * Проверка решения пазла. Успех даёт одноразовый captcha_token
-     * (держим в сессии сервера, в браузер не отдаём).
+     * Puzzle solution check. Success yields a one-time captcha_token
+     * (kept in the server session, never sent to the browser).
      *
      * @return array{ok: bool, captcha_token?: string, reason?: string}
      */
@@ -565,8 +564,8 @@ class CabinetService
     }
 
     /**
-     * Встроенный логин, шаг 1: попросить кабинет отправить код на email.
-     * Нужен одноразовый captcha_token (пазл кабинета, решённый выше).
+     * Embedded login, step 1: ask the cabinet to send a code to the email.
+     * Needs a one-time captcha_token (cabinet puzzle solved above).
      *
      * @return array{ok: bool, code?: string, error?: string, retry_after?: int}
      */
@@ -581,9 +580,9 @@ class CabinetService
     }
 
     /**
-     * Встроенный логин, шаг 2: проверить код (или trusted-тикет
-     * с доверенной сети — тогда код не нужен), вернуть пару токенов.
-     * Кабинет отдаёт {token_type, access_token, refresh_token, expires_in}.
+     * Embedded login, step 2: check the code (or a trusted ticket from
+     * a trusted network — then no code is needed), return a token pair.
+     * The cabinet answers {token_type, access_token, refresh_token, expires_in}.
      *
      * @return array{ok: bool, data?: array, code?: string, error?: string}
      */
@@ -603,8 +602,8 @@ class CabinetService
     }
 
     /**
-     * Браузерный флоу без секрета на проводе: кабинет знает шоп
-     * по domain (или shop_id), секрет shop_keys не отправляется.
+     * Browser flow with no secret on the wire: the cabinet knows the shop
+     * by domain (or shop_id), the shop_keys secret is never sent.
      *
      * @return array{ok: bool, data?: array, code?: string, error?: string, retry_after?: int}
      */
@@ -645,11 +644,11 @@ class CabinetService
     }
 
     /**
-     * Проверка связи: GET /api/v1/public-config?domain=. Секрета на проводе
-     * нет (параметр $secret оставлен для совместимости и игнорируется).
-     * URL кабинета — только env CABINET_URL (см. cabinetUrl()),
-     * домен шопа всегда берётся из текущего хоста запроса
-     * ($request->getHost()) — передавать их руками не нужно.
+     * Connection check: GET /api/v1/public-config?domain=. No secret on the wire
+     * (the $secret parameter stays for compatibility and is ignored).
+     * Cabinet URL comes from env CABINET_URL only (see cabinetUrl()),
+     * the shop domain always comes from the current request host
+     * ($request->getHost()) — no need to pass them manually.
      *
      * @return array{status: string, text: string, embedded: bool|null}
      *   status: ok|not_registered|fail
@@ -698,7 +697,7 @@ class CabinetService
     }
 
     /**
-     * Чистая интерпретация ответа кабинета для проверки связи (тестируемо без сети).
+     * Pure interpretation of the cabinet response for the connection check (network-free testable).
      *
      * @return array{status: string, text: string}
      */
@@ -720,5 +719,240 @@ class CabinetService
         }
 
         return ['status' => 'fail', 'text' => $error !== '' ? $error : 'Unexpected cabinet response (HTTP '.$httpStatus.').'];
+    }
+
+    // ---------- Display settings (portal parity: Order view) ----------
+
+    /**
+     * shop_keys key for display settings (single JSON for the whole cabinet).
+     */
+    public const DISPLAY_KEY = 'cabinet_display';
+
+    public const SHOP_BUTTON_ALL = 'all';
+    public const SHOP_BUTTON_FOREIGN = 'foreign';
+    public const SHOP_BUTTON_HIDE = 'hide';
+
+    /**
+     * Defaults: everything visible, Shop button for any order with a link (portal parity).
+     */
+    public static function displayDefaults(): array
+    {
+        return [
+            'pages' => ['orders' => true, 'bonus' => true, 'referral' => true, 'contact' => true, 'chat' => true],
+            'orders_filters' => true,
+            'orders_help' => true,
+            'orders_shop_button' => self::SHOP_BUTTON_ALL,
+            'shop_domain_override' => '',
+            'billing_url_override' => '',
+            'billing_button' => true,
+        ];
+    }
+
+    /**
+     * Pure normalization of raw input (admin form, DB): allowlist + types.
+     * Unknown keys are dropped, malformed URLs are reset.
+     */
+    public static function normalizeDisplayConfig(array $raw): array
+    {
+        $out = self::displayDefaults();
+
+        if (isset($raw['pages']) && is_array($raw['pages'])) {
+            foreach (array_keys($out['pages']) as $page) {
+                if (array_key_exists($page, $raw['pages'])) {
+                    $out['pages'][$page] = self::toBool($raw['pages'][$page]);
+                }
+            }
+        }
+
+        foreach (['orders_filters', 'orders_help', 'billing_button'] as $flag) {
+            if (array_key_exists($flag, $raw)) {
+                $out[$flag] = self::toBool($raw[$flag]);
+            }
+        }
+
+        if (array_key_exists('orders_shop_button', $raw)) {
+            $mode = strtolower(trim((string) $raw['orders_shop_button']));
+            if (in_array($mode, [self::SHOP_BUTTON_ALL, self::SHOP_BUTTON_FOREIGN, self::SHOP_BUTTON_HIDE], true)) {
+                $out['orders_shop_button'] = $mode;
+            }
+        }
+
+        foreach (['shop_domain_override', 'billing_url_override'] as $urlKey) {
+            if (array_key_exists($urlKey, $raw)) {
+                $out[$urlKey] = self::sanitizeOverrideUrl((string) $raw[$urlKey]);
+            }
+        }
+
+        return $out;
+    }
+
+    private static function toBool(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+        if (is_int($value) || is_float($value)) {
+            return $value != 0;
+        }
+        $value = strtolower(trim((string) $value));
+
+        return in_array($value, ['1', 'true', 'yes', 'on'], true);
+    }
+
+    /**
+     * Override must be an http(s) URL with a host, otherwise reset.
+     */
+    private static function sanitizeOverrideUrl(string $url): string
+    {
+        $url = trim($url);
+        if ($url === '') {
+            return '';
+        }
+        if (!preg_match('~^https?://~i', $url)) {
+            $url = 'https://'.$url;
+        }
+        $parts = parse_url($url);
+        if (!is_array($parts) || empty($parts['host'])) {
+            return '';
+        }
+        if (!preg_match('~^[A-Za-z0-9.-]+$~', (string) $parts['host'])) {
+            return '';
+        }
+
+        return $url;
+    }
+
+    /**
+     * First cabinet page allowed by display settings (post-login landing).
+     */
+    public static function firstVisiblePage(): string
+    {
+        $pages = (array) (self::displayConfig()['pages'] ?? []);
+        foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
+            if (!empty($pages[$page])) {
+                return $page;
+            }
+        }
+
+        return 'orders';
+    }
+
+    /**
+     * Read display config (shop_keys DB, no network). Without DB — defaults.
+     */
+    public static function displayConfig(): array
+    {
+        $defaults = self::displayDefaults();
+
+        try {
+            $raw = DB::table('shop_keys')->where('name_key', '=', self::DISPLAY_KEY)->value('key_data');
+        } catch (\Throwable $e) {
+            Log::error('CabinetService display config read failed: '.$e->getMessage());
+
+            return $defaults;
+        }
+
+        if (!is_string($raw) || $raw === '') {
+            return $defaults;
+        }
+        $decoded = json_decode($raw, true);
+
+        return self::normalizeDisplayConfig(is_array($decoded) ? $decoded : []);
+    }
+
+    /**
+     * Save display config (validated upsert).
+     */
+    public static function saveDisplay(array $data): void
+    {
+        DB::table('shop_keys')->updateOrInsert(
+            ['name_key' => self::DISPLAY_KEY],
+            ['key_data' => json_encode(self::normalizeDisplayConfig($data), JSON_UNESCAPED_SLASHES)]
+        );
+    }
+
+    /**
+     * Final billing URL: shop override, otherwise cabinet billing_base_url.
+     */
+    public static function resolveBillingUrl(): string
+    {
+        $override = (string) (self::displayConfig()['billing_url_override'] ?? '');
+        if ($override !== '') {
+            return $override;
+        }
+        $settings = self::shopSettings();
+
+        return trim((string) ($settings['billing_base_url'] ?? ''));
+    }
+
+    /**
+     * Apply a domain override to an API link (Shop button).
+     *
+     * Semantics: scheme/host(/port) come from the override; path comes from
+     * the override when set, otherwise from the link; query merge: link params
+     * win, missing ones are appended from the override. Example:
+     *   link https://shop1.example?aff=5 + override https://example.com?aff=1842
+     *   => https://example.com?aff=5
+     *   link https://shop1.example/catalog + override https://example.com?aff=1842
+     *   => https://example.com/catalog?aff=1842
+     * Pure function (no network/DB). On parse errors the link is unchanged.
+     */
+    public static function applyDomainOverride(string $link, string $override): string
+    {
+        $link = trim($link);
+        $override = trim($override);
+        if ($link === '' || $override === '') {
+            return $link;
+        }
+
+        if (!preg_match('~^https?://~i', $override)) {
+            $override = 'https://'.$override;
+        }
+        $ov = parse_url($override);
+        if (!is_array($ov) || empty($ov['host'])) {
+            return $link;
+        }
+
+        $isAbsolute = (bool) preg_match('~^https?://~i', $link);
+        $lp = $isAbsolute ? parse_url($link) : parse_url('https://placeholder.invalid/'.ltrim($link, '/'));
+        if (!is_array($lp)) {
+            return $link;
+        }
+
+        $scheme = strtolower((string) ($ov['scheme'] ?? 'https'));
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            $scheme = 'https';
+        }
+        $host = strtolower((string) $ov['host']);
+        $port = isset($ov['port']) ? ':'.((int) $ov['port']) : '';
+
+        $ovPath = (string) ($ov['path'] ?? '');
+        if ($ovPath !== '' && $ovPath !== '/') {
+            $path = $ovPath;
+        } else {
+            $path = $isAbsolute ? (string) ($lp['path'] ?? '') : '/'.ltrim((string) ($lp['path'] ?? ''), '/');
+            if ($path !== '' && $path[0] !== '/') {
+                $path = '/'.$path;
+            }
+        }
+
+        $linkQuery = [];
+        if (isset($lp['query']) && $lp['query'] !== '') {
+            parse_str((string) $lp['query'], $linkQuery);
+        }
+        $ovQuery = [];
+        if (isset($ov['query']) && $ov['query'] !== '') {
+            parse_str((string) $ov['query'], $ovQuery);
+        }
+        foreach ($ovQuery as $k => $v) {
+            if (!array_key_exists($k, $linkQuery)) {
+                $linkQuery[$k] = $v;
+            }
+        }
+        $query = $linkQuery !== [] ? '?'.http_build_query($linkQuery) : '';
+
+        $fragment = isset($lp['fragment']) && $lp['fragment'] !== '' ? '#'.$lp['fragment'] : '';
+
+        return $scheme.'://'.$host.$port.$path.$query.$fragment;
     }
 }

@@ -1,8 +1,8 @@
 {{--
     Live: "Chat" — Alpine (shop-cabinet.js cabinetChat, Chat.vue 1:1).
-    Тело письма — HTML (textHtml с портала, уже почищен), рендер через x-html.
-    V1 + стили HTML: public/css/cabinet-v1.css (общий для всех дизайнов).
-    Переменные: $design.
+    Message body is HTML (textHtml from the portal, already sanitized), rendered via x-html.
+    V1 + HTML styles: public/css/cabinet-v1.css (shared across designs).
+    Variables: $design.
 --}}
 <link rel="stylesheet" href="{{ asset_ver('css/cabinet-v1.css') }}">
 @php
