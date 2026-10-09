@@ -52,7 +52,7 @@
                         </svg>
                     </span>
                 </button>
-                <button type="button" id="cab_test_btn" class="jqTransformButton payment-details__button button">
+                <button type="button" id="cab_test_btn" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled">
                     <span>
                         <span>Test connection</span>
                     </span>
