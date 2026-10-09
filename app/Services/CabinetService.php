@@ -197,7 +197,7 @@ class CabinetService
         if ($path === 'orders') {
             return 'orders';
         }
-        if (preg_match('~^orders/\d+/(shipping|tracking|stop-recurring|repeat-virtual)$~', $path, $m)) {
+        if (preg_match('~^orders/\d+/(shipping|tracking|stop-recurring|repeat-virtual|repeat-context)$~', $path, $m)) {
             return match ($m[1]) {
                 'shipping'       => 'orders.shipping',
                 'tracking'       => 'orders.tracking',

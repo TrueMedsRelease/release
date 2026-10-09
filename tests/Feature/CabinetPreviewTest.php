@@ -9,15 +9,15 @@ use Tests\TestCase;
 class CabinetPreviewTest extends TestCase
 {
     /**
-     * Примечание: в песочнице APP_URL задан без схемы (testshop.test),
-     * из-за чего ПЕРВЫЙ url() в свежем приложении собирает кривой URI
-     * и первый HTTP-запрос уходит в fallback-404. Поэтому сначала делаем
-     * прогревочный запрос. На проде с корректным APP_URL и реальным
-     * веб-сервером (нормальный REQUEST_URI) этого эффекта нет.
+     * Note: in the sandbox APP_URL has no scheme (testshop.test),
+     * so the FIRST url() in a fresh app builds a broken URI
+     * and the first HTTP request lands in fallback-404. Hence the warm-up
+     * request first. In prod with a proper APP_URL and a real web server
+     * (normal REQUEST_URI) this effect does not exist.
      */
     public function test_live_redirects_to_design_login_when_no_token(): void
     {
-        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
+        $this->get('/cabinet-login/email'); // warm up UrlGenerator
         $this->seedShopSettings();
 
         try {
@@ -32,7 +32,7 @@ class CabinetPreviewTest extends TestCase
 
     public function test_designless_login_renders(): void
     {
-        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
+        $this->get('/cabinet-login/email'); // warm up UrlGenerator
         $this->seedShopSettings();
 
         try {
@@ -41,7 +41,7 @@ class CabinetPreviewTest extends TestCase
                 $response->assertStatus(200);
                 $response->assertSee('cablogin-', false);
             }
-            // Пейджера превью больше нет, вместо муляжа языка — рабочий блок языка.
+            // No preview pager anymore; a working language block instead of the language stub.
             $html = $this->get('/cabinet-login/email')->getContent();
             $this->assertStringNotContainsString('cablogin-pager', $html);
             $this->assertStringContainsString('cablogin-header__lang', $html);
@@ -52,7 +52,7 @@ class CabinetPreviewTest extends TestCase
 
     public function test_unknown_design_404_on_designless_routes(): void
     {
-        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
+        $this->get('/cabinet-login/email'); // warm up UrlGenerator
 
         $response = $this->withSession(['design' => 'design_99'])->get('/cabinet/orders');
         $response->assertNotFound();
@@ -75,7 +75,7 @@ class CabinetPreviewTest extends TestCase
 
     public function test_logout_clears_session_and_redirects_home(): void
     {
-        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
+        $this->get('/cabinet-login/email'); // warm up UrlGenerator
         \Illuminate\Support\Facades\Http::fake();
 
         $response = $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)
@@ -92,7 +92,7 @@ class CabinetPreviewTest extends TestCase
 
     public function test_login_layout_uses_custom_alpine_lang_dropdown(): void
     {
-        $this->get('/cabinet-login/email'); // прогреваем UrlGenerator
+        $this->get('/cabinet-login/email'); // warm up UrlGenerator
         $html = view('design_10.cabinet.login-layout', [
             'design' => 'design_10',
             'Language' => CabinetLoginLayoutFakeLanguage::class,
@@ -107,7 +107,7 @@ class CabinetPreviewTest extends TestCase
         $this->assertStringContainsString('js/cabinet-alpine.min.js', $html);
     }
     /**
-     * Настройки интеграции без сети: кеш обходит и БД, и кабинет.
+     * Network-free integration settings: cache bypasses both DB and cabinet.
      */
     private function seedShopSettings(): void
     {
@@ -120,7 +120,7 @@ class CabinetPreviewTest extends TestCase
     }
 
     /**
-     * У каждого дизайна с кабинетом есть живые и логин-вьюхи (без моков).
+     * Every design with a cabinet has live and login views (no mocks).
      */
     public function test_all_designs_have_cabinet_views(): void
     {
@@ -206,6 +206,36 @@ class CabinetPreviewTest extends TestCase
     {
         // No DB in tests: displayConfig() degrades to defaults (all pages on).
         $this->assertSame('orders', CabinetService::firstVisiblePage());
+    }
+
+    public function test_cabinet_repeat_url_prefers_api_formed_link(): void
+    {
+        \Illuminate\Support\Facades\Http::fake([
+            '*/repeat-context' => \Illuminate\Support\Facades\Http::response([
+                'data' => ['order' => ['id' => 9100, 'repeatUrl' => 'https://true-checkout.com/order/begin?products=X&auth=9001&is_cxserv=1']],
+            ], 200),
+        ]);
+
+        $method = new \ReflectionMethod(\App\Http\Controllers\AccountController::class, 'cabinetRepeatUrl');
+        $url = $method->invoke(null, 'test-token', '', 9100);
+
+        $this->assertSame(
+            'https://true-checkout.com/order/begin?products=X&auth=9001&is_cxserv=1',
+            $url
+        );
+    }
+
+    public function test_cabinet_repeat_url_null_without_api_link(): void
+    {
+        \Illuminate\Support\Facades\Http::fake([
+            '*/repeat-context' => \Illuminate\Support\Facades\Http::response([
+                'data' => ['order' => ['id' => 9100]],
+            ], 200),
+        ]);
+
+        $method = new \ReflectionMethod(\App\Http\Controllers\AccountController::class, 'cabinetRepeatUrl');
+
+        $this->assertNull($method->invoke(null, 'test-token', '', 9100));
     }
 }
 

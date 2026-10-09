@@ -38,6 +38,7 @@ class CabinetServiceTest extends TestCase
         $this->assertSame('orders.tracking', CabinetService::scopeForPath('orders/12/tracking'));
         $this->assertSame('orders.stop_recurring', CabinetService::scopeForPath('orders/12/stop-recurring'));
         $this->assertSame('orders', CabinetService::scopeForPath('orders/12/repeat-virtual'));
+        $this->assertSame('orders', CabinetService::scopeForPath('orders/12/repeat-context'));
         $this->assertSame('bonus', CabinetService::scopeForPath('bonus/program'));
         $this->assertSame('referral', CabinetService::scopeForPath('referral'));
         $this->assertSame('sessions', CabinetService::scopeForPath('sessions'));

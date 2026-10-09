@@ -365,18 +365,51 @@ class AccountController extends Controller
     }
 
     /**
-     * Local order repeat, no cabinet API calls:
-     * order positions (with packagingId from /api/v1/orders) go to the shop
-     * cart and we return the checkout URL. Unmatched/hidden packs are silently
-     * skipped; if nothing lands — an error for the toast.
+     * Fetch the API-formed repeat-checkout link for an order (best effort).
+     * Null on any failure or when the API returns no link — the caller
+     * falls back to the local virtual cart.
+     */
+    private static function cabinetRepeatUrl(string $access, string $fingerprint, int $id): ?string
+    {
+        try {
+            $response = CabinetService::apiCall('GET', 'orders/'.$id.'/repeat-context', $access, $fingerprint);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Cabinet repeat-context failed: '.$e->getMessage());
+
+            return null;
+        }
+        if (!$response->successful()) {
+            return null;
+        }
+        $data = $response->json('data');
+        $url = is_array($data) && isset($data['order']) && is_array($data['order'])
+            ? ($data['order']['repeatUrl'] ?? null)
+            : null;
+
+        return is_string($url) && $url !== '' ? $url : null;
+    }
+
+    /**
+     * Repeat an order: positions with packagingId from the order go to the shop
+     * cart and the checkout URL is returned. Used only when the cabinet API
+     * has no ready repeat link (see cabinetRepeatUrl above).
      */
     public function apiOrderRepeatVirtual(Request $request, int $id)
     {
         if (!CabinetService::enabled()) {
             return response()->json(['status' => 'error', 'message' => 'Cabinet is disabled.'], 403);
         }
-        if ((string) session('cabinet.access_token', '') === '') {
+        $access = (string) session('cabinet.access_token', '');
+        if ($access === '') {
             return response()->json(['status' => 'error', 'message' => 'Not logged in.', 'login' => false], 401);
+        }
+
+        // Preferred path: ready repeat-checkout link formed by the cabinet API
+        // (legacy true-checkout format, overridable base). Falls through to
+        // the local virtual cart when the API has no link (legacy orders).
+        $apiUrl = self::cabinetRepeatUrl($access, self::requestFingerprint($request), $id);
+        if ($apiUrl !== null) {
+            return response()->json(['status' => 'success', 'checkoutUrl' => $apiUrl]);
         }
 
         $items = $request->input('items', []);
@@ -531,6 +564,20 @@ class AccountController extends Controller
     }
 
     /**
+     * Browser fingerprint for cabinet calls: X-FP header first, ?_fp=
+     * query fallback (some prod stacks strip custom headers).
+     */
+    private static function requestFingerprint(Request $request): string
+    {
+        $fingerprint = trim((string) $request->header('X-FP', ''));
+        if ($fingerprint === '') {
+            $fingerprint = trim((string) $request->query('_fp', ''));
+        }
+
+        return $fingerprint;
+    }
+
+    /**
      * Proxy with the server-session Bearer + browser X-FP forwarded
      * as X-Fingerprint (the cabinet token is bound to it).
      * On 401 — a single pair rotation and retry.
@@ -546,16 +593,9 @@ class AccountController extends Controller
             return response()->json(['error' => 'Not logged in.'], 401);
         }
 
-        $fingerprint = trim((string) $request->header('X-FP', ''));
-        $fpSource = $fingerprint !== '' ? 'header' : 'none';
-        if ($fingerprint === '') {
-            // Fallback channel: some prod stacks strip custom headers,
-            // so the frontend duplicates FP into the ?_fp= query (never forwarded to the cabinet).
-            $fingerprint = trim((string) $request->query('_fp', ''));
-            if ($fingerprint !== '') {
-                $fpSource = 'query';
-            }
-        }
+        $fingerprint = self::requestFingerprint($request);
+        $fpSource = trim((string) $request->header('X-FP', '')) !== '' ? 'header'
+            : ($fingerprint !== '' ? 'query' : 'none');
 
         $response = CabinetService::apiCall($method, $path, $access, $fingerprint, $options);
 
