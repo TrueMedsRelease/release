@@ -5,15 +5,18 @@
  * primary would be unreadable on dark designs.
  */
 
-/* ---------- Orders: all actions as buttons in one left-to-right row ---------- */
+/* ---------- Orders: shipping on its own row, action buttons together ---------- */
 .cabp-layout--orders .oc-card__actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 8px;
 }
 .cabp-layout--orders .oc-card__secondary,
 .cabp-layout--orders .oc-actions {
-    display: contents;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
 }
 @media (max-width: 639px) {
     .cabp-layout--orders .oc-card__actions .button,
