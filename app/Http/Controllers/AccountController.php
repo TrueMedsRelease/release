@@ -379,6 +379,8 @@ class AccountController extends Controller
             return null;
         }
         if (!$response->successful()) {
+            \Illuminate\Support\Facades\Log::info('Cabinet repeat-context order '.$id.': http '.$response->status());
+
             return null;
         }
         $data = $response->json('data');
@@ -409,8 +411,11 @@ class AccountController extends Controller
         // the local virtual cart when the API has no link (legacy orders).
         $apiUrl = self::cabinetRepeatUrl($access, self::requestFingerprint($request), $id);
         if ($apiUrl !== null) {
+            Log::info('Cabinet repeat order '.$id.': api link used');
+
             return response()->json(['status' => 'success', 'checkoutUrl' => $apiUrl]);
         }
+        Log::info('Cabinet repeat order '.$id.': api link missing, local cart fallback');
 
         $items = $request->input('items', []);
         if (!is_array($items) || $items === []) {
@@ -441,6 +446,8 @@ class AccountController extends Controller
         }
 
         if ($added === 0) {
+            Log::info('Cabinet repeat order '.$id.': local cart empty, nothing matched');
+
             return response()->json(['status' => 'error', 'message' => __('text.cabinet_repeat_failed')], 422);
         }
 
