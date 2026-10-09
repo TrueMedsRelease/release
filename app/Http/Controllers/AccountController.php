@@ -476,6 +476,11 @@ class AccountController extends Controller
         $response = CabinetService::apiCall($method, $path, $access, $fingerprint, $options);
 
         if ($response->status() === 401) {
+            try {
+                $cabBody = $response->json();
+                Log::warning('Cabinet proxy 401: path='.$path.' code='.(is_array($cabBody) ? (string) ($cabBody['code'] ?? $cabBody['error'] ?? 'n/a') : 'n/a'));
+            } catch (\Throwable $e) {
+            }
             $refresh = (string) session('cabinet.refresh_token', '');
             if ($refresh !== '') {
                 $renewed = CabinetService::refreshPair($refresh, $fingerprint !== '' ? $fingerprint : null);

@@ -336,21 +336,98 @@
         });
     }
 
-    function initFingerprint() {
-        function fill(fp) {
-            if (!fp) return;
-            ['shop-fp', 'shop-code-fp'].forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el && !el.value) el.value = fp;
+    function loadShopScript(src, timeoutMs) {
+        return new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            var done = false;
+            var timer = setTimeout(function () {
+                if (!done) { done = true; reject(new Error('device lib load timeout')); }
+            }, timeoutMs || 5000);
+            s.onload = function () { if (!done) { done = true; clearTimeout(timer); resolve(); } };
+            s.onerror = function () { if (!done) { done = true; clearTimeout(timer); reject(new Error('device lib load failed')); } };
+            s.src = src;
+            document.head.appendChild(s);
+        });
+    }
+
+    // Fingerprint привязывается к токену кабинета на шагах
+    // embedded.start/verify (hidden input), а дальше каждая ручка
+    // /account/api/* шлёт его же в X-FP (account.js). Несовпадение
+    // (пусто на логине, реальный после) => 401 fingerprint_required
+    // на первом же запросе заказов => снос токенов => возврат на логин.
+    // Поэтому: считаем FP заранее, заполняем оба hidden input и не даём
+    // формам уйти раньше (включая программный form.submit() OTP-автосабмита).
+    var shopFpValue = '';
+    var shopFpReady = null;
+
+    function fillShopFp(fp) {
+        if (!fp) return;
+        shopFpValue = String(fp);
+        ['shop-fp', 'shop-code-fp'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el && !el.value) el.value = shopFpValue;
+        });
+    }
+
+    function ensureShopFp() {
+        if (shopFpValue) return Promise.resolve(shopFpValue);
+        if (shopFpReady) return shopFpReady;
+        shopFpReady = (async function () {
+            try {
+                if (typeof window.DeviceLib === 'undefined' && typeof window.FingerprintLib === 'undefined') {
+                    try {
+                        await loadShopScript('/js/cabinet/device-lib.js', 5000);
+                    } catch (e) { /* ниже вернём '' */ }
+                }
+                var Ctor = window.DeviceLib || window.FingerprintLib;
+                if (!Ctor) return '';
+                var r = await new Ctor().get();
+                var fp = (r && r.hash && (r.hash.v4 || String(r.hash.numeric || ''))) || '';
+                if (fp) fillShopFp(String(fp));
+                return shopFpValue || '';
+            } catch (e) {
+                return shopFpValue || '';
+            }
+        })();
+        return shopFpReady;
+    }
+
+    function guardShopForm(form) {
+        if (!form || form.__shopFpGuarded) return;
+        form.__shopFpGuarded = true;
+        var nativeSubmit = form.submit.bind(form);
+        var submitting = false;
+        function submitWithFp() {
+            if (submitting) return;
+            if (shopFpValue) {
+                fillShopFp(shopFpValue);
+                submitting = true;
+                nativeSubmit();
+                return;
+            }
+            var timeout = new Promise(function (resolve) {
+                setTimeout(function () { resolve('timeout'); }, 4000);
+            });
+            Promise.race([ensureShopFp(), timeout]).then(function () {
+                fillShopFp(shopFpValue);
+                submitting = true;
+                nativeSubmit();
             });
         }
-        try {
-            if (typeof window.DeviceLib === 'undefined') return;
-            new window.DeviceLib().get().then(function (r) {
-                var fp = (r && r.hash && (r.hash.v4 || String(r.hash.numeric || ''))) || '';
-                if (fp) fill(String(fp));
-            }).catch(function () {});
-        } catch (e) {}
+        form.addEventListener('submit', function (e) {
+            if (submitting) return;
+            var fpEl = document.getElementById('shop-fp') || document.getElementById('shop-code-fp');
+            if ((fpEl && fpEl.value) || shopFpValue) return;
+            e.preventDefault();
+            submitWithFp();
+        });
+        form.submit = submitWithFp;
+    }
+
+    function initFingerprint() {
+        ensureShopFp().catch(function () {});
+        guardShopForm(document.getElementById('shop-captcha-form'));
+        guardShopForm(document.getElementById('shop-code-form'));
     }
 
     function boot() {
