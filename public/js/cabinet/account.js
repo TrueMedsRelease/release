@@ -42,9 +42,13 @@
             var stored = window.localStorage ? window.localStorage.getItem('cabinet_fp') : '';
             if (stored) {
                 window.CabinetAccountFp = String(stored);
+                window.CabinetFpDebug = 'localstorage';
                 return Promise.resolve(window.CabinetAccountFp);
             }
-        } catch (e) {}
+            window.CabinetFpDebug = window.localStorage ? 'ls-empty' : 'ls-blocked';
+        } catch (e) {
+            window.CabinetFpDebug = 'ls-throw';
+        }
         if (fpPromise) return fpPromise;
         fpPromise = (async function () {
             try {
@@ -53,11 +57,14 @@
                 if (!window.DeviceLib && !window.FingerprintLib) {
                     try {
                         await loadScript('/js/cabinet/device-lib.js', 5000);
+                        window.CabinetFpDebug = 'lib-loaded-dyn';
                     } catch (e) {
+                        window.CabinetFpDebug = 'lib-load-fail';
                         var fpUrl = window.CabinetFpUrl || '';
                         if (fpUrl) {
                             try {
                                 await loadScript(fpUrl, 5000);
+                                window.CabinetFpDebug = 'lib-loaded-fallback';
                             } catch (e2) {
                                 var legacy = fpUrl.replace(/\/f\.js([?#]|$)/, '/fingerprint.js$1');
                                 if (legacy !== fpUrl) {
@@ -66,20 +73,29 @@
                             }
                         }
                     }
+                } else {
+                    window.CabinetFpDebug = 'lib-present';
                 }
                 var Ctor = window.DeviceLib || window.FingerprintLib;
-                if (!Ctor) return '';
+                if (!Ctor) {
+                    window.CabinetFpDebug += '|no-ctor';
+                    return '';
+                }
                 var lib = new Ctor();
                 var r = await lib.get();
                 var fp = (r && r.hash && (r.hash.v4 || String(r.hash.numeric || ''))) || '';
                 if (fp) {
                     window.CabinetAccountFp = String(fp);
+                    window.CabinetFpDebug += '|computed';
                     try {
                         if (window.localStorage) window.localStorage.setItem('cabinet_fp', String(fp));
                     } catch (e2) {}
+                } else {
+                    window.CabinetFpDebug += '|empty-hash';
                 }
                 return window.CabinetAccountFp || '';
             } catch (e) {
+                window.CabinetFpDebug = (window.CabinetFpDebug || '') + '|throw:' + String((e && e.message) || e).slice(0, 60);
                 return '';
             } finally {
                 fpPromise = null;
@@ -100,7 +116,12 @@
             });
             // Дублируем FP в query: запасной канал, если прод-стенд
             // вырезает кастомный заголовок X-FP (в кабинет не форвардится).
-            if (fp) qs.set('_fp', fp);
+            if (fp) {
+                qs.set('_fp', fp);
+            } else if (window.CabinetFpDebug) {
+                // FP пустой — везём код причины для серверного лога.
+                qs.set('_fpd', String(window.CabinetFpDebug).slice(0, 120));
+            }
             var s = qs.toString();
             if (s) url += (url.indexOf('?') === -1 ? '?' : '&') + s;
         }

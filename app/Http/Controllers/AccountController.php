@@ -476,7 +476,7 @@ class AccountController extends Controller
         }
 
         $fingerprint = trim((string) $request->header('X-FP', ''));
-        $fpSource = 'header';
+        $fpSource = $fingerprint !== '' ? 'header' : 'none';
         if ($fingerprint === '') {
             // Запасной канал: часть прод-стендов режет кастомные заголовки,
             // поэтому фронт дублирует FP в query ?_fp= (в кабинет не форвардится).
@@ -492,7 +492,8 @@ class AccountController extends Controller
             try {
                 $cabBody = $response->json();
                 $fpMatch = hash_equals((string) session('cabinet.fp_hash', ''), sha1($fingerprint));
-                Log::warning('Cabinet proxy 401: path='.$path.' code='.(is_array($cabBody) ? (string) ($cabBody['code'] ?? $cabBody['error'] ?? 'n/a') : 'n/a').' fp_len='.strlen($fingerprint).' fp_source='.$fpSource.' fp_match='.($fpMatch ? 'yes' : 'no'));
+                $fpDebug = substr(trim((string) $request->query('_fpd', '')), 0, 120);
+                Log::warning('Cabinet proxy 401: path='.$path.' code='.(is_array($cabBody) ? (string) ($cabBody['code'] ?? $cabBody['error'] ?? 'n/a') : 'n/a').' fp_len='.strlen($fingerprint).' fp_source='.$fpSource.' fp_match='.($fpMatch ? 'yes' : 'no').($fpDebug !== '' ? ' fp_debug='.$fpDebug : ''));
             } catch (\Throwable $e) {
             }
             $refresh = (string) session('cabinet.refresh_token', '');
