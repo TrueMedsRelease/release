@@ -35,6 +35,16 @@
 
     function ensureFingerprint() {
         if (window.CabinetAccountFp) return Promise.resolve(window.CabinetAccountFp);
+        // Тот же FP, что ушёл на embedded.start/verify при логине
+        // (shop-login.js кладёт его в localStorage): DeviceLib даёт разный
+        // хэш на разных страницах, пересчёт здесь сломал бы привязку токена.
+        try {
+            var stored = window.localStorage ? window.localStorage.getItem('cabinet_fp') : '';
+            if (stored) {
+                window.CabinetAccountFp = String(stored);
+                return Promise.resolve(window.CabinetAccountFp);
+            }
+        } catch (e) {}
         if (fpPromise) return fpPromise;
         fpPromise = (async function () {
             try {
@@ -62,7 +72,12 @@
                 var lib = new Ctor();
                 var r = await lib.get();
                 var fp = (r && r.hash && (r.hash.v4 || String(r.hash.numeric || ''))) || '';
-                if (fp) window.CabinetAccountFp = String(fp);
+                if (fp) {
+                    window.CabinetAccountFp = String(fp);
+                    try {
+                        if (window.localStorage) window.localStorage.setItem('cabinet_fp', String(fp));
+                    } catch (e2) {}
+                }
                 return window.CabinetAccountFp || '';
             } catch (e) {
                 return '';

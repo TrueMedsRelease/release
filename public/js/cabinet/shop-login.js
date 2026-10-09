@@ -359,10 +359,23 @@
     // формам уйти раньше (включая программный form.submit() OTP-автосабмита).
     var shopFpValue = '';
     var shopFpReady = null;
+    var SHOP_FP_KEY = 'cabinet_fp';
+
+    function readStoredShopFp() {
+        try {
+            var v = window.localStorage ? window.localStorage.getItem(SHOP_FP_KEY) : '';
+            return v ? String(v) : '';
+        } catch (e) {
+            return '';
+        }
+    }
 
     function fillShopFp(fp) {
         if (!fp) return;
         shopFpValue = String(fp);
+        try {
+            if (window.localStorage) window.localStorage.setItem(SHOP_FP_KEY, shopFpValue);
+        } catch (e) {}
         ['shop-fp', 'shop-code-fp'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el && !el.value) el.value = shopFpValue;
@@ -371,6 +384,14 @@
 
     function ensureShopFp() {
         if (shopFpValue) return Promise.resolve(shopFpValue);
+        // DeviceLib нестабилен между страницами (viewport, links/scripts,
+        // voices): переиспользуем значение, посчитанное ранее, чтобы кабинет
+        // видел один и тот же FP на логине и в /account/api/*.
+        var stored = readStoredShopFp();
+        if (stored) {
+            fillShopFp(stored);
+            return Promise.resolve(shopFpValue);
+        }
         if (shopFpReady) return shopFpReady;
         shopFpReady = (async function () {
             try {
