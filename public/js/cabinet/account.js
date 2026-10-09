@@ -90,13 +90,17 @@
 
     async function api(path, opts) {
         opts = opts || {};
+        var fp = await ensureFingerprint();
         var url = path;
-        if (opts.query) {
+        if (opts.query || fp) {
             var qs = new URLSearchParams();
-            Object.keys(opts.query).forEach(function (k) {
+            Object.keys(opts.query || {}).forEach(function (k) {
                 var v = opts.query[k];
                 if (v !== undefined && v !== null && v !== '') qs.set(k, String(v));
             });
+            // Дублируем FP в query: запасной канал, если прод-стенд
+            // вырезает кастомный заголовок X-FP (в кабинет не форвардится).
+            if (fp) qs.set('_fp', fp);
             var s = qs.toString();
             if (s) url += (url.indexOf('?') === -1 ? '?' : '&') + s;
         }
@@ -104,7 +108,7 @@
         var headers = {
             'Accept': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-FP': await ensureFingerprint(),
+            'X-FP': fp,
         };
         if (window.CabinetCsrfToken) headers['X-CSRF-TOKEN'] = window.CabinetCsrfToken;
         var fetchOpts = { method: method, headers: headers, credentials: 'same-origin' };

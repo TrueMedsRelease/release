@@ -111,6 +111,7 @@ class AccountController extends Controller
                 $verify = CabinetService::embeddedVerify($email, '', $request->ip(), $this->browserFingerprint($request), (string) $data['trusted_ticket']);
                 if (!empty($verify['ok'])) {
                     $this->storePair((array) $verify['data']);
+                    session(['cabinet.fp_hash' => sha1((string) $this->browserFingerprint($request))]);
 
                     return redirect()->route('cabinet.live.page', ['page' => 'orders']);
                 }
@@ -157,9 +158,9 @@ class AccountController extends Controller
                 ->with('cabinet_embedded_error', __('text.errors_wrong_code'));
         }
 
-        $result = CabinetService::embeddedVerify($email, $code, $request->ip(), $this->browserFingerprint($request));
-        if (empty($result['ok'])) {
-            $resultCode = (string) ($result['code'] ?? '');
+        $verifyFp = $this->browserFingerprint($request);
+        $result = CabinetService::embeddedVerify($email, $code, $request->ip(), $verifyFp);
+        if (empty($result['ok'])) {            $resultCode = (string) ($result['code'] ?? '');
             if ($resultCode === 'too_many_attempts') {
                 session()->forget('cabinet.embedded_email');
 
@@ -172,6 +173,9 @@ class AccountController extends Controller
         }
 
         $this->storePair((array) $result['data']);
+        // Хэш FP, к которому кабинет привязал токен: сверяем с ним FP
+        // из /account/api/* при 401 (сырое значение не храним/логируем).
+        session(['cabinet.fp_hash' => sha1((string) $verifyFp)]);
         session()->forget('cabinet.embedded_email');
 
         return redirect()->route('cabinet.live.page', ['page' => 'orders']);
@@ -225,7 +229,7 @@ class AccountController extends Controller
 
     private function forgetTokens(): void
     {
-        session()->forget(['cabinet.access_token', 'cabinet.refresh_token', 'cabinet.expires_at', 'cabinet.email', 'cabinet.forbidden']);
+        session()->forget(['cabinet.access_token', 'cabinet.refresh_token', 'cabinet.expires_at', 'cabinet.email', 'cabinet.forbidden', 'cabinet.fp_hash']);
         CabinetService::forgetCapabilities();
     }
 
@@ -472,13 +476,23 @@ class AccountController extends Controller
         }
 
         $fingerprint = trim((string) $request->header('X-FP', ''));
+        $fpSource = 'header';
+        if ($fingerprint === '') {
+            // Запасной канал: часть прод-стендов режет кастомные заголовки,
+            // поэтому фронт дублирует FP в query ?_fp= (в кабинет не форвардится).
+            $fingerprint = trim((string) $request->query('_fp', ''));
+            if ($fingerprint !== '') {
+                $fpSource = 'query';
+            }
+        }
 
         $response = CabinetService::apiCall($method, $path, $access, $fingerprint, $options);
 
         if ($response->status() === 401) {
             try {
                 $cabBody = $response->json();
-                Log::warning('Cabinet proxy 401: path='.$path.' code='.(is_array($cabBody) ? (string) ($cabBody['code'] ?? $cabBody['error'] ?? 'n/a') : 'n/a'));
+                $fpMatch = hash_equals((string) session('cabinet.fp_hash', ''), sha1($fingerprint));
+                Log::warning('Cabinet proxy 401: path='.$path.' code='.(is_array($cabBody) ? (string) ($cabBody['code'] ?? $cabBody['error'] ?? 'n/a') : 'n/a').' fp_len='.strlen($fingerprint).' fp_source='.$fpSource.' fp_match='.($fpMatch ? 'yes' : 'no'));
             } catch (\Throwable $e) {
             }
             $refresh = (string) session('cabinet.refresh_token', '');
