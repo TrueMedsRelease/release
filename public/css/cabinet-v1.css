@@ -5,16 +5,23 @@
  * primary would be unreadable on dark designs.
  */
 
-/* ---------- Orders: shipping + all action buttons in one left-to-right row ---------- */
+/* ---------- Orders: shipping + all action buttons together in one row ---------- */
 .cabp-layout--orders .oc-card__actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-start;
     gap: 8px;
 }
 .cabp-layout--orders .oc-card__secondary,
 .cabp-layout--orders .oc-actions {
     display: contents;
+}
+@media (min-width: 640px) {
+    .cabp-layout--orders .oc-card__actions,
+    .cabp-layout--orders .oc-actions {
+        justify-content: flex-start;
+    }
 }
 @media (max-width: 639px) {
     .cabp-layout--orders .oc-card__actions .button,

@@ -184,12 +184,12 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                     <span x-show="repeatingId !== order.id">{{ __('text.cabinet_repeat_order') }}</span>
                                     <span x-show="repeatingId === order.id">…</span>
                                 </a>
-                                <span class="button cabp-action cabp-action--danger-soft" x-show="showStop(order)" :disabled="stoppingId === order.id" @click="askStop(order.id)" style="cursor:pointer">
-                                    <span>{{ __('text.cabinet_stop_auto') }}</span>
-                                </span>
                                 <a x-show="showShop(order)" :href="shopUrl(order)" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
                                     <span>{{ __('text.cabinet_shop') }}</span>
                                 </a>
+                                <span class="button cabp-action cabp-action--danger-soft" x-show="showStop(order)" :disabled="stoppingId === order.id" @click="askStop(order.id)" style="cursor:pointer">
+                                    <span>{{ __('text.cabinet_stop_auto') }}</span>
+                                </span>
                                 <a x-show="billingUrl" :href="billingUrl" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
                                     <span x-text="billingLabel"></span>
                                 </a>
