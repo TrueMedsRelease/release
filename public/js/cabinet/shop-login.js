@@ -451,12 +451,64 @@
         guardShopForm(document.getElementById('shop-code-form'));
     }
 
+    /* ================= autologin (?login_key=, portal LoginLinkBox parity) ================= */
+
+    // Runs once when the email step carries a login key: resolves the
+    // fingerprint, redeems the link server-side, navigates on success.
+    // Failure shows an error and leaves the manual email form usable.
+    function initAutologin() {
+        var box = document.getElementById('shop-autologin');
+        if (!box || !window.ShopLoginConfig) return;
+        var cfg = window.ShopLoginConfig;
+        var key = (box.getAttribute('data-login-key') || '').trim();
+        if (!key || key.indexOf('lkl_') !== 0 || !cfg.autologinUrl) return;
+
+        var statusEl = document.getElementById('shop-autologin-status');
+        var errorEl = document.getElementById('shop-autologin-error');
+        var spinnerEl = document.getElementById('shop-autologin-spinner');
+
+        function fail(message) {
+            if (spinnerEl) spinnerEl.style.display = 'none';
+            if (statusEl) statusEl.style.display = 'none';
+            if (errorEl) {
+                errorEl.textContent = message || cfg.tAutologinFailed || 'Sign-in link failed.';
+                errorEl.hidden = false;
+            }
+        }
+
+        ensureShopFp().catch(function () {}).then(function () {
+            return fetch(cfg.autologinUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken(),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ login_token: key, fingerprint: shopFpValue || '' }),
+            });
+        }).then(function (res) {
+            return res.json().catch(function () { return {}; }).then(function (data) {
+                return { res: res, data: data || {} };
+            });
+        }).then(function (out) {
+            if (out.res.ok && out.data && out.data.status === 'success' && out.data.redirectUrl) {
+                window.location.href = out.data.redirectUrl;
+                return;
+            }
+            fail((out.data && out.data.message) || null);
+        }).catch(function () {
+            fail(null);
+        });
+    }
+
     function boot() {
         initEmailStep();
         initCaptchaStep();
         initOtpStep();
         initResend();
         initFingerprint();
+        initAutologin();
     }
 
     if (document.readyState === 'loading') {

@@ -216,4 +216,13 @@ class CabinetDisplayTest extends TestCase
             AccountController::applyCheckoutOverride($url, 'https://true-checkout.com?lang=es&aff=1842')
         );
     }
+
+    public function test_valid_login_token_shape(): void
+    {
+        $this->assertTrue(CabinetService::validLoginToken('lkl_abc.def'));
+        $this->assertTrue(CabinetService::validLoginToken('  lkl_abc  '));
+        $this->assertFalse(CabinetService::validLoginToken(''));
+        $this->assertFalse(CabinetService::validLoginToken('http://evil'));
+        $this->assertFalse(CabinetService::validLoginToken('lkl_' . str_repeat('x', 2048)));
+    }
 }

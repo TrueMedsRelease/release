@@ -45,12 +45,20 @@ class CabinetPreviewController extends Controller
             return redirect()->route('account.page', ['page' => CabinetService::firstVisiblePage()]);
         }
 
+        // Autologin (?login_key=): validated shape only, the crypto check
+        // happens on redeem. The email step shows an auto-attempt box.
+        $loginKey = trim((string) request()->query('login_key', ''));
+        if (!CabinetService::validLoginToken($loginKey)) {
+            $loginKey = '';
+        }
+
         return view($design . '.cabinet.' . $view, array_merge(
             $this->layoutData($design, 'cabinet_login'),
             [
                 'cabp_page' => 'login',
                 'cabp_step' => $step,
                 'email' => (string) session('cabinet.embedded_email', ''),
+                'loginKey' => $loginKey,
             ]
         ));
     }

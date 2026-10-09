@@ -602,6 +602,61 @@ class CabinetService
     }
 
     /**
+     * Autologin link shape check (portal ?login_key= parity): lkl_ prefix,
+     * bounded length. Crypto verification happens server-side on redeem.
+     */
+    public static function validLoginToken(string $token): bool
+    {
+        $token = trim($token);
+        if ($token === '' || strlen($token) > 2048) {
+            return false;
+        }
+
+        return str_starts_with($token, 'lkl_');
+    }
+
+    /**
+     * Autologin, single step: exchange an emailed login link for a token
+     * pair (fingerprint-bound, like embedded verify). The cabinet answers
+     * {token_type, access_token, refresh_token, expires_in}.
+     *
+     * @return array{ok: bool, data?: array, code?: string, error?: string}
+     */
+    public static function redeemLoginLink(string $loginToken, ?string $customerIp, ?string $fingerprint = null): array
+    {
+        $cfg = self::config();
+
+        $payload = [
+            'domain' => self::shopDomain(),
+            'login_token' => $loginToken,
+            'fingerprint' => $fingerprint,
+            'customer_ip' => $customerIp,
+        ];
+
+        try {
+            $response = Http::acceptJson()
+                ->timeout(15)
+                ->connectTimeout(5)
+                ->post($cfg['url'].'/api/v1/auth/login-link/redeem', $payload);
+        } catch (\Throwable $e) {
+            Log::error('CabinetService login-link redeem failed: '.$e->getMessage());
+
+            return ['ok' => false, 'code' => 'connection_failed', 'error' => 'No connection to cabinet.'];
+        }
+
+        $body = $response->json();
+        $body = is_array($body) ? $body : [];
+        if ($response->successful() && !empty($body['access_token'])) {
+            return ['ok' => true, 'data' => $body];
+        }
+
+        return [
+            'ok' => false,
+            'code' => (string) ($body['code'] ?? 'request_failed'),
+            'error' => (string) ($body['error'] ?? 'Cabinet request failed.'),
+        ];
+    }
+    /**
      * Browser flow with no secret on the wire: the cabinet knows the shop
      * by domain (or shop_id), the shop_keys secret is never sent.
      *

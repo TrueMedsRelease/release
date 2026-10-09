@@ -250,6 +250,37 @@ class CabinetPreviewTest extends TestCase
         $this->assertStringContainsString(route('admin.test_customer_personal_account_connection'), $html);
     }
 
+    public function test_login_page_shows_autologin_box_for_login_key(): void
+    {
+        $this->get('/account/login/email'); // warm up UrlGenerator
+
+        $key = 'lkl_testkey1234.signature';
+        $response = $this->get('/account/login/email?login_key=' . $key);
+        $response->assertStatus(200);
+        $html = $response->getContent();
+        $this->assertStringContainsString('id="shop-autologin"', $html);
+        $this->assertStringContainsString('data-login-key="' . $key . '"', $html);
+    }
+
+    public function test_login_page_ignores_malformed_login_key(): void
+    {
+        $this->get('/account/login/email'); // warm up UrlGenerator
+
+        $response = $this->get('/account/login/email?login_key=not-a-link');
+        $response->assertStatus(200);
+        $this->assertStringNotContainsString('id="shop-autologin"', $response->getContent());
+    }
+
+    public function test_autologin_endpoint_forbidden_when_cabinet_disabled(): void
+    {
+        $this->get('/account/login/email'); // warm up UrlGenerator (sandbox APP_URL quirk)
+        // No DB in tests: CabinetService::config() degrades to disabled.
+        $response = $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class)
+            ->post(route('account.autologin'), ['login_token' => 'lkl_abc.def']);
+
+        $response->assertStatus(403);
+    }
+
     public function test_cabinet_repeat_url_prefers_api_formed_link(): void
     {
         \Illuminate\Support\Facades\Http::fake([

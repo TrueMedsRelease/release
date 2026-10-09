@@ -182,6 +182,53 @@ class AccountController extends Controller
     }
 
     /**
+     * Autologin via emailed link (portal ?login_key= parity): exchanges
+     * {login_token, fingerprint} for a token pair, no email/code steps.
+     * JSON endpoint for the login page box: success carries redirectUrl,
+     * failure carries a display message (manual email login stays below).
+     */
+    public function autologin(Request $request)
+    {
+        if (!CabinetService::enabled()) {
+            return response()->json(['status' => 'error', 'message' => __('text.errors_login_failed')], 403);
+        }
+        if (session('cabinet.access_token')) {
+            return response()->json([
+                'status' => 'success',
+                'redirectUrl' => route('account.page', ['page' => CabinetService::firstVisiblePage()]),
+            ]);
+        }
+
+        $loginToken = trim((string) $request->input('login_token', ''));
+        if (!CabinetService::validLoginToken($loginToken)) {
+            return response()->json(['status' => 'error', 'message' => __('text.cabinet_link_invalid')], 422);
+        }
+
+        $fingerprint = $this->browserFingerprint($request);
+        $result = CabinetService::redeemLoginLink($loginToken, $request->ip(), $fingerprint);
+        if (empty($result['ok'])) {
+            $code = (string) ($result['code'] ?? '');
+            $message = match ($code) {
+                'invalid_login_token', 'login_link_revoked' => __('text.cabinet_link_invalid'),
+                'fingerprint_required' => __('text.cabinet_captcha_required'),
+                'connection_failed' => __('text.errors_connection_failed'),
+                'rate_limited' => __('text.errors_too_many_attempts'),
+                default => ($result['error'] ?? '') !== '' ? (string) $result['error'] : __('text.errors_login_failed'),
+            };
+
+            return response()->json(['status' => 'error', 'message' => $message], 401);
+        }
+
+        $this->storePair((array) $result['data']);
+        session(['cabinet.fp_hash' => sha1((string) $fingerprint)]);
+
+        return response()->json([
+            'status' => 'success',
+            'redirectUrl' => route('account.page', ['page' => CabinetService::firstVisiblePage()]),
+        ]);
+    }
+
+    /**
      * Browser fingerprint from the forms' hidden field (computed by DeviceLib):
      * the shop forwards it to the cabinet for code binding (hijack detection).
      * Empty is allowed, then the fingerprint check is skipped.

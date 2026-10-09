@@ -97,6 +97,7 @@ if (!function_exists('asset_ver')) {
 $shopLoginConfig = [
     'captchaImageUrl' => route('account.api.captcha'),
     'captchaVerifyUrl' => route('account.api.captcha.verify'),
+    'autologinUrl' => route('account.autologin'),
     'captchaUrl' => route('account.login', ['step' => 'captcha']),
     'tInvalidEmail' => __('text.errors_wrong_email'),
     'tChecking' => __('text.cabinet_captcha_checking'),
@@ -104,6 +105,7 @@ $shopLoginConfig = [
     'tFailed' => __('text.cabinet_captcha_failed'),
     'tError' => __('text.cabinet_captcha_error'),
     'tLoadFailed' => __('text.cabinet_captcha_load_failed'),
+    'tAutologinFailed' => __('text.cabinet_link_invalid'),
 ];
 $shopCodeConfig = [
     'resend' => __('text.cabinet_resend'),

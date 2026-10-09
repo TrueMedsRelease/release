@@ -1,6 +1,6 @@
-/* Отдельный layout логина кабинета (design_10). Структура 1:1 с референсом
-   (customerportal LoginLayout.vue): сплит-скрин, панель формы + hero-фото.
-   Коралловая тема дизайна. Без JS. */
+/* Standalone cabinet login layout (design_10). Structure 1:1 with the reference
+   (customerportal LoginLayout.vue): split screen, form panel + hero photo.
+   Coral design theme. No JS. */
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body { font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif; background: #fff; color: #2a464d; }
@@ -66,6 +66,15 @@ body { font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", s
 .cablogin-status--error { color: #d92d20; }
 .cablogin-status--success { color: #1a8a5c; }
 .cablogin-status--checking { color: #5b6b70; }
+
+/* Autologin box (?login_key=): spinner + status, shared by all designs. */
+.cablogin-autologin { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 10px 14px; border-radius: .8rem; background: #f2f6f7; }
+.cablogin-autologin .cablogin-hint { margin: 0; }
+.cablogin-spinner { width: 16px; height: 16px; flex-shrink: 0; border-radius: 999px; border: 2px solid rgba(42, 70, 77, .18); border-top-color: #2a464d; animation: cablogin-spin .8s linear infinite; }
+@keyframes cablogin-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+    .cablogin-spinner { animation: none; }
+}
 @media (max-width: 900px) {
     .cablogin__image { display: none; }
     .cablogin__body { flex-basis: 100%; }

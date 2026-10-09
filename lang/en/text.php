@@ -1291,6 +1291,8 @@ return [
     "cabinet_login_email" => "Email",
     "cabinet_login_submit" => "Enter",
     "cabinet_login_hint" => "Enter the email address associated with your orders.",
+    "cabinet_autologin_working" => "Signing you in…",
+    "cabinet_link_invalid" => "This sign-in link is invalid or expired. Please sign in with your email below.",
     "cabinet_captcha_required" => "Please solve the captcha first.",
     "cabinet_captcha_title" => "Confirm you are not a robot",
     "cabinet_captcha_subtitle" => "Drag the puzzle to the correct spot",
@@ -1306,7 +1308,7 @@ return [
     "cabinet_resend" => "Resend code",
     "cabinet_resend_in" => "Resend code in {s}s",
     "cabinet_scope_forbidden" => "This section is not available for this shop.",
-    // 1:1 с customerportal translations/messages.en.yaml (nav/header/orders/bonus/referral/contact/common).
+    // 1:1 with customerportal translations/messages.en.yaml (nav/header/orders/bonus/referral/contact/common).
     "cabinet_nav_orders" => "My orders",
     "cabinet_nav_referral" => "Referral program",
     "cabinet_nav_bonus" => "Bonus",

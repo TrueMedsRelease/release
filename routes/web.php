@@ -167,6 +167,7 @@ Route::controller(HomeController::class)->group(function () {
         Route::post('/account/api/captcha/verify', 'captchaVerify')->name('account.api.captcha.verify')->middleware('throttle:10,1');
         Route::post('/account/embedded/start', 'embeddedStart')->name('account.embedded.start')->middleware('throttle:10,1');
         Route::post('/account/embedded/verify', 'embeddedVerify')->name('account.embedded.verify')->middleware('throttle:10,1');
+        Route::post('/account/autologin', 'autologin')->name('account.autologin')->middleware('throttle:10,1');
         Route::post('/account/logout', 'logout')->name('account.logout');
         Route::get('/account/api/me', 'apiMe')->name('account.api.me');
         Route::get('/account/api/orders', 'apiOrders')->name('account.api.orders');
