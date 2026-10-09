@@ -523,7 +523,7 @@
                     @if (env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || $billing_country_current == "US"))
                         <option value="zelle" data-asset="{{ asset('style_checkout/images/icons/payment_type/zelle.svg') }}" @selected($payment_type_current == 'zelle')>ZELLE</option>
                     @endif
-                    @if (env('APP_PAYPAL_ON', 0) && $service_enable && session('paypal_limit', 'none') != 'none')
+                    @if (env('APP_PAYPAL_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US"))
                         <option value="paypal" data-asset="{{ asset('style_checkout/images/icons/payment_type/paypal.svg') }}" @selected($payment_type_current == 'paypal')>Paypal</option>
                     @endif
                     @if (env('APP_SEPA_LOCAL_ON', 0) && in_array($billing_country_current, ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
@@ -786,17 +786,6 @@
             </div>
         </div>
 
-        <div class="payment-information__paypal-content" @if ($payment_type_current != 'paypal') hidden @endif>
-            <div class="details-payment__row">
-                <div class="details-payment__data" style="text-align: center;">{{ __('text.checkout_sepa_text') }}</div>
-            </div>
-            <div class="form__field submit-field">
-                <button class="button form__submit" type="button" data-action="process-paypal">
-                    <span class="button-text">{{ __('text.checkout_sepa_button') }}</span>
-                </button>
-            </div>
-        </div>
-
         @if (env('APP_SEPA_ON', 0) == 1 && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
             <div class="payment-information__sepa-content" @if ($payment_type_current != 'sepa') hidden @endif>
                 <div class="content-sepa" id="sepa_requisites">
@@ -997,6 +986,22 @@
                 </div>
                 <div class="form__field submit-field">
                     <button class="button form__submit" type="button" data-action="process-cashapp" data-payment-type="{{ $payment_type_current }}">
+                        <span class="button-text">{{ __('text.checkout_place') }}</span>
+                        <span class="icon">
+                            <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        @endif
+
+        @if (env('APP_PAYPAL_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
+            <div class="payment-information__paypal-content" @if (!in_array($payment_type_current, ['paypal'])) hidden @endif>
+                <div class="details-payment__row">
+                    <div class="details-payment__data" style="text-align: center;">{{ __('text.checkout_sepa_text') }}</div>
+                </div>
+                <div class="form__field submit-field">
+                    <button class="button form__submit" type="button" data-action="process-paypal" data-payment-type="{{ $payment_type_current }}">
                         <span class="button-text">{{ __('text.checkout_place') }}</span>
                         <span class="icon">
                             <svg width="1em" height="1em" fill="currentColor"><use href="{{ asset("$design/svg/icons/sprite.svg?vmxkaego2#arrow-right") }}"></use></svg>
