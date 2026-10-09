@@ -384,11 +384,25 @@ class AccountController extends Controller
             return null;
         }
         $data = $response->json('data');
-        $url = is_array($data) && isset($data['order']) && is_array($data['order'])
-            ? ($data['order']['repeatUrl'] ?? null)
-            : null;
+        $order = is_array($data) && isset($data['order']) && is_array($data['order']) ? $data['order'] : null;
+        if (!is_array($order)) {
+            \Illuminate\Support\Facades\Log::info('Cabinet repeat-context order '.$id.': no order object');
 
-        return is_string($url) && $url !== '' ? $url : null;
+            return null;
+        }
+        if (!array_key_exists('repeatUrl', $order)) {
+            \Illuminate\Support\Facades\Log::info('Cabinet repeat-context order '.$id.': no repeatUrl field (api binary predates the feature)');
+
+            return null;
+        }
+        $url = $order['repeatUrl'];
+        if (!is_string($url) || $url === '') {
+            \Illuminate\Support\Facades\Log::info('Cabinet repeat-context order '.$id.': repeatUrl null/empty (nothing priced to repeat)');
+
+            return null;
+        }
+
+        return $url;
     }
 
     /**
