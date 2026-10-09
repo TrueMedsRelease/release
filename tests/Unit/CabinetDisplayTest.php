@@ -163,6 +163,37 @@ class CabinetDisplayTest extends TestCase
         $this->assertSame($body, AccountController::rewriteOrderShopLinks($body, ''));
     }
 
+    public function test_display_diff_keeps_only_non_defaults(): void
+    {
+        $this->assertSame([], CabinetService::displayDiff(CabinetService::displayDefaults()));
+
+        $diff = CabinetService::displayDiff(CabinetService::normalizeDisplayConfig([
+            'pages' => ['orders' => true, 'bonus' => false],
+            'orders_filters' => true,
+            'orders_shop_button' => 'foreign',
+            'checkout_base_override' => 'https://true-checkout.com?id=123456',
+        ]));
+
+        $this->assertSame(['bonus' => false], $diff['pages']);
+        $this->assertArrayNotHasKey('orders_filters', $diff);
+        $this->assertSame('foreign', $diff['orders_shop_button']);
+        $this->assertSame('https://true-checkout.com?id=123456', $diff['checkout_base_override']);
+        // The reported prod payload (all defaults + one URL) must stay tiny.
+        $this->assertLessThan(255, strlen((string) json_encode($diff)));
+    }
+
+    public function test_display_diff_round_trips_through_normalize(): void
+    {
+        $raw = ['pages' => ['chat' => '0'], 'billing_button' => '0'];
+        $restored = CabinetService::normalizeDisplayConfig(
+            CabinetService::displayDiff(CabinetService::normalizeDisplayConfig($raw))
+        );
+
+        $this->assertFalse($restored['pages']['chat']);
+        $this->assertFalse($restored['billing_button']);
+        $this->assertTrue($restored['pages']['orders']);
+    }
+
     public function test_apply_checkout_override_swaps_host_keeps_token(): void
     {
         $url = 'https://true-checkout.com/order/begin?products=P&aff=2131&auth=TOKEN&is_cxserv=1';

@@ -862,14 +862,43 @@ class CabinetService
     }
 
     /**
-     * Save display config (validated upsert).
+     * Save display config (validated upsert). Stores only values that differ
+     * from defaults: the legacy shop_keys.key_data column is a short VARCHAR
+     * and a full dump would not fit (1406 Data too long).
      */
     public static function saveDisplay(array $data): void
     {
         DB::table('shop_keys')->updateOrInsert(
             ['name_key' => self::DISPLAY_KEY],
-            ['key_data' => json_encode(self::normalizeDisplayConfig($data), JSON_UNESCAPED_SLASHES)]
+            ['key_data' => json_encode(self::displayDiff(self::normalizeDisplayConfig($data)), JSON_UNESCAPED_SLASHES)]
         );
+    }
+
+    /**
+     * Strip defaults from a normalized config for compact storage.
+     * Pure function (no DB).
+     */
+    public static function displayDiff(array $normalized): array
+    {
+        $defaults = self::displayDefaults();
+        $diff = [];
+        foreach ($normalized as $key => $value) {
+            if ($key === 'pages' && is_array($value)) {
+                $pageDiff = [];
+                foreach ($value as $page => $visible) {
+                    if ($visible !== ($defaults['pages'][$page] ?? null)) {
+                        $pageDiff[$page] = $visible;
+                    }
+                }
+                if ($pageDiff !== []) {
+                    $diff['pages'] = $pageDiff;
+                }
+            } elseif ($value !== ($defaults[$key] ?? null)) {
+                $diff[$key] = $value;
+            }
+        }
+
+        return $diff;
     }
 
     /**

@@ -1407,20 +1407,29 @@ class AdminController extends Controller
     }
 
     public function save_cabinet_info(Request $request) {
-        CabinetService::save([
-            'enabled' => (int) $request->input('cabinet_enabled', 0) === 1,
-            'secret'  => (string) $request->input('cabinet_secret', ''),
-        ]);
-        CabinetService::saveDisplay([
-            'pages' => (array) $request->input('display.pages', []),
-            'orders_filters' => $request->input('display.orders_filters'),
-            'orders_help' => $request->input('display.orders_help'),
-            'orders_shop_button' => $request->input('display.orders_shop_button'),
-            'shop_domain_override' => $request->input('display.shop_domain_override'),
-            'billing_url_override' => $request->input('display.billing_url_override'),
-            'checkout_base_override' => $request->input('display.checkout_base_override'),
-            'billing_button' => $request->input('display.billing_button'),
-        ]);
+        try {
+            CabinetService::save([
+                'enabled' => (int) $request->input('cabinet_enabled', 0) === 1,
+                'secret'  => (string) $request->input('cabinet_secret', ''),
+            ]);
+            CabinetService::saveDisplay([
+                'pages' => (array) $request->input('display.pages', []),
+                'orders_filters' => $request->input('display.orders_filters'),
+                'orders_help' => $request->input('display.orders_help'),
+                'orders_shop_button' => $request->input('display.orders_shop_button'),
+                'shop_domain_override' => $request->input('display.shop_domain_override'),
+                'billing_url_override' => $request->input('display.billing_url_override'),
+                'checkout_base_override' => $request->input('display.checkout_base_override'),
+                'billing_button' => $request->input('display.billing_button'),
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            $message = 'Save failed: database rejected the value.';
+            if (str_contains((string) $e->getMessage(), '1406') || str_contains((string) $e->getMessage(), 'too long')) {
+                $message = 'Save failed: a value is too long for the settings storage. Shorten the override URLs and try again.';
+            }
+
+            return response()->json(array('status' => 'error', 'text' => $message));
+        }
         CabinetService::forgetShopSettings();
 
         Cache::flush();
