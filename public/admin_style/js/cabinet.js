@@ -81,6 +81,7 @@
                 'display[orders_shop_button]': $('#cab_shop_button').val(),
                 'display[shop_domain_override]': $('#cab_shop_override').val(),
                 'display[billing_url_override]': $('#cab_billing_override').val(),
+                'display[checkout_base_override]': $('#cab_checkout_override').val(),
                 'display[billing_button]': $('#cab_billing_button').is(':checked') ? '1' : '0'
             };
         }

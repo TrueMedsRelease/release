@@ -70,6 +70,14 @@ class CabinetDisplayTest extends TestCase
 
         $bare = CabinetService::normalizeDisplayConfig(['shop_domain_override' => 'example.com']);
         $this->assertSame('https://example.com', $bare['shop_domain_override']);
+
+        $checkout = CabinetService::normalizeDisplayConfig([
+            'checkout_base_override' => 'https://example.com?aff=1842',
+        ]);
+        $this->assertSame('https://example.com?aff=1842', $checkout['checkout_base_override']);
+
+        $badCheckout = CabinetService::normalizeDisplayConfig(['checkout_base_override' => '::/nope']);
+        $this->assertSame('', $badCheckout['checkout_base_override']);
     }
 
     public function test_apply_domain_override_empty_inputs(): void
@@ -153,5 +161,16 @@ class CabinetDisplayTest extends TestCase
         $body = ['data' => ['items' => [['id' => 1, 'shop' => 'https://shop1.example?aff=5']]]];
 
         $this->assertSame($body, AccountController::rewriteOrderShopLinks($body, ''));
+    }
+
+    public function test_apply_checkout_override_swaps_host_keeps_token(): void
+    {
+        $url = 'https://true-checkout.com/order/begin?products=P&aff=2131&auth=TOKEN&is_cxserv=1';
+
+        $this->assertSame(
+            'https://example.com/order/begin?products=P&aff=2131&auth=TOKEN&is_cxserv=1',
+            AccountController::applyCheckoutOverride($url, 'https://example.com?aff=1842')
+        );
+        $this->assertSame($url, AccountController::applyCheckoutOverride($url, ''));
     }
 }

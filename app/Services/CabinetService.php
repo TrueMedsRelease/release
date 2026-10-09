@@ -744,6 +744,7 @@ class CabinetService
             'orders_shop_button' => self::SHOP_BUTTON_ALL,
             'shop_domain_override' => '',
             'billing_url_override' => '',
+            'checkout_base_override' => '',
             'billing_button' => true,
         ];
     }
@@ -777,7 +778,7 @@ class CabinetService
             }
         }
 
-        foreach (['shop_domain_override', 'billing_url_override'] as $urlKey) {
+        foreach (['shop_domain_override', 'billing_url_override', 'checkout_base_override'] as $urlKey) {
             if (array_key_exists($urlKey, $raw)) {
                 $out[$urlKey] = self::sanitizeOverrideUrl((string) $raw[$urlKey]);
             }

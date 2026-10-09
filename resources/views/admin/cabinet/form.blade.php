@@ -148,6 +148,17 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
 
         <div class="cab-admin__field">
             <div>
+                <div class="cab-admin__label"><label for="cab_checkout_override">Repeat order link override</label></div>
+                <div class="cab-admin__hint">Replaces the host of the API-formed true-checkout repeat link (e.g. https://example.com?aff=1842). Missing params are appended, existing params win. The sealed auth token is preserved.</div>
+            </div>
+            <div>
+                <input class="cab-admin__input" type="text" name="display_checkout_base_override" id="cab_checkout_override"
+                       value="{{ $cabinet_display['checkout_base_override'] ?? '' }}" placeholder="https://example.com?aff=1842" autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="cab-admin__field">
+            <div>
                 <div class="cab-admin__label">Billing button</div>
             </div>
             <div>

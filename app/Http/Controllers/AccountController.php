@@ -406,6 +406,24 @@ class AccountController extends Controller
     }
 
     /**
+     * Apply the shop checkout-base override to an API-formed repeat link.
+     * Host/scheme swap only; sealed auth token and params are preserved
+     * (missing override params are appended). Pass $override explicitly
+     * in tests; null reads the display config (DB with graceful defaults).
+     */
+    public static function applyCheckoutOverride(string $url, ?string $override = null): string
+    {
+        if ($override === null) {
+            $override = (string) (CabinetService::displayConfig()['checkout_base_override'] ?? '');
+        }
+        if ($override === '') {
+            return $url;
+        }
+
+        return CabinetService::applyDomainOverride($url, $override);
+    }
+
+    /**
      * Repeat an order: positions with packagingId from the order go to the shop
      * cart and the checkout URL is returned. Used only when the cabinet API
      * has no ready repeat link (see cabinetRepeatUrl above).
@@ -425,6 +443,7 @@ class AccountController extends Controller
         // the local virtual cart when the API has no link (legacy orders).
         $apiUrl = self::cabinetRepeatUrl($access, self::requestFingerprint($request), $id);
         if ($apiUrl !== null) {
+            $apiUrl = self::applyCheckoutOverride($apiUrl);
             Log::info('Cabinet repeat order '.$id.': api link used');
 
             return response()->json(['status' => 'success', 'checkoutUrl' => $apiUrl]);

@@ -1418,6 +1418,7 @@ class AdminController extends Controller
             'orders_shop_button' => $request->input('display.orders_shop_button'),
             'shop_domain_override' => $request->input('display.shop_domain_override'),
             'billing_url_override' => $request->input('display.billing_url_override'),
+            'checkout_base_override' => $request->input('display.checkout_base_override'),
             'billing_button' => $request->input('display.billing_button'),
         ]);
         CabinetService::forgetShopSettings();
