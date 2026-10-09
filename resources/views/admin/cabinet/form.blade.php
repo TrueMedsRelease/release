@@ -128,7 +128,7 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
             </div>
             <div>
                 <input class="cab-admin__input" type="text" name="display_shop_domain_override" id="cab_shop_override"
-                       value="{{ $cabinet_display['shop_domain_override'] ?? '' }}" placeholder="https://example.com?aff=1842" autocomplete="off" />
+                       value="{{ $cabinet_display['shop_domain_override'] ?? '' }}" placeholder="https://example.com" autocomplete="off" />
             </div>
         </div>
 
