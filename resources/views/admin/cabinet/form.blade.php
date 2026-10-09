@@ -169,5 +169,16 @@ $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hi
                 </label>
             </div>
         </div>
+
+        <div class="cab-admin__actions">
+            <button type="button" id="cab_display_save_btn" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled">
+                <span>
+                    <span>Save display settings</span>
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                    </svg>
+                </span>
+            </button>
+        </div>
     </div>
 </div>

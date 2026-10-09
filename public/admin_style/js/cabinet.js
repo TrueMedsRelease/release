@@ -140,6 +140,11 @@
             save();
         });
         $testBtn.on('click', test);
+        // Display settings live outside the form: their Save button
+        // reuses the same save (formData reads all fields by ID).
+        $('#cab_display_save_btn').on('click', function () {
+            $form.trigger('submit');
+        });
 
         // Show/hide the secret.
         $('#cab_secret_toggle').on('click', function () {
