@@ -230,12 +230,28 @@
         return (e && e.message) || fallback;
     }
 
+    // The cabinet API returns only `status` (statusKey is contract-forbidden
+    // server-side), so the pill key is derived here. Unknown values collapse
+    // to 'unknown', which the template hides.
+    var ORDER_STATUS_KEYS = ['checking', 'approved', 'delivered', 'declined', 'refunded'];
+
+    function normalizeStatusKey(status) {
+        var s = String(status || '').toLowerCase();
+        return ORDER_STATUS_KEYS.indexOf(s) !== -1 ? s : 'unknown';
+    }
+
     function pickList(body) {
         if (!body) return { items: [], cursor: null };
         var d = body.data && typeof body.data === 'object' ? body.data : {};
         var items = [];
         if (Array.isArray(body.items)) items = body.items;
         else if (Array.isArray(d.items)) items = d.items;
+        for (var i = 0; i < items.length; i++) {
+            var it = items[i];
+            if (it && typeof it === 'object' && !it.statusKey) {
+                it.statusKey = normalizeStatusKey(it.status);
+            }
+        }
         var cursor = body.nextCursor;
         if (cursor === undefined) cursor = body.next_cursor;
         if (cursor === undefined) cursor = d.nextCursor;
