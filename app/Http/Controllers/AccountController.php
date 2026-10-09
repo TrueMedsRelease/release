@@ -493,6 +493,11 @@ class AccountController extends Controller
                 $cabBody = $response->json();
                 $fpMatch = hash_equals((string) session('cabinet.fp_hash', ''), sha1($fingerprint));
                 $fpDebug = substr(trim((string) $request->query('_fpd', '')), 0, 120);
+                if ($fpDebug === '' && $fingerprint === '') {
+                    // Новый фронт при пустом FP всегда шлёт _fpd: его нет —
+                    // в браузере выполняется старый account.js (кеш HTML/JS).
+                    $fpDebug = 'no-fpd-param(stale-js)';
+                }
                 Log::warning('Cabinet proxy 401: path='.$path.' code='.(is_array($cabBody) ? (string) ($cabBody['code'] ?? $cabBody['error'] ?? 'n/a') : 'n/a').' fp_len='.strlen($fingerprint).' fp_source='.$fpSource.' fp_match='.($fpMatch ? 'yes' : 'no').($fpDebug !== '' ? ' fp_debug='.$fpDebug : ''));
             } catch (\Throwable $e) {
             }
