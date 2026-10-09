@@ -257,7 +257,10 @@
     margin: 8px 0;
 }
 
-/* ---------- My orders: sidebar hidden when filters and help are off ---------- */
+/* ---------- My orders: full-width cards when filters and help are off ---------- */
+.cabp-layout.cabp-layout--full {
+    grid-template-columns: 1fr !important;
+}
 .cabp-layout--full .oc-side,
 .cabp-layout--full .oc-filters-fab,
 .cabp-layout--full .oc-filters-pop {
