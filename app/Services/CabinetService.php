@@ -916,6 +916,87 @@ class CabinetService
     }
 
     /**
+     * Apply a checkout-base override to an API-formed link (repeat order).
+     * Opposite precedence to applyDomainOverride: the OVERRIDE is the base
+     * (host, scheme, port, path and its params win), the link fills in keys
+     * the override lacks (products, auth, ...). Funnel identity (aff/saff)
+     * always stays with the API-resolved link and is never overridden.
+     * Example: link .../order/begin?products=P&lang=en&aff=9&auth=T
+     *   + override https://true-checkout.com?lang=es
+     *   => https://true-checkout.com/order/begin?products=P&lang=es&aff=9&auth=T
+     * Pure function (no network/DB). On parse errors the link is unchanged.
+     */
+    public static function applyCheckoutBase(string $link, string $override): string
+    {
+        $link = trim($link);
+        $override = trim($override);
+        if ($link === '' || $override === '') {
+            return $link;
+        }
+
+        if (!preg_match('~^https?://~i', $override)) {
+            $override = 'https://'.$override;
+        }
+        $ov = parse_url($override);
+        if (!is_array($ov) || empty($ov['host'])) {
+            return $link;
+        }
+
+        $isAbsolute = (bool) preg_match('~^https?://~i', $link);
+        $lp = $isAbsolute ? parse_url($link) : parse_url('https://placeholder.invalid/'.ltrim($link, '/'));
+        if (!is_array($lp)) {
+            return $link;
+        }
+
+        $scheme = strtolower((string) ($ov['scheme'] ?? 'https'));
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            $scheme = 'https';
+        }
+        $host = strtolower((string) $ov['host']);
+        $port = isset($ov['port']) ? ':'.((int) $ov['port']) : '';
+
+        $ovPath = (string) ($ov['path'] ?? '');
+        if ($ovPath !== '' && $ovPath !== '/') {
+            $path = $ovPath;
+        } else {
+            $path = $isAbsolute ? (string) ($lp['path'] ?? '') : '/'.ltrim((string) ($lp['path'] ?? ''), '/');
+            if ($path !== '' && $path[0] !== '/') {
+                $path = '/'.$path;
+            }
+        }
+
+        $ovQuery = [];
+        if (isset($ov['query']) && $ov['query'] !== '') {
+            parse_str((string) $ov['query'], $ovQuery);
+        }
+        $linkQuery = [];
+        if (isset($lp['query']) && $lp['query'] !== '') {
+            parse_str((string) $lp['query'], $linkQuery);
+        }
+        foreach ($linkQuery as $k => $v) {
+            if (!array_key_exists($k, $ovQuery)) {
+                $ovQuery[$k] = $v;
+            }
+        }
+        // Funnel identity is API-resolved and never overridden.
+        foreach (['aff', 'saff'] as $protected) {
+            if (array_key_exists($protected, $linkQuery)) {
+                $ovQuery[$protected] = $linkQuery[$protected];
+            }
+        }
+        $query = $ovQuery !== [] ? '?'.http_build_query($ovQuery) : '';
+
+        $fragment = '';
+        if (isset($ov['fragment']) && $ov['fragment'] !== '') {
+            $fragment = '#'.$ov['fragment'];
+        } elseif (isset($lp['fragment']) && $lp['fragment'] !== '') {
+            $fragment = '#'.$lp['fragment'];
+        }
+
+        return $scheme.'://'.$host.$port.$path.$query.$fragment;
+    }
+
+    /**
      * Apply a domain override to an API link (Shop button).
      *
      * Semantics: scheme/host(/port) come from the override; path comes from

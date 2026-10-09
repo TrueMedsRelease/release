@@ -407,9 +407,10 @@ class AccountController extends Controller
 
     /**
      * Apply the shop checkout-base override to an API-formed repeat link.
-     * Host/scheme swap only; sealed auth token and params are preserved
-     * (missing override params are appended). Pass $override explicitly
-     * in tests; null reads the display config (DB with graceful defaults).
+     * The override is the base: its host (and params like lang) win, the API
+     * link fills in missing keys. Funnel identity (aff/saff) always stays
+     * with the API-resolved link. Pass $override explicitly in tests; null
+     * reads the display config (DB with graceful defaults).
      */
     public static function applyCheckoutOverride(string $url, ?string $override = null): string
     {
@@ -420,7 +421,7 @@ class AccountController extends Controller
             return $url;
         }
 
-        return CabinetService::applyDomainOverride($url, $override);
+        return CabinetService::applyCheckoutBase($url, $override);
     }
 
     /**

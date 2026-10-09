@@ -199,9 +199,21 @@ class CabinetDisplayTest extends TestCase
         $url = 'https://true-checkout.com/order/begin?products=P&aff=2131&auth=TOKEN&is_cxserv=1';
 
         $this->assertSame(
-            'https://example.com/order/begin?products=P&aff=2131&auth=TOKEN&is_cxserv=1',
+            'https://example.com/order/begin?aff=2131&products=P&auth=TOKEN&is_cxserv=1',
             AccountController::applyCheckoutOverride($url, 'https://example.com?aff=1842')
         );
         $this->assertSame($url, AccountController::applyCheckoutOverride($url, ''));
+    }
+
+    public function test_apply_checkout_override_wins_but_never_funnel(): void
+    {
+        $url = 'https://true-checkout.com/order/begin?products=P&lang=en&aff=9&saff=s1&auth=T&is_cxserv=1';
+
+        // Override params (lang) win, missing keys come from the link,
+        // funnel identity (aff/saff) always stays with the API link.
+        $this->assertSame(
+            'https://true-checkout.com/order/begin?lang=es&aff=9&products=P&saff=s1&auth=T&is_cxserv=1',
+            AccountController::applyCheckoutOverride($url, 'https://true-checkout.com?lang=es&aff=1842')
+        );
     }
 }
