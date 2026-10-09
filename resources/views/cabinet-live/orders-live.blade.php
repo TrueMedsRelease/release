@@ -180,10 +180,10 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1.5 3.5h7v6h-7z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.5 6H11l1.5 1.8v1.7H8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4.5" cy="10.7" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="10.5" cy="10.7" r="1.2" stroke="currentColor" stroke-width="1.2"/></svg>
                                     <span>{{ __('text.cabinet_tracking') }}</span>
                                 </button>
-                                <span class="button cabp-action cabp-action--dark" :disabled="repeatingId === order.id" @click="repeatVirtual(order)" style="cursor:pointer">
+                                <a href="#" class="button cabp-action cabp-action--dark" @click.prevent="repeatVirtual(order)" style="cursor:pointer">
                                     <span x-show="repeatingId !== order.id">{{ __('text.cabinet_repeat_order') }}</span>
                                     <span x-show="repeatingId === order.id">…</span>
-                                </span>
+                                </a>
                                 <span class="button cabp-action cabp-action--danger-soft" x-show="showStop(order)" :disabled="stoppingId === order.id" @click="askStop(order.id)" style="cursor:pointer">
                                     <span>{{ __('text.cabinet_stop_auto') }}</span>
                                 </span>
