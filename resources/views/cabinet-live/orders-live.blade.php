@@ -100,20 +100,17 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                             </span>
                         </div>
 
+                        <p class="oc-card__ship" x-show="shipInline(order)"><span>{{ __('text.cabinet_shipping_to') }}:</span> <span x-text="shipInline(order)"></span></p>
+
                         <div class="oc-items" x-show="(order.items || []).length">
-                            <button type="button" class="oc-items__toggle" @click="toggleItems(order.id)" :aria-expanded="String(isItemsOpen(order.id))">
+                            <div class="oc-items__head">
                                 <span class="oc-items__label">
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.2 4h7.6l-.65 6.2a.5.5 0 0 1-.5.45H3.35a.5.5 0 0 1-.5-.45L2.2 4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.2 4V3a1.8 1.8 0 0 1 3.6 0v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                                     <span class="oc-items__label-text" x-text="itemsLabel(order)"></span>
                                 </span>
-                                <span class="oc-items__meta">
-                                    <span class="oc-mono oc-items__total" x-text="formatMoney(itemsTotal(order.items))"></span>
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" class="oc-items__chevron" :class="{ 'oc-items__chevron--open': isItemsOpen(order.id) }">
-                                        <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </span>
-                            </button>
-                            <div class="oc-items__rows" x-show="isItemsOpen(order.id)">
+                                <span class="oc-mono oc-items__total" x-text="formatMoney(itemsTotal(order.items))"></span>
+                            </div>
+                            <div class="oc-items__rows">
                                 <template x-for="(item, idx) in (order.items || [])" :key="idx">
                                     <div class="oc-items__row">
                                         <p class="oc-items__name" x-text="itemName(item)"></p>
@@ -122,72 +119,37 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                     </div>
                                 </template>
                             </div>
+                            <div class="oc-items__foot">
+                                <span class="oc-items__foot-label">{{ __('text.cabinet_total') }}</span>
+                                <span class="oc-mono oc-items__foot-total" x-text="formatMoney(itemsTotal(order.items))"></span>
+                            </div>
                         </div>
                         <p class="oc-card__nodetail" x-show="!(order.items || []).length">{{ __('text.cabinet_no_details') }}</p>
                         <p class="oc-card__status" x-show="nextDateLine(order)" x-text="nextDateLine(order)"></p>
 
-                        <div class="oc-card__foot">
-                            <div class="oc-card__links" x-show="Number(order.bonus || 0) > 0">
+                        <div class="oc-card__foot" x-show="Number(order.bonus || 0) > 0">
+                            <div class="oc-card__links">
                                 <span class="oc-bonus" x-text="'+' + formatMoney(order.bonus) + ' {{ __('text.cabinet_bonus') }}'"></span>
-                            </div>
-                            <div class="oc-card__total">
-                                <span class="oc-card__total-label">{{ __('text.cabinet_total') }}</span>
-                                <span class="oc-mono oc-card__total-value" x-text="formatMoney(order.total)"></span>
                             </div>
                         </div>
 
                         <div class="oc-card__actions">
-                            <div class="oc-card__secondary">
-                                <span class="oc-ship">
-                                    <button type="button" class="oc-footlink" :aria-expanded="String(isShipOpen(order.id))" @click.stop="toggleShip(order.id)">
-                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1C4.79 1 3 2.79 3 5c0 3 4 8 4 8s4-5 4-8c0-2.21-1.79-4-4-4z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="7" cy="5" r="1.4" stroke="currentColor" stroke-width="1.2"/></svg>
-                                        <span>{{ __('text.cabinet_shipping') }}</span>
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" class="oc-ship__caret" :class="{ 'oc-ship__caret--open': isShipOpen(order.id) }">
-                                            <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </button>
-                                    <span class="oc-ship__popover" role="dialog" x-cloak :class="{ '_open': isShipOpen(order.id) }" @click.outside="closeShip(order.id)">
-                                        <span class="oc-ship__handle" aria-hidden="true"></span>
-                                        <span class="oc-ship__close" @click="closeShip(order.id)" style="cursor:pointer">×</span>
-                                        <template x-if="shipLoading[order.id]">
-                                            <div aria-hidden="true"><span class="cabp-skel" style="width:40%"></span><br><span class="cabp-skel" style="width:90%"></span></div>
-                                        </template>
-                                        <template x-if="!shipLoading[order.id] && shipFailed[order.id]">
-                                            <span class="oc-ship__contact">
-                                                <p class="oc-ship__note">{{ __('text.cabinet_shipping_failed') }}</p>
-                                                <button type="button" class="oc-ship__btn" @click="loadShip(order.id)">{{ __('text.cabinet_retry') }}</button>
-                                            </span>
-                                        </template>
-                                        <template x-if="!shipLoading[order.id] && !shipFailed[order.id] && shipLoaded[order.id] && !shipData[order.id]">
-                                            <p class="oc-ship__note">{{ __('text.cabinet_shipping_not_found') }}</p>
-                                        </template>
-                                        <template x-if="!shipLoading[order.id] && !shipFailed[order.id] && shipData[order.id]">
-                                            <span>
-                                                <p class="oc-ship__caption">{{ __('text.cabinet_shipping_to') }}</p>
-                                                <p class="oc-ship__name" x-text="shipFullName(order.id)"></p>
-                                                <p class="oc-ship__addr"><span x-text="shipAddress(order.id)"></span><br><span x-text="shipCityLine(order.id)"></span><br><span x-text="shipCountryLine(order.id)"></span></p>
-                                                <span class="oc-ship__contact">
-                                                    <p class="oc-ship__note">{{ __('text.cabinet_shipping_note') }}</p>
-                                                    <a class="oc-ship__btn" href="{{ route('cabinet.live.page', ['page' => 'contact']) }}"><span>{{ __('text.cabinet_nav_contact') }}</span></a>
-                                                </span>
-                                            </span>
-                                        </template>
-                                    </span>
-                                </span>
-                            </div>
                             <div class="oc-actions">
                                 <button type="button" class="oc-footlink" x-show="order.trackingNumber === undefined || order.trackingNumber" @click="openTrack(order.id)">
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1.5 3.5h7v6h-7z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.5 6H11l1.5 1.8v1.7H8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4.5" cy="10.7" r="1.2" stroke="currentColor" stroke-width="1.2"/><circle cx="10.5" cy="10.7" r="1.2" stroke="currentColor" stroke-width="1.2"/></svg>
                                     <span>{{ __('text.cabinet_tracking') }}</span>
                                 </button>
                                 <a href="#" class="button cabp-action cabp-action--dark" @click.prevent="repeatVirtual(order)" style="cursor:pointer">
-                                    <span x-show="repeatingId !== order.id">{{ __('text.cabinet_repeat_order') }}</span>
-                                    <span x-show="repeatingId === order.id">…</span>
+                                    <svg x-show="repeatingId !== order.id" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M10.5 6A4.5 4.5 0 1 1 6 1.5c1.6 0 3 .8 3.9 2M9.9 1v2.5H7.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    <span class="oc-spinner" x-show="repeatingId === order.id" aria-hidden="true"></span>
+                                    <span>{{ __('text.cabinet_repeat_order') }}</span>
                                 </a>
-                                <a x-show="showShop(order)" :href="shopUrl(order)" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
+                                <a x-show="showShop(order)" :href="shopUrl(order)" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft" :title="shopUrl(order)">
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.2 4h7.6l-.65 6.2a.5.5 0 0 1-.5.45H3.35a.5.5 0 0 1-.5-.45L2.2 4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.2 4V3a1.8 1.8 0 0 1 3.6 0v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                                     <span>{{ __('text.cabinet_shop') }}</span>
                                 </a>
                                 <span class="button cabp-action cabp-action--danger-soft" x-show="showStop(order)" :disabled="stoppingId === order.id" @click="askStop(order.id)" style="cursor:pointer">
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 4l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                                     <span>{{ __('text.cabinet_stop_auto') }}</span>
                                 </span>
                                 <a x-show="billingUrl" :href="billingUrl" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">

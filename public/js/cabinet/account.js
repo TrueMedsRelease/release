@@ -383,12 +383,6 @@
             shopButton: cfg.shopButton || 'all',
             billingUrl: cfg.billingUrl || '',
             billingLabel: cfg.tBilling || 'Billing',
-            openItems: {},
-            shipOpen: {},
-            shipLoading: {},
-            shipFailed: {},
-            shipLoaded: {},
-            shipData: {},
             trackRendered: {},
             trackLoading: {},
             trackFailed: {},
@@ -454,7 +448,8 @@
                     this.failed = '';
                 }
                 try {
-                    var query = { per_page: 15 };
+                    // Shipping is always embedded for the inline "Shipping to" line (portal parity).
+                    var query = { per_page: 15, with_shipping: 1 };
                     if (!replace && this.nextCursor !== null && this.nextCursor !== undefined && this.nextCursor !== '') {
                         query.cursor = this.nextCursor;
                     }
@@ -502,7 +497,7 @@
                 this.switchingFilter = true;
                 this.nextCursor = null;
                 try {
-                    var query = { per_page: 15 };
+                    var query = { per_page: 15, with_shipping: 1 };
                     if (next) query.status = next;
                     var body = await api(cfg.ordersUrl || '/account/api/orders', { query: query });
                     var parsed = pickList(body);
@@ -570,9 +565,6 @@
                 return (order && order.shop) || '#';
             },
 
-            isItemsOpen(id) { return this.openItems[id] !== false; },
-            toggleItems(id) { this.openItems[id] = !this.isItemsOpen(id); },
-
             async copyOrderNumber(id, forTrack) {
                 if (await copyText(String(id))) {
                     var self = this;
@@ -589,61 +581,14 @@
                 }
             },
 
-            // ----- Shipping popover -----
-            isShipOpen(id) { return !!this.shipOpen[id]; },
-
-            toggleShip(id) {
-                this.shipOpen[id] = !this.shipOpen[id];
-                if (this.shipOpen[id] && !this.shipLoaded[id] && !this.shipLoading[id]) this.loadShip(id);
-            },
-
-            closeShip(id) { this.shipOpen[id] = false; },
-
-            async loadShip(id) {
-                if (this.shipLoading[id]) return;
-                this.shipLoading[id] = true;
-                this.shipFailed[id] = false;
-                try {
-                    var body = await api((cfg.shipUrl || '/account/api/orders') + '/' + id + '/shipping');
-                    var d = pickObject(body);
-                    this.shipData[id] = d.shipping !== undefined ? { shipping: d.shipping, countryName: d.countryName || null } : (d.firstname || d.address ? { shipping: d, countryName: d.countryName || null } : null);
-                    if (this.shipData[id] && !this.shipData[id].shipping) this.shipData[id] = null;
-                    this.shipLoaded[id] = true;
-                } catch (e) {
-                    if (e && e.login === false) { window.location.href = cfg.startUrl || '/account'; return; }
-                    this.shipFailed[id] = true;
-                    this.shipLoaded[id] = true;
-                } finally {
-                    this.shipLoading[id] = false;
-                }
-            },
-
-            shipFullName(id) {
-                var s = this.shipData[id] && this.shipData[id].shipping;
+            // ----- Inline shipping line (portal parity): the list embeds
+            // shippingInfo, no extra request. "Name · City, Country".
+            shipInline(order) {
+                var s = order && order.shippingInfo;
                 if (!s) return '';
-                return ((s.firstname || '') + ' ' + (s.lastname || '')).trim();
-            },
-
-            shipAddress(id) {
-                var s = this.shipData[id] && this.shipData[id].shipping;
-                return (s && s.address) || '';
-            },
-
-            shipCityLine(id) {
-                var s = this.shipData[id] && this.shipData[id].shipping;
-                if (!s) return '';
-                var city = s.city || '';
-                var state = s.stateName || s.state || '';
-                var zip = s.postalCode || '';
-                return (city + (state ? ', ' + state : '') + (zip ? ' ' + zip : '')).trim();
-            },
-
-            shipCountryLine(id) {
-                var entry = this.shipData[id];
-                if (!entry || !entry.shipping) return '';
-                var code = entry.shipping.countryCode || '';
-                if (entry.countryName && code) return entry.countryName + ' (' + code + ')';
-                return entry.countryName || code;
+                var name = ((s.firstname || '') + ' ' + (s.lastname || '')).trim();
+                var place = [(s.city || ''), (s.countryName || s.countryCode || '')].filter(function (p) { return p !== ''; }).join(', ');
+                return [name, place].filter(function (p) { return p !== ''; }).join(' · ');
             },
 
             // ----- Tracking drawer -----

@@ -5,6 +5,80 @@
  * primary would be unreadable on dark designs.
  */
 
+/* ---------- Orders: inline "Shipping to" line (portal parity) ---------- */
+.cabp-layout--orders .oc-card__ship {
+    margin: 0 20px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #8a94a0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------- Orders: static items block with head total + foot total ---------- */
+.cabp-layout--orders .oc-items__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 44px;
+    padding: 10px 14px;
+}
+.cabp-layout--orders .oc-items__label-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cabp-layout--orders .oc-items__total {
+    font-size: 16px;
+    font-weight: 700;
+    color: #171717;
+    flex-shrink: 0;
+}
+.cabp-layout--orders .oc-items__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+}
+.cabp-layout--orders .oc-items__foot-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #737373;
+}
+.cabp-layout--orders .oc-items__foot-total {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #171717;
+    white-space: nowrap;
+}
+
+/* ---------- Orders: spinner for busy action buttons ---------- */
+.cabp-layout--orders .oc-spinner {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1.3px solid rgba(128, 128, 128, 0.35);
+    border-top-color: currentColor;
+    animation: oc-spin 0.7s linear infinite;
+}
+@keyframes oc-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .cabp-layout--orders .oc-spinner {
+        animation: none;
+    }
+}
+
 /* ---------- Orders: shipping + all action buttons together in one row ---------- */
 .cabp-layout--orders .oc-card__actions {
     display: flex;
