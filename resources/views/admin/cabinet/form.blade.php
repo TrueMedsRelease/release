@@ -2,8 +2,8 @@
     <div class="statistic__rows">
         <h3 class="payment-details__caption">Settings</h3>
         <form name="cabinet_properties" id="cabinet_properties" method="POST" action="#"
-              data-save-url="{{ route('admin.save_cabinet_info') }}"
-              data-test-url="{{ route('admin.test_cabinet_connection') }}">
+              data-save-url="{{ route('admin.save_customer_personal_account_info') }}"
+              data-test-url="{{ route('admin.test_customer_personal_account_connection') }}">
             <div class="cab-admin__field">
                 <div>
                     <div class="cab-admin__label">Status</div>

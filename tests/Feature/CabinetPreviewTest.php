@@ -237,6 +237,19 @@ class CabinetPreviewTest extends TestCase
         $this->assertTrue(\Illuminate\Support\Facades\Route::has('admin.test_customer_personal_account_connection'));
     }
 
+    public function test_admin_cabinet_form_references_existing_routes(): void
+    {
+        $html = view('admin.cabinet.form', [
+            'cabinet_enabled' => false,
+            'cabinet_url' => 'https://api.true-help.com',
+            'cabinet_secret' => '',
+            'cabinet_display' => CabinetService::displayDefaults(),
+        ])->render();
+
+        $this->assertStringContainsString(route('admin.save_customer_personal_account_info'), $html);
+        $this->assertStringContainsString(route('admin.test_customer_personal_account_connection'), $html);
+    }
+
     public function test_cabinet_repeat_url_prefers_api_formed_link(): void
     {
         \Illuminate\Support\Facades\Http::fake([
