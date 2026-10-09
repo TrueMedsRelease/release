@@ -511,6 +511,17 @@ class AccountController extends Controller
                 }
             }
             if ($response->status() === 401) {
+                // Гонка параллельных запросов (orders+me+topbar одновременно):
+                // refresh-токен одноразовый, выигрывает один запрос, остальные
+                // видят 401. Перед сносом сессии проверяем — вдруг соседний
+                // запрос уже положил свежую пару, повторяем с ней.
+                $currentAccess = (string) session('cabinet.access_token', '');
+                if ($currentAccess !== '' && $currentAccess !== $access) {
+                    $access = $currentAccess;
+                    $response = CabinetService::apiCall($method, $path, $access, $fingerprint, $options);
+                }
+            }
+            if ($response->status() === 401) {
                 $this->forgetTokens();
 
                 return response()->json(['error' => 'Session expired, please log in again.', 'login' => false], 401);

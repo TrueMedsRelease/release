@@ -13,34 +13,47 @@
         return meta ? meta.getAttribute('content') : '';
     }
 
+    // Единый FP со всеми остальными местами: читаем значение, которое
+    // ушло на embedded.start/verify при логине (localStorage cabinet_fp).
+    // Пересчёт через DeviceLib здесь запрещён: хэш нестабилен между
+    // страницами (viewport, links/scripts, voices) и сломал бы привязку.
     async function ensureFingerprint() {
         try {
-            if (typeof window.DeviceLib === 'undefined') return '';
-            var r = await new window.DeviceLib().get();
-            var fp = (r && r.hash && (r.hash.v4 || String(r.hash.numeric || ''))) || '';
-            return String(fp || '');
+            if (window.CabinetAccountFp) return window.CabinetAccountFp;
+            var stored = window.localStorage ? window.localStorage.getItem('cabinet_fp') : '';
+            if (stored) {
+                window.CabinetFpDebug = 'localstorage';
+                return String(stored);
+            }
+            window.CabinetFpDebug = window.localStorage ? 'ls-empty' : 'ls-blocked';
         } catch (e) {
-            return '';
+            window.CabinetFpDebug = 'ls-throw';
         }
+        return '';
     }
 
     async function api(path, opts) {
         opts = opts || {};
+        var fp = await ensureFingerprint();
         var url = path;
-        if (opts.query) {
-            var qs = new URLSearchParams();
-            Object.keys(opts.query).forEach(function (k) {
-                var v = opts.query[k];
-                if (v !== undefined && v !== null && v !== '') qs.set(k, String(v));
-            });
-            var s = qs.toString();
-            if (s) url += (url.indexOf('?') === -1 ? '?' : '&') + s;
+        var qs = new URLSearchParams();
+        Object.keys(opts.query || {}).forEach(function (k) {
+            var v = opts.query[k];
+            if (v !== undefined && v !== null && v !== '') qs.set(k, String(v));
+        });
+        // Дублируем FP в query: запасной канал, если стенд режет X-FP.
+        if (fp) {
+            qs.set('_fp', fp);
+        } else if (window.CabinetFpDebug) {
+            qs.set('_fpd', String(window.CabinetFpDebug).slice(0, 120));
         }
+        var s = qs.toString();
+        if (s) url += (url.indexOf('?') === -1 ? '?' : '&') + s;
         var method = (opts.method || 'GET').toUpperCase();
         var headers = {
             'Accept': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
-            'X-FP': await ensureFingerprint(),
+            'X-FP': fp,
         };
         if (window.CabinetCsrfToken) headers['X-CSRF-TOKEN'] = window.CabinetCsrfToken;
         var fetchOpts = { method: method, headers: headers, credentials: 'same-origin' };
