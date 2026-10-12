@@ -1402,4 +1402,8 @@ return [
     "cabinet_continue" => "Continue",
     "cabinet_reload" => "Reload",
     "cabinet_load_failed" => "Could not load data. Please try again.",
+    'upsell_title' => 'We also recommend these seasonal products:',
+    'upsell_skip' => 'Continue without adding',
+    'upsell_error' => 'Could not confirm these items. Retry, or continue to checkout and review your cart.',
+    'upsell_expired' => 'The selection or price has changed. Close this window and open it again to refresh.',
 ];

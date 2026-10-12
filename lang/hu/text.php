@@ -1052,4 +1052,9 @@ return [
     "track_url_text1" => "Ezen a linken bármikor ellenőrizheti rendelése aktuális állapotát és a feldolgozásával kapcsolatos információkat.",
     "track_url_text2" => "Mentse el a linket vagy a QR-kódot a későbbi hozzáféréshez. Biztonsági okokból ne ossza meg azokat másokkal, mivel az oldal információkat tartalmaz a rendeléséről.",
     "track_url_print_button" => "Oldal nyomtatása",
+
+    'upsell_title' => 'Ezeket a szezonális termékeket is ajánljuk:',
+    'upsell_skip' => 'Folytatás hozzáadás nélkül',
+    'upsell_error' => 'Ezeket a termékeket nem sikerült megerősíteni. Próbálja újra, vagy folytassa a pénztárhoz, és ellenőrizze a kosarát.',
+    'upsell_expired' => 'A választék vagy az ár megváltozott. A frissítéshez zárja be ezt az ablakot, majd nyissa meg újra.',
 ];

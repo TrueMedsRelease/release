@@ -1177,4 +1177,9 @@ return [
     "track_url_text1" => "Grâce à ce lien, vous pouvez consulter à tout moment le statut actuel de votre commande ainsi que les informations relatives à son traitement.",
     "track_url_text2" => "Enregistrez le lien ou le code QR pour y accéder ultérieurement. Pour des raisons de sécurité, ne les partagez pas avec des tiers, car cette page contient des informations concernant votre commande.",
     "track_url_print_button" => "Imprimer la page",
+
+    'upsell_title' => 'Nous vous recommandons également ces produits saisonniers :',
+    'upsell_skip' => 'Continuer sans ajouter',
+    'upsell_error' => 'Impossible de confirmer ces articles. Réessayez ou continuez vers le paiement et vérifiez votre panier.',
+    'upsell_expired' => 'La sélection ou le prix a changé. Fermez cette fenêtre et ouvrez-la à nouveau pour actualiser.',
 ];

@@ -119,6 +119,52 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr style="display:flex; justify-content: space-between; padding-top: 15px; gap: 15px;">
+                            <td style="width: 30%;">
+                                <div>
+                                    Show Promo Coupon Popup
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="promo_coupon_popup" id="promo_coupon_on" value="1" @if (env('APP_PROMO_COUPON_POPUP', '1') == 1) checked @endif />
+                                    <label for="promo_coupon_on">
+                                        ON
+                                    </label>
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="promo_coupon_popup" id="promo_coupon_off" value="0" @if (env('APP_PROMO_COUPON_POPUP', '1') == 0) checked @endif />
+                                    <label for="promo_coupon_off">
+                                        OFF
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style="display:flex; justify-content: space-between; padding-top: 15px; gap: 15px;">
+                            <td style="width: 30%;">
+                                <div>
+                                    Show Seasonal Upsell
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="seasonal_upsell" id="seasonal_upsell_on" value="1" @if (env('SEASONAL_UPSELL_ENABLED', '1') == 1) checked @endif />
+                                    <label for="seasonal_upsell_on">
+                                        ON
+                                    </label>
+                                </div>
+                            </td>
+                            <td style="width: 35%;">
+                                <div>
+                                    <input type="radio" name="seasonal_upsell" id="seasonal_upsell_off" value="0" @if (env('SEASONAL_UPSELL_ENABLED', '1') == 0) checked @endif />
+                                    <label for="seasonal_upsell_off">
+                                        OFF
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="saveDefaultErrorPage();">

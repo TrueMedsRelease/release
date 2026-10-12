@@ -2388,7 +2388,7 @@ class HomeController extends Controller
         }
 
         try {
-            $serviceResponse = Http::timeout(3)
+            $serviceResponse = Http::timeout(10)
                 ->asJson()
                 ->post('https://true-serv.net/subscribe/subscribe.php', $msg);
 

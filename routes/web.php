@@ -10,6 +10,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentRedirectController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SeasonalUpsellController;
 use App\Http\Middleware\SetCookiesForStatistics;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Currency;
@@ -48,6 +49,11 @@ Route::controller(ChatController::class)->group(function () {
         ->where('slug', '.*')
         ->withoutMiddleware(VerifyCsrfToken::class);
 });
+
+Route::get('/api/seasonal-upsell', [SeasonalUpsellController::class, 'index'])
+    ->name('seasonal-upsell.index')->middleware('throttle:30,1')->block(120, 15);
+Route::post('/cart/seasonal-upsell', [SeasonalUpsellController::class, 'add'])
+    ->name('seasonal-upsell.add')->middleware('throttle:30,1')->block(120, 15);
 
 Route::controller(CartController::class)->group(function () {
     Route::get('/cart', 'index')->name('cart.index');
@@ -140,7 +146,10 @@ Route::controller(PaymentRedirectController::class)->group(function () {
     Route::get('/payment-redirect/go', 'go')->name('payment.redirect.go');
 });
 
-
+Route::prefix('promo')->group(function () {
+    Route::post('/send/{channel}', [App\Http\Controllers\PromoController::class, 'send'])->where('channel', '[a-z0-9_]+')->name('promo.send');
+    Route::post('/verify/{channel}', [App\Http\Controllers\PromoController::class, 'verify'])->where('channel', '[a-z0-9_]+')->name('promo.verify');
+});
 
 Route::get('/redirect', function () {
     if (!empty(session('order.url'))) {

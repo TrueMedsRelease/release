@@ -5,6 +5,8 @@
 @section('description', $page_properties->description)
 
 @section('content')
+@include('shared.seasonal-upsell')
+
 <div class="modal_cart hidden">
     <div class="bloktext">
        <p>{{ __('text.common_cart1') }}<b>{{ ucfirst(session('location.country_name')) }} {{ __('text.common_cart2') }}</b></p>
@@ -14,14 +16,11 @@
     flagc = true;
 </script>
     <div class="main" id="scroll">
-    <!-- content -->
-    <section class="basket"  id="shopping_cart">
-
-
-
-    </section>
-    <!-- END content -->
+        <section class="basket"  id="shopping_cart">
+            @include('preloader')
+        </section>
     </div>
+
     </div>
     </div>
     </div>

@@ -1046,4 +1046,9 @@ return [
     "track_url_text1" => "Pomocou tohto odkazu môžete kedykoľvek skontrolovať aktuálny stav svojej objednávky a informácie o jej spracovaní.",
     "track_url_text2" => "Uložte si odkaz alebo QR kód pre neskorší prístup. Z bezpečnostných dôvodov ich nezdieľajte s inými osobami, pretože stránka obsahuje informácie o vašej objednávke.",
     "track_url_print_button" => "Vytlačiť stránku",
+
+    'upsell_title' => 'Odporúčame vám aj tieto sezónne produkty:',
+    'upsell_skip' => 'Pokračovať bez pridania',
+    'upsell_error' => 'Tieto položky sa nepodarilo potvrdiť. Skúste to znova alebo pokračujte k pokladni a skontrolujte košík.',
+    'upsell_expired' => 'Výber alebo cena sa zmenili. Zavrite toto okno a znova ho otvorte, aby sa údaje aktualizovali.',
 ];

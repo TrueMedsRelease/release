@@ -1049,4 +1049,9 @@ return [
     "track_url_text1" => "Via denne lenken kan du når som helst sjekke den aktuelle statusen på bestillingen din og informasjon om behandlingen av den.",
     "track_url_text2" => "Lagre lenken eller QR-koden for senere tilgang. Av sikkerhetsgrunner bør du ikke dele dem med andre, siden siden inneholder informasjon om bestillingen din.",
     "track_url_print_button" => "Skriv ut side",
+
+    'upsell_title' => 'Vi anbefaler også disse sesongproduktene:',
+    'upsell_skip' => 'Fortsett uten å legge til',
+    'upsell_error' => 'Disse varene kunne ikke bekreftes. Prøv igjen, eller fortsett til betaling og sjekk handlekurven.',
+    'upsell_expired' => 'Utvalget eller prisen har endret seg. Lukk dette vinduet og åpne det igjen for å oppdatere.',
 ];

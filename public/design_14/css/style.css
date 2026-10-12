@@ -3025,6 +3025,7 @@ input.just-validate-success-field:focus-visible{
   gap:2rem;
   padding-top:1rem;
   padding-bottom:2rem;
+  justify-content: center
 }
 
 .container{

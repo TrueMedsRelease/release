@@ -5,6 +5,8 @@
 @section('description', $page_properties->description)
 
 @section('content')
+@include('shared.seasonal-upsell')
+
 <script>
     flagc = true;
 </script>
@@ -257,7 +259,7 @@
 	<div class="page-cart__container">
 		<div class="page-cart__body">
 			<div class="page-cart__content basket" id="shopping_cart">
-
+                @include('preloader')
 			</div>
 			<aside class="page-cart__sidebar">
 				<div class="page-cart__preference preference-page-cart">

@@ -1166,4 +1166,9 @@ return [
     "track_url_text1" => "Através deste link, você pode verificar a qualquer momento o status atual do seu pedido e as informações sobre o seu processamento.",
     "track_url_text2" => "Salve o link ou o código QR para acessá-lo posteriormente. Por motivos de segurança, não os compartilhe com terceiros, pois a página contém informações sobre o seu pedido.",
     "track_url_print_button" => "Imprimir página",
+
+    'upsell_title' => 'Também recomendamos estes produtos sazonais:',
+    'upsell_skip' => 'Continuar sem adicionar',
+    'upsell_error' => 'Não foi possível confirmar estes artigos. Tente novamente ou avance para o checkout e reveja o seu carrinho.',
+    'upsell_expired' => 'A seleção ou o preço foram alterados. Feche esta janela e abra-a novamente para atualizar.',
 ];

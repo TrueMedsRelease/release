@@ -1042,4 +1042,9 @@ return [
     "track_url_text1" => "Prin intermediul acestui link puteți verifica în orice moment starea actuală a comenzii și informațiile privind procesarea acesteia.",
     "track_url_text2" => "Salvați linkul sau codul QR pentru acces ulterior. Din motive de securitate, nu le distribuiți altor persoane, deoarece pagina conține informații despre comanda dvs.",
     "track_url_print_button" => "Tipărește pagina",
+
+    'upsell_title' => 'Vă recomandăm și aceste produse de sezon:',
+    'upsell_skip' => 'Continuați fără a adăuga',
+    'upsell_error' => 'Aceste produse nu au putut fi confirmate. Încercați din nou sau continuați la finalizarea comenzii și verificați coșul.',
+    'upsell_expired' => 'Selecția sau prețul s-au modificat. Închideți această fereastră și redeschideți-o pentru actualizare.',
 ];
