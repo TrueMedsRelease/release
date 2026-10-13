@@ -30,13 +30,23 @@ class SeasonalUpsellStatus extends Command
         $cache = DB::table('seasonal_upsell_cache')->where('id', 1)->first();
         $this->line('Last successful refresh: '.($cache->refreshed_at ?? 'never'));
         $snapshot = $cache ? json_decode($cache->items, true, 512, JSON_THROW_ON_ERROR) : [];
-        if (($snapshot['format'] ?? null) !== 2) {
+        $format = $snapshot['format'] ?? null;
+        if (!in_array($format, [2, 3], true)) {
             $this->warn('Country feed not initialized. Run seasonal-upsell:refresh --force.');
             return self::FAILURE;
         }
+        $this->line('Snapshot format: '.$format);
         $countryRows = [];
-        foreach ($snapshot['countries'] as $code => $ids) {
-            $countryRows[] = [$code, implode(', ', $ids), count($ids)];
+        foreach ($snapshot['countries'] as $code => $products) {
+            if ($format === 3) {
+                $details = [];
+                foreach ($products as $id => $settings) {
+                    $details[] = $id.' (autocheck '.$settings['autocheck'].', packs '.count($settings['prices']).')';
+                }
+                $countryRows[] = [$code, implode(', ', $details), count($products)];
+            } else {
+                $countryRows[] = [$code, implode(', ', $products), count($products)];
+            }
         }
         $this->table(['Country', 'Product IDs in display order', 'Count'], $countryRows);
         $items = $snapshot['products'];
