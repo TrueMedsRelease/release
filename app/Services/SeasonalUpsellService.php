@@ -6,9 +6,11 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\ProductPackaging;
 use Carbon\Carbon;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 
 class SeasonalUpsellService
@@ -79,8 +81,19 @@ class SeasonalUpsellService
         return $countries;
     }
 
+    public static function ensureTable(): void
+    {
+        if (Schema::hasTable('seasonal_upsell_cache')) return;
+        Schema::create('seasonal_upsell_cache', function (Blueprint $table) {
+            $table->unsignedTinyInteger('id')->primary();
+            $table->json('items');
+            $table->timestamp('refreshed_at')->nullable();
+        });
+    }
+
     public function refresh(bool $force = false): void
     {
+        self::ensureTable();
         DB::table('seasonal_upsell_cache')->insertOrIgnore(['id' => 1, 'items' => '[]']);
         DB::transaction(function () use ($force) {
             $cache = DB::table('seasonal_upsell_cache')->where('id', 1)->lockForUpdate()->first();
