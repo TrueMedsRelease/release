@@ -29,7 +29,7 @@ class AdminController extends Controller
             return false;
         }
 
-        return !in_array($name, ['.', '..', 'admin', 'account', 'cabinet-live', 'cabinet-parts'], true);
+        return !in_array($name, ['.', '..', 'admin', 'account', 'cabinet-live', 'cabinet-parts', 'shared'], true);
     }
 
     public function admin_enter() {
