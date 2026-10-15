@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Helpers\SessionHelper;
 use App\Services\ProductServices;
+use App\Services\TrueServService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -251,26 +254,38 @@ class Cart extends Model
         if (session()->has('coupon')) {
             $coupon_discount = ceil($productTotal * (session('coupon.percent') / 100));
         } elseif (session()->has('coupon_get')) {
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
+            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->value('key_data');
 
-            $data = [
+            $coupon = session('coupon_get');
+            $data   = [
                 'method'  => 'coupon',
-                'api_key' => $api_key->key_data,
-                'coupon'  => session('coupon_get'),
+                'api_key' => $api_key,
+                'coupon'  => $coupon,
             ];
 
-            $response = Http::timeout(30)->post('http://true-serv.net/checkout/order.php', $data);
+            if (TrueServService::available()) {
+                try {
+                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    Log::info("Cart coupon answer: " . $response);
 
-            $response = json_decode($response, true);
+                    if ($response->successful()) {
+                        $response = json_decode($response, true);
 
-            if ($response['status'] == 'success') {
-                $result['coupon']  = session('coupon_get');
-                $result['percent'] = $response['coupon']['percent'];
+                        if (is_array($response) && $response['status'] == 'success') {
+                            $result['coupon']  = $coupon;
+                            $result['percent'] = $response['coupon']['percent'];
+                            $result['type']    = $response['coupon']['type'];
 
-                session(['coupon' => $result]);
-                $coupon_discount = ceil($productTotal * ($result['percent']) / 100);
-            } else {
-                session()->forget('coupon_get');
+                            session(['coupon' => $result]);
+                        }
+                    } else {
+                        session()->forget('coupon_get');
+                    }
+                } catch (ConnectionException $e) {
+                    session()->forget('coupon_get');
+                } catch (RequestException $e) {
+                    session()->forget('coupon_get');
+                }
             }
         }
 
