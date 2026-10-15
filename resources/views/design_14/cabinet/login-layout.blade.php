@@ -77,14 +77,24 @@ if (!function_exists('asset_ver')) {
             </main>
 
             <footer class="cablogin-footer">
+                @php
+                    $cabLoginPhones = [];
+                    for ($cabLoginPhoneId = 1; $cabLoginPhoneId <= 17; $cabLoginPhoneId++) {
+                        $cabLoginPhoneNumber = __('text.phones_title_phone_' . $cabLoginPhoneId);
+                        if ($cabLoginPhoneNumber === 'text.phones_title_phone_' . $cabLoginPhoneId) {
+                            continue;
+                        }
+                        $cabLoginPhones[] = [
+                            'code' => __('text.phones_title_phone_' . $cabLoginPhoneId . '_code'),
+                            'number' => $cabLoginPhoneNumber,
+                            'tel' => preg_replace('/[^+\d]/', '', $cabLoginPhoneNumber),
+                        ];
+                    }
+                @endphp
                 <div class="cablogin-footer__phones">
-                    <a href="tel:+18009815864">US: +1-800-981-5864</a>
-                    <a href="tel:+16473708281">CA: +1-647-370-8281</a>
-                    <a href="tel:+61482075486">AU: +61-48-207-5486</a>
-                    <a href="tel:+442038354834">UK: +44-20-3835-4834</a>
-                    <a href="tel:+33644639941">FR: +33-64-463-9941</a>
-                    <a href="tel:+34518899156">ES: +34-51-889-9156</a>
-                    <a href="tel:+64800748315">NZ: +64-80-074-8315</a>
+                    @foreach ($cabLoginPhones as $cabLoginPhone)
+                        <a href="tel:{{ $cabLoginPhone['tel'] }}">{{ $cabLoginPhone['code'] }}{{ $cabLoginPhone['number'] }}</a>
+                    @endforeach
                 </div>
             </footer>
         </div>

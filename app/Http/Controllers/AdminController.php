@@ -1593,7 +1593,7 @@ class AdminController extends Controller
                 $title = 'Checkout';
                 break;
             case 'cabinet':
-                $title = 'Embedded Customer Cabinet';
+                $title = 'Embedded Customer Account';
                 break;
             case 'update_shop':
                 // $title = __('text.admin_renewal_shop');
