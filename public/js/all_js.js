@@ -165,66 +165,30 @@ function addCardNew() {
 }
 
 function enterProfile() {
-    let email = $('[name="form[email]"]').val();
-    let captcha = $('[name="form[code]"]').val();
+    // Встроенный кабинет выключен: бэкенд не дёргаем, только валидируем
+    // email и уводим покупателя на портал: true-help.com/login?email=...
+    let email = ($('[name="form[email]"]').val() || '').trim();
     let validRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
     if (!email) {
-        $('#email_error').show();
-    } else if (!email.match(validRegex)) {
         $('#email_error .input').text(email_invalid_text);
         $('#email_error').show();
-    } else {
-        $('#email_error').hide();
+        return;
     }
 
-    if (!captcha) {
-        $('#captcha_error').show();
-    } else {
-        $.ajax({
-            url: routeCheckCode,
-            type: 'POST',
-            cache: false,
-            dataType: 'json',
-            data: {
-                'captcha': captcha,
-            },
-            success: function (data) {
-                if (data['result'] == false) {
-                    $('#captcha_image_log').attr('src', data['new_captcha']);
-                    $('#captcha_error .input').text(code_invalid_text);
-                    $('#captcha_error').show();
-                } else {
-                    $('#captcha_error').hide();
-                }
-
-                if (!$('#captcha_error').is(':visible') && !$('#email_error').is(':visible')) {
-                    $.ajax({
-                        url: routeRequestLogin,
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data: {
-                            'email': email,
-                            'captcha': captcha,
-                        },
-                        success: function (data) {
-                            if (data['status'] == 'error') {
-                                if (data['text'] != 'Error') {
-                                    alert(data['text']);
-                                }
-                            } else if (data['status'] == 'need_code') {
-                                $('.popup_verify_profile').css('display', 'flex');
-                            } else {
-                                $('#preloader').show();
-                                window.location.href = data['url'];
-                            }
-                        }
-                    });
-                }
-            }
-        });
+    if (!email.match(validRegex)) {
+        $('#email_error .input').text(email_invalid_text);
+        $('#email_error').show();
+        return;
     }
+
+    $('#email_error').hide();
+    $('#preloader').show();
+
+    let portalBase = (typeof portalLoginUrl !== 'undefined' && portalLoginUrl)
+        ? portalLoginUrl
+        : 'https://true-help.com/login';
+    window.location.href = portalBase + '?email=' + encodeURIComponent(email);
 }
 
 function verifyProfile() {
