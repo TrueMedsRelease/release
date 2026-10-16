@@ -5354,6 +5354,10 @@ body::after {
   color: rgb(171 171 171);
 }
 
+.button_close svg:hover {
+    color: black;
+}
+
 .popup_bottom{
   display: flex;
   flex-direction: column;

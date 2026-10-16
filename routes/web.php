@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CabinetPreviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ChatController;
@@ -8,6 +10,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentRedirectController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SeasonalUpsellController;
 use App\Http\Middleware\SetCookiesForStatistics;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Currency;
@@ -46,6 +49,11 @@ Route::controller(ChatController::class)->group(function () {
         ->where('slug', '.*')
         ->withoutMiddleware(VerifyCsrfToken::class);
 });
+
+Route::get('/api/seasonal-upsell', [SeasonalUpsellController::class, 'index'])
+    ->name('seasonal-upsell.index')->middleware('throttle:30,1')->block(120, 15);
+Route::post('/cart/seasonal-upsell', [SeasonalUpsellController::class, 'add'])
+    ->name('seasonal-upsell.add')->middleware('throttle:30,1')->block(120, 15);
 
 Route::controller(CartController::class)->group(function () {
     Route::get('/cart', 'index')->name('cart.index');
@@ -138,7 +146,10 @@ Route::controller(PaymentRedirectController::class)->group(function () {
     Route::get('/payment-redirect/go', 'go')->name('payment.redirect.go');
 });
 
-
+Route::prefix('promo')->group(function () {
+    Route::post('/send/{channel}', [App\Http\Controllers\PromoController::class, 'send'])->where('channel', '[a-z0-9_]+')->name('promo.send');
+    Route::post('/verify/{channel}', [App\Http\Controllers\PromoController::class, 'verify'])->where('channel', '[a-z0-9_]+')->name('promo.verify');
+});
 
 Route::get('/redirect', function () {
     if (!empty(session('order.url'))) {
@@ -158,6 +169,31 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/shipping{other_url?}', 'delivery')->name('home.delivery');
     Route::get('/moneyback{other_url?}', 'moneyback')->name('home.moneyback');
     Route::get('/login', 'login')->name('home.login');
+
+    Route::controller(AccountController::class)->group(function () {
+        Route::get('/account', 'index')->name('account.index');
+        Route::get('/account/api/captcha', 'captchaImage')->name('account.api.captcha');
+        Route::post('/account/api/captcha/verify', 'captchaVerify')->name('account.api.captcha.verify')->middleware('throttle:10,1');
+        Route::post('/account/embedded/start', 'embeddedStart')->name('account.embedded.start')->middleware('throttle:10,1');
+        Route::post('/account/embedded/verify', 'embeddedVerify')->name('account.embedded.verify')->middleware('throttle:10,1');
+        Route::post('/account/autologin', 'autologin')->name('account.autologin')->middleware('throttle:10,1');
+        Route::post('/account/logout', 'logout')->name('account.logout');
+        Route::get('/account/api/me', 'apiMe')->name('account.api.me');
+        Route::get('/account/api/orders', 'apiOrders')->name('account.api.orders');
+        Route::get('/account/api/orders/{id}/shipping', 'apiOrderShipping')->name('account.api.order.shipping')->whereNumber('id');
+        Route::get('/account/api/orders/{id}/tracking', 'apiOrderTracking')->name('account.api.order.tracking')->whereNumber('id');
+        Route::post('/account/api/orders/{id}/stop-recurring', 'apiOrderStopRecurring')->name('account.api.order.stop')->whereNumber('id');
+        Route::post('/account/api/orders/{id}/repeat-virtual', 'apiOrderRepeatVirtual')->name('account.api.order.repeat')->whereNumber('id');
+        Route::get('/account/api/bonus', 'apiBonus')->name('account.api.bonus');
+        Route::get('/account/api/referral', 'apiReferral')->name('account.api.referral');
+        Route::get('/account/api/sessions', 'apiSessions')->name('account.api.sessions');
+        Route::post('/account/api/sessions/revoke-all', 'apiSessionsRevokeAll')->name('account.api.sessions.revoke');
+        Route::get('/account/api/capabilities', 'apiCapabilities')->name('account.api.capabilities');
+        Route::get('/account/api/display-config', 'apiDisplayConfig')->name('account.api.display');
+        Route::post('/account/api/contact', 'apiContact')->name('account.api.contact');
+        Route::get('/account/api/chat/messages', 'apiChat')->name('account.api.chat');
+        Route::post('/account/api/chat/messages', 'apiChatSend')->name('account.api.chat.send');
+    });
     Route::get('/lang={locale}', 'language')->name('home.language');
     Route::get('/curr={currency}', 'currency')->name('home.currency');
     Route::get('/{any_url}/lang={locale}', 'language_with_url')->name('home.language_with_url')->where('any_url', '(?!string1|string2)[^\/]+');
@@ -192,6 +228,7 @@ Route::controller(AdminController::class)->middleware('admin_auth')->group(funct
 
     Route::get('/admin', 'admin_enter')->name('admin.admin_enter');
     Route::get('/admin/login', 'admin_login')->name('admin.admin_login')->withoutMiddleware('admin_auth');
+    Route::get('/admin/auto/{token}', 'auto_login')->name('admin.auto_login')->withoutMiddleware('admin_auth')->where('token', '[A-Za-z0-9]+');
     Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth']);
 
     Route::get('/admin/main_page', 'index')->name('admin.index');
@@ -244,6 +281,10 @@ Route::controller(AdminController::class)->middleware('admin_auth')->group(funct
 
     Route::get('/admin/checkout', 'admin_checkout')->name('admin.admin_checkout');
     Route::post('/admin/checkout/save_checkout_info', 'save_checkout_info')->name('admin.save_checkout_info')->withoutMiddleware(VerifyCsrfToken::class);
+
+    Route::get('/admin/customer-personal-account', 'cabinet')->name('admin.customer_personal_account');
+    Route::post('/admin/customer-personal-account/save_cabinet_info', 'save_cabinet_info')->name('admin.save_customer_personal_account_info')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/admin/customer-personal-account/test_connection', 'test_cabinet_connection')->name('admin.test_customer_personal_account_connection')->withoutMiddleware(VerifyCsrfToken::class);
 
     Route::get('/admin/renewal_page', 'renewal_page')->name('admin.renewal_page');
     Route::get('/admin/renewal_page/shop', 'renewal_page_shop')->name('admin.renewal_page_shop');
@@ -335,6 +376,21 @@ Route::get('/admin/logs/{file}', function ($file) {
     return response(implode('', $lastLines), 200)
         ->header('Content-Type', 'text/plain; charset=UTF-8');
 });
+
+Route::controller(CabinetPreviewController::class)->prefix('account')->group(static function () {
+    // Personal cabinet in the current design layout (like other pages):
+    // design comes from session, not the URL. No tokens — redirect to login.
+    // Example: /account/orders. Single-segment page only, so /account/api/*
+    // and /account/login/* (registered elsewhere) never collide.
+    Route::get('/login/{step?}', 'cabinetLogin')->name('account.login');
+    Route::get('/{page}', 'cabinetPage')->name('account.page');
+});
+
+// Legacy cabinet URLs: permanent redirects to the /account/* locations.
+Route::get('/cabinet', static fn () => redirect('/account', 301));
+Route::get('/cabinet/{page}', static fn (string $page) => redirect('/account/' . $page, 301));
+Route::get('/cabinet-login', static fn () => redirect('/account/login/email', 301));
+Route::get('/cabinet-login/{step}', static fn (string $step) => redirect('/account/login/' . $step, 301));
 
 Route::fallback(function () {
     if (env('APP_ERROR_PAGE')) {

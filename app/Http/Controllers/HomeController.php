@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Phattarachai\LaravelMobileDetect\Agent;
+use App\Services\CabinetService;
 use App\Services\TrueServService;
 
 class HomeController extends Controller
@@ -1371,6 +1372,12 @@ class HomeController extends Controller
             }
         }
 
+        // Встроенный кабинет включён — ведём покупателя в /account,
+        // иначе старый флоу: login.blade.php → редирект на true-help.
+        if (CabinetService::enabled()) {
+            return redirect()->route('account.index');
+        }
+
         // $statisticPromise = StatisticService::SendStatistic('login');
 
         $phone_codes = PhoneCodes::all()->toArray();
@@ -2381,7 +2388,7 @@ class HomeController extends Controller
         }
 
         try {
-            $serviceResponse = Http::timeout(3)
+            $serviceResponse = Http::timeout(10)
                 ->asJson()
                 ->post('https://true-serv.net/subscribe/subscribe.php', $msg);
 

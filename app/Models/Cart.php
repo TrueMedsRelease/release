@@ -12,13 +12,23 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Services\SeasonalUpsellService;
 
 class Cart extends Model
 {
     use HasFactory;
 
-    public static function add($pack_id)
+    public static function add($pack_id, $seasonalPriceUsd = null)
     {
+        if ($seasonalPriceUsd !== null) {
+            $seasonalPriceUsd = SeasonalUpsellService::normalizePrice($seasonalPriceUsd);
+            foreach (session('cart', []) as $existing) {
+                if ($existing['pack_id'] == $pack_id
+                    && SeasonalUpsellService::normalizePrice($existing['price']) !== $seasonalPriceUsd) {
+                    throw new \RuntimeException('Cannot merge a seasonal pack with a different cart price.');
+                }
+            }
+        }
         $design = session('design') ? session('design') : config('app.design');
         $product_pack   = ProductPackaging::query()->find($pack_id);
         $array          = [];
@@ -33,7 +43,7 @@ class Cart extends Model
             'num'            => $product_pack->num,
             'type'           => $product_pack->type_id,
             'q'              => 1,
-            'price'          => $product_pack->price,
+            'price'          => $seasonalPriceUsd ?? $product_pack->price,
             'max_pill_price' => $max_pill_price,
             'upgrade_pack'   => $upgrade_pack,
             'product_info'   => array_values($product_info)[0] ?? null

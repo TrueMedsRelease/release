@@ -1,0 +1,72 @@
+/* Отдельный layout логина (design_11). Сплит-скрин: панель формы + hero-фото. Индиго тема. Без JS. */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #fff; color: #262d38; }
+.cablogin { display: flex; min-height: 100vh; min-height: 100dvh; }
+.cablogin__body { flex: 1 1 480px; display: flex; background: #fff; }
+.cablogin__inner { margin: auto; width: 100%; max-width: 480px; padding: 32px 40px; display: flex; flex-direction: column; gap: 36px; }
+.cablogin-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+[x-cloak] { display: none !important; }
+.cablogin-header__lang { position: relative; }
+.cablogin-lang { position: relative; display: inline-flex; }
+.cablogin-lang__title { display: inline-flex; align-items: center; padding: 4px 2px; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: inherit; cursor: pointer; }
+.cablogin-lang__title:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 6px; }
+.cablogin-lang .select__value { display: inline-flex; align-items: center; gap: 6px; }
+.cablogin-lang .select__text { white-space: nowrap; }
+.cablogin-lang .select__icon { display: inline-flex; transition: transform .25s ease; }
+.cablogin-lang._select-open .select__icon { transform: rotate(180deg); }
+.cablogin-lang .select__options { position: absolute; top: calc(100% + 8px); right: 0; z-index: 50; min-width: 170px; max-width: 240px; padding: 6px; border-radius: 12px; background: #fff; color: #232a2e; box-shadow: 0 12px 40px rgba(15,25,35,.18); }
+.cablogin-lang._drop-up .select__options { top: auto; bottom: calc(100% + 8px); }
+.cablogin-lang .select__scroll { display: flex; flex-direction: column; max-height: 220px; overflow-y: auto; }
+.cablogin-lang .select__option { display: block; padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: inherit; text-decoration: none; white-space: nowrap; }
+.cablogin-lang .select__option:hover { background: rgba(15,25,35,.06); }
+.cablogin-lang .select__option._select-selected { font-weight: 800; }
+.cablogin-lang .select__option:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+.cablogin-header__logo img { display: block; max-width: 100%; height: auto; }
+.cablogin-header__lang { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.cablogin-content { display: flex; flex-direction: column; justify-content: center; }
+.cablogin-content__title { margin: 0 0 20px; font-size: 30px; font-weight: 800; }
+.cablogin-footer__phones { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.cablogin-footer__phones a { font-size: 13px; font-weight: 500; color: #737373; text-decoration: none; white-space: nowrap; }
+.cablogin__image { flex: 1 1 50%; min-width: 0; max-height: 100vh; max-height: 100dvh; overflow: hidden; }
+.cablogin__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cablogin-step { display: flex; flex-direction: column; }
+.cablogin-step__caption { margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #737373; }
+.cablogin-hint { margin: 8px 0 0; font-size: 13px; line-height: 1.55; color: #737373; }
+.cablogin-form { display: flex; flex-direction: column; margin-top: 16px; }
+.cablogin-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.cablogin-field__label { font-size: 13px; font-weight: 600; }
+.cablogin-field__input { height: 48px; padding: 0 14px; border: 1px solid #e5e7f0; border-radius: 1rem; font-size: 15px; font-family: inherit; color: inherit; background: #fff; }
+.cablogin-field__input:focus { outline: 2px solid #616ede; border-color: #616ede; }
+.cablogin-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; border-radius: 1rem; font-size: 15px; font-weight: 700; cursor: pointer; border: 1px solid transparent; text-decoration: none; }
+.cablogin-btn--primary { background: #616ede; color: #fff; }
+.cablogin-btn--ghost { background: #f0f1fa; color: #262d38; }
+.cablogin-btn--wide { width: 100%; margin-top: 20px; }
+.cablogin-captcha { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.cablogin-captcha__canvas { height: 170px; border-radius: 1rem; background: linear-gradient(135deg, #eef0ff, #f0f1fa); border: 1px solid #e5e7f0; position: relative; overflow: hidden; }
+.cablogin-captcha__piece { position: absolute; left: 48px; top: 56px; width: 52px; height: 52px; background: rgba(255,255,255,.9); border: 2px dashed #616ede; border-radius: 8px; }
+.cablogin-captcha__controls { display: flex; gap: 10px; }
+.cablogin-captcha__controls .cablogin-btn { flex: 1; }
+.cablogin-otp { display: flex; gap: 8px; margin: 16px 0 0; }
+.cablogin-otp__cell { width: 48px; height: 56px; border: 1px solid #e5e7f0; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; background: #fff; }
+.cablogin-actions { display: flex; align-items: center; justify-content: center; gap: 26px; flex-wrap: wrap; margin-top: 20px; }
+.cablogin-link { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; color: #616ede; text-decoration: none; }
+.cablogin-link svg { width: 16px; height: 16px; }
+.cablogin-link.is-disabled { opacity: .5; }
+.cablogin-pager { margin-top: 28px; padding: 10px 14px; border: 1px dashed #cfd4e2; border-radius: 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; color: #737373; }
+.cablogin-pager a { color: #737373; text-decoration: underline; }
+.cablogin-pager a[aria-current="page"] { color: #262d38; font-weight: 800; text-decoration: none; }
+.cablogin-field__error { padding: 10px 14px; border: 1px solid rgba(225,76,92,.35); border-radius: 8px; background: rgba(225,76,92,.08); color: #e14c5c; font-size: 13px; }
+.cablogin-status { min-height: 20px; font-size: 13px; }
+.cablogin-status--error { color: #e14c5c; }
+.cablogin-status--success { color: #3d9e1f; }
+@media (max-width: 900px) {
+    .cablogin__image { display: none; }
+    .cablogin__body { flex-basis: 100%; }
+}
+@media (max-width: 480px) {
+    .cablogin__inner { padding: 24px 20px; }
+    .cablogin-content__title { font-size: 24px; }
+    .cablogin-otp { flex-wrap: wrap; }
+    .cablogin-otp__cell { width: 44px; height: 52px; font-size: 20px; }
+}

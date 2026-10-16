@@ -2665,6 +2665,7 @@ body.has-scroll{
   flex:1 0 auto;
   align-items:flex-start;
   padding:2rem 0;
+  justify-content: center
 }
 
 .container{
