@@ -2155,57 +2155,89 @@ class HomeController extends Controller
     {
         $captcha = $request->captcha;
         $email   = $request->email;
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $result  = [
+            'status' => 'error',
+            'text'   => __('text.errors_empty_field')
+        ];
 
-        if ($captcha && $email) {
-            $data = [
+        if (!$captcha || !$email) {
+            return json_encode($result);
+        }
+
+        $keyRow = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->first('key_data');
+        if (!$keyRow || empty($keyRow->key_data)) {
+            Log::error('request_login: missing profile_key in shop_keys');
+            $result['text'] = 'Service unavailable';
+
+            return json_encode($result);
+        }
+
+        if (!TrueServService::available()) {
+            Log::warning('request_login: true-serv unavailable (DNS)');
+            $result['text'] = 'Service unavailable';
+
+            return json_encode($result);
+        }
+
+        try {
+            $httpResponse = Http::timeout(10)->post('https://true-serv.net/api/customer_api_new.php', [
                 "email"  => $email,
                 'method' => 'login',
-                'key'    => $api_key->key_data
-            ];
+                'key'    => $keyRow->key_data
+            ]);
+            $response = json_decode($httpResponse, true);
+        } catch (\Throwable $e) {
+            Log::error('request_login HTTP error: ' . $e->getMessage());
+            $result['text'] = 'Service unavailable';
 
-            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_new.php', $data);
-            $response = json_decode($response, true);
+            return json_encode($result);
+        }
 
-            if ($response['status'] == 'ERROR') {
-                if ($response['message'] == 'Unknown customer!') {
-                    // $result = [
-                    //     'status' => 'error',
-                    //     'text'   => __('text.login_email_unknow')
-                    // ];
-                    $result = [
-                        'status' => 'error',
-                        'text'   => 'Error'
-                    ];
-                }
-            } elseif ($response['status'] == 'OK') {
-                if ($response['message'] == 'NEED_CODE') {
-                    $result = [
-                        'status' => 'need_code',
-                        'text'   => 'need code'
-                    ];
-                }
-                if ($response['message'] == 'Access is allowed!') {
-                    $_SESSION['user'] = $response['uid'];
-                    $lang             = App::currentLocale();
-                    if ($lang === 'gr') {
-                        $lang === 'el';
-                    }
-                    if ($lang === 'arb') {
-                        $lang === 'ar';
-                    }
+        if (!is_array($response) || !isset($response['status'])) {
+            Log::error('request_login: bad API response: ' . substr((string) $httpResponse, 0, 500));
+            $result['text'] = 'Service unavailable';
 
-                    $result = [
-                        'status' => 'success',
-                        'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
-                    ];
-                }
+            return json_encode($result);
+        }
+
+        if ($response['status'] == 'ERROR') {
+            if (($response['message'] ?? null) == 'Unknown customer!') {
+                // $result = [
+                //     'status' => 'error',
+                //     'text'   => __('text.login_email_unknow')
+                // ];
+                $result = [
+                    'status' => 'error',
+                    'text'   => 'Error'
+                ];
+            } else {
+                $result = [
+                    'status' => 'error',
+                    'text'   => $response['message'] ?? 'Error'
+                ];
             }
-        } else {
-            $result = [
-                'status' => 'error',
-                'text'   => __('text.errors_empty_field')
-            ];
+        } elseif ($response['status'] == 'OK') {
+            if (($response['message'] ?? null) == 'NEED_CODE') {
+                $result = [
+                    'status' => 'need_code',
+                    'text'   => 'need code'
+                ];
+            }
+            if (($response['message'] ?? null) == 'Access is allowed!') {
+                $_SESSION['user'] = $response['uid'] ?? null;
+                $lang             = App::currentLocale();
+                if ($lang === 'gr') {
+                    $lang = 'el';
+                }
+                if ($lang === 'arb') {
+                    $lang = 'ar';
+                }
+
+                $result = [
+                    'status' => 'success',
+                    'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid'] ?? '') . '&lang=' . $lang,
+                ];
+            }
         }
 
         return json_encode($result);
@@ -2215,46 +2247,73 @@ class HomeController extends Controller
     {
         $verify_code = $request->verify_code;
         $email   = $request->email;
-        $api_key = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->get('key_data')->toArray()[0];
+        $result  = [
+            'status' => 'error',
+            'text'   => __('text.errors_empty_field')
+        ];
 
-        if ($verify_code && $email) {
-            $data = [
+        if (!$verify_code || !$email) {
+            return json_encode($result);
+        }
+
+        $keyRow = DB::table('shop_keys')->where('name_key', '=', 'profile_key')->first('key_data');
+        if (!$keyRow || empty($keyRow->key_data)) {
+            Log::error('verify_profile: missing profile_key in shop_keys');
+            $result['text'] = 'Service unavailable';
+
+            return json_encode($result);
+        }
+
+        if (!TrueServService::available()) {
+            Log::warning('verify_profile: true-serv unavailable (DNS)');
+            $result['text'] = 'Service unavailable';
+
+            return json_encode($result);
+        }
+
+        try {
+            $httpResponse = Http::timeout(10)->post('https://true-serv.net/api/customer_api_new.php', [
                 "email"  => $email,
                 'code' => $verify_code,
                 'method' => 'verify_code',
-                'key'    => $api_key->key_data
-            ];
+                'key'    => $keyRow->key_data
+            ]);
+            $response = json_decode($httpResponse, true);
+        } catch (\Throwable $e) {
+            Log::error('verify_profile HTTP error: ' . $e->getMessage());
+            $result['text'] = 'Service unavailable';
 
-            $response = Http::timeout(10)->post('https://true-serv.net/api/customer_api_new.php', $data);
-            $response = json_decode($response, true);
+            return json_encode($result);
+        }
 
-            if ($response['status'] == 'ERROR') {
-                $result = [
-                    'status' => 'error',
-                    'text'   => $response['message']
-                ];
-            } elseif ($response['status'] == 'OK') {
-                if ($response['message'] == 'Access is allowed!') {
-                    $_SESSION['user'] = $response['uid'];
-                    $lang             = App::currentLocale();
-                    if ($lang === 'gr') {
-                        $lang === 'el';
-                    }
-                    if ($lang === 'arb') {
-                        $lang === 'ar';
-                    }
+        if (!is_array($response) || !isset($response['status'])) {
+            Log::error('verify_profile: bad API response: ' . substr((string) $httpResponse, 0, 500));
+            $result['text'] = 'Service unavailable';
 
-                    $result = [
-                        'status' => 'success',
-                        'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid']) . '&lang=' . $lang,
-                    ];
-                }
-            }
-        } else {
+            return json_encode($result);
+        }
+
+        if ($response['status'] == 'ERROR') {
             $result = [
                 'status' => 'error',
-                'text'   => __('text.errors_empty_field')
+                'text'   => $response['message'] ?? 'Error'
             ];
+        } elseif ($response['status'] == 'OK') {
+            if (($response['message'] ?? null) == 'Access is allowed!') {
+                $_SESSION['user'] = $response['uid'] ?? null;
+                $lang             = App::currentLocale();
+                if ($lang === 'gr') {
+                    $lang = 'el';
+                }
+                if ($lang === 'arb') {
+                    $lang = 'ar';
+                }
+
+                $result = [
+                    'status' => 'success',
+                    'url' => 'https://true-help.com/orders.php?eai=' . rawurlencode($response['uid'] ?? '') . '&lang=' . $lang,
+                ];
+            }
         }
 
         return json_encode($result);
