@@ -288,7 +288,7 @@
                     </button>
                     <nav class="nav navbar drawer drawer--rtl" id="main-nav" data-drawer="navbar" aria-label="Main Menu">
                         <div class="nav-container">
-                            <a class="navbar__auth-link link" href="{{ route("home.login") }}" target="_blank">
+                            <a class="navbar__auth-link link" href="{{ route("home.login") }}">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
                                         <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>
@@ -716,7 +716,7 @@
                                 <span class="button__text">{{ __('text.common_cart_text_d2') }}</span>
                                 <span class="button__price ellipsis">{{ $Currency::Convert($cart_total, true) }}</span>
                             </button>
-                            <a class="button button--tapbar" href="{{ route("home.login") }}" target="_blank">
+                            <a class="button button--tapbar" href="{{ route("home.login") }}">
                                 <span class="icon">
                                     <svg width="1em" height="1em" fill="currentColor">
                                         <use href="{{ asset($design . '/svg/icons/sprite.svg?vmxkaego2#user-round') }}"></use>
@@ -798,30 +798,7 @@
             </div>
         </dialog> --}}
 
-        <div class="popup_white hide">
-            <div class="popup_push">
-                <div class="button_close">
-                    @if (env('APP_PRINT_SPRITE', 1) == 1)
-                        <svg width="1em" height="1em" fill="currentColor">
-                            <use href="{{ asset("$design/images/icons/icons.svg#svg-close") }}"></use>
-                        </svg>
-                    @else
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
-                            <path d="M6 6.00003L18.7742 18.7742" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M6 18.7742L18.7742 6.00001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    @endif
-                </div>
-                <div class="popup_block">
-                    <div class="popup_head">{{ __('text.common_push_head') }}</div>
-                    <div class="popup_push_text">{{ __('text.common_push_text') }}</div>
-                    <div class="push_buttons">
-                        <div class="push_decline">{{ __('text.common_decline') }}</div>
-                        <div class="push_allow">{{ __('text.common_allow') }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('push_popup')
 
         <div class="popup_gray" style="display: none">
             <div class="popup_call">
@@ -911,5 +888,7 @@
         @if ($web_statistic)
             <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
         @endif
+
+        @include('promo_block')
     </body>
 </html>

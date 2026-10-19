@@ -41,9 +41,7 @@
     <script>
         const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";
         const routeCartContent = "{{ route('cart.content') }}";
-        const routeCheckCode = "{{ route('home.check_code') }}";
-        const routeRequestLogin = "{{ route('home.request_login') }}";
-        const routeVerifyProfile = "{{ route('home.verify_profile') }}";
+        const portalLoginUrl = "https://true-help.com/login";
     </script>
 
     <script defer src="{{ asset("vendor/jquery/jquery-3.6.3.min.js") }}"></script>
@@ -113,18 +111,6 @@
 								<div class="form__row" id="email_error">
 									<p style="color: #ff6666; font-weight: bold; width: max-content; padding: 5px;" class="input">{{__('text.login_email_empty')}}</p>
 								</div>
-								<div class="form__row">
-									<label for="code" class="form__label">{{__('text.login_code')}}</label>
-									<div class="form__input form__input--has-image">
-										<input id="code" autocomplete="off" type="text" name="form[code]" id="code" data-error="Not correct" class="input">
-										<picture>
-											<img loading="lazy" id="captcha_image_log" src="{{ captcha_src() }}">
-										</picture>
-									</div>
-								</div>
-								<div class="form__row" id="captcha_error">
-									<p style="color: #ff6666; font-weight: bold; width: max-content; padding: 5px;" class="input">{{__('text.login_code_empty')}}</p>
-								</div>
 							</div>
 							<button name="enter" id="enter" type="submit" onclick="enterProfile()" class="form__button button button--dark">
 								<span>{{__('text.login_enter')}}</span>
@@ -151,23 +137,6 @@
 			</div>
 		</div>
 	</div>
-    <div class="popup_verify_profile">
-        <div class="verify_profile_block">
-            <div class="verify_text">
-                {{ __('text.profile_verify_text') }}
-            </div>
-            <div class="verify_input">
-                <input id="verify_code" autocomplete="off" type="text" name="verify_code" data-error="Not correct" class="input" placeholder="Code">
-            </div>
-            <div class="form__row" id="verify_code_error">
-                <p style="color: #ff6666; font-weight: bold; width: max-content; padding: 5px;" class="input">{{__('text.login_email_empty')}}</p>
-            </div>
-            <div class="verify_buttons">
-                <button class="button button--dark button--single" id="close_verify_block">{{ ucfirst(__('text.admin_common_cancel_text')) }}</button>
-                <button class="button button--single" onclick="verifyProfile()">{{ __('text.profile_verify_confirm_code') }}</button>
-            </div>
-        </div>
-    </div>
 	{{-- <div id="popup" aria-hidden="true" class="popup">
 	    <div class="popup__wrapper">
 		    <div class="popup__content">
@@ -186,7 +155,6 @@
 <script defer>
 
     const email_invalid_text = "{{__('text.login_email_invalid')}}";
-    const code_invalid_text = "{{__('text.login_code_invalid')}}";
 
     window.addEventListener('load', function () {
         var preloader = document.getElementById('preloader');

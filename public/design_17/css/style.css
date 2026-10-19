@@ -5817,7 +5817,7 @@ article.content{
     opacity: 1;
 }
 
-.close_popup {
+#insur_popup .close_popup {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -5828,6 +5828,10 @@ article.content{
     border: none;
     background: transparent;
     cursor: pointer;
+}
+
+.popup_push .close_popup {
+    position: static;
 }
 
 .popup_head {

@@ -252,7 +252,8 @@ class GeoIpService
 
     public static function GetInfoByIp()
     {
-        // $ip = '5.187.2.250';//request()->ip();
+        // $ip = '85.214.132.11';//request()->ip();
+        // $ip = '103.54.17.84';//request()->ip();
         $ip = request()->headers->get('cf-connecting-ip') ?? request()->ip();
 
         $ip = trim((string) $ip);

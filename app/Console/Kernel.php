@@ -15,8 +15,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call(function () {
-            CacheServices::GetCountryInfo();
+            CacheServices::CheckCountryInfo();
         })->daily();
+
+        $schedule->command('seasonal-upsell:refresh')->hourly()->withoutOverlapping();
 
         $schedule->command('trueserv:check-dns')->everyMinute();
     }

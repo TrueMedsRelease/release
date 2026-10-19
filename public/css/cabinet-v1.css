@@ -1,0 +1,268 @@
+/* Shared live cabinet: V1 soft action buttons (portal OrderCard 1:1)
+ * and chat message HTML rendering. One file for all designs, included
+ * from shared cabinet-live partials (after per-design cabinet-preview.css).
+ * Primary (repeat) stays per-design .cabp-action--dark — a single dark
+ * primary would be unreadable on dark designs.
+ */
+
+/* ---------- Orders: inline "Shipping to" line (portal parity) ---------- */
+.cabp-layout--orders .oc-card__ship {
+    margin: 0 20px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #8a94a0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------- Orders: static items block with head total + foot total ---------- */
+.cabp-layout--orders .oc-items__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 44px;
+    padding: 10px 14px;
+}
+.cabp-layout--orders .oc-items__label-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cabp-layout--orders .oc-items__total {
+    font-size: 16px;
+    font-weight: 700;
+    color: #171717;
+    flex-shrink: 0;
+}
+.cabp-layout--orders .oc-items__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+}
+.cabp-layout--orders .oc-items__foot-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #737373;
+}
+.cabp-layout--orders .oc-items__foot-total {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #171717;
+    white-space: nowrap;
+}
+
+/* ---------- Orders: spinner for busy action buttons ---------- */
+.cabp-layout--orders .oc-spinner {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1.3px solid rgba(128, 128, 128, 0.35);
+    border-top-color: currentColor;
+    animation: oc-spin 0.7s linear infinite;
+}
+@keyframes oc-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .cabp-layout--orders .oc-spinner {
+        animation: none;
+    }
+}
+
+/* ---------- Orders: shipping + all action buttons together in one row ---------- */
+.cabp-layout--orders .oc-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+}
+.cabp-layout--orders .oc-card__secondary,
+.cabp-layout--orders .oc-actions {
+    display: contents;
+}
+@media (min-width: 640px) {
+    .cabp-layout--orders .oc-card__actions,
+    .cabp-layout--orders .oc-actions {
+        justify-content: flex-start;
+    }
+}
+@media (max-width: 639px) {
+    .cabp-layout--orders .oc-card__actions .button,
+    .cabp-layout--orders .oc-footlink {
+        flex: 1 1 40%;
+        justify-content: center;
+    }
+}
+
+/* Shipping/tracking triggers: from links to soft buttons. */
+.cabp-layout--orders .oc-footlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+}
+@media (any-hover: hover) {
+    .cabp-layout--orders .oc-footlink:hover {
+        background: #e2e8f0;
+        color: #334155;
+        text-decoration: none;
+    }
+}
+.cabp-layout--orders .oc-footlink:active {
+    background: #e2e8f0;
+}
+.cabp-layout--orders .oc-footlink:focus-visible {
+    outline: 2px solid #334155;
+    outline-offset: 2px;
+}
+
+/* Regular actions — slate fill, dangerous — soft red. No borders. */
+.button.cabp-action--soft {
+    border: 0;
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+}
+@media (any-hover: hover) {
+    .button.cabp-action--soft:hover {
+        background: #e2e8f0;
+    }
+}
+.button.cabp-action--soft:active {
+    background: #e2e8f0;
+}
+.button.cabp-action--danger-soft {
+    border: 0;
+    background: #fef2f2;
+    color: #dc2626;
+    font-weight: 600;
+}
+@media (any-hover: hover) {
+    .button.cabp-action--danger-soft:hover {
+        background: #fee2e2;
+    }
+}
+.button.cabp-action--danger-soft:active {
+    background: #fee2e2;
+}
+
+/* ---------- Bonus: history offset from about block, copy feedback ---------- */
+.cabp-history {
+    margin-top: 16px;
+}
+.cabp-bank__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.cabp-bank__copied {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+/* ---------- Referral: share block offset from about block ---------- */
+.cabp-share {
+    margin-top: 16px;
+}
+
+/* ---------- Chat: message HTML (textHtml from backend, already sanitized) ---------- */
+.cabp-chat .cabp-chat-msg__text {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+.cabp-chat .cabp-chat-msg__text p,
+.cabp-chat .cabp-chat-msg__text div,
+.cabp-chat .cabp-chat-msg__text h1,
+.cabp-chat .cabp-chat-msg__text h2,
+.cabp-chat .cabp-chat-msg__text h3,
+.cabp-chat .cabp-chat-msg__text h4,
+.cabp-chat .cabp-chat-msg__text blockquote,
+.cabp-chat .cabp-chat-msg__text pre,
+.cabp-chat .cabp-chat-msg__text ul,
+.cabp-chat .cabp-chat-msg__text ol,
+.cabp-chat .cabp-chat-msg__text table {
+    margin: 0 0 8px;
+}
+.cabp-chat .cabp-chat-msg__text :last-child {
+    margin-bottom: 0;
+}
+.cabp-chat .cabp-chat-msg__text ul,
+.cabp-chat .cabp-chat-msg__text ol {
+    padding-left: 20px;
+}
+.cabp-chat .cabp-chat-msg__text li {
+    margin-bottom: 2px;
+}
+.cabp-chat .cabp-chat-msg__text a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+}
+.cabp-chat .cabp-chat-msg__text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.cabp-chat .cabp-chat-msg__text table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+.cabp-chat .cabp-chat-msg__text th,
+.cabp-chat .cabp-chat-msg__text td {
+    padding: 4px 8px;
+    border: 1px solid rgba(128, 128, 128, .3);
+    text-align: left;
+    vertical-align: top;
+}
+.cabp-chat .cabp-chat-msg__text blockquote {
+    padding-left: 10px;
+    border-left: 2px solid rgba(128, 128, 128, .35);
+}
+.cabp-chat .cabp-chat-msg__text pre {
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(128, 128, 128, .12);
+    font-size: 12px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+.cabp-chat .cabp-chat-msg__text hr {
+    border: 0;
+    border-top: 1px solid rgba(128, 128, 128, .3);
+    margin: 8px 0;
+}
+
+/* ---------- My orders: full-width cards when filters and help are off ---------- */
+.cabp-layout.cabp-layout--full {
+    grid-template-columns: 1fr !important;
+}
+.cabp-layout--full .oc-side,
+.cabp-layout--full .oc-filters-fab,
+.cabp-layout--full .oc-filters-pop {
+    display: none !important;
+}

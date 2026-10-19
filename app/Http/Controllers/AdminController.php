@@ -8,15 +8,30 @@ use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\AdminServices;
+use App\Services\CabinetService;
 use App\Models\Language;
 use App\Models\Currency;
 use App\Models\Category;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Cache;
 use App\Services\RenewalService;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
+    /**
+     * View dirs under resources/views that are not shop designs and must
+     * never appear as templates in admin (shared cabinet partials etc.).
+     */
+    private static function isDesignTemplateDir(string $name, string $basePath): bool
+    {
+        if (!is_dir($basePath . '/' . $name)) {
+            return false;
+        }
+
+        return !in_array($name, ['.', '..', 'admin', 'account', 'cabinet-live', 'cabinet-parts', 'shared'], true);
+    }
+
     public function admin_enter() {
         if (session('logged_in')) {
             return redirect()->route('admin.admin_seo');
@@ -48,6 +63,22 @@ class AdminController extends Controller
     {
         session(['logged_in' => false]);
         return redirect()->route('admin.admin_login');
+    }
+
+    /**
+     * Autologin via secret token from .env (ADMIN_AUTOLOGIN_TOKEN).
+     * Handy for staging; do not set the token in prod (results in 404).
+     */
+    public function auto_login($token = '') {
+        $expected = (string) env('ADMIN_AUTOLOGIN_TOKEN', '');
+
+        if ($expected === '' || !hash_equals($expected, (string) $token)) {
+            abort(404);
+        }
+
+        session(['logged_in' => true]);
+
+        return redirect()->route('admin.customer_personal_account');
     }
 
     public function request_login(Request $request) {
@@ -120,12 +151,14 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
@@ -159,12 +192,14 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
@@ -567,16 +602,14 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template)
-                && $cur_template != "."
-                && $cur_template != ".."
-                && $cur_template != "admin"
-            ) {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
@@ -621,12 +654,14 @@ class AdminController extends Controller
         $cur_template_scrin = "";
         $templates_dir_content = scandir($catalog_templates_path);
         foreach ($templates_dir_content as $cur_template) {
-            if (is_dir($catalog_templates_path . "/" . $cur_template) && $cur_template != "." && $cur_template != ".." && $cur_template != "admin") {
+            if (self::isDesignTemplateDir($cur_template, $catalog_templates_path)) {
                 $cur_template_info = [];
                 $cur_template_info["name"] = $cur_template;
-                if (file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")) {
-                    $cur_template_info["scrin"] = "/" . $cur_template . "/images/scrin.png";
-                }
+                // Always set the key: a screenshot may be missing (e.g. for
+                // internal view folders) — the template checks it via empty().
+                $cur_template_info["scrin"] = file_exists(public_path() . "/" . $cur_template . "/images/scrin.png")
+                    ? "/" . $cur_template . "/images/scrin.png"
+                    : "";
                 $templates[] = $cur_template_info;
                 if ($cur_template_info["name"] == $cur_design) {
                     $cur_template_scrin = $cur_template_info["scrin"];
@@ -1362,6 +1397,81 @@ class AdminController extends Controller
         ]);
     }
 
+    public function cabinet() {
+        $title = $this->pageAdminTitle('cabinet');
+        $agent = new Agent();
+        $cabinet = CabinetService::config();
+
+        return view('admin.cabinet', [
+            'title' => $title,
+            'agent' => $agent,
+            'logged_in' => true,
+            'cabinet_enabled' => $cabinet['enabled'],
+            'cabinet_secret' => $cabinet['secret'],
+            'cabinet_url' => $cabinet['url'],
+            // Domain is never configured: always the current request host.
+            'cabinet_domain' => CabinetService::shopDomain(),
+            'cabinet_display' => CabinetService::displayConfig(),
+        ]);
+    }
+
+    public function save_cabinet_info(Request $request) {
+        try {
+            CabinetService::save([
+                'enabled' => (int) $request->input('cabinet_enabled', 0) === 1,
+                'secret'  => (string) $request->input('cabinet_secret', ''),
+            ]);
+            CabinetService::saveDisplay([
+                'pages' => (array) $request->input('display.pages', []),
+                'orders_filters' => $request->input('display.orders_filters'),
+                'orders_help' => $request->input('display.orders_help'),
+                'orders_shop_button' => $request->input('display.orders_shop_button'),
+                'shop_domain_override' => $request->input('display.shop_domain_override'),
+                'billing_url_override' => $request->input('display.billing_url_override'),
+            'checkout_base_override' => $request->input('display.checkout_base_override'),
+        ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            $message = 'Save failed: database rejected the value.';
+            if (str_contains((string) $e->getMessage(), '1406') || str_contains((string) $e->getMessage(), 'too long')) {
+                $message = 'Save failed: a value is too long for the settings storage. Shorten the override URLs and try again.';
+            }
+
+            return response()->json(array('status' => 'error', 'text' => $message));
+        }
+        CabinetService::forgetShopSettings();
+
+        Cache::flush();
+
+        return response()->json(array('status' => 'success', 'url' => route('admin.customer_personal_account')));
+    }
+
+    public function test_cabinet_connection(Request $request) {
+        $secret = trim((string) $request->input('cabinet_secret', ''));
+
+        // Cabinet URL comes from env CABINET_URL only, domain is automatic
+        // from the current request host (CabinetService::shopDomain()).
+        // The secret is not used on the wire (the cabinet knows the shop by domain),
+        // the field is stored for compatibility.
+        $result = CabinetService::testConnection($secret);
+
+        if ($result['status'] === 'ok') {
+            // Connection works — persist the verified secret and refresh
+            // the integration settings from the cabinet.
+            CabinetService::save([
+                'enabled' => CabinetService::enabled(),
+                'secret'  => $secret,
+            ]);
+            CabinetService::shopSettings(true);
+
+            return response()->json(array(
+                'status' => 'success',
+                'text' => $result['text'],
+            ));
+        }
+
+        return response()->json(array('status' => 'error', 'text' => $result['text']));
+    }
+
     public function save_checkout_info(Request $request) {
         $default_shipping = $request->default_shipping;
         // $default_insur = $request->default_insur;
@@ -1379,9 +1489,13 @@ class AdminController extends Controller
     public function save_default_error_page(Request $request) {
         $default_error_page = $request->default_error_page;
         $default_meta = $request->default_meta;
+        $promo_coupon_popup = $request->promo_coupon_popup;
+        $seasonal_upsell = $request->seasonal_upsell;
 
         $this->envUpdate('APP_ERROR_PAGE', $default_error_page);
         $this->envUpdate('APP_DEFAULT_META', $default_meta);
+        $this->envUpdate('APP_PROMO_COUPON_POPUP', $promo_coupon_popup);
+        $this->envUpdate('SEASONAL_UPSELL_ENABLED', $seasonal_upsell);
 
         Cache::flush();
 
@@ -1478,6 +1592,9 @@ class AdminController extends Controller
             case 'checkout':
                 $title = 'Checkout';
                 break;
+            case 'cabinet':
+                $title = 'Embedded Customer Account';
+                break;
             case 'update_shop':
                 // $title = __('text.admin_renewal_shop');
                 $title = 'Update Shop';
@@ -1515,7 +1632,7 @@ class AdminController extends Controller
 
     public function envUpdate($flag,$value)
     {
-        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META'];
+        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META', 'APP_PROMO_COUPON_POPUP', 'SEASONAL_UPSELL_ENABLED'];
 
         if (in_array($flag, $allow_flags))
         {

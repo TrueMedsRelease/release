@@ -94,6 +94,9 @@
                                     <a href="{{ route('admin.renewal_page') }}">Update Shop</a>
                                 </li>
                                 <li class="menu__item">
+                                    <a href="{{ route('admin.customer_personal_account') }}">Customer Account</a>
+                                </li>
+                                <li class="menu__item">
 								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
                                         <svg width="20" height="20">
                                             <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-sign-out") }}"></use>

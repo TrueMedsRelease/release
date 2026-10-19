@@ -1,0 +1,228 @@
+<?php
+
+namespace Tests\Unit;
+
+use App\Http\Controllers\AccountController;
+use App\Services\CabinetService;
+use PHPUnit\Framework\TestCase;
+
+class CabinetDisplayTest extends TestCase
+{
+    public function test_display_defaults(): void
+    {
+        $defaults = CabinetService::displayDefaults();
+
+        $this->assertSame(
+            ['orders' => true, 'bonus' => true, 'referral' => true, 'contact' => true, 'chat' => true],
+            $defaults['pages']
+        );
+        $this->assertTrue($defaults['orders_filters']);
+        $this->assertTrue($defaults['orders_help']);
+        $this->assertSame('all', $defaults['orders_shop_button']);
+        $this->assertSame('', $defaults['shop_domain_override']);
+        $this->assertSame('', $defaults['billing_url_override']);
+        $this->assertTrue($defaults['billing_button']);
+    }
+
+    public function test_normalize_display_config_empty_gives_defaults(): void
+    {
+        $this->assertSame(CabinetService::displayDefaults(), CabinetService::normalizeDisplayConfig([]));
+    }
+
+    public function test_normalize_display_config_flags_and_pages(): void
+    {
+        $config = CabinetService::normalizeDisplayConfig([
+            'pages' => ['orders' => '1', 'bonus' => '0', 'chat' => 0, 'unknown_page' => '1'],
+            'orders_filters' => '0',
+            'orders_help' => 0,
+            'billing_button' => 'yes',
+            'unknown_key' => 'x',
+        ]);
+
+        $this->assertTrue($config['pages']['orders']);
+        $this->assertFalse($config['pages']['bonus']);
+        $this->assertFalse($config['pages']['chat']);
+        $this->assertTrue($config['pages']['referral']);
+        $this->assertArrayNotHasKey('unknown_page', $config['pages']);
+        $this->assertFalse($config['orders_filters']);
+        $this->assertFalse($config['orders_help']);
+        $this->assertTrue($config['billing_button']);
+        $this->assertArrayNotHasKey('unknown_key', $config);
+    }
+
+    public function test_normalize_display_config_shop_button_modes(): void
+    {
+        $this->assertSame('foreign', CabinetService::normalizeDisplayConfig(['orders_shop_button' => 'FOREIGN'])['orders_shop_button']);
+        $this->assertSame('hide', CabinetService::normalizeDisplayConfig(['orders_shop_button' => 'hide'])['orders_shop_button']);
+        $this->assertSame('all', CabinetService::normalizeDisplayConfig(['orders_shop_button' => 'everywhere'])['orders_shop_button']);
+        $this->assertSame('all', CabinetService::normalizeDisplayConfig([])['orders_shop_button']);
+    }
+
+    public function test_normalize_display_config_urls(): void
+    {
+        $config = CabinetService::normalizeDisplayConfig([
+            'shop_domain_override' => 'https://example.com?aff=1842',
+            'billing_url_override' => 'not a url at all ///',
+        ]);
+
+        $this->assertSame('https://example.com?aff=1842', $config['shop_domain_override']);
+        $this->assertSame('', $config['billing_url_override']);
+
+        $bare = CabinetService::normalizeDisplayConfig(['shop_domain_override' => 'example.com']);
+        $this->assertSame('https://example.com', $bare['shop_domain_override']);
+
+        $checkout = CabinetService::normalizeDisplayConfig([
+            'checkout_base_override' => 'https://example.com?aff=1842',
+        ]);
+        $this->assertSame('https://example.com?aff=1842', $checkout['checkout_base_override']);
+
+        $badCheckout = CabinetService::normalizeDisplayConfig(['checkout_base_override' => '::/nope']);
+        $this->assertSame('', $badCheckout['checkout_base_override']);
+    }
+
+    public function test_apply_domain_override_empty_inputs(): void
+    {
+        $this->assertSame('', CabinetService::applyDomainOverride('', 'https://example.com'));
+        $this->assertSame('https://shop1.example/x', CabinetService::applyDomainOverride('https://shop1.example/x', ''));
+        $this->assertSame('https://shop1.example/x', CabinetService::applyDomainOverride('https://shop1.example/x', '   '));
+    }
+
+    public function test_apply_domain_override_host_swap_keeps_params(): void
+    {
+        $this->assertSame(
+            'https://example.com?aff=5',
+            CabinetService::applyDomainOverride('https://shop1.example?aff=5', 'https://example.com?aff=1842')
+        );
+    }
+
+    public function test_apply_domain_override_appends_missing_params(): void
+    {
+        $this->assertSame(
+            'https://example.com/catalog?aff=1842',
+            CabinetService::applyDomainOverride('https://shop1.example/catalog', 'https://example.com?aff=1842')
+        );
+    }
+
+    public function test_apply_domain_override_path_from_override(): void
+    {
+        $this->assertSame(
+            'https://example.com/shop?a=1&aff=1842',
+            CabinetService::applyDomainOverride('https://shop1.example/catalog?a=1', 'https://example.com/shop?aff=1842')
+        );
+    }
+
+    public function test_apply_domain_override_relative_link(): void
+    {
+        $this->assertSame(
+            'https://example.com/catalog?x=1&aff=1842',
+            CabinetService::applyDomainOverride('catalog?x=1', 'https://example.com?aff=1842')
+        );
+    }
+
+    public function test_apply_domain_override_invalid_override_keeps_link(): void
+    {
+        $this->assertSame(
+            'https://shop1.example/x',
+            CabinetService::applyDomainOverride('https://shop1.example/x', 'http://')
+        );
+    }
+
+    public function test_allowed_order_status_has_no_refunded(): void
+    {
+        $this->assertSame('approved', AccountController::allowedOrderStatus('approved'));
+        $this->assertSame('checking', AccountController::allowedOrderStatus('checking'));
+        $this->assertSame('delivered', AccountController::allowedOrderStatus('delivered'));
+        $this->assertSame('declined', AccountController::allowedOrderStatus('declined'));
+        $this->assertNull(AccountController::allowedOrderStatus('refunded'));
+        $this->assertNull(AccountController::allowedOrderStatus(''));
+        $this->assertNull(AccountController::allowedOrderStatus('APPROVED'));
+        $this->assertNull(AccountController::allowedOrderStatus('unknown'));
+    }
+
+    public function test_rewrite_order_shop_links_explicit_override(): void
+    {
+        $body = [
+            'data' => ['items' => [
+                ['id' => 1, 'shop' => 'https://shop1.example?aff=5'],
+                ['id' => 2, 'shop' => null],
+                ['id' => 3],
+            ]],
+        ];
+
+        $result = AccountController::rewriteOrderShopLinks($body, 'https://example.com?aff=1842');
+
+        $this->assertSame('https://example.com?aff=5', $result['data']['items'][0]['shop']);
+        $this->assertNull($result['data']['items'][1]['shop']);
+        $this->assertArrayNotHasKey('shop', $result['data']['items'][2]);
+    }
+
+    public function test_rewrite_order_shop_links_empty_override_keeps_body(): void
+    {
+        $body = ['data' => ['items' => [['id' => 1, 'shop' => 'https://shop1.example?aff=5']]]];
+
+        $this->assertSame($body, AccountController::rewriteOrderShopLinks($body, ''));
+    }
+
+    public function test_display_diff_keeps_only_non_defaults(): void
+    {
+        $this->assertSame([], CabinetService::displayDiff(CabinetService::displayDefaults()));
+
+        $diff = CabinetService::displayDiff(CabinetService::normalizeDisplayConfig([
+            'pages' => ['orders' => true, 'bonus' => false],
+            'orders_filters' => true,
+            'orders_shop_button' => 'foreign',
+            'checkout_base_override' => 'https://true-checkout.com?id=123456',
+        ]));
+
+        $this->assertSame(['bonus' => false], $diff['pages']);
+        $this->assertArrayNotHasKey('orders_filters', $diff);
+        $this->assertSame('foreign', $diff['orders_shop_button']);
+        $this->assertSame('https://true-checkout.com?id=123456', $diff['checkout_base_override']);
+        // The reported prod payload (all defaults + one URL) must stay tiny.
+        $this->assertLessThan(255, strlen((string) json_encode($diff)));
+    }
+
+    public function test_display_diff_round_trips_through_normalize(): void
+    {
+        $raw = ['pages' => ['chat' => '0'], 'billing_button' => '0'];
+        $restored = CabinetService::normalizeDisplayConfig(
+            CabinetService::displayDiff(CabinetService::normalizeDisplayConfig($raw))
+        );
+
+        $this->assertFalse($restored['pages']['chat']);
+        $this->assertFalse($restored['billing_button']);
+        $this->assertTrue($restored['pages']['orders']);
+    }
+
+    public function test_apply_checkout_override_swaps_host_keeps_token(): void
+    {
+        $url = 'https://true-checkout.com/order/begin?products=P&aff=2131&auth=TOKEN&is_cxserv=1';
+
+        $this->assertSame(
+            'https://example.com/order/begin?aff=2131&products=P&auth=TOKEN&is_cxserv=1',
+            AccountController::applyCheckoutOverride($url, 'https://example.com?aff=1842')
+        );
+        $this->assertSame($url, AccountController::applyCheckoutOverride($url, ''));
+    }
+
+    public function test_apply_checkout_override_wins_but_never_funnel(): void
+    {
+        $url = 'https://true-checkout.com/order/begin?products=P&lang=en&aff=9&saff=s1&auth=T&is_cxserv=1';
+
+        // Override params (lang) win, missing keys come from the link,
+        // funnel identity (aff/saff) always stays with the API link.
+        $this->assertSame(
+            'https://true-checkout.com/order/begin?lang=es&aff=9&products=P&saff=s1&auth=T&is_cxserv=1',
+            AccountController::applyCheckoutOverride($url, 'https://true-checkout.com?lang=es&aff=1842')
+        );
+    }
+
+    public function test_valid_login_token_shape(): void
+    {
+        $this->assertTrue(CabinetService::validLoginToken('lkl_abc.def'));
+        $this->assertTrue(CabinetService::validLoginToken('  lkl_abc  '));
+        $this->assertFalse(CabinetService::validLoginToken(''));
+        $this->assertFalse(CabinetService::validLoginToken('http://evil'));
+        $this->assertFalse(CabinetService::validLoginToken('lkl_' . str_repeat('x', 2048)));
+    }
+}

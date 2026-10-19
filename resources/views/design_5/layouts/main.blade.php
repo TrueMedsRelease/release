@@ -312,7 +312,7 @@
                             </div>
                         @endif
                         <div class="profile_top_block">
-                            <a href="{{ route('home.login') }}" class="item profile_top" target="_blank">
+                            <a href="{{ route('home.login') }}" class="item profile_top">
                                 <span class="ico">
                                     <img loading="lazy" src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt=""
                                         width="20" height="20">
@@ -439,29 +439,8 @@
             </div>
         </div>
 
-        <div class="popup_white hide">
-            <div class="popup_push">
-                <div class="button_close">
-                    @if (env('APP_PRINT_SPRITE', 1) == 1)
-                        <svg class="close_popup" width="15" height="15">
-                            <use xlink:href="{{ asset("$design/images/icon/icons.svg#svg-close") }}"></use>
-                        </svg>
-                    @else
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="close_popup" width="15" height="15">
-                            <path d="M15.59 2.39A1.4 1.4 0 1 0 13.61.41L8 6.02 2.39.41A1.4 1.4 0 1 0 .41 2.39L6.02 8 .41 13.61a1.4 1.4 0 0 0 1.98 1.98L8 9.98l5.61 5.61a1.4 1.4 0 1 0 1.98-1.98L9.98 8l5.61-5.61Z"/>
-                        </svg>
-                    @endif
-                </div>
-                <div class="popup_block">
-                    <div class="popup_head">{{ __('text.common_push_head') }}</div>
-                    <div class="popup_push_text">{{ __('text.common_push_text') }}</div>
-                    <div class="push_buttons">
-                        <div class="push_decline">{{ __('text.common_decline') }}</div>
-                        <div class="push_allow">{{ __('text.common_allow') }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('push_popup')
+        
     </header>
     <main class="content">
         <div class="container">
@@ -820,7 +799,7 @@
             </span>
             <span class="name">{{ __('text.common_home_main_menu_item') }}</span>
         </a>
-        <a href="{{ route('home.login') }}" class="item" target="_blank">
+        <a href="{{ route('home.login') }}" class="item">
             <span class="ico">
                 <img loading="lazy" src="{{ asset("$design/images/icon/ico-profile.svg") }}" alt="">
             </span>
@@ -834,6 +813,8 @@
             <span class="name">{{ $Currency::convert($cart_total) }}</span>
         </a>
     </div>
+    {{-- Announce-баннер магазина ("N people are looking...") не показываем в живом кабинете --}}
+    @if(!request()->routeIs('account.page', 'account.login', 'account.*'))
     <div class="announce">
         <div class="announce__item @yield('announce_color', 'announce__item--blue')">
             <div class="announce__icon">
@@ -852,6 +833,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     @if ($web_statistic)
         <input hidden id="stattemp" value="{{ $web_statistic['params_string'] }}">
@@ -916,6 +898,8 @@
     <script defer src="{{ asset("$design/js/slick.js") }}"></script>
     <script defer src="{{ asset_ver("$design/js/main.js") }}"></script>
     <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
+
+    @include('promo_block')
 
 </body>
 
