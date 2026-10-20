@@ -8092,3 +8092,7 @@ body {
 .sitemap_menu:hover{
     color: var(--accent-color);
 }
+
+#gpw-trigger {
+    bottom: 70px !important;
+}
