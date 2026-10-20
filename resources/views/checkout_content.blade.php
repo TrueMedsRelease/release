@@ -1289,21 +1289,6 @@
                             </div>
                         </div>
 
-                        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US' && $service_enable)
-                            <div class="enter-info__google-content" @if (session('form.payment_type', 'mastercard') != 'google') hidden @endif>
-                                <div class="details-payment__row">
-                                    <div class="details-payment__data" style="text-align: center;">
-                                        {{ __('text.checkout_sepa_text') }}
-                                    </div>
-                                </div>
-                                <div style="display: flex; justify-content: center;">
-                                    <iframe
-                                        src="https://r.express/m-pay/l2Bm75tKjX?amount={{ session('total.checkout_total_eur') }}&currency=EUR&country={{ session('location.country', 'US') }}&width=200&height=50&buttonColor=white&buttonRadius=20px&buttonLocale=en"
-                                        style="border: 0" width="255" height="67"></iframe>
-                                </div>
-                            </div>
-                        @endif
-
                         @if (env('APP_SEPA_ON', 0) == 1 && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"]))
                             <div class="enter-info__sepa-content"  @if (session('form.payment_type', 'mastercard') != 'sepa') hidden @endif>
                                 <div class="content-sepa">

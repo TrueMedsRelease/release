@@ -827,8 +827,11 @@ function renewalShop() {
                 alert(data.text);
                 location.reload();
             } else {
-                alert('Error');
+                alert('Error: ' + (data && data.text ? data.text : 'unknown'));
             }
+        },
+        error: function (xhr, status) {
+            alert('Error: HTTP ' + xhr.status + ' (' + status + ')');
         }
     });
 }
