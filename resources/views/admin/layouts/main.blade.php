@@ -3,6 +3,7 @@
 <head>
  	<title>@yield('title', 'Defult')</title>
  	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
  	<meta http-equiv="content-script-type" content="text/javascript">
 	<meta http-equiv="content-style-type" content="text/css">
 
@@ -59,75 +60,69 @@
 	<header class="header">
 		<div class="header__container" style="margin-top: 15px">
 			<div class="header__row">
+				@php
+					$adminMenu = [
+						['route' => 'admin.main_properties', 'label' => __('text.admin_common_main_menu_1_element')],
+						['route' => 'admin.admin_seo', 'label' => __('text.admin_common_main_menu_14_element')],
+						['route' => 'admin.products', 'label' => __('text.admin_common_main_menu_4_element')],
+						['route' => 'admin.available_products', 'label' => __('text.admin_common_main_menu_5_element')],
+						['route' => 'admin.available_packagings', 'label' => __('text.admin_common_main_menu_6_element')],
+						['route' => 'admin.index', 'label' => __('text.admin_common_main_menu_7_element')],
+						['route' => 'admin.admin_checkout', 'label' => 'Checkout'],
+						['route' => 'admin.admin_languages', 'label' => __('text.admin_common_main_menu_9_element')],
+						['route' => 'admin.admin_currencies', 'label' => __('text.admin_common_main_menu_10_element')],
+						['route' => 'admin.renewal_page', 'label' => 'Update Shop'],
+						['route' => 'admin.customer_personal_account', 'label' => 'Customer Account'],
+					];
+					$adminMenuCurrent = collect($adminMenu)->first(fn ($item) => request()->routeIs($item['route']));
+				@endphp
+				<button type="button" class="adm-burger" id="adm_burger" aria-controls="adm_menu" aria-expanded="false">
+					<span class="adm-burger__icon"><span></span></span>
+					<span class="adm-burger__label">{{ $adminMenuCurrent['label'] ?? 'Menu' }}</span>
+				</button>
 				<div class="header__wrapper">
 					<div class="header__menu menu">
-						<nav class="menu__body">
+						<nav class="menu__body adm-menu" id="adm_menu">
 							<ul class="menu__list">
-								<li class="menu__item">
-								    <a href="{{ route('admin.main_properties') }}">{{__('text.admin_common_main_menu_1_element')}}</a>
-								</li>
-                                <li class="menu__item">
-								    <a href="{{ route('admin.admin_seo') }}">{{__('text.admin_common_main_menu_14_element')}}</a>
-								</li>
-								<li class="menu__item">
-								    <a href="{{ route('admin.products') }}">{{__('text.admin_common_main_menu_4_element')}}</a>
-								</li>
-								<li class="menu__item">
-								    <a href="{{ route('admin.available_products') }}">{{__('text.admin_common_main_menu_5_element')}}</a>
-								</li>
-								<li class="menu__item">
-								    <a href="{{ route('admin.available_packagings') }}">{{__('text.admin_common_main_menu_6_element')}}</a>
-								</li>
-								<li class="menu__item">
-								    <a href="{{ route('admin.index') }}">{{__('text.admin_common_main_menu_7_element')}}</a>
-								</li>
-                                <li class="menu__item">
-								    <a href="{{ route('admin.admin_checkout') }}">Checkout</a>
-								</li>
-								<li class="menu__item">
-								    <a href="{{ route('admin.admin_languages') }}">{{__('text.admin_common_main_menu_9_element')}}</a>
-								</li>
-								<li class="menu__item">
-								    <a href="{{ route('admin.admin_currencies') }}">{{__('text.admin_common_main_menu_10_element')}}</a>
-								</li>
-                                <li class="menu__item">
-                                    <a href="{{ route('admin.renewal_page') }}">Update Shop</a>
-                                </li>
-                                <li class="menu__item">
-                                    <a href="{{ route('admin.customer_personal_account') }}">Customer Account</a>
-                                </li>
-                                <li class="menu__item">
-								    <a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
-                                        <svg width="20" height="20">
-                                            <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-sign-out") }}"></use>
-                                        </svg>
-                                    </a>
+								@foreach ($adminMenu as $item)
+									<li class="menu__item @if (request()->routeIs($item['route'])) is-active @endif">
+										<a href="{{ route($item['route']) }}" @if (request()->routeIs($item['route'])) aria-current="page" @endif>{{ $item['label'] }}</a>
+									</li>
+								@endforeach
+								<li class="menu__item menu__item--logout">
+									<a href="{{ route('admin.admin_logout') }}" class="header__sign-out" title="Log out">
+										<svg width="20" height="20">
+											<use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-sign-out") }}"></use>
+										</svg>
+										<span class="adm-menu__logout-text">Log out</span>
+									</a>
 								</li>
 							</ul>
 						</nav>
 					</div>
 				</div>
-
-				{{-- <div class="header__actions">
-					<div class="header__profile profile-header" data-da=".header__row, 479.98, 1">
-						<div class="profile-header__icon">
-							<svg width="20" height="20">
-								<use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-user") }}"></use>
-							</svg>
-						</div>
-						<div class="profile-header__info">
-							<p class="profile-header__name profile-header__name--desktop">Admin</p>
-							<p class="profile-header__name profile-header__name--mobile">profile</p>
-						</div>
-					</div>
-					<a href="{{ route('admin.admin_logout') }}" class="header__sign-out" data-da=".header__row, 479.98, last">
-						<svg width="20" height="20">
-							<use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-sign-out") }}"></use>
-						</svg>
-					</a>
-				</div> --}}
 			</div>
 		</div>
+		<script>
+			(function () {
+				var burger = document.getElementById('adm_burger');
+				var header = burger.closest('.header');
+				function setOpen(open) {
+					header.classList.toggle('adm-menu-open', open);
+					burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+				}
+				burger.addEventListener('click', function (e) {
+					e.stopPropagation();
+					setOpen(!header.classList.contains('adm-menu-open'));
+				});
+				document.addEventListener('click', function (e) {
+					if (!header.contains(e.target)) setOpen(false);
+				});
+				document.addEventListener('keydown', function (e) {
+					if (e.key === 'Escape') setOpen(false);
+				});
+			})();
+		</script>
 	</header>
 @endif
 	<main class="page">

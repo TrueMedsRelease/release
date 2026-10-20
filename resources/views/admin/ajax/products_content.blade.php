@@ -1,6 +1,6 @@
 <form id="products_form" name="products_form" method="POST">
     {{-- <input type="hidden" name="page_name" value="admin_product"> --}}
-    <table style="width: 100%;">
+    <table class="adm-split" style="width: 100%;">
         <tbody  align="center">
             <tr>
                 <td valign="top" width="28%" class="products_on_products">

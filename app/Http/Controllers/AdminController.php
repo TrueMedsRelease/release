@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Cache;
 use App\Services\RenewalService;
 use Illuminate\Support\Facades\Log;
+use App\Services\ProductServices;
 
 class AdminController extends Controller
 {
@@ -594,8 +595,6 @@ class AdminController extends Controller
 
         $selected_template = $request->selected_template;
 
-        $this->envUpdate('APP_DESIGN', $selected_template);
-
         $cur_design = $selected_template;
         $templates = [];
         $catalog_templates_path = resource_path() . '/views';
@@ -632,6 +631,8 @@ class AdminController extends Controller
         ])->render();
 
         Cache::flush();
+
+        $this->envUpdate('APP_DESIGN', $selected_template);
 
         return response()->json(array('success' => true, 'html' => "$returnHTML"));
     }
@@ -1212,7 +1213,6 @@ class AdminController extends Controller
         $languages_form = $request->languages_form_data;
 
         $default_language_code = $languages_form["default_language_code_field"];
-        $this->envUpdate('APP_LANGUAGE', $default_language_code);
 
         $all_languages = Language::query()->orderBy('ord','asc')->get()->toArray();
         $error = [];
@@ -1261,11 +1261,12 @@ class AdminController extends Controller
 
         DB::update("UPDATE `language` SET `show` = 1 WHERE code = '$default_language_code'");
 
+        Cache::flush();
+        $this->envUpdate('APP_LANGUAGE', $default_language_code);
+
         if (count($error) > 0) {
             return response()->json(array('status' => 'error', 'text' => $error['text']));
         } else {
-
-            Cache::flush();
             return response()->json(array('status' => 'success', 'url' => route('admin.admin_languages')));
         }
     }
@@ -1290,7 +1291,6 @@ class AdminController extends Controller
         $currencies_form = $request->currencies_form_data;
 
         $default_currency_code = $currencies_form["default_currency_code_field"];
-        $this->envUpdate('APP_CURRENCY', $default_currency_code);
 
         $all_currencies = Currency::query()->get()->toArray();
         $error = [];
@@ -1361,15 +1361,17 @@ class AdminController extends Controller
 
         DB::update("UPDATE `currency` SET `show_in_menu` = 1 WHERE code = '$default_currency_code'");
 
+        if (count($error) == 0) {
+            session()->forget('currency');
+            session()->forget('currency_c');
+        }
+
+        Cache::flush();
+        $this->envUpdate('APP_CURRENCY', $default_currency_code);
+
         if (count($error) > 0) {
             return response()->json(array('status' => 'error', 'text' => $error['text']));
         } else {
-
-            session()->forget('currency');
-            session()->forget('currency_c');
-
-            Cache::flush();
-
             return response()->json(array('status' => 'success', 'url' => route('admin.admin_currencies')));
         }
     }
@@ -1389,10 +1391,12 @@ class AdminController extends Controller
     public function admin_checkout() {
         $title = $this->pageAdminTitle('checkout');
         $agent = new Agent();
+        $bonus = ProductServices::GetBonuses();
 
         return view('admin.admin_checkout', [
             'title' => $title,
             'agent' => $agent,
+            'bonus' => $bonus,
             'logged_in' => true,
         ]);
     }
@@ -1474,14 +1478,20 @@ class AdminController extends Controller
 
     public function save_checkout_info(Request $request) {
         $default_shipping = $request->default_shipping;
+        $default_bonus = $request->default_bonus;
         // $default_insur = $request->default_insur;
         // $default_secret = $request->default_secret;
 
-        $this->envUpdate('APP_DEFAULT_SHIPPING', $default_shipping);
-        // $this->envUpdate('APP_INSUR_ON', $default_insur);
-        // $this->envUpdate('APP_SECRET_ON', $default_secret);
+        session()->forget('cart_option');
 
         Cache::flush();
+
+        $this->envUpdateMany([
+            'APP_DEFAULT_SHIPPING' => $default_shipping,
+            'APP_DEFAULT_BONUS' => $default_bonus,
+            // 'APP_INSUR_ON' => $default_insur,
+            // 'APP_SECRET_ON' => $default_secret,
+        ]);
 
         return response()->json(array('status' => 'success', 'url' => route('admin.admin_checkout')));
     }
@@ -1492,12 +1502,14 @@ class AdminController extends Controller
         $promo_coupon_popup = $request->promo_coupon_popup;
         $seasonal_upsell = $request->seasonal_upsell;
 
-        $this->envUpdate('APP_ERROR_PAGE', $default_error_page);
-        $this->envUpdate('APP_DEFAULT_META', $default_meta);
-        $this->envUpdate('APP_PROMO_COUPON_POPUP', $promo_coupon_popup);
-        $this->envUpdate('SEASONAL_UPSELL_ENABLED', $seasonal_upsell);
-
         Cache::flush();
+
+        $this->envUpdateMany([
+            'APP_ERROR_PAGE' => $default_error_page,
+            'APP_DEFAULT_META' => $default_meta,
+            'APP_PROMO_COUPON_POPUP' => $promo_coupon_popup,
+            'SEASONAL_UPSELL_ENABLED' => $seasonal_upsell,
+        ]);
 
         return response()->json(array('status' => 'success', 'url' => route('admin.main_properties')));
     }
@@ -1506,9 +1518,9 @@ class AdminController extends Controller
     public function save_subscribe_info(Request $request) {
         $popup_status = $request->popup_status;
 
-        $this->envUpdate('SUBSCRIBE_POPUP_STATUS', $popup_status);
-
         Cache::flush();
+
+        $this->envUpdate('SUBSCRIBE_POPUP_STATUS', $popup_status);
 
         return response()->json(array('status' => 'success', 'url' => route('admin.index')));
     }
@@ -1618,27 +1630,46 @@ class AdminController extends Controller
     // }
 
     public function setEnv($key, $value) {
+        $this->setEnvMany([$key => $value]);
+    }
+
+    public function setEnvMany(array $values) {
         $path = base_path('.env');
         $content = file_get_contents($path);
 
-        if (strpos($content, $key) !== false) {
-            $content = preg_replace("/^{$key}=(.*)$/m", "{$key}={$value}", $content);
-        } else {
-            $content .= PHP_EOL . "{$key}={$value}";
+        foreach ($values as $key => $value) {
+            $line = "{$key}={$value}";
+            $pattern = '/^' . preg_quote($key, '/') . '=.*$/m';
+
+            if (preg_match($pattern, $content)) {
+                $content = preg_replace_callback($pattern, fn () => $line, $content);
+            } else {
+                $content = rtrim($content, "\r\n") . PHP_EOL . $line . PHP_EOL;
+            }
         }
 
-        file_put_contents($path, $content);
+        file_put_contents($path, $content, LOCK_EX);
     }
+
+    private const ENV_ALLOWED_FLAGS = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_DEFAULT_BONUS', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META', 'APP_PROMO_COUPON_POPUP', 'SEASONAL_UPSELL_ENABLED'];
 
     public function envUpdate($flag,$value)
     {
-        $allow_flags = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META', 'APP_PROMO_COUPON_POPUP', 'SEASONAL_UPSELL_ENABLED'];
-
-        if (in_array($flag, $allow_flags))
+        if (in_array($flag, self::ENV_ALLOWED_FLAGS))
         {
             $this->setEnv((string)$flag, (string)$value);
             return env(env((string)$flag));
         }
 
+    }
+
+    public function envUpdateMany(array $values)
+    {
+        $values = array_filter($values, fn ($key) => in_array($key, self::ENV_ALLOWED_FLAGS), ARRAY_FILTER_USE_KEY);
+        $values = array_map(fn ($value) => (string)$value, $values);
+
+        if (count($values) > 0) {
+            $this->setEnvMany($values);
+        }
     }
 }

@@ -76,86 +76,67 @@
                 </tbody>
             </table>
 		</form> --}}
-		<h3 class="payment-details__caption" style="margin-bottom:15px;">{{__('text.admin_currencies_currencies_title')}}</h3>
+		<h3 class="payment-details__caption adm-section-title">{{__('text.admin_currencies_currencies_title')}}</h3>
 		<form id="currencies_form" name="currencies_form" action="" method="POST">
             @csrf
-            <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
-                <thead class="table_head">
-                    <tr align="center">
-                        <th width="5%">{{__('text.admin_currencies_default_title')}}</th>
-                        <th width="5%">{{__('text.admin_currencies_show_title')}}</th>
-                        <th width="19%">{{__('text.admin_currencies_name_title')}}</th>
-                        <th width="12%">{{__('text.admin_currencies_prefix_title')}}</th>
-                        <th width="12%">{{__('text.admin_currencies_code_title')}}</th>
-                        <th width="12%">{{__('text.admin_currencies_coeff_title')}}</th>
-                        <th width="19%">{{__('text.admin_currencies_country_iso2_title')}}</th>
-                        {{-- <th width="16%">&nbsp;</th> --}}
-                    </tr>
-                </thead>
-                <tbody valign="middle" align="center">
-                @foreach ($currencies_info as $cur_currency_info)
-                    <tr>
-                        <td width="5%">
-                            <div style="width: 40%; margin-left: 30%;"><input type="radio" name="default_currency_code_field" id="default_currency_code_field" value="{{ $cur_currency_info['code'] }}" @if ($cur_currency_info['code'] == $default_currency_code) checked @endif/></div>
-                        </td>
-                        <td width="5%" style="padding-left: 10px">
-                            <input type="checkbox" name="{{ $cur_currency_info['id'] }}_show_field" value="{{ $cur_currency_info['code'] }}"
-                            @if ($cur_currency_info['show_in_menu']) checked @endif />
-                        </td>
-                        <td  width="19%" style="padding-top:0.7%;">
-                            <div class="input_elem" style="width: 80%">
-                                <input class="input" type="text" size="22" maxlength="32" name="{{ $cur_currency_info['id'] }}_name_field" id="{{ $cur_currency_info['id'] }}_name_field" value="{{ $cur_currency_info['name'] }}" />
-                            </div>
-                            <div id="{{ $cur_currency_info['id'] }}_name_error">
-                            </div>
-                        </td>
-                        <td width="12%" style="padding-top:0.7%;">
-                            <div class="input_elem" style="width: 80%">
-                                <input class="input" type="text" size="10" maxlength="10" name="{{ $cur_currency_info['id'] }}_prefix_field" id="{{ $cur_currency_info['id'] }}_prefix_field" value="{{ $cur_currency_info['prefix'] }}" />
-                            </div>
-                            <div id="{{ $cur_currency_info['id'] }}_prefix_error">
-                            </div>
-                        </td>
-                        <td width="12%" style="padding-top:0.7%;">
-                            <div class="input_elem" style="width: 80%">
-                                <input class="input" type="text" size="10" maxlength="10" name="{{ $cur_currency_info['id'] }}_code_field" id="{{ $cur_currency_info['id'] }}_code_field" value="{{ $cur_currency_info['code'] }}" />
-                            </div>
-                            <div id="{{ $cur_currency_info['id'] }}_code_error">
-                            </div>
-                        </td>
-                        <td width="12%" style="padding-top:0.7%;">
-                            <div class="input_elem" style="width: 80%">
-                                <input class="input" type="text" size="10" maxlength="10" name="{{ $cur_currency_info['id'] }}_coef_field" id="{{ $cur_currency_info['id'] }}_coef_field" value="{{ $cur_currency_info['coef'] }}" />
-                            </div>
-                            <div id="{{ $cur_currency_info['id'] }}_coef_error">
-                            </div>
-                        </td>
-                        <td width="19%" style="padding-top:0.7%;">
-                            <div class="input_elem" style="width: 80%">
-                                <input class="input" type="text" size="20" maxlength="120" name="{{ $cur_currency_info['id'] }}_country_iso2_field" id="{{ $cur_currency_info['id'] }}_country_iso2_field" value="{{ $cur_currency_info['country_iso2'] }}" />
-                            </div>
-                            <div id="{{ $cur_currency_info['id'] }}_country_iso2_error">
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td colspan="6">
-                        <div class="rowElem"><div id="currencies_messages">&nbsp;</div></div>
-                        <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('currencies_messages', '{{__('text.admin_common_saving_message')}}'); saveCurrenciesInfo();">
-                            <span>
-                                <span>
-                                    {{__('text.admin_currencies_currencies_form_submit')}}
-                                </span>
-                                <svg width="20" height="20">
-                                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
-                                </svg>
-                            </span>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="adm-table-scroll">
+                <table class="adm-table">
+                    <thead>
+                        <tr>
+                            <th class="adm-table__check">{{__('text.admin_currencies_default_title')}}</th>
+                            <th class="adm-table__check">{{__('text.admin_currencies_show_title')}}</th>
+                            <th>{{__('text.admin_currencies_name_title')}}</th>
+                            <th>{{__('text.admin_currencies_prefix_title')}}</th>
+                            <th>{{__('text.admin_currencies_code_title')}}</th>
+                            <th>{{__('text.admin_currencies_coeff_title')}}</th>
+                            <th>{{__('text.admin_currencies_country_iso2_title')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($currencies_info as $cur_currency_info)
+                        <tr>
+                            <td class="adm-table__check">
+                                <input type="radio" name="default_currency_code_field" value="{{ $cur_currency_info['code'] }}" @if ($cur_currency_info['code'] == $default_currency_code) checked @endif/>
+                            </td>
+                            <td class="adm-table__check">
+                                <input type="checkbox" name="{{ $cur_currency_info['id'] }}_show_field" value="{{ $cur_currency_info['code'] }}" @if ($cur_currency_info['show_in_menu']) checked @endif />
+                            </td>
+                            <td>
+                                <input class="input" type="text" maxlength="32" name="{{ $cur_currency_info['id'] }}_name_field" id="{{ $cur_currency_info['id'] }}_name_field" value="{{ $cur_currency_info['name'] }}" />
+                                <div id="{{ $cur_currency_info['id'] }}_name_error"></div>
+                            </td>
+                            <td>
+                                <input class="input" type="text" maxlength="10" name="{{ $cur_currency_info['id'] }}_prefix_field" id="{{ $cur_currency_info['id'] }}_prefix_field" value="{{ $cur_currency_info['prefix'] }}" />
+                                <div id="{{ $cur_currency_info['id'] }}_prefix_error"></div>
+                            </td>
+                            <td>
+                                <input class="input" type="text" maxlength="10" name="{{ $cur_currency_info['id'] }}_code_field" id="{{ $cur_currency_info['id'] }}_code_field" value="{{ $cur_currency_info['code'] }}" />
+                                <div id="{{ $cur_currency_info['id'] }}_code_error"></div>
+                            </td>
+                            <td>
+                                <input class="input" type="text" maxlength="10" name="{{ $cur_currency_info['id'] }}_coef_field" id="{{ $cur_currency_info['id'] }}_coef_field" value="{{ $cur_currency_info['coef'] }}" />
+                                <div id="{{ $cur_currency_info['id'] }}_coef_error"></div>
+                            </td>
+                            <td>
+                                <input class="input" type="text" maxlength="120" name="{{ $cur_currency_info['id'] }}_country_iso2_field" id="{{ $cur_currency_info['id'] }}_country_iso2_field" value="{{ $cur_currency_info['country_iso2'] }}" />
+                                <div id="{{ $cur_currency_info['id'] }}_country_iso2_error"></div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="adm-actions">
+                <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('currencies_messages', '{{__('text.admin_common_saving_message')}}'); saveCurrenciesInfo();">
+                    <span>
+                        {{__('text.admin_currencies_currencies_form_submit')}}
+                    </span>
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                    </svg>
+                </button>
+                <div id="currencies_messages" class="adm-actions__message"></div>
+            </div>
 		</form>
     </div>
 </div>

@@ -765,6 +765,7 @@ function saveGiftCardInfo() {
 
 function saveCheckoutInfo() {
     let default_shipping = $('input[name="default_shipping"]:checked').val();
+    let default_bonus = $('input[name="default_bonus"]:checked').val();
     // let default_insur = $('input[name="default_insur"]:checked').val();
     // let default_secret = $('input[name="default_secret"]:checked').val();
     $.ajax({
@@ -774,6 +775,7 @@ function saveCheckoutInfo() {
         dataType: 'html',
         data: {
             'default_shipping': default_shipping,
+            'default_bonus': default_bonus,
             // 'default_insur': default_insur,
             // 'default_secret': default_secret,
         },
@@ -894,3 +896,31 @@ function saveDefaultErrorPage() {
         }
     });
 }
+
+function reloadWhenServerIsBack(attempt) {
+    attempt = attempt || 0;
+
+    fetch(location.href, { method: 'HEAD', cache: 'no-store' })
+        .then(function () {
+            location.reload();
+        })
+        .catch(function () {
+            if (attempt < 40) {
+                setTimeout(function () {
+                    reloadWhenServerIsBack(attempt + 1);
+                }, 250);
+            }
+        });
+}
+
+$(document).ajaxError(function (event, jqXHR, settings) {
+    if (jqXHR.status !== 0 || jqXHR.statusText === 'abort' || String(settings.type).toUpperCase() !== 'POST') {
+        return;
+    }
+
+    if (!document.getElementById('adm_restart_notice')) {
+        $('body').append('<div id="adm_restart_notice" class="adm-toast">Applying changes…</div>');
+    }
+
+    setTimeout(reloadWhenServerIsBack, 500);
+});

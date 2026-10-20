@@ -62,68 +62,58 @@
             </table>
 		</form>
 	</div> --}}
-    <h3 class="payment-details__caption" style="text-align:left; margin-bottom:15px;">{{__('text.admin_languages_languages_title')}}</h3>
+    <h3 class="payment-details__caption adm-section-title">{{__('text.admin_languages_languages_title')}}</h3>
 	<div class="statistic__rows">
 		<form id="languages_form" name="languages_form" action="" method="POST">
             @csrf
-            <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
-                <thead class="table_head">
-                    <th width="10%">{{__('text.admin_languages_default_title')}}</th>
-                    <th width="10%">{{__('text.admin_languages_show_title')}}</th>
-                    <th width="25%">{{__('text.admin_languages_name_title')}}</th>
-                    <th width="15%">{{__('text.admin_languages_code_title')}}</th>
-                    <th width="25%">{{__('text.admin_languages_country_iso2_title')}}</th>
-                    {{-- <th width="15%">&nbsp;</th> --}}
-                </thead>
-                <tbody valign="middle" align="center">
-                    @foreach ($languages_info as $cur_lang_info)
+            <div class="adm-table-scroll">
+                <table class="adm-table">
+                    <thead>
                         <tr>
-                            <td width="10%" style="padding-left: 10px">
-                                <input  type="radio" name="default_language_code_field" value="{{ $cur_lang_info['code'] }}"
-                                @if ($default_language_code == $cur_lang_info['code']) checked @endif />
-                            </td>
-                            <td width="10%" style="padding-left: 10px">
-                                <input type="checkbox" name="{{ $cur_lang_info['id'] }}_show_field" value="{{ $cur_lang_info['code'] }}"
-                                @if ($cur_lang_info['show']) checked @endif />
-                            </td>
-                            <td width="25%">
-                                <div class="input_elem" style="width: 80%; margin-top:5%;">
-                                    <input class="input" type="text" size="20" maxlength="32" name="{{ $cur_lang_info['id'] }}_name_field" id="{{ $cur_lang_info['id'] }}_name_field" value="{{ $cur_lang_info['name'] }}"/>
-                                </div>
-                                <div id="{{ $cur_lang_info['id'] }}_name_error">
-                                </div>
-                            </td>
-                            <td width="15%">
-                                <div class="input_elem" style="width: 80%; margin-top:5%;">
-                                <input  class="input" type="text" size="8" maxlength="8" name="{{ $cur_lang_info['id'] }}_code_field" id="{{ $cur_lang_info['id'] }}_code_field" value="{{ $cur_lang_info['code'] }}" />
-                                </div>
-                                <div id="{{ $cur_lang_info['id'] }}_code_error">
-                                </div>
-                            </td>
-                            <td width="25%">
-                                <div class="input_elem" style="width: 80%; margin-top:5%;">
-                                <input class="input" type="text" size="20" maxlength="120" name="{{ $cur_lang_info['id'] }}_country_iso2_field" id="{{ $cur_lang_info['id'] }}_country_iso2_field" value="{{ $cur_lang_info['country_iso2'] }}" />
-                                </div>
-                                <div id="{{ $cur_lang_info['id'] }}_country_iso2_error">
-                                </div>
-                            </td>
+                            <th class="adm-table__check">{{__('text.admin_languages_default_title')}}</th>
+                            <th class="adm-table__check">{{__('text.admin_languages_show_title')}}</th>
+                            <th>{{__('text.admin_languages_name_title')}}</th>
+                            <th>{{__('text.admin_languages_code_title')}}</th>
+                            <th>{{__('text.admin_languages_country_iso2_title')}}</th>
                         </tr>
-                    @endforeach
-                    <tr>
-                        <td colspan="6">
-                            <div class="rowElem"><div id="languages_messages">&nbsp;</div></div>
-                            <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('languages_messages', '{{__('text.admin_common_saving_message')}}'); saveLanguagesInfo();">
-                                <span>
-                                    {{__('text.admin_languages_languages_form_submit')}}
-                                </span>
-                                <svg width="20" height="20">
-                                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
-                                </svg>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($languages_info as $cur_lang_info)
+                            <tr>
+                                <td class="adm-table__check">
+                                    <input type="radio" name="default_language_code_field" value="{{ $cur_lang_info['code'] }}" @if ($default_language_code == $cur_lang_info['code']) checked @endif />
+                                </td>
+                                <td class="adm-table__check">
+                                    <input type="checkbox" name="{{ $cur_lang_info['id'] }}_show_field" value="{{ $cur_lang_info['code'] }}" @if ($cur_lang_info['show']) checked @endif />
+                                </td>
+                                <td>
+                                    <input class="input" type="text" maxlength="32" name="{{ $cur_lang_info['id'] }}_name_field" id="{{ $cur_lang_info['id'] }}_name_field" value="{{ $cur_lang_info['name'] }}"/>
+                                    <div id="{{ $cur_lang_info['id'] }}_name_error"></div>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" maxlength="8" name="{{ $cur_lang_info['id'] }}_code_field" id="{{ $cur_lang_info['id'] }}_code_field" value="{{ $cur_lang_info['code'] }}" />
+                                    <div id="{{ $cur_lang_info['id'] }}_code_error"></div>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" maxlength="120" name="{{ $cur_lang_info['id'] }}_country_iso2_field" id="{{ $cur_lang_info['id'] }}_country_iso2_field" value="{{ $cur_lang_info['country_iso2'] }}" />
+                                    <div id="{{ $cur_lang_info['id'] }}_country_iso2_error"></div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="adm-actions">
+                <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('languages_messages', '{{__('text.admin_common_saving_message')}}'); saveLanguagesInfo();">
+                    <span>
+                        {{__('text.admin_languages_languages_form_submit')}}
+                    </span>
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                    </svg>
+                </button>
+                <div id="languages_messages" class="adm-actions__message"></div>
+            </div>
     	</form>
     </div>
 </div>

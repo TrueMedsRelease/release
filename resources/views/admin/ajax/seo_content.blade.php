@@ -1,144 +1,88 @@
-<div class="parked-domains">
-    <div class="parked-domains__col">
-        <form method="post" id="templates_form" name="templates_form">
-            <div class="payment-details__items">
-                <div class="payment-details__item">
-                    <div class="payment-details__top-row">
-                        <div class="payment-details__currency">
-                            <h3 class="payment-details__caption">{{__('text.admin_main_properties_templates_title')}}</h3>
-                        </div>
-                        <p class="payment-details__code"></p>
-                    </div>
-
-                    <table>
-                        <tr>
-                            <td width="40%;">
-                                <script type="text/javascript">
-                                    var selected_template_image_id = "";
-                                    var prev_template_image_id = "";
-                                    var cur_template_image_id = "";
-                                    function showImage(id){
-                                        prev_template_image_id = cur_template_image_id;
-                                        cur_template_image_id = id;
-                                        $('#' + prev_template_image_id).css("display", "none");
-                                        $('#' + cur_template_image_id).css("display", "");
-                                    }
-                                    function selectImage(id){
-                                        selected_template_image_id = id;
-                                        prev_checkout_template_image_id = cur_template_image_id;
-                                        cur_template_image_id = selected_template_image_id;
-                                    }
-                                    function resetImage(){
-                                        $('#' + cur_template_image_id).css("display", "none");
-                                        $('#' + selected_template_image_id).css("display", "");
-                                        cur_template_image_id = selected_template_image_id;
-                                        prev_template_image_id = cur_template_image_id;
-                                    }
-                                </script>
-                                @foreach ($templates as $cur_template_ar)
-                                    @if ($cur_template_ar['name'] == $cur_template)
-                                        <script type="text/javascript">
-                                            selectImage('{{$cur_template_ar['name']}}_image');
-                                        </script>
-                                    @endif
-                                    <div id="div_template_{{ $cur_template_ar['name'] }}" class="rowElem" onmouseover=" showImage('{{ $cur_template_ar['name'] }}_image');" onmouseout="resetImage();">
-                                        <input type="radio" name="template_name_field" id="template_{{ $cur_template_ar['name'] }}" value="{{ $cur_template_ar['name'] }}" @if ($cur_template_ar['name'] == $cur_template) checked @endif
-                                            onclick="selectImage('{{ $cur_template_ar['name'] }}_image');">
-                                        <label for='template_{{ $cur_template_ar['name'] }}'>
-                                            {{ $cur_template_ar['name'] }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </td>
-                            <td width="10%;">&nbsp;</td>
-                            <td width="50%;" valign="center">
-                                @foreach ($templates as $cur_template_ar)
-                                    @if (!empty($cur_template_ar['scrin']))
-                                    <img id="{{ $cur_template_ar['name'] }}_image" src="{{ asset($cur_template_ar['scrin']) }}" width="200" alt="" style="display: @if ($cur_template_ar['name'] == $cur_template) block @else none @endif">
-                                    @endif
-                                @endforeach
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="payment-details__bottom">
-            <div id="templates_messages">&nbsp;</div>
-                <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); saveTemplate();">
-                    <span>
-                        {{__('text.admin_main_properties_password_form_submit')}}
-                    </span>
-                    <svg width="20" height="20">
-                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
-                    </svg>
-                </button>
-            </div>
-        </form>
+<div class="statistic adm-card">
+    <div class="adm-card__head">
+        <h3 class="payment-details__caption">{{__('text.admin_main_properties_templates_title')}}</h3>
     </div>
-    <div class="parked-domains__col">
-        <form method="post" id="pixel_form" name="pixel_form">
-            <div class="payment-details__items">
-                <div class="payment-details__item">
-                    <div class="payment-details__top-row">
-                        <div class="payment-details__currency">
-                            <h3 class="payment-details__caption">Pixel</h3>
-                        </div>
-                        <p class="payment-details__code"></p>
-                    </div>
+    <form method="post" id="templates_form" name="templates_form">
+        <div class="adm-templates">
+            @foreach (collect($templates)->sortBy('name', SORT_NATURAL)->values() as $cur_template_ar)
+                <label class="adm-template" for="template_{{ $cur_template_ar['name'] }}">
+                    <input type="radio" name="template_name_field" id="template_{{ $cur_template_ar['name'] }}" value="{{ $cur_template_ar['name'] }}" @if ($cur_template_ar['name'] == $cur_template) checked @endif>
+                    <span class="adm-template__preview">
+                        @if (!empty($cur_template_ar['scrin']))
+                            <img src="{{ asset($cur_template_ar['scrin']) }}" loading="lazy" alt="{{ $cur_template_ar['name'] }}">
+                        @else
+                            <span class="adm-template__empty">No preview</span>
+                        @endif
+                    </span>
+                    <span class="adm-template__name">
+                        {{ $cur_template_ar['name'] }}
+                        @if ($cur_template_ar['name'] == $cur_template)
+                            <span class="adm-template__badge">current</span>
+                        @endif
+                    </span>
+                </label>
+            @endforeach
+        </div>
+        <div class="adm-actions">
+            <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); saveTemplate();">
+                <span>
+                    {{__('text.admin_main_properties_password_form_submit')}}
+                </span>
+                <svg width="20" height="20">
+                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                </svg>
+            </button>
+            <div id="templates_messages" class="adm-actions__message"></div>
+        </div>
+    </form>
+</div>
 
-                    <table>
-                        <tr>
-                            <td width="40%;">
-                                <div id="pixel_shop_block" class="rowElem" style="padding: 20px 0;">
-                                    <input type="radio" name="pixel_name_field" id="pixel_shop" value="shop" onclick="loadPixelData(this.value)">
-                                    <label for='pixel_shop'>
-                                        shop
-                                    </label>
-                                </div>
-                                <div id="pixel_checkout_block" class="rowElem" style="padding: 20px 0;">
-                                    <input type="radio" name="pixel_name_field" id="pixel_checkout" value="checkout" onclick="loadPixelData(this.value)">
-                                    <label for='pixel_shop'>
-                                        checkout
-                                    </label>
-                                </div>
-                                <div id="pixel_complete_block" class="rowElem" style="padding: 20px 0;">
-                                    <input type="radio" name="pixel_name_field" id="pixel_complete" value="complete" onclick="loadPixelData(this.value)">
-                                    <label for='pixel_complete'>
-                                        complete
-                                    </label>
-                                </div>
-                            </td>
-                            <td width="10%;">&nbsp;</td>
-                            <td width="50%;" valign="center">
-                                <div class="input_elem" style="width: 100%">
-                                    <textarea id="pixel_text" name="pixel_text" class="input"></textarea>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+<div class="statistic adm-card">
+    <form method="post" id="pixel_form" name="pixel_form">
+        <div class="payment-details__items">
+            <div class="payment-details__item">
+                <div class="payment-details__top-row">
+                    <div class="payment-details__currency">
+                        <h3 class="payment-details__caption">Pixel</h3>
+                    </div>
+                    <p class="payment-details__code"></p>
                 </div>
+
+                <table class="adm-split" style="width: 100%;">
+                    <tr>
+                        <td width="40%;">
+                            <div class="adm-choices adm-choices--stack">
+                            <label id="pixel_shop_block" class="adm-choice" for="pixel_shop">
+                                <input type="radio" name="pixel_name_field" id="pixel_shop" value="shop" onclick="loadPixelData(this.value)">
+                                <span class="adm-choice__mark"></span>
+                                <span class="adm-choice__name">shop</span>
+                            </label>
+                            <label id="pixel_checkout_block" class="adm-choice" for="pixel_checkout">
+                                <input type="radio" name="pixel_name_field" id="pixel_checkout" value="checkout" onclick="loadPixelData(this.value)">
+                                <span class="adm-choice__mark"></span>
+                                <span class="adm-choice__name">checkout</span>
+                            </label>
+                            <label id="pixel_complete_block" class="adm-choice" for="pixel_complete">
+                                <input type="radio" name="pixel_name_field" id="pixel_complete" value="complete" onclick="loadPixelData(this.value)">
+                                <span class="adm-choice__mark"></span>
+                                <span class="adm-choice__name">complete</span>
+                            </label>
+                            </div>
+                        </td>
+                        <td width="10%;">&nbsp;</td>
+                        <td width="50%;" valign="center">
+                            <div class="input_elem" style="width: 100%">
+                                <textarea id="pixel_text" name="pixel_text" class="input"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <div class="payment-details__bottom">
-                <div id="templates_messages">&nbsp;</div>
-                <div style="display: flex; gap:20px;">
-                    <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
-                        <span>
-                            {{__('text.admin_main_properties_password_form_submit')}}
-                        </span>
-                        <svg width="20" height="20">
-                            <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
-                        </svg>
-                    </button>
-                    <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); DeletePixelData();">
-                        <span>
-                            {{__('text.admin_common_delete_text')}}
-                        </span>
-                        <svg width="20" height="20">
-                            <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-remove") }}"></use>
-                        </svg>
-                    </button>
-                </div>
-                {{-- <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
+        </div>
+        <div class="payment-details__bottom">
+            <div id="pixel_messages"></div>
+            <div style="display: flex; gap:20px;">
+                <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
                     <span>
                         {{__('text.admin_main_properties_password_form_submit')}}
                     </span>
@@ -146,17 +90,33 @@
                         <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                     </svg>
                 </button>
-                <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); DeletePixelData();">
+                <button type="button" class="jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="show_loading_message('titles_and_tags_messages', '{{__('text.admin_common_saving_message')}}'); DeletePixelData();">
                     <span>
                         {{__('text.admin_common_delete_text')}}
                     </span>
                     <svg width="20" height="20">
-                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-remove") }}"></use>
                     </svg>
-                </button> --}}
+                </button>
             </div>
-        </form>
-    </div>
+            {{-- <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); SavePixelData();">
+                <span>
+                    {{__('text.admin_main_properties_password_form_submit')}}
+                </span>
+                <svg width="20" height="20">
+                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                </svg>
+            </button>
+            <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('templates_messages', '{{__('text.admin_common_saving_message')}}'); DeletePixelData();">
+                <span>
+                    {{__('text.admin_common_delete_text')}}
+                </span>
+                <svg width="20" height="20">
+                    <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                </svg>
+            </button> --}}
+        </div>
+    </form>
 </div>
 
 <div class="statistic" style="margin-top: 2%;">
@@ -170,7 +130,7 @@
     </div>
     <div class="statistic__rows">
         <form id="page_properties_form" name="page_properties_form" method="POST">
-            <table style="width: 100%">
+            <table class="adm-split" style="width: 100%">
                 <thead class="table_head">
                 <th width="22%">{{__('text.admin_main_properties_page_names_title')}}</th>
                 <th width="5%">&nbsp;</th>
@@ -218,20 +178,17 @@
                                         value=""
                                     @endif class="input"/>
                                 </div>
-                                </div>
                             </div>
                             <div class="payment-details__item" style="flex-direction: row; padding-top: 1.2%; padding-bottom: 7.6%; gap:25px;">
                                 <div class="label">{{__('text.admin_main_properties_description_title')}}</div>
                                 <div class="input_elem" style="width: 100%">
                                     <textarea id="description_field" name="description_field" class="input">@if ($page_properties){{ $page_properties->description }}@endif</textarea>
                                 </div>
-                                </div>
                             </div>
                             <div class="payment-details__item" style="flex-direction: row;padding-top: 1.2%; padding-bottom: 7.6%; gap:25px;">
                                 <div class="label">{{__('text.admin_main_properties_keywords_title')}}</div>
                                 <div class="input_elem" style="width: 100%">
                                     <textarea id="keywords_field" name="keywords_field" class="input">@if ($page_properties){{ $page_properties->keyword }}@endif</textarea>
-                                </div>
                                 </div>
                             </div>
                             <div  style="text-align: center;"><div id="titles_and_tags_messages">&nbsp;</div></div>
@@ -275,7 +232,7 @@
     </div>
 
     <form id="products_form" name="products_form" method="POST">
-        <table style="width: 100%;">
+        <table class="adm-split" style="width: 100%;">
             <tbody  align="center">
                 <tr>
                     <td valign="top" width="28%" class="products_on_products">
@@ -288,7 +245,7 @@
                         </select>
                     </td>
                     <td width="12%">
-                        <div id="products_loading_messages" style="margin-bottom: 870px"></div>
+                        <div id="products_loading_messages"></div>
                     </td>
                     @if (count($product_url) > 0)
                         <td valign="middle" width="60%" align="center">
@@ -301,7 +258,6 @@
                                             <input class="input" type="text" id="{{ $item['id'] }}_url_field" name="{{ $item['id'] }}_url_field" value="{{ $product_url[$item['id']] }}" size="32" maxlength="64"/>
                                         </div>
                                         <div id="{{ $item['id'] }}_url_error"></div>
-                                    </div>
                                     </div>
                                 @endforeach
                             </fieldset>
@@ -331,7 +287,6 @@
                                             <input class="input" type="text" id="{{ $item['id'] }}_url_field" name="{{ $item['id'] }}_url_field" size="32" maxlength="64"/>
                                         </div>
                                         <div id="{{ $item['id'] }}_url_error"></div>
-                                    </div>
                                     </div>
                                 @endforeach
                             </fieldset>
