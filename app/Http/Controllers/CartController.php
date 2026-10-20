@@ -145,6 +145,17 @@ class CartController extends Controller
         }
 
         if (empty(session('cart_option'))) {
+
+            $default_bonus = null;
+            if (collect($products)->contains(fn ($p) => $p['product_id'] != 616) && env("APP_DEFAULT_BONUS", 0) != 0) {
+                $default_bonus = ProductServices::GetBonuses(env("APP_DEFAULT_BONUS")) ?? null;
+            }
+            $default_bonus_id    = $default_bonus ? $default_bonus->pack_id : 0;
+            $default_bonus_price = $default_bonus ? $default_bonus->price : 0;
+
+            $product_total       += $default_bonus_price;
+            $product_total_check += $default_bonus_price;
+
             $shipping_name = $shipping['ems'] != 0 ? 'ems' : 'regular';
             if ($shipping_name == 'regular' && $product_total_check >= 200) {
                 $shipping_price = 0;
@@ -165,8 +176,8 @@ class CartController extends Controller
             $option = [
                 "shipping"        => $shipping_name,
                 "shipping_price"  => $shipping_price,
-                "bonus_id"        => 0,
-                "bonus_price"     => 0,
+                "bonus_id"        => $default_bonus_id,
+                "bonus_price"     => $default_bonus_price,
                 "insurance"       => $ins_start,
                 "insurance_price" => 0,
                 "secret_package"  => $secret_start,

@@ -7,118 +7,52 @@
 
 <div class="statistic" style="margin-top: 2%;">
     <div class="statistic__rows">
-        <h3 class="payment-details__caption">Checkout Properties</h3>
+        <h3 class="payment-details__caption adm-section-title">Checkout Properties</h3>
         <form name="checkout_properties" id="checkout_properties" method="POST">
-            <table class="form_table" cellpadding="4" cellspacing="0" style="width:100%">
-                <tbody style="display: flex; gap: 15px; flex-direction: column;">
-                    <tr style="display:flex; justify-content: space-between; padding-top: 15px; gap: 15px;">
-                        <td style="width: 30%;">
-                            <div>
-                                Default Shipping
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="default_shipping" id="ship_ems" value="ems" @if (env('APP_DEFAULT_SHIPPING', 'ems') == 'ems') checked @endif />
-                                <label for="ship_ems">
-                                    Express Delivery
-                                </label>
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="default_shipping" id="ship_regular" value="regular" @if (env('APP_DEFAULT_SHIPPING', 'ems') == 'regular') checked @endif />
-                                <label for="ship_regular">
-                                    Regular Delivery
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- <tr style="display:flex; justify-content: space-between; padding: 15px 0; gap: 15px;">
-                        <td style="width: 30%;">
-                            <div>
-                                Secret Packaging
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="default_secret" id="secret_on" value="1" @if (env('APP_SECRET_ON', 1) == 1) checked @endif />
-                                <label for="secret_on">
-                                    Checked
-                                </label>
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="default_secret" id="secret_off" value="0" @if (env('APP_SECRET_ON', 1) == 0) checked @endif />
-                                <label for="secret_off">
-                                    Unchecked
-                                </label>
-                            </div>
-                        </td>
-                    </tr> -->
-                    <!-- <tr style="display:flex; justify-content: space-between; padding-bottom: 15px; gap: 15px;">
-                        <td style="width: 30%;">
-                            <div>
-                                Shipping Insurance
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="default_insur" id="insur_on" value="1" @if (env('APP_INSUR_ON', 1) == 1) checked @endif />
-                                <label for="insur_on">
-                                    Checked
-                                </label>
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="default_insur" id="insur_off" value="0" @if (env('APP_INSUR_ON', 1) == 0) checked @endif />
-                                <label for="insur_off">
-                                    Unchecked
-                                </label>
-                            </div>
-                        </td>
-                    </tr> -->
-                    {{-- <tr style="display:flex; justify-content: space-between; padding-bottom: 15px; gap: 15px;">
-                        <td style="width: 30%;">
-                            <div>
-                                Paypal
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="paypal_setting" id="paypal_on" value="1" @if (env('APP_PAYPAL_ON', 0) == 1) checked @endif />
-                                <label for="paypal_on">
-                                    Available
-                                </label>
-                            </div>
-                        </td>
-                        <td style="width: 35%;">
-                            <div>
-                                <input type="radio" name="paypal_setting" id="paypal_off" value="0" @if (env('APP_PAYPAL_ON', 0) == 0) checked @endif />
-                                <label for="paypal_off">
-                                    Unavailable
-                                </label>
-                            </div>
-                        </td>
-                    </tr> --}}
-                    <tr>
-                        <td>
-                            <button type="button" class=" jqTransformButton jqTransformButton_hover payment-details__button button button--filled" onclick="saveCheckoutInfo();">
-                                <span>
-                                    <span>
-                                        {{__('text.admin_currencies_currencies_form_submit')}}
-                                    </span>
-                                    <svg width="20" height="20">
-                                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
-                                    </svg>
-                                </span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="adm-settings">
+                <div class="adm-setting">
+                    <div class="adm-setting__label">Default Shipping</div>
+                    <div class="adm-choices">
+                        <label class="adm-choice" for="ship_ems">
+                            <input type="radio" name="default_shipping" id="ship_ems" value="ems" @if (env('APP_DEFAULT_SHIPPING', 'ems') == 'ems') checked @endif />
+                            <span class="adm-choice__mark"></span>
+                            <span class="adm-choice__name">Express Delivery</span>
+                        </label>
+                        <label class="adm-choice" for="ship_regular">
+                            <input type="radio" name="default_shipping" id="ship_regular" value="regular" @if (env('APP_DEFAULT_SHIPPING', 'ems') == 'regular') checked @endif />
+                            <span class="adm-choice__mark"></span>
+                            <span class="adm-choice__name">Regular Delivery</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="adm-setting">
+                    <div class="adm-setting__label">Default Bonus</div>
+                    <div class="adm-choices">
+                        <label class="adm-choice adm-choice--muted" for="bonus_0">
+                            <input type="radio" name="default_bonus" id="bonus_0" value="0" @if (env('APP_DEFAULT_BONUS', 0) == 0) checked @endif />
+                            <span class="adm-choice__mark"></span>
+                            <span class="adm-choice__name">No Bonus</span>
+                        </label>
+                        @foreach ($bonus as $product)
+                            <label class="adm-choice" for="bonus_{{ $product->pack_id }}">
+                                <input type="radio" name="default_bonus" id="bonus_{{ $product->pack_id }}" value="{{ $product->pack_id }}" @if (env('APP_DEFAULT_BONUS', 0) == $product->pack_id) checked @endif />
+                                <span class="adm-choice__mark"></span>
+                                <span class="adm-choice__name">{{ $product->name }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="adm-actions">
+                <button type="button" class="payment-details__button button button--filled" onclick="saveCheckoutInfo();">
+                    <span>
+                        {{__('text.admin_currencies_currencies_form_submit')}}
+                    </span>
+                    <svg width="20" height="20">
+                        <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
+                    </svg>
+                </button>
+            </div>
         </form>
     </div>
 </div>

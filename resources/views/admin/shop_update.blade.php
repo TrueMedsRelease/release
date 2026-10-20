@@ -6,8 +6,16 @@
 @section('content')
 <div id="properties_content">
     <div class="parked-domains">
-        <div class="parked-domains__col" style="">
-            <div class="payment-details__bottom">
+        <div class="parked-domains__col">
+            <div class="adm-alert">
+                {{-- <p>{{ __('text.admin_renewal_text1') }}</p> --}}
+                {{-- <p>{{ __('text.admin_renewal_text2') }}</p> --}}
+                <div>
+                    <p>Warning: If you update the store, your changes will be lost. If you need to update, please contact support.</p>
+                    <p>If you want to update manually, please create a dump of your database and store.</p>
+                </div>
+            </div>
+            <div class="adm-actions">
                 <button type="button" class="payment-details__button button button--filled" onclick="show_loading_message('new_password_messages', '{{__('text.admin_common_saving_message')}}'); renewalShop();">
                     <span>
                         <span>
@@ -30,13 +38,7 @@
                         <use xlink:href="{{ asset("admin_style/images/icons/icons.svg#svg-checkmark") }}"></use>
                     </svg>
                 </button>
-                <div id="new_password_messages"></div>
-            </div>
-            <div style="line-height: 2.5; color: red; font-size: 18px;">
-                {{-- <p>{{ __('text.admin_renewal_text1') }}</p> --}}
-                {{-- <p>{{ __('text.admin_renewal_text2') }}</p> --}}
-                <p>Warning: If you update the store, your changes will be lost. If you need to update, please contact support.</p>
-                <p>If you want to update manually, please create a dump of your database and store.</p>
+                <div id="new_password_messages" class="adm-actions__message"></div>
             </div>
         </div>
     </div>

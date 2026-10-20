@@ -3,9 +3,24 @@
 @section('title', $title)
 @section('page_name', $title)
 
+@php
+    if (!function_exists('asset_ver')) {
+        function asset_ver(string $path): string {
+            static $mtimes = [];
+            $full = public_path($path);
+            if (!isset($mtimes[$path])) {
+                $mtimes[$path] = is_file($full) ? filemtime($full) : null;
+            }
+            $url = asset($path);
+            $v = $mtimes[$path] ?? time();
+            return $url . '?v=' . $v;
+        }
+    }
+@endphp
+
 @section('content')
 
-<link rel="stylesheet" href="{{ asset('admin_style/css/cabinet.css') }}">
+<link rel="stylesheet" href="{{ asset_ver('/admin_style/css/cabinet.css') }}">
 
 <div class="cab-admin">
     @include('admin.cabinet.form', [
@@ -19,6 +34,6 @@
     ])
 </div>
 
-<script src="{{ asset('admin_style/js/cabinet.js') }}"></script>
+<script src="{{ asset_ver('admin_style/js/cabinet.js') }}"></script>
 
 @endsection
