@@ -860,17 +860,6 @@
             </div>
         @endif
 
-        @if (env('APP_GOOGLE_ON', 0) == 1 && session('location.country') != 'US' && $service_enable)
-            <div class="payment-information__google-content" @if ($payment_type_current != 'google') hidden @endif>
-                <div class="details-payment__row">
-                    <div class="details-payment__data" style="text-align: center;">{{ __('text.checkout_sepa_text') }}</div>
-                </div>
-                <div style="display: flex; justify-content: center;">
-                    <iframe src="https://r.express/m-pay/l2Bm75tKjX?amount={{ session('total.checkout_total_eur') }}&currency=EUR&country={{ session('location.country', 'US') }}&width=200&height=50&buttonColor=white&buttonRadius=20px&buttonLocale=en" style="border: 0" width="255" height="67"></iframe>
-                </div>
-            </div>
-        @endif
-
         <div class="payment-information__zelle-content" @if ($payment_type_current != 'zelle') hidden @endif>
             <div class="form__field submit-field">
                 <button class="button form__submit" type="button" data-action="get-zelle-data">
