@@ -5181,3 +5181,7 @@ opacity:0;
 .sitemap_menu:hover{
     color: var(--black);
 }
+
+#gpw-trigger {
+    bottom: 70px !important;
+}
