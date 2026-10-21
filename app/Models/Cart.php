@@ -287,10 +287,12 @@ class Cart extends Model
                             $result['type']    = $response['coupon']['type'];
 
                             session(['coupon' => $result]);
+
+                            $coupon_discount = ceil($productTotal * ($result['percent'] / 100));
                         }
-                    } else {
-                        session()->forget('coupon_get');
                     }
+
+                    session()->forget('coupon_get');
                 } catch (ConnectionException $e) {
                     session()->forget('coupon_get');
                 } catch (RequestException $e) {
