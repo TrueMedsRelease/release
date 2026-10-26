@@ -1501,6 +1501,7 @@ class AdminController extends Controller
         $default_meta = $request->default_meta;
         $promo_coupon_popup = $request->promo_coupon_popup;
         $seasonal_upsell = $request->seasonal_upsell;
+        $bonus_promo = $request->bonus_promo;
 
         Cache::flush();
 
@@ -1509,6 +1510,7 @@ class AdminController extends Controller
             'APP_DEFAULT_META' => $default_meta,
             'APP_PROMO_COUPON_POPUP' => $promo_coupon_popup,
             'SEASONAL_UPSELL_ENABLED' => $seasonal_upsell,
+            'APP_BONUS_PROMO' => $bonus_promo,
         ]);
 
         return response()->json(array('status' => 'success', 'url' => route('admin.main_properties')));
@@ -1651,7 +1653,7 @@ class AdminController extends Controller
         file_put_contents($path, $content, LOCK_EX);
     }
 
-    private const ENV_ALLOWED_FLAGS = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_DEFAULT_BONUS', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META', 'APP_PROMO_COUPON_POPUP', 'SEASONAL_UPSELL_ENABLED'];
+    private const ENV_ALLOWED_FLAGS = ["APP_DESIGN", 'APP_CURRENCY', 'APP_LANGUAGE', 'APP_GIFT_CARD', 'APP_DEFAULT_SHIPPING', 'APP_DEFAULT_BONUS', 'APP_INSUR_ON', 'APP_SECRET_ON', 'SUBSCRIBE_POPUP_STATUS', 'APP_PAYPAL_ON', 'APP_ERROR_PAGE', 'APP_DEFAULT_META', 'APP_PROMO_COUPON_POPUP', 'SEASONAL_UPSELL_ENABLED', 'APP_BONUS_PROMO'];
 
     public function envUpdate($flag,$value)
     {

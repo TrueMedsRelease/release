@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Console\Commands\UpdateCurrencyRates;
 use App\Http\Controllers\CartController;
 use App\Models\Currency;
 use App\Models\Language;
@@ -11,6 +12,7 @@ use App\Services\GeoIpService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 
@@ -37,6 +39,12 @@ class SessionParameterHandler
                 App::setLocale($lang);
                 session(['locale' => $lang]);
             }
+        }
+
+        $rates_version = Cache::get(UpdateCurrencyRates::VERSION_KEY);
+        if ($rates_version && session()->has('currency') && session('currency_v') != $rates_version) {
+            session(['currency_c' => Currency::GetCoef(session('currency'))]);
+            session(['currency_v' => $rates_version]);
         }
 
         // referer

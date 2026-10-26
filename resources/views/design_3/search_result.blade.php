@@ -41,15 +41,17 @@
 
         <h2 class="page__title title">{{__('text.search_result_best_for_search')}}</h2>
         <div class="products__items">
-            <a href="{{ route('home.bonus_referral_program') }}" class="item-product bonus_card">
-                <div class="bonus_top">
-                    <div class="bonus_head">{{ __('text.bonus_card_ref_programm') }}</div>
-                    <div class="bonus_text">{{ __('text.save_earn') }}</div>
-                </div>
-                <div class="bonus_image">
-                    <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="100%" height="100%">
-                </div>
-            </a>
+            @if (env('APP_BONUS_PROMO', 1))
+                <a href="{{ route('home.bonus_referral_program') }}" class="item-product bonus_card">
+                    <div class="bonus_top">
+                        <div class="bonus_head">{{ __('text.bonus_card_ref_programm') }}</div>
+                        <div class="bonus_text">{{ __('text.save_earn') }}</div>
+                    </div>
+                    <div class="bonus_image">
+                        <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="100%" height="100%">
+                    </div>
+                </a>
+            @endif
             @foreach ($bestsellers as $product)
                 <a href="{{ route('home.product', $product['url']) }}" class="item-product">
                     <div class="item-product__content">
@@ -99,15 +101,17 @@
 @else
     <div class="page__products products">
         <div class="products__items">
-            <a href="{{ route('home.bonus_referral_program') }}" class="item-product bonus_card">
-                <div class="bonus_top">
-                    <div class="bonus_head">{{ __('text.bonus_card_ref_programm') }}</div>
-                    <div class="bonus_text">{{ __('text.save_earn') }}</div>
-                </div>
-                <div class="bonus_image">
-                    <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="100%" height="100%">
-                </div>
-            </a>
+            @if (env('APP_BONUS_PROMO', 1))
+                <a href="{{ route('home.bonus_referral_program') }}" class="item-product bonus_card">
+                    <div class="bonus_top">
+                        <div class="bonus_head">{{ __('text.bonus_card_ref_programm') }}</div>
+                        <div class="bonus_text">{{ __('text.save_earn') }}</div>
+                    </div>
+                    <div class="bonus_image">
+                        <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="100%" height="100%">
+                    </div>
+                </a>
+            @endif
             @foreach ($products as $product)
                 <a href="{{ route('home.product', $product['url']) }}" class="item-product">
                     <div class="item-product__content">

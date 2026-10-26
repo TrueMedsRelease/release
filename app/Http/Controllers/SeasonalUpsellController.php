@@ -62,7 +62,10 @@ class SeasonalUpsellController extends Controller
         try {
             DB::transaction(function () use ($data, $offer, $request, $service, &$completed) {
                 // Serialize with refresh(): the allowed packs and API prices stay stable during this add.
-                DB::table('seasonal_upsell_cache')->where('id', 1)->lockForUpdate()->first();
+                // Without the table (refresh never ran) offers() is empty and only an empty selection passes.
+                if (SeasonalUpsellService::tableExists()) {
+                    DB::table('seasonal_upsell_cache')->where('id', 1)->lockForUpdate()->first();
+                }
                 $available = [];
                 foreach ($service->offers() as $product) {
                     foreach ($product['packs'] as $pack) {

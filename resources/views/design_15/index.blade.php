@@ -9,15 +9,17 @@
     <main class="main">
         <div class="product-cards">
             <div class="cards">
-                <a class="promo-card promo-card--bonus" href="{{ route('home.bonus_referral_program') }}">
-                    <div class="promo-card__content">
-                        <div class="promo-card__title">{{ __('text.bonus_card_ref_programm') }}</div>
-                        <span class="promo-card__text">{{ __('text.save_earn') }}</span>
-                    </div>
-                    <div class="promo-card__cover">
-                        <img src="{{ asset("$design/svg/cards/promo-card-cover-01.svg") }}" width="288" height="211" alt="Promo card cover">
-                    </div>
-                </a>
+                @if (env('APP_BONUS_PROMO', 1))
+                    <a class="promo-card promo-card--bonus" href="{{ route('home.bonus_referral_program') }}">
+                        <div class="promo-card__content">
+                            <div class="promo-card__title">{{ __('text.bonus_card_ref_programm') }}</div>
+                            <span class="promo-card__text">{{ __('text.save_earn') }}</span>
+                        </div>
+                        <div class="promo-card__cover">
+                            <img src="{{ asset("$design/svg/cards/promo-card-cover-01.svg") }}" width="288" height="211" alt="Promo card cover">
+                        </div>
+                    </a>
+                @endif
                 @foreach ($bestsellers as $product)
                     <article class="card">
                         <div class="card__img">

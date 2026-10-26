@@ -28,19 +28,21 @@
             {{-- <h4 class="best-sellers__title title" id = "scroll">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h4> --}}
             <h2 class="best-sellers__title title">{{__('text.search_result_best_for_search')}}</h2>
             <div class="best-sellers__items">
-                <a href="{{ route('home.bonus_referral_program') }}" class="product-card bonus_programm">
-                    <div class="bonus_top">
-                        <div class="bonus_head">
-                            {{ __('text.bonus_card_ref_programm') }}
+                @if (env('APP_BONUS_PROMO', 1))
+                    <a href="{{ route('home.bonus_referral_program') }}" class="product-card bonus_programm">
+                        <div class="bonus_top">
+                            <div class="bonus_head">
+                                {{ __('text.bonus_card_ref_programm') }}
+                            </div>
+                            <div class="bonus_text">
+                                {{ __('text.save_earn') }}
+                            </div>
                         </div>
-                        <div class="bonus_text">
-                            {{ __('text.save_earn') }}
+                        <div class="bonus_image">
+                            <img loading="lazy" src="{{ asset($design . '/images/bonus_programm.png') }}">
                         </div>
-                    </div>
-                    <div class="bonus_image">
-                        <img loading="lazy" src="{{ asset($design . '/images/bonus_programm.png') }}">
-                    </div>
-                </a>
+                    </a>
+                @endif
                 @foreach ($bestsellers as $product)
                     <a href="{{ route('home.product', $product['url']) }}" class="product-card">
                         <div class="product-card__body">
@@ -80,19 +82,21 @@
         <section class="page__best-sellers best-sellers">
         <h2 class="best-sellers__title title" id = "scroll">{{__('text.search_result_title_page')}} «{{ $search_text }}»</h2>
         <div class="best-sellers__items">
-            <a href="{{ route('home.bonus_referral_program') }}" class="product-card bonus_programm">
-                <div class="bonus_top">
-                    <div class="bonus_head">
-                        {{ __('text.bonus_card_ref_programm') }}
+            @if (env('APP_BONUS_PROMO', 1))
+                <a href="{{ route('home.bonus_referral_program') }}" class="product-card bonus_programm">
+                    <div class="bonus_top">
+                        <div class="bonus_head">
+                            {{ __('text.bonus_card_ref_programm') }}
+                        </div>
+                        <div class="bonus_text">
+                            {{ __('text.save_earn') }}
+                        </div>
                     </div>
-                    <div class="bonus_text">
-                        {{ __('text.save_earn') }}
+                    <div class="bonus_image">
+                        <img loading="lazy" src="{{ asset($design . '/images/bonus_programm.png') }}">
                     </div>
-                </div>
-                <div class="bonus_image">
-                    <img loading="lazy" src="{{ asset($design . '/images/bonus_programm.png') }}">
-                </div>
-            </a>
+                </a>
+            @endif
             @foreach ($products as $product)
                 <a href="{{ route('home.product', $product['url']) }}" class="product-card">
                     <div class="product-card__body">

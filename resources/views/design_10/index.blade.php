@@ -64,12 +64,14 @@
                 </article>
                 @if ($loop->index == 1)
                     <div class="combo-cards">
-                        <article class="card combo-card combo-card--bonus">
-                            <a class="link-primary combo-card__link-wrapper" href="{{ route('home.bonus_referral_program') }}">
-                                <h2 class="combo-card__title">{{ __('text.bonus_card_ref_programm') }}</h2>
-                                <div class="combo-card__text">{{ __('text.save_earn') }}</div>
-                            </a>
-                        </article>
+                        @if (env('APP_BONUS_PROMO', 1))
+                            <article class="card combo-card combo-card--bonus">
+                                <a class="link-primary combo-card__link-wrapper" href="{{ route('home.bonus_referral_program') }}">
+                                    <h2 class="combo-card__title">{{ __('text.bonus_card_ref_programm') }}</h2>
+                                    <div class="combo-card__text">{{ __('text.save_earn') }}</div>
+                                </a>
+                            </article>
+                        @endif
                         <article class="card combo-card">
                             <div class="link-primary combo-card__link-wrapper" href="">
                                 <h2 class="combo-card__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</h2>
