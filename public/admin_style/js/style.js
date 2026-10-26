@@ -877,6 +877,7 @@ function saveDefaultErrorPage() {
     let default_meta = $('input[name="default_meta"]:checked').val();
     let promo_coupon_popup = $('input[name="promo_coupon_popup"]:checked').val();
     let seasonal_upsell = $('input[name="seasonal_upsell"]:checked').val();
+    let bonus_promo = $('input[name="bonus_promo"]:checked').val();
 
     $.ajax({
         url: routeAdminSaveDefaultErrorPage,
@@ -887,7 +888,8 @@ function saveDefaultErrorPage() {
             'default_error_page': default_error_page,
             'default_meta': default_meta,
             'promo_coupon_popup': promo_coupon_popup,
-            'seasonal_upsell': seasonal_upsell
+            'seasonal_upsell': seasonal_upsell,
+            'bonus_promo': bonus_promo
         },
         success: function (data) {
             data = JSON.parse(data);

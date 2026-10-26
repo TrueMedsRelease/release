@@ -184,6 +184,30 @@ class Cart extends Model
         return $insurance;
     }
 
+    public static function ApplyShipping(array $cart_option, array $shipping, $product_total_check)
+    {
+        if (empty($cart_option['shipping']) || !isset($shipping[$cart_option['shipping']])) {
+            $cart_option['shipping'] = env('APP_DEFAULT_SHIPPING', 'ems');
+        }
+
+        $ems_free = !empty($shipping['ems']) && $product_total_check >= 300;
+
+        if ($ems_free && empty($cart_option['ems_free'])) {
+            $cart_option['shipping'] = 'ems';
+        }
+        $cart_option['ems_free'] = $ems_free;
+
+        if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
+            $cart_option['shipping_price'] = 0;
+        } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
+            $cart_option['shipping_price'] = 0;
+        } else {
+            $cart_option['shipping_price'] = $shipping[$cart_option['shipping']] ?? 0;
+        }
+
+        return $cart_option;
+    }
+
     public static function update_cart_total()
     {
         if (!empty(session('cart'))) {

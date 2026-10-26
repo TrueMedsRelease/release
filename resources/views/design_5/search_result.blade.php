@@ -376,23 +376,25 @@
             {{-- <h2 class="title-page">{{__('text.search_result_nothing_found1')}} «{{ $search_text }}» {{__('text.search_result_nothing_found2')}}</h2> --}}
             <h2 class="title-page">{{__('text.search_result_best_for_search')}}</h2>
             <div class="product-list">
-                <div class="item">
-                    <a href="{{ route('home.bonus_referral_program') }}" class="img">
-                        <img src="{{ asset($design . '/images/bonus_programm.png') }}">
-                    </a>
-                    <div class="info">
-                        <div class="box">
-                            <a href="{{ route('home.bonus_referral_program') }}" class="name">
-                                {{ __('text.bonus_card_ref_programm') }}
-                            </a>
-                        </div>
-                        <div class="box">
-                            <a href="{{ route('home.bonus_referral_program') }}" class="cat">
-                                {{ __('text.save_earn') }}
-                            </a>
+                @if (env('APP_BONUS_PROMO', 1))
+                    <div class="item">
+                        <a href="{{ route('home.bonus_referral_program') }}" class="img">
+                            <img src="{{ asset($design . '/images/bonus_programm.png') }}">
+                        </a>
+                        <div class="info">
+                            <div class="box">
+                                <a href="{{ route('home.bonus_referral_program') }}" class="name">
+                                    {{ __('text.bonus_card_ref_programm') }}
+                                </a>
+                            </div>
+                            <div class="box">
+                                <a href="{{ route('home.bonus_referral_program') }}" class="cat">
+                                    {{ __('text.save_earn') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 @foreach ($bestsellers as $product)
                     <div class="item">
                         @if ($product['id'] != 616 && $product['discount'] != 0)
@@ -433,23 +435,25 @@
         <div class="products">
             <h2 class="title-page">{{__('text.search_result_title_page')}}  «{{$search_text}}»</h2>
             <div class="product-list">
-                <div class="item">
-                    <a href="{{ route('home.bonus_referral_program') }}" class="img">
-                        <img src="{{ asset($design . '/images/bonus_programm.png') }}">
-                    </a>
-                    <div class="info">
-                        <div class="box">
-                            <a href="{{ route('home.bonus_referral_program') }}" class="name">
-                                {{ __('text.bonus_card_ref_programm') }}
-                            </a>
-                        </div>
-                        <div class="box">
-                            <a href="{{ route('home.bonus_referral_program') }}" class="cat">
-                                {{ __('text.save_earn') }}
-                            </a>
+                @if (env('APP_BONUS_PROMO', 1))
+                    <div class="item">
+                        <a href="{{ route('home.bonus_referral_program') }}" class="img">
+                            <img src="{{ asset($design . '/images/bonus_programm.png') }}">
+                        </a>
+                        <div class="info">
+                            <div class="box">
+                                <a href="{{ route('home.bonus_referral_program') }}" class="name">
+                                    {{ __('text.bonus_card_ref_programm') }}
+                                </a>
+                            </div>
+                            <div class="box">
+                                <a href="{{ route('home.bonus_referral_program') }}" class="cat">
+                                    {{ __('text.save_earn') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 @foreach ($products as $product)
                     <div class="item">
                         @if ($product['id'] != 616 && $product['discount'] != 0)

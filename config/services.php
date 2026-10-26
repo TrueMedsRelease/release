@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'currency_rates' => [
+        'url' => env('CURRENCY_RATES_URL', 'https://true-serv.net/currency/rates'),
+    ],
+
 ];

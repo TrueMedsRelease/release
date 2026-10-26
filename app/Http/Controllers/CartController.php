@@ -156,26 +156,12 @@ class CartController extends Controller
             $product_total       += $default_bonus_price;
             $product_total_check += $default_bonus_price;
 
-            $shipping_name = $shipping['ems'] != 0 ? 'ems' : 'regular';
-            if ($shipping_name == 'regular' && $product_total_check >= 200) {
-                $shipping_price = 0;
-            } elseif ($shipping_name == 'ems' && $product_total_check >= 300) {
-                $shipping_price = 0;
-            } else {
-                $shipping_price = $shipping['ems'] != 0 ? $shipping['ems'] : $shipping['regular'];
-            }
-
-            $start_shipping = env('APP_DEFAULT_SHIPPING', 'ems');
-
-            $shipping_name  = $start_shipping;
-            $shipping_price = $shipping_price == 0 ? $shipping_price : $shipping[$start_shipping];
-
             $ins_start    = intval(env('APP_INSUR_ON', 1));
             $secret_start = intval(env('APP_SECRET_ON', 1));
 
             $option = [
-                "shipping"        => $shipping_name,
-                "shipping_price"  => $shipping_price,
+                "shipping"        => env('APP_DEFAULT_SHIPPING', 'ems'),
+                "shipping_price"  => 0,
                 "bonus_id"        => $default_bonus_id,
                 "bonus_price"     => $default_bonus_price,
                 "insurance"       => $ins_start,
@@ -183,6 +169,8 @@ class CartController extends Controller
                 "secret_package"  => $secret_start,
                 "secret_price"    => 0,
             ];
+
+            $option = Cart::ApplyShipping($option, $shipping, $product_total_check);
 
             session(['cart_option' => $option]);
         } else {
@@ -196,13 +184,7 @@ class CartController extends Controller
             $product_total_check += $bonus_price;
 
 
-            if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-                $cart_option['shipping_price'] = 0;
-            } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-                $cart_option['shipping_price'] = 0;
-            } else {
-                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-            }
+            $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
             session(['cart_option' => $cart_option]);
         }
@@ -342,13 +324,7 @@ class CartController extends Controller
 
         $cart_option = session('cart_option');
 
-        if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-            $cart_option['shipping_price'] = 0;
-        } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-            $cart_option['shipping_price'] = 0;
-        } else {
-            $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-        }
+        $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
         session(['cart_option' => $cart_option]);
 
@@ -477,13 +453,7 @@ class CartController extends Controller
             'shipping' => env('APP_DEFAULT_SHIPPING')
         ]);
 
-        if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-            $cart_option['shipping_price'] = 0;
-        } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-            $cart_option['shipping_price'] = 0;
-        } else {
-            $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-        }
+        $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
         session(['cart_option' => $cart_option]);
 
@@ -613,13 +583,7 @@ class CartController extends Controller
 
             $cart_option = session('cart_option');
 
-            if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-                $cart_option['shipping_price'] = 0;
-            } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-                $cart_option['shipping_price'] = 0;
-            } else {
-                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-            }
+            $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
             session(['cart_option' => $cart_option]);
 
@@ -752,13 +716,7 @@ class CartController extends Controller
 
             $cart_option = session('cart_option');
 
-            if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-                $cart_option['shipping_price'] = 0;
-            } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-                $cart_option['shipping_price'] = 0;
-            } else {
-                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-            }
+            $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
             session(['cart_option' => $cart_option]);
 
@@ -844,6 +802,8 @@ class CartController extends Controller
         $option                   = session('cart_option');
         $option['shipping']       = $shipping_name;
         $option['shipping_price'] = $shipping_price;
+        
+        $option['ems_free'] = true;
 
         session(['cart_option' => $option]);
         $design = session('design') ? session('design') : config('app.design');
@@ -899,13 +859,7 @@ class CartController extends Controller
 
             $cart_option = session('cart_option');
 
-            if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-                $cart_option['shipping_price'] = 0;
-            } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-                $cart_option['shipping_price'] = 0;
-            } else {
-                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-            }
+            $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
             session(['cart_option' => $cart_option]);
 
@@ -1050,13 +1004,7 @@ class CartController extends Controller
                 'shipping' => env('APP_DEFAULT_SHIPPING')
             ]);
 
-            if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-                $cart_option['shipping_price'] = 0;
-            } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-                $cart_option['shipping_price'] = 0;
-            } else {
-                $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-            }
+            $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
             session(['cart_option' => $cart_option]);
 

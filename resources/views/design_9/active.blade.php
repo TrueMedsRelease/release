@@ -47,11 +47,13 @@
             </div> --}}
 
             <div class="bonus_block all_padding big">
-                <div class="bonus1">
-                    <a href="{{ route('home.bonus_referral_program') }}">
-                        <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
-                    </a>
-                </div>
+                @if (env('APP_BONUS_PROMO', 1))
+                    <div class="bonus1">
+                        <a href="{{ route('home.bonus_referral_program') }}">
+                            <img loading="lazy" src="{{ asset("$design/images/bonus_programm.png") }}">
+                        </a>
+                    </div>
+                @endif
                 <div class="bonus1">
                     <img loading="lazy" src="{{ asset("$design/images/happy_day.png") }}">
                 </div>
@@ -60,11 +62,13 @@
                 </div>
             </div>
             <div class="bonus_block all_padding small">
-                <div class="bonus1">
-                    <a href="{{ route('home.bonus_referral_program') }}">
-                        <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
-                    </a>
-                </div>
+                @if (env('APP_BONUS_PROMO', 1))
+                    <div class="bonus1">
+                        <a href="{{ route('home.bonus_referral_program') }}">
+                            <img loading="lazy" src="{{ asset("$design/images/bonus_1_small.png") }}">
+                        </a>
+                    </div>
+                @endif
                 <div class="bonus1">
                     <img loading="lazy" src="{{ asset("$design/images/bonus_2_small.png") }}">
                 </div>
@@ -72,7 +76,7 @@
                     <img loading="lazy" src="{{ asset("$design/images/bonus_3_small.png") }}">
                 </div>
             </div>
-            
+
             <h2 class="bestsellers__title title">{{__('text.aktiv_aktiv_result_title')}} {{ ucwords(str_replace('-', ' ', $active)) }}</h2>
             <div class="bestsellers__body">
                 <div class="product_list">

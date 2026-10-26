@@ -120,41 +120,43 @@
 @endsection
 
 @section('promo_bonus')
-  <div class="promo-items">
-        <a class="promo-item" href="{{ route('home.bonus_referral_program') }}" style="text-decoration: none">
+    <div class="promo-items">
+        @if (env('APP_BONUS_PROMO', 1))
+            <a class="promo-item" href="{{ route('home.bonus_referral_program') }}" style="text-decoration: none">
+                <div class="promo-item__info">
+                    <div class="promo-item__title">{{ __('text.bonus_card_ref_programm') }}</div>
+                    <div class="promo-item__text">{{ __('text.save_earn') }}</div>
+                </div>
+                <div class="promo-item__img">
+                    <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="172" height="112" alt="Promo">
+                </div>
+            </a>
+        @endif
+        <div class="promo-item">
             <div class="promo-item__info">
-                <div class="promo-item__title">{{ __('text.bonus_card_ref_programm') }}</div>
-                <div class="promo-item__text">{{ __('text.save_earn') }}</div>
+                <div class="promo-item__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>
+                <div class="promo-item__text">{{__('text.common_banner1_text3')}} {{__('text.common_banner1_text4')}}</div>
             </div>
             <div class="promo-item__img">
-                <img src="{{ asset($design . '/images/bonus_programm.png') }}" width="172" height="112" alt="Promo">
+                <picture>
+                    <source type="image/webp" srcset="{{ asset($design . '/images/layout/promo-1-172w.webp 1x, ' . $design . '/images/layout/promo-1-344w.webp 2x') }}">
+                    <img src="{{ asset($design . '/images/layout/promo-1-172w.png') }}" srcset="{{ asset($design . '/images/layout/promo-1-172w.png 1x, ' . $design . '/images/layout/promo-1-344w.png 2x') }}" width="172" height="112" alt="Promo">
+                </picture>
             </div>
-        </a>
-      <div class="promo-item">
-          <div class="promo-item__info">
-              <div class="promo-item__title">{{Str::ucfirst(__('text.common_banner1_text1'))}} {{Str::ucfirst(__('text.common_banner1_text2'))}}</div>
-              <div class="promo-item__text">{{__('text.common_banner1_text3')}} {{__('text.common_banner1_text4')}}</div>
-          </div>
-          <div class="promo-item__img">
-              <picture>
-                  <source type="image/webp" srcset="{{ asset($design . '/images/layout/promo-1-172w.webp 1x, ' . $design . '/images/layout/promo-1-344w.webp 2x') }}">
-                  <img src="{{ asset($design . '/images/layout/promo-1-172w.png') }}" srcset="{{ asset($design . '/images/layout/promo-1-172w.png 1x, ' . $design . '/images/layout/promo-1-344w.png 2x') }}" width="172" height="112" alt="Promo">
-              </picture>
-          </div>
-      </div>
-      <div class="promo-item">
-          <div class="promo-item__info">
-              <div class="promo-item__title promo-item__title--green">{{__('text.common_banner2_text1')}} {!!__('text.common_banner2_text2')!!}</div>
-              <div class="promo-item__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
-          </div>
-          <div class="promo-item__img">
-              <picture>
-                  <source type="image/webp" srcset="{{ asset($design . '/images/layout/promo-2-172w.webp 1x, ' . $design . '/images/layout/promo-2-344w.webp 2x') }}">
-                  <img src="{{ asset($design . '/images/layout/promo-2-172w.png') }}" srcset="{{ asset($design . '/images/layout/promo-2-172w.png 1x, ' . $design . '/images/layout/promo-2-344w.png 2x') }}" width="172" height="112" alt="Promo">
-              </picture>
-          </div>
-      </div>
-  </div>
+        </div>
+        <div class="promo-item">
+            <div class="promo-item__info">
+                <div class="promo-item__title promo-item__title--green">{{__('text.common_banner2_text1')}} {!!__('text.common_banner2_text2')!!}</div>
+                <div class="promo-item__text">{{__('text.common_banner2_text3')}} {{__('text.common_banner2_text4')}}</div>
+            </div>
+            <div class="promo-item__img">
+                <picture>
+                    <source type="image/webp" srcset="{{ asset($design . '/images/layout/promo-2-172w.webp 1x, ' . $design . '/images/layout/promo-2-344w.webp 2x') }}">
+                    <img src="{{ asset($design . '/images/layout/promo-2-172w.png') }}" srcset="{{ asset($design . '/images/layout/promo-2-172w.png 1x, ' . $design . '/images/layout/promo-2-344w.png 2x') }}" width="172" height="112" alt="Promo">
+                </picture>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('rewies')

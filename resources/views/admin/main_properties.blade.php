@@ -132,6 +132,21 @@
                             </label>
                         </div>
                     </div>
+                    <div class="adm-setting">
+                        <div class="adm-setting__label">Show Bonus Card & Referral Program</div>
+                        <div class="adm-choices">
+                            <label class="adm-choice" for="bonus_promo_on">
+                                <input type="radio" name="bonus_promo" id="bonus_promo_on" value="1" @if (env('APP_BONUS_PROMO', '1') == 1) checked @endif />
+                                <span class="adm-choice__mark"></span>
+                                <span class="adm-choice__name">ON</span>
+                            </label>
+                            <label class="adm-choice" for="bonus_promo_off">
+                                <input type="radio" name="bonus_promo" id="bonus_promo_off" value="0" @if (env('APP_BONUS_PROMO', '1') == 0) checked @endif />
+                                <span class="adm-choice__mark"></span>
+                                <span class="adm-choice__name">OFF</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="adm-actions">
                     <button type="button" class="payment-details__button button button--filled" onclick="saveDefaultErrorPage();">

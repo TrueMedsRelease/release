@@ -21,6 +21,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('seasonal-upsell:refresh')->hourly()->withoutOverlapping();
 
         $schedule->command('trueserv:check-dns')->everyMinute();
+
+        $schedule->command('currency:update-rates')->dailyAt('12:00')->withoutOverlapping();
     }
 
     /**

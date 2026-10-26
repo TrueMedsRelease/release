@@ -81,6 +81,12 @@ class SeasonalUpsellService
         return $countries;
     }
 
+    public static function tableExists(): bool
+    {
+        static $exists = null;
+        return $exists ??= Schema::hasTable('seasonal_upsell_cache');
+    }
+
     public static function ensureTable(): void
     {
         if (Schema::hasTable('seasonal_upsell_cache')) return;
@@ -159,7 +165,7 @@ class SeasonalUpsellService
             return [];
         }
 
-        $cache = DB::table('seasonal_upsell_cache')->where('id', 1)->first();
+        $cache = self::tableExists() ? DB::table('seasonal_upsell_cache')->where('id', 1)->first() : null;
         if (!$cache || !$cache->refreshed_at) {
             $this->reason = 'not_initialized';
             return [];

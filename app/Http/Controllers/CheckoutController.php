@@ -207,13 +207,7 @@ class CheckoutController extends Controller
         $cart_option['insurance_price'] = Cart::CalcInsurance();
         $cart_option['secret_price']    = $shipping['secret_package'];
 
-        if ($cart_option['shipping'] == 'regular' && $product_total_check >= 200) {
-            $cart_option['shipping_price'] = 0;
-        } elseif ($cart_option['shipping'] == 'ems' && $product_total_check >= 300) {
-            $cart_option['shipping_price'] = 0;
-        } else {
-            $cart_option['shipping_price'] = $shipping[$cart_option['shipping']];
-        }
+        $cart_option = Cart::ApplyShipping($cart_option, $shipping, $product_total_check);
 
         session(['cart_option' => $cart_option]);
 
