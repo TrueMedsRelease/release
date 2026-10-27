@@ -20,7 +20,6 @@ $cabLiveOrdersConfig = [
     'filtersEnabled' => (bool) ($cabDisplay['orders_filters'] ?? true),
     'helpEnabled' => (bool) ($cabDisplay['orders_help'] ?? true),
     'shopButton' => (string) ($cabDisplay['orders_shop_button'] ?? 'all'),
-    'billingUrl' => ((bool) ($cabDisplay['billing_button'] ?? true)) ? (string) \App\Services\CabinetService::resolveBillingUrl() : '',
     'tBilling' => __('text.cabinet_billing'),
     'tOrderNumber' => __('text.cabinet_order_number'),
     'tItems' => __('text.cabinet_items'),
@@ -152,7 +151,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 4l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
                                     <span>{{ __('text.cabinet_stop_auto') }}</span>
                                 </span>
-                                <a x-show="billingUrl" :href="billingUrl" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
+                                <a x-show="order.billing" :href="order.billing" target="_blank" rel="noopener noreferrer" class="button cabp-action cabp-action--soft">
                                     <span x-text="billingLabel"></span>
                                 </a>
                             </div>

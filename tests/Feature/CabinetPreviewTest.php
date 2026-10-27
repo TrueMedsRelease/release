@@ -166,7 +166,7 @@ class CabinetPreviewTest extends TestCase
         $this->get('/account/login/email'); // warm up UrlGenerator
         Cache::put(
             CabinetService::SETTINGS_CACHE_KEY,
-            ['shop_id' => 'test', 'embedded_login' => true, 'billing_base_url' => 'https://billing.example'],
+            ['shop_id' => 'test', 'embedded_login' => true],
             60
         );
 
@@ -187,31 +187,9 @@ class CabinetPreviewTest extends TestCase
             $this->assertTrue($config['filtersEnabled']);
             $this->assertTrue($config['helpEnabled']);
             $this->assertSame('all', $config['shopButton']);
-            $this->assertSame('https://billing.example', $config['billingUrl']);
-        } finally {
-            $this->forgetShopSettings();
-        }
-    }
-
-    public function test_orders_page_has_no_billing_url_when_server_returns_empty(): void
-    {
-        $this->get('/account/login/email'); // warm up UrlGenerator
-        Cache::put(
-            CabinetService::SETTINGS_CACHE_KEY,
-            ['shop_id' => 'test', 'embedded_login' => true, 'billing_base_url' => '   '],
-            60
-        );
-
-        try {
-            $response = $this->withSession(['cabinet.access_token' => 'test-token'])
-                ->get('/account/orders');
-            $response->assertStatus(200);
-
-            $html = $response->getContent();
-            $this->assertSame(1, preg_match('/window\.CabinetConfig = (\{.*?\});/s', $html, $matches));
-            $config = json_decode($matches[1], true);
-
-            $this->assertSame('', $config['billingUrl']);
+            // Billing is per-order (api `billing`), not a global config URL.
+            $this->assertArrayNotHasKey('billingUrl', $config);
+            $this->assertStringContainsString(':href="order.billing"', $html);
         } finally {
             $this->forgetShopSettings();
         }
