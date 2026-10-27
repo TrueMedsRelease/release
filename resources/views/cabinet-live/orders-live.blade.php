@@ -121,7 +121,7 @@ window.CabinetMeUrl = @json(route('account.api.me'));
                             </div>
                             <div class="oc-items__foot">
                                 <span class="oc-items__foot-label">{{ __('text.cabinet_total') }}</span>
-                                <span class="oc-mono oc-items__foot-total" x-text="formatMoney(itemsTotal(order.items))"></span>
+                                <span class="oc-mono oc-items__foot-total" x-text="formatMoney(order.total)"></span>
                             </div>
                         </div>
                         <p class="oc-card__nodetail" x-show="!(order.items || []).length">{{ __('text.cabinet_no_details') }}</p>
