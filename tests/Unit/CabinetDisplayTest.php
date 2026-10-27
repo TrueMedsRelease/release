@@ -217,6 +217,16 @@ class CabinetDisplayTest extends TestCase
         );
     }
 
+    public function test_merge_billing_url_override_requires_server_base(): void
+    {
+        $this->assertSame('', CabinetService::mergeBillingUrl('', 'https://billing.example'));
+        $this->assertSame('', CabinetService::mergeBillingUrl('   ', 'https://billing.example'));
+        $this->assertSame('https://billing.example', CabinetService::mergeBillingUrl('https://server.example', 'https://billing.example'));
+        $this->assertSame('https://server.example', CabinetService::mergeBillingUrl('https://server.example', ''));
+        $this->assertSame('https://server.example', CabinetService::mergeBillingUrl(' https://server.example ', '   '));
+        $this->assertSame('', CabinetService::mergeBillingUrl('', ''));
+    }
+
     public function test_valid_login_token_shape(): void
     {
         $this->assertTrue(CabinetService::validLoginToken('lkl_abc.def'));
