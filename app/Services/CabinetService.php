@@ -281,7 +281,7 @@ class CabinetService
      * Integration settings from the cabinet (1 minute cache): shop_id,
      * scopes/chat_enabled for navigation (60s cache, like capabilities).
      *
-     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}
+     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool, billing_base_url?: string}
      */
     public static function shopSettings(bool $force = false): array
     {
@@ -450,7 +450,7 @@ class CabinetService
      * Shop bootstrap from the cabinet: GET /api/v1/public-config?domain=.
      * Needs no secret (none on the wire), always answers wrapped in {data: {...}}.
      *
-     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool}|null null — no connection/shop not registered
+     * @return array{shop_id: string, embedded_login: bool, scopes?: string[]|null, chat_enabled?: bool, billing_base_url?: string}|null null — no connection/shop not registered
      */
     private static function fetchShopSettings(): ?array
     {
@@ -491,6 +491,9 @@ class CabinetService
             'embedded_login' => (bool) $data['embedded_login'],
             'scopes'         => $scopes,
             'chat_enabled'   => isset($data['chat_enabled']) ? (bool) $data['chat_enabled'] : true,
+            // Empty string means the cabinet has no billing for this shop:
+            // the admin override must not turn the Billing button on.
+            'billing_base_url' => trim((string) ($data['billing_base_url'] ?? '')),
         ];
     }
 
@@ -957,17 +960,31 @@ class CabinetService
     }
 
     /**
-     * Final billing URL: shop override, otherwise cabinet billing_base_url.
+     * Final billing URL: shop override only replaces a non-empty cabinet
+     * billing_base_url. An empty server value means "no billing", so the
+     * override must not resurrect the Billing button.
      */
     public static function resolveBillingUrl(): string
     {
-        $override = (string) (self::displayConfig()['billing_url_override'] ?? '');
-        if ($override !== '') {
-            return $override;
-        }
-        $settings = self::shopSettings();
+        return self::mergeBillingUrl(
+            (string) (self::shopSettings()['billing_base_url'] ?? ''),
+            (string) (self::displayConfig()['billing_url_override'] ?? '')
+        );
+    }
 
-        return trim((string) ($settings['billing_base_url'] ?? ''));
+    /**
+     * Pure precedence: an empty server base disables billing outright,
+     * otherwise the shop override wins when set.
+     */
+    public static function mergeBillingUrl(string $serverBase, string $override): string
+    {
+        $base = trim($serverBase);
+        if ($base === '') {
+            return '';
+        }
+        $override = trim($override);
+
+        return $override !== '' ? $override : $base;
     }
 
     /**

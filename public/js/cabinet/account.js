@@ -381,7 +381,6 @@
             filtersOn: cfg.filtersEnabled !== false,
             helpOn: cfg.helpEnabled !== false,
             shopButton: cfg.shopButton || 'all',
-            billingUrl: cfg.billingUrl || '',
             billingLabel: cfg.tBilling || 'Billing',
             trackRendered: {},
             trackLoading: {},

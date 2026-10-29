@@ -166,7 +166,7 @@ class CabinetPreviewTest extends TestCase
         $this->get('/account/login/email'); // warm up UrlGenerator
         Cache::put(
             CabinetService::SETTINGS_CACHE_KEY,
-            ['shop_id' => 'test', 'embedded_login' => true, 'billing_base_url' => 'https://billing.example'],
+            ['shop_id' => 'test', 'embedded_login' => true],
             60
         );
 
@@ -187,7 +187,9 @@ class CabinetPreviewTest extends TestCase
             $this->assertTrue($config['filtersEnabled']);
             $this->assertTrue($config['helpEnabled']);
             $this->assertSame('all', $config['shopButton']);
-            $this->assertSame('https://billing.example', $config['billingUrl']);
+            // Billing is per-order (api `billing`), not a global config URL.
+            $this->assertArrayNotHasKey('billingUrl', $config);
+            $this->assertStringContainsString(':href="order.billing"', $html);
         } finally {
             $this->forgetShopSettings();
         }
