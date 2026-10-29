@@ -23,14 +23,37 @@ class AdvancedSqlInjectionChecker
         //     '/(?:\b(select|union)[\s\S]+(from|join|into|load_file|information_schema|mysql)\b)/i', // Комбинированные шаблоны
         // ];
 
+        // $patterns = [
+        //     '/\b(select|union|insert|update|delete|drop|alter|create|truncate)\b.*?\b(from|into|set|values|where|join|table)?\b/i',
+        //     // '/\b(and|or|xor|not)\b\s+[^\n]*?\s*(=|like|>|<|in|is|between)\s+[^\n]*/i',
+        //     // '/\b(and|or|xor|not)\b.{0,120}?(=|like|>|<|!=|<>).{0,120}/i',
+        //     '/\b(and|or|xor|not)\b.{0,120}?\bin\s*\(/i',
+        //     '/\b(and|or|xor|not)\b.{0,120}?\bis\s+(not\s+)?null\b/i',
+        //     '/\b(exec|execute|sp_executesql|xp_cmdshell)\b/i',
+        //     '/(\b(select|update|delete|insert|drop|exec|union)\b.*(;|\-\-|\#))/i', // опасные завершения строк
+        // ];
+
         $patterns = [
-            '/\b(select|union|insert|update|delete|drop|alter|create|truncate)\b.*?\b(from|into|set|values|where|join|table)?\b/i',
-            // '/\b(and|or|xor|not)\b\s+[^\n]*?\s*(=|like|>|<|in|is|between)\s+[^\n]*/i',
-            // '/\b(and|or|xor|not)\b.{0,120}?(=|like|>|<|!=|<>).{0,120}/i',
-            '/\b(and|or|xor|not)\b.{0,120}?\bin\s*\(/i',
-            '/\b(and|or|xor|not)\b.{0,120}?\bis\s+(not\s+)?null\b/i',
-            '/\b(exec|execute|sp_executesql|xp_cmdshell)\b/i',
-            '/(\b(select|update|delete|insert|drop|exec|union)\b.*(;|\-\-|\#))/i', // опасные завершения строк
+            // SELECT ... FROM
+            '/\b(select\s+[\s\S]{1,200}?\s+from)\b/i',
+            // INSERT ... INTO
+            '/\b(insert\s+into)\b/i',
+            // UPDATE ... SET
+            '/\b(update\s+[\s\S]{1,100}?\s+set)\b/i',
+            // DELETE ... FROM
+            '/\b(delete\s+from)\b/i',
+            // DROP/ALTER/CREATE TABLE
+            '/\b(drop|alter|create)\s+table\b/i',
+            // UNION SELECT
+            '/\bunion\s+(all\s+)?select\b/i',
+            // Execution commands
+            '/\b(exec|execute|sp_executesql|xp_cmdshell)\s*\(/i',
+            // Classic 1=1 or '1'='1 injections
+            '/\b(or|and)\s+[\'"]?\d+[\'"]?\s*=\s*[\'"]?\d+[\'"]?/i',
+            // Time-based injections
+            '/\b(waitfor\s+delay|sleep|benchmark)\s*\(/i',
+            // Dangerous terminations/comments (must be combined with SQL keywords)
+            '/\b(select|update|delete|insert|drop|exec|union)\b[\s\S]{0,100}?(--|\#|\/\*)/i'
         ];
 
         foreach ($patterns as $i => $pattern) {
