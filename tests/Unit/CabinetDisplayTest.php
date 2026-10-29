@@ -163,6 +163,39 @@ class CabinetDisplayTest extends TestCase
         $this->assertSame($body, AccountController::rewriteOrderShopLinks($body, ''));
     }
 
+    public function test_rewrite_order_billing_links_swaps_host_keeps_path_and_query(): void
+    {
+        $body = [
+            'data' => ['items' => [
+                ['id' => 1, 'billing' => 'https://true-payment.com/billing-page/?id=8001'],
+                ['id' => 2, 'billing' => null],
+                ['id' => 3],
+            ]],
+        ];
+
+        $result = AccountController::rewriteOrderBillingLinks($body, 'https://billing.example.com');
+
+        $this->assertSame('https://billing.example.com/billing-page/?id=8001', $result['data']['items'][0]['billing']);
+        $this->assertNull($result['data']['items'][1]['billing']);
+        $this->assertArrayNotHasKey('billing', $result['data']['items'][2]);
+    }
+
+    public function test_rewrite_order_billing_links_never_resurrects_empty_link(): void
+    {
+        $body = ['data' => ['items' => [['id' => 1, 'billing' => '']]]];
+
+        $result = AccountController::rewriteOrderBillingLinks($body, 'https://billing.example.com');
+
+        $this->assertSame('', $result['data']['items'][0]['billing']);
+    }
+
+    public function test_rewrite_order_billing_links_empty_override_keeps_body(): void
+    {
+        $body = ['data' => ['items' => [['id' => 1, 'billing' => 'https://true-payment.com/billing-page/?id=8001']]]];
+
+        $this->assertSame($body, AccountController::rewriteOrderBillingLinks($body, ''));
+    }
+
     public function test_display_diff_keeps_only_non_defaults(): void
     {
         $this->assertSame([], CabinetService::displayDiff(CabinetService::displayDefaults()));
@@ -215,6 +248,16 @@ class CabinetDisplayTest extends TestCase
             'https://true-checkout.com/order/begin?lang=es&aff=9&products=P&saff=s1&auth=T&is_cxserv=1',
             AccountController::applyCheckoutOverride($url, 'https://true-checkout.com?lang=es&aff=1842')
         );
+    }
+
+    public function test_merge_billing_url_override_requires_server_base(): void
+    {
+        $this->assertSame('', CabinetService::mergeBillingUrl('', 'https://billing.example'));
+        $this->assertSame('', CabinetService::mergeBillingUrl('   ', 'https://billing.example'));
+        $this->assertSame('https://billing.example', CabinetService::mergeBillingUrl('https://server.example', 'https://billing.example'));
+        $this->assertSame('https://server.example', CabinetService::mergeBillingUrl('https://server.example', ''));
+        $this->assertSame('https://server.example', CabinetService::mergeBillingUrl(' https://server.example ', '   '));
+        $this->assertSame('', CabinetService::mergeBillingUrl('', ''));
     }
 
     public function test_valid_login_token_shape(): void

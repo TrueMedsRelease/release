@@ -345,7 +345,34 @@ class AccountController extends Controller
             return $response;
         }
 
-        return response()->json(self::rewriteOrderShopLinks($body), 200);
+        return response()->json(self::rewriteOrderBillingLinks(self::rewriteOrderShopLinks($body)), 200);
+    }
+
+    /**
+     * Rewrite per-order Billing links through billing_url_override (admin
+     * setting). The API always stamps the canonical host; the override swaps
+     * only the host, keeping path/query (billing-page/?id=...). An empty
+     * order link means "no billing" and is never resurrected by the override.
+     */
+    public static function rewriteOrderBillingLinks(array $body, ?string $override = null): array
+    {
+        if ($override === null) {
+            $override = (string) (CabinetService::displayConfig()['billing_url_override'] ?? '');
+        }
+        if ($override === '') {
+            return $body;
+        }
+        $items = $body['data']['items'] ?? null;
+        if (!is_array($items)) {
+            return $body;
+        }
+        foreach ($items as $i => $order) {
+            if (is_array($order) && isset($order['billing']) && is_string($order['billing']) && $order['billing'] !== '') {
+                $body['data']['items'][$i]['billing'] = CabinetService::applyDomainOverride($order['billing'], $override);
+            }
+        }
+
+        return $body;
     }
 
     /**
