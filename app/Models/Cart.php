@@ -184,8 +184,12 @@ class Cart extends Model
         return $insurance;
     }
 
-    public static function ApplyShipping(array $cart_option, array $shipping, $product_total_check)
+    public static function ApplyShipping(?array $cart_option, ?array $shipping, $product_total_check)
     {
+        // cart_option может ещё не быть в сессии (корзину меняют до её открытия)
+        $cart_option = $cart_option ?? [];
+        $shipping    = $shipping ?? [];
+
         if (empty($cart_option['shipping']) || !isset($shipping[$cart_option['shipping']])) {
             $cart_option['shipping'] = env('APP_DEFAULT_SHIPPING', 'ems');
         }
