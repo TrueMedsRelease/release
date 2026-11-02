@@ -69,7 +69,6 @@ $cbPages = [
     'bonus' => 'Bonus',
     'referral' => 'Referral program',
     'contact' => 'Contact Us',
-    'chat' => 'Chat',
 ];
 $cbShopButtons = ['all' => 'Show always', 'foreign' => 'Foreign shops only', 'hide' => 'Hide'];
 @endphp
