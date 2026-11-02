@@ -5,7 +5,6 @@
 @section('description', $page_properties->description)
 
 @section('content')
-@include('shared.seasonal-upsell')
 
 <div class="modal_cart hidden">
     <div class="bloktext">
