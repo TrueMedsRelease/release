@@ -109,9 +109,8 @@ class CabinetPreviewController extends Controller
             return redirect()->route('account.login', ['step' => 'email']);
         }
 
-        // Disabled in the shop display settings — same as a missing section.
         $cabDisplay = CabinetService::displayConfig();
-        if (empty($cabDisplay['pages'][$page])) {
+        if ($page !== 'chat' && empty($cabDisplay['pages'][$page])) {
             abort(404);
         }
 
