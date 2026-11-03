@@ -796,7 +796,7 @@ class CabinetService
     public static function displayDefaults(): array
     {
         return [
-            'pages' => ['orders' => true, 'bonus' => true, 'referral' => true, 'contact' => true, 'chat' => true],
+            'pages' => ['orders' => true, 'bonus' => true, 'referral' => true, 'contact' => true],
             'orders_filters' => true,
             'orders_help' => true,
             'orders_shop_button' => self::SHOP_BUTTON_ALL,
@@ -887,7 +887,7 @@ class CabinetService
     public static function firstVisiblePage(): string
     {
         $pages = (array) (self::displayConfig()['pages'] ?? []);
-        foreach (['orders', 'bonus', 'referral', 'contact', 'chat'] as $page) {
+        foreach (['orders', 'bonus', 'referral', 'contact'] as $page) {
             if (!empty($pages[$page])) {
                 return $page;
             }
