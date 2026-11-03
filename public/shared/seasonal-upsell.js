@@ -138,18 +138,21 @@
         for (const item of data.items) {
             if (!Array.isArray(item.packs) || !item.packs.length) continue;
             const row = node('div', 'su-row');
-            const selected = node('input');
-            selected.type = 'checkbox';
-            selected.setAttribute('aria-label', `${dialog.dataset.selectLabel}: ${item.name}`);
-            const choice = node('label', 'su-choice');
-            const check = node('span', 'su-check');
-            check.setAttribute('aria-hidden', 'true');
-            choice.append(selected, check);
+            const add = node('button', 'su-add');
+            add.type = 'button';
+            add.title = dialog.dataset.selectLabel;
+            add.setAttribute('aria-label', `${dialog.dataset.selectLabel}: ${item.name}`);
+            add.setAttribute('aria-pressed', 'false');
+            add.innerHTML = '<svg class="su-add-cart" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M3 4h2l2.4 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6.2"/><circle cx="9" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/><path d="M13 3v6 M10 6h6"/></svg>'
+                + '<svg class="su-add-done" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
             const img = node('img', 'su-image');
             img.src = item.image;
             img.alt = '';
             const name = node('a', 'su-name', item.name);
             name.href = item.url;
+            const info = node('div', 'su-info');
+            info.append(name);
+            if (item.desc) info.append(node('p', 'su-desc', item.desc));
             const pack = node('select');
             pack.setAttribute('aria-label', `${dialog.dataset.packLabel}: ${item.name}`);
             item.packs.forEach((p, index) => {
@@ -174,7 +177,7 @@
             const currentPrice = node('div', 'su-price-current');
             comparison.append(oldPrice, discount);
             price.append(comparison, currentPrice);
-            const state = {selected, pack, item, quantity:1};
+            const state = {selected:false, pack, item, quantity:1};
             const update = () => {
                 count.textContent = String(state.quantity);
                 const selectedPack = item.packs[Number(pack.value)];
@@ -190,8 +193,13 @@
             minus.addEventListener('click', () => { state.quantity = Math.max(1, state.quantity - 1); update(); });
             plus.addEventListener('click', () => { state.quantity = Math.min(data.max_quantity, state.quantity + 1); update(); });
             pack.addEventListener('change', update);
+            add.addEventListener('click', () => {
+                state.selected = !state.selected;
+                add.setAttribute('aria-pressed', String(state.selected));
+                row.classList.toggle('su-row--added', state.selected);
+            });
             quantity.append(minus, count, plus);
-            row.append(choice, img, name, packagePicker(pack), quantity, price);
+            row.append(img, info, packagePicker(pack), quantity, price, add);
             list.append(row);
             rows.push(state);
             update();
@@ -239,7 +247,7 @@
     // skip.addEventListener('click', event => { if (saving) event.preventDefault(); });
     proceed.addEventListener('click', async () => {
         if (saving) return;
-        const items = rows.filter(row => row.selected.checked).map(row => ({
+        const items = rows.filter(row => row.selected).map(row => ({
             pack_id:row.item.packs[Number(row.pack.value)].pack_id, quantity:row.quantity
         }));
         if (!items.length) { location.assign(dialog.dataset.checkout); return; }

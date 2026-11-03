@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 
 class SeasonalUpsellService
@@ -258,6 +259,7 @@ class SeasonalUpsellService
                     'product_id' => $item['product_id'],
                     'autocheck' => $autocheck,
                     'name' => $product['name'], 'url' => route('home.product', $product['url']),
+                    'desc' => Str::limit(trim(preg_replace('/\s+/u', ' ', strip_tags(html_entity_decode((string) ($product['desc'] ?? ''))))), 140),
                     'image' => route('home.set_images', $product['image']), 'packs' => $options,
                 ];
             }
