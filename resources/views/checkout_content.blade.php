@@ -843,7 +843,7 @@
                                     @endif
 
                                     <!-- Amex, Discover, Visa -->
-                                    @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
+                                    @if (in_array(session('form.billing_country', session('location.country')), ["US", "CA"]) && session('total.checkout_total') < 350)
                                     <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'amex') is_selected @endif @if($isPaymentLocked && session('form.payment_type') !== 'mastercard') disabled @endif">
                                         <input type="radio" name="payment_type" value="amex" @if(session('form.payment_type', 'mastercard') == 'amex') checked @endif>
                                         <img src="{{ asset('style_checkout/images/pay-systems/amex.svg') }}" class="payment-method-icon" alt="Amex">
@@ -851,7 +851,7 @@
                                     </label>
                                     @endif
 
-                                    @if (in_array(session('form.billing_country'), ["US", "CA"]) && session('total.checkout_total') < 350)
+                                    @if (in_array(session('form.billing_country', session('location.country')), ["US", "CA"]) && session('total.checkout_total') < 350)
                                     <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'discover') is_selected @endif @if($isPaymentLocked && session('form.payment_type') !== 'mastercard') disabled @endif">
                                         <input type="radio" name="payment_type" value="discover" @if(session('form.payment_type', 'mastercard') == 'discover') checked @endif>
                                         <img src="{{ asset('style_checkout/images/pay-systems/discover.svg') }}" class="payment-method-icon" alt="Discover">
