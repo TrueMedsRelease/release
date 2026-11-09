@@ -152,11 +152,16 @@ class ProductServices
             $query = Product::query();
             self::joinMainPageOrderIfExists($query, $hasMainPageOrderTable);
 
+            // Subquery instead of join: a product linked to several subcategories of 47
+            // would otherwise be returned once per subcategory (duplicates on the main page).
             $query
-                ->join('product_category', 'product.id', '=', 'product_category.product_id')
-                ->join('category', 'category.id', '=', 'product_category.category_id')
                 ->where('product.is_showed', '=', 1)
-                ->whereIn('category.category_parent_id', [47]);
+                ->whereIn('product.id', function ($sub) {
+                    $sub->select('product_category.product_id')
+                        ->from('product_category')
+                        ->join('category', 'category.id', '=', 'product_category.category_id')
+                        ->whereIn('category.category_parent_id', [47]);
+                });
 
             if (Schema::hasColumn('product', 'sport_order')) {
                 $query->orderBy('product.sport_order');
