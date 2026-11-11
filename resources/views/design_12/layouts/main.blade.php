@@ -172,13 +172,7 @@
             }
         @endphp
 
-        {{-- <div class="christmas" style="display: none">
-            <img loading="lazy" src="{{ asset("pub_images/pay_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/christmas_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/black_friday_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/new_year_big.png") }}">
-            <img loading="lazy" src="{{ asset("pub_images/valentine_day_big.png") }}">
-        </div> --}}
+        @include('header_banner')
 
         <div class="topbar">
             <div class="container">

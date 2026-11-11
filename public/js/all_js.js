@@ -247,129 +247,57 @@ $('#close_verify_block').click(function() {
 })
 
 if (design > 0) {
-    if (document.documentElement.clientWidth > 1925) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-        // $('.christmas img').attr('src', pathImagePayBiggest);
-        // $('.christmas img').attr('src', pathImageBlackFridayBiggest);
-        // $('.christmas img').attr('src', pathImageChristmasBiggest);
-        // $('.christmas img').attr('src', pathImageNewYearBiggest);
-        $('.christmas img').attr('src', pathImageValentineDayBiggest);
+    const responsiveImages = {
+        checkup: {
+            biggest: pathImageCheckupBiggest,
+            big: pathImageCheckupBig,
+            middle: pathImageCheckupMiddle,
+            small: pathImageCheckupSmall,
+        },
+        installStore: {
+            biggest: pathImageDownloadStoreBiggest,
+            big: pathImageDownloadStoreBig,
+            middle: pathImageDownloadStoreMiddle,
+            small: pathImageDownloadStoreSmall,
+        },
+    };
 
-        if (design != 3) {
-            $('.checkup img').attr('src', pathImageCheckupBiggest);
-        }
+    function getBannerSize() {
+        const width = document.documentElement.clientWidth;
 
-        $('.install_store img').attr('src', pathImageDownloadStoreBiggest);
-    }
-    if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-        // $('.christmas img').attr('src', pathImagePayBig);
-        // $('.christmas img').attr('src', pathImageBlackFridayBig);
-        // $('.christmas img').attr('src', pathImageChristmasBig);
-        // $('.christmas img').attr('src', pathImageNewYearBig);
-        $('.christmas img').attr('src', pathImageValentineDayBig);
-
-        if (design != 3) {
-            $('.checkup img').attr('src', pathImageCheckupBig);
-        }
-
-        $('.install_store img').attr('src', pathImageDownloadStoreBig);
-    }
-    if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-        // $('.christmas img').attr('src', pathImagePayMiddle);
-        // $('.christmas img').attr('src', pathImageBlackFridayMiddle);
-        // $('.christmas img').attr('src', pathImageChristmasMiddle);
-        // $('.christmas img').attr('src', pathImageNewYearMiddle);
-        $('.christmas img').attr('src', pathImageValentineDayMiddle);
-
-        if (design != 3) {
-            $('.checkup img').attr('src', pathImageCheckupMiddle);
-        }
-
-        $('.install_store img').attr('src', pathImageDownloadStoreMiddle);
-    }
-    if (document.documentElement.clientWidth < 391) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-        // $('.christmas img').attr('src', pathImagePaySmall);
-        // $('.christmas img').attr('src', pathImageBlackFridaySmall);
-        // $('.christmas img').attr('src', pathImageChristmasSmall);
-        // $('.christmas img').attr('src', pathImageNewYearSmall);
-        $('.christmas img').attr('src', pathImageValentineDaySmall);
-
-        if (design != 3) {
-            $('.checkup img').attr('src', pathImageCheckupSmall);
-        }
-
-        $('.install_store img').attr('src', pathImageDownloadStoreSmall);
+        if (width > 1920) return 'biggest';
+        if (width > 768) return 'big';
+        if (width > 390) return 'middle';
+        return 'small';
     }
 
-    window.addEventListener('resize', function (e) {
-        if (document.documentElement.clientWidth > 1925) {
-            //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-            // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-            // $('.christmas img').attr('src', pathImagePayBiggest);
-            // $('.christmas img').attr('src', pathImageBlackFridayBiggest);
-            // $('.christmas img').attr('src', pathImageChristmasBiggest);
-            // $('.christmas img').attr('src', pathImageNewYearBiggest);
-            $('.christmas img').attr('src', pathImageValentineDayBiggest);
+    function updateResponsiveBanners() {
+        const size = getBannerSize();
 
-            if (design != 3) {
-                $('.checkup img').attr('src', pathImageCheckupBiggest);
-            }
-
-            $('.install_store img').attr('src', pathImageDownloadStoreBiggest);
+        const $headerBanner = $('.christmas[data-banner]');
+        const headerBannerSrc = $headerBanner.attr('data-src-' + size);
+        if (headerBannerSrc) {
+            $headerBanner.find('img').attr('src', headerBannerSrc);
         }
-        if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
-            //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-            // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-            // $('.christmas img').attr('src', pathImagePayBig);
-            // $('.christmas img').attr('src', pathImageBlackFridayBig);
-            // $('.christmas img').attr('src', pathImageChristmasBig);
-            // $('.christmas img').attr('src', pathImageNewYearBig);
-            $('.christmas img').attr('src', pathImageValentineDayBig);
 
-            if (design != 3) {
-                $('.checkup img').attr('src', pathImageCheckupBig);
-            }
-
-            $('.install_store img').attr('src', pathImageDownloadStoreBig);
+        if (design != 3) {
+            $('.checkup img').attr('src', responsiveImages.checkup[size]);
         }
-        if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
-            //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-            // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-            // $('.christmas img').attr('src', pathImagePayMiddle);
-            // $('.christmas img').attr('src', pathImageBlackFridayMiddle);
-            // $('.christmas img').attr('src', pathImageChristmasMiddle);
-            // $('.christmas img').attr('src', pathImageNewYearMiddle);
-            $('.christmas img').attr('src', pathImageValentineDayMiddle);
 
-            if (design != 3) {
-                $('.checkup img').attr('src', pathImageCheckupMiddle);
-            }
+        $('.install_store img').attr('src', responsiveImages.installStore[size]);
+    }
 
-            $('.install_store img').attr('src', pathImageDownloadStoreMiddle);
+    let lastBannerSize = null;
+    function onBannerResize() {
+        const size = getBannerSize();
+        if (size !== lastBannerSize) {
+            lastBannerSize = size;
+            updateResponsiveBanners();
         }
-        if (document.documentElement.clientWidth < 391) {
-            //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-            // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-            // $('.christmas img').attr('src', pathImagePaySmall);
-            // $('.christmas img').attr('src', pathImageBlackFridaySmall);
-            // $('.christmas img').attr('src', pathImageChristmasSmall);
-            // $('.christmas img').attr('src', pathImageNewYearSmall);
-            $('.christmas img').attr('src', pathImageValentineDaySmall);
+    }
 
-            if (design != 3) {
-                $('.checkup img').attr('src', pathImageCheckupSmall);
-            }
-
-            $('.install_store img').attr('src', pathImageDownloadStoreSmall);
-        }
-    });
+    onBannerResize();
+    window.addEventListener('resize', onBannerResize);
 }
 
 (function initCallbackPhoneSanitizer() {
