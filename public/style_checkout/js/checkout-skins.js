@@ -215,7 +215,7 @@
             el.classList.toggle('ck-step-hidden', parseInt(el.getAttribute('data-ck-step'), 10) !== step);
         });
 
-        r.querySelectorAll('.ck-steps__item').forEach(function (li) {
+        r.querySelectorAll('.ck-steps__item, .ck-journey__item[data-ck-goto]').forEach(function (li) {
             var n = parseInt(li.getAttribute('data-ck-goto'), 10);
             li.classList.toggle('is_done', n < step);
             li.classList.toggle('is_current', n === step);

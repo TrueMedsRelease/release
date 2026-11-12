@@ -5515,6 +5515,7 @@ article.content{
   --fsp-text:var(--color-white);
   --fsp-accent:var(--color-white);
   --fsp-bar:var(--color-white);
+  --fsp-marker-text:var(--color-dark);
   --fsp-track:var(--color-grey-6);
   --fsp-height:6px;
   box-shadow:0 10px 20px 0 rgba(18, 19, 52, 0.05);

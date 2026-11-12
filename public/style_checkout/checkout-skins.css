@@ -111,6 +111,124 @@
     border-bottom-color: var(--green);
 }
 
+/* journey_steps: ✓ Shop — ✓ Cart — 3 Checkout — 4 Payment */
+.ck-journey {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+}
+
+.ck-journey__item {
+    display: flex;
+    align-items: center;
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(38, 45, 56, 0.6);
+}
+
+/* Линия между шагами: зелёная после пройденного шага, серая — дальше */
+.ck-journey__item + .ck-journey__item::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 28px;
+    height: 2px;
+    margin: 0 10px;
+    border-radius: 1px;
+    background-color: rgba(38, 45, 56, 0.15);
+}
+
+.ck-journey__item.is_done + .ck-journey__item::before {
+    background-color: rgba(80, 129, 17, 0.45);
+}
+
+.ck-journey__link {
+    display: flex;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+}
+
+.ck-journey__link:hover .ck-journey__label {
+    text-decoration: underline;
+}
+
+.ck-journey__num {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue);
+    background-color: #fff;
+    border: 1.5px solid rgba(38, 45, 56, 0.15);
+    border-radius: 50%;
+}
+
+.ck-journey__label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Пройденный шаг: зелёный кружок с галочкой */
+.ck-journey__item.is_done {
+    color: var(--green);
+}
+
+.ck-journey__item.is_done .ck-journey__num {
+    font-size: 0;
+    background: var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4L18 8.5' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / 16px 16px;
+    border-color: var(--green);
+}
+
+.ck-journey__item.is_done[data-ck-goto] {
+    cursor: pointer;
+}
+
+/* Текущий шаг: тёмный кружок */
+.ck-journey__item.is_current {
+    color: var(--blue);
+}
+
+.ck-journey__item.is_current .ck-journey__num {
+    color: #fff;
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
+@media (max-width: 599.98px) {
+    .ck-journey__item {
+        font-size: 13px;
+    }
+
+    .ck-journey__item + .ck-journey__item::before {
+        width: 14px;
+        margin: 0 6px;
+    }
+
+    .ck-journey__num {
+        flex-basis: 24px;
+        width: 24px;
+        height: 24px;
+        margin-right: 6px;
+        font-size: 12px;
+    }
+
+    /* На узком экране подписи только у текущего шага */
+    .ck-journey__item:not(.is_current) .ck-journey__label {
+        display: none;
+    }
+}
+
 .ck-f-multistep .ck-step-hidden {
     display: none !important;
 }
@@ -128,26 +246,48 @@
 
 .ck-step-back {
     flex: 0 0 auto;
-    padding: 10px 4px;
-    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px 9px 9px;
+    font-size: 16px;
     font-weight: 600;
-    color: rgba(38, 45, 56, 0.65);
-    background: none;
-    border: 0;
-    cursor: pointer;
-}
-
-.ck-step-back::before {
-    content: "\2190\00a0";
-}
-
-.ck-step-back:hover {
+    line-height: 1.3;
     color: var(--blue);
+    background-color: #fff;
+    border: 1.5px solid rgba(38, 45, 56, 0.18);
+    border-radius: 999px;
+    box-shadow: 0 1px 2px rgba(38, 45, 56, 0.06);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Стрелка в зелёном кружке */
+.ck-step-back::before {
+    content: "";
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(80, 129, 17, 0.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 12H5m0 0l6-6m-6 6l6 6' fill='none' stroke='%23508111' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / 16px 16px;
+    transition: background-color 0.2s ease;
+}
+
+.ck-step-back:hover,
+.ck-step-back:focus-visible {
+    color: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 2px 8px rgba(80, 129, 17, 0.15);
+    outline: none;
+}
+
+.ck-step-back:hover::before,
+.ck-step-back:focus-visible::before {
+    background-color: rgba(80, 129, 17, 0.18);
 }
 
 .ck-step-back--top {
-    margin-bottom: 12px;
-    padding-left: 0;
+    margin-bottom: 18px;
 }
 
 @media (max-width: 479.98px) {

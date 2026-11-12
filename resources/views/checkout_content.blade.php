@@ -464,7 +464,27 @@
                     </span>
                     {{__('text.checkout_timer')}}
                 </p>
-                @if ($ck('multistep'))
+                @if ($ck('multistep') && $ck('journey_steps'))
+                    {{-- Полоса прогресса: магазин и корзина уже пройдены, впереди ещё два шага --}}
+                    <ol class="ck-journey" data-ck-steps>
+                        <li class="ck-journey__item is_done">
+                            <a class="ck-journey__link" href="{{ route('home.index') }}">
+                                <span class="ck-journey__num">1</span><span class="ck-journey__label">{{ __('text.checkout_journey_shop') }}</span>
+                            </a>
+                        </li>
+                        <li class="ck-journey__item is_done">
+                            <a class="ck-journey__link" href="{{ route('cart.index') }}">
+                                <span class="ck-journey__num">2</span><span class="ck-journey__label">{{ __('text.checkout_journey_cart') }}</span>
+                            </a>
+                        </li>
+                        <li class="ck-journey__item" data-ck-goto="1">
+                            <span class="ck-journey__num">3</span><span class="ck-journey__label">{{ __('text.checkout_journey_checkout') }}</span>
+                        </li>
+                        <li class="ck-journey__item" data-ck-goto="2">
+                            <span class="ck-journey__num">4</span><span class="ck-journey__label">{{ __('text.checkout_step_payment') }}</span>
+                        </li>
+                    </ol>
+                @elseif ($ck('multistep'))
                     <ol class="ck-steps" data-ck-steps>
                         <li class="ck-steps__item" data-ck-goto="1"><span class="ck-steps__num">1</span><span class="ck-steps__label">{{ __('text.checkout_step_details') }}</span></li>
                         <li class="ck-steps__item" data-ck-goto="2"><span class="ck-steps__num">2</span><span class="ck-steps__label">{{ __('text.checkout_step_payment') }}</span></li>
