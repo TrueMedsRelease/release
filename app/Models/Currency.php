@@ -57,8 +57,9 @@ class Currency extends Model
 
     public static function GetCoef($currency)
     {
-        $currency = Currency::query()->where('code', '=', $currency)->get()->toArray();
-        return $currency[0]['coef'];
+        $row = Currency::query()->where('code', '=', $currency)->first();
+
+        return $row?->coef;
     }
 
     public static function Convert($number, $round = false, $format = false)

@@ -505,18 +505,15 @@
                 selectItems.forEach(((originalSelect, index) => {
                     this.selectInit(originalSelect, index + 1);
                 }));
-                document.addEventListener("click", function (e) {
-                    this.selectsActions(e);
-                }.bind(this));
-                document.addEventListener("keydown", function (e) {
-                    this.selectsActions(e);
-                }.bind(this));
-                document.addEventListener("focusin", function (e) {
-                    this.selectsActions(e);
-                }.bind(this));
-                document.addEventListener("focusout", function (e) {
-                    this.selectsActions(e);
-                }.bind(this));
+                window.__selectsInstance = this;
+                if (!window.__selectsListenersBound) {
+                    window.__selectsListenersBound = true;
+                    ["click", "keydown", "focusin", "focusout"].forEach((function (type) {
+                        document.addEventListener(type, (function (e) {
+                            window.__selectsInstance.selectsActions(e);
+                        }));
+                    }));
+                }
             }
             selectInit(originalSelect, index) {
                 const _this = this;
@@ -595,9 +592,15 @@
                     this.selectsСlose(selectOneGroup);
                 }
                 if (!selectOptions.classList.contains("_slide")) {
+                    if (!selectItem.classList.contains(this.selectClasses.classSelectOpen)) {
+                        this.selectPlaceDropdown(selectItem);
+                    }
                     selectItem.classList.toggle(this.selectClasses.classSelectOpen);
                     _slideToggle(selectOptions, originalSelect.dataset.speed);
                 }
+            }
+            selectPlaceDropdown(selectItem) {
+                placeSelectDropdown(selectItem);
             }
             setSelectTitleValue(selectItem, originalSelect) {
                 const selectItemBody = this.getSelectElement(selectItem, this.selectClasses.classSelectBody).selectElement;
@@ -4267,90 +4270,6 @@ $(document).on('click', '.christmas', function () {
     document.cookie = 'christmas=1; path=/; expires=' + date;
 });
 
-if (document.documentElement.clientWidth > 1925) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-    // $('.christmas img').attr('src', pathImagePayBiggest);
-    // $('.christmas img').attr('src', pathImageBlackFridayBiggest);
-    // $('.christmas img').attr('src', pathImageChristmasBiggest);
-    // $('.christmas img').attr('src', pathImageNewYearBiggest);
-    $('.christmas img').attr('src', pathImageValentineDayBiggest);
-    // $('.checkup img').attr('src', pathImageCheckupBiggest);
-}
-if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-    // $('.christmas img').attr('src', pathImagePayBig);
-    // $('.christmas img').attr('src', pathImageBlackFridayBig);
-    // $('.christmas img').attr('src', pathImageChristmasBig);
-    // $('.christmas img').attr('src', pathImageNewYearBig);
-    $('.christmas img').attr('src', pathImageValentineDayBig);
-    // $('.checkup img').attr('src', pathImageCheckupBig);
-}
-if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-    // $('.christmas img').attr('src', pathImagePayMiddle);
-    // $('.christmas img').attr('src', pathImageBlackFridayMiddle);
-    // $('.christmas img').attr('src', pathImageChristmasMiddle);
-    // $('.christmas img').attr('src', pathImageNewYearMiddle);
-    $('.christmas img').attr('src', pathImageValentineDayMiddle);
-    // $('.checkup img').attr('src', pathImageCheckupMiddle);
-}
-if (document.documentElement.clientWidth < 391) {
-    //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-    // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-    // $('.christmas img').attr('src', pathImagePaySmall);
-    // $('.christmas img').attr('src', pathImageBlackFridaySmall);
-    // $('.christmas img').attr('src', pathImageChristmasSmall);
-    // $('.christmas img').attr('src', pathImageNewYearSmall);
-    $('.christmas img').attr('src', pathImageValentineDaySmall);
-    // $('.checkup img').attr('src', pathImageCheckupSmall);
-}
-
-window.addEventListener('resize', function (e) {
-    if (document.documentElement.clientWidth > 1925) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_biggest.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_biggest.png');
-        // $('.christmas img').attr('src', pathImagePayBiggest);
-        // $('.christmas img').attr('src', pathImageBlackFridayBiggest);
-        // $('.christmas img').attr('src', pathImageChristmasBiggest);
-        // $('.christmas img').attr('src', pathImageNewYearBiggest);
-        $('.christmas img').attr('src', pathImageValentineDayBiggest);
-        // $('.checkup img').attr('src', pathImageCheckupBiggest);
-    }
-    if (document.documentElement.clientWidth > 769 && document.documentElement.clientWidth < 1920) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_big.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_big.png');
-        // $('.christmas img').attr('src', pathImagePayBig);
-        // $('.christmas img').attr('src', pathImageBlackFridayBig);
-        // $('.christmas img').attr('src', pathImageChristmasBig);
-        // $('.christmas img').attr('src', pathImageNewYearBig);
-        $('.christmas img').attr('src', pathImageValentineDayBig);
-        // $('.checkup img').attr('src', pathImageCheckupBig);
-    }
-    if (document.documentElement.clientWidth > 391 && document.documentElement.clientWidth < 769) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_middle.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_middle.png');
-        // $('.christmas img').attr('src', pathImagePayMiddle);
-        // $('.christmas img').attr('src', pathImageBlackFridayMiddle);
-        // $('.christmas img').attr('src', pathImageChristmasMiddle);
-        // $('.christmas img').attr('src', pathImageNewYearMiddle);
-        $('.christmas img').attr('src', pathImageValentineDayMiddle);
-        // $('.checkup img').attr('src', pathImageCheckupMiddle);
-    }
-    if (document.documentElement.clientWidth < 391) {
-        //$('.christmas').css('background', 'url("' + $('#path_image').val() + '/pay_small.png") no-repeat ');
-        // $('.christmas img').attr('src', 'pub_images/christmas_small.png');
-        // $('.christmas img').attr('src', pathImagePaySmall);
-        // $('.christmas img').attr('src', pathImageBlackFridaySmall);
-        // $('.christmas img').attr('src', pathImageChristmasSmall);
-        // $('.christmas img').attr('src', pathImageNewYearSmall);
-        $('.christmas img').attr('src', pathImageValentineDaySmall);
-        // $('.checkup img').attr('src', pathImageCheckupSmall);
-    }
-});
-
 $('.discount_block').click(function(){
     ChangeBonus('discount');
 });
@@ -4700,7 +4619,6 @@ window.__TOKENS__ = window.__TOKENS__ || [
         hidden.value = it.value;
         render();
 
-        // --- Вся старая логика из события "change" ---
         $(".ploader").show();
         document.getElementById("requisites").hidden = true;
         document.getElementById('paid').style.display = "none";
@@ -4777,7 +4695,6 @@ window.__TOKENS__ = window.__TOKENS__ || [
         render();
     });
 
-    // Сброс при переключении с крипты на другой способ оплаты
     root.resetSelect = function() {
         selectedValue = '';
         hidden.value = '';
@@ -4788,3 +4705,55 @@ window.__TOKENS__ = window.__TOKENS__ || [
 
     render();
 })(document.getElementById('tokenSelect'), window.__TOKENS__);
+
+function placeSelectDropdown(selectItem) {
+    var title = selectItem.querySelector('.select__title');
+    var body = selectItem.querySelector('.select__body');
+    var options = selectItem.querySelector('.select__options');
+    if (!title || !body || !options) return;
+
+    if (!options.hidden) return;
+
+    selectItem.classList.remove('_select-up');
+    options.style.removeProperty('top');
+    options.style.removeProperty('bottom');
+
+    var optionsHeight = measureSelectOptions(options);
+
+    var rect = title.getBoundingClientRect();
+    var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    var spaceBelow = viewportHeight - rect.bottom;
+    var spaceAbove = rect.top;
+
+    if (optionsHeight > spaceBelow && spaceAbove > spaceBelow) {
+        selectItem.classList.add('_select-up');
+        options.style.top = 'auto';
+        options.style.bottom = (body.offsetHeight - title.offsetTop) + 'px';
+    }
+}
+
+function measureSelectOptions(options) {
+    var wasHidden = options.hidden;
+    options.hidden = false;
+
+    var height = options.offsetHeight;
+    var scroll = options.querySelector('.select__scroll');
+    var items = options.querySelectorAll('.select__option');
+    if (items.length) {
+        var contentHeight = 0;
+        for (var i = 0; i < items.length; i++) contentHeight += items[i].offsetHeight;
+        if (scroll) {
+            var maxHeight = parseFloat(window.getComputedStyle(scroll).maxHeight);
+            if (!isNaN(maxHeight)) contentHeight = Math.min(contentHeight, maxHeight);
+        }
+        var style = window.getComputedStyle(options);
+        contentHeight += (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0);
+
+        var search = options.querySelector('.ck-code-search');
+        if (search) contentHeight += search.offsetHeight;
+        height = Math.max(height, contentHeight);
+    }
+
+    options.hidden = wasHidden;
+    return height;
+}

@@ -36,6 +36,7 @@
     @endphp
 
     <link rel="stylesheet" type="text/css" href="{{ asset_ver('style_checkout/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset_ver('style_checkout/checkout-skins.css') }}">
 	<link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
     <script defer src="{{ asset_ver('js/payment-redirect.js') }}"></script>

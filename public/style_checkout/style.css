@@ -513,6 +513,19 @@ textarea.input {
   overflow: hidden;
 }
 
+._select-up .select__options {
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -6px 16px rgba(38, 45, 56, 0.08);
+}
+
+._select-up._select-open .select__title {
+  border-radius: 0 0 12px 12px;
+}
+
+.enter-info__card-date ._select-up._select-open .select__title {
+  border-radius: 0;
+}
+
 .header__select .select__options {
   top: 46px;
   padding: 0;

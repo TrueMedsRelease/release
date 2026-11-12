@@ -844,8 +844,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -1158,7 +1161,17 @@ class CheckoutController extends Controller
     {
         $form = session('form');
 
-        $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
+        $phone_code = !empty($form['billing_country'])
+            ? PhoneCodes::where('iso', '=', $form['billing_country'])->first()
+            : null;
+
+        if (!$phone_code || empty(session('cart'))) {
+            return response()->json([
+                'success' => false,
+                'text'    => 'Session expired, please fill in the checkout form again',
+            ], 422);
+        }
+
         $phone_code = $phone_code->phonecode;
 
         $products = [];
@@ -1318,8 +1331,11 @@ class CheckoutController extends Controller
 
             $form = session('form');
 
-            $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($form['billing_country'] ?? null);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
 
             $billing_state  = isset($form['billing_state']) ? e($form['billing_state']) : 'XX';
             $ref_id = Str::random(8);
@@ -1415,7 +1431,17 @@ class CheckoutController extends Controller
     {
         $form = session('form');
 
-        $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
+        $phone_code = !empty($form['billing_country'])
+            ? PhoneCodes::where('iso', '=', $form['billing_country'])->first()
+            : null;
+
+        if (!$phone_code || empty(session('cart'))) {
+            return response()->json([
+                'success' => false,
+                'text'    => 'Session expired, please fill in the checkout form again',
+            ], 422);
+        }
+
         $phone_code = $phone_code->phonecode;
 
         $products = [];
@@ -1593,8 +1619,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -1902,6 +1931,8 @@ class CheckoutController extends Controller
             // ];
 
             if (TrueServService::available()) {
+                $order_cache_id = null;
+
                 try {
                     // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
 
@@ -1913,7 +1944,15 @@ class CheckoutController extends Controller
                     // session(['check_payment' => $response_payment]);
 
                     // if ($response_payment['status'] == 3 || $response_payment == 5) {
-                    $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
+                    $phone_code = PhoneCodes::where('iso', '=', (string) $request->billing_country)->first();
+
+                    if (!$phone_code) {
+                        return response()->json([
+                            'status' => 'error',
+                            'text'   => 'Invalid billing country',
+                        ], 422);
+                    }
+
                     $phone_code = $phone_code->phonecode;
 
                     $products = [];
@@ -2144,8 +2183,11 @@ class CheckoutController extends Controller
 
             $form = session('form');
 
-            $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($form['billing_country'] ?? null);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
 
             $products = [];
             $sessid   = '';
@@ -2289,8 +2331,11 @@ class CheckoutController extends Controller
     {
         $form = $request->json()->all();
 
-        $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
-        $phone_code = $phone_code->phonecode;
+        $phone_code = $this->findPhoneCode($form['billing_country'] ?? null);
+
+        if ($phone_code === null) {
+            return $this->invalidCountryResponse();
+        }
 
         $products = [];
         $sessid   = '';
@@ -2535,8 +2580,11 @@ class CheckoutController extends Controller
 
             $form = session('form');
 
-            $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($form['billing_country'] ?? null);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
 
             $products = [];
             $sessid   = '';
@@ -2719,8 +2767,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -2991,8 +3042,11 @@ class CheckoutController extends Controller
 
             $form = session('form');
 
-            $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($form['billing_country'] ?? null);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
 
             $products = [];
             $sessid   = '';
@@ -3269,8 +3323,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -3510,8 +3567,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -3729,8 +3789,11 @@ class CheckoutController extends Controller
 
             session(['form.payment_type' => $form['wallet']]);
 
-            $phone_code = PhoneCodes::where('iso', '=', $form['billing_country'])->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($form['billing_country'] ?? null);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
 
             $products = [];
             $sessid   = '';
@@ -3997,8 +4060,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -4305,8 +4371,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -4583,8 +4652,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -4855,8 +4927,11 @@ class CheckoutController extends Controller
 
             // $products = str_replace(['[',']'], '', $products);
 
-            $phone_code = PhoneCodes::where('iso', '=', $request->billing_country)->first();
-            $phone_code = $phone_code->phonecode;
+            $phone_code = $this->findPhoneCode($request->billing_country);
+
+            if ($phone_code === null) {
+                return $this->invalidCountryResponse();
+            }
             $api_key    = DB::table('shop_keys')->where('name_key', '=', 'api_key')->get('key_data')->toArray()[0];
 
             $data = [
@@ -5277,8 +5352,35 @@ class CheckoutController extends Controller
             && filter_var($response['paymethod_error'], FILTER_VALIDATE_BOOLEAN) === true;
     }
 
-    private function markOrderRetry(int $orderId, ?string $error = null): void
+    /**
+     * Phone code for an ISO country code, or null if the country is unknown/missing.
+     */
+    private function findPhoneCode($iso): ?string
     {
+        if (!is_string($iso) || $iso === '') {
+            return null;
+        }
+
+        $code = PhoneCodes::where('iso', '=', $iso)->value('phonecode');
+
+        return $code === null ? null : (string) $code;
+    }
+
+    private function invalidCountryResponse()
+    {
+        return response()->json([
+            'errors' => [
+                ['message' => 'Please select a valid country', 'field' => 'billing_country'],
+            ],
+        ], 422);
+    }
+
+    private function markOrderRetry(?int $orderId, ?string $error = null): void
+    {
+        if ($orderId === null) {
+            return;
+        }
+
         $order = DB::table('order_cache')
             ->where('id', $orderId)
             ->first(['attempts']);

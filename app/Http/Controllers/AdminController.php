@@ -83,10 +83,19 @@ class AdminController extends Controller
     }
 
     public function request_login(Request $request) {
-        $password = $request->password;
+        $password = $request->input('password');
+
+        if (!is_string($password) || $password === '') {
+            return json_encode([
+                'status'      => 'error',
+                'text'        => __('text.admin_login_form_invalid_log_in'),
+                'new_captcha' => captcha_src(),
+            ]);
+        }
+
         $md5_password = md5($password);
 
-        $user = DB::select("SELECT * FROM user WHERE md5_pw = '{$md5_password}'");
+        $user = DB::select('SELECT * FROM user WHERE md5_pw = ?', [$md5_password]);
 
         if (count($user) > 0) {
 
