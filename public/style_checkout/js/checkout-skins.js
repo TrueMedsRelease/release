@@ -29,27 +29,30 @@
 
     var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+    // Шаг 1 — контакты и адрес одним блоком, шаг 2 — оплата.
     function stepRules(step) {
-        if (step === 1) {
-            return [
-                { name: 'email', ok: function (v) { return EMAIL_RE.test(v); } },
-                { name: 'phone', ok: function (v) { return v.replace(/\D/g, '').length >= 5; } }
-            ];
-        }
-        if (step === 2) {
-            var rules = ['firstname', 'lastname', 'billing_city', 'billing_address', 'billing_zip'];
-            if (field('billing_state')) rules.splice(2, 0, 'billing_state');
+        return step === 1 ? contactRules().concat(addressRules()) : [];
+    }
 
-            var differentShipping = document.getElementById('c_1');
-            if (differentShipping && differentShipping.checked) {
-                rules.push('shipping_city', 'shipping_address', 'shipping_zip');
-                if (field('shipping_state')) rules.push('shipping_state');
-            }
-            return rules.map(function (name) {
-                return { name: name, ok: function (v) { return v !== ''; } };
-            });
+    function contactRules() {
+        return [
+            { name: 'email', ok: function (v) { return EMAIL_RE.test(v); } },
+            { name: 'phone', ok: function (v) { return v.replace(/\D/g, '').length >= 5; } }
+        ];
+    }
+
+    function addressRules() {
+        var rules = ['firstname', 'lastname', 'billing_city', 'billing_address', 'billing_zip'];
+        if (field('billing_state')) rules.splice(2, 0, 'billing_state');
+
+        var differentShipping = document.getElementById('c_1');
+        if (differentShipping && differentShipping.checked) {
+            rules.push('shipping_city', 'shipping_address', 'shipping_zip');
+            if (field('shipping_state')) rules.push('shipping_state');
         }
-        return [];
+        return rules.map(function (name) {
+            return { name: name, ok: function (v) { return v !== ''; } };
+        });
     }
 
     function invalidFields(step) {
@@ -98,7 +101,7 @@
     }
 
     function ruleFor(name) {
-        var rules = stepRules(1).concat(stepRules(2));
+        var rules = stepRules(1);
         for (var i = 0; i < rules.length; i++) if (rules[i].name === name) return rules[i];
         return null;
     }
@@ -113,7 +116,7 @@
 
     function initValidMarks() {
         if (!has('valid_marks')) return;
-        stepRules(1).concat(stepRules(2)).forEach(function (rule) { updateValidMark(rule.name); });
+        stepRules(1).forEach(function (rule) { updateValidMark(rule.name); });
     }
 
     var AUTOCOMPLETE = {
@@ -162,8 +165,37 @@
         if (!has('soft_payments')) return;
         var grid = document.querySelector('.payment-methods-grid');
         if (!grid) return;
-        var locked = invalidFields(1).length > 0 || invalidFields(2).length > 0;
+        var locked = invalidFields(1).length > 0;
         grid.classList.toggle('ck-pay-locked', locked);
+    }
+
+    function payLocked() {
+        if (!has('soft_payments')) return false;
+        updatePayLock();
+        var grid = document.querySelector('.payment-methods-grid');
+        return !!grid && grid.classList.contains('ck-pay-locked');
+    }
+
+    // Пока данные не заполнены, клик по способу оплаты не переключает его и не ходит
+    // на сервер. Вместо этого — подсказка у плиток, красная подсветка всех незаполненных
+    // полей (как делала серверная проверка) и переход к первому из них.
+    function nudgeToMissing() {
+        var grid = document.querySelector('.payment-methods-grid');
+        if (grid) {
+            grid.classList.add('ck-pay-hint-show');
+            clearTimeout(window.__ckHintTimer);
+            window.__ckHintTimer = setTimeout(function () {
+                grid.classList.remove('ck-pay-hint-show');
+            }, 2500);
+        }
+
+        // Красная подсветка (поле + сообщение об ошибке) и прокрутка к первому пустому полю.
+        validateSteps([1, 2]);
+    }
+
+    function selectedPaymentRadio() {
+        var panel = document.querySelector('.payment-methods-grid .payment-method-panel.is_selected');
+        return panel ? panel.querySelector('input[name="payment_type"]') : null;
     }
 
     // ---------- multistep ----------
@@ -199,9 +231,7 @@
 
     function initialStep() {
         if (window.__ckStep) return window.__ckStep;
-        if (invalidFields(1).length) return 1;
-        if (invalidFields(2).length) return 2;
-        return 3;
+        return invalidFields(1).length ? 1 : 2;
     }
 
     // ---------- collapse_optional ----------
@@ -399,15 +429,27 @@
                 return;
             }
 
-            var panel = t.closest('.payment-method-panel');
-            if (panel && t.tagName !== 'INPUT') {
-                var grid = panel.closest('.payment-methods-grid');
-                var radio = panel.querySelector('input[name="payment_type"]');
-                if (grid && grid.classList.contains('ck-pay-locked') && radio && radio.checked) {
-                    validateSteps([1, 2]);
-                }
-            }
         });
+
+        // soft_payments: клик по плитке оплаты при незаполненных данных — без переключения.
+        document.addEventListener('click', function (e) {
+            var panel = e.target && e.target.closest ? e.target.closest('.payment-methods-grid .payment-method-panel') : null;
+            if (!panel || !payLocked()) return;
+            e.preventDefault();
+            e.stopPropagation();
+            nudgeToMissing();
+        }, true);
+
+        // То же для клавиатуры (стрелки в группе радиокнопок): откатываем выбор
+        // до того, как сработает обработчик app.js.
+        document.addEventListener('change', function (e) {
+            var t = e.target;
+            if (!t || t.name !== 'payment_type' || !payLocked()) return;
+            e.stopPropagation();
+            var prev = selectedPaymentRadio();
+            if (prev && prev !== t) prev.checked = true;
+            nudgeToMissing();
+        }, true);
 
         document.addEventListener('keydown', function (e) {
 
@@ -427,10 +469,16 @@
             if (e.key !== 'Enter' || !has('multistep')) return;
             var el = e.target;
             if (!el || el.tagName !== 'INPUT' || !el.closest('#order_form')) return;
-            var step = stepOf(el);
-            if (step !== 1 && step !== 2) return;
+            if (stepOf(el) !== 1) return;
             e.preventDefault();
-            var next = root().querySelector('.ck-step-actions[data-ck-step="' + step + '"] [data-ck-next]');
+            // Enter ведёт к следующему незаполненному полю, а когда пусто только текущее
+            // (или всё заполнено) — жмёт «Продолжить».
+            var missing = invalidFields(1).filter(function (name) { return name !== el.name; });
+            if (missing.length) {
+                scrollToField(missing[0]);
+                return;
+            }
+            var next = root().querySelector('.ck-step-actions[data-ck-step="1"] [data-ck-next]');
             if (next) next.click();
         });
     }

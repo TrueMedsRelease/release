@@ -5328,3 +5328,16 @@ body.has-scroll{
 .footer__wrapper .nav__link {
     text-align: center;
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--color-grey-3);
+  --fsp-border:1px solid var(--color-stroke);
+  --fsp-radius:0;
+  --fsp-margin:0;
+  --fsp-padding:1.6rem 1.9rem 1.8rem;
+  --fsp-text:var(--color-white);
+  --fsp-accent:var(--color-primary);
+  --fsp-bar:var(--color-primary);
+  --fsp-track:var(--color-stroke);
+  --fsp-height:6px;
+}

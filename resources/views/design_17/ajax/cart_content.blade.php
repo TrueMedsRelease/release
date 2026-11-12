@@ -142,6 +142,10 @@
         </div>
     </fieldset>
 
+    @if (!$is_only_card)
+        @include('shared.free_ship_progress')
+    @endif
+
     <fieldset class="form__fieldset cart-form__delivery-fieldset">
         <div class="form__field custom-field">
             @if (!$is_only_card)

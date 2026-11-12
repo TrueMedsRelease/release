@@ -4048,3 +4048,20 @@ ul.footer-nav li {
 .sitemap_menu a:hover{
     color: #3D94AF;
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:#fff;
+  --fsp-border:none;
+  --fsp-radius:0;
+  --fsp-margin:0;
+  --fsp-padding:15px 30px;
+  --fsp-text:var(--black-main);
+  --fsp-accent:#3d8ea8;
+  --fsp-bar:var(--primary-gradient);
+  --fsp-track:var(--gray-light);
+  --fsp-height:6px;
+  border-top:1px solid #E3EBFA !important;
+}
+@media only screen and (max-width: 1099px){
+  .free-ship-progress{ --fsp-padding:15px; }
+}

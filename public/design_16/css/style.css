@@ -5504,3 +5504,18 @@ article.content{
     align-items: center;
     gap: 2rem;
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--color-stroke);
+  --fsp-border:none;
+  --fsp-radius:2rem;
+  --fsp-margin:0;
+  --fsp-padding:2rem;
+  --fsp-font-size:1.5rem;
+  --fsp-text:var(--color-white);
+  --fsp-accent:var(--color-white);
+  --fsp-bar:var(--color-white);
+  --fsp-track:var(--color-grey-6);
+  --fsp-height:6px;
+  box-shadow:0 10px 20px 0 rgba(18, 19, 52, 0.05);
+}

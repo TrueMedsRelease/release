@@ -51,7 +51,8 @@
 }
 
 .payment-methods-grid.ck-pay-locked:hover .ck-pay-hint,
-.payment-methods-grid.ck-pay-locked:focus-within .ck-pay-hint {
+.payment-methods-grid.ck-pay-locked:focus-within .ck-pay-hint,
+.payment-methods-grid.ck-pay-locked.ck-pay-hint-show .ck-pay-hint {
     visibility: visible;
     opacity: 1;
     transform: translate(-50%, 0);

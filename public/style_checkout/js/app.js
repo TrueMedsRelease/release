@@ -2714,6 +2714,9 @@ $('input[name="payment_type"]').on('change', function (e) {
     var $radio = $(this);
     var type = $radio.val();
     var form = $('form').serialize();
+    // Предыдущий выбранный метод — чтобы откатиться, если сервер не принял данные
+    // (иначе подсвечена новая плитка, а под ней остаётся форма старого метода).
+    var $prevRadio = $('.payment-method-panel.is_selected input[name="payment_type"]').not(this);
 
     $('.poopuptext').removeClass("show");
     $('.payment-method-panel').removeClass('is_selected');
@@ -2743,7 +2746,7 @@ $('input[name="payment_type"]').on('change', function (e) {
                     });
                 }
             });
-            if (flag) { hidePaymentPreloader(); return; }
+            if (flag) { revertPaymentSelection($prevRadio); hidePaymentPreloader(); return; }
         }
         else if (type == 'sepa') {
             $.ajax({
@@ -2759,7 +2762,7 @@ $('input[name="payment_type"]').on('change', function (e) {
                     });
                 }
             });
-            if (flag) { hidePaymentPreloader(); return; }
+            if (flag) { revertPaymentSelection($prevRadio); hidePaymentPreloader(); return; }
         }
         else if (type == 'sepa_local' || type == 'fps' || type == 'domestic' || type == 'ach' || type == 'interac' || type == 'usd_swift' || type == 'gbp_swift') {
             form += '&local_payment=' + type;
@@ -2785,7 +2788,7 @@ $('input[name="payment_type"]').on('change', function (e) {
                     });
                 }
             });
-            if (flag) { hidePaymentPreloader(); return; }
+            if (flag) { revertPaymentSelection($prevRadio); hidePaymentPreloader(); return; }
         }
         else if (type == 'google_pay' || type == 'apple_pay') {
             form += '&wallet=' + type;
@@ -2802,7 +2805,7 @@ $('input[name="payment_type"]').on('change', function (e) {
                     });
                 }
             });
-            if (flag) { hidePaymentPreloader(); return; }
+            if (flag) { revertPaymentSelection($prevRadio); hidePaymentPreloader(); return; }
         }
 
         if (type != 'crypto') {
@@ -2843,11 +2846,19 @@ $('input[name="payment_type"]').on('change', function (e) {
                     var popup = document.getElementById("error_" + error.field);
                     if (popup) { popup.classList.add("show"); if (i == 0) popup.scrollIntoView(); }
                 });
+                revertPaymentSelection($prevRadio);
                 hidePaymentPreloader();
             }
         });
     }, 30);
 });
+
+function revertPaymentSelection($prevRadio) {
+    if (!$prevRadio || !$prevRadio.length) return;
+    $prevRadio.prop('checked', true);
+    $('.payment-method-panel').removeClass('is_selected');
+    $prevRadio.closest('.payment-method-panel').addClass('is_selected');
+}
 
 // Функция перепривязки обработчиков после перерисовки HTML (для панелей оплаты)
 function rebindPaymentMethods() {

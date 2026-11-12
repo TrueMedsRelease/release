@@ -6728,3 +6728,15 @@ textarea.input {
         justify-content: center;
     }
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--white-darker);
+  --fsp-border:none;
+  --fsp-radius:20px;
+  --fsp-margin:12px 0;
+  --fsp-padding:14px 20px 16px;
+  --fsp-text:var(--black-main);
+  --fsp-accent:#3d8ea8;
+  --fsp-bar:var(--primary-gradient);
+  --fsp-track:#fff;
+}

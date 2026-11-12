@@ -6273,3 +6273,14 @@ body::after {
 .install_store {
     margin-top: 20px;
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--add-white);
+  --fsp-border:none;
+  --fsp-radius:0;
+  --fsp-margin:12px 0;
+  --fsp-text:var(--dark-gray);
+  --fsp-accent:#16a862;
+  --fsp-bar:var(--green);
+  --fsp-track:#fff;
+}

@@ -8570,3 +8570,14 @@ strong {
         gap: 0;
     }
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--table-color);
+  --fsp-border:none;
+  --fsp-radius:14px;
+  --fsp-margin:12px 0;
+  --fsp-text:var(--dark);
+  --fsp-accent:var(--accent-color-hover);
+  --fsp-bar:var(--accent-color);
+  --fsp-track:#fff;
+}

@@ -8096,3 +8096,23 @@ body {
 #gpw-trigger {
     bottom: 70px !important;
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:transparent;
+  --fsp-border:none;
+  --fsp-radius:0;
+  --fsp-margin:0;
+  --fsp-padding:0.9375rem 1.875rem;
+  --fsp-text:var(--dark);
+  --fsp-accent:#16a862;
+  --fsp-bar:var(--accent-linear-color);
+  --fsp-track:var(--gray-light);
+  --fsp-height:6px;
+  border-top:1px solid var(--gray-light) !important;
+}
+@media (max-width: 74.99875em){
+  .free-ship-progress{ --fsp-padding:0.9375rem 1.25rem; }
+}
+@media (max-width: 24.375em){
+  .free-ship-progress{ --fsp-padding:15px 0.625rem; }
+}

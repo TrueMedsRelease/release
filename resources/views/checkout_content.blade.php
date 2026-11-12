@@ -466,9 +466,8 @@
                 </p>
                 @if ($ck('multistep'))
                     <ol class="ck-steps" data-ck-steps>
-                        <li class="ck-steps__item" data-ck-goto="1"><span class="ck-steps__num">1</span><span class="ck-steps__label">{{ __('text.checkout_step_contact') }}</span></li>
-                        <li class="ck-steps__item" data-ck-goto="2"><span class="ck-steps__num">2</span><span class="ck-steps__label">{{ __('text.checkout_step_address') }}</span></li>
-                        <li class="ck-steps__item" data-ck-goto="3"><span class="ck-steps__num">3</span><span class="ck-steps__label">{{ __('text.checkout_step_payment') }}</span></li>
+                        <li class="ck-steps__item" data-ck-goto="1"><span class="ck-steps__num">1</span><span class="ck-steps__label">{{ __('text.checkout_step_details') }}</span></li>
+                        <li class="ck-steps__item" data-ck-goto="2"><span class="ck-steps__num">2</span><span class="ck-steps__label">{{ __('text.checkout_step_payment') }}</span></li>
                     </ol>
                 @endif
                 <section class="enter-info__block" data-ck-step="1">
@@ -486,14 +485,7 @@
                         @endif
                     </div>
                 </section>
-                @if ($ck('multistep'))
-                    <div class="ck-step-actions" data-ck-step="1">
-                        <button type="button" class="enter-info__button button ck-step-next" data-ck-next="2">
-                            <span>{{ __('text.checkout_step_next') }}</span>
-                        </button>
-                    </div>
-                @endif
-                <section class="enter-info__block" data-ck-step="2">
+                <section class="enter-info__block" data-ck-step="1">
                     <h2 class="enter-info__title title">{{__('text.checkout_billing_address')}}</h2>
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
@@ -548,7 +540,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="enter-info__block" data-ck-step="2">
+                <section class="enter-info__block" data-ck-step="1">
                     <div class="enter-info__shiping">
                         <h2 class="enter-info__title title">{{__('text.checkout_shipping_address')}}</h2>
                         <div class="enter-info__checkbox checkbox">
@@ -613,16 +605,15 @@
                     </div>
                 </section>
                 @if ($ck('multistep'))
-                    <div class="ck-step-actions" data-ck-step="2">
-                        <button type="button" class="ck-step-back" data-ck-goto="1">{{ __('text.checkout_step_back') }}</button>
-                        <button type="button" class="enter-info__button button ck-step-next" data-ck-next="3">
+                    <div class="ck-step-actions" data-ck-step="1">
+                        <button type="button" class="enter-info__button button ck-step-next" data-ck-next="2">
                             <span>{{ __('text.checkout_step_next') }}</span>
                         </button>
                     </div>
                 @endif
-                <section class="enter-info__block" data-ck-step="3">
+                <section class="enter-info__block" data-ck-step="2">
                     @if ($ck('multistep'))
-                        <button type="button" class="ck-step-back ck-step-back--top" data-ck-goto="2">{{ __('text.checkout_step_back') }}</button>
+                        <button type="button" class="ck-step-back ck-step-back--top" data-ck-goto="1">{{ __('text.checkout_step_back') }}</button>
                     @endif
                     <h2 class="enter-info__title title">{{__('text.checkout_payment')}}</h2>
                     @if ($ck('help_phone') && count($phone_arr))
