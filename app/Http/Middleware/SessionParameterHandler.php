@@ -173,6 +173,21 @@ class SessionParameterHandler
             }
         }
 
+        $stripParams = ['lang', 'curr', 'design'];
+
+        if (
+            $request->isMethod('GET') &&
+            !$request->ajax() &&
+            !$request->expectsJson() &&
+            !empty(array_intersect($stripParams, array_keys($request->query())))
+        ) {
+            $query = \Illuminate\Support\Arr::except($request->query(), $stripParams);
+
+            $cleanUrl = $request->url() . (!empty($query) ? '?' . http_build_query($query) : '');
+
+            return redirect()->to($cleanUrl);
+        }
+
         return $next($request);
     }
 }
