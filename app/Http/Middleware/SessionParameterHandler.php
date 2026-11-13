@@ -173,8 +173,6 @@ class SessionParameterHandler
             }
         }
 
-        // убираем из URL параметры, которые уже сохранены в сессию,
-        // чтобы они не "залипали" в ссылке и в last_page
         $stripParams = ['lang', 'curr', 'design'];
 
         if (
