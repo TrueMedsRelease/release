@@ -49,6 +49,7 @@
     <div class="adm-dual adm-dual--two">
         <div class="adm-dual__list">
             <h3 class="discounts__label">{{__('text.admin_products_show_not_showed_products_title')}}</h3>
+            @include('admin.partials.product_search', ['target' => '#not_showed_products_field'])
             <select class="input" name="not_showed_products_field" id="not_showed_products_field" size="30" multiple >
                 @foreach ($not_showed_products_info as $cur_product_info)
                     <option value="{{ $cur_product_info['id'] }}">{{ $cur_product_info['name'] }}</option>
@@ -61,6 +62,7 @@
         </div>
         <div class="adm-dual__list">
             <h3 class="discounts__label">{{__('text.admin_products_show_showed_products_title')}}</h3>
+            @include('admin.partials.product_search', ['target' => '#showed_products_field'])
             <select class="input" name="showed_products_field" id="showed_products_field" size="30" multiple >
                 @foreach ($showed_products_info as $cur_product_info)
                     <option value="{{ $cur_product_info['id'] }}">{{ $cur_product_info['name'] }}</option>

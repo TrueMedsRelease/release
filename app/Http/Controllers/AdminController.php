@@ -1284,6 +1284,7 @@ class AdminController extends Controller
         $title = $this->pageAdminTitle('currencies');
         $agent = new Agent();
 
+        $has_prefix_space = Currency::ensurePrefixSpaceColumn();
         $all_currencies = Currency::query()->get()->toArray();
         $default_currency_code = config('app.currency') ? config('app.currency') : session('language');
 
@@ -1292,7 +1293,8 @@ class AdminController extends Controller
             'agent' => $agent,
             'logged_in' => true,
             'default_currency_code' => $default_currency_code,
-            'currencies_info' => $all_currencies
+            'currencies_info' => $all_currencies,
+            'has_prefix_space' => $has_prefix_space,
         ]);
     }
 
@@ -1301,6 +1303,7 @@ class AdminController extends Controller
 
         $default_currency_code = $currencies_form["default_currency_code_field"];
 
+        $has_prefix_space = Currency::ensurePrefixSpaceColumn();
         $all_currencies = Currency::query()->get()->toArray();
         $error = [];
         foreach ($all_currencies as $cur_currency) {
@@ -1359,6 +1362,12 @@ class AdminController extends Controller
                         'prefix' => $cur_currency_prefix
                     ]);
                 // DB::update('UPDATE `currency` SET `name` = "' . $cur_currency_name . '", `code` = "' . $cur_currency_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '", `coef` = "' . $cur_currency_coef . '", `prefix` = "' . $cur_currency_prefix . '" WHERE id = ' . $cur_currency_id . ' ');
+            }
+
+            if ($has_prefix_space) {
+                DB::table('currency')
+                    ->where('id', '=', $cur_currency_id)
+                    ->update(['prefix_space' => isset($currencies_form[$cur_currency_id . '_prefix_space_field']) ? 1 : 0]);
             }
 
             if(isset($currencies_form[$cur_currency_id . '_show_field'])) {

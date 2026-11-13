@@ -9195,3 +9195,26 @@ fieldset {
         max-width: none;
     }
 }
+
+.adm-search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.adm-search-wrap .adm-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 70px 8px 12px;
+    border-radius: 12px;
+}
+
+.adm-search-wrap .adm-search__count {
+    position: absolute;
+    right: 12px;
+    font-size: 12px;
+    opacity: .6;
+    pointer-events: none;
+}
