@@ -929,3 +929,92 @@ $(document).ajaxError(function (event, jqXHR, settings) {
 
     setTimeout(reloadWhenServerIsBack, 500);
 });
+
+var admSearchState = {};
+
+function admFilterSelect(input) {
+    let select = document.querySelector(input.dataset.target);
+    if (!select) {
+        return;
+    }
+
+    let query = input.value.trim().toLowerCase();
+    let header = null;
+    let headerHasMatch = false;
+    let matches = 0;
+
+    let finishHeader = function () {
+        if (header) {
+            header.hidden = query !== '' && !headerHasMatch;
+            header.style.display = header.hidden ? 'none' : '';
+        }
+    };
+
+    Array.prototype.forEach.call(select.options, function (option) {
+        if (option.value === '0' && /^\.{3,}/.test(option.text)) {
+            finishHeader();
+            header = option;
+            headerHasMatch = false;
+            return;
+        }
+
+        let visible = query === '' || option.text.toLowerCase().indexOf(query) !== -1;
+        option.hidden = !visible;
+        option.style.display = visible ? '' : 'none';
+
+        if (visible) {
+            matches++;
+            headerHasMatch = true;
+        } else if (option.selected && select.multiple) {
+            option.selected = false;
+        }
+    });
+    finishHeader();
+
+    let counter = input.parentNode.querySelector('.adm-search__count');
+    if (counter) {
+        counter.textContent = query === '' ? '' : matches + ' / ' + select.options.length;
+    }
+}
+
+function admRestoreSearch(root) {
+    (root || document).querySelectorAll('.adm-search').forEach(function (input) {
+        let saved = admSearchState[input.dataset.target];
+        if (saved && input.value !== saved) {
+            input.value = saved;
+        }
+        if (input.value) {
+            admFilterSelect(input);
+        }
+    });
+}
+
+$(document).on('input', '.adm-search', function () {
+    admSearchState[this.dataset.target] = this.value;
+    admFilterSelect(this);
+});
+
+$(document).on('keydown', '.adm-search', function (e) {
+    if (e.key === 'Escape') {
+        this.value = '';
+        admSearchState[this.dataset.target] = '';
+        admFilterSelect(this);
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+    }
+});
+
+if (window.MutationObserver) {
+    new MutationObserver(function (mutations) {
+        for (let i = 0; i < mutations.length; i++) {
+            let nodes = mutations[i].addedNodes;
+            for (let j = 0; j < nodes.length; j++) {
+                let node = nodes[j];
+                if (node.nodeType === 1 && (node.matches('.adm-search') || node.querySelector('.adm-search'))) {
+                    admRestoreSearch();
+                    return;
+                }
+            }
+        }
+    }).observe(document.body, { childList: true, subtree: true });
+}

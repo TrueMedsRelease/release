@@ -274,6 +274,6 @@ class SeasonalUpsellService
     public function currency(): array
     {
         $code = session('currency', 'usd');
-        return ['code' => strtoupper($code), 'symbol' => Currency::$prefix[$code] ?? '$'];
+        return ['code' => strtoupper($code), 'symbol' => Currency::symbol($code)];
     }
 }
