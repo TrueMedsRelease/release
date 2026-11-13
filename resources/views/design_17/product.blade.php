@@ -14,7 +14,7 @@
             'image'     => !empty($product['image']) ? route('home.set_images', $product['image']) : '',
             'aktiv'     => $product['aktiv'] ?? [],
             'packs'     => $product['packs'] ?? [],
-            'currency_prefix' => $Currency::$prefix[session('currency', 'usd')] ?? '$',
+            'currency_prefix' => $Currency::symbol(session('currency', 'usd')),
             'currency_coef'   => (float) session('currency_c', 1),
         ];
     @endphp

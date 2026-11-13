@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class Currency extends Model
 {
@@ -48,6 +51,70 @@ class Currency extends Model
         'bbd' => 'BB$',
     ];
 
+    /** @var array<string, bool>|null */
+    protected static $prefixSpaceMap = null;
+
+    /**
+     * Добавляет в таблицу currency колонку prefix_space (пробел между символом и суммой),
+     * если её ещё нет. Миграции на магазинах не запускаются, поэтому создаём на лету.
+     */
+    public static function ensurePrefixSpaceColumn(): bool
+    {
+        if (Schema::hasColumn('currency', 'prefix_space')) {
+            return true;
+        }
+
+        try {
+            Schema::table('currency', function (Blueprint $table) {
+                $table->tinyInteger('prefix_space')->default(0);
+            });
+        } catch (\Throwable $e) {
+            // Колонку уже добавил параллельный запрос или у пользователя БД нет прав ALTER.
+        }
+
+        return Schema::hasColumn('currency', 'prefix_space');
+    }
+
+    /**
+     * Карта code => нужен ли пробел после символа валюты.
+     */
+    public static function prefixSpaceMap(): array
+    {
+        if (static::$prefixSpaceMap !== null) {
+            return static::$prefixSpaceMap;
+        }
+
+        try {
+            static::$prefixSpaceMap = Cache::rememberForever('currency_prefix_space_map', function () {
+                if (!Schema::hasColumn('currency', 'prefix_space')) {
+                    return [];
+                }
+
+                return Currency::query()
+                    ->where('prefix_space', '=', 1)
+                    ->pluck('code')
+                    ->mapWithKeys(fn ($code) => [strtolower($code) => true])
+                    ->all();
+            });
+        } catch (\Throwable $e) {
+            static::$prefixSpaceMap = [];
+        }
+
+        return static::$prefixSpaceMap;
+    }
+
+    /**
+     * Символ валюты для вывода перед суммой — с пробелом, если он включён для этой валюты в админке.
+     */
+    public static function symbol(?string $code, string $default = '$'): string
+    {
+        $code = strtolower((string) $code);
+        $prefix = Currency::$prefix[$code] ?? $default;
+
+        // Неразрывный пробел (U+00A0), чтобы знак валюты и сумма не разъезжались по разным строкам.
+        return isset(static::prefixSpaceMap()[$code]) ? $prefix . "\u{00A0}" : $prefix;
+    }
+
     public static function GetAllCurrency()
     {
         $currency = Currency::query()->where('show_in_menu', '=', 1)->get()->toArray();
@@ -65,7 +132,7 @@ class Currency extends Model
     {
         $current_currency = session('currency', 'usd');
         $coef             = session('currency_c', 1);
-        $prefix           = Currency::$prefix[$current_currency];
+        $prefix           = Currency::symbol($current_currency);
         if ($round) {
             $total = ceil($number * $coef);
         } else {
@@ -83,7 +150,7 @@ class Currency extends Model
     {
         $currency = 'eur';
         $coef             = Currency::query()->where('code', '=', $currency)->get()->toArray()[0]['coef'];
-        $prefix           = Currency::$prefix[$currency];
+        $prefix           = Currency::symbol($currency);
         if ($round) {
             $total = ceil($number * $coef);
         } else {
@@ -109,7 +176,7 @@ class Currency extends Model
             $sum = round($sum);
         }
 
-        return Currency::$prefix[$current_currency] . $sum;
+        return Currency::symbol($current_currency) . $sum;
     }
 
     public static function GetCurrencyByCountry($country)

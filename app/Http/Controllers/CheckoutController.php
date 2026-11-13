@@ -1096,7 +1096,7 @@ class CheckoutController extends Controller
                     if (isset($response['status']) && $response['status'] == 'error') {
                         return response()->json(json_encode(['status' => 'error', 'text' => 'Service unavailable']));
                     } else {
-                        $response['crypto_total'] = Currency::$prefix[session('currency', 'usd')] . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
+                        $response['crypto_total'] = Currency::symbol(session('currency', 'usd')) . round(session('total.checkout_total') * 0.85 * session('currency_c', 1), 2);
                         $response['qr']           = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . $response['purse'];
                         $response['currency']     = $request->currency;
 

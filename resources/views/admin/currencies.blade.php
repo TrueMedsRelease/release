@@ -87,6 +87,9 @@
                             <th class="adm-table__check">{{__('text.admin_currencies_show_title')}}</th>
                             <th>{{__('text.admin_currencies_name_title')}}</th>
                             <th>{{__('text.admin_currencies_prefix_title')}}</th>
+                            @if ($has_prefix_space)
+                                <th class="adm-table__check" title="{{__('text.admin_currencies_prefix_space_hint')}}">{{__('text.admin_currencies_prefix_space_title')}}</th>
+                            @endif
                             <th>{{__('text.admin_currencies_code_title')}}</th>
                             <th>{{__('text.admin_currencies_coeff_title')}}</th>
                             <th>{{__('text.admin_currencies_country_iso2_title')}}</th>
@@ -109,6 +112,16 @@
                                 <input class="input" type="text" maxlength="10" name="{{ $cur_currency_info['id'] }}_prefix_field" id="{{ $cur_currency_info['id'] }}_prefix_field" value="{{ $cur_currency_info['prefix'] }}" />
                                 <div id="{{ $cur_currency_info['id'] }}_prefix_error"></div>
                             </td>
+                            @if ($has_prefix_space)
+                                <td class="adm-table__check">
+                                    <label title="{{__('text.admin_currencies_prefix_space_hint')}}">
+                                        <input type="checkbox" name="{{ $cur_currency_info['id'] }}_prefix_space_field" value="1" @if (!empty($cur_currency_info['prefix_space'])) checked @endif
+                                               onchange="this.nextElementSibling.textContent = this.dataset.prefix + (this.checked ? '\u00a0' : '') + '100';"
+                                               data-prefix="{{ $cur_currency_info['prefix'] }}" />
+                                        <span class="adm-prefix-preview" style="white-space: nowrap; margin-left: 4px;">{{ $cur_currency_info['prefix'] }}@if (!empty($cur_currency_info['prefix_space']))&nbsp;@endif{{ '100' }}</span>
+                                    </label>
+                                </td>
+                            @endif
                             <td>
                                 <input class="input" type="text" maxlength="10" name="{{ $cur_currency_info['id'] }}_code_field" id="{{ $cur_currency_info['id'] }}_code_field" value="{{ $cur_currency_info['code'] }}" />
                                 <div id="{{ $cur_currency_info['id'] }}_code_error"></div>
