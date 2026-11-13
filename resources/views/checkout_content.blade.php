@@ -116,7 +116,8 @@
         </div>
     </div>
 </header>
-<main class="enter-info {{ \App\Services\CheckoutSkin::cssClasses() }}" data-checkout-skin="{{ \App\Services\CheckoutSkin::id() }}">
+<main class="enter-info {{ \App\Services\CheckoutSkin::cssClasses() }}" data-checkout-skin="{{ \App\Services\CheckoutSkin::id() }}"
+    @if ($ck('email_typo_hint')) data-ck-text-typo="{{ __('text.checkout_email_typo') }}" data-ck-text-typo-fix="{{ __('text.checkout_email_typo_fix') }}" @endif>
     <div class="enter-info__container">
         <form id="order_form" class="enter-info__form">
             @csrf
@@ -464,7 +465,7 @@
                     </span>
                     {{__('text.checkout_timer')}}
                 </p>
-                @if ($ck('multistep') && $ck('journey_steps'))
+                @if ($ck('journey_steps'))
                     {{-- Полоса прогресса: магазин и корзина уже пройдены, впереди ещё два шага --}}
                     <ol class="ck-journey" data-ck-steps>
                         <li class="ck-journey__item is_done">
@@ -522,7 +523,7 @@
                         </div>
                         <div class="enter-info__row">
                             <div class="enter-info__select select_billing_country">
-                                <select required id="billing_country" name="billing_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
+                                <select required id="billing_country" name="billing_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                     @foreach ($countries as $country)
                                         <option @selected($country['country_iso2'] == session('form.billing_country', session('location.country', 'US'))) value="{{ $country['country_iso2'] }}">
                                             {{ $country['country_name'] }}</option>
@@ -531,7 +532,7 @@
                             </div>
                             @if (in_array(session('form.billing_country', session('location.country', 'US')), array_keys($states)))
                             <div class="enter-info__select select_billing_state">
-                                <select required id="billing_state" name="billing_state" class="form" data-pseudo-label="State" data-scroll>
+                                <select required id="billing_state" name="billing_state" class="form" data-pseudo-label="State" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                     @foreach ($states[session('form.billing_country', session('location.country', 'US'))] as $key => $state)
                                         <option value="{{ $key }}" @selected($key == session('form.billing_state', session('location.state', '')))>
                                             {{ $state }}
@@ -584,7 +585,7 @@
                         class="enter-info__add-inputs add-info info-form__add-inputs">
                             <div class="enter-info__row">
                                 <div class="enter-info__select select_shipping_country">
-                                    <select required id="shipping_country" name="shipping_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
+                                    <select required id="shipping_country" name="shipping_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                         @foreach ($countries as $country)
                                             <option @selected($country['country_iso2'] == session('form.shipping_country', session('location.country')))
                                                 value="{{ $country['country_iso2'] }}">{{ $country['country_name'] }}
@@ -594,7 +595,7 @@
                                 </div>
                                 @if (in_array(session('form.shipping_country', session('location.country', 'US')), array_keys($states)))
                                     <div class="enter-info__select select_shipping_state">
-                                        <select required id="shipping_state" name="shipping_state" class="form" data-pseudo-label="{{__('text.checkout_state')}}" data-scroll>
+                                        <select required id="shipping_state" name="shipping_state" class="form" data-pseudo-label="{{__('text.checkout_state')}}" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                             @foreach ($states[session('form.shipping_country', session('location.country', 'US'))] as $key => $state)
                                                 <option value="{{ $key }}" @selected($key == session('form.shipping_state', session('location.state', '')))>
                                                     {{ $state }}
@@ -1628,6 +1629,24 @@
                             </div>
                         @endif
                     </div>
+                    @if ($ck('trust_badges'))
+                        <div class="ck-trust">
+                            <div class="ck-trust__head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="currentColor"/>
+                                    <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>{{ __('text.checkout_secure_title') }}</span>
+                            </div>
+                            <div class="ck-trust__note">{{ __('text.checkout_secure_note') }}</div>
+                            <div class="ck-trust__logos">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/geotrust.svg') }}" width="72" height="24" alt="GeoTrust">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/norton.svg') }}" width="56" height="32" alt="Norton">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/comodo.svg') }}" width="72" height="24" alt="Comodo">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/mcafee.svg') }}" width="64" height="20" alt="McAfee">
+                            </div>
+                        </div>
+                    @endif
                 </section>
             </div>
             <div class="popup_warning">

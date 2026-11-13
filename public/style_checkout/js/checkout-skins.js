@@ -234,6 +234,122 @@
         return invalidFields(1).length ? 1 : 2;
     }
 
+    // ---------- journey_steps на одной странице (без multistep) ----------
+    // "Checkout" — текущий, пока не долистали до оплаты; галочка у него — только когда
+    // контакты и адрес действительно заполнены.
+
+    function updateJourney() {
+        var r = root();
+        if (!r || !has('journey_steps') || has('multistep')) return;
+        var pay = r.querySelector('section[data-ck-step="2"]');
+        if (!pay) return;
+        var reached = pay.getBoundingClientRect().top < window.innerHeight * 0.6;
+        var filled = invalidFields(1).length === 0;
+        r.querySelectorAll('.ck-journey__item[data-ck-goto]').forEach(function (li) {
+            var n = parseInt(li.getAttribute('data-ck-goto'), 10);
+            li.classList.toggle('is_done', n === 1 && filled && reached);
+            li.classList.toggle('is_current', reached ? n === 2 : n === 1);
+        });
+    }
+
+    function scrollToSection(step) {
+        var r = root();
+        var section = r && r.querySelector('section[data-ck-step="' + step + '"]');
+        if (!section) return;
+        var y = section.getBoundingClientRect().top + window.pageYOffset - 90;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    }
+
+    // ---------- email_typo_hint: "gmial.con → gmail.com?" ----------
+
+    var EMAIL_DOMAINS = [
+        'gmail.com', 'googlemail.com', 'yahoo.com', 'yahoo.co.uk', 'yahoo.fr', 'yahoo.de', 'yahoo.es', 'yahoo.it',
+        'ymail.com', 'hotmail.com', 'hotmail.co.uk', 'hotmail.fr', 'hotmail.de', 'hotmail.it', 'hotmail.es',
+        'outlook.com', 'outlook.fr', 'outlook.de', 'live.com', 'live.co.uk', 'msn.com', 'aol.com', 'icloud.com',
+        'me.com', 'mac.com', 'mail.com', 'gmx.com', 'gmx.de', 'gmx.net', 'web.de', 't-online.de', 'orange.fr',
+        'free.fr', 'laposte.net', 'sfr.fr', 'wanadoo.fr', 'libero.it', 'virgilio.it', 'comcast.net', 'att.net',
+        'verizon.net', 'sbcglobal.net', 'bellsouth.net', 'cox.net', 'charter.net', 'shaw.ca', 'rogers.com',
+        'sympatico.ca', 'bigpond.com', 'optusnet.com.au', 'btinternet.com', 'sky.com', 'protonmail.com',
+        'proton.me', 'yandex.com', 'seznam.cz', 'wp.pl', 'o2.pl', 'onet.pl', 'telenet.be', 'ziggo.nl', 'kpnmail.nl'
+    ];
+
+    // Расстояние Дамерау–Левенштейна (перестановка соседних букв = 1 правка).
+    function editDistance(a, b) {
+        var d = [];
+        for (var i = 0; i <= a.length; i++) { d[i] = [i]; }
+        for (var j = 0; j <= b.length; j++) { d[0][j] = j; }
+        for (i = 1; i <= a.length; i++) {
+            for (j = 1; j <= b.length; j++) {
+                var cost = a[i - 1] === b[j - 1] ? 0 : 1;
+                d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+                if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+                    d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+                }
+            }
+        }
+        return d[a.length][b.length];
+    }
+
+    function emailSuggestion(value) {
+        var m = /^([^\s@]+)@([^\s@]+)$/.exec(String(value || '').trim());
+        if (!m) return null;
+        var domain = m[2].toLowerCase();
+        if (EMAIL_DOMAINS.indexOf(domain) !== -1) return null;
+        // "john@gmail" — забыли ".com"
+        if (domain.indexOf('.') === -1 && EMAIL_DOMAINS.indexOf(domain + '.com') !== -1) {
+            return m[1] + '@' + domain + '.com';
+        }
+        var best = null;
+        var bestDistance = 99;
+        EMAIL_DOMAINS.forEach(function (candidate) {
+            var dist = editDistance(domain, candidate);
+            if (dist < bestDistance) { bestDistance = dist; best = candidate; }
+        });
+        // Короткие домены правим только на 1 букву, чтобы не "исправлять" чужие (ibm.com ≠ aol.com).
+        var limit = domain.length >= 9 ? 2 : 1;
+        return best && bestDistance <= limit ? m[1] + '@' + best : null;
+    }
+
+    function removeEmailHint(input) {
+        var wrap = input && (input.closest('.enter-info__input') || input.parentNode);
+        var old = wrap && wrap.querySelector('.ck-email-hint');
+        if (old) old.remove();
+    }
+
+    function showEmailHint(input) {
+        removeEmailHint(input);
+        var suggestion = emailSuggestion(input.value);
+        if (!suggestion) return;
+
+        var r = root();
+        var hint = document.createElement('div');
+        hint.className = 'ck-email-hint';
+        hint.setAttribute('role', 'status');
+
+        var text = document.createElement('span');
+        text.appendChild(document.createTextNode((r.getAttribute('data-ck-text-typo') || 'Did you mean') + ' '));
+        var b = document.createElement('b');
+        b.textContent = suggestion;
+        text.appendChild(b);
+        text.appendChild(document.createTextNode('?'));
+        hint.appendChild(text);
+
+        var fix = document.createElement('button');
+        fix.type = 'button';
+        fix.className = 'ck-email-hint__fix';
+        fix.textContent = r.getAttribute('data-ck-text-typo-fix') || 'Fix';
+        fix.addEventListener('click', function () {
+            input.value = suggestion;
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            removeEmailHint(input);
+            input.focus();
+        });
+        hint.appendChild(fix);
+
+        (input.closest('.enter-info__input') || input.parentNode).appendChild(hint);
+    }
+
     // ---------- collapse_optional ----------
 
     function initOptional() {
@@ -296,9 +412,10 @@
             var o = byValue[btn.getAttribute('data-value')];
             if (!o) return;
             var name = o.getAttribute('data-name') || '';
-            var code = o.textContent.trim();
-            btn.setAttribute('data-ck-search', (name + ' ' + o.value + ' ' + code).toLowerCase());
-            btn.setAttribute('data-ck-code', code.replace(/\D/g, ''));
+            var text = o.textContent.trim();
+            btn.setAttribute('data-ck-search', (name + ' ' + o.value + ' ' + text).toLowerCase());
+            // Поиск по цифрам (+39 / 39) — только у кода телефона; у стран и штатов — по названию и ISO.
+            btn.setAttribute('data-ck-code', selectItem.classList.contains('select_code') ? text.replace(/\D/g, '') : '');
             btn.setAttribute('data-ck-selected', btn.hidden ? '1' : '');
             // Название страны в списке не показываем, но искать по нему можно.
             if (name) btn.setAttribute('title', name);
@@ -336,8 +453,9 @@
         var any = false;
 
         options.querySelectorAll('.select__option').forEach(function (btn) {
-            var match = !q || (byCode
-                ? (btn.getAttribute('data-ck-code') || '').indexOf(digits) === 0
+            var code = btn.getAttribute('data-ck-code') || '';
+            var match = !q || (byCode && code
+                ? code.indexOf(digits) === 0
                 : (btn.getAttribute('data-ck-search') || '').indexOf(q) !== -1);
 
             btn.hidden = !match || (!q && btn.getAttribute('data-ck-selected') === '1');
@@ -362,7 +480,28 @@
             clearError(el.name);
             updateValidMark(el.name);
             updatePayLock();
+            updateJourney();
+            if (e.type === 'input' && (el.name === 'email' || el.name === 'alt_email')) removeEmailHint(el);
         };
+
+        // Уход из поля: подсказка опечатки в почте и (validate_on_blur) проверка сразу,
+        // а не только при нажатии "Оплатить". Пустое поле не ругаем — человек мог ещё не дойти.
+        document.addEventListener('focusout', function (e) {
+            var el = e.target;
+            if (!el || !el.name || !el.closest || !el.closest('#order_form')) return;
+            if (has('email_typo_hint') && (el.name === 'email' || el.name === 'alt_email')) showEmailHint(el);
+            if (!has('validate_on_blur') || el.tagName === 'SELECT') return;
+            var rule = ruleFor(el.name);
+            var v = val(el.name);
+            if (rule && v !== '' && !rule.ok(v)) markErrors([el.name]);
+        });
+
+        var journeyTick = false;
+        window.addEventListener('scroll', function () {
+            if (journeyTick) return;
+            journeyTick = true;
+            window.requestAnimationFrame(function () { journeyTick = false; updateJourney(); });
+        }, { passive: true });
         document.addEventListener('input', function (e) {
             var t = e.target;
             if (t && t.classList && t.classList.contains('ck-code-search__input')) {
@@ -374,7 +513,7 @@
         document.addEventListener('change', onEdit);
 
         document.addEventListener('click', function (e) {
-            var title = e.target && e.target.closest ? e.target.closest('.select_code .select__title') : null;
+            var title = e.target && e.target.closest ? e.target.closest('.select_code .select__title, .select_search .select__title') : null;
             if (!title) return;
             var selectItem = title.closest('.select');
             if (selectItem.classList.contains('_select-open')) return;
@@ -410,6 +549,11 @@
             }
 
             var go = t.closest('[data-ck-goto]');
+            if (go && !has('multistep') && go.classList.contains('ck-journey__item')) {
+                e.preventDefault();
+                scrollToSection(parseInt(go.getAttribute('data-ck-goto'), 10));
+                return;
+            }
             if (go && has('multistep')) {
                 var n = parseInt(go.getAttribute('data-ck-goto'), 10);
                 if (n < (window.__ckStep || 1)) {
@@ -491,6 +635,7 @@
         initValidMarks();
         if (has('multistep')) showStep(initialStep());
         updatePayLock();
+        updateJourney();
         observeServerErrors();
     }
 

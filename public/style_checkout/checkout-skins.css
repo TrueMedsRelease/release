@@ -775,6 +775,16 @@
     box-shadow: 0 12px 32px rgba(38, 45, 56, 0.16), 0 0 0 1px rgba(38, 45, 56, 0.06);
 }
 
+/* Страна и штат: список во всю ширину поля, поиск сверху */
+.select_search .select__options {
+    padding-top: 0;
+    box-shadow: 0 12px 32px rgba(38, 45, 56, 0.16), 0 0 0 1px rgba(38, 45, 56, 0.06);
+}
+
+._select-up.select_search .select__options {
+    box-shadow: 0 -12px 32px rgba(38, 45, 56, 0.16), 0 0 0 1px rgba(38, 45, 56, 0.06);
+}
+
 ._select-up.select_code .select__options {
     border-radius: 12px 12px 12px 0;
     box-shadow: 0 -12px 32px rgba(38, 45, 56, 0.16), 0 0 0 1px rgba(38, 45, 56, 0.06);
@@ -824,6 +834,107 @@
     font-size: 14px;
     color: rgba(38, 45, 56, 0.55);
     text-align: center;
+}
+
+/* ---------- journey_steps на одной странице: полоса прилипает сверху ---------- */
+.ck-f-journey_steps:not(.ck-f-multistep) .ck-journey {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin-left: -4px;
+    margin-right: -4px;
+    padding: 12px 4px;
+    background-color: #f5f5f5;
+    box-shadow: 0 8px 12px -12px rgba(38, 45, 56, 0.35);
+}
+
+.ck-f-journey_steps:not(.ck-f-multistep) .ck-journey__item[data-ck-goto] {
+    cursor: pointer;
+}
+
+/* ---------- hide_timer ---------- */
+.ck-f-hide_timer .timer1,
+.ck-f-hide_timer .timer2 {
+    display: none !important;
+}
+
+/* ---------- email_typo_hint ---------- */
+.ck-email-hint {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    margin-top: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #6b4e00;
+    background-color: #fff6dc;
+    border: 1px solid #f0d58a;
+    border-radius: 10px;
+}
+
+.ck-email-hint b {
+    font-weight: 700;
+    word-break: break-all;
+}
+
+.ck-email-hint__fix {
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    background-color: var(--green);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.ck-email-hint__fix:hover,
+.ck-email-hint__fix:focus-visible {
+    opacity: 0.9;
+    outline: 2px solid rgba(80, 129, 17, 0.4);
+    outline-offset: 2px;
+}
+
+/* ---------- trust_badges: "Безопасная оплата" под кнопкой оплаты ---------- */
+.ck-trust {
+    margin-top: 18px;
+    padding: 14px 16px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid rgba(38, 45, 56, 0.1);
+    border-radius: 12px;
+}
+
+.ck-trust__head {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+.ck-trust__note {
+    margin-top: 4px;
+    font-size: 13px;
+    color: rgba(38, 45, 56, 0.65);
+}
+
+.ck-trust__logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 22px;
+    margin-top: 12px;
+}
+
+.ck-trust__logos img {
+    height: 24px;
+    width: auto;
+    opacity: 0.85;
 }
 
 .ck-switcher {
