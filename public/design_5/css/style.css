@@ -2664,6 +2664,7 @@ input[type=number] {
         margin: 0; } }
 
 .announce {
+  pointer-events: none;
     position: fixed;
     bottom: 44vh;
     right: 0;
@@ -2706,6 +2707,7 @@ input[type=number] {
 }
 
 .announce__item.active {
+  pointer-events: auto;
     -webkit-transform: translate(0px, 0px);
     -ms-transform: translate(0px, 0px);
     transform: translate(0px, 0px);
@@ -4064,4 +4066,13 @@ ul.footer-nav li {
 }
 @media only screen and (max-width: 1099px){
   .free-ship-progress{ --fsp-padding:15px; }
+}
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
 }

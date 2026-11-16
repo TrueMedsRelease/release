@@ -83,6 +83,16 @@ class AdminController extends Controller
     }
 
     public function request_login(Request $request) {
+        $captchaPassedAt = (int) $request->session()->pull('captcha_passed_at', 0);
+
+        if ($captchaPassedAt === 0 || time() - $captchaPassedAt > 300) {
+            return json_encode([
+                'status'      => 'error',
+                'text'        => __('text.admin_common_form_wrong_captcha_value'),
+                'new_captcha' => captcha_src(),
+            ]);
+        }
+
         $password = $request->input('password');
 
         if (!is_string($password) || $password === '') {
@@ -603,6 +613,12 @@ class AdminController extends Controller
         // }
 
         $selected_template = $request->selected_template;
+
+        if (!is_string($selected_template)
+            || !preg_match('/^design_\d+$/', $selected_template)
+            || !self::isDesignTemplateDir($selected_template, resource_path('views'))) {
+            return response()->json(['status' => 'error', 'text' => 'Unknown template']);
+        }
 
         $cur_design = $selected_template;
         $templates = [];
@@ -1654,6 +1670,13 @@ class AdminController extends Controller
     }
 
     public function setEnvMany(array $values) {
+        foreach ($values as $key => $value) {
+            if (!preg_match('/^[A-Z][A-Z0-9_]*$/', (string) $key)
+                || !preg_match('/^[A-Za-z0-9_.\-]*$/', (string) $value)) {
+                throw new \InvalidArgumentException("Invalid .env value for {$key}");
+            }
+        }
+
         $path = base_path('.env');
         $content = file_get_contents($path);
 

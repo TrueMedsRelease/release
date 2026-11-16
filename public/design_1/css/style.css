@@ -5200,3 +5200,12 @@ opacity:0;
   --fsp-height:6px;
   border-bottom:1px solid #f3f6ef !important;
 }
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

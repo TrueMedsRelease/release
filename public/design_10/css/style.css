@@ -5694,3 +5694,12 @@ strong {
   --fsp-bar:linear-gradient(90deg,var(--color-secondary),var(--color-accent));
   --fsp-track:var(--color-primary-10);
 }
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

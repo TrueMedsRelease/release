@@ -6150,6 +6150,7 @@ textarea.input {
 
 
 .announce {
+  pointer-events: none;
   position: fixed;
   bottom: 44vh;
   right: 0;
@@ -6192,6 +6193,7 @@ textarea.input {
 }
 
 .announce__item.active {
+  pointer-events: auto;
   -webkit-transform: translate(0px, 0px);
   -ms-transform: translate(0px, 0px);
   transform: translate(0px, 0px);
@@ -7927,4 +7929,13 @@ textarea.input {
   --fsp-accent:#e07200;
   --fsp-bar:linear-gradient(90deg,var(--orange-light),var(--orange));
   --fsp-track:#ffe9d1;
+}
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
 }

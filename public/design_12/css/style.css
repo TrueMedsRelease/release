@@ -5341,3 +5341,12 @@ body.has-scroll{
   --fsp-track:var(--color-stroke);
   --fsp-height:6px;
 }
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

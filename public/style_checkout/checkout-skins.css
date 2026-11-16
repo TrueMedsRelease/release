@@ -491,16 +491,23 @@
     display: none;
 }
 
+/* Одинаковое расстояние 20px между любыми двумя полями: и внутри строки, и между
+   строками. На мобильном у полей и строк свои отступы (10px) — их обнуляем. */
 .ck-f-single_column .enter-info__row:not(.enter-info__row--no-wrap) {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
+}
+
+.ck-f-single_column .enter-info__row:not(:last-child) {
+    margin-bottom: 20px;
 }
 
 .ck-f-single_column .enter-info__row:not(.enter-info__row--no-wrap) > * {
     flex: 0 0 auto;
     width: 100%;
     max-width: none;
+    margin-bottom: 0;
 }
 
 .ck-f-inline_errors .poopup .poopuptext {
@@ -514,6 +521,11 @@
     font-size: 14px;
     line-height: 1.4;
     text-align: left;
+}
+
+/* Поле с ошибкой: под текстом ошибки место, чтобы он не наползал на следующее поле */
+.ck-f-inline_errors .poopup.ck-error-gap {
+    margin-bottom: 30px;
 }
 
 .ck-f-inline_errors .poopup .poopuptext::after {
@@ -740,7 +752,8 @@
     }
 
     .ck-phones__container {
-        justify-content: space-between;
+        justify-content: center;
+        gap: 8px 14px;
     }
 
     .ck-phones__list {

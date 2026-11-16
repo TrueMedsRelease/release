@@ -5538,3 +5538,12 @@ input.just-validate-success-field:focus-visible{
   --fsp-bar:linear-gradient(90deg,#7a7ef0,var(--color-primary));
   --fsp-track:var(--color-secondary);
 }
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

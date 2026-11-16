@@ -5520,3 +5520,12 @@ article.content{
   --fsp-height:6px;
   box-shadow:0 10px 20px 0 rgba(18, 19, 52, 0.05);
 }
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

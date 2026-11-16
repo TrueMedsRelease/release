@@ -2336,6 +2336,8 @@ class HomeController extends Controller
         $check = is_string($captcha) && $captcha !== '' && captcha_check($captcha);
 
         if ($check) {
+            session(['captcha_passed_at' => time()]);
+
             $result = [
                 'result' => $check
             ];

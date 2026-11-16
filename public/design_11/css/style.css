@@ -4952,3 +4952,12 @@ body.has-scroll{
   --fsp-bar:linear-gradient(90deg,var(--color-primary-subtler),var(--color-primary));
   --fsp-track:var(--color-white);
 }
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

@@ -25,6 +25,11 @@
         el.classList.toggle(cls, on);
         var line = el.closest('.enter-info__line');
         if (line) line.classList.toggle(cls, on);
+        // Место под текст ошибки (inline_errors), чтобы он не наползал на следующее поле
+        if (cls === 'ck-invalid') {
+            var wrap = el.closest('.poopup');
+            if (wrap) wrap.classList.toggle('ck-error-gap', on);
+        }
     }
 
     var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;

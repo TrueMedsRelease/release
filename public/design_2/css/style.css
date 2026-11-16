@@ -8116,3 +8116,12 @@ body {
 @media (max-width: 24.375em){
   .free-ship-progress{ --fsp-padding:15px 0.625rem; }
 }
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}
