@@ -12,8 +12,13 @@
 | Выбор скина (по приоритету):
 |   1. ?checkout_skin=N в URL любой страницы — запоминается в сессии
 |      (?checkout_skin=0 — сбросить на дефолт);
-|   2. APP_CHECKOUT_SKIN в .env;
-|   3. 1 (исходник).
+|   2. APP_CHECKOUT_SKIN_MODE=random — случайный скин из APP_CHECKOUT_SKIN_RANDOM
+|      (например 1,2,5; пусто — все). Выбирается один раз на сессию;
+|   3. APP_CHECKOUT_SKIN в .env (режим static, по умолчанию);
+|   4. 1 (исходник).
+|
+| Номер скина уходит на true-serv.net полем checkout_skin: при заходе на
+| чекаут (method=checkout) и в каждом заказе (рядом со store_skin).
 |
 | Доступные флаги:
 |   email_first        — блок почты выше блока телефонов
@@ -45,6 +50,12 @@
 return [
 
     'default_skin' => (int) env('APP_CHECKOUT_SKIN', 1),
+
+    // static — всегда default_skin; random — случайный скин на сессию
+    'mode' => env('APP_CHECKOUT_SKIN_MODE', 'static'),
+
+    // Пул для random через запятую: "1,2,5". Пусто — все скины.
+    'random_skins' => env('APP_CHECKOUT_SKIN_RANDOM', ''),
 
     'switcher' => env('APP_CHECKOUT_SKIN_SWITCHER', env('APP_DEBUG', false)),
 
