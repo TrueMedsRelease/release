@@ -18,6 +18,7 @@ class AdminSecurityTest extends TestCase
         // even if a check regresses and something gets written.
         $this->envBackup = file_get_contents(base_path('.env'));
         RateLimiter::clear(sha1('127.0.0.1'));
+        RateLimiter::clear('admin-login-fails:127.0.0.1');
         // APP_URL may be a bare host (no scheme); pin a clean root.
         URL::forceRootUrl('http://localhost');
     }
@@ -55,9 +56,65 @@ class AdminSecurityTest extends TestCase
         $this->assertSame('error', $response->json('status'));
     }
 
-    public function test_login_is_rate_limited(): void
+    private function attemptLogin(string $password)
     {
+        return $this->withSession(['captcha_passed_at' => time()])
+            ->post('/admin/request_login', ['password' => $password]);
+    }
+
+    private function fakePassword(string $valid): void
+    {
+        $this->partialMock(AdminController::class, function ($mock) use ($valid) {
+            $mock->shouldReceive('passwordMatches')
+                ->andReturnUsing(fn (string $p) => $p === $valid);
+        });
+    }
+
+    public function test_locks_after_five_wrong_passwords(): void
+    {
+        $this->fakePassword('right');
+
         for ($i = 0; $i < 5; $i++) {
+            $this->assertSame('error', $this->attemptLogin('wrong')->json('status'));
+        }
+
+        // Even the correct password is refused while locked.
+        $response = $this->attemptLogin('right');
+        $this->assertSame('error', $response->json('status'));
+        $this->assertStringContainsString('Too many', $response->json('text'));
+        $this->assertNotTrue(session('logged_in'));
+    }
+
+    public function test_successful_login_resets_counter(): void
+    {
+        $this->fakePassword('right');
+
+        for ($i = 0; $i < 4; $i++) {
+            $this->attemptLogin('wrong');
+        }
+        $this->assertSame('success', $this->attemptLogin('right')->json('status'));
+
+        // Counter is back to zero: 4 more wrong attempts still don't lock.
+        for ($i = 0; $i < 4; $i++) {
+            $this->attemptLogin('wrong');
+        }
+        $this->assertSame('success', $this->attemptLogin('right')->json('status'));
+    }
+
+    public function test_missing_captcha_does_not_count_as_failed_password(): void
+    {
+        $this->fakePassword('right');
+
+        for ($i = 0; $i < 10; $i++) {
+            $this->post('/admin/request_login', ['password' => 'wrong']);
+        }
+
+        $this->assertSame('success', $this->attemptLogin('right')->json('status'));
+    }
+
+    public function test_route_has_flood_limit(): void
+    {
+        for ($i = 0; $i < 30; $i++) {
             $this->post('/admin/request_login', ['password' => 'x'])->assertOk();
         }
 

@@ -229,7 +229,7 @@ Route::controller(AdminController::class)->middleware('admin_auth')->group(funct
     Route::get('/admin', 'admin_enter')->name('admin.admin_enter');
     Route::get('/admin/login', 'admin_login')->name('admin.admin_login')->withoutMiddleware('admin_auth');
     Route::get('/admin/auto/{token}', 'auto_login')->name('admin.auto_login')->withoutMiddleware('admin_auth')->where('token', '[A-Za-z0-9]+');
-    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth'])->middleware('throttle:5,1');
+    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth'])->middleware('throttle:30,1');
 
     Route::get('/admin/main_page', 'index')->name('admin.index');
     Route::get('/admin/admin_main_page', 'admin_main_content')->name('admin.admin_main_content')->withoutMiddleware(VerifyCsrfToken::class);

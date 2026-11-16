@@ -888,6 +888,7 @@ return [
     "admin_common_form_invalid_password_repeat" => "Incorrect password repeat",
     "admin_common_form_wrong_captcha_value" => "Wrong value!",
     "admin_login_form_invalid_log_in" => "Wrong username or password",
+    "admin_login_form_too_many_attempts" => "Too many failed login attempts. Try again in :minutes min.",
     "admin_products_form_min_price_title" => "min price:",
     "admin_products_form_invalid_price" => "New product price less than the minimum",
     "admin_products_form_invalid_url" => "Url must be in the format any_text.html",

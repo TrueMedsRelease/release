@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use App\Services\AdminServices;
 use App\Services\CabinetService;
 use App\Models\Language;
@@ -82,7 +83,32 @@ class AdminController extends Controller
         return redirect()->route('admin.customer_personal_account');
     }
 
+    /** Wrong passwords allowed per IP before the login is locked. */
+    private const LOGIN_MAX_FAILS = 5;
+
+    /** Lock duration after too many wrong passwords; also the counting window. */
+    private const LOGIN_LOCK_SECONDS = 3600;
+
+    public function passwordMatches(string $password): bool
+    {
+        return count(DB::select('SELECT id FROM user WHERE md5_pw = ?', [md5($password)])) > 0;
+    }
+
     public function request_login(Request $request) {
+        // Only wrong passwords count (captcha mistakes never reach this
+        // endpoint); a successful login resets the counter.
+        $limiterKey = 'admin-login-fails:' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($limiterKey, self::LOGIN_MAX_FAILS)) {
+            return json_encode([
+                'status'      => 'error',
+                'text'        => __('text.admin_login_form_too_many_attempts', [
+                    'minutes' => (int) ceil(RateLimiter::availableIn($limiterKey) / 60),
+                ]),
+                'new_captcha' => captcha_src(),
+            ]);
+        }
+
         $captchaPassedAt = (int) $request->session()->pull('captcha_passed_at', 0);
 
         if ($captchaPassedAt === 0 || time() - $captchaPassedAt > 300) {
@@ -95,7 +121,9 @@ class AdminController extends Controller
 
         $password = $request->input('password');
 
-        if (!is_string($password) || $password === '') {
+        if (!is_string($password) || $password === '' || !$this->passwordMatches($password)) {
+            RateLimiter::hit($limiterKey, self::LOGIN_LOCK_SECONDS);
+
             return json_encode([
                 'status'      => 'error',
                 'text'        => __('text.admin_login_form_invalid_log_in'),
@@ -103,27 +131,15 @@ class AdminController extends Controller
             ]);
         }
 
-        $md5_password = md5($password);
+        RateLimiter::clear($limiterKey);
 
-        $user = DB::select('SELECT * FROM user WHERE md5_pw = ?', [$md5_password]);
+        $request->session()->regenerate();
+        session(['logged_in' => true]);
 
-        if (count($user) > 0) {
-
-            session(['logged_in' => true]);
-
-            $result = [
-                'status' => 'success',
-                'url' => route('admin.admin_seo'),
-            ];
-        } else {
-            $result = [
-                'status' => 'error',
-                'text' => __('text.admin_login_form_invalid_log_in'),
-                'new_captcha' => captcha_src()
-            ];
-        }
-
-        return json_encode($result);
+        return json_encode([
+            'status' => 'success',
+            'url'    => route('admin.admin_seo'),
+        ]);
     }
 
     public function admin_main_content() {
