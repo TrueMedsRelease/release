@@ -4671,10 +4671,11 @@
                 }), 2000);
                 setTimeout((() => {
                     announce.classList.remove("active");
+                    announce.parentNode.style.pointerEvents = 'none';
+                    setTimeout((() => {
+                        announce.parentNode.style.display = 'none';
+                    }), 700);
                 }), 7000);
-                setTimeout((() => {
-                    announce.parentNode.style = 'z-index: 0;';
-                }), 8000);
             }
         }
         let showCustomShippingCheckbox = document.querySelector("[data-show-custom-shipping]");
