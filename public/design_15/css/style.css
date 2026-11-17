@@ -5526,3 +5526,24 @@ input.just-validate-success-field:focus-visible{
 .cart-form-gift{
     margin-bottom: 2rem;;
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--color-white);
+  --fsp-border:1px solid var(--color-stroke);
+  --fsp-radius:2rem;
+  --fsp-margin:0;
+  --fsp-padding:1.6rem 1.9rem 1.8rem;
+  --fsp-text:var(--color-text);
+  --fsp-accent:var(--color-primary);
+  --fsp-bar:linear-gradient(90deg,#7a7ef0,var(--color-primary));
+  --fsp-track:var(--color-secondary);
+}
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

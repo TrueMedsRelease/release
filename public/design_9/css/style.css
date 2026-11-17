@@ -8570,3 +8570,23 @@ strong {
         gap: 0;
     }
 }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--table-color);
+  --fsp-border:none;
+  --fsp-radius:14px;
+  --fsp-margin:12px 0;
+  --fsp-text:var(--dark);
+  --fsp-accent:var(--accent-color-hover);
+  --fsp-bar:var(--accent-color);
+  --fsp-track:#fff;
+}
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

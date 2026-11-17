@@ -137,6 +137,7 @@
             </fieldset>
 
             @if (!$is_only_card)
+                @include('shared.free_ship_progress')
                 <fieldset class="form__fieldset">
                     <div class="form__field custom-field">
                         <div class="delivery-radios grey-panel">

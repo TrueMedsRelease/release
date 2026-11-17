@@ -6172,6 +6172,7 @@ textarea.input {
 
 
 .announce {
+  pointer-events: none;
   position: fixed;
   bottom: 44vh;
   right: 0;
@@ -6214,6 +6215,7 @@ textarea.input {
 }
 
 .announce__item.active {
+  pointer-events: auto;
   -webkit-transform: translate(0px, 0px);
   -ms-transform: translate(0px, 0px);
   transform: translate(0px, 0px);
@@ -8194,4 +8196,24 @@ footer .top-phones-header {
     .bonus2 {
         display: block;
     }
+}
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:#eef6fd;
+  --fsp-border:1px solid #d3e7f7;
+  --fsp-radius:12px;
+  --fsp-margin:12px 0;
+  --fsp-text:var(--blue);
+  --fsp-accent:var(--blue-main);
+  --fsp-bar:linear-gradient(90deg,var(--blue-main-light),var(--blue-main));
+  --fsp-track:#d9eaf8;
+}
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
 }

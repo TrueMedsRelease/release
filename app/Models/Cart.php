@@ -271,7 +271,7 @@ class Cart extends Model
         $productTotal = $product_total - $sum_card;
 
         $payment_with_bonus = [
-            // 'mastercard',
+            'mastercard',
             // 'sepa_local',
             // 'fps',
             // 'domestic',
@@ -286,7 +286,11 @@ class Cart extends Model
         ];
 
         if (in_array(session('bonus_checkout_payment', 'mastercard'), $payment_with_bonus)) {
-            $bonus_checkout = ceil($checkoutTotal * 0.05);
+            if (session('bonus_checkout_payment', 'mastercard') == 'mastercard') {
+                $bonus_checkout = ceil($checkoutTotal * 0.01);
+            } else {
+                $bonus_checkout = ceil($checkoutTotal * 0.05);
+            }
         }
 
         if (session()->has('coupon')) {

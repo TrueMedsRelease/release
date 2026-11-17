@@ -29,6 +29,13 @@
         $phone_arr = [$target_key => $target_value] + $phone_arr;
     }
 
+    $ckFlags = \App\Services\CheckoutSkin::flags();
+    $ck = fn (string $flag) => in_array($flag, $ckFlags, true);
+    $ckPlaceLabel = __('text.checkout_place');
+    if ($ck('pay_total_button') && session('total.checkout_total_in_currency')) {
+        $ckPlaceLabel .= ' · ' . session('total.checkout_total_in_currency');
+    }
+
     if (!function_exists('asset_ver')) {
         function asset_ver(string $path): string {
             static $mtimes = [];
@@ -49,15 +56,7 @@
     <input type="hidden" id="app_google_on" @if (env('APP_GOOGLE_ON', 0) && session('location.country') != 'US' && $service_enable) value="1" @else value="0" @endif>
     <input type="hidden" id="app_sepa_on" @if(env('APP_SEPA_ON', 0) && in_array(session('location.country'), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI", "CH", "GB", "MC", "SM", "AD", "VA"])) value="1" @else value="0" @endif>
     <input type="hidden" id="app_zelle_on" @if(env('APP_ZELLE_ON', 0) && (session('location.country') == "US" || session('form.billing_country') == "US")) value="1" @else value="0" @endif>
-    <div class="header__phones-top top-phones-header">
-        <div class="top-phones-header__container header__container">
-            <div class="top-phones-header__items">
-                @foreach ($phone_arr as $id_phone => $phones)
-                    <a class="top-phones-header__item" href="tel:{{__('text.phones_title_phone_' . $id_phone)}}">{{__('text.phones_title_phone_' . $id_phone . '_code')}}{{__('text.phones_title_phone_' . $id_phone)}}</a>
-                @endforeach
-            </div>
-        </div>
-    </div>
+    @include('checkout_parts.phones_bar')
     <div class="header__content">
         <div class="header__container">
             <div class="header__top">
@@ -117,7 +116,8 @@
         </div>
     </div>
 </header>
-<main class="enter-info">
+<main class="enter-info {{ \App\Services\CheckoutSkin::cssClasses() }}" data-checkout-skin="{{ \App\Services\CheckoutSkin::id() }}"
+    @if ($ck('email_typo_hint')) data-ck-text-typo="{{ __('text.checkout_email_typo') }}" data-ck-text-typo-fix="{{ __('text.checkout_email_typo_fix') }}" @endif>
     <div class="enter-info__container">
         <form id="order_form" class="enter-info__form">
             @csrf
@@ -465,79 +465,48 @@
                     </span>
                     {{__('text.checkout_timer')}}
                 </p>
-                <section class="enter-info__block">
+                @if ($ck('journey_steps'))
+                    {{-- Полоса прогресса: магазин и корзина уже пройдены, впереди ещё два шага --}}
+                    <ol class="ck-journey" data-ck-steps>
+                        <li class="ck-journey__item is_done">
+                            <a class="ck-journey__link" href="{{ route('home.index') }}">
+                                <span class="ck-journey__num">1</span><span class="ck-journey__label">{{ __('text.checkout_journey_shop') }}</span>
+                            </a>
+                        </li>
+                        <li class="ck-journey__item is_done">
+                            <a class="ck-journey__link" href="{{ route('cart.index') }}">
+                                <span class="ck-journey__num">2</span><span class="ck-journey__label">{{ __('text.checkout_journey_cart') }}</span>
+                            </a>
+                        </li>
+                        <li class="ck-journey__item" data-ck-goto="1">
+                            <span class="ck-journey__num">3</span><span class="ck-journey__label">{{ __('text.checkout_journey_checkout') }}</span>
+                        </li>
+                        <li class="ck-journey__item" data-ck-goto="2">
+                            <span class="ck-journey__num">4</span><span class="ck-journey__label">{{ __('text.checkout_step_payment') }}</span>
+                        </li>
+                    </ol>
+                @elseif ($ck('multistep'))
+                    <ol class="ck-steps" data-ck-steps>
+                        <li class="ck-steps__item" data-ck-goto="1"><span class="ck-steps__num">1</span><span class="ck-steps__label">{{ __('text.checkout_step_details') }}</span></li>
+                        <li class="ck-steps__item" data-ck-goto="2"><span class="ck-steps__num">2</span><span class="ck-steps__label">{{ __('text.checkout_step_payment') }}</span></li>
+                    </ol>
+                @endif
+                <section class="enter-info__block" data-ck-step="1">
                     <h2 class="enter-info__title title">{{__('text.checkout_info')}}</h2>
                     <div class="enter-info__rows">
-                        <div class="enter-info__row">
-                            <div class="enter-info__line poopup">
-                                <span class="poopuptext" id="error_phone">{{__('text.checkout_wrong_phone')}}</span>
-                                <div class="enter-info__country phone_code">
-                                    <select name="phone_code" class="form" id="phone_code_select"
-                                        data-pseudo-label="{{__('text.checkout_phone')}}" data-scroll>
-                                        @foreach ($phone_codes as $item)
-                                            <option id=""
-                                            @if (empty(session('form')))
-                                                 @selected($item['iso'] == session('location.country', ''))
-                                            @else
-                                                @selected($item['iso'] == session('form.phone_code', ''))
-                                            @endif
-                                                data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}" value="{{ $item['iso'] }}">
-                                                +{{ $item['phonecode'] }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="enter-info__input enter-info__input--country" style="margin-bottom: 0;">
-                                    <input required autocomplete="off" type="number" id="phone" name="phone"
-                                        value="{{ session('form.phone', '') }}"
-                                        placeholder="000 000 00 00" class="input"
-                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                        type = "number" maxlength = "14">
-                                </div>
-                            </div>
-                            <div class="enter-info__line poopup">
-                                <span class="poopuptext" id="error_alt_phone">{{__('text.checkout_wrong_phone')}}</span>
-                                <div class="enter-info__country alt_phone_code">
-                                    <select name="alt_phone_code" class="form" id="phone_code_select"
-                                        data-pseudo-label="{{__('text.checkout_alt_phone')}}" data-scroll>
-                                        @foreach ($phone_codes as $item)
-                                            <option id=""
-                                            @if (empty(session('form')))
-                                                @selected($item['iso'] == session('location.country', ''))
-                                            @else
-                                                @selected($item['iso'] == session('form.alt_phone_code', ''))
-                                            @endif
-                                                data-asset="{{ asset('style_checkout/images/countrys/sprite.svg#' . $item['nicename']) }}"
-                                                value="{{ $item['iso'] }}">
-                                                +{{ $item['phonecode'] }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="enter-info__input enter-info__input--country" style="margin-bottom: 0;">
-                                    <input autocomplete="off" type="number" id="alt_phone" name="alt_phone"
-                                        value="{{ session('form.alt_phone', '') }}"
-                                        placeholder="000 000 00 00" class="input"
-                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                        type = "number" maxlength = "14">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="enter-info__row">
-                            <div class="enter-info__input poopup">
-                                <label for="email" class="enter-info__label">{{__('text.checkout_email')}}</label>
-                                <span class="poopuptext" id="error_email">{{__('text.checkout_wrong_email')}}</span>
-                                <input id="email" required autocomplete="off" type="email" name="email" class="input" value="{{ session('form.email', '') }}">
-                            </div>
-                            <div class="enter-info__input poopup">
-                                <span class="poopuptext" id="error_alt_email">{{__('text.checkout_wrong_email')}}</span>
-                                <label for="alt_email" class="enter-info__label">{{__('text.checkout_email2')}}</label>
-                                <input id="alt_email" autocomplete="off" type="email" name="alt_email" class="input" value="{{ session('form.alt_email', '') }}">
-                            </div>
-                        </div>
+                        @if ($ck('email_first'))
+                            @include('checkout_parts.contact_emails')
+                            @include('checkout_parts.contact_phones')
+                        @else
+                            @include('checkout_parts.contact_phones')
+                            @include('checkout_parts.contact_emails')
+                        @endif
+                        @if ($ck('collapse_optional'))
+                            <button type="button" class="ck-optional-toggle" data-ck-optional-toggle>{{ __('text.checkout_add_alt_contacts') }}</button>
+                        @endif
                     </div>
                 </section>
-                <section class="enter-info__block">
+                <section class="enter-info__block" data-ck-step="1">
                     <h2 class="enter-info__title title">{{__('text.checkout_billing_address')}}</h2>
                     <div class="enter-info__rows">
                         <div class="enter-info__row">
@@ -554,7 +523,7 @@
                         </div>
                         <div class="enter-info__row">
                             <div class="enter-info__select select_billing_country">
-                                <select required id="billing_country" name="billing_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
+                                <select required id="billing_country" name="billing_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                     @foreach ($countries as $country)
                                         <option @selected($country['country_iso2'] == session('form.billing_country', session('location.country', 'US'))) value="{{ $country['country_iso2'] }}">
                                             {{ $country['country_name'] }}</option>
@@ -563,7 +532,7 @@
                             </div>
                             @if (in_array(session('form.billing_country', session('location.country', 'US')), array_keys($states)))
                             <div class="enter-info__select select_billing_state">
-                                <select required id="billing_state" name="billing_state" class="form" data-pseudo-label="State" data-scroll>
+                                <select required id="billing_state" name="billing_state" class="form" data-pseudo-label="State" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                     @foreach ($states[session('form.billing_country', session('location.country', 'US'))] as $key => $state)
                                         <option value="{{ $key }}" @selected($key == session('form.billing_state', session('location.state', '')))>
                                             {{ $state }}
@@ -592,7 +561,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="enter-info__block">
+                <section class="enter-info__block" data-ck-step="1">
                     <div class="enter-info__shiping">
                         <h2 class="enter-info__title title">{{__('text.checkout_shipping_address')}}</h2>
                         <div class="enter-info__checkbox checkbox">
@@ -616,7 +585,7 @@
                         class="enter-info__add-inputs add-info info-form__add-inputs">
                             <div class="enter-info__row">
                                 <div class="enter-info__select select_shipping_country">
-                                    <select required id="shipping_country" name="shipping_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll>
+                                    <select required id="shipping_country" name="shipping_country" class="form" data-pseudo-label="{{__('text.checkout_country')}}" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                         @foreach ($countries as $country)
                                             <option @selected($country['country_iso2'] == session('form.shipping_country', session('location.country')))
                                                 value="{{ $country['country_iso2'] }}">{{ $country['country_name'] }}
@@ -626,7 +595,7 @@
                                 </div>
                                 @if (in_array(session('form.shipping_country', session('location.country', 'US')), array_keys($states)))
                                     <div class="enter-info__select select_shipping_state">
-                                        <select required id="shipping_state" name="shipping_state" class="form" data-pseudo-label="{{__('text.checkout_state')}}" data-scroll>
+                                        <select required id="shipping_state" name="shipping_state" class="form" data-pseudo-label="{{__('text.checkout_state')}}" data-scroll="300" data-class-modif="search" data-search-placeholder="{{ __('text.checkout_select_search') }}" data-search-empty="{{ __('text.checkout_code_not_found') }}">
                                             @foreach ($states[session('form.shipping_country', session('location.country', 'US'))] as $key => $state)
                                                 <option value="{{ $key }}" @selected($key == session('form.shipping_state', session('location.state', '')))>
                                                     {{ $state }}
@@ -656,8 +625,31 @@
                         </div>
                     </div>
                 </section>
-                <section class="enter-info__block">
+                @if ($ck('multistep'))
+                    <div class="ck-step-actions" data-ck-step="1">
+                        <button type="button" class="enter-info__button button ck-step-next" data-ck-next="2">
+                            <span>{{ __('text.checkout_step_next') }}</span>
+                        </button>
+                    </div>
+                @endif
+                <section class="enter-info__block" data-ck-step="2">
+                    @if ($ck('multistep'))
+                        <button type="button" class="ck-step-back ck-step-back--top" data-ck-goto="1">{{ __('text.checkout_step_back') }}</button>
+                    @endif
                     <h2 class="enter-info__title title">{{__('text.checkout_payment')}}</h2>
+                    @if ($ck('help_phone') && count($phone_arr))
+                        @php $ckHelpPhoneId = array_key_first($phone_arr); @endphp
+                        <div class="ck-help">
+                            <svg class="ck-help__icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8Z" fill="currentColor"/>
+                            </svg>
+                            <div class="ck-help__body">
+                                <div class="ck-help__title">{{ __('text.checkout_help_call') }}</div>
+                                <a class="ck-help__phone" href="tel:{{ __('text.phones_title_phone_' . $ckHelpPhoneId) }}">{{ __('text.phones_title_phone_' . $ckHelpPhoneId . '_code') }}{{ __('text.phones_title_phone_' . $ckHelpPhoneId) }}</a>
+                                <div class="ck-help__note">{{ __('text.checkout_help_call_note') }}</div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="enter-info__rows">
                         @php
                             $currentPaymentType = session('form.payment_type', 'mastercard');
@@ -674,6 +666,7 @@
                                         <input type="radio" name="payment_type" value="mastercard" @if(session('form.payment_type', 'mastercard') == 'mastercard') checked @endif>
                                         <img src="{{ asset('style_checkout/images/pay-systems/mastercard.svg') }}" class="payment-method-icon" alt="MasterCard">
                                         <span class="payment-method-title">MasterCard</span>
+                                        <span class="payment-discount">-1% off</span>
                                     </label>
 
                                     <!-- Apple Pay -->
@@ -701,7 +694,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/revolut.svg') }}" class="payment-method-icon" alt="Revolut">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">Revolut</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                             </div>
                                         </label>
 
@@ -710,7 +703,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/wise.svg') }}" class="payment-method-icon" alt="Wise">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">Wise</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                             </div>
                                         </label>
 
@@ -719,7 +712,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/n26.svg') }}" class="payment-method-icon" alt="N26">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">N26</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                             </div>
                                         </label>
 
@@ -728,7 +721,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" class="payment-method-icon" alt="Instant Bank Transfer">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">Instant Bank Transfer</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                                 <span class="payment-subtext">{{ __('text.checkout_open_banking_subtext') }}</span>
                                             </div>
                                         </label>
@@ -831,7 +824,7 @@
                                         <img src="{{ asset('style_checkout/images/icons/payment_type/crypto.svg') }}" class="payment-method-icon" alt="Crypto">
                                         <div class="payment-method-info">
                                             <span class="payment-method-title">Crypto</span>
-                                            <span class="payment-discount">-15% extra off</span>
+                                            <span class="payment-discount">-15% off</span>
                                         </div>
                                     </label>
                                     @endif
@@ -880,6 +873,9 @@
                                     @endif
 
                                     <span class="poopuptext" id="myPopup9">{{__('text.checkout_not_selected')}}</span>
+                                    @if ($ck('soft_payments'))
+                                        <span class="ck-pay-hint" role="tooltip">{{ __('text.checkout_fill_details_hint') }}</span>
+                                    @endif
                                 </div>
 
 
@@ -947,7 +943,7 @@
                                 </div>
                             </div>
                             <button id="proccess" name="proccess" class="enter-info__button button">
-                                <span>{{__('text.checkout_place')}}</span>
+                                <span>{{ $ckPlaceLabel }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -1555,7 +1551,7 @@
 
                         <div class="enter-info__bonus-card-content" @if (session('form.payment_type', 'mastercard') != 'bonus_card') hidden @endif>
                             <button id="proccess_bonus_card" name="proccess" class="enter-info__button button">
-                                <span>{{ __('text.checkout_place') }}</span>
+                                <span>{{ $ckPlaceLabel }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -1566,7 +1562,7 @@
 
                         <div class="enter-info__gift-card-content" @if (session('form.payment_type', 'mastercard') != 'gift_card') hidden @endif>
                             <button id="proccess_gift_card" name="proccess" class="enter-info__button button">
-                                <span>{{ __('text.checkout_place') }}</span>
+                                <span>{{ $ckPlaceLabel }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -1577,7 +1573,7 @@
 
                         <div class="enter-info__open-banking-content" @if (!in_array(session('form.payment_type', 'mastercard'), ['open_banking', 'revolut', 'wise', 'n26'])) hidden @endif>
                             <button id="proccess_open_banking" name="proccess" class="enter-info__button button">
-                                <span>{{ __('text.checkout_place') }}</span>
+                                <span>{{ $ckPlaceLabel }}</span>
                                 <svg width="18" height="18">
                                     <use
                                         xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -1611,7 +1607,7 @@
                         @if (env('APP_CASHAPP_ON', 0) == 1 && session('form.billing_country') == "US")
                             <div class="enter-info__cashapp-content" @if (session('form.payment_type', 'mastercard') != 'cashapp') hidden @endif>
                                 <button id="proccess_cashapp" name="proccess" class="enter-info__button button">
-                                    <span>{{ __('text.checkout_place') }}</span>
+                                    <span>{{ $ckPlaceLabel }}</span>
                                     <svg width="18" height="18">
                                         <use
                                             xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -1624,7 +1620,7 @@
                         @if (env('APP_PAYPAL_ON', 0) == 1 && session('form.billing_country') == "US")
                             <div class="enter-info__paypal-content" @if (session('form.payment_type', 'mastercard') != 'paypal') hidden @endif>
                                 <button id="proccess_paypal" name="proccess" class="enter-info__button button">
-                                    <span>{{ __('text.checkout_place') }}</span>
+                                    <span>{{ $ckPlaceLabel }}</span>
                                     <svg width="18" height="18">
                                         <use
                                             xlink:href="{{ asset('style_checkout/images/icons/icons.svg') }}#svg-arr-left">
@@ -1634,6 +1630,24 @@
                             </div>
                         @endif
                     </div>
+                    @if ($ck('trust_badges'))
+                        <div class="ck-trust">
+                            <div class="ck-trust__head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" fill="currentColor"/>
+                                    <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                <span>{{ __('text.checkout_secure_title') }}</span>
+                            </div>
+                            <div class="ck-trust__note">{{ __('text.checkout_secure_note') }}</div>
+                            <div class="ck-trust__logos">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/geotrust.svg') }}" width="72" height="24" alt="GeoTrust">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/norton.svg') }}" width="56" height="32" alt="Norton">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/comodo.svg') }}" width="72" height="24" alt="Comodo">
+                                <img loading="lazy" src="{{ asset('style_checkout/images/partners/mcafee.svg') }}" width="64" height="20" alt="McAfee">
+                            </div>
+                        </div>
+                    @endif
                 </section>
             </div>
             <div class="popup_warning">
@@ -1651,7 +1665,11 @@
         </form>
     </div>
     <script src="{{ asset_ver('style_checkout/js/app.js') }}"></script>
+    <script src="{{ asset_ver('style_checkout/js/checkout-skins.js') }}"></script>
 </main>
+@if (config('checkout.switcher'))
+    @include('checkout_parts.skin_switcher')
+@endif
 <footer class="footer">
     <div class="footer__container">
         <p class="footer__text">{{__('text.checkout_copyright')}} <br> {{__('text.checkout_ltd')}}</p>

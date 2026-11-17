@@ -1435,7 +1435,12 @@ class HomeController extends Controller
 
     public function currency(Request $request, $currency)
     {
-        $coef = Currency::GetCoef($currency);
+        $currency = strtolower((string) $currency);
+        $coef     = isset(Currency::$prefix[$currency]) ? Currency::GetCoef($currency) : null;
+
+        if ($coef === null) {
+            return redirect()->to($this->resolveRedirectUrl($request));
+        }
 
         session([
             'currency'   => $currency,
@@ -1449,7 +1454,12 @@ class HomeController extends Controller
 
     public function currency_with_url(Request $request, $url, $currency)
     {
-        $coef = Currency::GetCoef($currency);
+        $currency = strtolower((string) $currency);
+        $coef     = isset(Currency::$prefix[$currency]) ? Currency::GetCoef($currency) : null;
+
+        if ($coef === null) {
+            return redirect()->to($this->resolveRedirectUrl($request, $url));
+        }
 
         session([
             'currency'   => $currency,
@@ -2321,11 +2331,13 @@ class HomeController extends Controller
 
     public function check_code(Request $request)
     {
-        $captcha = $request->captcha;
+        $captcha = $request->input('captcha');
 
-        $check = captcha_check($captcha);
+        $check = is_string($captcha) && $captcha !== '' && captcha_check($captcha);
 
         if ($check) {
+            session(['captcha_passed_at' => time()]);
+
             $result = [
                 'result' => $check
             ];

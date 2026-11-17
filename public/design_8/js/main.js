@@ -11,7 +11,10 @@ $( function() {
 
             setTimeout((() => {
                 announce.classList.remove("active");
-                announce.parentNode.style = 'z-index: 0;';
+                announce.parentNode.style.pointerEvents = 'none';
+                setTimeout((() => {
+                    announce.parentNode.style.display = 'none';
+                }), 700);
             }), 12000);
 
         }

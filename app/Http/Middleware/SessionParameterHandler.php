@@ -9,6 +9,7 @@ use App\Models\Language;
 use App\Models\Product;
 use App\Models\ProductPackaging;
 use App\Services\GeoIpService;
+use App\Services\CheckoutSkin;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -140,6 +141,14 @@ class SessionParameterHandler
             if (in_array($request->query('design'), [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17
              ])) {
                 session(['design' => 'design_' . $request->query('design')]);
+            }
+        }
+
+        if ($request->query('checkout_skin') !== null) {
+            if (CheckoutSkin::exists($request->query('checkout_skin'))) {
+                session(['checkout_skin' => (int) $request->query('checkout_skin')]);
+            } else {
+                session()->forget('checkout_skin');
             }
         }
 

@@ -36,6 +36,7 @@
     @endphp
 
     <link rel="stylesheet" type="text/css" href="{{ asset_ver('style_checkout/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset_ver('style_checkout/checkout-skins.css') }}">
 	<link rel="shortcut icon" href="{{ asset('style_checkout/favicon.ico') }}">
     <script defer src="{{ asset_ver('js/crosstab-bus.js') }}"></script>
     <script defer src="{{ asset_ver('js/payment-redirect.js') }}"></script>
@@ -104,6 +105,7 @@
         const checkoutValidateWallet = "{{ route('checkout.validate_for_wallet') }}";
         const checkoutWallet = "{{ route('checkout.wallet_process') }}";
         const checkoutRecalculation = "{{ route('checkout.recalculation') }}";
+        const checkoutValidateEmail = "{{ route('checkout.validate_email') }}";
         const checkoutOpenBanking = "{{ route('checkout.open_banking_process') }}";
         const checkoutCashapp = "{{ route('checkout.cashapp_process') }}";
 

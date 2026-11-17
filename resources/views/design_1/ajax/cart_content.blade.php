@@ -162,6 +162,7 @@
         </form>
 
         @if (!$is_only_card)
+            @include('shared.free_ship_progress')
             <form class="order-delivery" action="#">
                 @csrf
                 <div class="order-delivery__item">

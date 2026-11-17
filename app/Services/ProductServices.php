@@ -225,7 +225,7 @@ class ProductServices
 
         $countryCode = strtoupper(session('location.country') ?? '');
         foreach ($products as $i => &$product) {
-            if ($countryCode != 'US' && ($product['id'] == 755 || $product['id'] == 491)) {
+            if (!in_array($countryCode, ['US', 'GB', 'AU'], true) && ($product['id'] == 755 || $product['id'] == 491)) {
                 unset($products[$i]);
                 continue;
             }
@@ -381,7 +381,7 @@ class ProductServices
                     }
                 }
 
-                if ($countryCode != 'US' && ($product['id'] == 755 || $product['id'] == 491)) {
+                if (!in_array($countryCode, ['US', 'GB', 'AU'], true) && ($product['id'] == 755 || $product['id'] == 491)) {
                     $product['unset'] = true;
                 }
 

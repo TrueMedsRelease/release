@@ -642,6 +642,7 @@ bottom:0;
 }
 
 .announce {
+  pointer-events: none;
   position: fixed;
   bottom: 44vh;
   right: 0;
@@ -681,6 +682,7 @@ bottom:0;
 }
 
 .announce__item.active {
+  pointer-events: auto;
   -webkit-transform: translate(0px, 0px);
       -ms-transform: translate(0px, 0px);
           transform: translate(0px, 0px);
@@ -6272,4 +6274,24 @@ body::after {
 
 .install_store {
     margin-top: 20px;
+}
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--add-white);
+  --fsp-border:none;
+  --fsp-radius:0;
+  --fsp-margin:12px 0;
+  --fsp-text:var(--dark-gray);
+  --fsp-accent:#16a862;
+  --fsp-bar:var(--green);
+  --fsp-track:#fff;
+}
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
 }
