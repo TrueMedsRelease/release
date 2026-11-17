@@ -3,6 +3,8 @@
     Подключается в ajax/cart_content каждого дизайна через @include('shared.free_ship_progress').
     Ожидает в области видимости: $shipping, $product_total_check, $Currency.
 
+    Отключение: APP_FREE_SHIP_PROGRESS=0 в .env (по умолчанию включена).
+
     Режимы:
       • сумма < 200 — одна полоса до порога выбранной доставки (Regular 200 / Express 300);
       • сумма ≥ 200 и доступны обе доставки — полоса из двух половин: левая — бесплатная
@@ -22,7 +24,8 @@
     if ($fsp_staged) {
         $fsp_name = 'ems';
     }
-    $fsp_threshold = $fsp_thresholds[$fsp_name] ?? null;
+
+    $fsp_threshold = env('APP_FREE_SHIP_PROGRESS', 1) ? ($fsp_thresholds[$fsp_name] ?? null) : null;
 @endphp
 @if ($fsp_threshold && !empty($shipping[$fsp_name]))
     @php

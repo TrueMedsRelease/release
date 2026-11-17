@@ -239,9 +239,83 @@
         return invalidFields(1).length ? 1 : 2;
     }
 
-    // ---------- journey_steps на одной странице (без multistep) ----------
-    // "Checkout" — текущий, пока не долистали до оплаты; галочка у него — только когда
-    // контакты и адрес действительно заполнены.
+    function checkEmailOnServer(done) {
+        if (typeof checkoutValidateEmail === 'undefined' || !field('email')) return done([]);
+
+        var email = val('email');
+        var alt = val('alt_email');
+        var key = email + '|' + alt;
+        var cache = window.__ckEmailCheck || (window.__ckEmailCheck = {});
+        if (cache[key]) return done(cache[key]);
+
+        var body = new FormData();
+        body.append('email', email);
+        if (alt) body.append('alt_email', alt);
+
+        fetch(checkoutValidateEmail, {
+            method: 'POST',
+            body: body,
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(function (res) {
+                if (res.status === 422) {
+                    return res.json().then(function (json) {
+                        return (json.errors || []).map(function (err) { return err.field; });
+                    });
+                }
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return [];
+            })
+            .then(function (bad) {
+                cache[key] = bad;
+                done(bad);
+            })
+            .catch(function () { done([]); });
+    }
+
+    function showEmailErrors(bad) {
+        if (!bad.length) return;
+        if (bad.indexOf('alt_email') !== -1) openOptional();
+        markErrors(bad);
+        scrollToField(bad[0]);
+    }
+
+    function goToStep(to, btn) {
+        var proceed = function () {
+            showStep(to);
+            updatePayLock();
+            scrollToSteps();
+        };
+        if (to < 2 || !field('email')) return proceed();
+        if (btn && btn.classList.contains('ck-loading')) return;
+
+        if (btn) {
+            btn.classList.add('ck-loading');
+            btn.setAttribute('aria-busy', 'true');
+        }
+        checkEmailOnServer(function (bad) {
+            if (btn) {
+                btn.classList.remove('ck-loading');
+                btn.removeAttribute('aria-busy');
+            }
+            if (bad.length) {
+                showStep(1);
+                showEmailErrors(bad);
+                return;
+            }
+            proceed();
+        });
+    }
+
+    function verifyEmailOnStep2() {
+        if ((window.__ckStep || 1) < 2) return;
+        checkEmailOnServer(function (bad) {
+            if (!bad.length || (window.__ckStep || 1) < 2) return;
+            showStep(1);
+            updatePayLock();
+            showEmailErrors(bad);
+        });
+    }
 
     function updateJourney() {
         var r = root();
@@ -419,10 +493,10 @@
             var name = o.getAttribute('data-name') || '';
             var text = o.textContent.trim();
             btn.setAttribute('data-ck-search', (name + ' ' + o.value + ' ' + text).toLowerCase());
-            // Поиск по цифрам (+39 / 39) — только у кода телефона; у стран и штатов — по названию и ISO.
+
             btn.setAttribute('data-ck-code', selectItem.classList.contains('select_code') ? text.replace(/\D/g, '') : '');
             btn.setAttribute('data-ck-selected', btn.hidden ? '1' : '');
-            // Название страны в списке не показываем, но искать по нему можно.
+
             if (name) btn.setAttribute('title', name);
         });
 
@@ -489,8 +563,7 @@
             if (e.type === 'input' && (el.name === 'email' || el.name === 'alt_email')) removeEmailHint(el);
         };
 
-        // Уход из поля: подсказка опечатки в почте и (validate_on_blur) проверка сразу,
-        // а не только при нажатии "Оплатить". Пустое поле не ругаем — человек мог ещё не дойти.
+
         document.addEventListener('focusout', function (e) {
             var el = e.target;
             if (!el || !el.name || !el.closest || !el.closest('#order_form')) return;
@@ -498,7 +571,17 @@
             if (!has('validate_on_blur') || el.tagName === 'SELECT') return;
             var rule = ruleFor(el.name);
             var v = val(el.name);
-            if (rule && v !== '' && !rule.ok(v)) markErrors([el.name]);
+            if (rule && v !== '' && !rule.ok(v)) {
+                markErrors([el.name]);
+                return;
+            }
+
+
+            if (has('multistep') && (el.name === 'email' || el.name === 'alt_email') && v !== '') {
+                checkEmailOnServer(function (bad) {
+                    if (bad.indexOf(el.name) !== -1 && val(el.name) === v) markErrors([el.name]);
+                });
+            }
         });
 
         var journeyTick = false;
@@ -545,11 +628,7 @@
                 var to = parseInt(next.getAttribute('data-ck-next'), 10);
                 var steps = [];
                 for (var s = 1; s < to; s++) steps.push(s);
-                if (validateSteps(steps)) {
-                    showStep(to);
-                    updatePayLock();
-                    scrollToSteps();
-                }
+                if (validateSteps(steps)) goToStep(to, next);
                 return;
             }
 
@@ -580,7 +659,6 @@
 
         });
 
-        // soft_payments: клик по плитке оплаты при незаполненных данных — без переключения.
         document.addEventListener('click', function (e) {
             var panel = e.target && e.target.closest ? e.target.closest('.payment-methods-grid .payment-method-panel') : null;
             if (!panel || !payLocked()) return;
@@ -589,8 +667,7 @@
             nudgeToMissing();
         }, true);
 
-        // То же для клавиатуры (стрелки в группе радиокнопок): откатываем выбор
-        // до того, как сработает обработчик app.js.
+
         document.addEventListener('change', function (e) {
             var t = e.target;
             if (!t || t.name !== 'payment_type' || !payLocked()) return;
@@ -620,8 +697,7 @@
             if (!el || el.tagName !== 'INPUT' || !el.closest('#order_form')) return;
             if (stepOf(el) !== 1) return;
             e.preventDefault();
-            // Enter ведёт к следующему незаполненному полю, а когда пусто только текущее
-            // (или всё заполнено) — жмёт «Продолжить».
+            
             var missing = invalidFields(1).filter(function (name) { return name !== el.name; });
             if (missing.length) {
                 scrollToField(missing[0]);
@@ -638,7 +714,10 @@
         initAutofill();
         initOptional();
         initValidMarks();
-        if (has('multistep')) showStep(initialStep());
+        if (has('multistep')) {
+            showStep(initialStep());
+            verifyEmailOnStep2();
+        }
         updatePayLock();
         updateJourney();
         observeServerErrors();

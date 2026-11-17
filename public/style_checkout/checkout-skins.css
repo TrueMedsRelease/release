@@ -969,3 +969,24 @@
 .ck-switcher__item.is_active {
     background: var(--green);
 }
+
+.ck-step-next.ck-loading {
+    pointer-events: none;
+    opacity: 0.75;
+    cursor: progress;
+}
+.ck-step-next.ck-loading::after {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-left: 10px;
+    vertical-align: -0.15em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: ck-spin 0.7s linear infinite;
+}
+@keyframes ck-spin {
+    to { transform: rotate(360deg); }
+}

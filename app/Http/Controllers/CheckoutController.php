@@ -5164,6 +5164,25 @@ class CheckoutController extends Controller
             }
         }
     }
+    
+    public function validate_email(Request $request)
+    {
+        $validator = Validator::make($request->only(['email', 'alt_email']), [
+            'email'     => ['required', 'email:rfc,dns', 'max:255'],
+            'alt_email' => ['nullable', 'email:rfc,dns', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->messages()->toArray() as $key => $error) {
+                $errors[] = ['message' => $error[0], 'field' => $key];
+            }
+            return response()->json(['errors' => $errors], 422);
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     public function recalculation(Request $request)
     {
         $form = $request->all();
