@@ -3998,10 +3998,11 @@ html { scroll-behavior: smooth; }
 }
 
 .payment-discount {
-    font-size: 9px; /* Уменьшаем шрифт скидки */
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     color: var(--green);
-    line-height: 1.1;
+    line-height: 1.2;
+    margin-top: 2px;
 }
 
 /* Скрываем длинный подтекст, чтобы он не растягивал квадратик */

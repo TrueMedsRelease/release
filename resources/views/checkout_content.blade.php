@@ -666,6 +666,7 @@
                                         <input type="radio" name="payment_type" value="mastercard" @if(session('form.payment_type', 'mastercard') == 'mastercard') checked @endif>
                                         <img src="{{ asset('style_checkout/images/pay-systems/mastercard.svg') }}" class="payment-method-icon" alt="MasterCard">
                                         <span class="payment-method-title">MasterCard</span>
+                                        <span class="payment-discount">-1% off</span>
                                     </label>
 
                                     <!-- Apple Pay -->
@@ -693,7 +694,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/revolut.svg') }}" class="payment-method-icon" alt="Revolut">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">Revolut</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                             </div>
                                         </label>
 
@@ -702,7 +703,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/wise.svg') }}" class="payment-method-icon" alt="Wise">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">Wise</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                             </div>
                                         </label>
 
@@ -711,7 +712,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/n26.svg') }}" class="payment-method-icon" alt="N26">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">N26</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                             </div>
                                         </label>
 
@@ -720,7 +721,7 @@
                                             <img src="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" class="payment-method-icon" alt="Instant Bank Transfer">
                                             <div class="payment-method-info">
                                                 <span class="payment-method-title">Instant Bank Transfer</span>
-                                                <span class="payment-discount">-5% extra off</span>
+                                                <span class="payment-discount">-5% off</span>
                                                 <span class="payment-subtext">{{ __('text.checkout_open_banking_subtext') }}</span>
                                             </div>
                                         </label>
@@ -823,7 +824,7 @@
                                         <img src="{{ asset('style_checkout/images/icons/payment_type/crypto.svg') }}" class="payment-method-icon" alt="Crypto">
                                         <div class="payment-method-info">
                                             <span class="payment-method-title">Crypto</span>
-                                            <span class="payment-discount">-15% extra off</span>
+                                            <span class="payment-discount">-15% off</span>
                                         </div>
                                     </label>
                                     @endif

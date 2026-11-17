@@ -506,16 +506,16 @@
                         <option value="google_pay" data-asset="{{ asset('style_checkout/images/icons/payment_type/google_pay.svg') }}" @selected($payment_type_current == 'google_pay')>Google Pay</option>
                     @endif
                     @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                        <option value="revolut" data-asset="{{ asset('style_checkout/images/icons/revolut.svg') }}" @selected($payment_type_current == 'revolut')>Revolut -5% extra off</option>
+                        <option value="revolut" data-asset="{{ asset('style_checkout/images/icons/revolut.svg') }}" @selected($payment_type_current == 'revolut')>Revolut -5% off</option>
                     @endif
                     @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                        <option value="wise" data-asset="{{ asset('style_checkout/images/icons/wise.svg') }}" @selected($payment_type_current == 'wise')>Wise -5% extra off</option>
+                        <option value="wise" data-asset="{{ asset('style_checkout/images/icons/wise.svg') }}" @selected($payment_type_current == 'wise')>Wise -5% off</option>
                     @endif
                     @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                        <option value="n26" data-asset="{{ asset('style_checkout/images/icons/n26.svg') }}" @selected($payment_type_current == 'n26')>N26 -5% extra off</option>
+                        <option value="n26" data-asset="{{ asset('style_checkout/images/icons/n26.svg') }}" @selected($payment_type_current == 'n26')>N26 -5% off</option>
                     @endif
                     @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array($billing_country_current, ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
-                        <option value="open_banking" data-asset="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" @selected($payment_type_current == 'open_banking')>Instant Bank Transfer -5% extra off</option>
+                        <option value="open_banking" data-asset="{{ asset('style_checkout/images/icons/de_rotating_40x40.gif') }}" @selected($payment_type_current == 'open_banking')>Instant Bank Transfer -5% off</option>
                     @endif
                     @if (env('APP_CASHAPP_ON', 0) == 1 && (session('location.country') == "US" || session('form.billing_country') == "US"))
                         <option value="cashapp" data-asset="{{ asset('style_checkout/images/icons/payment_type/cashapp.svg') }}" @selected($payment_type_current == 'cashapp')>Cash App</option>
@@ -551,7 +551,7 @@
                         <option value="interac" data-asset="{{ asset('style_checkout/images/icons/payment_type/interac.svg') }}" @selected($payment_type_current == 'interac')>Interac / EFT</option>
                     @endif
                     @if ($service_enable)
-                        <option value="crypto" data-asset="{{ asset('style_checkout/images/icons/payment_type/crypto.svg') }}" @selected($payment_type_current == 'crypto')>{{ __('text.checkout_crypto') }} -15% extra off</option>
+                        <option value="crypto" data-asset="{{ asset('style_checkout/images/icons/payment_type/crypto.svg') }}" @selected($payment_type_current == 'crypto')>{{ __('text.checkout_crypto') }} -15% off</option>
                     @endif
                     @if (session('checked_bonus', 'discount') == 'gift_card' && session('total.gift_card_discount', 0) > 0 && session('total.gift_card_discount', 0) >= session('total.checkout_total'))
                         <option value="gift_card" data-asset="{{ asset('style_checkout/images/icons/payment_type/gift.svg') }}" @selected($payment_type_current == 'gift_card')>{{ __('text.common_gift_card') }}</option>
