@@ -286,7 +286,7 @@ class Cart extends Model
         ];
 
         if (in_array(session('bonus_checkout_payment', 'mastercard'), $payment_with_bonus)) {
-            if (session('bonus_checkout_payment', 'mastercard') == '') {
+            if (session('bonus_checkout_payment', 'mastercard') == 'mastercard') {
                 $bonus_checkout = ceil($checkoutTotal * 0.01);
             } else {
                 $bonus_checkout = ceil($checkoutTotal * 0.05);

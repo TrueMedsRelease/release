@@ -661,10 +661,8 @@
 .ck-phones__flag {
     flex: 0 0 auto;
     width: 20px;
-    height: 14px;
+    height: 20px;
     object-fit: cover;
-    border-radius: 2px;
-    box-shadow: 0 0 0 1px rgba(38, 45, 56, 0.1);
 }
 
 .ck-phones__more {
