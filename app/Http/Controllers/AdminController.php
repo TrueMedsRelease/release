@@ -686,9 +686,8 @@ class AdminController extends Controller
         $page_properties = DB::table('page_properties')
             ->where('page', '=', $page)
             ->where('language', '=', $language_id)
-            ->get(['title', 'description', 'keyword'])
-            ->toArray();
-        $page_properties = $page_properties[0];
+
+            ->first(['title', 'description', 'keyword']);
 
         $cur_design = env('APP_DESIGN');
         $templates = [];
