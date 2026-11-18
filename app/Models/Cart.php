@@ -287,7 +287,9 @@ class Cart extends Model
 
         if (in_array(session('bonus_checkout_payment', 'mastercard'), $payment_with_bonus)) {
             if (session('bonus_checkout_payment', 'mastercard') == 'mastercard') {
-                $bonus_checkout = ceil($checkoutTotal * 0.01);
+                if (!in_array(session('form.billing_country', session('location.country')), ["US", "CA", "AU"])) {
+                    $bonus_checkout = ceil($checkoutTotal * 0.01);
+                }
             } else {
                 $bonus_checkout = ceil($checkoutTotal * 0.05);
             }
@@ -307,7 +309,7 @@ class Cart extends Model
 
             if (TrueServService::available()) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
                     Log::info("Cart coupon answer: " . $response);
 
                     if ($response->successful()) {

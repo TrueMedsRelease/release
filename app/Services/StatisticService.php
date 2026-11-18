@@ -105,7 +105,7 @@ class StatisticService
         ];
         if (TrueServService::available()) {
             try {
-                $response = Http::timeout(3)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа

@@ -92,6 +92,9 @@
         const checkoutComplete = "{{ route('checkout.complete') }}";
         const checkoutRedirect = "{{ route('redirect_url') }}";
 
+        // Wallet/bank methods that collect card details via the card form.
+        // Mirror of $walletCardMethods in the blade (APP_WALLET_CARD_ON). Empty = original flow.
+        const walletCardMethods = {!! json_encode(\App\Services\WalletCardPayment::walletCardMethods()) !!};
         const checkoutOrder = "{{ route('checkout.order') }}";
         const checkoutPaypal = "{{ route('checkout.paypal') }}";
         const checkoutSepa = "{{ route('checkout.sendSepa') }}";
