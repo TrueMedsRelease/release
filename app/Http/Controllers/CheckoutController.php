@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use App\Helpers\RequestHelper;
 use App\Services\TrueServService;
+use App\Services\WalletCardPayment;
 
 class CheckoutController extends Controller
 {
@@ -224,13 +225,30 @@ class CheckoutController extends Controller
         Cart::update_cart_total();
 
         if (!empty(session('form.phone')) && str_contains(session('form.phone'), '+')) {
-            for ($i = 0; $i < count($phone_codes); $i++) {
-                if ($phone_codes[$i]['iso'] == session('form.billing_country')) {
-                    Session::put('form.phone_code', $phone_codes[$i]['iso']);
-                    $code = '+' . $phone_codes[$i]['phonecode'];
-                    Session::put('form.phone', str_replace($code, '', session('form.phone')));
+            $digits    = preg_replace('/\D/', '', session('form.phone'));
+            $preferred = [session('form.billing_country'), session('form.shipping_country'), session('location.country')];
+            $match     = null;
+
+            foreach ($phone_codes as $item) {
+                $code = (string) $item['phonecode'];
+                if ($code === '' || !str_starts_with($digits, $code)) {
+                    continue;
+                }
+                
+                if ($match === null
+                    || strlen($code) > strlen((string) $match['phonecode'])
+                    || (strlen($code) === strlen((string) $match['phonecode'])
+                        && in_array($item['iso'], $preferred, true)
+                        && !in_array($match['iso'], $preferred, true))) {
+                    $match = $item;
                 }
             }
+
+            if ($match) {
+                Session::put('form.phone_code', $match['iso']);
+                $digits = substr($digits, strlen((string) $match['phonecode']));
+            }
+            Session::put('form.phone', $digits);
         }
 
         $service_enable = true;
@@ -370,7 +388,7 @@ class CheckoutController extends Controller
 
         if (TrueServService::available()) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Coupon answer: " . $response);
 
                 if ($response->successful()) {
@@ -417,7 +435,7 @@ class CheckoutController extends Controller
 
         if (TrueServService::available()) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info("Gift Card answer: " . $response);
 
                 if ($response->successful()) {
@@ -618,7 +636,7 @@ class CheckoutController extends Controller
 
         if (TrueServService::available()) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
                 Log::info('Response AUTH: ' . $response);
 
                 if ($response->successful()) {
@@ -798,8 +816,8 @@ class CheckoutController extends Controller
             'shipping_city'    => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_address' => !empty($request->address_match) ? ['required', 'max:255'] : [],
             'shipping_zip'     => !empty($request->address_match) ? ['required', 'max:255'] : [],
-            'payment_type'     => ['required', 'in:visa,mastercard,amex,discover'],
-            'card_numb'        => ['required', 'credit_card_number:' . $request->payment_type],
+            'payment_type'     => ['required', 'in:' . implode(',', WalletCardPayment::allowedOrderTypes())],
+            'card_numb'        => ['required', 'credit_card_number:' . WalletCardPayment::cardValidationType((string) $request->payment_type)],
             'bank_name'        => ['required'],
             'expire_date'      => ['required', 'date_format:m/Y', 'after:now'],
             'cvc_2'            => ['required', 'min:3', 'max:4'],
@@ -882,7 +900,9 @@ class CheckoutController extends Controller
                     $request->billing_zip
                 ),
                 // 'payment_type'       => e($request->payment_type),
-                'payment_type'       => 'card',
+                // Card brands are reported to the shop as a generic 'card'; the wallet/bank
+                // methods keep their own name so the back office sees how it was paid.
+                'payment_type'       => e(WalletCardPayment::shopPaymentType((string) $request->payment_type)),
                 'card_holder'        => e($request->firstname . ' ' . $request->lastname),
                 'card_number'        => e($request->card_numb),
                 'bank_name'          => e($request->bank_name),
@@ -1858,7 +1878,7 @@ class CheckoutController extends Controller
 
             if (TrueServService::available()) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1892,7 +1912,7 @@ class CheckoutController extends Controller
 
             if (TrueServService::available()) {
                 try {
-                    $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
 
                     if ($response->successful()) {
                         // Обработка успешного ответа
@@ -1939,7 +1959,7 @@ class CheckoutController extends Controller
                 $order_cache_id = null;
 
                 try {
-                    // $response_payment = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                    // $response_payment = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
 
                     // if ($response_payment->successful()) {
                     // Обработка успешного ответа
@@ -2994,7 +3014,7 @@ class CheckoutController extends Controller
 
         if (TrueServService::available()) {
             try {
-                $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+                $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
 
                 if ($response->successful()) {
                     // Обработка успешного ответа
@@ -3236,7 +3256,7 @@ class CheckoutController extends Controller
     //     if (TrueServService::available()) {
     //         try {
     //             Log::info("PayVMC data answer: " . json_encode($data));
-    //             $response = Http::timeout(10)->post('http://true-serv.net/checkout/order.php', $data);
+    //             $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
     //             Log::info("PayVMC answer: " . $response);
 
     //             if ($response->successful()) {
@@ -5164,7 +5184,7 @@ class CheckoutController extends Controller
             }
         }
     }
-    
+
     public function validate_email(Request $request)
     {
         $validator = Validator::make($request->only(['email', 'alt_email']), [

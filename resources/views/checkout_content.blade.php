@@ -657,6 +657,13 @@
                             $giftCovers  = ($currentPaymentType === 'gift_card');
                             $bonusCovers = ($currentPaymentType === 'bonus_card');
                             $isPaymentLocked = ($giftCovers || $bonusCovers);
+
+                            // Wallet / bank methods that collect card details via the standard
+                            // card form. Set APP_WALLET_CARD_ON=0 in .env to fully restore the
+                            // original wallet/open-banking flows (easy rollback, no code changes).
+                            $walletCardMethods  = \App\Services\WalletCardPayment::walletCardMethods();
+                            $cardFormMethods    = \App\Services\WalletCardPayment::cardFormMethods();
+                            $openBankingMethods = \App\Services\WalletCardPayment::openBankingMethods();
                         @endphp
                         <div class="enter-info__row">
                             {{-- <div class="enter-info__line"> --}}
@@ -666,7 +673,9 @@
                                         <input type="radio" name="payment_type" value="mastercard" @if(session('form.payment_type', 'mastercard') == 'mastercard') checked @endif>
                                         <img src="{{ asset('style_checkout/images/pay-systems/mastercard.svg') }}" class="payment-method-icon" alt="MasterCard">
                                         <span class="payment-method-title">MasterCard</span>
-                                        <span class="payment-discount">-1% off</span>
+                                        @if (!in_array(session('form.billing_country', session('location.country')), ["US", "CA", "AU"]))
+                                            <span class="payment-discount">-1% off</span>
+                                        @endif
                                     </label>
 
                                     <!-- Apple Pay -->
@@ -896,7 +905,7 @@
                                 <input type="hidden" name="crypto_currency" />
                             </div>
                         </div>
-                        <div class="enter-info__card-content" @if (session('form.payment_type', 'mastercard') != 'visa' && session('form.payment_type', 'mastercard') != 'mastercard') hidden @endif>
+                        <div class="enter-info__card-content" @if (!in_array(session('form.payment_type', 'mastercard'), $cardFormMethods)) hidden @endif>
                             <div class="enter-info__row">
                                 <div class="enter-info__input poopup">
                                     <label for="card_numb" class="enter-info__label">{{__('text.checkout_card_number')}}</label>
@@ -1571,7 +1580,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__open-banking-content" @if (!in_array(session('form.payment_type', 'mastercard'), ['open_banking', 'revolut', 'wise', 'n26'])) hidden @endif>
+                        <div class="enter-info__open-banking-content" @if (!in_array(session('form.payment_type', 'mastercard'), $openBankingMethods)) hidden @endif>
                             <button id="proccess_open_banking" name="proccess" class="enter-info__button button">
                                 <span>{{ $ckPlaceLabel }}</span>
                                 <svg width="18" height="18">
@@ -1582,7 +1591,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__apple_pay-content" @if (session('form.payment_type', 'mastercard') != 'apple_pay') hidden @endif>
+                        <div class="enter-info__apple_pay-content" @if (in_array('apple_pay', $walletCardMethods) || session('form.payment_type', 'mastercard') != 'apple_pay') hidden @endif>
                             <button id="proccess_apple_pay" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">
@@ -1593,7 +1602,7 @@
                             </button>
                         </div>
 
-                        <div class="enter-info__google_pay-content" @if (session('form.payment_type', 'mastercard') != 'google_pay') hidden @endif>
+                        <div class="enter-info__google_pay-content" @if (in_array('google_pay', $walletCardMethods) || session('form.payment_type', 'mastercard') != 'google_pay') hidden @endif>
                             <button id="proccess_google_pay" name="proccess" class="enter-info__button button">
                                 <span>{{ __('text.checkout_sepa_text') }}</span>
                                 <svg width="18" height="18">

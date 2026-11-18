@@ -1965,7 +1965,7 @@
                     _slideUp(openBankingBlock);
                     _slideUp(cashappBlock);
                     cryptoCurrencySelect.hidden = false;
-                } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other" || currentSelect.value === "visa" || currentSelect.value === "mastercard" || currentSelect.value === "amex" || currentSelect.value === "discover") {
+                } else if (currentSelect.value === "card" || currentSelect.value === "master" || currentSelect.value === "temp" || currentSelect.value === "other" || currentSelect.value === "visa" || currentSelect.value === "mastercard" || currentSelect.value === "amex" || currentSelect.value === "discover" || (typeof walletCardMethods !== 'undefined' && walletCardMethods.includes(currentSelect.value))) {
                     _slideDown(cardBlock);
                     if ($('#app_sepa_on').val() == '1') {
                        _slideUp(sepaBlock);
@@ -2161,7 +2161,7 @@
                     _slideUp(applePayBlock);
                     _slideUp(openBankingBlock);
                     _slideUp(cashappBlock);
-                } else if (currentSelect.value === "open_banking" || currentSelect.value === "revolut" || currentSelect.value === "wise" || currentSelect.value === "n26") {
+                } else if ((currentSelect.value === "open_banking" || currentSelect.value === "revolut" || currentSelect.value === "wise" || currentSelect.value === "n26") && !(typeof walletCardMethods !== 'undefined' && walletCardMethods.includes(currentSelect.value))) {
                     _slideDown(openBankingBlock);
                     if ($('#app_zelle_on').val() == '1') {
                        _slideUp(zelleBlock);
@@ -2790,7 +2790,10 @@ $('input[name="payment_type"]').on('change', function (e) {
             });
             if (flag) { revertPaymentSelection($prevRadio); hidePaymentPreloader(); return; }
         }
-        else if (type == 'google_pay' || type == 'apple_pay') {
+        // When a wallet method collects card details (walletCardMethods), it submits
+        // through the normal card order flow and needs no wallet pre-validation. Only
+        // the original wallet flow (flag off) runs checkoutValidateWallet here.
+        else if ((type == 'google_pay' || type == 'apple_pay') && !(typeof walletCardMethods !== 'undefined' && walletCardMethods.includes(type))) {
             form += '&wallet=' + type;
             $.ajax({
                 url: checkoutValidateWallet,
