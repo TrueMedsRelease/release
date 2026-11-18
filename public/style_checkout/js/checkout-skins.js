@@ -70,16 +70,25 @@
         names.forEach(function (name) {
             var popup = document.getElementById('error_' + name);
             if (popup) popup.classList.add('show');
-            var el = field(name);
+            var el = errorTarget(name);
             setState(el, 'ck-invalid', true);
             setState(el, 'ck-valid', false);
         });
     }
 
+    // Поле для подсветки. У составных полей (expire_date = card_month + card_year)
+    // нет одного input с таким name — тогда подсвечиваем обёртку .poopup целиком.
+    function errorTarget(name) {
+        var el = field(name);
+        if (el) return el;
+        var popup = document.getElementById('error_' + name);
+        return popup ? popup.closest('.poopup') : null;
+    }
+
     function clearError(name) {
         var popup = document.getElementById('error_' + name);
         if (popup) popup.classList.remove('show');
-        setState(field(name), 'ck-invalid', false);
+        setState(errorTarget(name), 'ck-invalid', false);
     }
 
     function scrollToField(name) {
@@ -459,7 +468,7 @@
                 if (!el.classList || !el.classList.contains('poopuptext') || !el.classList.contains('show')) return;
                 if (!el.id || el.id.indexOf('error_') !== 0) return;
                 var name = el.id.slice(6);
-                setState(field(name), 'ck-invalid', true);
+                setState(errorTarget(name), 'ck-invalid', true);
                 if (name === 'alt_phone' || name === 'alt_email') openOptional();
                 if (!first) first = el;
             });
@@ -557,6 +566,9 @@
             var el = e.target;
             if (!el || !el.name || !el.closest || !el.closest('#order_form')) return;
             clearError(el.name);
+            if ((el.name === 'card_month' || el.name === 'card_year') && val('card_month') && val('card_year')) {
+                clearError('expire_date');
+            }
             updateValidMark(el.name);
             updatePayLock();
             updateJourney();
