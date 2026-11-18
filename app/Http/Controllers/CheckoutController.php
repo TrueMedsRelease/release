@@ -225,13 +225,30 @@ class CheckoutController extends Controller
         Cart::update_cart_total();
 
         if (!empty(session('form.phone')) && str_contains(session('form.phone'), '+')) {
-            for ($i = 0; $i < count($phone_codes); $i++) {
-                if ($phone_codes[$i]['iso'] == session('form.billing_country')) {
-                    Session::put('form.phone_code', $phone_codes[$i]['iso']);
-                    $code = '+' . $phone_codes[$i]['phonecode'];
-                    Session::put('form.phone', str_replace($code, '', session('form.phone')));
+            $digits    = preg_replace('/\D/', '', session('form.phone'));
+            $preferred = [session('form.billing_country'), session('form.shipping_country'), session('location.country')];
+            $match     = null;
+
+            foreach ($phone_codes as $item) {
+                $code = (string) $item['phonecode'];
+                if ($code === '' || !str_starts_with($digits, $code)) {
+                    continue;
+                }
+                
+                if ($match === null
+                    || strlen($code) > strlen((string) $match['phonecode'])
+                    || (strlen($code) === strlen((string) $match['phonecode'])
+                        && in_array($item['iso'], $preferred, true)
+                        && !in_array($match['iso'], $preferred, true))) {
+                    $match = $item;
                 }
             }
+
+            if ($match) {
+                Session::put('form.phone_code', $match['iso']);
+                $digits = substr($digits, strlen((string) $match['phonecode']));
+            }
+            Session::put('form.phone', $digits);
         }
 
         $service_enable = true;
