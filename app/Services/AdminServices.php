@@ -156,19 +156,22 @@ class AdminServices
                 ->select('product.id');
         }
 
-        $not_showed_product = $query->get()->toArray();
+        $result = [];
 
-        for ($i = 0; $i < count($not_showed_product); $i++) {
-            if (!isset($products_desc[$not_showed_product[$i]['id']])) {
-                unset($not_showed_product[$i]);
+        foreach ($query->get()->toArray() as $product) {
+            if (!isset($products_desc[$product['id']])) {
                 continue;
             }
 
-            $not_showed_product[$i]['name'] = $products_desc[$not_showed_product[$i]['id']]['name'];
-            $not_showed_product[$i]['url'] = $products_desc[$not_showed_product[$i]['id']]['url'];
+            $product['name'] = $products_desc[$product['id']]['name'];
+            $product['url'] = $products_desc[$product['id']]['url'];
+            $result[] = $product;
         }
 
-        return array_values($not_showed_product);
+
+        usort($result, fn ($a, $b) => strnatcasecmp($a['name'], $b['name']));
+
+        return $result;
     }
 
     public static function getShowedOnMainProduct() {
@@ -191,123 +194,65 @@ class AdminServices
                 ->select('product.id');
         }
 
-        $showed_product = $query->get()->toArray();
+        $result = [];
 
-        for ($i = 0; $i < count($showed_product); $i++) {
-            if (!isset($products_desc[$showed_product[$i]['id']])) {
-                unset($showed_product[$i]);
+
+        foreach ($query->get()->toArray() as $product) {
+            if (!isset($products_desc[$product['id']])) {
                 continue;
             }
 
-            $showed_product[$i]['name'] = $products_desc[$showed_product[$i]['id']]['name'];
-            $showed_product[$i]['url'] = $products_desc[$showed_product[$i]['id']]['url'];
+            $product['name'] = $products_desc[$product['id']]['name'];
+            $product['url'] = $products_desc[$product['id']]['url'];
+            $result[] = $product;
         }
 
-        return array_values($showed_product);
+        return $result;
+    }
+
+    protected static function getProductsListForAdmin(?int $isShowed = null): array
+    {
+        $rows = DB::table('product')
+            ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
+            ->whereExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('product_category')
+                    ->join('category', 'category.id', '=', 'product_category.category_id')
+                    ->whereColumn('product_category.product_id', 'product.id')
+                    ->where('category.is_showed', '=', 1);
+            })
+            ->when($isShowed !== null, function ($q) use ($isShowed) {
+                $q->where('product.is_showed', '=', $isShowed);
+            })
+            ->when(Schema::hasColumn('product', 'ban'), function ($q) {
+                $q->where('product.ban', '=', 0);
+            })
+            ->whereNotIn('product.id', [615, 224, 223, 225])
+            ->get(['product.id', 'product_desc.name', 'product_desc.language_id']);
+
+        $products = [];
+        foreach ($rows as $row) {
+            if (!isset($products[$row->id]) || (int) $row->language_id === 1) {
+                $products[$row->id] = ['id' => $row->id, 'name' => $row->name];
+            }
+        }
+
+        $products = array_values($products);
+        usort($products, fn ($a, $b) => strnatcasecmp($a['name'], $b['name']));
+
+        return $products;
     }
 
     public static function getCategoriesWithUnavailableProducts() {
-        $all_category_ids = DB::table('category')
-            ->distinct()
-            ->where('is_showed', '=', 1)
-            ->orderBy('ord', 'asc')
-            ->get(['id', 'en_name', 'ord'])
-            ->toArray();
-
-        $not_showed_products_info = [];
-        foreach ($all_category_ids as $cur_category_id){
-            $not_showed_products_id = DB::table('product')
-                ->distinct()
-                ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
-                ->join('product_category', 'product.id', '=', 'product_category.product_id')
-                ->where('product.is_showed', '=', 0)
-                ->when(Schema::hasColumn('product', 'ban'), function ($q) {
-                    $q->where('product.ban', '=', 0);
-                })
-                ->where('product_category.category_id', '=', $cur_category_id->id)
-                ->whereNotIn('product.id', [615, 224, 223, 225])
-                ->orderBy('product_desc.name')
-                ->get(['product.id', 'product_desc.name', 'product.main_order'])
-                ->toArray();
-
-            if(count($not_showed_products_id)){
-                array_push($not_showed_products_info, ["id" => 0, "name" => ".......".$cur_category_id->en_name."......"]);
-                foreach ($not_showed_products_id as $cur_product_id){
-                    array_push($not_showed_products_info, ["id" => $cur_product_id->id, "name" => $cur_product_id->name]);
-                }
-            }
-        }
-
-        return $not_showed_products_info;
+        return static::getProductsListForAdmin(0);
     }
 
     public static function getCategoriesWithAvailableProducts() {
-        $all_category_ids = DB::table('category')
-            ->distinct()
-            ->where('is_showed', '=', 1)
-            ->orderBy('ord', 'asc')
-            ->get(['id', 'en_name', 'ord'])
-            ->toArray();
-
-        $showed_products_info = [];
-        foreach ($all_category_ids as $cur_category_id){
-            $showed_products_id = DB::table('product')
-                ->distinct()
-                ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
-                ->join('product_category', 'product.id', '=', 'product_category.product_id')
-                ->where('product.is_showed', '=', 1)
-                ->when(Schema::hasColumn('product', 'ban'), function ($q) {
-                    $q->where('product.ban', '=', 0);
-                })
-                ->where('product_category.category_id', '=', $cur_category_id->id)
-                ->whereNotIn('product.id', [615, 224, 223, 225])
-                ->orderBy('product_desc.name')
-                ->get(['product.id', 'product_desc.name', 'product.main_order'])
-                ->toArray();
-
-            if(count($showed_products_id)){
-                array_push($showed_products_info, ["id" => 0, "name" => ".......".$cur_category_id->en_name."......"]);
-                foreach ($showed_products_id as $cur_product_id){
-                    array_push($showed_products_info, ["id" => $cur_product_id->id, "name" => $cur_product_id->name]);
-                }
-            }
-        }
-
-        return $showed_products_info;
+        return static::getProductsListForAdmin(1);
     }
 
     public static function getAllProductWithCategory() {
-        $all_category_ids = DB::table('category')
-            ->distinct()
-            ->where('is_showed', '=', 1)
-            ->orderBy('ord', 'asc')
-            ->get(['id', 'en_name', 'ord'])
-            ->toArray();
-
-        $products_info = [];
-        foreach ($all_category_ids as $cur_category_id){
-            $products_id = DB::table('product')
-                ->distinct()
-                ->join('product_desc', 'product.id', '=', 'product_desc.product_id')
-                ->join('product_category', 'product.id', '=', 'product_category.product_id')
-                ->where('product_category.category_id', '=', $cur_category_id->id)
-                ->when(Schema::hasColumn('product', 'ban'), function ($q) {
-                    $q->where('product.ban', '=', 0);
-                })
-                ->whereNotIn('product.id', [615, 224, 223, 225])
-                ->orderBy('product_desc.name')
-                ->get(['product.id', 'product_desc.name', 'product.main_order'])
-                ->toArray();
-
-            if(count($products_id)){
-                array_push($products_info, ["id" => 0, "name" => ".......".$cur_category_id->en_name."......"]);
-                foreach ($products_id as $cur_product_id){
-                    array_push($products_info, ["id" => $cur_product_id->id, "name" => $cur_product_id->name]);
-                }
-            }
-        }
-
-        return $products_info;
+        return static::getProductsListForAdmin();
     }
 
     public static function getShowedProductPackaging($product_id, $is_showed) {

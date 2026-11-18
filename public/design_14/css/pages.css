@@ -1917,3 +1917,16 @@ td.product__button-wrapper{
     line-height:1.3rem;
   }
 }
+
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--color-white);
+  --fsp-border:1px solid var(--color-grey-2);
+  --fsp-radius:0;
+  --fsp-margin:0;
+  --fsp-padding:1.4rem 1.9rem 1.6rem;
+  --fsp-text:var(--color-text);
+  --fsp-accent:var(--color-primary-hover);
+  --fsp-bar:linear-gradient(90deg,var(--color-primary),var(--color-primary-hover));
+  --fsp-track:var(--color-grey-2);
+}

@@ -46,6 +46,7 @@ class StatisticService
                 "keyword"     => session('keyword', ''),
                 "user_agent"  => $userAgent,
                 "store_skin"  => $design,
+                "checkout_skin" => CheckoutSkin::id(),
                 "theme"       => "",
                 "duration"    => 0,
                 "checkout"    => "",
@@ -99,6 +100,7 @@ class StatisticService
             'saff'        => session('saff', ''),
             'ref'         => session('referer', ''),
             "user_agent"  => request()->userAgent(),
+            'checkout_skin' => CheckoutSkin::id(),
             'is_checkout_data_send' => session('is_checkout_data_send', 0)
         ];
         if (TrueServService::available()) {

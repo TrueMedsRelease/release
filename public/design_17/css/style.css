@@ -5877,3 +5877,25 @@ article.content{
 
 .js-chat-container { display: flex; flex-direction: column; }
 .thread-chat { margin-top: auto; }
+/* Free delivery progress (cart) — base styles live in resources/views/shared/free_ship_progress.blade.php */
+.free-ship-progress{
+  --fsp-bg:var(--color-white);
+  --fsp-border:none;
+  --fsp-radius:2rem;
+  --fsp-margin:0;
+  --fsp-padding:1.8rem 2rem 2rem;
+  --fsp-font-size:1.5rem;
+  --fsp-text:var(--color-primary);
+  --fsp-accent:var(--color-text);
+  --fsp-bar:var(--color-text);
+  --fsp-track:var(--color-gray-1);
+}
+
+/* push popup: the full-width wrapper lets clicks through, only the card catches them */
+.popup_white {
+  pointer-events: none;
+}
+
+.popup_white .popup_push {
+  pointer-events: auto;
+}

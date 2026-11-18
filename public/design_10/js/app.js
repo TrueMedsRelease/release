@@ -5036,12 +5036,12 @@ if (btnClose) {
 
 if (flagc) {
     setTimeout(function() {
-        $('.modal_cart').removeClass('hidden').css('opacity', 1);
+        $('.modal_cart').removeClass('hidden').css({'opacity': 1, 'pointer-events': ''});
         $('.modal_cart').css('z-index', 10);
     }, 2000);
 
     setTimeout(function() {
-        $('.modal_cart').css('opacity', 0);
+        $('.modal_cart').css({'opacity': 0, 'pointer-events': 'none'});
     }, 5000);
 
     setTimeout(function() {
@@ -5051,12 +5051,12 @@ if (flagc) {
 }
 if (flagp) {
     setTimeout(function() {
-        $('.cmcmodal').removeClass('hidden').css('opacity', 1);
+        $('.cmcmodal').removeClass('hidden').css({'opacity': 1, 'pointer-events': ''});
         $('.cmcmodal').css('z-index', 10);
     }, 2000);
 
     setTimeout(function() {
-        $('.cmcmodal').css('opacity', 0);
+        $('.cmcmodal').css({'opacity': 0, 'pointer-events': 'none'});
     }, 5000);
 
     setTimeout(function() {

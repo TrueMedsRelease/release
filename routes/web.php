@@ -134,6 +134,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::post('/gift_card_process', 'gift_card_process')->name('checkout.gift_card_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/validate_for_wallet', 'validate_for_wallet')->name('checkout.validate_for_wallet');
     Route::post('/wallet_process', 'wallet_process')->name('checkout.wallet_process')->withoutMiddleware(VerifyCsrfToken::class);
+    Route::post('/checkout/validate_email', 'validate_email')->name('checkout.validate_email')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/checkout/recalculation', 'recalculation')->name('checkout.recalculation')->withoutMiddleware(VerifyCsrfToken::class);
     Route::post('/open_banking_process', 'open_banking_process')->name('checkout.open_banking_process')->withoutMiddleware(VerifyCsrfToken::class);
     Route::get('/checkout/new_order', 'new_order')->name('checkout.new_order');
@@ -229,7 +230,7 @@ Route::controller(AdminController::class)->middleware('admin_auth')->group(funct
     Route::get('/admin', 'admin_enter')->name('admin.admin_enter');
     Route::get('/admin/login', 'admin_login')->name('admin.admin_login')->withoutMiddleware('admin_auth');
     Route::get('/admin/auto/{token}', 'auto_login')->name('admin.auto_login')->withoutMiddleware('admin_auth')->where('token', '[A-Za-z0-9]+');
-    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth']);
+    Route::post('/admin/request_login', 'request_login')->name('admin.request_login')->withoutMiddleware([VerifyCsrfToken::class, 'admin_auth'])->middleware('throttle:30,1');
 
     Route::get('/admin/main_page', 'index')->name('admin.index');
     Route::get('/admin/admin_main_page', 'admin_main_content')->name('admin.admin_main_content')->withoutMiddleware(VerifyCsrfToken::class);

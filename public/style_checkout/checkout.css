@@ -10,8 +10,8 @@
   }
 
 
-  
-  
+
+
   /* The actual poopup */
   .poopup .poopuptext {
     visibility: hidden;
@@ -23,11 +23,11 @@
     padding: 8px 0;
     position: absolute;
     z-index: 999;
-    bottom: 125%;
+    bottom: 110%;
     left: 50%;
     margin-left: -80px;
   }
-  
+
   /* Popup arrow */
   .poopup .poopuptext::after {
     content: "";
@@ -55,7 +55,7 @@
     left: 50%;
     margin-left: -80px;
   }
-  
+
   /* Popup arrow */
   .poopup .poopuptext1::after {
     content: "";
@@ -67,20 +67,20 @@
     border-style: solid;
     border-color: rgba(127, 127, 127, 0.85) transparent transparent transparent;
   }
-  
+
   /* Toggle this class - hide and show the poopup */
   .poopup .show {
     visibility: visible;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
   }
-  
+
   /* Add animation (fade in the poopup) */
   @-webkit-keyframes fadeIn {
-    from {opacity: 0;} 
+    from {opacity: 0;}
     to {opacity: 1;}
   }
-  
+
   @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity:1 ;}
@@ -132,7 +132,7 @@
   .discount-line__button:hover {
     background-color: #d4e0bf;
   } */
-  
+
   .preloader__row {
     position: relative;
     top: 50%;
@@ -144,7 +144,7 @@
     text-align: center;
     animation: preloader-rotate 2s infinite linear;
   }
-  
+
   .preloader__item {
     position: absolute;
     display: inline-block;
@@ -155,36 +155,36 @@
     height: 35px;
     animation: preloader-bounce 2s infinite ease-in-out;
   }
-  
+
   .preloader__item:last-child {
     top: auto;
     bottom: 0;
     animation-delay: -1s;
   }
-  
+
   @keyframes preloader-rotate {
     100% {
       transform: rotate(360deg);
     }
   }
-  
+
   @keyframes preloader-bounce {
-  
+
     0%,
     100% {
       transform: scale(0);
     }
-  
+
     50% {
       transform: scale(1);
     }
   }
-  
+
   .loaded_hiding .preloader {
     transition: 0.3s opacity;
     opacity: 0;
   }
-  
+
   .loaded .preloader {
     display: none;
   }

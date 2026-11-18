@@ -112,6 +112,7 @@
             </fieldset>
             <!-- Shipping -->
             @if (!$is_only_card)
+                @include('shared.free_ship_progress')
                 <fieldset class="form__fieldset form-panel discount-panel">
                     <div class="form__field">
                         <div class="delivery-radios">

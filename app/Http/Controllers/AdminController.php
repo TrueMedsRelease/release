@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Phattarachai\LaravelMobileDetect\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use App\Services\AdminServices;
 use App\Services\CabinetService;
 use App\Models\Language;
@@ -82,29 +83,63 @@ class AdminController extends Controller
         return redirect()->route('admin.customer_personal_account');
     }
 
+    /** Wrong passwords allowed per IP before the login is locked. */
+    private const LOGIN_MAX_FAILS = 5;
+
+    /** Lock duration after too many wrong passwords; also the counting window. */
+    private const LOGIN_LOCK_SECONDS = 3600;
+
+    public function passwordMatches(string $password): bool
+    {
+        return count(DB::select('SELECT id FROM user WHERE md5_pw = ?', [md5($password)])) > 0;
+    }
+
     public function request_login(Request $request) {
-        $password = $request->password;
-        $md5_password = md5($password);
+        // Only wrong passwords count (captcha mistakes never reach this
+        // endpoint); a successful login resets the counter.
+        $limiterKey = 'admin-login-fails:' . $request->ip();
 
-        $user = DB::select("SELECT * FROM user WHERE md5_pw = '{$md5_password}'");
-
-        if (count($user) > 0) {
-
-            session(['logged_in' => true]);
-
-            $result = [
-                'status' => 'success',
-                'url' => route('admin.admin_seo'),
-            ];
-        } else {
-            $result = [
-                'status' => 'error',
-                'text' => __('text.admin_login_form_invalid_log_in'),
-                'new_captcha' => captcha_src()
-            ];
+        if (RateLimiter::tooManyAttempts($limiterKey, self::LOGIN_MAX_FAILS)) {
+            return json_encode([
+                'status'      => 'error',
+                'text'        => __('text.admin_login_form_too_many_attempts', [
+                    'minutes' => (int) ceil(RateLimiter::availableIn($limiterKey) / 60),
+                ]),
+                'new_captcha' => captcha_src(),
+            ]);
         }
 
-        return json_encode($result);
+        $captchaPassedAt = (int) $request->session()->pull('captcha_passed_at', 0);
+
+        if ($captchaPassedAt === 0 || time() - $captchaPassedAt > 300) {
+            return json_encode([
+                'status'      => 'error',
+                'text'        => __('text.admin_common_form_wrong_captcha_value'),
+                'new_captcha' => captcha_src(),
+            ]);
+        }
+
+        $password = $request->input('password');
+
+        if (!is_string($password) || $password === '' || !$this->passwordMatches($password)) {
+            RateLimiter::hit($limiterKey, self::LOGIN_LOCK_SECONDS);
+
+            return json_encode([
+                'status'      => 'error',
+                'text'        => __('text.admin_login_form_invalid_log_in'),
+                'new_captcha' => captcha_src(),
+            ]);
+        }
+
+        RateLimiter::clear($limiterKey);
+
+        $request->session()->regenerate();
+        session(['logged_in' => true]);
+
+        return json_encode([
+            'status' => 'success',
+            'url'    => route('admin.admin_seo'),
+        ]);
     }
 
     public function admin_main_content() {
@@ -594,6 +629,12 @@ class AdminController extends Controller
         // }
 
         $selected_template = $request->selected_template;
+
+        if (!is_string($selected_template)
+            || !preg_match('/^design_\d+$/', $selected_template)
+            || !self::isDesignTemplateDir($selected_template, resource_path('views'))) {
+            return response()->json(['status' => 'error', 'text' => 'Unknown template']);
+        }
 
         $cur_design = $selected_template;
         $templates = [];
@@ -1275,6 +1316,7 @@ class AdminController extends Controller
         $title = $this->pageAdminTitle('currencies');
         $agent = new Agent();
 
+        $has_prefix_space = Currency::ensurePrefixSpaceColumn();
         $all_currencies = Currency::query()->get()->toArray();
         $default_currency_code = config('app.currency') ? config('app.currency') : session('language');
 
@@ -1283,7 +1325,8 @@ class AdminController extends Controller
             'agent' => $agent,
             'logged_in' => true,
             'default_currency_code' => $default_currency_code,
-            'currencies_info' => $all_currencies
+            'currencies_info' => $all_currencies,
+            'has_prefix_space' => $has_prefix_space,
         ]);
     }
 
@@ -1292,6 +1335,7 @@ class AdminController extends Controller
 
         $default_currency_code = $currencies_form["default_currency_code_field"];
 
+        $has_prefix_space = Currency::ensurePrefixSpaceColumn();
         $all_currencies = Currency::query()->get()->toArray();
         $error = [];
         foreach ($all_currencies as $cur_currency) {
@@ -1350,6 +1394,12 @@ class AdminController extends Controller
                         'prefix' => $cur_currency_prefix
                     ]);
                 // DB::update('UPDATE `currency` SET `name` = "' . $cur_currency_name . '", `code` = "' . $cur_currency_code . '", `country_iso2` = "' . $cur_currency_country_iso2 . '", `coef` = "' . $cur_currency_coef . '", `prefix` = "' . $cur_currency_prefix . '" WHERE id = ' . $cur_currency_id . ' ');
+            }
+
+            if ($has_prefix_space) {
+                DB::table('currency')
+                    ->where('id', '=', $cur_currency_id)
+                    ->update(['prefix_space' => isset($currencies_form[$cur_currency_id . '_prefix_space_field']) ? 1 : 0]);
             }
 
             if(isset($currencies_form[$cur_currency_id . '_show_field'])) {
@@ -1636,6 +1686,13 @@ class AdminController extends Controller
     }
 
     public function setEnvMany(array $values) {
+        foreach ($values as $key => $value) {
+            if (!preg_match('/^[A-Z][A-Z0-9_]*$/', (string) $key)
+                || !preg_match('/^[A-Za-z0-9_.\-]*$/', (string) $value)) {
+                throw new \InvalidArgumentException("Invalid .env value for {$key}");
+            }
+        }
+
         $path = base_path('.env');
         $content = file_get_contents($path);
 

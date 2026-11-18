@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class Currency extends Model
 {
@@ -48,6 +51,66 @@ class Currency extends Model
         'bbd' => 'BB$',
     ];
 
+    /** @var array<string, array{prefix: string, space: bool}>|null */
+    protected static $prefixSpaceMap = null;
+
+    public static function ensurePrefixSpaceColumn(): bool
+    {
+        if (Schema::hasColumn('currency', 'prefix_space')) {
+            return true;
+        }
+
+        try {
+            Schema::table('currency', function (Blueprint $table) {
+                $table->tinyInteger('prefix_space')->default(0);
+            });
+        } catch (\Throwable $e) {
+            // Колонку уже добавил параллельный запрос или у пользователя БД нет прав ALTER.
+        }
+
+        return Schema::hasColumn('currency', 'prefix_space');
+    }
+
+    public static function prefixSpaceMap(): array
+    {
+        if (static::$prefixSpaceMap !== null) {
+            return static::$prefixSpaceMap;
+        }
+
+        try {
+            static::$prefixSpaceMap = Cache::rememberForever('currency_display_prefix_map', function () {
+                $hasSpaceColumn = Schema::hasColumn('currency', 'prefix_space');
+                $columns = $hasSpaceColumn ? ['code', 'prefix', 'prefix_space'] : ['code', 'prefix'];
+
+                $map = [];
+                foreach (Currency::query()->get($columns) as $currency) {
+                    $map[strtolower($currency->code)] = [
+                        'prefix' => (string) $currency->prefix,
+                        'space' => $hasSpaceColumn && (int) $currency->prefix_space === 1,
+                    ];
+                }
+
+                return $map;
+            });
+        } catch (\Throwable $e) {
+            static::$prefixSpaceMap = [];
+        }
+
+        return static::$prefixSpaceMap;
+    }
+
+    public static function symbol(?string $code, string $default = '$'): string
+    {
+        $code = strtolower((string) $code);
+        $settings = static::prefixSpaceMap()[$code] ?? null;
+
+        $prefix = ($settings && trim($settings['prefix']) !== '')
+            ? $settings['prefix']
+            : (Currency::$prefix[$code] ?? $default);
+
+        return ($settings && $settings['space']) ? $prefix . "\u{00A0}" : $prefix;
+    }
+
     public static function GetAllCurrency()
     {
         $currency = Currency::query()->where('show_in_menu', '=', 1)->get()->toArray();
@@ -57,15 +120,16 @@ class Currency extends Model
 
     public static function GetCoef($currency)
     {
-        $currency = Currency::query()->where('code', '=', $currency)->get()->toArray();
-        return $currency[0]['coef'];
+        $row = Currency::query()->where('code', '=', $currency)->first();
+
+        return $row?->coef;
     }
 
     public static function Convert($number, $round = false, $format = false)
     {
         $current_currency = session('currency', 'usd');
         $coef             = session('currency_c', 1);
-        $prefix           = Currency::$prefix[$current_currency];
+        $prefix           = Currency::symbol($current_currency);
         if ($round) {
             $total = ceil($number * $coef);
         } else {
@@ -83,7 +147,7 @@ class Currency extends Model
     {
         $currency = 'eur';
         $coef             = Currency::query()->where('code', '=', $currency)->get()->toArray()[0]['coef'];
-        $prefix           = Currency::$prefix[$currency];
+        $prefix           = Currency::symbol($currency);
         if ($round) {
             $total = ceil($number * $coef);
         } else {
@@ -109,7 +173,7 @@ class Currency extends Model
             $sum = round($sum);
         }
 
-        return Currency::$prefix[$current_currency] . $sum;
+        return Currency::symbol($current_currency) . $sum;
     }
 
     public static function GetCurrencyByCountry($country)

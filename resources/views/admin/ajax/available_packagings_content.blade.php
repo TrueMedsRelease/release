@@ -2,6 +2,7 @@
     <div class="adm-dual adm-dual--three">
         <div class="adm-dual__list">
             <h3 class="discounts__label">{{__('text.admin_packagings_show_all_products_title')}}</h3>
+            @include('admin.partials.product_search', ['target' => '#all_products_field'])
             <select class="input" name="all_products_field" id="all_products_field" size="30" onchange="loadProductPackaging(this.value)">
                 @foreach ($all_products_info as $cur_product_info)
                     <option value="{{ $cur_product_info['id'] }}">{{ $cur_product_info['name'] }}</option>

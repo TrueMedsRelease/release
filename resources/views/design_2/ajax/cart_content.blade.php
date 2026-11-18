@@ -135,6 +135,7 @@
                 @endforeach
 
                 @if (!$is_only_card)
+                    @include('shared.free_ship_progress')
                     <div class="order__line delivery-line">
                         <div class="delivery-line__item">
                             <div class="checkbox">

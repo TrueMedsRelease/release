@@ -236,6 +236,7 @@
             <tbody  align="center">
                 <tr>
                     <td valign="top" width="28%" class="products_on_products">
+                        @include('admin.partials.product_search', ['target' => '#all_products_field'])
                         <select class="input" name="all_products_field" id="all_products_field" size="50" style="width: 100%;"
                                 onchange="show_loading_message('products_loading_messages', '{{__('text.admin_common_loading_message')}}');
                                     loadProductURL(this.value);">

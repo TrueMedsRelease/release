@@ -9,6 +9,7 @@ use App\Models\Language;
 use App\Models\Product;
 use App\Models\ProductPackaging;
 use App\Services\GeoIpService;
+use App\Services\CheckoutSkin;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -143,6 +144,14 @@ class SessionParameterHandler
             }
         }
 
+        if ($request->query('checkout_skin') !== null) {
+            if (CheckoutSkin::exists($request->query('checkout_skin'))) {
+                session(['checkout_skin' => (int) $request->query('checkout_skin')]);
+            } else {
+                session()->forget('checkout_skin');
+            }
+        }
+
         if (!empty($request->query('product'))) {
             if (in_array($request->query('product'), ['tretiva', 'cialis'])) {
                 if ($request->query('product') == 'tretiva') {
@@ -171,6 +180,21 @@ class SessionParameterHandler
                     }
                 }
             }
+        }
+
+        $stripParams = ['lang', 'curr', 'design'];
+
+        if (
+            $request->isMethod('GET') &&
+            !$request->ajax() &&
+            !$request->expectsJson() &&
+            !empty(array_intersect($stripParams, array_keys($request->query())))
+        ) {
+            $query = \Illuminate\Support\Arr::except($request->query(), $stripParams);
+
+            $cleanUrl = $request->url() . (!empty($query) ? '?' . http_build_query($query) : '');
+
+            return redirect()->to($cleanUrl);
         }
 
         return $next($request);

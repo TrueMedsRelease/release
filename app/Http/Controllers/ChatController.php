@@ -337,7 +337,7 @@ class ChatController extends Controller
                 $response['products'] = $products ?? [];
                 $response['is_shop_question'] = $isShopQuestion;
                 $response['currency'] = [
-                    'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
+                    'prefix' => Currency::symbol(session('currency', 'usd')),
                     'code' => session('currency', 'usd'),
                     'coef' => (float) session('currency_c', 1),
                 ];
@@ -470,7 +470,7 @@ class ChatController extends Controller
             'answer' => $answer,
             'products' => $products,
             'currency' => [
-                'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
+                'prefix' => Currency::symbol(session('currency', 'usd')),
                 'code' => session('currency', 'usd'),
                 'coef' => (float) session('currency_c', 1),
             ],
@@ -859,7 +859,7 @@ class ChatController extends Controller
             'next_offset' => $nextOffset,
             'total' => $total,
             'currency' => [
-                'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
+                'prefix' => Currency::symbol(session('currency', 'usd')),
                 'code' => session('currency', 'usd'),
                 'coef' => (float) session('currency_c', 1),
             ],
@@ -979,7 +979,7 @@ class ChatController extends Controller
             'products' => $products,
             'steps' => [],
             'currency' => [
-                'prefix' => Currency::$prefix[session('currency', 'usd')] ?? '$',
+                'prefix' => Currency::symbol(session('currency', 'usd')),
                 'code' => session('currency', 'usd'),
                 'coef' => (float) session('currency_c', 1),
             ],
