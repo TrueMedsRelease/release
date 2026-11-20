@@ -1199,4 +1199,10 @@ return [
     'upsell_skip' => 'Ohne Hinzufügen fortfahren',
     'upsell_error' => 'Diese Artikel konnten nicht bestätigt werden. Versuchen Sie es erneut oder fahren Sie zur Kasse fort und überprüfen Sie Ihren Warenkorb.',
     'upsell_expired' => 'Die Auswahl oder der Preis hat sich geändert. Schließen Sie dieses Fenster und öffnen Sie es erneut, um die Auswahl zu aktualisieren.',
+    'coupon_bar_title' => 'Sie haben einen aktiven Gutschein',
+    'coupon_bar_text' => 'Ihr zusätzlicher Rabatt wird an der Kasse automatisch berechnet.',
+    'coupon_price_label' => 'Mit Gutschein',
+    'coupon_cart_discount' => 'Gutscheinrabatt',
+    'coupon_cart_total' => 'Gesamt mit Gutschein',
+    'coupon_cart_note' => 'Wird an der Kasse automatisch abgezogen',
 ];

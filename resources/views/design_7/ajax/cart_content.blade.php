@@ -182,9 +182,11 @@
                     <div class="price_with_save">
                         <span style="color: var(--green); text-align: center">{{__('text.cart_saving')}} {{ $Currency::convert($saving) }}</span>
                         <span>{{__('text.cart_only')}} {{ session('total.all_in_currency') }}</span>
+                        @include('shared.coupon_cart_line')
                     </div>
                 @else
                     <span>{{ session('total.all_in_currency') }}</span>
+                    @include('shared.coupon_cart_line')
                 @endif
             </div>
 		</div>

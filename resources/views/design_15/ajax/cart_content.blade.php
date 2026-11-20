@@ -361,12 +361,14 @@
                                         </div>
                                     </div>
                                     <div class="cart-total__price">{{__('text.cart_only')}} {{ session('total.all_in_currency') }} </div>
+                                    @include('shared.coupon_cart_line')
                                 </div>
                             @endif
                             @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                                 <div class="cart-total__title">{{__('text.cart_total_price_text')}}</div>
                                 <div class="cart-total__wrapper">
                                     <div class="cart-total__price">{{ session('total.all_in_currency') }}</div>
+                                    @include('shared.coupon_cart_line')
                                 </div>
                             @endif
                         </div>

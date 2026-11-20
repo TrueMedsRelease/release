@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\SessionHelper;
 use App\Services\ProductServices;
 use App\Services\TrueServService;
+use App\Services\CouponService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\ConnectionException;
@@ -295,44 +296,11 @@ class Cart extends Model
             }
         }
 
+        // Validates a pending ?coupon= code (normally already done on landing).
+        CouponService::resolvePending();
+
         if (session()->has('coupon')) {
             $coupon_discount = ceil($productTotal * (session('coupon.percent') / 100));
-        } elseif (session()->has('coupon_get')) {
-            $api_key = DB::table('shop_keys')->where('name_key', '=', 'api_key')->value('key_data');
-
-            $coupon = session('coupon_get');
-            $data   = [
-                'method'  => 'coupon',
-                'api_key' => $api_key,
-                'coupon'  => $coupon,
-            ];
-
-            if (TrueServService::available()) {
-                try {
-                    $response = Http::timeout(20)->post('http://true-serv.net/checkout/order.php', $data);
-                    Log::info("Cart coupon answer: " . $response);
-
-                    if ($response->successful()) {
-                        $response = json_decode($response, true);
-
-                        if (is_array($response) && $response['status'] == 'success') {
-                            $result['coupon']  = $coupon;
-                            $result['percent'] = $response['coupon']['percent'];
-                            $result['type']    = $response['coupon']['type'];
-
-                            session(['coupon' => $result]);
-
-                            $coupon_discount = ceil($productTotal * ($result['percent'] / 100));
-                        }
-                    }
-
-                    session()->forget('coupon_get');
-                } catch (ConnectionException $e) {
-                    session()->forget('coupon_get');
-                } catch (RequestException $e) {
-                    session()->forget('coupon_get');
-                }
-            }
         }
 
         if (session('checked_bonus', 'discount') == 'discount') {

@@ -1075,4 +1075,10 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     'upsell_skip' => 'Teruskan tanpa menambah',
     'upsell_error' => 'Item ini tidak dapat disahkan. Cuba lagi, atau teruskan ke pembayaran dan semak troli anda.',
     'upsell_expired' => 'Pilihan atau harga telah berubah. Tutup tetingkap ini dan buka semula untuk memuat semula.',
+    'coupon_bar_title' => 'Anda mempunyai kupon aktif',
+    'coupon_bar_text' => 'Diskaun tambahan anda akan dikira secara automatik semasa pembayaran.',
+    'coupon_price_label' => 'Dengan kupon',
+    'coupon_cart_discount' => 'Diskaun kupon',
+    'coupon_cart_total' => 'Jumlah dengan kupon',
+    'coupon_cart_note' => 'Digunakan secara automatik semasa pembayaran',
 ];

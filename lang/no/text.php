@@ -1076,4 +1076,10 @@ return [
     'upsell_skip' => 'Fortsett uten å legge til',
     'upsell_error' => 'Disse varene kunne ikke bekreftes. Prøv igjen, eller fortsett til betaling og sjekk handlekurven.',
     'upsell_expired' => 'Utvalget eller prisen har endret seg. Lukk dette vinduet og åpne det igjen for å oppdatere.',
+    'coupon_bar_title' => 'Du har en aktiv kupong',
+    'coupon_bar_text' => 'Ekstrarabatten din beregnes automatisk i kassen.',
+    'coupon_price_label' => 'Med kupong',
+    'coupon_cart_discount' => 'Kupongrabatt',
+    'coupon_cart_total' => 'Totalt med kupong',
+    'coupon_cart_note' => 'Trekkes automatisk fra i kassen',
 ];

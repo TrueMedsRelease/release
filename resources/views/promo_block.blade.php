@@ -66,6 +66,14 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.2s;
         }
         #gpw-trigger:hover { transform: scale(1.1); }
+        /* --gpw-offset: height of a fixed bottom bar (mobile nav, cookie banner...) under the button, set by JS */
+        #gpw-trigger { bottom: calc(30px + var(--gpw-offset, 0px)); transition: transform 0.2s, bottom 0.2s; }
+        @media (max-width: 767px) {
+            #gpw-trigger {
+                width: 48px; height: 48px; font-size: 24px; right: 16px;
+                bottom: calc(16px + var(--gpw-offset, 0px) + env(safe-area-inset-bottom, 0px));
+            }
+        }
         #gpw-popup {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); z-index: 99999; display: flex;
@@ -392,6 +400,43 @@
                 if (code) document.getElementById('gpw-code').value = code;
             }
         };
+
+        // Lift the % button above fixed bottom bars (mobile tab bar etc.) so it never covers them.
+        (function () {
+            function isPinned(el) {
+                for (; el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
+                    var pos = getComputedStyle(el).position;
+                    if (pos === 'fixed' || pos === 'sticky') return el;
+                }
+                return null;
+            }
+            function update() {
+                var btn = document.getElementById('gpw-trigger');
+                if (!btn) return;
+                var r = btn.getBoundingClientRect();
+                var x = Math.round(r.left + r.width / 2);
+                var h = window.innerHeight;
+                var offset = 0;
+                [2, 12, 24].forEach(function (dy) {
+                    (document.elementsFromPoint ? document.elementsFromPoint(x, h - dy) : []).forEach(function (el) {
+                        if (btn.contains(el) || el.closest('#global-promo-widget')) return;
+                        var pinned = isPinned(el);
+                        if (!pinned) return;
+                        var pr = pinned.getBoundingClientRect();
+                        // only bars glued to the bottom edge and not taller than half the screen
+                        if (pr.bottom >= h - 4 && pr.height < h / 2) offset = Math.max(offset, h - pr.top);
+                    });
+                });
+                btn.style.setProperty('--gpw-offset', Math.ceil(offset) + 'px');
+            }
+            var t;
+            function schedule() { clearTimeout(t); t = setTimeout(update, 150); }
+            window.addEventListener('load', function () { update(); setTimeout(update, 1500); });
+            window.addEventListener('resize', schedule);
+            window.addEventListener('scroll', schedule, { passive: true });
+            window.addEventListener('orientationchange', schedule);
+            document.addEventListener('DOMContentLoaded', update);
+        })();
 
         document.addEventListener('DOMContentLoaded', () => {
             GPW.checkUrlParams();

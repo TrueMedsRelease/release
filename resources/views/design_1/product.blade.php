@@ -195,6 +195,7 @@
                                                 @else
                                                     <span class="product-table__current">{{ $Currency::convert($item['price'], true) }}</span>
                                                 @endif
+                                                @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']])
                                             </th>
                                             <th class="product-table__add">
                                                 <form action="{{ route('cart.add', $item['id']) }}" method="post">

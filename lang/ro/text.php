@@ -1069,4 +1069,10 @@ return [
     'upsell_skip' => 'Continuați fără a adăuga',
     'upsell_error' => 'Aceste produse nu au putut fi confirmate. Încercați din nou sau continuați la finalizarea comenzii și verificați coșul.',
     'upsell_expired' => 'Selecția sau prețul s-au modificat. Închideți această fereastră și redeschideți-o pentru actualizare.',
+    'coupon_bar_title' => 'Aveți un cupon activ',
+    'coupon_bar_text' => 'Reducerea suplimentară va fi calculată automat la finalizarea comenzii.',
+    'coupon_price_label' => 'Cu cupon',
+    'coupon_cart_discount' => 'Reducere cupon',
+    'coupon_cart_total' => 'Total cu cupon',
+    'coupon_cart_note' => 'Se aplică automat la finalizarea comenzii',
 ];

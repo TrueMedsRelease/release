@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\ProductPackaging;
 use App\Services\GeoIpService;
 use App\Services\CheckoutSkin;
+use App\Services\CouponService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -106,6 +107,9 @@ class SessionParameterHandler
         // coupon_get
         if (!empty($request->query('coupon'))) {
             session(['coupon_get' => $request->query('coupon')]);
+            // Validate right away so product/cart pages can show the real coupon price.
+            // Short timeout: this runs on the landing request; on failure the cart retries.
+            CouponService::resolvePending(5);
         }
 
         // lang (перезаписываем всегда при наличии)

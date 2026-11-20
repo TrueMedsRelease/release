@@ -109,6 +109,7 @@ usort($dosageKeys, static fn (string $left, string $right): int => -$compareDosa
                                                     </div>
                                                 @endif
                                                 <div class="product__price">{{ $Currency::Convert($pack['price'] ?? 0) }}</div>
+                                                @include('shared.coupon_price', ['couponBase' => $pack['price'] ?? 0, 'couponProductId' => $product['id'] ?? null])
                                             </div>
                                         </td>
                                         <td class="product__button-wrapper">

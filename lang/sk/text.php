@@ -1073,4 +1073,10 @@ return [
     'upsell_skip' => 'Pokračovať bez pridania',
     'upsell_error' => 'Tieto položky sa nepodarilo potvrdiť. Skúste to znova alebo pokračujte k pokladni a skontrolujte košík.',
     'upsell_expired' => 'Výber alebo cena sa zmenili. Zavrite toto okno a znova ho otvorte, aby sa údaje aktualizovali.',
+    'coupon_bar_title' => 'Máte aktívny kupón',
+    'coupon_bar_text' => 'Dodatočná zľava bude automaticky započítaná pri dokončení objednávky.',
+    'coupon_price_label' => 'S kupónom',
+    'coupon_cart_discount' => 'Zľava z kupónu',
+    'coupon_cart_total' => 'Spolu s kupónom',
+    'coupon_cart_note' => 'Uplatní sa automaticky pri dokončení objednávky',
 ];

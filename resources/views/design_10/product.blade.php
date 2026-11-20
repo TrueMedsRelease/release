@@ -194,6 +194,7 @@
                                                 @else
                                                     {{ $Currency::convert($item['price'], true) }}
                                                 @endif
+                                                @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']])
                                             </div>
                                         </td>
                                         <td class="product__button-wrapper">

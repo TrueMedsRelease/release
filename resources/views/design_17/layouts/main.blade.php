@@ -213,6 +213,7 @@
         }
     @endphp
     <body class="@yield('page_name'){{ $cart_count <= 0 ? ' cart-hidden-desktop' : '' }}" data-page="@yield('body_data_page')">
+        @include('shared.coupon_bar')
         <script>
             let flagc = false;
             let flagp = false;

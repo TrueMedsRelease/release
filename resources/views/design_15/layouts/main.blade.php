@@ -114,6 +114,7 @@
     </head>
 
     <body class="@yield('page_name')">
+        @include('shared.coupon_bar')
         <script>
             let flagc = false;
             let flagp = false;

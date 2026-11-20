@@ -1209,4 +1209,10 @@ return [
     'upsell_skip' => 'Continua senza aggiungere',
     'upsell_error' => 'Non è stato possibile confermare questi articoli. Riprova oppure continua al pagamento e controlla il carrello.',
     'upsell_expired' => 'La selezione o il prezzo sono cambiati. Chiudi questa finestra e riaprila per aggiornare.',
+    'coupon_bar_title' => 'Hai un coupon attivo',
+    'coupon_bar_text' => 'Il tuo sconto extra verrà calcolato automaticamente al momento del pagamento.',
+    'coupon_price_label' => 'Con coupon',
+    'coupon_cart_discount' => 'Sconto coupon',
+    'coupon_cart_total' => 'Totale con coupon',
+    'coupon_cart_note' => 'Applicato automaticamente al pagamento',
 ];

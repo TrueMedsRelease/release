@@ -100,6 +100,7 @@
 </head>
 
 <body>
+    @include('shared.coupon_bar')
     <script>
         let flagc = false;
         let flagp = false;

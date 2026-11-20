@@ -302,9 +302,11 @@
                                 {{__('text.cart_saving')}}{{ $Currency::convert($saving) }}
                             </div>
                             <div class="cart-total__price h3">{{__('text.cart_only')}} {{ session('total.all_in_currency') }} </div>
+                            @include('shared.coupon_cart_line')
                         @endif
                         @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                             <div class="cart-total__price h3">{{ session('total.all_in_currency') }}</div>
+                            @include('shared.coupon_cart_line')
                         @endif
                     </div>
                     <div class="cart-form__controls">

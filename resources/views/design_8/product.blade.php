@@ -123,9 +123,9 @@
                         <span>{{ $Currency::convert(round($item['price'] / $item['num'], 2), false, true) }}</span>
                     </div>
                     @if ($loop->remaining != 1 && $product['id'] != 616)
-                        <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span></div>
+                        <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span>@include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']])</div>
                     @else
-                        <div class="col"><span>{{ $Currency::convert($item['price']) }}</span></div>
+                        <div class="col"><span>{{ $Currency::convert($item['price']) }}</span>@include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']])</div>
                     @endif
                     <div class="col">
                         <form method="POST" action="{{ route('cart.add', $item['id']) }}">
