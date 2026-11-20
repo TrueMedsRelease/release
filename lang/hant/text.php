@@ -1078,6 +1078,5 @@ return  [
     'coupon_bar_text' => '額外折扣將在結帳時自動計算。',
     'coupon_price_label' => '使用優惠券',
     'coupon_cart_discount' => '優惠券折扣',
-    'coupon_cart_total' => '使用優惠券後合計',
     'coupon_cart_note' => '結帳時自動扣除',
 ];

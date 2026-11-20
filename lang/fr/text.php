@@ -1208,6 +1208,5 @@ return [
     'coupon_bar_text' => 'Votre réduction supplémentaire sera calculée automatiquement lors de la commande.',
     'coupon_price_label' => 'Avec coupon',
     'coupon_cart_discount' => 'Réduction coupon',
-    'coupon_cart_total' => 'Total avec coupon',
     'coupon_cart_note' => 'Appliquée automatiquement lors de la commande',
 ];

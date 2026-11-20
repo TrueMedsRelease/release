@@ -1084,6 +1084,5 @@ return [
     'coupon_bar_text' => 'Lisäalennuksesi lasketaan automaattisesti kassalla.',
     'coupon_price_label' => 'Kupongilla',
     'coupon_cart_discount' => 'Kuponkialennus',
-    'coupon_cart_total' => 'Yhteensä kupongilla',
     'coupon_cart_note' => 'Vähennetään automaattisesti kassalla',
 ];

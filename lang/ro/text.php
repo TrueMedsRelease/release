@@ -1073,6 +1073,5 @@ return [
     'coupon_bar_text' => 'Reducerea suplimentară va fi calculată automat la finalizarea comenzii.',
     'coupon_price_label' => 'Cu cupon',
     'coupon_cart_discount' => 'Reducere cupon',
-    'coupon_cart_total' => 'Total cu cupon',
     'coupon_cart_note' => 'Se aplică automat la finalizarea comenzii',
 ];

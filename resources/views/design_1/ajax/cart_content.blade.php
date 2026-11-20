@@ -350,13 +350,12 @@
                     </div>
                     <span class="order-total__saving">{{__('text.cart_saving')}} {{ $Currency::convert($saving) }}</span>
                     <span class="order-total__only">{{__('text.cart_only')}} {{ session('total.all_in_currency') }}</span>
-                    @include('shared.coupon_cart_line')
                 @endif
                 @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                     <div class="order-total__only">{{ session('total.all_in_currency') }}</div>
-                    @include('shared.coupon_cart_line')
                 @endif
             </div>
+            @include('shared.coupon_cart_line')
         </div>
 
         <a href="{{ route('checkout.index') }}" class="order__pay">{{__('text.cart_pay_button')}}<span>→</span></a>

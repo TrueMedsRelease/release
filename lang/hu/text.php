@@ -1083,6 +1083,5 @@ return [
     'coupon_bar_text' => 'Az extra kedvezményt a rendelés leadásakor automatikusan kiszámítjuk.',
     'coupon_price_label' => 'Kuponnal',
     'coupon_cart_discount' => 'Kuponkedvezmény',
-    'coupon_cart_total' => 'Összesen kuponnal',
     'coupon_cart_note' => 'A rendelés leadásakor automatikusan érvényesül',
 ];

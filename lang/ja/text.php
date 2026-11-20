@@ -1196,7 +1196,6 @@ return [
     'coupon_bar_text' => '追加割引はご注文手続き時に自動で計算されます。',
     'coupon_price_label' => 'クーポン適用',
     'coupon_cart_discount' => 'クーポン割引',
-    'coupon_cart_total' => 'クーポン適用後の合計',
     'coupon_cart_note' => 'ご注文手続き時に自動で適用されます',
 ];
 

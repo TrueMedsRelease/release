@@ -1197,6 +1197,5 @@ return [
     'coupon_bar_text' => 'Seu desconto extra será calculado automaticamente ao finalizar o pedido.',
     'coupon_price_label' => 'Com cupom',
     'coupon_cart_discount' => 'Desconto do cupom',
-    'coupon_cart_total' => 'Total com cupom',
     'coupon_cart_note' => 'Aplicado automaticamente ao finalizar o pedido',
 ];

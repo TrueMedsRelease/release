@@ -1082,6 +1082,5 @@ return [
     'coupon_bar_text' => '额外折扣将在结账时自动计算。',
     'coupon_price_label' => '使用优惠券',
     'coupon_cart_discount' => '优惠券折扣',
-    'coupon_cart_total' => '使用优惠券后合计',
     'coupon_cart_note' => '结账时自动抵扣',
 ];

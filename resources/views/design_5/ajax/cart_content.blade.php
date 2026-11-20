@@ -304,15 +304,14 @@
                                         </div>
                                             <div class="total-line__new-price">
                                             <div class="total-line__digits">{{__('text.cart_only')}} {{ session('total.all_in_currency') }}</div>
-                                            @include('shared.coupon_cart_line')
                                         </div>
                                     @endif
                                     @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                                         <div class="total-line__digits">{{ session('total.all_in_currency') }}</div>
-                                        @include('shared.coupon_cart_line')
                                     @endif
                                 </span>
                             </div>
+                            @include('shared.coupon_cart_line')
                             <div class="column">
                                 <button class="btn btn-default blue back-to-main" onclick="location.href='{{ route('home.index') }}'">{{__('text.cart_back_to_shop')}}</button>
                                 <button class="btn btn-primary button-checkout" onclick="location.href='{{ route('checkout.index') }}'" data-seasonal-checkout="{{ route('checkout.index') }}">{{__('text.cart_pay_button')}}</button>

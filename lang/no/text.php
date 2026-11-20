@@ -1080,6 +1080,5 @@ return [
     'coupon_bar_text' => 'Ekstrarabatten din beregnes automatisk i kassen.',
     'coupon_price_label' => 'Med kupong',
     'coupon_cart_discount' => 'Kupongrabatt',
-    'coupon_cart_total' => 'Totalt med kupong',
     'coupon_cart_note' => 'Trekkes automatisk fra i kassen',
 ];

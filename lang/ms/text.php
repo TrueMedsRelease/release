@@ -1079,6 +1079,5 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     'coupon_bar_text' => 'Diskaun tambahan anda akan dikira secara automatik semasa pembayaran.',
     'coupon_price_label' => 'Dengan kupon',
     'coupon_cart_discount' => 'Diskaun kupon',
-    'coupon_cart_total' => 'Jumlah dengan kupon',
     'coupon_cart_note' => 'Digunakan secara automatik semasa pembayaran',
 ];

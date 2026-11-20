@@ -1127,6 +1127,5 @@ return [
     'coupon_bar_text' => 'Din ekstra rabat beregnes automatisk ved kassen.',
     'coupon_price_label' => 'Med kupon',
     'coupon_cart_discount' => 'Kuponrabat',
-    'coupon_cart_total' => 'I alt med kupon',
     'coupon_cart_note' => 'Trækkes automatisk fra ved kassen',
 ];

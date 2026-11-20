@@ -194,8 +194,8 @@
                                                 @else
                                                     {{ $Currency::convert($item['price'], true) }}
                                                 @endif
-                                                @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']])
                                             </div>
+                                            @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']])
                                         </td>
                                         <td class="product__button-wrapper">
                                             <form action="{{ route('cart.add', $item['id']) }}" method="post">

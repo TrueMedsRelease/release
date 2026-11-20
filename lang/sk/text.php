@@ -1077,6 +1077,5 @@ return [
     'coupon_bar_text' => 'Dodatočná zľava bude automaticky započítaná pri dokončení objednávky.',
     'coupon_price_label' => 'S kupónom',
     'coupon_cart_discount' => 'Zľava z kupónu',
-    'coupon_cart_total' => 'Spolu s kupónom',
     'coupon_cart_note' => 'Uplatní sa automaticky pri dokončení objednávky',
 ];

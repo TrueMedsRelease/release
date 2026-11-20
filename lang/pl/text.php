@@ -1078,6 +1078,5 @@ return [
     'coupon_bar_text' => 'Dodatkowy rabat zostanie naliczony automatycznie przy składaniu zamówienia.',
     'coupon_price_label' => 'Z kuponem',
     'coupon_cart_discount' => 'Rabat z kuponu',
-    'coupon_cart_total' => 'Razem z kuponem',
     'coupon_cart_note' => 'Naliczany automatycznie przy składaniu zamówienia',
 ];

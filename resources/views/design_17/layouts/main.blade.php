@@ -877,6 +877,21 @@
         <script defer src="{{ asset_ver("$design/js/cart-aside.js") }}"></script>
         <script>window.medbotPollInterval = {{ config('medbot.poll_interval', 5000) }};</script>
         <script>window.DESIGN17_CHAT_LOG_LEVEL = "{{ app()->environment('production') ? 'error' : 'debug' }}";</script>
+        @if (\App\Services\CouponService::active())
+            @include('shared.coupon_price_css')
+            @php
+                $design17Coupon = [
+                    'percent'  => \App\Services\CouponService::percent(),
+                    'excluded' => \App\Services\CouponService::EXCLUDED_PRODUCT_ID,
+                    'tag'      => trim(view('shared.coupon_tag')->render()),
+                    'title'    => __('text.coupon_cart_note'),
+                ];
+            @endphp
+            <script>
+                // Coupon for the JS-rendered pack table (chat.js -> couponPriceHtml()).
+                window.design17Coupon = @json($design17Coupon);
+            </script>
+        @endif
         <script defer src="{{ asset_ver("$design/js/chat.js") }}"></script>
         <script defer src="{{ asset_ver('js/all_js.js') }}"></script>
 

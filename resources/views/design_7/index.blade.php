@@ -413,6 +413,7 @@
                                 @else
                                     <span>{{ $Currency::convert($item['price']) }}</span>
                                 @endif
+                                @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id'] ?? null])
                             </span>
 
                             <form method="POST" action="{{ route('cart.add', $item['id']) }}">

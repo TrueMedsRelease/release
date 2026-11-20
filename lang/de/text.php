@@ -1203,6 +1203,5 @@ return [
     'coupon_bar_text' => 'Ihr zusätzlicher Rabatt wird an der Kasse automatisch berechnet.',
     'coupon_price_label' => 'Mit Gutschein',
     'coupon_cart_discount' => 'Gutscheinrabatt',
-    'coupon_cart_total' => 'Gesamt mit Gutschein',
     'coupon_cart_note' => 'Wird an der Kasse automatisch abgezogen',
 ];

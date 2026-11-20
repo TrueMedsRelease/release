@@ -1242,6 +1242,5 @@ return [
     'coupon_bar_text' => 'Tu descuento adicional se calculará automáticamente al finalizar el pedido.',
     'coupon_price_label' => 'Con cupón',
     'coupon_cart_discount' => 'Descuento del cupón',
-    'coupon_cart_total' => 'Total con cupón',
     'coupon_cart_note' => 'Se aplica automáticamente al finalizar el pedido',
 ];

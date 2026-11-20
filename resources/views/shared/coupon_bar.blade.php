@@ -9,8 +9,9 @@
     </svg>
     <span><b>{{ __('text.coupon_bar_title') }} &minus;{{ \App\Services\CouponService::percentLabel() }}%.</b> {{ __('text.coupon_bar_text') }}</span>
 </div>
+@include('shared.coupon_color')
 <style>
-    .coupon-bar { position: relative; z-index: 50; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; background: #2e9e4f; color: #fff; font-size: 14px; line-height: 1.35; text-align: center; }
+    .coupon-bar { position: relative; z-index: 50; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; background: #2e9e4f; background: var(--coupon-bg, color-mix(in srgb, var(--coupon-color, #2e9e4f) 82%, #000)); color: var(--coupon-on, #fff); font-size: 14px; line-height: 1.35; text-align: center; }
     .coupon-bar b { font-weight: 700; }
     .coupon-bar__icon { flex: none; }
     @media (max-width: 600px) { .coupon-bar { font-size: 13px; padding: 7px 12px; } }

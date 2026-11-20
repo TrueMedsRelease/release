@@ -1436,6 +1436,5 @@ return [
     'coupon_bar_text' => 'Your extra discount will be calculated automatically at checkout.',
     'coupon_price_label' => 'With coupon',
     'coupon_cart_discount' => 'Coupon discount',
-    'coupon_cart_total' => 'Total with coupon',
     'coupon_cart_note' => 'Applied automatically at checkout',
 ];

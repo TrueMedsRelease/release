@@ -1081,6 +1081,5 @@ return [
     'coupon_bar_text' => 'سيتم احتساب الخصم الإضافي تلقائيًا عند إتمام الطلب.',
     'coupon_price_label' => 'مع الكوبون',
     'coupon_cart_discount' => 'خصم الكوبون',
-    'coupon_cart_total' => 'الإجمالي مع الكوبون',
     'coupon_cart_note' => 'يُطبَّق تلقائيًا عند إتمام الطلب',
 ];

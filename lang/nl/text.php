@@ -1117,6 +1117,5 @@ return [
     'coupon_bar_text' => 'Je extra korting wordt automatisch berekend bij het afrekenen.',
     'coupon_price_label' => 'Met kortingscode',
     'coupon_cart_discount' => 'Korting via code',
-    'coupon_cart_total' => 'Totaal met kortingscode',
     'coupon_cart_note' => 'Wordt automatisch verrekend bij het afrekenen',
 ];
