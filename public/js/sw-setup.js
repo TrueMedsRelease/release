@@ -2,7 +2,7 @@
 
 const DEBUG = true;
 
-const SW_VERSION = '2026-05-27-5';
+const SW_VERSION = '2026-11-23-1';
 const SW_URL = `/sw.js?v=${SW_VERSION}`;
 
 let refreshing = false;

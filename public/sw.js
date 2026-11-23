@@ -16,7 +16,7 @@
 
 let PUSH_SAVE_URL = '/push/save_push';
 
-const SW_VERSION = '2026-05-27-4';
+const SW_VERSION = '2026-11-23-1';
 const CACHE_PREFIX = 'shop-pwa';
 
 const PAGE_CACHE = `${CACHE_PREFIX}-pages-${SW_VERSION}`;
@@ -68,6 +68,8 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox
 
 if (self.workbox) {
     workbox.setConfig({ debug: false });
+
+    const isSameOrigin = (url) => url.origin === self.location.origin;
 
     const NEVER_CACHE_PATTERNS = [
         /^\/admin(?:\/|$)/,
@@ -123,22 +125,27 @@ if (self.workbox) {
         /^\/gift_card_process(?:\/|$)/
     ];
 
+    // Не-GET запросы своего домена — только сеть
     workbox.routing.registerRoute(
-        ({ request }) => request.method !== 'GET',
+        ({ url, request }) => isSameOrigin(url) && request.method !== 'GET',
         new workbox.strategies.NetworkOnly()
     );
 
+    // Страницы, которые нельзя кэшировать — только сеть
     workbox.routing.registerRoute(
         ({ url, request }) => {
+            if (!isSameOrigin(url)) return false;
             if (request.method !== 'GET') return false;
             return NEVER_CACHE_PATTERNS.some((re) => re.test(url.pathname));
         },
         new workbox.strategies.NetworkOnly()
     );
 
+    // Навигация (HTML-страницы)
     workbox.routing.registerRoute(
         ({ request, url }) => {
-            return request.mode === 'navigate' &&
+            return isSameOrigin(url) &&
+                request.mode === 'navigate' &&
                 !NEVER_CACHE_PATTERNS.some((re) => re.test(url.pathname));
         },
         new workbox.strategies.NetworkFirst({
@@ -157,12 +164,15 @@ if (self.workbox) {
         })
     );
 
+    // Скрипты, стили, воркеры
     workbox.routing.registerRoute(
         ({ request, url }) =>
-            request.destination === 'script' ||
-            request.destination === 'style' ||
-            request.destination === 'worker' ||
-            /\.(?:js|css|ico)$/i.test(url.pathname),
+            isSameOrigin(url) && (
+                request.destination === 'script' ||
+                request.destination === 'style' ||
+                request.destination === 'worker' ||
+                /\.(?:js|css|ico)$/i.test(url.pathname)
+            ),
         new workbox.strategies.StaleWhileRevalidate({
             cacheName: STATIC_CACHE,
             plugins: [
@@ -175,11 +185,14 @@ if (self.workbox) {
         })
     );
 
+    // Картинки
     workbox.routing.registerRoute(
         ({ request, url }) =>
-            url.pathname.startsWith('/set_images/') ||
-            request.destination === 'image' ||
-            /\.(?:png|webp|svg|jpg|jpeg|gif|avif)$/i.test(url.pathname),
+            isSameOrigin(url) && (
+                url.pathname.startsWith('/set_images/') ||
+                request.destination === 'image' ||
+                /\.(?:png|webp|svg|jpg|jpeg|gif|avif)$/i.test(url.pathname)
+            ),
         new workbox.strategies.CacheFirst({
             cacheName: IMAGE_CACHE,
             plugins: [
@@ -192,10 +205,13 @@ if (self.workbox) {
         })
     );
 
+    // Шрифты
     workbox.routing.registerRoute(
         ({ request, url }) =>
-            request.destination === 'font' ||
-            /\.(?:woff|woff2|ttf|otf)$/i.test(url.pathname),
+            isSameOrigin(url) && (
+                request.destination === 'font' ||
+                /\.(?:woff|woff2|ttf|otf)$/i.test(url.pathname)
+            ),
         new workbox.strategies.CacheFirst({
             cacheName: FONT_CACHE,
             plugins: [
