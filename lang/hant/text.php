@@ -1074,4 +1074,9 @@ return  [
     'upsell_skip' => '不新增，繼續',
     'upsell_error' => '無法確認這些商品。請重試，或繼續結帳並檢查您的購物車。',
     'upsell_expired' => '所選商品或價格已發生變化。請關閉此視窗並重新開啟以更新資訊。',
+    'coupon_bar_title' => '您有一張有效的優惠券',
+    'coupon_bar_text' => '額外折扣將在結帳時自動計算。',
+    'coupon_price_label' => '使用優惠券',
+    'coupon_cart_discount' => '優惠券折扣',
+    'coupon_cart_note' => '結帳時自動扣除',
 ];

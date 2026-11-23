@@ -306,6 +306,7 @@
                         @if ($total_discount_product == (session('total.product_total') - session('total.bonus_total')) || $is_only_card)
                             <div class="cart-total__price h3">{{ session('total.all_in_currency') }}</div>
                         @endif
+                        @include('shared.coupon_cart_line')
                     </div>
                     <div class="cart-form__controls">
                         <button class="button button--outline" type="button" onclick="document.location.href='{{ route('home.index') }}'">{{__('text.cart_back_to_shop')}}</button>

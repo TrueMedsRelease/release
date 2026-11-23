@@ -7939,3 +7939,11 @@ textarea.input {
 .popup_white .popup_push {
   pointer-events: auto;
 }
+
+/* Cart total: the fixed 60px bar grows when the coupon row is shown under it */
+.total-line:has(.coupon-cart) {
+  height: auto;
+  min-height: 60px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}

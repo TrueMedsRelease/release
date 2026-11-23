@@ -1432,4 +1432,9 @@ return [
     'upsell_skip' => 'Continue without adding',
     'upsell_error' => 'Could not confirm these items. Retry, or continue to checkout and review your cart.',
     'upsell_expired' => 'The selection or price has changed. Close this window and open it again to refresh.',
+    'coupon_bar_title' => 'You have an active coupon',
+    'coupon_bar_text' => 'Your extra discount will be calculated automatically at checkout.',
+    'coupon_price_label' => 'With coupon',
+    'coupon_cart_discount' => 'Coupon discount',
+    'coupon_cart_note' => 'Applied automatically at checkout',
 ];

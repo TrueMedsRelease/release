@@ -1389,7 +1389,16 @@
         return groups;
     }
 
-    function buildPackTableHtml(packs, productName) {
+    // Price with the coupon applied (window.design17Coupon is set by the layout when a coupon is active).
+    function couponPriceHtml(price, productId) {
+        var c = window.design17Coupon;
+        if (!c || !(c.percent > 0) || !(price > 0) || String(productId) === String(c.excluded)) return '';
+        var reduced = price - Math.ceil(price * c.percent / 100);
+        return '<small class="coupon-price" title="' + escapeHtml(c.title || '') + '">' + c.tag +
+            ' <b class="coupon-price__sum">' + formatPrice(reduced) + '</b></small>';
+    }
+
+    function buildPackTableHtml(packs, productName, productId) {
         if (!packs.length) return '';
         var compactCart = isCompactCartLocale();
         var maxPillPrice = 0;
@@ -1458,6 +1467,7 @@
                         '<div class="product__price-wrapper">' +
                             discountHtml +
                             '<div class="product__price">' + formatPrice(pack.price) + '</div>' +
+                            couponPriceHtml(pack.price, productId) +
                         '</div>' +
                     '</td>' +
                     '<td class="product__button-wrapper">' +
@@ -1497,7 +1507,7 @@
 
         var packsHtml = '';
         dosageKeys.forEach(function (dosage) {
-            packsHtml += buildPackTableHtml(packsByDosage[dosage], product.name || '');
+            packsHtml += buildPackTableHtml(packsByDosage[dosage], product.name || '', product.id);
         });
 
         var imageHtml = '';
@@ -1569,7 +1579,7 @@
 
         var packsHtml = '';
         dosageKeys.forEach(function (dosage) {
-            packsHtml += buildPackTableHtml(packsByDosage[dosage], product.name || '');
+            packsHtml += buildPackTableHtml(packsByDosage[dosage], product.name || '', product.id);
         });
 
         var imageHtml = '';

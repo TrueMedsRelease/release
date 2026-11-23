@@ -1079,4 +1079,9 @@ return [
     'upsell_skip' => 'Folytatás hozzáadás nélkül',
     'upsell_error' => 'Ezeket a termékeket nem sikerült megerősíteni. Próbálja újra, vagy folytassa a pénztárhoz, és ellenőrizze a kosarát.',
     'upsell_expired' => 'A választék vagy az ár megváltozott. A frissítéshez zárja be ezt az ablakot, majd nyissa meg újra.',
+    'coupon_bar_title' => 'Önnek aktív kuponja van',
+    'coupon_bar_text' => 'Az extra kedvezményt a rendelés leadásakor automatikusan kiszámítjuk.',
+    'coupon_price_label' => 'Kuponnal',
+    'coupon_cart_discount' => 'Kuponkedvezmény',
+    'coupon_cart_note' => 'A rendelés leadásakor automatikusan érvényesül',
 ];

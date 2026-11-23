@@ -1080,4 +1080,9 @@ return [
     'upsell_skip' => 'Jatka lisäämättä',
     'upsell_error' => 'Näitä tuotteita ei voitu vahvistaa. Yritä uudelleen tai jatka kassalle ja tarkista ostoskorisi.',
     'upsell_expired' => 'Valikoima tai hinta on muuttunut. Sulje tämä ikkuna ja avaa se uudelleen päivittääksesi tiedot.',
+    'coupon_bar_title' => 'Sinulla on aktiivinen kuponki',
+    'coupon_bar_text' => 'Lisäalennuksesi lasketaan automaattisesti kassalla.',
+    'coupon_price_label' => 'Kupongilla',
+    'coupon_cart_discount' => 'Kuponkialennus',
+    'coupon_cart_note' => 'Vähennetään automaattisesti kassalla',
 ];

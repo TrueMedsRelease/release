@@ -1123,4 +1123,9 @@ return [
     'upsell_skip' => 'Fortsæt uden at tilføje',
     'upsell_error' => 'Disse varer kunne ikke bekræftes. Prøv igen, eller fortsæt til betaling og gennemgå din kurv.',
     'upsell_expired' => 'Udvalget eller prisen er ændret. Luk dette vindue, og åbn det igen for at opdatere.',
+    'coupon_bar_title' => 'Du har en aktiv kupon',
+    'coupon_bar_text' => 'Din ekstra rabat beregnes automatisk ved kassen.',
+    'coupon_price_label' => 'Med kupon',
+    'coupon_cart_discount' => 'Kuponrabat',
+    'coupon_cart_note' => 'Trækkes automatisk fra ved kassen',
 ];

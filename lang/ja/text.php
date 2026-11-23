@@ -1192,5 +1192,10 @@ return [
     'upsell_skip' => '追加せずに続ける',
     'upsell_error' => 'これらの商品を確認できませんでした。もう一度お試しいただくか、購入手続きに進んでカートをご確認ください。',
     'upsell_expired' => '選択内容または価格が変更されました。このウィンドウを閉じて、もう一度開いて更新してください。',
+    'coupon_bar_title' => '有効なクーポンをお持ちです',
+    'coupon_bar_text' => '追加割引はご注文手続き時に自動で計算されます。',
+    'coupon_price_label' => 'クーポン適用',
+    'coupon_cart_discount' => 'クーポン割引',
+    'coupon_cart_note' => 'ご注文手続き時に自動で適用されます',
 ];
 

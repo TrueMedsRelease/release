@@ -179,8 +179,9 @@
                             @if ($loop->last)
                                 @continue
                             @endif
-                            <tr class="product">
-                                <td class="product__info-wrapper">
+                            @php $hasCouponRow = \App\Services\CouponService::discount((float) $item['price'], $product['id']) > 0; @endphp
+                            <tr class="product @if ($hasCouponRow) product--has-coupon @endif">
+                                <td class="product__info-wrapper" @if ($hasCouponRow) rowspan="2" @endif>
                                     <div class="product__info @if ($loop->iteration == 1 && $product['id'] != 616) product__info--sale @endif" @if ($loop->iteration == 1 && $product['id'] != 616) style="height: auto;" @endif>
                                         <div class="product__quantity">{{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}</div>
                                         @if ($product['id'] != 616)
@@ -220,7 +221,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="product__button-wrapper">
+                                <td class="product__button-wrapper" @if ($hasCouponRow) rowspan="2" @endif>
                                     <form action="{{ route('cart.add', $item['id']) }}" method="post">
                                         @csrf
                                         @if (!in_array(App::currentLocale(), ['de', 'it', 'gr', 'nl', 'hu', 'pt']))
@@ -244,6 +245,7 @@
                                     </form>
                                 </td>
                             </tr>
+                            @include('shared.coupon_row', ['couponBase' => $item['price'], 'couponProductId' => $product['id'], 'couponColspan' => 2])
                         @endforeach
                     </tbody>
                 </table>

@@ -1078,4 +1078,9 @@ return [
     'upsell_skip' => '不添加，继续',
     'upsell_error' => '无法确认这些商品。请重试，或继续结账并检查您的购物车。',
     'upsell_expired' => '所选商品或价格已发生变化。请关闭此窗口并重新打开以刷新信息。',
+    'coupon_bar_title' => '您有一张有效的优惠券',
+    'coupon_bar_text' => '额外折扣将在结账时自动计算。',
+    'coupon_price_label' => '使用优惠券',
+    'coupon_cart_discount' => '优惠券折扣',
+    'coupon_cart_note' => '结账时自动抵扣',
 ];

@@ -355,6 +355,7 @@
                     <div class="order-total__only">{{ session('total.all_in_currency') }}</div>
                 @endif
             </div>
+            @include('shared.coupon_cart_line')
         </div>
 
         <a href="{{ route('checkout.index') }}" class="order__pay">{{__('text.cart_pay_button')}}<span>→</span></a>

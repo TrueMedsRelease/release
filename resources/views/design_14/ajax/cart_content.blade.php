@@ -383,6 +383,7 @@
                                     <div class="cart-total__price">{{ session('total.all_in_currency') }}</div>
                                 </div>
                             @endif
+                            @include('shared.coupon_cart_line')
                         </div>
                         <div class="cart-form__controls">
                             <a class="button button--uppercase" href="{{ route('home.index') }}">{{__('text.cart_back_to_shop')}}</a>

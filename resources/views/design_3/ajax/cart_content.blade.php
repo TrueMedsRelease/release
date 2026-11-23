@@ -367,6 +367,7 @@
                         <div class="total-line__digits">{{ session('total.all_in_currency') }}</div>
                     @endif
                 </div>
+                @include('shared.coupon_cart_line')
             </div>
             <div class="order__bottom actions-line">
                 <a href="{{ route('home.index') }}" class="actions-line__continue">{{__('text.cart_back_to_shop')}}</a>

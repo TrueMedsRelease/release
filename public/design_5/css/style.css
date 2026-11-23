@@ -2795,7 +2795,7 @@ input[type=number] {
     position: absolute;
     bottom: -10px;
     left: 50%;
-    min-width: 150px;
+    min-width: 100px;
     max-height: 400px;
     border-radius: 15px;
     background-color: #fff;
@@ -4075,4 +4075,66 @@ ul.footer-nav li {
 
 .popup_white .popup_push {
   pointer-events: auto;
+}
+
+/* Cart total: coupon row sits on its own line between the total and the buttons */
+.table-box.cart-table .table .body .line.full-line.total-line .total-box > .coupon-cart {
+    margin: 10px 0 12px;
+    padding-top: 10px; }
+
+/* Cart delivery options: on narrow phones stack Express / Regular instead of squeezing them side by side */
+@media only screen and (max-width: 575px) {
+    .table-box.cart-table .table .body .line.full-line.delivery-line {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px; }
+    .table-box.cart-table .table .body .line.full-line.delivery-line > .delivery-box,
+    .table-box.cart-table .table .body .line.full-line.delivery-line > .delivery-line__item {
+        width: 100%;
+        min-width: 0; }
+    .table-box.cart-table .table .body .line.full-line.delivery-line .delivery-box .checkbox {
+        margin-top: 0; }
+    .table-box.cart-table .table .body .line.full-line.delivery-line .name-delivery {
+        gap: 8px; }
+    .table-box.cart-table .table .body .line.full-line.delivery-line .name-delivery .price {
+        flex: none;
+        white-space: nowrap; }
+}
+
+/* Header on small phones: logo + language + currency must fit inside the white panel */
+@media only screen and (max-width: 480px) {
+    .header .header-container .panel-box {
+        gap: 8px;
+        padding: 10px 12px; }
+    .header .logo {
+        flex: none;
+        max-width: 84px; }
+    .header .header-container .drop-info {
+        width: auto;
+        min-width: 0;
+        flex: 1 1 auto;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-left: 0;
+        padding-right: 0; }
+    .header .header-container .drop-info .drop + .drop {
+        margin-left: 0; }
+    .header .header-container .drop-info .drop {
+        flex: none;
+        padding: 0 14px 0 20px; /* right: room for the chevron drawn outside the button */
+        background-size: 15px auto;
+        font-size: 12px; }
+    .header .header-container .drop-info .select__title {
+        width: auto;
+        padding: 1px 0 1px 4px;
+        font-size: 12px; }
+    .header .header-container .drop-info .select__value {
+        white-space: nowrap; }
+    /* long language names ("Bahasa Melayu", Arabic): ellipsis instead of running into the logo */
+    .header .header-container .drop-info .lang .select__content {
+        display: inline-block;
+        max-width: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle; }
 }

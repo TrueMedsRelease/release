@@ -1113,4 +1113,9 @@ return [
     'upsell_skip' => 'Doorgaan zonder toe te voegen',
     'upsell_error' => 'Deze artikelen konden niet worden bevestigd. Probeer het opnieuw, of ga door naar afrekenen en controleer uw winkelwagen.',
     'upsell_expired' => 'De selectie of prijs is gewijzigd. Sluit dit venster en open het opnieuw om te vernieuwen.',
+    'coupon_bar_title' => 'Je hebt een actieve kortingscode',
+    'coupon_bar_text' => 'Je extra korting wordt automatisch berekend bij het afrekenen.',
+    'coupon_price_label' => 'Met kortingscode',
+    'coupon_cart_discount' => 'Korting via code',
+    'coupon_cart_note' => 'Wordt automatisch verrekend bij het afrekenen',
 ];

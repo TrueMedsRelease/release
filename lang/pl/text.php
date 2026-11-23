@@ -1074,4 +1074,9 @@ return [
     'upsell_skip' => 'Kontynuuj bez dodawania',
     'upsell_error' => 'Nie udało się potwierdzić tych produktów. Spróbuj ponownie lub przejdź do kasy i sprawdź koszyk.',
     'upsell_expired' => 'Wybór lub cena uległy zmianie. Zamknij to okno i otwórz je ponownie, aby odświeżyć informacje.',
+    'coupon_bar_title' => 'Masz aktywny kupon',
+    'coupon_bar_text' => 'Dodatkowy rabat zostanie naliczony automatycznie przy składaniu zamówienia.',
+    'coupon_price_label' => 'Z kuponem',
+    'coupon_cart_discount' => 'Rabat z kuponu',
+    'coupon_cart_note' => 'Naliczany automatycznie przy składaniu zamówienia',
 ];

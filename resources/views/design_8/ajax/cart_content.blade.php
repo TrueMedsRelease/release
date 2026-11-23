@@ -187,6 +187,7 @@
                     <span>{{ session('total.all_in_currency') }}</span>
                 @endif
             </div>
+            @include('shared.coupon_cart_line')
 		</div>
 	</div>
 

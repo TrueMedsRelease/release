@@ -1204,4 +1204,9 @@ return [
     'upsell_skip' => 'Continuer sans ajouter',
     'upsell_error' => 'Impossible de confirmer ces articles. Réessayez ou continuez vers le paiement et vérifiez votre panier.',
     'upsell_expired' => 'La sélection ou le prix a changé. Fermez cette fenêtre et ouvrez-la à nouveau pour actualiser.',
+    'coupon_bar_title' => 'Vous avez un coupon actif',
+    'coupon_bar_text' => 'Votre réduction supplémentaire sera calculée automatiquement lors de la commande.',
+    'coupon_price_label' => 'Avec coupon',
+    'coupon_cart_discount' => 'Réduction coupon',
+    'coupon_cart_note' => 'Appliquée automatiquement lors de la commande',
 ];
