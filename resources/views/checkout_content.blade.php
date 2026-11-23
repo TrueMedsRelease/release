@@ -697,7 +697,7 @@
                                     @endif
 
                                     <!-- Revolut, Wise, N26, Open Banking -->
-                                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LT", "NL", "PT", "ES"]))
+                                    @if (env('APP_OPEN_BANKING_ON', 0) && session('open_banking_available', true) && in_array(session('form.billing_country', session('location.country')), ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE"]))
                                         <label class="payment-method-panel @if(session('form.payment_type', 'mastercard') == 'revolut') is_selected @endif @if($isPaymentLocked && session('form.payment_type') !== 'mastercard') disabled @endif">
                                             <input type="radio" name="payment_type" value="revolut" @if(session('form.payment_type', 'mastercard') == 'revolut') checked @endif>
                                             <img src="{{ asset('style_checkout/images/icons/revolut.svg') }}" class="payment-method-icon" alt="Revolut">

@@ -23,10 +23,9 @@
         'design_17' => 'var(--color-primary, #13163f)',
     ][$ccDesign] ?? '#2e9e4f';
 
-    // Light brand colours (yellow buttons with dark text): use the colour as is, without the
-    // darkening applied for white text, and put dark text on it — same as the design's buttons.
     $ccLight = [
-        'design_3' => 'var(--black, #000)',
+        'design_3'  => 'var(--black, #000)',          // yellow buttons, dark text
+        'design_14' => 'var(--color-white, #fff)',    // green buttons, white text
     ][$ccDesign] ?? null;
 @endphp
 <style>:root { --coupon-color: {{ $ccColor }};@if ($ccLight) --coupon-bg: {{ $ccColor }}; --coupon-on: {{ $ccLight }};@endif }</style>
