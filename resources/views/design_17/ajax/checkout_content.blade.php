@@ -149,6 +149,18 @@
                                 </div>
                             </td>
                         </tr>
+                        @if (session('total.bonus_checkout', 0) > 0)
+                            <tr>
+                                <td colspan="4">
+                                    <div class="order-option">
+                                        <div class="form__label-title">{{ __('text.checkout_payment_discount') }}</div>
+                                        <div class="order-option__price" style="color: #ED4C54;">
+                                            -{{ $Currency::convert(session('total.bonus_checkout')) }}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
                     @endif
                     </tbody>
                 </table>
@@ -266,8 +278,8 @@
                             $total_discount += session('cart_option.shipping_price');
                             $total_discount += session('total.coupon_discount');
                             $total_discount += session('total.bonus_card_discount');
-                            $total_discount += session('cart_option.insurance_price');
-                            $total_discount += session('cart_option.secret_price');
+                            $total_discount += session('total.insurance', 0);
+                            $total_discount += session('total.secret_package', 0);
 
                             $saving = $total_discount - session('total.checkout_total') + session('total.gift_card_discount');
                         @endphp

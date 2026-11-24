@@ -633,6 +633,7 @@ return [
     "checkout_type" => "طريقة الدفع",
     "checkout_pls_select" => "الرجاء التحديد",
     "checkout_master_discount" => "خصم ماستركارد",
+    "checkout_payment_discount" => "خصم طريقة الدفع",
     "checkout_not_selected" => "لم يتم تحديد نوع البطاقة",
     "checkout_card" => "بطاقة",
     "checkout_crypto" => "تشفير",
@@ -1082,4 +1083,5 @@ return [
     'coupon_price_label' => 'مع الكوبون',
     'coupon_cart_discount' => 'خصم الكوبون',
     'coupon_cart_note' => 'يُطبَّق تلقائيًا عند إتمام الطلب',
+    'coupon_cart_applied' => 'تم تطبيق خصم الكوبون',
 ];

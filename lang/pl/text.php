@@ -630,6 +630,7 @@ return [
     "checkout_type" => "Rodzaj płatności",
     "checkout_pls_select" => "Proszę wybrać",
     "checkout_master_discount" => "Zniżka na kartę MasterCard",
+    "checkout_payment_discount" => "Rabat za metodę płatności",
     "checkout_not_selected" => "Nie wybrano typu karty",
     "checkout_card" => "Karta",
     "checkout_crypto" => "Krypto",
@@ -1079,4 +1080,5 @@ return [
     'coupon_price_label' => 'Z kuponem',
     'coupon_cart_discount' => 'Rabat z kuponu',
     'coupon_cart_note' => 'Naliczany automatycznie przy składaniu zamówienia',
+    'coupon_cart_applied' => 'Rabat z kuponu naliczony',
 ];

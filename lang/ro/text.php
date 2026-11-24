@@ -625,6 +625,7 @@ return [
     "checkout_type" => "Tip de plata",
     "checkout_pls_select" => "Te rog selecteaza",
     "checkout_master_discount" => "Reducere MasterCard",
+    "checkout_payment_discount" => "Reducere pentru metoda de plată",
     "checkout_not_selected" => "Tipul cardului nu este selectat",
     "checkout_card" => "Card",
     "checkout_crypto" => "Cripto",
@@ -1074,4 +1075,5 @@ return [
     'coupon_price_label' => 'Cu cupon',
     'coupon_cart_discount' => 'Reducere cupon',
     'coupon_cart_note' => 'Se aplică automat la finalizarea comenzii',
+    'coupon_cart_applied' => 'Reducerea cuponului a fost aplicată',
 ];

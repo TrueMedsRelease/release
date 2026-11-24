@@ -5778,3 +5778,24 @@ strong {
     color:var(--coupon-color, #2e9e4f);
   }
 }
+
+/*! Coupon on product packs: table row on desktop, plashka above the Add button on phones (cards) */
+.product__coupon-cell{
+  display:none;
+}
+@media (max-width: 700px){
+  tr.product--coupon{
+    display:none !important;
+  }
+  .product__coupon-cell{
+    display:block;
+    grid-column:1 / -1;
+    grid-row:3;
+  }
+  .product__coupon-cell .coupon-row{
+    margin:0;
+  }
+  .product--has-coupon .product__button-wrapper{
+    grid-row:4;
+  }
+}

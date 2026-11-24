@@ -7947,3 +7947,37 @@ textarea.input {
   padding-top: 14px;
   padding-bottom: 14px;
 }
+
+
+/* Price table rows with a coupon: 2-row grid — Package and the Add button span both rows
+   (vertically centred), the coupon box sits under Per pill + Special price.
+   Column widths are measured from the normal flex layout by shared/coupon_row (JS) and set inline,
+   so the columns line up exactly with rows without a coupon. */
+.table_row:has(> .coupon-row-wrap):not(.coupon-measure) {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  column-gap: 0;
+  row-gap: 6px;
+  align-items: center;
+}
+.table_row:has(> .coupon-row-wrap):not(.coupon-measure) > .product_package,
+.table_row:has(> .coupon-row-wrap):not(.coupon-measure) > .product_per_pill,
+.table_row:has(> .coupon-row-wrap):not(.coupon-measure) > .product_offer {
+  width: auto;
+}
+.table_row:has(> .coupon-row-wrap):not(.coupon-measure) > .product_package,
+.table_row:has(> .coupon-row-wrap):not(.coupon-measure) > form {
+  grid-row: 1 / span 2;
+}
+.table_row > .coupon-row-wrap {
+  grid-column: 2 / 4;
+  grid-row: 2;
+  padding: 0;
+}
+.table_row.coupon-measure > .coupon-row-wrap {
+  display: none;
+}
+.table_row > .coupon-row-wrap .coupon-row {
+  margin: 0;
+}

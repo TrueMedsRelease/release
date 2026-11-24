@@ -83,8 +83,9 @@ usort($dosageKeys, static fn (string $left, string $right): int => -$compareDosa
                             </thead>
                             <tbody>
                                 @foreach ($dosagePacks as $pack)
-                                    <tr class="product">
-                                        <td class="product__info-wrapper">
+                                    @php $hasCouponRow = \App\Services\CouponService::discount((float) ($pack['price'] ?? 0), $product['id'] ?? null) > 0; @endphp
+                                    <tr class="product @if ($hasCouponRow) product--has-coupon @endif">
+                                        <td class="product__info-wrapper" @if ($hasCouponRow) rowspan="2" @endif>
                                             <div class="product__info">
                                                 <div class="product__quantity">
                                                     {{ $pack['quantity'] ?? '' }}
@@ -109,10 +110,9 @@ usort($dosageKeys, static fn (string $left, string $right): int => -$compareDosa
                                                     </div>
                                                 @endif
                                                 <div class="product__price">{{ $Currency::Convert($pack['price'] ?? 0) }}</div>
-                                                {{-- @include('shared.coupon_price', ['couponBase' => $pack['price'] ?? 0, 'couponProductId' => $product['id'] ?? null]) --}}
                                             </div>
                                         </td>
-                                        <td class="product__button-wrapper">
+                                        <td class="product__button-wrapper" @if ($hasCouponRow) rowspan="2" @endif>
                                             <form action="{{ $pack['add_url'] ?? '#' }}" method="post" class="product__form">
                                                 @csrf
                                                 <button class="button product__button" type="submit">
@@ -126,6 +126,7 @@ usort($dosageKeys, static fn (string $left, string $right): int => -$compareDosa
                                             </form>
                                         </td>
                                     </tr>
+                                    @include('shared.coupon_row', ['couponBase' => $pack['price'] ?? 0, 'couponProductId' => $product['id'] ?? null, 'couponColspan' => 2])
                                 @endforeach
                             </tbody>
                         </table>

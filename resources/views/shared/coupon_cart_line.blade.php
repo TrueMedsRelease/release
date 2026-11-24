@@ -21,13 +21,16 @@
                 display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px 10px;
                 flex: 0 0 100%; grid-column: 1 / -1; align-self: stretch;
                 width: 100%; max-width: none; box-sizing: border-box;
-                margin: 12px 0 0; padding: 12px 0 0;
+                /* margin: 12px 0 0;  */
+                padding: 12px 0 0;
                 border-top: 1px dashed rgba(127, 127, 127, .35);
                 font-size: 14px; font-style: normal; font-weight: 400; line-height: 1.3;
                 color: inherit; text-align: end; text-transform: none; letter-spacing: normal;
             }
             .coupon-cart__note { font-size: 13px; opacity: .7; }
-            .coupon-cart__deal { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+            .coupon-cart__deal { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+                /* margin-left: auto; */
+            } /* stays right even when the line wraps */
             .coupon-cart__deal .coupon-tag { font-size: 12px; padding: 3px 7px 3px 6px; }
             .coupon-cart__sum { font-size: 18px; font-weight: 700; }
             /* the totals container keeps its own layout; it just lets our row wrap below */
@@ -39,7 +42,7 @@
         </style>
     @endonce
     <div class="coupon-cart" title="{{ $ccTitle }}">
-        <small class="coupon-cart__note">{{ __('text.coupon_cart_note') }}</small>
+        <small class="coupon-cart__note">{{ __('text.coupon_cart_applied') }}</small>
         <b class="coupon-cart__deal">@include('shared.coupon_tag')<b class="coupon-cart__sum">{{ $ccTotal }}</b></b>
     </div>
 @endif

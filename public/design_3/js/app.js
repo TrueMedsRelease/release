@@ -4302,8 +4302,11 @@ function getHeaderTopOffset() {
     const phonesHeight = $('.header__phones-top').outerHeight() || 31;
     const $banner = $('.christmas');
     const bannerHeight = $banner.is(':visible') ? ($banner.outerHeight() || 0) : 0;
+    // coupon bar (shared/coupon_bar.blade.php) sits above the header when a coupon is active
+    const $coupon = $('.coupon-bar');
+    const couponHeight = $coupon.is(':visible') ? ($coupon.outerHeight() || 0) : 0;
 
-    return phonesHeight + bannerHeight;
+    return phonesHeight + bannerHeight + couponHeight;
 }
 
 function updateHeaderTopOffset() {
@@ -4315,6 +4318,7 @@ function updateHeaderTopOffset() {
 }
 
 $('.christmas img').on('load', updateHeaderTopOffset);
+$(window).on('resize orientationchange', updateHeaderTopOffset);
 
 if (getCookie('christmas')) {
     $('.christmas').hide();

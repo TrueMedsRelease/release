@@ -409,11 +409,10 @@
                                     <span class="old_price">
                                         <span>{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }}</span>
                                         -{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%
-                                    </span>{!!__('text.product_only')!!} <span>{{ $Currency::convert($item['price']) }}</span>
+                                    </span><span class="new_price">{!!__('text.product_only')!!} <span>{{ $Currency::convert($item['price']) }}</span></span>
                                 @else
                                     <span>{{ $Currency::convert($item['price']) }}</span>
                                 @endif
-                                {{-- @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id'] ?? null]) --}}
                             </span>
 
                             <form method="POST" action="{{ route('cart.add', $item['id']) }}">
@@ -423,6 +422,7 @@
                                     <span>{{__('text.product_add_to_cart_text_d2')}}</span>
                                 </button>
                             </form>
+                            @include('shared.coupon_row', ['couponBase' => $item['price'], 'couponProductId' => $product['id'] ?? null, 'couponAs' => 'div'])
                         </div>
                     @endforeach
                 </div>

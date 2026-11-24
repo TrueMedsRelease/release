@@ -5209,3 +5209,40 @@ opacity:0;
 .popup_white .popup_push {
   pointer-events: auto;
 }
+
+/* Product packs with a coupon: package row + its coupon row read as one block
+   (no white separator line between them; the badge is centred on the package cell) */
+.product-table__list.product--has-coupon,
+.product-table__list.product--has-coupon:not(:last-child) {
+  border-bottom: 0 !important;
+}
+.product-table__list--badge.product--has-coupon .product-table__package {
+  position: relative;
+}
+
+/* Cart total, in the design's order, one line when there is room:
+   Total: ....... $236.99 -67%  Savings: $158  Only $78.99   ("Only" wraps to the next line when it doesn't fit) */
+.order-total {
+  align-items: baseline;
+}
+.order-total__content {
+  -webkit-box-orient: horizontal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
+  column-gap: 12px;
+  row-gap: 2px;
+  text-align: right;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.order-total__content > .order-total__only {
+  line-height: 1.3;
+}
+.order-total__content > .order-total__price,
+.order-total__content > .order-total__saving {
+  font-size: 14px;
+  line-height: 1.3;
+}

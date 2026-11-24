@@ -377,15 +377,18 @@ class Cart extends Model
                 // Currency::Convert($bonus_total, true),
             ]);
 
+            // Сумма тех же строк, что видит клиент в блоке заказа (товары с ceil, остальное с копейками),
+            // без итогового округления — иначе итог расходится с суммой строк.
             $checkout_total_in_currency = Currency::SumInCurrency([
-                Currency::Convert($all, true),
+                Currency::Convert($product_total, true),
+                Currency::Convert($shipping_total),
                 Currency::Convert($insurance),
                 Currency::Convert($secret_package),
                 Currency::Convert($coupon_discount * (-1)),
                 Currency::Convert($gift_card_discount * (-1)),
                 Currency::Convert($bonus_card_discount * (-1)),
                 Currency::Convert($bonus_checkout * (-1)),
-            ], true);
+            ]);
         }
 
         if ($is_only_card) {
@@ -412,6 +415,7 @@ class Cart extends Model
             'coupon_discount'            => $coupon_discount,
             'gift_card_discount'         => $gift_card_discount,
             'bonus_card_discount'        => $bonus_card_discount,
+            'bonus_checkout'             => $is_only_card ? 0 : $bonus_checkout,
             'checkout_total'             => $checkout_total,
             'checkout_total_eur'         => round($checkout_total * $eur, 2),
             'checkout_total_in_currency' => $checkout_total_in_currency,

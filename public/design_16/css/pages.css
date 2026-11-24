@@ -1921,3 +1921,9 @@ td.product__button-wrapper{
     font-size:1.3rem;
   }
 }
+
+/* Price table with coupon rows: every cell here has the --color-stroke background (no striping),
+   the coupon row gets it too instead of the shared transparent one */
+.table > tbody > tr.product--coupon > td{
+  background-color:var(--color-stroke) !important;
+}

@@ -629,6 +629,7 @@ return [
     "checkout_type" => "Typ av betalning",
     "checkout_pls_select" => "Vänligen välj",
     "checkout_master_discount" => "MasterCard rabatt",
+    "checkout_payment_discount" => "Rabatt för betalningsmetod",
     "checkout_not_selected" => "Korttyp inte vald",
     "checkout_card" => "Kort",
     "checkout_crypto" => "Krypto",
@@ -1078,4 +1079,5 @@ return [
     'coupon_price_label' => 'Med kupong',
     'coupon_cart_discount' => 'Kupongrabatt',
     'coupon_cart_note' => 'Dras av automatiskt i kassan',
+    'coupon_cart_applied' => 'Kupongrabatt tillämpad',
 ];

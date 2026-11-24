@@ -749,6 +749,7 @@ return [
     "checkout_type" => "Tipo de pagamento",
     "checkout_pls_select" => "Por favor selecione",
     "checkout_master_discount" => "Desconto MasterCard",
+    "checkout_payment_discount" => "Desconto no método de pagamento",
     "checkout_not_selected" => "Tipo de cartão não selecionado",
     "checkout_card" => "Cartão",
     "checkout_crypto" => "Criptografia",
@@ -1198,4 +1199,5 @@ return [
     'coupon_price_label' => 'Com cupom',
     'coupon_cart_discount' => 'Desconto do cupom',
     'coupon_cart_note' => 'Aplicado automaticamente ao finalizar o pedido',
+    'coupon_cart_applied' => 'Desconto do cupom aplicado',
 ];

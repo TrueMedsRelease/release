@@ -1389,13 +1389,16 @@
         return groups;
     }
 
-    // Price with the coupon applied (window.design17Coupon is set by the layout when a coupon is active).
-    function couponPriceHtml(price, productId) {
+    // Coupon row under a package row (window.design17Coupon is set by the layout when a coupon is active):
+    // same markup as resources/views/shared/coupon_row.blade.php, under the Per item + Price columns.
+    function couponRowHtml(price, productId) {
         var c = window.design17Coupon;
         if (!c || !(c.percent > 0) || !(price > 0) || String(productId) === String(c.excluded)) return '';
         var reduced = price - Math.ceil(price * c.percent / 100);
-        return '<small class="coupon-price" title="' + escapeHtml(c.title || '') + '">' + c.tag +
-            ' <b class="coupon-price__sum">' + formatPrice(reduced) + '</b></small>';
+        return '<tr class="product product--coupon"><td colspan="2">' +
+            '<div class="coupon-row" title="' + escapeHtml(c.title || '') + '">' + c.tag +
+            '<em class="coupon-row__label">' + escapeHtml(c.label || '') + '</em>' +
+            '<b class="coupon-row__sum">' + formatPrice(reduced) + '</b></div></td></tr>';
     }
 
     function buildPackTableHtml(packs, productName, productId) {
@@ -1451,9 +1454,11 @@
                     '<span class="button__text">' + getText('add_to_cart') + '</span>' +
                 '</button>';
 
+            var couponHtml = couponRowHtml(pack.price, productId), rs = couponHtml ? ' rowspan="2"' : '';
+
             rowsHtml +=
-                '<tr class="product">' +
-                    '<td class="product__info-wrapper">' +
+                '<tr class="product' + (couponHtml ? ' product--has-coupon' : '') + '">' +
+                    '<td class="product__info-wrapper"' + rs + '>' +
                         '<div class="product__info' + (isFirstRow ? ' product__info--sale' : '') + '"' +
                             (isFirstRow ? ' style="height: auto;"' : '') + '>' +
                             '<div class="product__quantity">' + escapeHtml(String(pack.quantity)) +
@@ -1467,13 +1472,12 @@
                         '<div class="product__price-wrapper">' +
                             discountHtml +
                             '<div class="product__price">' + formatPrice(pack.price) + '</div>' +
-                            couponPriceHtml(pack.price, productId) +
                         '</div>' +
                     '</td>' +
-                    '<td class="product__button-wrapper">' +
+                    '<td class="product__button-wrapper"' + rs + '>' +
                         buttonHtml +
                     '</td>' +
-                '</tr>';
+                '</tr>' + couponHtml;
         });
         var dosageLabel = packs[0].dosage || '';
         var headerHtml = dosageLabel

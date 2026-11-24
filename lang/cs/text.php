@@ -715,6 +715,7 @@ return [
     "checkout_type" => "Typ platby",
     "checkout_pls_select" => "Prosím vyberte",
     "checkout_master_discount" => "Sleva MasterCard",
+    "checkout_payment_discount" => "Sleva za způsob platby",
     "checkout_not_selected" => "Typ karty není vybrán",
     "checkout_card" => "Kartu",
     "checkout_crypto" => "Krypto",
@@ -1164,4 +1165,5 @@ return [
     'coupon_price_label' => 'S kupónem',
     'coupon_cart_discount' => 'Sleva z kupónu',
     'coupon_cart_note' => 'Uplatní se automaticky při dokončení objednávky',
+    'coupon_cart_applied' => 'Sleva z kupónu uplatněna',
 ];

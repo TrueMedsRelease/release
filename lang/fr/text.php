@@ -759,6 +759,7 @@ return [
     "checkout_type" => "Type de paiement",
     "checkout_pls_select" => "Veuillez sélectionner",
     "checkout_master_discount" => "Remise MasterCard",
+    "checkout_payment_discount" => "Remise sur le mode de paiement",
     "checkout_not_selected" => "Type de carte non sélectionné",
     "checkout_card" => "Carte",
     "checkout_crypto" => "Cryptomonnaie",
@@ -1209,4 +1210,5 @@ return [
     'coupon_price_label' => 'Avec coupon',
     'coupon_cart_discount' => 'Réduction coupon',
     'coupon_cart_note' => 'Appliquée automatiquement lors de la commande',
+    'coupon_cart_applied' => 'Réduction du coupon appliquée',
 ];

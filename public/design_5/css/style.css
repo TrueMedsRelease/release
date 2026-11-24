@@ -4138,3 +4138,38 @@ ul.footer-nav li {
         text-overflow: ellipsis;
         vertical-align: middle; }
 }
+
+/* Product packs with a coupon: the row becomes a 2-row grid — Package and the Add button span both rows
+   (vertically centred), the coupon box sits under Per pill + Special price */
+.package-box .package-table .body .item:has(> .coupon-row-wrap) {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 6px;
+    padding-top: 8px;
+    padding-bottom: 8px; }
+.package-box .package-table .body .item:has(> .coupon-row-wrap) > .col:first-child,
+.package-box .package-table .body .item:has(> .coupon-row-wrap) > .col:nth-child(4) {
+    grid-row: 1 / span 2; }
+.package-box .package-table .body .item > .coupon-row-wrap {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    padding: 0; }
+.package-box .package-table .body .item > .coupon-row-wrap .coupon-row {
+    margin: 0; }
+
+/* Cart total with a coupon: the total takes the full row and its prices go right,
+   so "Only $X" sits right above the coupon price */
+.table-box.cart-table .table .body .line.full-line.total-line .total-box:has(> .coupon-cart) > .column.price {
+    width: 100%; }
+.table-box.cart-table .table .body .line.full-line.total-line .total-box:has(> .coupon-cart) > .column.price .sum {
+    flex: 1 1 auto;
+    text-align: right;
+    /* one line when there is room, "Only" wraps to the next line when there isn't */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    column-gap: 12px;
+    row-gap: 2px; }
