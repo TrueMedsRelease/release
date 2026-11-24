@@ -878,7 +878,7 @@
         <script>window.medbotPollInterval = {{ config('medbot.poll_interval', 5000) }};</script>
         <script>window.DESIGN17_CHAT_LOG_LEVEL = "{{ app()->environment('production') ? 'error' : 'debug' }}";</script>
         @if (\App\Services\CouponService::active())
-            @include('shared.coupon_price_css')
+            {{-- @include('shared.coupon_price_css') --}}
             @php
                 $design17Coupon = [
                     'percent'  => \App\Services\CouponService::percent(),
