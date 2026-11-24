@@ -679,6 +679,7 @@ return [
     "checkout_type" => "Betalingstype",
     "checkout_pls_select" => "Vælg venligst",
     "checkout_master_discount" => "MasterCard rabat",
+    "checkout_payment_discount" => "Rabat for betalingsmetode",
     "checkout_not_selected" => "Korttype ikke valgt",
     "checkout_card" => "Kort",
     "checkout_crypto" => "Krypto",
@@ -1128,4 +1129,5 @@ return [
     'coupon_price_label' => 'Med kupon',
     'coupon_cart_discount' => 'Kuponrabat',
     'coupon_cart_note' => 'Trækkes automatisk fra ved kassen',
+    'coupon_cart_applied' => 'Kuponrabat anvendt',
 ];

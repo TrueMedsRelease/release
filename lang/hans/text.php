@@ -634,6 +634,7 @@ return [
     "checkout_type" => "付款方式",
     "checkout_pls_select" => "请选择",
     "checkout_master_discount" => "万事达卡折扣",
+    "checkout_payment_discount" => "支付方式折扣",
     "checkout_not_selected" => "未选择卡类型",
     "checkout_card" => "卡片",
     "checkout_crypto" => "加密货币",
@@ -1083,4 +1084,5 @@ return [
     'coupon_price_label' => '使用优惠券',
     'coupon_cart_discount' => '优惠券折扣',
     'coupon_cart_note' => '结账时自动抵扣',
+    'coupon_cart_applied' => '已使用优惠券折扣',
 ];

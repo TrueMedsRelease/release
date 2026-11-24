@@ -54,8 +54,9 @@
                                 @if ($loop->last)
                                     @continue
                                 @endif
-                                <tr class="product">
-                                    <td class="product__info-wrapper">
+                                @php $hasCouponRow = \App\Services\CouponService::discount((float) $item['price'], $product['id']) > 0; @endphp
+                                <tr class="@if ($hasCouponRow) product--has-coupon @endif @if ($loop->iteration % 2 == 1) product--zebra @endif product">
+                                    <td class="product__info-wrapper" @if ($hasCouponRow) rowspan="2" @endif>
                                         <div class="product__info @if ($loop->iteration == 1 && $product['id'] != 616) product__info--sale @endif" @if ($loop->iteration == 1 && $product['id'] != 616) style="height: auto;" @endif>
                                             <div class="product__quantity">{{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}</div>
                                             @if ($product['id'] != 616)
@@ -92,11 +93,10 @@
                                                 @else
                                                     {{ $Currency::convert($item['price'], true) }}
                                                 @endif
-                                                {{-- @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']]) --}}
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="product__button-wrapper">
+                                    <td class="product__button-wrapper" @if ($hasCouponRow) rowspan="2" @endif>
                                         <form action="{{ route('cart.add', $item['id']) }}" method="post">
                                             @csrf
                                             <button class="button product__button">
@@ -110,6 +110,7 @@
                                         </form>
                                     </td>
                                 </tr>
+                                @include('shared.coupon_row', ['couponBase' => $item['price'], 'couponProductId' => $product['id'], 'couponColspan' => 2, 'couponRowClass' => ($loop->iteration % 2 == 1 ? 'product product--zebra' : 'product')])
                             @endforeach
                         </tbody>
                     </table>

@@ -1930,3 +1930,12 @@ td.product__button-wrapper{
     font-size:1.3rem;
   }
 }
+
+
+/* Price table with coupon rows: stripe by package (package row + its coupon row), not by <tr> */
+.table > tbody:has(> tr.product--coupon) > tr:nth-child(even) td{
+  background-color:transparent;
+}
+.table > tbody:has(> tr.product--coupon) > tr.product--zebra > td{
+  background-color:var(--color-stroke) !important;
+}

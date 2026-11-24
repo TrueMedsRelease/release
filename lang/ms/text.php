@@ -631,6 +631,7 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     "checkout_type" => "Jenis Pembayaran",
     "checkout_pls_select" => "Sila Pilih",
     "checkout_master_discount" => "Diskaun MasterCard",
+    "checkout_payment_discount" => "Diskaun kaedah pembayaran",
     "checkout_not_selected" => "Jenis kad tidak dipilih",
     "checkout_card" => "Kad",
     "checkout_crypto" => "Kripto",
@@ -1080,4 +1081,5 @@ Kami berusaha untuk menjadikan kepuasan pelanggan sebagai keutamaan utama. Kami 
     'coupon_price_label' => 'Dengan kupon',
     'coupon_cart_discount' => 'Diskaun kupon',
     'coupon_cart_note' => 'Digunakan secara automatik semasa pembayaran',
+    'coupon_cart_applied' => 'Diskaun kupon telah digunakan',
 ];

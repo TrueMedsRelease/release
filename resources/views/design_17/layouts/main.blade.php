@@ -878,17 +878,18 @@
         <script>window.medbotPollInterval = {{ config('medbot.poll_interval', 5000) }};</script>
         <script>window.DESIGN17_CHAT_LOG_LEVEL = "{{ app()->environment('production') ? 'error' : 'debug' }}";</script>
         @if (\App\Services\CouponService::active())
-            {{-- @include('shared.coupon_price_css') --}}
+            @include('shared.coupon_row', ['couponAs' => 'css'])
             @php
                 $design17Coupon = [
                     'percent'  => \App\Services\CouponService::percent(),
                     'excluded' => \App\Services\CouponService::EXCLUDED_PRODUCT_ID,
                     'tag'      => trim(view('shared.coupon_tag')->render()),
                     'title'    => __('text.coupon_cart_note'),
+                    'label'    => __('text.coupon_price_label'),
                 ];
             @endphp
             <script>
-                // Coupon for the JS-rendered pack table (chat.js -> couponPriceHtml()).
+                // Coupon for the JS-rendered pack table (chat.js -> couponRowHtml()).
                 window.design17Coupon = @json($design17Coupon);
             </script>
         @endif

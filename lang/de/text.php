@@ -755,6 +755,7 @@ return [
     "checkout_type" => "Zahlungsart",
     "checkout_pls_select" => "Bitte auswählen",
     "checkout_master_discount" => "MasterCard-Rabatt",
+    "checkout_payment_discount" => "Rabatt für die Zahlungsart",
     "checkout_not_selected" => "Kartentyp nicht ausgewählt",
     "checkout_card" => "Karte",
     "checkout_crypto" => "Krypto",
@@ -1204,4 +1205,5 @@ return [
     'coupon_price_label' => 'Mit Gutschein',
     'coupon_cart_discount' => 'Gutscheinrabatt',
     'coupon_cart_note' => 'Wird an der Kasse automatisch abgezogen',
+    'coupon_cart_applied' => 'Gutscheinrabatt angewendet',
 ];

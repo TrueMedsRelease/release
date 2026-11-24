@@ -6751,3 +6751,8 @@ textarea.input {
 .popup_white .popup_push {
   pointer-events: auto;
 }
+
+/* Coupon row on product packs: price in the coupon box matches the table's small type */
+.item-product-info__table .coupon-row__sum {
+  font-size: 13px;
+}

@@ -748,6 +748,7 @@ return [
     "checkout_type" => "支払い方法",
     "checkout_pls_select" => "選んでください",
     "checkout_master_discount" => "マスターカード割引",
+    "checkout_payment_discount" => "お支払い方法割引",
     "checkout_not_selected" => "カードの種類が選択されていません",
     "checkout_card" => "カード",
     "checkout_crypto" => "暗号",
@@ -1197,5 +1198,6 @@ return [
     'coupon_price_label' => 'クーポン適用',
     'coupon_cart_discount' => 'クーポン割引',
     'coupon_cart_note' => 'ご注文手続き時に自動で適用されます',
+    'coupon_cart_applied' => 'クーポン割引が適用されました',
 ];
 

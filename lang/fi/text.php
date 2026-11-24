@@ -637,6 +637,7 @@ return [
     "checkout_type" => "Maksun tyyppi",
     "checkout_pls_select" => "Ole hyvä ja valitse",
     "checkout_master_discount" => "MasterCard-alennus",
+    "checkout_payment_discount" => "Maksutapa-alennus",
     "checkout_not_selected" => "Korttityyppiä ei ole valittu",
     "checkout_card" => "Kortti",
     "checkout_crypto" => "Krypto",
@@ -1085,4 +1086,5 @@ return [
     'coupon_price_label' => 'Kupongilla',
     'coupon_cart_discount' => 'Kuponkialennus',
     'coupon_cart_note' => 'Vähennetään automaattisesti kassalla',
+    'coupon_cart_applied' => 'Kuponkialennus käytetty',
 ];

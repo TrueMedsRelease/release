@@ -627,6 +627,7 @@ return [
     "checkout_type" => "Τύπος πληρωμής",
     "checkout_pls_select" => "Παρακαλώ επιλέξτε",
     "checkout_master_discount" => "Έκπτωση MasterCard",
+    "checkout_payment_discount" => "Έκπτωση τρόπου πληρωμής",
     "checkout_not_selected" => "Ο τύπος κάρτας δεν έχει επιλεγεί",
     "checkout_card" => "Κάρτα",
     "checkout_crypto" => "Crypto",
@@ -1077,4 +1078,5 @@ return [
     'coupon_price_label' => 'Με κουπόνι',
     'coupon_cart_discount' => 'Έκπτωση κουπονιού',
     'coupon_cart_note' => 'Εφαρμόζεται αυτόματα κατά την ολοκλήρωση της παραγγελίας',
+    'coupon_cart_applied' => 'Η έκπτωση κουπονιού εφαρμόστηκε',
 ];

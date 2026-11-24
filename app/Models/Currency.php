@@ -169,9 +169,8 @@ class Currency extends Model
             $sum += floatval(preg_replace("/[^-0-9\.]/", "", $num));
         }
 
-        if ($round) {
-            $sum = round($sum);
-        }
+        // round(..., 2) убирает хвосты float (198.48999999)
+        $sum = $round ? round($sum) : round($sum, 2);
 
         return Currency::symbol($current_currency) . $sum;
     }

@@ -94,7 +94,7 @@
     <link href="{{ asset($design . '/vendor/custom-select/custom-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset($design . '/vendor/intl-tel/css/intlTelInput.min.css') }}" rel="stylesheet">
     <link href="{{ asset_ver($design . '/css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset($design . '/css/pages.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver($design . '/css/pages.css') }}" rel="stylesheet">
 
     <script>
         const routeSearchAutocomplete = "{{ route('search.search_autocomplete') }}";

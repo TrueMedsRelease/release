@@ -1679,3 +1679,12 @@
     line-height:1.3rem;
   }
 }
+
+/* Price table with coupon rows: stripe by package (package row + its coupon row), not by <tr>
+   (this design paints the odd rows) */
+.table > tbody:has(> tr.product--coupon) > tr:nth-child(odd) > td{
+  background-color:transparent;
+}
+.table > tbody:has(> tr.product--coupon) > tr.product--zebra > td{
+  background-color:var(--color-grey-3) !important;
+}

@@ -241,6 +241,16 @@
                                     </div>
                                 </div>
                             @endif
+                            @if (session('total.bonus_checkout', 0) > 0)
+                                <div class="your-order__row">
+                                    <div class="your-order__checkbox checkbox">
+                                        <span class="checkbox__text" style="padding-left: 0;"><b style="font-weight: 500; color: var(--red);">{{ __('text.checkout_payment_discount') }}</b></span>
+                                    </div>
+                                    <div class="your-order__price" style="color: var(--red); font-weight: 500;">
+                                        -{{ $Currency::convert(session('total.bonus_checkout')) }}
+                                    </div>
+                                </div>
+                            @endif
                         @endif
 
                         {{-- Reorder discount --}}
@@ -416,8 +426,8 @@
                                         $total_discount += session('cart_option.shipping_price');
                                         $total_discount += session('total.coupon_discount');
                                         $total_discount += session('total.bonus_card_discount');
-                                        $total_discount += session('cart_option.insurance_price');
-                                        $total_discount += session('cart_option.secret_price');
+                                        $total_discount += session('total.insurance', 0);
+                                        $total_discount += session('total.secret_package', 0);
 
                                         $saving = $total_discount - session('total.checkout_total') + session('total.gift_card_discount');
                                     @endphp

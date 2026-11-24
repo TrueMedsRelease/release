@@ -233,7 +233,8 @@
                             @endphp
                         @endif
                         <tbody @if ($loop->iteration == 1 && $product['id'] != 616) class="item-product-info__row--discount" @endif>
-                        <tr class="item-product-info__row">
+                        @php $hasCouponRow = \App\Services\CouponService::discount((float) $item['price'], $product['id']) > 0; @endphp
+                        <tr class="@if ($hasCouponRow) product--coupon-grid @endif item-product-info__row">
                             <th class="item-product-info__package">
                                 {{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}
                                 @if ($product['id'] != 616)
@@ -266,7 +267,6 @@
                                     @else
                                         {{ $Currency::convert($item['price'], true) }}
                                     @endif
-                                    {{-- @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']]) --}}
                                 </span>
                             </th>
                             <th class="item-product-info__btn">
@@ -286,6 +286,7 @@
                                     </button>
                                 </form>
                             </th>
+                            @include('shared.coupon_row', ['couponBase' => $item['price'], 'couponProductId' => $product['id'], 'couponAs' => 'cell'])
                         </tr>
                         </div>
                     @endforeach

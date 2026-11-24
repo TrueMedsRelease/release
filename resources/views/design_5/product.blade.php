@@ -149,12 +149,10 @@
 
                     @if ($loop->remaining != 1 && $product['id'] != 616)
                         <div class="col"><span><span class="red">{{ $Currency::convert($dosage['max_pill_price'] * $item['num']) }} -{{ abs(ceil(100 - ($item['price'] / ($dosage['max_pill_price'] * $item['num'])) * 100)) }}%</span> {!!__('text.product_only')!!} {{ $Currency::convert($item['price']) }}</span>
-                            {{-- @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']]) --}}
                         </div>
                     @else
                         <div class="col">
                             <span>{{ $Currency::convert($item['price']) }}</span>
-                            {{-- @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']]) --}}
                         </div>
                     @endif
                     <div class="col">
@@ -166,6 +164,7 @@
                             </button>
                         </form>
                     </div>
+                    @include('shared.coupon_row', ['couponBase' => $item['price'], 'couponProductId' => $product['id'] ?? null, 'couponAs' => 'div'])
                 </div>
             </div>
     @endforeach

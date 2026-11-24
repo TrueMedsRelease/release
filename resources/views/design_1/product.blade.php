@@ -164,8 +164,9 @@
                                             $prev_dosage = $key;
                                         @endphp
                             @endif
-                                        <tr class="product-table__list @if ($loop->iteration == 1 && $product['id'] != 616) product-table__list--badge @endif">
-                                            <th class="product-table__package">
+                                        @php $hasCouponRow = \App\Services\CouponService::discount((float) $item['price'], $product['id']) > 0; @endphp
+                                        <tr class="@if ($hasCouponRow) product--has-coupon @endif product-table__list @if ($loop->iteration == 1 && $product['id'] != 616) product-table__list--badge @endif">
+                                            <th class="product-table__package" @if ($hasCouponRow) rowspan="2" @endif>
                                                 {{ "{$item['num']} {$product['product_types'][$item['type_id']]}" }}
                                                 @if ($product['id'] != 616)
                                                     @if ($item['price'] >= 300)
@@ -195,9 +196,8 @@
                                                 @else
                                                     <span class="product-table__current">{{ $Currency::convert($item['price'], true) }}</span>
                                                 @endif
-                                                {{-- @include('shared.coupon_price', ['couponBase' => $item['price'], 'couponProductId' => $product['id']]) --}}
                                             </th>
-                                            <th class="product-table__add">
+                                            <th class="product-table__add" @if ($hasCouponRow) rowspan="2" @endif>
                                                 <form action="{{ route('cart.add', $item['id']) }}" method="post">
                                                     @csrf
                                                     <button class="product-table__btn" type="submit">
@@ -214,6 +214,7 @@
                                                 </form>
                                             </th>
                                         </tr>
+                                        @include('shared.coupon_row', ['couponBase' => $item['price'], 'couponProductId' => $product['id'], 'couponColspan' => 2, 'couponRowClass' => 'product-table__list'])
                                     @endforeach
                                         </tbody>
                                     </table>

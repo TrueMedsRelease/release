@@ -5276,15 +5276,17 @@ if (document.getElementById("this_product_category")) {
 
 //     btnUp.addEventListener();
 
-    if (flagc) {
-        document.querySelector(".modal_cart").style.display = "none";
-        setTimeout(() => document.querySelector(".modal_cart").style.display = "", 5000); //
-        setTimeout(() => document.querySelector(".modal_cart").style.display = "none", 9000);
+    // the cart page of this design may have no .modal_cart block: only toggle it when it exists
+    const modalCart = document.querySelector(".modal_cart");
+    if (flagc && modalCart) {
+        modalCart.style.display = "none";
+        setTimeout(() => modalCart.style.display = "", 5000);
+        setTimeout(() => modalCart.style.display = "none", 9000);
       }
       if (flagp) {
-        document.querySelector(".cmcmodal").style.display = "none";
-        setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 5000); //
-        setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 9000);
+        // document.querySelector(".cmcmodal").style.display = "none";
+        // setTimeout(() => document.querySelector(".cmcmodal").style.display = "", 5000);
+        // setTimeout(() => document.querySelector(".cmcmodal").style.display = "none", 9000);
       }
 
 // function Unloader() {

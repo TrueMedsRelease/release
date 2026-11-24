@@ -6295,3 +6295,8 @@ body::after {
 .popup_white .popup_push {
   pointer-events: auto;
 }
+
+.item-product-info__btn {
+    display: flex;
+    justify-content: flex-end;
+}

@@ -635,6 +635,7 @@ return [
     "checkout_type" => "Fizetés típusa",
     "checkout_pls_select" => "Kérlek, válassz",
     "checkout_master_discount" => "MasterCard kedvezmény",
+    "checkout_payment_discount" => "Fizetési mód kedvezmény",
     "checkout_not_selected" => "A kártya típusa nincs kiválasztva",
     "checkout_card" => "Kártya",
     "checkout_crypto" => "Crypto",
@@ -1084,4 +1085,5 @@ return [
     'coupon_price_label' => 'Kuponnal',
     'coupon_cart_discount' => 'Kuponkedvezmény',
     'coupon_cart_note' => 'A rendelés leadásakor automatikusan érvényesül',
+    'coupon_cart_applied' => 'Kuponkedvezmény érvényesítve',
 ];

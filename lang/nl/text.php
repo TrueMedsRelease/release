@@ -669,6 +669,7 @@ return [
     "checkout_type" => "Soort betaling",
     "checkout_pls_select" => "Selecteer alstublieft",
     "checkout_master_discount" => "MasterCard-korting",
+    "checkout_payment_discount" => "Korting op betaalmethode",
     "checkout_not_selected" => "Kaarttype niet geselecteerd",
     "checkout_card" => "Kaart",
     "checkout_crypto" => "Crypto",
@@ -1118,4 +1119,5 @@ return [
     'coupon_price_label' => 'Met kortingscode',
     'coupon_cart_discount' => 'Korting via code',
     'coupon_cart_note' => 'Wordt automatisch verrekend bij het afrekenen',
+    'coupon_cart_applied' => 'Korting via kortingscode toegepast',
 ];

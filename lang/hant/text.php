@@ -630,6 +630,7 @@ return  [
     "checkout_type" => "付款方式",
     "checkout_pls_select" => "請選擇",
     "checkout_master_discount" => "萬事達卡折扣",
+    "checkout_payment_discount" => "付款方式折扣",
     "checkout_not_selected" => "未選擇卡片類型",
     "checkout_card" => "卡片",
     "checkout_crypto" => "加密貨幣",
@@ -1079,4 +1080,5 @@ return  [
     'coupon_price_label' => '使用優惠券',
     'coupon_cart_discount' => '優惠券折扣',
     'coupon_cart_note' => '結帳時自動扣除',
+    'coupon_cart_applied' => '已套用優惠券折扣',
 ];
