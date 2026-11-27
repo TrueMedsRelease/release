@@ -49,7 +49,7 @@
 
 return [
 
-    'default_skin' => (int) env('APP_CHECKOUT_SKIN', 1),
+    'default_skin' => (int) env('APP_CHECKOUT_SKIN', 2),
 
     // static — всегда default_skin; random — случайный скин на сессию
     'mode' => env('APP_CHECKOUT_SKIN_MODE', 'static'),
